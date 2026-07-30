@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+    Câmeras — ARGOS
+{% endblock %}
+
+{% block conteudo %}
+    <section class="page-heading">
+        <div>
+            <span class="page-heading__eyebrow">
+                Inventário CFTV
+            </span>
+
+            <h1>Câmeras</h1>
+
+            <p>
+                Consulte as informações técnicas das câmeras cadastradas.
+            </p>
+        </div>
+
+        <div class="record-counter">
+            <strong>{{ cameras.count }}</strong>
+
+            <span>
+                câmera{{ cameras.count|pluralize:"s" }}
+            </span>
+        </div>
+    </section>
+
+    {% if cameras %}
+        <section class="content-panel">
+            <div class="content-panel__header">
+                <div>
+                    <h2>Câmeras cadastradas</h2>
+
+                    <p>
+                        Relação atual dos equipamentos inventariados.
+                    </p>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="camera-table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Câmera</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Endereço IP</th>
+                        <th scope="col">Máscara</th>
+                        <th scope="col">VLAN</th>
+                        <th scope="col">Fabricante</th>
+                        <th scope="col">Modelo</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for camera in cameras %}
+                        <tr>
+                            <td>
+                                <div class="camera-identification">
+                                        <span class="camera-identification__icon">
+                                            C
+                                        </span>
+
+                                    <strong>
+                                        {{ camera.nome }}
+                                    </strong>
+                                </div>
+                            </td>
+
+                            <td>
+                                {{ camera.get_tipo_display|default:"Não informado" }}
+                            </td>
+
+                            <td class="monospace">
+                                {{ camera.ip }}
+                            </td>
+
+                            <td class="monospace">
+                                {{ camera.mascara_subrede }}
+                            </td>
+
+                            <td>
+                                    <span class="vlan-badge">
+                                        VLAN {{ camera.vlan }}
+                                    </span>
+                            </td>
+
+                            <td>
+                                {{ camera.fabricante }}
+                            </td>
+
+                            <td>
+                                {{ camera.modelo }}
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    {% else %}
+        <section class="empty-state">
+            <div class="empty-state__icon">
+                C
+            </div>
+
+            <h2>Nenhuma câmera cadastrada</h2>
+
+            <p>
+                Cadastre uma câmera pelo painel administrativo para
+                iniciar o inventário.
+            </p>
+        </section>
+    {% endif %}
+{% endblock %}
