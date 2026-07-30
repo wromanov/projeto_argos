@@ -9,6 +9,10 @@ class Camera(models.Model):
         SPEED_DOME = "SPEED_DOME", "Speed Dome"
         FISHEYE = "FISHEYE", "Fisheye"
 
+    class StatusCamera(models.TextChoices):
+        ONLINE = "ONLINE", "Online"
+        OFFLINE = "OFFLINE", "Offline"
+
     nome = models.CharField(
         max_length=150,
         unique=True,
@@ -45,6 +49,20 @@ class Camera(models.Model):
         blank=True,
         default="",
         verbose_name="Tipo de câmera",
+    )
+
+    status = models.CharField(
+        max_length=7,
+        choices=StatusCamera.choices,
+        null=True,
+        blank=True,
+        verbose_name="Status",
+    )
+
+    status_em = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Status desde",
     )
 
     def __str__(self):

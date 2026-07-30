@@ -7,12 +7,14 @@ from .models import Camera
 class CameraAdmin(admin.ModelAdmin):
     list_display = (
         "nome",
+        "status",
+        "status_em",
+        "tipo",
         "ip",
         "mascara_subrede",
         "vlan",
         "fabricante",
         "modelo",
-        "tipo",
     )
 
     search_fields = (
@@ -23,6 +25,7 @@ class CameraAdmin(admin.ModelAdmin):
     )
 
     list_filter = (
+        "status",
         "tipo",
         "fabricante",
         "vlan",

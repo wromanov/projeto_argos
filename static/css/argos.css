@@ -256,7 +256,7 @@ a {
 
 .camera-table {
     width: 100%;
-    min-width: 850px;
+    min-width: 1120px;
 
     border-collapse: collapse;
 }
@@ -299,6 +299,9 @@ a {
     border-bottom: none;
 }
 
+
+/* Identificação da câmera */
+
 .camera-identification {
     display: flex;
     align-items: center;
@@ -326,12 +329,17 @@ a {
     color: var(--color-text);
 }
 
+
+/* Informações técnicas */
+
 .monospace {
     font-family:
         "SFMono-Regular",
         Consolas,
         "Liberation Mono",
         monospace;
+
+    font-variant-numeric: tabular-nums;
 }
 
 .vlan-badge {
@@ -346,6 +354,75 @@ a {
 
     font-size: 12px;
     font-weight: 700;
+}
+
+
+/* Status */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 6px 10px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+.status-badge--online {
+    background-color: #dcfae6;
+    color: #067647;
+}
+
+.status-badge--offline {
+    background-color: #fee4e2;
+    color: #b42318;
+}
+
+.status-badge--unknown {
+    background-color: #f2f4f7;
+    color: #667085;
+}
+
+
+/* Data do status */
+
+.status-date {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+
+    font-variant-numeric: tabular-nums;
+}
+
+.status-date span {
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-date small {
+    color: var(--color-text-secondary);
+    font-size: 12px;
+}
+
+.empty-value {
+    color: #98a2b3;
 }
 
 
