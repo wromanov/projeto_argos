@@ -8,7 +8,7 @@
     <div><span class="inventory-eyebrow">Inventário CFTV</span><h1 id="page-title">Câmeras</h1><p>Visão geral dos equipamentos cadastrados no Projeto ARGOS.</p></div>
     <div class="inventory-hero__actions">
         <div class="metric-card" aria-label="Total de câmeras"><strong>{{ total }}</strong><span>câmera{{ total|pluralize:"s" }}</span></div>
-        <button class="button button--primary" type="button" disabled aria-disabled="true"><span aria-hidden="true">+</span> Nova câmera</button>
+        <a class="button button--primary" href="{% url 'cameras:criar' %}"><span aria-hidden="true">+</span> Nova câmera</a>
     </div>
 </section>
 <section class="inventory-toolbar" aria-label="Pesquisa e filtros">

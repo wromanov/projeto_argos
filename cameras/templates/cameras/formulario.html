@@ -1,18 +1,78 @@
 ﻿{% extends "base.html" %}
 {% load static %}
-{% block titulo %}Nova câmera — ARGOS{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/inventario.css' %}">{% endblock %}
+
+{% block titulo %}{{ titulo_pagina }} — ARGOS{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/inventario.css' %}">
+{% endblock %}
+
 {% block conteudo %}
-<section class="inventory-hero"><div><span class="inventory-eyebrow">Inventário CFTV</span><h1>Nova câmera</h1><p>Layout preparado para o cadastro completo do equipamento.</p></div><span class="template-status">Formulário em preparação</span></section>
-<form class="inventory-form" aria-label="Formulário de câmera">
-    <fieldset class="inventory-panel form-section"><legend>Identificação</legend><div class="form-grid">
-        <label class="field"><span class="field__label">Patrimônio</span><input type="text" placeholder="Preenchimento futuro" disabled></label><label class="field"><span class="field__label">Nome</span><input type="text" placeholder="Preenchimento futuro" disabled></label><label class="field"><span class="field__label">Fabricante</span><input type="text" placeholder="Preenchimento futuro" disabled></label><label class="field"><span class="field__label">Modelo</span><input type="text" placeholder="Preenchimento futuro" disabled></label><label class="field"><span class="field__label">Serial</span><input type="text" placeholder="Preenchimento futuro" disabled></label><label class="field"><span class="field__label">MAC</span><input type="text" placeholder="Preenchimento futuro" disabled></label><label class="field"><span class="field__label">Ativo</span><select disabled><option>Selecione</option></select></label><label class="field"><span class="field__label">Ordens de Serviço</span><input type="text" placeholder="Preenchimento futuro" disabled></label>
-    </div></fieldset>
-    <fieldset class="inventory-panel form-section"><legend>Localização</legend><div class="form-grid"><label class="field"><span class="field__label">Terminal</span><input disabled></label><label class="field"><span class="field__label">Pavimento</span><input disabled></label><label class="field"><span class="field__label">Setor</span><input disabled></label><label class="field"><span class="field__label">Ambiente</span><input disabled></label><label class="field form-field--wide"><span class="field__label">Descrição detalhada</span><textarea disabled></textarea></label><label class="field form-field--wide"><span class="field__label">Ponto de referência</span><input disabled></label></div></fieldset>
-    <fieldset class="inventory-panel form-section"><legend>Rede</legend><div class="form-grid"><label class="field"><span class="field__label">IP</span><input disabled></label><label class="field"><span class="field__label">Máscara</span><input disabled></label><label class="field"><span class="field__label">Gateway</span><input disabled></label><label class="field"><span class="field__label">VLAN</span><input disabled></label></div></fieldset>
-    <fieldset class="inventory-panel form-section"><legend>Gravação</legend><div class="form-grid"><label class="field"><span class="field__label">Farm</span><input disabled></label><label class="field"><span class="field__label">Retenção esperada</span><input disabled></label><label class="field"><span class="field__label">Codec</span><input disabled></label></div></fieldset>
-    <fieldset class="inventory-panel form-section"><legend>Monitoramento</legend><div class="form-grid"><label class="field"><span class="field__label">Status</span><select disabled><option>Selecione</option></select></label><label class="field"><span class="field__label">Última verificação</span><input disabled></label></div></fieldset>
-    <fieldset class="inventory-panel form-section"><legend>Governança</legend><div class="form-grid"><label class="field"><span class="field__label">Criado por</span><input disabled></label><label class="field"><span class="field__label">Criado em</span><input disabled></label><label class="field"><span class="field__label">Atualizado por</span><input disabled></label><label class="field"><span class="field__label">Atualizado em</span><input disabled></label><label class="field"><span class="field__label">Origem do cadastro</span><input disabled></label><label class="field form-field--wide"><span class="field__label">Observações</span><textarea disabled></textarea></label></div></fieldset>
-    <div class="form-actions"><button class="button button--primary" type="button" disabled>Salvar câmera</button></div>
-</form>
+    <section class="inventory-hero" aria-labelledby="page-title">
+        <div>
+            <span class="inventory-eyebrow">Inventário CFTV</span>
+            <h1 id="page-title">{{ titulo_pagina }}</h1>
+            <p>Preencha as informações disponíveis para incluir o equipamento no inventário.</p>
+        </div>
+    </section>
+
+    <form class="inventory-form" method="post" aria-label="Formulário de câmera" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+
+        <fieldset class="inventory-panel form-section">
+            <legend>Identificação</legend>
+            <div class="form-grid">
+                <div class="field"><label class="field__label" for="{{ form.patrimonio.id_for_label }}">{{ form.patrimonio.label }}</label>{{ form.patrimonio }}<div class="field-errors">{{ form.patrimonio.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.nome.id_for_label }}">{{ form.nome.label }}</label>{{ form.nome }}<div class="field-errors">{{ form.nome.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.fabricante.id_for_label }}">{{ form.fabricante.label }}</label>{{ form.fabricante }}<div class="field-errors">{{ form.fabricante.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.modelo.id_for_label }}">{{ form.modelo.label }}</label>{{ form.modelo }}<div class="field-errors">{{ form.modelo.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.serial.id_for_label }}">{{ form.serial.label }}</label>{{ form.serial }}<div class="field-errors">{{ form.serial.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.mac.id_for_label }}">{{ form.mac.label }}</label>{{ form.mac }}<div class="field-errors">{{ form.mac.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.tipo.id_for_label }}">{{ form.tipo.label }}</label>{{ form.tipo }}<div class="field-errors">{{ form.tipo.errors }}</div></div>
+                <div class="field field--checkbox"><span class="field__label">{{ form.ativo.label }}</span><label class="form-check" for="{{ form.ativo.id_for_label }}">{{ form.ativo }}<span>Câmera ativa</span></label><div class="field-errors">{{ form.ativo.errors }}</div></div>
+            </div>
+        </fieldset>
+
+        <fieldset class="inventory-panel form-section">
+            <legend>Localização</legend>
+            <div class="form-grid">
+                <div class="field"><label class="field__label" for="{{ form.terminal.id_for_label }}">{{ form.terminal.label }}</label>{{ form.terminal }}<div class="field-errors">{{ form.terminal.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.pavimento.id_for_label }}">{{ form.pavimento.label }}</label>{{ form.pavimento }}<div class="field-errors">{{ form.pavimento.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.setor.id_for_label }}">{{ form.setor.label }}</label>{{ form.setor }}<div class="field-errors">{{ form.setor.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.ambiente.id_for_label }}">{{ form.ambiente.label }}</label>{{ form.ambiente }}<div class="field-errors">{{ form.ambiente.errors }}</div></div>
+                <div class="field form-field--wide"><label class="field__label" for="{{ form.descricao_detalhada.id_for_label }}">{{ form.descricao_detalhada.label }}</label>{{ form.descricao_detalhada }}<div class="field-errors">{{ form.descricao_detalhada.errors }}</div></div>
+                <div class="field form-field--wide"><label class="field__label" for="{{ form.ponto_referencia.id_for_label }}">{{ form.ponto_referencia.label }}</label>{{ form.ponto_referencia }}<div class="field-errors">{{ form.ponto_referencia.errors }}</div></div>
+            </div>
+        </fieldset>
+
+        <fieldset class="inventory-panel form-section">
+            <legend>Rede</legend>
+            <div class="form-grid">
+                <div class="field"><label class="field__label" for="{{ form.ip.id_for_label }}">{{ form.ip.label }}</label>{{ form.ip }}<div class="field-errors">{{ form.ip.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.mascara_subrede.id_for_label }}">{{ form.mascara_subrede.label }}</label>{{ form.mascara_subrede }}<div class="field-errors">{{ form.mascara_subrede.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.gateway.id_for_label }}">{{ form.gateway.label }}</label>{{ form.gateway }}<div class="field-errors">{{ form.gateway.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.vlan.id_for_label }}">{{ form.vlan.label }}</label>{{ form.vlan }}<div class="field-errors">{{ form.vlan.errors }}</div></div>
+            </div>
+        </fieldset>
+
+        <fieldset class="inventory-panel form-section">
+            <legend>Gravação</legend>
+            <div class="form-grid">
+                <div class="field"><label class="field__label" for="{{ form.farm.id_for_label }}">{{ form.farm.label }}</label>{{ form.farm }}<div class="field-errors">{{ form.farm.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.retencao_esperada_dias.id_for_label }}">{{ form.retencao_esperada_dias.label }}</label>{{ form.retencao_esperada_dias }}<div class="field-errors">{{ form.retencao_esperada_dias.errors }}</div></div>
+                <div class="field"><label class="field__label" for="{{ form.codec.id_for_label }}">{{ form.codec.label }}</label>{{ form.codec }}<div class="field-errors">{{ form.codec.errors }}</div></div>
+            </div>
+        </fieldset>
+
+        <fieldset class="inventory-panel form-section">
+            <legend>Governança</legend>
+            <div class="form-grid">
+                <div class="field"><label class="field__label" for="{{ form.origem_cadastro.id_for_label }}">{{ form.origem_cadastro.label }}</label>{{ form.origem_cadastro }}<div class="field-errors">{{ form.origem_cadastro.errors }}</div></div>
+                <div class="field form-field--wide"><label class="field__label" for="{{ form.observacoes.id_for_label }}">{{ form.observacoes.label }}</label>{{ form.observacoes }}<div class="field-errors">{{ form.observacoes.errors }}</div></div>
+            </div>
+        </fieldset>
+
+        <div class="form-actions"><a class="button button--secondary" href="{% url 'cameras:lista' %}">Cancelar</a><button class="button button--primary" type="submit">Salvar câmera</button></div>
+    </form>
 {% endblock %}
