@@ -1,15 +1,93 @@
 ﻿{% extends "base.html" %}
 {% load static %}
-{% block titulo %}Detalhes da câmera — ARGOS{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/inventario.css' %}">{% endblock %}
+
+{% block titulo %}{{ camera.nome }} — ARGOS{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/inventario.css' %}">
+{% endblock %}
+
 {% block conteudo %}
-<section class="inventory-hero"><div><span class="inventory-eyebrow">Inventário CFTV</span><h1>Detalhes da câmera</h1><p>Visualização preparada para os dados completos do equipamento.</p></div><span class="template-status">Layout em preparação</span></section>
-<div class="detail-layout">
-    <section class="inventory-panel detail-card"><div class="inventory-panel__header"><span class="inventory-eyebrow">01</span><h2>Identificação</h2></div><dl class="detail-grid"><dt>Patrimônio</dt><dd>—</dd><dt>Nome</dt><dd>—</dd><dt>Fabricante</dt><dd>—</dd><dt>Modelo</dt><dd>—</dd><dt>Serial</dt><dd>—</dd><dt>MAC</dt><dd>—</dd><dt>Ativo</dt><dd>—</dd><dt>Ordens de Serviço</dt><dd>—</dd></dl></section>
-    <section class="inventory-panel detail-card"><div class="inventory-panel__header"><span class="inventory-eyebrow">02</span><h2>Localização</h2></div><dl class="detail-grid"><dt>Terminal</dt><dd>—</dd><dt>Pavimento</dt><dd>—</dd><dt>Setor</dt><dd>—</dd><dt>Ambiente</dt><dd>—</dd><dt>Descrição detalhada</dt><dd>—</dd><dt>Ponto de referência</dt><dd>—</dd></dl></section>
-    <section class="inventory-panel detail-card"><div class="inventory-panel__header"><span class="inventory-eyebrow">03</span><h2>Rede</h2></div><dl class="detail-grid"><dt>IP</dt><dd>—</dd><dt>Máscara</dt><dd>—</dd><dt>Gateway</dt><dd>—</dd><dt>VLAN</dt><dd>—</dd></dl></section>
-    <section class="inventory-panel detail-card"><div class="inventory-panel__header"><span class="inventory-eyebrow">04</span><h2>Gravação</h2></div><dl class="detail-grid"><dt>Farm</dt><dd>—</dd><dt>Retenção esperada</dt><dd>—</dd><dt>Codec</dt><dd>—</dd></dl></section>
-    <section class="inventory-panel detail-card"><div class="inventory-panel__header"><span class="inventory-eyebrow">05</span><h2>Monitoramento</h2></div><dl class="detail-grid"><dt>Status</dt><dd>—</dd><dt>Última verificação</dt><dd>—</dd></dl></section>
-    <section class="inventory-panel detail-card"><div class="inventory-panel__header"><span class="inventory-eyebrow">06</span><h2>Governança</h2></div><dl class="detail-grid"><dt>Criado por</dt><dd>—</dd><dt>Criado em</dt><dd>—</dd><dt>Atualizado por</dt><dd>—</dd><dt>Atualizado em</dt><dd>—</dd><dt>Origem do cadastro</dt><dd>—</dd><dt>Observações</dt><dd>—</dd></dl></section>
-</div>
+    <section class="inventory-hero" aria-labelledby="page-title">
+        <div>
+            <a class="detail-back-link" href="{% url 'cameras:lista' %}">← Voltar para câmeras</a>
+            <span class="inventory-eyebrow">Inventário CFTV</span>
+            <h1 id="page-title">{{ camera.nome }}</h1>
+            <p>Dados completos do equipamento inventariado.</p>
+        </div>
+        {% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}
+    </section>
+
+    <div class="detail-layout">
+        <section class="inventory-panel detail-card">
+            <div class="inventory-panel__header"><span class="inventory-eyebrow">01</span><h2>Identificação</h2></div>
+            <dl class="detail-grid">
+                <dt>Patrimônio</dt><dd>{{ camera.patrimonio|default:"—" }}</dd>
+                <dt>Nome</dt><dd>{{ camera.nome }}</dd>
+                <dt>Fabricante</dt><dd>{{ camera.fabricante|default:"—" }}</dd>
+                <dt>Modelo</dt><dd>{{ camera.modelo|default:"—" }}</dd>
+                <dt>Serial</dt><dd>{{ camera.serial|default:"—" }}</dd>
+                <dt>MAC</dt><dd class="monospace">{{ camera.mac|default:"—" }}</dd>
+                <dt>Tipo</dt><dd>{{ camera.get_tipo_display|default:"—" }}</dd>
+                <dt>Ativo</dt><dd>{% if camera.ativo %}Sim{% else %}Não{% endif %}</dd>
+            </dl>
+        </section>
+
+        <section class="inventory-panel detail-card">
+            <div class="inventory-panel__header"><span class="inventory-eyebrow">02</span><h2>Localização</h2></div>
+            <dl class="detail-grid">
+                <dt>Terminal</dt><dd>{{ camera.terminal|default:"—" }}</dd>
+                <dt>Pavimento</dt><dd>{{ camera.pavimento|default:"—" }}</dd>
+                <dt>Setor</dt><dd>{{ camera.setor|default:"—" }}</dd>
+                <dt>Ambiente</dt><dd>{{ camera.ambiente|default:"—" }}</dd>
+                <dt>Descrição detalhada</dt><dd>{{ camera.descricao_detalhada|default:"—" }}</dd>
+                <dt>Ponto de referência</dt><dd>{{ camera.ponto_referencia|default:"—" }}</dd>
+            </dl>
+        </section>
+
+        <section class="inventory-panel detail-card">
+            <div class="inventory-panel__header"><span class="inventory-eyebrow">03</span><h2>Rede</h2></div>
+            <dl class="detail-grid">
+                <dt>IP</dt><dd class="monospace">{{ camera.ip|default:"—" }}</dd>
+                <dt>Máscara</dt><dd class="monospace">{{ camera.mascara_subrede|default:"—" }}</dd>
+                <dt>Gateway</dt><dd class="monospace">{{ camera.gateway|default:"—" }}</dd>
+                <dt>VLAN</dt><dd>{% if camera.vlan %}VLAN {{ camera.vlan }}{% else %}—{% endif %}</dd>
+            </dl>
+        </section>
+
+        <section class="inventory-panel detail-card">
+            <div class="inventory-panel__header"><span class="inventory-eyebrow">04</span><h2>Gravação</h2></div>
+            <dl class="detail-grid">
+                <dt>Farm</dt><dd>{{ camera.farm|default:"—" }}</dd>
+                <dt>Retenção esperada</dt><dd>{% if camera.retencao_esperada_dias %}{{ camera.retencao_esperada_dias }} dias{% else %}—{% endif %}</dd>
+                <dt>Codec</dt><dd>{{ camera.codec|default:"—" }}</dd>
+            </dl>
+        </section>
+
+        <section class="inventory-panel detail-card">
+            <div class="inventory-panel__header"><span class="inventory-eyebrow">05</span><h2>Monitoramento</h2></div>
+            <dl class="detail-grid">
+                <dt>Status</dt><dd>{% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}</dd>
+                <dt>Status desde</dt><dd>{% if camera.status_em %}{{ camera.status_em|date:"d/m/Y H:i" }}{% else %}—{% endif %}</dd>
+                <dt>Última verificação</dt><dd>{% if camera.ultima_verificacao %}{{ camera.ultima_verificacao|date:"d/m/Y H:i" }}{% else %}—{% endif %}</dd>
+            </dl>
+        </section>
+
+        <section class="inventory-panel detail-card">
+            <div class="inventory-panel__header"><span class="inventory-eyebrow">06</span><h2>Governança</h2></div>
+            <dl class="detail-grid">
+                <dt>Criado por</dt><dd>{{ camera.criado_por|default:"—" }}</dd>
+                <dt>Criado em</dt><dd>{% if camera.criado_em %}{{ camera.criado_em|date:"d/m/Y H:i" }}{% else %}—{% endif %}</dd>
+                <dt>Atualizado por</dt><dd>{{ camera.atualizado_por|default:"—" }}</dd>
+                <dt>Atualizado em</dt><dd>{% if camera.atualizado_em %}{{ camera.atualizado_em|date:"d/m/Y H:i" }}{% else %}—{% endif %}</dd>
+                <dt>Origem do cadastro</dt><dd>{{ camera.get_origem_cadastro_display }}</dd>
+                <dt>Observações</dt><dd>{{ camera.observacoes|default:"—" }}</dd>
+            </dl>
+        </section>
+
+        <section class="inventory-panel detail-card detail-card--full">
+            <div class="inventory-panel__header"><span class="inventory-eyebrow">07</span><h2>Ordens de Serviço</h2></div>
+            <div class="detail-empty-area"><p>Nenhuma ordem de serviço vinculada.</p><button class="button button--primary" type="button" disabled>Nova ordem de serviço</button></div>
+        </section>
+    </div>
 {% endblock %}

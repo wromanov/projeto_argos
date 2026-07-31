@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% load static %}
 {% block titulo %}Câmeras — ARGOS{% endblock %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/inventario.css' %}">{% endblock %}
@@ -26,7 +26,7 @@
     </div></div>
     <div class="table-container"><table class="camera-table"><thead><tr><th scope="col">Câmera</th><th scope="col">Status</th><th scope="col">Desde</th><th scope="col">Tipo</th><th scope="col">Endereço IP</th><th scope="col">Máscara</th><th scope="col">VLAN</th><th scope="col">Fabricante</th><th scope="col">Modelo</th></tr></thead><tbody>
     {% for camera in cameras %}<tr>
-        <td><div class="camera-identification"><span class="camera-identification__icon" aria-hidden="true">C</span><strong>{{ camera.nome }}</strong></div></td>
+        <td><div class="camera-identification"><span class="camera-identification__icon" aria-hidden="true">C</span><a class="camera-name-link" href="{% url 'cameras:detalhe' camera.pk %}">{{ camera.nome }}</a></div></td>
         <td>{% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}</td>
         <td>{% if camera.status and camera.status_em %}<div class="status-date"><span>{{ camera.status_em|date:"d/m/Y" }}</span><small>{{ camera.status_em|date:"H:i" }}</small></div>{% else %}<span class="empty-value">—</span>{% endif %}</td>
         <td>{{ camera.get_tipo_display|default:"Não informado" }}</td><td class="monospace">{{ camera.ip }}</td><td class="monospace">{{ camera.mascara_subrede }}</td><td><span class="vlan-badge">VLAN {{ camera.vlan }}</span></td><td>{{ camera.fabricante }}</td><td>{{ camera.modelo }}</td>
