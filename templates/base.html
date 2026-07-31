@@ -1,67 +1,30 @@
-{% load static %}
-
+﻿{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        {% block titulo %}
-            Projeto ARGOS
-        {% endblock %}
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/argos.css' %}"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Projeto ARGOS{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/argos.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
-
 <body>
     <header class="app-header">
         <div class="app-header__content">
-            <a
-                class="brand"
-                href="{% url 'cameras:lista' %}"
-            >
-                <span class="brand__symbol">
-                    A
-                </span>
-
+            <a class="brand" href="{% url 'cameras:lista' %}">
+                <span class="brand__symbol">A</span>
                 <span class="brand__text">
                     <strong>Projeto ARGOS</strong>
-
-                    <small>
-                        Inventário e monitoramento de câmeras
-                    </small>
+                    <small>Inventário e monitoramento de câmeras</small>
                 </span>
             </a>
-
             <nav class="main-navigation">
-                <a
-                    class="main-navigation__link main-navigation__link--active"
-                    href="{% url 'cameras:lista' %}"
-                >
-                    Câmeras
-                </a>
+                <a class="main-navigation__link main-navigation__link--active" href="{% url 'cameras:lista' %}">Câmeras</a>
             </nav>
         </div>
     </header>
-
-    <main class="page-container">
-        {% block conteudo %}
-        {% endblock %}
-    </main>
-
-    <footer class="app-footer">
-        <p>
-            Projeto ARGOS — Sistema de Inventário e Monitoramento de Câmeras
-        </p>
-    </footer>
+    <main class="page-container">{% block conteudo %}{% endblock %}</main>
+    <footer class="app-footer"><p>Projeto ARGOS — Sistema de Inventário e Monitoramento de Câmeras</p></footer>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

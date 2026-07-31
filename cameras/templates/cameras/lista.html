@@ -1,169 +1,40 @@
-{% extends "base.html" %}
-
-{% block titulo %}
-    Câmeras — ARGOS
-{% endblock %}
-
+﻿{% extends "base.html" %}
+{% load static %}
+{% block titulo %}Câmeras — ARGOS{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/inventario.css' %}">{% endblock %}
 {% block conteudo %}
-    {% with total=cameras|length %}
-        <section class="page-heading">
-            <div>
-                <span class="page-heading__eyebrow">
-                    Inventário CFTV
-                </span>
-
-                <h1>Câmeras</h1>
-
-                <p>
-                    Consulte as informações técnicas das câmeras cadastradas.
-                </p>
-            </div>
-
-            <div class="record-counter">
-                <strong>{{ total }}</strong>
-
-                <span>
-                    câmera{{ total|pluralize:"s" }}
-                </span>
-            </div>
-        </section>
-
-        {% if cameras %}
-            <section class="content-panel">
-                <div class="content-panel__header">
-                    <div>
-                        <h2>Câmeras cadastradas</h2>
-
-                        <p>
-                            Relação atual dos equipamentos inventariados.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="table-container">
-                    <table class="camera-table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Câmera</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Desde</th>
-                                <th scope="col">Tipo</th>
-                                <th scope="col">Endereço IP</th>
-                                <th scope="col">Máscara</th>
-                                <th scope="col">VLAN</th>
-                                <th scope="col">Fabricante</th>
-                                <th scope="col">Modelo</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {% for camera in cameras %}
-                                <tr>
-                                    <td>
-                                        <div class="camera-identification">
-                                            <span class="camera-identification__icon">
-                                                C
-                                            </span>
-
-                                            <strong>
-                                                {{ camera.nome }}
-                                            </strong>
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        {% if camera.status == "ONLINE" %}
-                                            <span class="status-badge status-badge--online">
-                                                <span
-                                                    class="status-dot"
-                                                    aria-hidden="true"
-                                                ></span>
-
-                                                {{ camera.get_status_display }}
-                                            </span>
-
-                                        {% elif camera.status == "OFFLINE" %}
-                                            <span class="status-badge status-badge--offline">
-                                                <span
-                                                    class="status-dot"
-                                                    aria-hidden="true"
-                                                ></span>
-
-                                                {{ camera.get_status_display }}
-                                            </span>
-
-                                        {% else %}
-                                            <span class="status-badge status-badge--unknown">
-                                                <span
-                                                    class="status-dot"
-                                                    aria-hidden="true"
-                                                ></span>
-
-                                                Não verificado
-                                            </span>
-                                        {% endif %}
-                                    </td>
-
-                                    <td>
-                                        {% if camera.status and camera.status_em %}
-                                            <div class="status-date">
-                                                <span>
-                                                    {{ camera.status_em|date:"d/m/Y" }}
-                                                </span>
-
-                                                <small>
-                                                    {{ camera.status_em|date:"H:i" }}
-                                                </small>
-                                            </div>
-                                        {% else %}
-                                            <span class="empty-value">—</span>
-                                        {% endif %}
-                                    </td>
-
-                                    <td>
-                                        {{ camera.get_tipo_display|default:"Não informado" }}
-                                    </td>
-
-                                    <td class="monospace">
-                                        {{ camera.ip }}
-                                    </td>
-
-                                    <td class="monospace">
-                                        {{ camera.mascara_subrede }}
-                                    </td>
-
-                                    <td>
-                                        <span class="vlan-badge">
-                                            VLAN {{ camera.vlan }}
-                                        </span>
-                                    </td>
-
-                                    <td>
-                                        {{ camera.fabricante }}
-                                    </td>
-
-                                    <td>
-                                        {{ camera.modelo }}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        {% else %}
-            <section class="empty-state">
-                <div class="empty-state__icon">
-                    C
-                </div>
-
-                <h2>Nenhuma câmera cadastrada</h2>
-
-                <p>
-                    Cadastre uma câmera pelo painel administrativo para
-                    iniciar o inventário.
-                </p>
-            </section>
-        {% endif %}
-    {% endwith %}
+{% with total=cameras|length %}
+<section class="inventory-hero" aria-labelledby="page-title">
+    <div><span class="inventory-eyebrow">Inventário CFTV</span><h1 id="page-title">Câmeras</h1><p>Visão geral dos equipamentos cadastrados no Projeto ARGOS.</p></div>
+    <div class="inventory-hero__actions">
+        <div class="metric-card" aria-label="Total de câmeras"><strong>{{ total }}</strong><span>câmera{{ total|pluralize:"s" }}</span></div>
+        <button class="button button--primary" type="button" disabled aria-disabled="true"><span aria-hidden="true">+</span> Nova câmera</button>
+    </div>
+</section>
+<section class="inventory-toolbar" aria-label="Pesquisa e filtros">
+    <label class="field field--search"><span class="field__label">Pesquisar</span><span class="field__control field__control--with-icon"><span class="field__icon" aria-hidden="true">⌕</span><input type="search" placeholder="Nome, IP ou fabricante" disabled></span></label>
+    <label class="field"><span class="field__label">Status</span><select disabled><option>Todos os status</option></select></label>
+    <label class="field"><span class="field__label">Tipo</span><select disabled><option>Todos os tipos</option></select></label>
+    <span class="toolbar-note">Filtros disponíveis em breve</span>
+</section>
+{% if cameras %}
+<section class="inventory-panel" aria-labelledby="table-title">
+    <div class="inventory-panel__header"><div><span class="inventory-eyebrow">Relação atual</span><h2 id="table-title">Câmeras cadastradas</h2></div><div class="status-legend" aria-label="Legenda dos status">
+        {% include "cameras/partials/_status_badge.html" with status="ONLINE" status_label="Online" %}
+        {% include "cameras/partials/_status_badge.html" with status="OFFLINE" status_label="Offline" %}
+        {% include "cameras/partials/_status_badge.html" with status="UNKNOWN" status_label="Não verificado" %}
+    </div></div>
+    <div class="table-container"><table class="camera-table"><thead><tr><th scope="col">Câmera</th><th scope="col">Status</th><th scope="col">Desde</th><th scope="col">Tipo</th><th scope="col">Endereço IP</th><th scope="col">Máscara</th><th scope="col">VLAN</th><th scope="col">Fabricante</th><th scope="col">Modelo</th></tr></thead><tbody>
+    {% for camera in cameras %}<tr>
+        <td><div class="camera-identification"><span class="camera-identification__icon" aria-hidden="true">C</span><strong>{{ camera.nome }}</strong></div></td>
+        <td>{% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}</td>
+        <td>{% if camera.status and camera.status_em %}<div class="status-date"><span>{{ camera.status_em|date:"d/m/Y" }}</span><small>{{ camera.status_em|date:"H:i" }}</small></div>{% else %}<span class="empty-value">—</span>{% endif %}</td>
+        <td>{{ camera.get_tipo_display|default:"Não informado" }}</td><td class="monospace">{{ camera.ip }}</td><td class="monospace">{{ camera.mascara_subrede }}</td><td><span class="vlan-badge">VLAN {{ camera.vlan }}</span></td><td>{{ camera.fabricante }}</td><td>{{ camera.modelo }}</td>
+    </tr>{% endfor %}
+    </tbody></table></div>
+</section>
+{% else %}
+<section class="empty-state" aria-labelledby="empty-title"><div class="empty-state__icon" aria-hidden="true">C</div><span class="inventory-eyebrow">Inventário vazio</span><h2 id="empty-title">Nenhuma câmera cadastrada</h2><p>As câmeras adicionadas ao inventário aparecerão aqui.</p></section>
+{% endif %}
+{% endwith %}
 {% endblock %}
