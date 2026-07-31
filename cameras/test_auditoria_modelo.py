@@ -64,7 +64,8 @@ class AuditoriaModeloTests(TestCase):
         self.assertEqual(obter_ip_requisicao(request), "192.0.2.11")
 
     def test_12_sanitiza_chaves_sensiveis(self):
-        self.assertEqual(sanitizar_dados({"password": "valor"})  # pragma: allowlist secret["password"], "[REDACTED]")
+        dados = sanitizar_dados({"password": "valor"})  # pragma: allowlist secret
+        self.assertEqual(dados["password"], "[REDACTED]")
 
     def test_13_sanitiza_estrutura_aninhada(self):
         valor = sanitizar_dados({"dados": [{"api_key": "valor"}], "decimal": Decimal("1.2"), "uuid": UUID(int=0), "data": datetime(2026, 1, 1)})
