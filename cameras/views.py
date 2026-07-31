@@ -5,8 +5,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 
-from .forms import CameraForm
-from .models import Camera
+from .forms import AtividadeCameraForm, CameraForm
+from .models import AtividadeCamera, Camera
 
 
 ORDENACOES_PERMITIDAS = {
@@ -177,13 +177,52 @@ def alternar_atividade_camera(request, pk):
 
 def detalhe_camera(request, pk):
     camera = get_object_or_404(Camera, pk=pk)
+    atividades = camera.atividades.select_related("criado_por", "atualizado_por")[:10]
+    return render(request, "cameras/detalhe.html", {"camera": camera, "atividades": atividades})
 
-    contexto = {
-        "camera": camera,
-    }
 
-    return render(
-        request,
-        "cameras/detalhe.html",
-        contexto,
-    )
+def lista_atividades_camera(request, camera_pk):
+    camera = get_object_or_404(Camera, pk=camera_pk)
+    queryset = camera.atividades.select_related("criado_por", "atualizado_por").all()
+    paginator = Paginator(queryset, 20)
+    page_obj = paginator.get_page(request.GET.get("page"))
+    return render(request, "cameras/atividades/lista.html", {"camera": camera, "atividades": page_obj, "page_obj": page_obj, "total_atividades": paginator.count})
+
+
+def criar_atividade_camera(request, camera_pk):
+    camera = get_object_or_404(Camera, pk=camera_pk)
+    if request.method == "POST":
+        form = AtividadeCameraForm(request.POST)
+        if form.is_valid():
+            atividade = form.save(commit=False)
+            atividade.camera = camera
+            if request.user.is_authenticated:
+                atividade.criado_por = request.user
+                atividade.atualizado_por = request.user
+            atividade.save()
+            messages.success(request, "Atividade registrada com sucesso.")
+            return redirect("cameras:detalhe", pk=camera.pk)
+    else:
+        agora = timezone.localtime().replace(second=0, microsecond=0)
+        form = AtividadeCameraForm(initial={"ocorrida_em": agora})
+    return render(request, "cameras/atividades/formulario.html", {"form": form, "camera": camera, "titulo_pagina": "Registrar atividade", "modo_edicao": False})
+
+
+def editar_atividade_camera(request, pk):
+    atividade = get_object_or_404(AtividadeCamera.objects.select_related("camera"), pk=pk)
+    camera_original_id = atividade.camera_id
+    criado_por_original_id = atividade.criado_por_id
+    if request.method == "POST":
+        form = AtividadeCameraForm(request.POST, instance=atividade)
+        if form.is_valid():
+            atividade = form.save(commit=False)
+            atividade.camera_id = camera_original_id
+            atividade.criado_por_id = criado_por_original_id
+            if request.user.is_authenticated:
+                atividade.atualizado_por = request.user
+            atividade.save()
+            messages.success(request, "Atividade atualizada com sucesso.")
+            return redirect("cameras:detalhe", pk=atividade.camera_id)
+    else:
+        form = AtividadeCameraForm(instance=atividade)
+    return render(request, "cameras/atividades/formulario.html", {"form": form, "atividade": atividade, "camera": atividade.camera, "titulo_pagina": "Editar atividade", "modo_edicao": True})

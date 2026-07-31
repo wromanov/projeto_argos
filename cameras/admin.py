@@ -1,6 +1,6 @@
-﻿from django.contrib import admin
+from django.contrib import admin
 
-from .models import Camera
+from .models import AtividadeCamera, Camera
 
 
 @admin.register(Camera)
@@ -104,4 +104,28 @@ class CameraAdmin(admin.ModelAdmin):
         if not change:
             obj.criado_por = request.user
         obj.atualizado_por = request.user
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(AtividadeCamera)
+class AtividadeCameraAdmin(admin.ModelAdmin):
+    list_display = (
+        "camera", "tipo", "titulo", "responsavel", "ocorrida_em", "criado_por", "atualizado_em",
+    )
+    search_fields = (
+        "camera__nome", "camera__patrimonio", "camera__ip", "titulo", "descricao", "responsavel",
+    )
+    list_filter = ("tipo", "ocorrida_em", "camera__terminal", "responsavel")
+    autocomplete_fields = ("camera",)
+    readonly_fields = ("criado_por", "criado_em", "atualizado_por", "atualizado_em")
+    fieldsets = (
+        ("Atividade", {"fields": ("camera", "tipo", "titulo", "descricao", "ocorrida_em", "responsavel")} ),
+        ("Governança", {"fields": ("criado_por", "criado_em", "atualizado_por", "atualizado_em")} ),
+    )
+
+    def save_model(self, request, obj, form, change):
+        if request.user.is_authenticated:
+            if not change and obj.criado_por_id is None:
+                obj.criado_por = request.user
+            obj.atualizado_por = request.user
         super().save_model(request, obj, form, change)

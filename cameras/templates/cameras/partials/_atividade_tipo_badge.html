@@ -1,0 +1,11 @@
+{% if atividade.tipo == "AVARIA" %}
+    <span class="activity-badge activity-badge--danger">{{ atividade.get_tipo_display }}</span>
+{% elif atividade.tipo == "RETIRADA" or atividade.tipo == "ENVIO_CONSERTO" or atividade.tipo == "RETORNO_CONSERTO" %}
+    <span class="activity-badge activity-badge--warning">{{ atividade.get_tipo_display }}</span>
+{% elif atividade.tipo == "SUBSTITUICAO" %}
+    <span class="activity-badge activity-badge--special">{{ atividade.get_tipo_display }}</span>
+{% elif atividade.tipo == "OUTRO" %}
+    <span class="activity-badge activity-badge--neutral">{{ atividade.get_tipo_display }}</span>
+{% else %}
+    <span class="activity-badge activity-badge--info">{{ atividade.get_tipo_display }}</span>
+{% endif %}

@@ -1,6 +1,6 @@
-﻿from django import forms
+from django import forms
 
-from .models import Camera
+from .models import AtividadeCamera, Camera
 
 
 class CameraForm(forms.ModelForm):
@@ -62,3 +62,20 @@ class CameraForm(forms.ModelForm):
         if not mac:
             return mac
         return mac.strip().upper()
+
+
+class AtividadeCameraForm(forms.ModelForm):
+    class Meta:
+        model = AtividadeCamera
+        fields = ("tipo", "titulo", "descricao", "ocorrida_em", "responsavel")
+        widgets = {
+            "tipo": forms.Select(attrs={"class": "form-control"}),
+            "titulo": forms.TextInput(attrs={"class": "form-control", "placeholder": "Resumo da atividade"}),
+            "descricao": forms.Textarea(attrs={"class": "form-control", "rows": 6, "placeholder": "Descreva o que aconteceu com a câmera"}),
+            "ocorrida_em": forms.DateTimeInput(format="%Y-%m-%dT%H:%M", attrs={"class": "form-control", "type": "datetime-local"}),
+            "responsavel": forms.TextInput(attrs={"class": "form-control", "placeholder": "Nome do responsável, equipe ou empresa"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["ocorrida_em"].input_formats = ["%Y-%m-%dT%H:%M"]
