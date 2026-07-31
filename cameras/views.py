@@ -37,6 +37,30 @@ def criar_camera(request):
     return render(request, "cameras/formulario.html", contexto)
 
 
+def editar_camera(request, pk):
+    camera = get_object_or_404(Camera, pk=pk)
+
+    if request.method == "POST":
+        form = CameraForm(request.POST, instance=camera)
+        if form.is_valid():
+            camera = form.save(commit=False)
+            if request.user.is_authenticated:
+                camera.atualizado_por = request.user
+            camera.save()
+            messages.success(request, "Câmera atualizada com sucesso.")
+            return redirect("cameras:detalhe", pk=camera.pk)
+    else:
+        form = CameraForm(instance=camera)
+
+    contexto = {
+        "form": form,
+        "camera": camera,
+        "titulo_pagina": "Editar câmera",
+    }
+
+    return render(request, "cameras/formulario.html", contexto)
+
+
 def detalhe_camera(request, pk):
     camera = get_object_or_404(Camera, pk=pk)
 

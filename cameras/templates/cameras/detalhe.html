@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block titulo %}{{ camera.nome }} — ARGOS{% endblock %}
@@ -8,14 +8,17 @@
 {% endblock %}
 
 {% block conteudo %}
-    <section class="inventory-hero" aria-labelledby="page-title">
+    <section class="inventory-hero detail-heading" aria-labelledby="page-title">
         <div>
             <a class="detail-back-link" href="{% url 'cameras:lista' %}">← Voltar para câmeras</a>
             <span class="inventory-eyebrow">Inventário CFTV</span>
             <h1 id="page-title">{{ camera.nome }}</h1>
             <p>Dados completos do equipamento inventariado.</p>
         </div>
-        {% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}
+        <div class="detail-heading__actions">
+            {% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}
+            <a class="button button--secondary" href="{% url 'cameras:editar' camera.pk %}">Editar</a>
+        </div>
     </section>
 
     <div class="detail-layout">

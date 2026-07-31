@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block titulo %}{{ titulo_pagina }} — ARGOS{% endblock %}
@@ -12,7 +12,7 @@
         <div>
             <span class="inventory-eyebrow">Inventário CFTV</span>
             <h1 id="page-title">{{ titulo_pagina }}</h1>
-            <p>Preencha as informações disponíveis para incluir o equipamento no inventário.</p>
+            <p>{% if camera %}Atualize as informações de inventário do equipamento.{% else %}Preencha as informações disponíveis para incluir o equipamento no inventário.{% endif %}</p>
         </div>
     </section>
 
@@ -73,6 +73,7 @@
             </div>
         </fieldset>
 
-        <div class="form-actions"><a class="button button--secondary" href="{% url 'cameras:lista' %}">Cancelar</a><button class="button button--primary" type="submit">Salvar câmera</button></div>
+        {% if camera %}{% url 'cameras:detalhe' camera.pk as cancelar_url %}{% else %}{% url 'cameras:lista' as cancelar_url %}{% endif %}
+        <div class="form-actions"><a class="button button--secondary" href="{{ cancelar_url }}">Cancelar</a><button class="button button--primary" type="submit">{% if camera %}Salvar alterações{% else %}Salvar câmera{% endif %}</button></div>
     </form>
 {% endblock %}
