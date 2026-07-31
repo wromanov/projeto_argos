@@ -7,6 +7,8 @@ from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.http import require_POST
 from .forms import ArgosAuthenticationForm, ArgosPasswordChangeForm, DadosPessoaisForm, PerfilProprioForm
 from .models import PerfilUsuario
@@ -20,12 +22,14 @@ class ArgosLoginView(LoginView):
 
 
 @require_POST
+@never_cache
 def logout_argos(request):
     logout(request)
     return redirect("usuarios:login")
 
 
 @login_required
+@never_cache
 def perfil(request):
     perfil_usuario, _ = PerfilUsuario.objects.get_or_create(usuario=request.user)
     grupos = request.user.groups.order_by("name")
@@ -37,6 +41,7 @@ def perfil(request):
 
 
 @login_required
+@never_cache
 @transaction.atomic
 def editar_perfil(request):
     perfil_usuario, _ = PerfilUsuario.objects.get_or_create(usuario=request.user)
@@ -51,7 +56,9 @@ def editar_perfil(request):
     return render(request, "usuarios/editar_perfil.html", {"dados_form": dados_form, "perfil_form": perfil_form, "perfil_usuario": perfil_usuario})
 
 
+@sensitive_post_parameters("old_password", "new_password1", "new_password2")
 @login_required
+@never_cache
 def alterar_senha(request):
     form = ArgosPasswordChangeForm(request.user, request.POST or None)
     if request.method == "POST" and form.is_valid():

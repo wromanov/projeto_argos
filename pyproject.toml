@@ -1,0 +1,2 @@
+[tool.bandit]
+exclude_dirs = [".venv", "venv", "migrations", "tests", "test_*.py"]

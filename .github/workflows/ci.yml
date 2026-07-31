@@ -1,0 +1,49 @@
+name: ARGOS CI
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+permissions:
+  contents: read
+concurrency:
+  group: argos-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ARGOS_SECRET_KEY: ci-only-validation-key-with-sufficient-length-and-diversity-4A3-X9
+      ARGOS_DEBUG: "false"
+      ARGOS_ALLOWED_HOSTS: testserver,localhost
+      ARGOS_CSRF_TRUSTED_ORIGINS: https://testserver
+      DJANGO_SETTINGS_MODULE: config.settings
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pip check
+      - run: python manage.py check
+      - run: python manage.py makemigrations --check --dry-run
+      - run: python manage.py test
+      - run: python -m coverage run manage.py test && python -m coverage report
+      - run: python -m bandit -c pyproject.toml -r config core usuarios cameras --severity-level medium --confidence-level medium
+      - run: python -m pip_audit -r requirements.txt
+      - run: detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
+      - name: Check production settings
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings_production
+          ARGOS_ALLOWED_HOSTS: argos.example.internal
+          ARGOS_CSRF_TRUSTED_ORIGINS: https://argos.example.internal
+          ARGOS_SECURE_SSL_REDIRECT: "true"
+          ARGOS_SECURE_HSTS_SECONDS: "31536000"
+          ARGOS_SECURE_HSTS_INCLUDE_SUBDOMAINS: "true"
+          ARGOS_SECURE_HSTS_PRELOAD: "true"
+          ARGOS_TRUST_PROXY_SSL_HEADER: "false"
+        run: python manage.py check --deploy

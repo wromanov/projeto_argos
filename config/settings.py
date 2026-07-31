@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+from .environment import get_env_bool, get_env_list
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9@amw9y37_apqroi+av9_@udb7m5^)uf()m4f2mhuq3e98tg+z'
+# Chave exclusiva de desenvolvimento local; nunca utilizar em produção.
+DEVELOPMENT_SECRET_KEY = "development-only-argos-local-key-never-use-in-production"
+SECRET_KEY = os.environ.get("ARGOS_SECRET_KEY", DEVELOPMENT_SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_env_bool("ARGOS_DEBUG", True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = get_env_list("ARGOS_ALLOWED_HOSTS", default=["127.0.0.1", "localhost", "testserver"])
 
 
 # Application definition

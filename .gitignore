@@ -1,31 +1,39 @@
-# Ambiente virtual
-.venv/
-
-# Arquivos temporários do Python
+# Python
 __pycache__/
 *.py[cod]
-
-# Banco local de desenvolvimento
+*$py.class
+# Ambientes virtuais
+.venv/
+venv/
+env/
+# Django
 db.sqlite3
-
-# Configurações locais do PyCharm
-.idea/
-
-# Variáveis de ambiente e segredos
+*.sqlite3
+media/
+staticfiles/
+# Variáveis e segredos
 .env
 .env.*
-
-# Logs
-*.log
-
-# Arquivos temporários do sistema
-.DS_Store
-Thumbs.db
-
-# Cobertura e testes
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+*.crt
+*.cer
+# IDE
+.idea/
+.vscode/
+# Testes e ferramentas
 .coverage
+coverage.xml
 htmlcov/
 .pytest_cache/
-
-# Arquivos de mídia locais
-media/
+.mypy_cache/
+.ruff_cache/
+.bandit/
+pip-audit-report.*
+secrets-report.*
+# Sistema operacional
+.DS_Store
+Thumbs.db

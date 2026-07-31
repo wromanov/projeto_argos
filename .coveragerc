@@ -1,0 +1,19 @@
+[run]
+branch = True
+source =
+    cameras
+    core
+    usuarios
+[report]
+show_missing = True
+skip_covered = True
+fail_under = 80
+omit =
+    */migrations/*
+    */tests.py
+    */test_*.py
+    */admin.py
+    */apps.py
+    manage.py
+[html]
+directory = htmlcov

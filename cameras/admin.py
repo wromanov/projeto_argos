@@ -106,6 +106,9 @@ class CameraAdmin(admin.ModelAdmin):
         obj.atualizado_por = request.user
         super().save_model(request, obj, form, change)
 
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(AtividadeCamera)
 class AtividadeCameraAdmin(admin.ModelAdmin):
@@ -129,3 +132,6 @@ class AtividadeCameraAdmin(admin.ModelAdmin):
                 obj.criado_por = request.user
             obj.atualizado_por = request.user
         super().save_model(request, obj, form, change)
+
+    def has_delete_permission(self, request, obj=None):
+        return False
