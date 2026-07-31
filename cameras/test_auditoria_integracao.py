@@ -8,14 +8,15 @@ from django.test import RequestFactory, TestCase
 from django.urls import reverse
 
 from .admin import EventoAuditoriaAdmin
+from .forms import CAMPOS_CAMERA
 from .models import AtividadeCamera, Camera, EventoAuditoria
 
 
 class AuditoriaIntegracaoTests(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(username="integracao", password="Senha-segura-123", first_name="Nome", last_name="Teste", email="teste@example.com")
-        self.user.user_permissions.add(*self._permissoes("add_camera", "change_camera", "view_camera", "add_atividadecamera", "change_atividadecamera", "view_atividadecamera"))
-        self.camera = Camera.objects.create(nome="CAM-INT", fabricante="Axis", modelo="M", ip="10.22.0.1", mascara_subrede="255.255.255.0", vlan=100)
+        self.user.user_permissions.add(*self._permissoes("add_camera", "change_camera", "view_camera", "add_atividadecamera", "change_atividadecamera", "view_atividadecamera", "desativar_camera", "reativar_camera"))
+        self.camera = Camera.objects.create(nome="CAM-INT", fabricante="Axis", modelo="M", serial="SER-INT", mac="AA:BB:CC:DD:EE:99", tipo="DOME", terminal="T1", pavimento="1", setor="S", ambiente="A", ip="10.22.0.1", mascara_subrede="255.255.255.0", gateway="10.22.0.254", vlan=100, farm="F1", retencao_esperada_dias=30, codec="H265")
         self.factory = RequestFactory()
 
     def _permissoes(self, *codenames):
@@ -23,7 +24,7 @@ class AuditoriaIntegracaoTests(TestCase):
         return Permission.objects.filter(codename__in=codenames, content_type__app_label="cameras")
 
     def dados_camera(self, **kwargs):
-        dados = {"nome": "CAM-NOVA", "fabricante": "Axis", "modelo": "M2", "ip": "10.22.0.2", "mascara_subrede": "255.255.255.0", "vlan": "101", "ativo": "on", "tipo": "", "origem_cadastro": "MANUAL"}
+        dados = {"nome": "CAM-NOVA", "fabricante": "Axis", "modelo": "M2", "serial": "SER-NOVA", "mac": "AA:BB:CC:DD:EE:98", "tipo": "DOME", "terminal": "T1", "pavimento": "1", "setor": "S", "ambiente": "A", "ip": "10.22.0.2", "mascara_subrede": "255.255.255.0", "gateway": "10.22.0.254", "vlan": "101", "farm": "F1", "retencao_esperada_dias": "30", "codec": "H265", "origem_cadastro": "MANUAL", "situacao_operacional": "PRODUCAO"}
         dados.update(kwargs); return dados
 
     def test_01_login_sucesso(self):
@@ -54,7 +55,7 @@ class AuditoriaIntegracaoTests(TestCase):
 
     def test_06_senha_registrada_sem_valores(self):
         self.client.force_login(self.user)
-        self.client.post(reverse("usuarios:alterar_senha"), {"old_password": "Senha-segura-123", "new_password1": "Nova-senha-segura-456", "new_password2": "Nova-senha-segura-456"})
+        self.client.post(reverse("usuarios:alterar_senha"), {"old_password": "Senha-segura-123", "new_password1": "Nova-senha-segura-456", "new_password2": "Nova-senha-segura-456"})  # pragma: allowlist secret
         evento = EventoAuditoria.objects.get(codigo="perfil.senha_alterada")
         self.assertEqual(evento.alteracoes, {})
         self.assertNotIn("Nova-senha", str(evento.metadados))
@@ -64,23 +65,23 @@ class AuditoriaIntegracaoTests(TestCase):
         self.assertTrue(EventoAuditoria.objects.filter(codigo="camera.criada").exists())
 
     def test_08_edicao_camera(self):
-        self.client.force_login(self.user); dados = self.dados_camera(nome=self.camera.nome, ip=self.camera.ip, vlan=self.camera.vlan, modelo="ALTERADO")
+        self.client.force_login(self.user); dados = {campo: getattr(self.camera, campo) or "" for campo in CAMPOS_CAMERA}; dados["modelo"] = "ALTERADO"
         self.client.post(reverse("cameras:editar", args=[self.camera.pk]), dados)
         self.assertIn("modelo", EventoAuditoria.objects.get(codigo="camera.atualizada").alteracoes)
 
     def test_09_edicao_camera_sem_mudanca_nao_registra(self):
-        self.client.force_login(self.user); dados = self.dados_camera(nome=self.camera.nome, ip=self.camera.ip, vlan=self.camera.vlan, modelo=self.camera.modelo)
+        self.client.force_login(self.user); dados = {campo: getattr(self.camera, campo) or "" for campo in CAMPOS_CAMERA}
         self.client.post(reverse("cameras:editar", args=[self.camera.pk]), dados)
         self.assertFalse(EventoAuditoria.objects.filter(codigo="camera.atualizada").exists())
 
     def test_10_inativacao_camera(self):
-        self.client.force_login(self.user); self.client.post(reverse("cameras:alternar_atividade", args=[self.camera.pk]))
-        self.assertTrue(EventoAuditoria.objects.filter(codigo="camera.inativada").exists())
+        self.client.force_login(self.user); self.client.post(reverse("cameras:desativar", args=[self.camera.pk]), {"motivo": "Motivo operacional válido"})
+        self.assertTrue(EventoAuditoria.objects.filter(codigo="camera.desativada").exists())
 
     def test_11_reativacao_camera(self):
-        self.camera.ativo = False; self.camera.save(); self.client.force_login(self.user)
-        self.client.post(reverse("cameras:alternar_atividade", args=[self.camera.pk]))
-        self.assertTrue(EventoAuditoria.objects.filter(codigo="camera.ativada").exists())
+        self.camera.situacao_operacional = Camera.SituacaoOperacional.DESATIVADA; self.camera.save(); self.client.force_login(self.user)
+        self.client.post(reverse("cameras:reativar", args=[self.camera.pk]), {"destino": "ESTOQUE", "justificativa": "Retorno operacional válido"})
+        self.assertTrue(EventoAuditoria.objects.filter(codigo="camera.reativada").exists())
 
     def test_12_criacao_atividade(self):
         self.client.force_login(self.user)

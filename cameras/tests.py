@@ -13,7 +13,7 @@ class ListaCamerasTests(TestCase):
             nome="CAM-ALFA",
             patrimonio="PAT-ALFA",
             status="ONLINE",
-            ativo=True,
+            situacao_operacional=Camera.SituacaoOperacional.PRODUCAO,
             terminal="TPS1",
             tipo="DOME",
             fabricante="Axis",
@@ -25,7 +25,7 @@ class ListaCamerasTests(TestCase):
             nome="CAM-BRAVO",
             patrimonio="PAT-BRAVO",
             status="OFFLINE",
-            ativo=False,
+            situacao_operacional=Camera.SituacaoOperacional.DESATIVADA,
             terminal="TPS2",
             tipo="BULLET",
             fabricante="Hikvision",
@@ -37,7 +37,7 @@ class ListaCamerasTests(TestCase):
             nome="CAM-CHARLIE",
             patrimonio="PAT-CHARLIE",
             status=None,
-            ativo=True,
+            situacao_operacional=Camera.SituacaoOperacional.PRODUCAO,
             terminal="TPS2",
             tipo="FISHEYE",
             fabricante="Axis",
@@ -57,7 +57,7 @@ class ListaCamerasTests(TestCase):
             "serial": f"SERIAL-{indice:03d}",
             "mac": f"AA:BB:CC:DD:EE:{indice:02X}",
             "tipo": "DOME",
-            "ativo": True,
+            "situacao_operacional": Camera.SituacaoOperacional.PRODUCAO,
             "terminal": "TPS1",
             "farm": "FARM-A",
         }
@@ -96,11 +96,11 @@ class ListaCamerasTests(TestCase):
     def test_filtro_por_status_nao_verificado(self):
         self.assertEqual(self.nomes_da_pagina(self.buscar(status="NAO_VERIFICADO")), ["CAM-CHARLIE"])
 
-    def test_filtro_por_camera_ativa(self):
-        self.assertEqual(self.nomes_da_pagina(self.buscar(ativo="1")), ["CAM-ALFA", "CAM-CHARLIE"])
+    def test_filtro_por_camera_em_producao(self):
+        self.assertEqual(self.nomes_da_pagina(self.buscar(situacao_operacional="PRODUCAO")), ["CAM-ALFA", "CAM-CHARLIE"])
 
-    def test_filtro_por_camera_inativa(self):
-        self.assertEqual(self.nomes_da_pagina(self.buscar(ativo="0")), ["CAM-BRAVO"])
+    def test_filtro_por_camera_desativada(self):
+        self.assertEqual(self.nomes_da_pagina(self.buscar(situacao_operacional="DESATIVADA")), ["CAM-BRAVO"])
 
     def test_filtro_por_terminal(self):
         self.assertEqual(self.nomes_da_pagina(self.buscar(terminal="TPS2")), ["CAM-BRAVO", "CAM-CHARLIE"])
@@ -118,7 +118,7 @@ class ListaCamerasTests(TestCase):
         self.assertEqual(self.nomes_da_pagina(self.buscar(farm="FARM-A")), ["CAM-ALFA"])
 
     def test_combinacao_de_pesquisa_e_filtros(self):
-        response = self.buscar(q="CAM", terminal="TPS2", ativo="1", fabricante="Axis")
+        response = self.buscar(q="CAM", terminal="TPS2", situacao_operacional="PRODUCAO", fabricante="Axis")
         self.assertEqual(self.nomes_da_pagina(response), ["CAM-CHARLIE"])
 
     def test_ordenacao_por_nome(self):
@@ -141,7 +141,7 @@ class ListaCamerasTests(TestCase):
         pagina_com_filtros = self.buscar(q="CAM", terminal="TPS1", ordenacao="-nome")
         self.assertContains(
             pagina_com_filtros,
-            "?page=2&amp;q=CAM&amp;terminal=TPS1&amp;ordenacao=-nome",
+            "?page=2&q=CAM&amp;terminal=TPS1&amp;ordenacao=-nome",
         )
 
     def test_pagina_invalida_nao_gera_erro(self):
@@ -152,7 +152,7 @@ class ListaCamerasTests(TestCase):
     def test_contador_representa_queryset_filtrado(self):
         response = self.buscar(terminal="TPS2")
         self.assertEqual(response.context["total_resultados"], 2)
-        self.assertContains(response, 'aria-label="Total de resultados"><strong>2</strong>')
+        self.assertContains(response, '<strong>2</strong><span>câmeras</span>')
 
     def test_estado_sem_resultados(self):
         response = self.buscar(q="inexistente")

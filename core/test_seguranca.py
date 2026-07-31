@@ -31,7 +31,7 @@ class SegurancaTests(TestCase):
     def test_editar_perfil_post_sem_csrf_retorna_403(self): self.assertEqual(self.csrf().post("/perfil/editar/",{}).status_code,403)
     def test_alterar_senha_post_sem_csrf_retorna_403(self): self.assertEqual(self.csrf().post("/perfil/alterar-senha/",{}).status_code,403)
     def test_criar_camera_post_sem_csrf_retorna_403(self): self.assertEqual(self.csrf().post("/cameras/nova/",{}).status_code,403)
-    def test_alternar_camera_get_retorna_405(self): self.grupo("Operador ARGOS"); self.assertEqual(self.client.get(reverse("cameras:alternar_atividade",args=[self.camera.pk])).status_code,405)
+    def test_desativar_camera_get_exibe_formulario(self): self.grupo("Operador ARGOS"); self.assertEqual(self.client.get(reverse("cameras:desativar",args=[self.camera.pk])).status_code,200)
     def login_next(self,next_value): return self.client.post("/login/",{"username":"seguro","password":"Senha-forte-123","next":next_value})
     def test_login_respeita_next_interno(self): self.assertEqual(self.login_next("/perfil/")["Location"],"/perfil/")
     def test_login_rejeita_next_externo(self): self.assertEqual(self.login_next("https://evil.example/")["Location"],"/")

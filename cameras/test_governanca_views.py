@@ -1,0 +1,38 @@
+from io import StringIO
+from django.contrib import admin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
+from django.core.management import call_command
+from django.test import RequestFactory, TestCase
+from django.urls import reverse
+
+from .admin import SubstituicaoCameraAdmin
+from .forms import CameraEdicaoForm
+from .governanca import substituir_camera
+from .models import Camera, SubstituicaoCamera
+
+
+class GovernancaViewsPermissoesTests(TestCase):
+    def setUp(self):
+        call_command("configurar_perfis_argos",stdout=StringIO()); self.user=get_user_model().objects.create_user("usuario"); self.superuser=get_user_model().objects.create_superuser("admin",email=""); self.camera=self.criar(1,"PRODUCAO"); self.estoque=self.criar(2,"ESTOQUE")
+    def criar(self,n,situacao,**extra):
+        data=dict(nome=f"CAM-{n}",fabricante="Axis",modelo="P",serial=f"SER-{n}",mac=f"AA:BB:CC:DD:EE:{n:02X}",tipo="DOME",terminal="T1",pavimento="1",setor="S",ambiente="A",ip=f"10.0.0.{n}",mascara_subrede="255.255.255.0",gateway="10.0.0.254",vlan=10,farm="F1",retencao_esperada_dias=30,codec="H265",situacao_operacional=situacao); data.update(extra); return Camera.objects.create(**data)
+    def grupo(self,nome): self.user.groups.set([Group.objects.get(name=nome)]); self.client.force_login(self.user)
+    def dados(self,c): return {f.name:(getattr(c,f.name) if getattr(c,f.name) is not None else "") for f in CameraEdicaoForm._meta.model._meta.fields if f.name in CameraEdicaoForm.base_fields}
+    def test_lista_filtra_por_situacao_operacional(self): self.client.force_login(self.superuser); r=self.client.get(reverse("cameras:lista"),{"situacao_operacional":"ESTOQUE"}); self.assertEqual([c.pk for c in r.context["cameras"]],[self.estoque.pk])
+    def test_lista_filtra_por_cadastro_completo(self): self.criar(3,"PRODUCAO",gateway=None); self.client.force_login(self.superuser); r=self.client.get(reverse("cameras:lista"),{"completude":"COMPLETO"}); self.assertIn(self.camera,[*r.context["cameras"]]); self.assertNotContains(r,"CAM-3")
+    def test_lista_filtra_por_cadastro_incompleto(self): self.criar(3,"PRODUCAO",gateway=None); self.client.force_login(self.superuser); self.assertEqual(self.client.get(reverse("cameras:lista"),{"completude":"INCOMPLETO"}).context["total_resultados"],1)
+    def test_lista_exibe_badges_de_situacao(self): self.client.force_login(self.superuser); r=self.client.get(reverse("cameras:lista")); self.assertContains(r,"Produção"); self.assertContains(r,"Estoque")
+    def test_detalhe_exibe_campos_faltantes(self): c=self.criar(3,"PRODUCAO",gateway=None); self.client.force_login(self.superuser); self.assertContains(self.client.get(reverse("cameras:detalhe",args=[c.pk])),"Gateway")
+    def test_formulario_de_edicao_nao_expoe_situacao(self): self.assertNotIn("situacao_operacional",CameraEdicaoForm().fields)
+    def test_post_adulterado_nao_altera_situacao(self): self.client.force_login(self.superuser); d=self.dados(self.camera); d["situacao_operacional"]="DESATIVADA"; self.client.post(reverse("cameras:editar",args=[self.camera.pk]),d); self.camera.refresh_from_db(); self.assertEqual(self.camera.situacao_operacional,"PRODUCAO")
+    def test_desativacao_get_nao_altera_camera(self): self.grupo("Operador ARGOS"); self.client.get(reverse("cameras:desativar",args=[self.camera.pk])); self.camera.refresh_from_db(); self.assertEqual(self.camera.situacao_operacional,"PRODUCAO")
+    def test_desativacao_post_valido_altera_camera(self): self.grupo("Operador ARGOS"); self.client.post(reverse("cameras:desativar",args=[self.camera.pk]),{"motivo":"Motivo operacional válido"}); self.camera.refresh_from_db(); self.assertEqual(self.camera.situacao_operacional,"DESATIVADA")
+    def test_monitoramento_nao_pode_alterar_situacao(self): self.grupo("Monitoramento ARGOS"); self.assertEqual(self.client.post(reverse("cameras:alterar_situacao",args=[self.camera.pk]),{"destino":"ESTOQUE","justificativa":"Movimento planejado"}).status_code,403)
+    def test_operador_pode_alterar_situacao(self): self.grupo("Operador ARGOS"); self.client.post(reverse("cameras:alterar_situacao",args=[self.camera.pk]),{"destino":"ESTOQUE","justificativa":"Movimento planejado"}); self.camera.refresh_from_db(); self.assertEqual(self.camera.situacao_operacional,"ESTOQUE")
+    def test_operador_pode_registrar_substituicao(self): self.grupo("Operador ARGOS"); self.client.post(reverse("cameras:substituir",args=[self.camera.pk]),{"camera_substituta":self.estoque.pk,"motivo":"Falha física confirmada","observacoes":""}); self.assertEqual(SubstituicaoCamera.objects.count(),1)
+    def test_lista_de_substituicoes_e_somente_leitura(self): self.grupo("Operador ARGOS"); substituir_camera(camera_anterior=self.camera,camera_substituta=self.estoque,motivo="Falha física confirmada",usuario=self.user); r=self.client.get(reverse("cameras:lista_substituicoes")); self.assertEqual(r.status_code,200); self.assertNotContains(r,"Excluir")
+    def test_admin_substituicao_nao_permite_adicionar_editar_ou_excluir(self): a=SubstituicaoCameraAdmin(SubstituicaoCamera,admin.site); req=RequestFactory().get("/"); req.user=self.superuser; self.assertFalse(a.has_add_permission(req)); self.assertFalse(a.has_change_permission(req)); self.assertFalse(a.has_delete_permission(req))
+    def test_dashboard_exibe_situacoes_completude_e_ips_duplicados(self): self.criar(3,"ESTOQUE",ip=self.camera.ip); self.client.force_login(self.superuser); r=self.client.get(reverse("core:dashboard")); self.assertContains(r,"Produção"); self.assertContains(r,"Cadastro completo"); self.assertContains(r,"IP duplicado")
+    def test_grupos_possuem_matriz_de_governanca_sem_delete(self):
+        op=Group.objects.get(name="Operador ARGOS"); cod=set(op.permissions.filter(content_type__app_label="cameras").values_list("codename",flat=True)); self.assertIn("registrar_substituicao_camera",cod); self.assertFalse(any(x.startswith("delete_") for x in cod))

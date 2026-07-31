@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import permission_required
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.shortcuts import render
-from cameras.models import AtividadeCamera, Camera
+
+from cameras.governanca import q_camera_completa, q_camera_incompleta
+from cameras.models import AtividadeCamera, Camera, SubstituicaoCamera
 
 
 def inicio(request):
@@ -13,5 +15,22 @@ def inicio(request):
 @permission_required("cameras.view_camera", raise_exception=True)
 def dashboard(request):
     cameras = Camera.objects.all()
-    contexto = {"total_cameras": cameras.count(), "cameras_ativas": cameras.filter(ativo=True).count(), "cameras_inativas": cameras.filter(ativo=False).count(), "cameras_online": cameras.filter(status=Camera.StatusCamera.ONLINE).count(), "cameras_offline": cameras.filter(status=Camera.StatusCamera.OFFLINE).count(), "cameras_nao_verificadas": cameras.filter(Q(status__isnull=True) | Q(status="")).count(), "total_atividades": AtividadeCamera.objects.count(), "atividades_recentes": AtividadeCamera.objects.select_related("camera", "criado_por")[:5], "cameras_recentes": cameras.select_related("atualizado_por").order_by("-atualizado_em")[:5]}
+    ips_duplicados = cameras.exclude(ip__isnull=True).exclude(ip="").values("ip").annotate(total=Count("pk")).filter(total__gt=1)
+    cameras_com_ip_duplicado = sum(item["total"] for item in ips_duplicados)
+    contexto = {
+        "total_cameras": cameras.count(),
+        "cameras_producao": cameras.filter(situacao_operacional=Camera.SituacaoOperacional.PRODUCAO).count(),
+        "cameras_estoque": cameras.filter(situacao_operacional=Camera.SituacaoOperacional.ESTOQUE).count(),
+        "cameras_desativadas": cameras.filter(situacao_operacional=Camera.SituacaoOperacional.DESATIVADA).count(),
+        "cameras_completas": cameras.filter(q_camera_completa()).count(),
+        "cameras_incompletas": cameras.filter(q_camera_incompleta()).count(),
+        "cameras_online": cameras.filter(status=Camera.StatusCamera.ONLINE).count(),
+        "cameras_offline": cameras.filter(status=Camera.StatusCamera.OFFLINE).count(),
+        "cameras_nao_verificadas": cameras.filter(Q(status__isnull=True) | Q(status="")).count(),
+        "cameras_com_ip_duplicado": cameras_com_ip_duplicado,
+        "total_substituicoes": SubstituicaoCamera.objects.count(),
+        "total_atividades": AtividadeCamera.objects.count(),
+        "atividades_recentes": AtividadeCamera.objects.select_related("camera", "criado_por")[:5],
+        "cameras_recentes": cameras.select_related("atualizado_por").order_by("-atualizado_em")[:5],
+    }
     return render(request, "core/dashboard.html", contexto)

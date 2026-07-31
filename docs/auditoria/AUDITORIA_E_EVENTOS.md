@@ -28,3 +28,15 @@ A consulta exige cameras.consultar_eventos. Os perfis padrão recebem apenas vie
 ## Operação
 
 O painel geral está em /eventos/; o detalhe em /eventos/<id>/; e o histórico por câmera em /cameras/<id>/eventos/. As listas usam paginação de 50 registros e filtros por texto, categoria, origem e período.
+## Governança operacional — Sprint 4C
+
+A situação operacional é independente do status técnico. Os eventos atuais são:
+
+- `camera.desativada`: desativação com motivo, data e usuário;
+- `camera.reativada`: reativação controlada para Produção ou Estoque;
+- `camera.movida_estoque`: movimentação de Produção para Estoque;
+- `camera.colocada_producao`: movimentação de Estoque para Produção;
+- `camera.substituida`: câmera anterior desativada por substituição física;
+- `camera.assumiu_posicao`: substituta em Produção após receber os dados operacionais.
+
+Os códigos `camera.ativada` e `camera.inativada` não são mais emitidos, mas podem permanecer em eventos históricos anteriores à Sprint 4C. Eventos antigos não são alterados.

@@ -1,54 +1,20 @@
-{% extends "base.html" %}
-{% load static %}
-
+{% extends "base.html" %}{% load static %}
 {% block titulo %}Câmeras — ARGOS{% endblock %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/inventario.css' %}">
-{% endblock %}
-
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/inventario.css' %}"><link rel="stylesheet" href="{% static 'css/governanca.css' %}">{% endblock %}
 {% block conteudo %}
-    <section class="inventory-hero" aria-labelledby="page-title">
-        <div>
-            <span class="inventory-eyebrow">Inventário CFTV</span>
-            <h1 id="page-title">Câmeras</h1>
-            <p>Consulte e organize os equipamentos cadastrados no Projeto ARGOS.</p>
-        </div>
-        <div class="inventory-hero__actions">
-            <div class="metric-card" aria-label="Total de resultados"><strong>{{ total_resultados }}</strong><span>câmera{{ total_resultados|pluralize:"s" }}</span></div>
-            <a class="button button--primary" href="{% url 'cameras:criar' %}"><span aria-hidden="true">+</span> Nova câmera</a>
-        </div>
-    </section>
-
-    <form class="inventory-toolbar inventory-filter-form" method="get" aria-label="Pesquisa e filtros">
-        <label class="field field--search"><span class="field__label">Pesquisar</span><span class="field__control field__control--with-icon"><span class="field__icon" aria-hidden="true">⌕</span><input type="search" name="q" value="{{ q }}" placeholder="Nome, patrimônio, IP ou fabricante"></span></label>
-        <label class="field"><span class="field__label">Status</span><select name="status"><option value="">Todos</option><option value="ONLINE" {% if status_selecionado == "ONLINE" %}selected{% endif %}>Online</option><option value="OFFLINE" {% if status_selecionado == "OFFLINE" %}selected{% endif %}>Offline</option><option value="NAO_VERIFICADO" {% if status_selecionado == "NAO_VERIFICADO" %}selected{% endif %}>Não verificado</option></select></label>
-        <label class="field"><span class="field__label">Situação</span><select name="ativo"><option value="">Todas</option><option value="1" {% if ativo_selecionado == "1" %}selected{% endif %}>Ativas</option><option value="0" {% if ativo_selecionado == "0" %}selected{% endif %}>Inativas</option></select></label>
-        <label class="field"><span class="field__label">Terminal</span><select name="terminal"><option value="">Todos</option>{% for terminal in terminais %}<option value="{{ terminal }}" {% if terminal_selecionado == terminal %}selected{% endif %}>{{ terminal }}</option>{% endfor %}</select></label>
-        <label class="field"><span class="field__label">Tipo</span><select name="tipo"><option value="">Todos</option>{% for valor, rotulo in tipos_camera %}<option value="{{ valor }}" {% if tipo_selecionado == valor %}selected{% endif %}>{{ rotulo }}</option>{% endfor %}</select></label>
-        <label class="field"><span class="field__label">Fabricante</span><select name="fabricante"><option value="">Todos</option>{% for fabricante in fabricantes %}<option value="{{ fabricante }}" {% if fabricante_selecionado == fabricante %}selected{% endif %}>{{ fabricante }}</option>{% endfor %}</select></label>
-        <label class="field"><span class="field__label">VLAN</span><select name="vlan"><option value="">Todas</option>{% for vlan in vlans %}<option value="{{ vlan }}" {% if vlan_selecionada == vlan|stringformat:"s" %}selected{% endif %}>VLAN {{ vlan }}</option>{% endfor %}</select></label>
-        <label class="field"><span class="field__label">Farm</span><select name="farm"><option value="">Todas</option>{% for farm in farms %}<option value="{{ farm }}" {% if farm_selecionada == farm %}selected{% endif %}>{{ farm }}</option>{% endfor %}</select></label>
-        <label class="field"><span class="field__label">Ordenar por</span><select name="ordenacao"><option value="nome" {% if ordenacao == "nome" %}selected{% endif %}>Nome: A–Z</option><option value="-nome" {% if ordenacao == "-nome" %}selected{% endif %}>Nome: Z–A</option><option value="status" {% if ordenacao == "status" %}selected{% endif %}>Status: A–Z</option><option value="-status" {% if ordenacao == "-status" %}selected{% endif %}>Status: Z–A</option><option value="ip" {% if ordenacao == "ip" %}selected{% endif %}>IP: crescente</option><option value="-ip" {% if ordenacao == "-ip" %}selected{% endif %}>IP: decrescente</option><option value="-atualizado_em" {% if ordenacao == "-atualizado_em" %}selected{% endif %}>Atualização: mais recente</option><option value="atualizado_em" {% if ordenacao == "atualizado_em" %}selected{% endif %}>Atualização: mais antiga</option></select></label>
-        <div class="filter-actions"><button class="button button--primary" type="submit">Filtrar</button><a class="button button--secondary" href="{% url 'cameras:lista' %}">Limpar</a></div>
-    </form>
-
-    {% if total_resultados %}
-        <section class="inventory-panel" aria-labelledby="table-title">
-            <div class="inventory-panel__header"><div><span class="inventory-eyebrow">Relação atual</span><h2 id="table-title">Câmeras cadastradas</h2></div><div class="status-legend" aria-label="Legenda dos status">{% include "cameras/partials/_status_badge.html" with status="ONLINE" status_label="Online" %}{% include "cameras/partials/_status_badge.html" with status="OFFLINE" status_label="Offline" %}{% include "cameras/partials/_status_badge.html" with status="UNKNOWN" status_label="Não verificado" %}</div></div>
-            <div class="table-container"><table class="camera-table"><thead><tr><th scope="col">Câmera</th><th scope="col">Status</th><th scope="col">Desde</th><th scope="col">Tipo</th><th scope="col">Endereço IP</th><th scope="col">Máscara</th><th scope="col">VLAN</th><th scope="col">Fabricante</th><th scope="col">Modelo</th></tr></thead><tbody>
-                {% for camera in cameras %}<tr{% if not camera.ativo %} class="camera-row--inactive"{% endif %}><td><div class="camera-identification"><span class="camera-identification__icon" aria-hidden="true">C</span><a class="camera-name-link" href="{% url 'cameras:detalhe' camera.pk %}">{{ camera.nome }}</a>{% if camera.ativo %}<span class="state-badge state-badge--active">Ativa</span>{% else %}<span class="state-badge state-badge--inactive">Inativa</span>{% endif %}</div></td><td>{% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}</td><td>{% if camera.status and camera.status_em %}<div class="status-date"><span>{{ camera.status_em|date:"d/m/Y" }}</span><small>{{ camera.status_em|date:"H:i" }}</small></div>{% else %}<span class="empty-value">—</span>{% endif %}</td><td>{{ camera.get_tipo_display|default:"Não informado" }}</td><td class="monospace">{{ camera.ip }}</td><td class="monospace">{{ camera.mascara_subrede }}</td><td><span class="vlan-badge">VLAN {{ camera.vlan }}</span></td><td>{{ camera.fabricante }}</td><td>{{ camera.modelo }}</td></tr>{% endfor %}
-            </tbody></table></div>
-        </section>
-
-        {% if page_obj.has_other_pages %}
-            <nav class="pagination" aria-label="Paginação de câmeras">
-                {% if page_obj.has_previous %}<a class="pagination__button" href="?page={{ page_obj.previous_page_number }}{% if query_string %}&amp;{{ query_string }}{% endif %}">Anterior</a>{% else %}<span class="pagination__button pagination__button--disabled">Anterior</span>{% endif %}
-                <span class="pagination__status">Página {{ page_obj.number }} de {{ paginator.num_pages }}</span>
-                {% if page_obj.has_next %}<a class="pagination__button" href="?page={{ page_obj.next_page_number }}{% if query_string %}&amp;{{ query_string }}{% endif %}">Próxima</a>{% else %}<span class="pagination__button pagination__button--disabled">Próxima</span>{% endif %}
-            </nav>
-        {% endif %}
-    {% else %}
-        <section class="empty-state" aria-labelledby="empty-title"><div class="empty-state__icon" aria-hidden="true">C</div>{% if possui_cameras_cadastradas %}<span class="inventory-eyebrow">Sem resultados</span><h2 id="empty-title">Nenhuma câmera encontrada</h2><p>Revise os termos da pesquisa ou remova alguns filtros.</p><a class="button button--secondary" href="{% url 'cameras:lista' %}">Limpar filtros</a>{% else %}<span class="inventory-eyebrow">Inventário vazio</span><h2 id="empty-title">Nenhuma câmera cadastrada</h2><p>Cadastre uma câmera para iniciar o inventário.</p><a class="button button--primary" href="{% url 'cameras:criar' %}">Nova câmera</a>{% endif %}</section>
-    {% endif %}
+<section class="inventory-hero"><div><span class="inventory-eyebrow">Inventário CFTV</span><h1>Câmeras</h1><p>Consulte e organize os equipamentos cadastrados.</p></div><div class="inventory-hero__actions"><div class="metric-card"><strong>{{ total_resultados }}</strong><span>câmeras</span></div>{% if perms.cameras.add_camera %}<a class="button button--primary" href="{% url 'cameras:criar' %}">+ Nova câmera</a>{% endif %}</div></section>
+<form class="inventory-toolbar inventory-filter-form" method="get">
+<label class="field field--search"><span class="field__label">Pesquisar</span><input type="search" name="q" value="{{ q }}" placeholder="Nome, patrimônio, IP ou fabricante"></label>
+<label class="field"><span class="field__label">Status técnico</span><select name="status"><option value="">Todos</option><option value="ONLINE"{% if status_selecionado == "ONLINE" %} selected{% endif %}>Online</option><option value="OFFLINE"{% if status_selecionado == "OFFLINE" %} selected{% endif %}>Offline</option><option value="NAO_VERIFICADO"{% if status_selecionado == "NAO_VERIFICADO" %} selected{% endif %}>Não verificado</option></select></label>
+<label class="field"><span class="field__label">Situação operacional</span><select name="situacao_operacional"><option value="">Todas</option>{% for valor,rotulo in situacoes_operacionais %}<option value="{{ valor }}"{% if situacao_selecionada == valor %} selected{% endif %}>{{ rotulo }}</option>{% endfor %}</select></label>
+<label class="field"><span class="field__label">Completude</span><select name="completude"><option value="">Todos</option><option value="COMPLETO"{% if completude_selecionada == "COMPLETO" %} selected{% endif %}>Completo</option><option value="INCOMPLETO"{% if completude_selecionada == "INCOMPLETO" %} selected{% endif %}>Incompleto</option></select></label>
+<label class="field"><span class="field__label">Terminal</span><select name="terminal"><option value="">Todos</option>{% for terminal in terminais %}<option value="{{ terminal }}"{% if terminal_selecionado == terminal %} selected{% endif %}>{{ terminal }}</option>{% endfor %}</select></label>
+<label class="field"><span class="field__label">Tipo</span><select name="tipo"><option value="">Todos</option>{% for valor,rotulo in tipos_camera %}<option value="{{ valor }}"{% if tipo_selecionado == valor %} selected{% endif %}>{{ rotulo }}</option>{% endfor %}</select></label>
+<label class="field"><span class="field__label">Fabricante</span><select name="fabricante"><option value="">Todos</option>{% for fabricante in fabricantes %}<option value="{{ fabricante }}"{% if fabricante_selecionado == fabricante %} selected{% endif %}>{{ fabricante }}</option>{% endfor %}</select></label>
+<label class="field"><span class="field__label">VLAN</span><select name="vlan"><option value="">Todas</option>{% for vlan in vlans %}<option value="{{ vlan }}"{% if vlan_selecionada == vlan|stringformat:"s" %} selected{% endif %}>{{ vlan }}</option>{% endfor %}</select></label>
+<label class="field"><span class="field__label">Farm</span><select name="farm"><option value="">Todas</option>{% for farm in farms %}<option value="{{ farm }}"{% if farm_selecionada == farm %} selected{% endif %}>{{ farm }}</option>{% endfor %}</select></label>
+<div class="filter-actions"><button class="button button--primary" type="submit">Filtrar</button><a class="button button--secondary" href="{% url 'cameras:lista' %}">Limpar</a></div></form>
+{% if total_resultados %}<section class="inventory-panel"><div class="table-container"><table class="camera-table"><thead><tr><th>Câmera</th><th>Situação</th><th>Cadastro</th><th>Status técnico</th><th>Tipo</th><th>IP</th><th>VLAN</th><th>Fabricante</th><th>Modelo</th></tr></thead><tbody>{% for camera in cameras %}<tr class="camera-row--{{ camera.situacao_operacional|lower }}"><td><a class="camera-name-link" href="{% url 'cameras:detalhe' camera.pk %}">{{ camera.nome }}</a></td><td><span class="governance-badge governance-badge--{{ camera.situacao_operacional|lower }}">{{ camera.get_situacao_operacional_display }}</span></td><td>{% if camera.cadastro_completo %}<span class="completeness completeness--ok">Cadastro completo</span>{% else %}<span class="completeness completeness--warning" title="{{ camera.rotulos_campos_incompletos|join:', ' }}">Cadastro incompleto</span>{% endif %}</td><td>{% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}</td><td>{{ camera.get_tipo_display|default:"—" }}</td><td class="monospace">{{ camera.ip|default:"—" }}</td><td>{{ camera.vlan|default:"—" }}</td><td>{{ camera.fabricante }}</td><td>{{ camera.modelo }}</td></tr>{% endfor %}</tbody></table></div></section>
+{% if page_obj.has_other_pages %}<nav class="pagination">{% if page_obj.has_previous %}<a class="pagination__button" href="?page={{ page_obj.previous_page_number }}{% if query_string %}&{{ query_string }}{% endif %}">Anterior</a>{% endif %}<span class="pagination__status">Página {{ page_obj.number }} de {{ paginator.num_pages }}</span>{% if page_obj.has_next %}<a class="pagination__button" href="?page={{ page_obj.next_page_number }}{% if query_string %}&{{ query_string }}{% endif %}">Próxima</a>{% endif %}</nav>{% endif %}
+{% else %}<section class="empty-state"><h2>{% if possui_cameras_cadastradas %}Nenhuma câmera encontrada{% else %}Nenhuma câmera cadastrada{% endif %}</h2><p>{% if possui_cameras_cadastradas %}Revise os filtros aplicados.{% else %}Cadastre o primeiro equipamento do inventário.{% endif %}</p></section>{% endif %}
 {% endblock %}

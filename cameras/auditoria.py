@@ -9,8 +9,8 @@ from django.utils import timezone
 from .models import EventoAuditoria
 
 CAMPOS_CAMERA_AUDITAVEIS = (
-    "patrimonio", "nome", "fabricante", "modelo", "serial", "mac", "tipo", "ativo",
-    "terminal", "pavimento", "setor", "ambiente", "descricao_detalhada",
+    "patrimonio", "nome", "fabricante", "modelo", "serial", "mac", "tipo",
+    "situacao_operacional", "motivo_desativacao", "terminal", "pavimento", "setor", "ambiente", "descricao_detalhada",
     "ponto_referencia", "ip", "mascara_subrede", "gateway", "vlan", "farm",
     "retencao_esperada_dias", "codec", "origem_cadastro", "observacoes",
 )

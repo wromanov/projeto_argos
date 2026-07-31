@@ -1,67 +1,104 @@
 from django import forms
 
 from .models import AtividadeCamera, Camera
+from .validadores import normalizar_mac
 
 
-class CameraForm(forms.ModelForm):
+CAMPOS_CAMERA = (
+    "patrimonio", "nome", "fabricante", "modelo", "serial", "mac", "tipo",
+    "terminal", "pavimento", "setor", "ambiente", "descricao_detalhada",
+    "ponto_referencia", "ip", "mascara_subrede", "gateway", "vlan", "farm",
+    "retencao_esperada_dias", "codec", "origem_cadastro", "observacoes",
+)
+
+
+class CameraBaseForm(forms.ModelForm):
     class Meta:
         model = Camera
-        fields = (
-            "patrimonio",
-            "nome",
-            "fabricante",
-            "modelo",
-            "serial",
-            "mac",
-            "tipo",
-            "ativo",
-            "terminal",
-            "pavimento",
-            "setor",
-            "ambiente",
-            "descricao_detalhada",
-            "ponto_referencia",
-            "ip",
-            "mascara_subrede",
-            "gateway",
-            "vlan",
-            "farm",
-            "retencao_esperada_dias",
-            "codec",
-            "origem_cadastro",
-            "observacoes",
-        )
+        fields = CAMPOS_CAMERA
         widgets = {
-            "patrimonio": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ex.: PAT-CFTV-0002"}),
-            "nome": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ex.: EST-TPS2-CM80"}),
-            "fabricante": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ex.: Axis"}),
-            "modelo": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ex.: P3265-LVE"}),
-            "serial": forms.TextInput(attrs={"class": "form-control", "placeholder": "Número de série"}),
-            "mac": forms.TextInput(attrs={"class": "form-control", "placeholder": "AA:BB:CC:DD:EE:FF"}),
-            "tipo": forms.Select(attrs={"class": "form-control"}),
-            "ativo": forms.CheckboxInput(attrs={"class": "form-check-input"}),
-            "terminal": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ex.: TPS2"}),
-            "pavimento": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ex.: Embarque"}),
-            "setor": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ex.: Check-in"}),
-            "ambiente": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ex.: Saguão"}),
-            "descricao_detalhada": forms.Textarea(attrs={"class": "form-control", "placeholder": "Descreva a instalação", "rows": 4}),
-            "ponto_referencia": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ex.: Próxima ao balcão 20"}),
-            "ip": forms.TextInput(attrs={"class": "form-control", "placeholder": "10.20.78.20"}),
-            "mascara_subrede": forms.TextInput(attrs={"class": "form-control", "placeholder": "255.255.255.0"}),
-            "gateway": forms.TextInput(attrs={"class": "form-control", "placeholder": "10.20.78.1"}),
-            "vlan": forms.NumberInput(attrs={"class": "form-control", "placeholder": "Ex.: 210"}),
-            "farm": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ex.: FARM-TPS2-01"}),
-            "retencao_esperada_dias": forms.NumberInput(attrs={"class": "form-control", "placeholder": "Ex.: 30"}),
-            "codec": forms.TextInput(attrs={"class": "form-control", "placeholder": "Ex.: H.264"}),
-            "origem_cadastro": forms.Select(attrs={"class": "form-control"}),
-            "observacoes": forms.Textarea(attrs={"class": "form-control", "placeholder": "Informações complementares", "rows": 4}),
+            campo: forms.Textarea(attrs={"class": "form-control", "rows": 4})
+            if campo in ("descricao_detalhada", "observacoes")
+            else forms.Select(attrs={"class": "form-control"})
+            if campo in ("tipo", "origem_cadastro")
+            else forms.NumberInput(attrs={"class": "form-control"})
+            if campo in ("vlan", "retencao_esperada_dias")
+            else forms.TextInput(attrs={"class": "form-control"})
+            for campo in CAMPOS_CAMERA
         }
 
     def clean_mac(self):
-        mac = self.cleaned_data.get("mac")
-        if not mac:
-            return mac
-        return mac.strip().upper()
+        return normalizar_mac(self.cleaned_data.get("mac"))
+
+    def clean(self):
+        cleaned = super().clean()
+        if not self.errors:
+            for campo, valor in cleaned.items():
+                if hasattr(self.instance, campo):
+                    setattr(self.instance, campo, valor)
+            situacao = cleaned.get("situacao_operacional", self.instance.situacao_operacional)
+            faltantes = self.instance.campos_incompletos(situacao)
+            if faltantes:
+                rotulos = ", ".join(str(self.instance._meta.get_field(campo).verbose_name) for campo in faltantes)
+                raise forms.ValidationError(f"Complete os seguintes campos antes de continuar: {rotulos}.")
+        return cleaned
+
+
+class CameraCriacaoForm(CameraBaseForm):
+    situacao_operacional = forms.ChoiceField(
+        choices=(
+            (Camera.SituacaoOperacional.PRODUCAO, "Produção"),
+            (Camera.SituacaoOperacional.ESTOQUE, "Estoque"),
+        ),
+        label="Situação operacional",
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+
+    class Meta(CameraBaseForm.Meta):
+        fields = ("situacao_operacional",) + CAMPOS_CAMERA
+
+
+class CameraEdicaoForm(CameraBaseForm):
+    pass
+
+
+CameraForm = CameraEdicaoForm
+
+
+class DesativarCameraForm(forms.Form):
+    motivo = forms.CharField(label="Motivo da desativação", min_length=10, max_length=500, strip=True, widget=forms.Textarea(attrs={"class": "form-control", "rows": 5}))
+
+
+class ReativarCameraForm(forms.Form):
+    destino = forms.ChoiceField(choices=((Camera.SituacaoOperacional.PRODUCAO, "Produção"), (Camera.SituacaoOperacional.ESTOQUE, "Estoque")), widget=forms.Select(attrs={"class": "form-control"}))
+    justificativa = forms.CharField(min_length=10, max_length=500, strip=True, widget=forms.Textarea(attrs={"class": "form-control", "rows": 5}))
+
+
+class AlterarSituacaoCameraForm(forms.Form):
+    destino = forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}))
+    justificativa = forms.CharField(min_length=10, max_length=500, strip=True, widget=forms.Textarea(attrs={"class": "form-control", "rows": 5}))
+
+    def __init__(self, *args, camera=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if camera is None or camera.situacao_operacional == Camera.SituacaoOperacional.DESATIVADA:
+            self.fields["destino"].choices = ()
+        elif camera.situacao_operacional == Camera.SituacaoOperacional.PRODUCAO:
+            self.fields["destino"].choices = ((Camera.SituacaoOperacional.ESTOQUE, "Estoque"),)
+        else:
+            self.fields["destino"].choices = ((Camera.SituacaoOperacional.PRODUCAO, "Produção"),)
+
+
+class SubstituirCameraForm(forms.Form):
+    camera_substituta = forms.ModelChoiceField(queryset=Camera.objects.none(), widget=forms.Select(attrs={"class": "form-control"}))
+    motivo = forms.CharField(min_length=10, max_length=1000, strip=True, widget=forms.Textarea(attrs={"class": "form-control", "rows": 5}))
+    observacoes = forms.CharField(required=False, strip=True, widget=forms.Textarea(attrs={"class": "form-control", "rows": 4}))
+
+    def __init__(self, *args, camera_anterior=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        queryset = Camera.objects.filter(situacao_operacional=Camera.SituacaoOperacional.ESTOQUE).order_by("nome")
+        if camera_anterior is not None:
+            queryset = queryset.exclude(pk=camera_anterior.pk)
+        self.fields["camera_substituta"].queryset = queryset
 
 
 class AtividadeCameraForm(forms.ModelForm):

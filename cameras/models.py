@@ -1,8 +1,12 @@
 from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Q
+from django.db.models.functions import Lower
+
+from .validadores import normalizar_mac, validar_mac
 
 
 class Camera(models.Model):
@@ -21,6 +25,11 @@ class Camera(models.Model):
         IMPORTACAO = "IMPORTACAO", "Importação"
         INTEGRACAO = "INTEGRACAO", "Integração"
 
+    class SituacaoOperacional(models.TextChoices):
+        PRODUCAO = "PRODUCAO", "Produção"
+        ESTOQUE = "ESTOQUE", "Estoque"
+        DESATIVADA = "DESATIVADA", "Desativada"
+
     patrimonio = models.CharField(
         max_length=50,
         unique=True,
@@ -28,7 +37,7 @@ class Camera(models.Model):
         blank=True,
         verbose_name="Patrimônio",
     )
-    nome = models.CharField(max_length=150, unique=True)
+    nome = models.CharField(max_length=150)
     fabricante = models.CharField(max_length=100)
     modelo = models.CharField(max_length=100)
     serial = models.CharField(
@@ -38,19 +47,11 @@ class Camera(models.Model):
         blank=True,
         verbose_name="Número de série",
     )
-    mac = models.CharField(
-        max_length=17,
-        null=True,
-        blank=True,
-        verbose_name="Endereço MAC",
-        validators=[
-            RegexValidator(
-                regex=r"^(?:[0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$",
-                message="Informe um endereço MAC no formato AA:BB:CC:DD:EE:FF.",
-            ),
-        ],
-    )
-    ativo = models.BooleanField(default=True, verbose_name="Ativa")
+    mac = models.CharField(max_length=17, null=True, blank=True, default=None, verbose_name="Endereço MAC", validators=[validar_mac])
+    situacao_operacional = models.CharField(max_length=20, choices=SituacaoOperacional.choices, default=SituacaoOperacional.PRODUCAO, db_index=True, verbose_name="Situação operacional")
+    motivo_desativacao = models.CharField(max_length=500, blank=True, default="", verbose_name="Motivo da última desativação")
+    desativada_em = models.DateTimeField(null=True, blank=True, verbose_name="Desativada em")
+    desativada_por = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="cameras_desativadas", verbose_name="Desativada por")
     tipo = models.CharField(
         max_length=20,
         choices=TipoCamera.choices,
@@ -75,13 +76,11 @@ class Camera(models.Model):
         verbose_name="Ponto de referência",
     )
 
-    ip = models.GenericIPAddressField(protocol="IPv4", unique=True)
-    mascara_subrede = models.GenericIPAddressField(
-        protocol="IPv4",
-        verbose_name="Máscara de sub-rede",
-    )
+    ip = models.GenericIPAddressField(protocol="IPv4", null=True, blank=True)
+    mascara_subrede = models.GenericIPAddressField(protocol="IPv4", null=True, blank=True, verbose_name="Máscara de sub-rede")
     gateway = models.GenericIPAddressField(protocol="IPv4", null=True, blank=True)
     vlan = models.PositiveSmallIntegerField(
+        null=True, blank=True,
         validators=[MinValueValidator(1), MaxValueValidator(4094)],
     )
 
@@ -153,6 +152,46 @@ class Camera(models.Model):
         ordering = ["nome"]
         verbose_name = "Câmera"
         verbose_name_plural = "Câmeras"
+        permissions = (("desativar_camera", "Pode desativar câmera"), ("reativar_camera", "Pode reativar câmera"), ("alterar_situacao_camera", "Pode alterar situação operacional da câmera"), ("registrar_substituicao_camera", "Pode registrar substituição física de câmera"))
+        constraints = [
+            models.UniqueConstraint(Lower("nome"), condition=~Q(situacao_operacional="DESATIVADA"), name="uniq_camera_nome_ativa_ci"),
+            models.UniqueConstraint(Lower("mac"), condition=Q(mac__isnull=False), name="uniq_camera_mac_ci_nao_nulo"),
+        ]
+
+    CAMPOS_PRODUCAO = (
+        "nome", "fabricante", "modelo", "serial", "mac", "tipo", "terminal",
+        "pavimento", "setor", "ambiente", "ip", "mascara_subrede", "gateway",
+        "vlan", "farm", "retencao_esperada_dias", "codec",
+    )
+    CAMPOS_ESTOQUE = ("nome", "fabricante", "modelo", "serial", "mac", "tipo")
+    CAMPOS_DESATIVADA = ("nome",)
+
+    def campos_obrigatorios_situacao(self, situacao=None):
+        situacao = situacao or self.situacao_operacional
+        return {
+            self.SituacaoOperacional.PRODUCAO: self.CAMPOS_PRODUCAO,
+            self.SituacaoOperacional.ESTOQUE: self.CAMPOS_ESTOQUE,
+            self.SituacaoOperacional.DESATIVADA: self.CAMPOS_DESATIVADA,
+        }.get(situacao, ())
+
+    def campos_incompletos(self, situacao=None):
+        incompletos = []
+        for campo in self.campos_obrigatorios_situacao(situacao):
+            valor = getattr(self, campo, None)
+            if valor is None or (isinstance(valor, str) and not valor.strip()):
+                incompletos.append(campo)
+        return incompletos
+
+    def rotulos_campos_incompletos(self, situacao=None):
+        return [self._meta.get_field(campo).verbose_name for campo in self.campos_incompletos(situacao)]
+
+    @property
+    def cadastro_completo(self):
+        return not self.campos_incompletos()
+
+    def save(self, *args, **kwargs):
+        self.mac = normalizar_mac(self.mac)
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.nome
@@ -289,3 +328,47 @@ class EventoAuditoria(models.Model):
 
     def delete(self, *args, **kwargs):
         raise ValidationError("Eventos de auditoria não podem ser excluídos.")
+
+class SubstituicaoCameraQuerySet(models.QuerySet):
+    def update(self, **kwargs):
+        raise ValidationError("Substituições de câmera são imutáveis.")
+
+    def delete(self):
+        raise ValidationError("Substituições de câmera não podem ser excluídas.")
+
+
+class SubstituicaoCamera(models.Model):
+    camera_anterior = models.ForeignKey(Camera, on_delete=models.PROTECT, related_name="substituicoes_como_anterior", verbose_name="Câmera anterior")
+    camera_substituta = models.ForeignKey(Camera, on_delete=models.PROTECT, related_name="substituicoes_como_substituta", verbose_name="Câmera substituta")
+    ocorrida_em = models.DateTimeField(default=timezone.now, db_index=True, verbose_name="Data da substituição")
+    motivo = models.TextField(max_length=1000, verbose_name="Motivo")
+    observacoes = models.TextField(blank=True, default="", verbose_name="Observações")
+    nome_operacional = models.CharField(max_length=150, verbose_name="Nome operacional transferido")
+    nome_anterior_substituta = models.CharField(max_length=150, verbose_name="Nome anterior da substituta")
+    registrado_por = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="substituicoes_camera_registradas", verbose_name="Registrado por")
+    registrado_por_username = models.CharField(max_length=150, blank=True, default="", verbose_name="Username registrado")
+    registrado_por_nome = models.CharField(max_length=200, blank=True, default="", verbose_name="Nome registrado")
+    criado_em = models.DateTimeField(auto_now_add=True, verbose_name="Registrado em")
+
+    objects = SubstituicaoCameraQuerySet.as_manager()
+
+    class Meta:
+        verbose_name = "Substituição de câmera"
+        verbose_name_plural = "Substituições de câmeras"
+        ordering = ["-ocorrida_em", "-pk"]
+        permissions = (("consultar_substituicoescamera", "Pode consultar substituições de câmeras"),)
+        indexes = [
+            models.Index(fields=["camera_anterior", "ocorrida_em"]),
+            models.Index(fields=["camera_substituta", "ocorrida_em"]),
+        ]
+
+    def __str__(self):
+        return f"{self.camera_anterior} → {self.camera_substituta}"
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            raise ValidationError("Substituições de câmera são imutáveis.")
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("Substituições de câmera não podem ser excluídas.")
