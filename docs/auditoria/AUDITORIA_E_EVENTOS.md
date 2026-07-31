@@ -27,4 +27,4 @@ A consulta exige cameras.consultar_eventos. Os perfis padrão recebem apenas vie
 
 ## Operação
 
-O painel geral está em /cameras/eventos/; o detalhe em /cameras/eventos/<id>/; e o histórico por câmera em /cameras/<id>/eventos/. As listas usam paginação de 50 registros e filtros por texto, categoria, origem e período.
+O painel geral está em /eventos/; o detalhe em /eventos/<id>/; e o histórico por câmera em /cameras/<id>/eventos/. As listas usam paginação de 50 registros e filtros por texto, categoria, origem e período.

@@ -27,11 +27,11 @@ class AuditoriaIntegracaoTests(TestCase):
         dados.update(kwargs); return dados
 
     def test_01_login_sucesso(self):
-        self.client.post(reverse("usuarios:login"), {"username": "integracao", "password": "Senha-segura-123"})
+        self.client.post(reverse("usuarios:login"), {"username": "integracao", "password": "Senha-segura-123"})  # pragma: allowlist secret
         self.assertTrue(EventoAuditoria.objects.filter(codigo="autenticacao.login_sucesso").exists())
 
     def test_02_login_falha_sem_identificador_ou_senha(self):
-        self.client.post(reverse("usuarios:login"), {"username": "alguem", "password": "valor-invalido"})
+        self.client.post(reverse("usuarios:login"), {"username": "alguem", "password": "valor-invalido"})  # pragma: allowlist secret
         evento = EventoAuditoria.objects.get(codigo="autenticacao.login_falha")
         self.assertEqual(evento.usuario_username, "")
         self.assertNotIn("alguem", str(evento.metadados))

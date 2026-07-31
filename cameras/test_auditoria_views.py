@@ -23,58 +23,58 @@ class AuditoriaViewsTests(TestCase):
         self.client.force_login(self.user)
 
     def test_01_anonimo_redirecionado(self):
-        self.assertEqual(self.client.get(reverse("cameras:lista_eventos")).status_code, 302)
+        self.assertEqual(self.client.get(reverse("eventos:lista")).status_code, 302)
 
     def test_02_sem_permissao_recebe_403(self):
         self.autenticar(False)
-        self.assertEqual(self.client.get(reverse("cameras:lista_eventos")).status_code, 403)
+        self.assertEqual(self.client.get(reverse("eventos:lista")).status_code, 403)
 
     def test_03_com_permissao_recebe_200(self):
         self.autenticar()
-        self.assertEqual(self.client.get(reverse("cameras:lista_eventos")).status_code, 200)
+        self.assertEqual(self.client.get(reverse("eventos:lista")).status_code, 200)
 
     def test_04_template_da_lista(self):
-        self.autenticar(); response = self.client.get(reverse("cameras:lista_eventos"))
+        self.autenticar(); response = self.client.get(reverse("eventos:lista"))
         self.assertTemplateUsed(response, "cameras/eventos/lista.html")
 
     def test_05_exibe_evento(self):
         self.autenticar()
-        self.assertContains(self.client.get(reverse("cameras:lista_eventos")), "camera.criada")
+        self.assertContains(self.client.get(reverse("eventos:lista")), "camera.criada")
 
     def test_06_filtro_textual(self):
         EventoAuditoria.objects.create(categoria="SISTEMA", codigo="outro", resumo="Nada")
-        self.autenticar(); response = self.client.get(reverse("cameras:lista_eventos"), {"q": "CAM-VIEW"})
+        self.autenticar(); response = self.client.get(reverse("eventos:lista"), {"q": "CAM-VIEW"})
         self.assertEqual(response.context["total_eventos"], 1)
 
     def test_07_filtro_categoria(self):
-        self.autenticar(); response = self.client.get(reverse("cameras:lista_eventos"), {"categoria": "CAMERA"})
+        self.autenticar(); response = self.client.get(reverse("eventos:lista"), {"categoria": "CAMERA"})
         self.assertEqual(response.context["total_eventos"], 1)
 
     def test_08_filtro_origem(self):
-        self.autenticar(); response = self.client.get(reverse("cameras:lista_eventos"), {"origem": "ADMIN"})
+        self.autenticar(); response = self.client.get(reverse("eventos:lista"), {"origem": "ADMIN"})
         self.assertEqual(response.context["total_eventos"], 0)
 
     def test_09_filtro_periodo(self):
         self.autenticar(); hoje = timezone.localdate().isoformat()
-        self.assertEqual(self.client.get(reverse("cameras:lista_eventos"), {"data_inicial": hoje, "data_final": hoje}).context["total_eventos"], 1)
+        self.assertEqual(self.client.get(reverse("eventos:lista"), {"data_inicial": hoje, "data_final": hoje}).context["total_eventos"], 1)
 
     def test_10_periodo_invalido(self):
-        self.autenticar(); response = self.client.get(reverse("cameras:lista_eventos"), {"data_inicial": "invalida"})
+        self.autenticar(); response = self.client.get(reverse("eventos:lista"), {"data_inicial": "invalida"})
         self.assertTrue(response.context["periodo_invalido"])
 
     def test_11_paginacao_de_50(self):
         for indice in range(51):
             EventoAuditoria.objects.create(categoria="SISTEMA", codigo=f"sistema.{indice}", resumo="Teste")
-        self.autenticar(); response = self.client.get(reverse("cameras:lista_eventos"))
+        self.autenticar(); response = self.client.get(reverse("eventos:lista"))
         self.assertEqual(len(response.context["eventos"]), 50)
         self.assertEqual(response.context["paginator"].num_pages, 2)
 
     def test_12_detalhe_evento(self):
         self.autenticar()
-        self.assertEqual(self.client.get(reverse("cameras:detalhe_evento", args=[self.evento.pk])).status_code, 200)
+        self.assertEqual(self.client.get(reverse("eventos:detalhe", kwargs={"pk": self.evento.pk})).status_code, 200)
 
     def test_13_detalhe_sem_acoes_de_mutacao(self):
-        self.autenticar(); response = self.client.get(reverse("cameras:detalhe_evento", args=[self.evento.pk]))
+        self.autenticar(); response = self.client.get(reverse("eventos:detalhe", kwargs={"pk": self.evento.pk}))
         self.assertNotContains(response, "Excluir evento")
         self.assertNotContains(response, "Editar evento")
 
