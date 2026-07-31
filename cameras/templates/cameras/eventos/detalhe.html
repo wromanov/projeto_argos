@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% load static %}
+{% block titulo %}{{ evento.codigo }} — ARGOS{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/eventos.css' %}">{% endblock %}
+{% block conteudo %}<section class="event-hero"><div><a href="{% url 'cameras:lista_eventos' %}">← Voltar aos eventos</a><span class="event-eyebrow">Evento #{{ evento.pk }}</span><h1>{{ evento.codigo }}</h1><p>{{ evento.resumo }}</p></div><span class="event-badge event-badge--{{ evento.categoria|lower }}">{{ evento.get_categoria_display }}</span></section>
+<div class="event-detail-grid"><section class="event-card"><h2>Contexto</h2><dl><dt>Ocorrido em</dt><dd>{{ evento.ocorrido_em|date:"d/m/Y H:i:s" }}</dd><dt>Origem</dt><dd>{{ evento.get_origem_display }}</dd><dt>IP de origem</dt><dd>{{ evento.ip_origem|default:"—" }}</dd><dt>Câmera</dt><dd>{% if evento.camera %}<a href="{% url 'cameras:detalhe' evento.camera.pk %}">{{ evento.camera }}</a>{% else %}—{% endif %}</dd></dl></section>
+<section class="event-card"><h2>Usuário congelado</h2><dl><dt>Username</dt><dd>{{ evento.usuario_username|default:"—" }}</dd><dt>Nome</dt><dd>{{ evento.usuario_nome|default:"—" }}</dd><dt>E-mail</dt><dd>{{ evento.usuario_email|default:"—" }}</dd><dt>Referência atual</dt><dd>{{ evento.usuario|default:"—" }}</dd></dl></section>
+<section class="event-card"><h2>Entidade</h2><dl><dt>Tipo</dt><dd>{{ evento.entidade_tipo|default:"—" }}</dd><dt>ID</dt><dd>{{ evento.entidade_id|default:"—" }}</dd><dt>Descrição</dt><dd>{{ evento.entidade_descricao|default:"—" }}</dd></dl></section>
+<section class="event-card"><h2>Alterações</h2>{% if evento.alteracoes %}<pre>{{ evento.alteracoes }}</pre>{% else %}<p>Sem valores registrados.</p>{% endif %}</section>
+<section class="event-card event-card--full"><h2>Metadados seguros</h2>{% if evento.metadados %}<pre>{{ evento.metadados }}</pre>{% else %}<p>Sem metadados.</p>{% endif %}</section></div>{% endblock %}

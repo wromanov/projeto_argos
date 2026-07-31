@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% load static %}
+{% block titulo %}Eventos de auditoria — ARGOS{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/eventos.css' %}">{% endblock %}
+{% block conteudo %}
+<section class="event-hero"><div><span class="event-eyebrow">Governança</span><h1>Eventos de auditoria</h1><p>Histórico imutável das ações relevantes no ARGOS.</p></div><strong>{{ total_eventos }} evento{{ total_eventos|pluralize }}</strong></section>
+<form method="get" class="event-filters">
+<label>Pesquisa<input name="q" value="{{ q }}" placeholder="Código, resumo, usuário ou câmera"></label>
+<label>Categoria<select name="categoria"><option value="">Todas</option>{% for value,label in categorias %}<option value="{{ value }}"{% if categoria_selecionada == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+<label>Origem<select name="origem"><option value="">Todas</option>{% for value,label in origens %}<option value="{{ value }}"{% if origem_selecionada == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+<label>De<input type="date" name="data_inicial" value="{{ data_inicial }}"></label><label>Até<input type="date" name="data_final" value="{{ data_final }}"></label>
+<button class="button button--primary" type="submit">Filtrar</button><a class="button button--secondary" href="{% url 'cameras:lista_eventos' %}">Limpar</a>
+</form>
+{% if periodo_invalido %}<p class="event-alert">Informe um período válido.</p>{% endif %}
+<section class="event-panel"><div class="event-table-wrap"><table class="event-table"><thead><tr><th>Data</th><th>Evento</th><th>Categoria</th><th>Usuário</th><th>Entidade</th><th>Origem</th></tr></thead><tbody>{% for evento in eventos %}<tr><td>{{ evento.ocorrido_em|date:"d/m/Y H:i:s" }}</td><td><a href="{% url 'cameras:detalhe_evento' evento.pk %}"><strong>{{ evento.codigo }}</strong><small>{{ evento.resumo }}</small></a></td><td><span class="event-badge event-badge--{{ evento.categoria|lower }}">{{ evento.get_categoria_display }}</span></td><td>{{ evento.usuario_username|default:"—" }}</td><td>{{ evento.entidade_descricao|default:"—" }}</td><td>{{ evento.get_origem_display }}</td></tr>{% empty %}<tr><td colspan="6" class="event-empty">Nenhum evento encontrado.</td></tr>{% endfor %}</tbody></table></div></section>
+{% include "cameras/eventos/_paginacao.html" %}
+{% endblock %}

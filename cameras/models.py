@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 
@@ -223,3 +224,68 @@ class AtividadeCamera(models.Model):
 
     def __str__(self):
         return f"{self.camera.nome} — {self.get_tipo_display()}"
+
+class EventoAuditoriaQuerySet(models.QuerySet):
+    def update(self, **kwargs):
+        raise ValidationError("Eventos de auditoria são imutáveis.")
+
+    def delete(self):
+        raise ValidationError("Eventos de auditoria não podem ser excluídos.")
+
+
+class EventoAuditoria(models.Model):
+    class Categoria(models.TextChoices):
+        AUTENTICACAO = "AUTENTICACAO", "Autenticação"
+        CAMERA = "CAMERA", "Câmera"
+        ATIVIDADE = "ATIVIDADE", "Atividade"
+        PERFIL = "PERFIL", "Perfil"
+        SISTEMA = "SISTEMA", "Sistema"
+
+    class Origem(models.TextChoices):
+        WEB = "WEB", "Web"
+        ADMIN = "ADMIN", "Admin"
+        COMANDO = "COMANDO", "Comando"
+        SISTEMA = "SISTEMA", "Sistema"
+
+    categoria = models.CharField(max_length=20, choices=Categoria.choices, db_index=True)
+    codigo = models.CharField(max_length=100, db_index=True)
+    resumo = models.CharField(max_length=255)
+    camera = models.ForeignKey(Camera, on_delete=models.PROTECT, null=True, blank=True, related_name="eventos_auditoria")
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="eventos_auditoria")
+    usuario_username = models.CharField(max_length=150, blank=True, default="")
+    usuario_nome = models.CharField(max_length=200, blank=True, default="")
+    usuario_email = models.EmailField(blank=True, default="")
+    entidade_tipo = models.CharField(max_length=100, blank=True, default="")
+    entidade_id = models.CharField(max_length=100, blank=True, default="")
+    entidade_descricao = models.CharField(max_length=255, blank=True, default="")
+    alteracoes = models.JSONField(default=dict, blank=True)
+    metadados = models.JSONField(default=dict, blank=True)
+    origem = models.CharField(max_length=20, choices=Origem.choices, default=Origem.WEB, db_index=True)
+    ip_origem = models.GenericIPAddressField(null=True, blank=True)
+    ocorrido_em = models.DateTimeField(default=timezone.now, db_index=True)
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    objects = EventoAuditoriaQuerySet.as_manager()
+
+    class Meta:
+        ordering = ["-ocorrido_em", "-pk"]
+        verbose_name = "Evento de auditoria"
+        verbose_name_plural = "Eventos de auditoria"
+        permissions = (("consultar_eventos", "Pode consultar eventos de auditoria"),)
+        indexes = [
+            models.Index(fields=["categoria", "ocorrido_em"]),
+            models.Index(fields=["camera", "ocorrido_em"]),
+            models.Index(fields=["usuario", "ocorrido_em"]),
+            models.Index(fields=["origem", "ocorrido_em"]),
+        ]
+
+    def __str__(self):
+        return f"{self.codigo} — {self.resumo}"
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            raise ValidationError("Eventos de auditoria são imutáveis.")
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("Eventos de auditoria não podem ser excluídos.")

@@ -7,7 +7,7 @@ from cameras.models import AtividadeCamera, Camera
 def inicio(request):
     pode_inventario = request.user.has_perm("cameras.view_camera")
     nome = request.user.get_full_name() or request.user.get_username()
-    return render(request, "core/inicio.html", {"nome_exibicao": nome, "quantidade_modulos": 2 if pode_inventario else 0, "pode_inventario": pode_inventario})
+    return render(request, "core/inicio.html", {"nome_exibicao": nome, "quantidade_modulos": 2 if pode_inventario else 0, "pode_inventario": pode_inventario, "pode_eventos": request.user.has_perm("cameras.consultar_eventos")})
 
 
 @permission_required("cameras.view_camera", raise_exception=True)

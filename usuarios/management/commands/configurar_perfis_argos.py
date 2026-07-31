@@ -9,9 +9,9 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         camera_perms = Permission.objects.filter(content_type__app_label="cameras")
-        monitoramento = camera_perms.filter(codename__in=("view_camera", "view_atividadecamera"))
-        operador = camera_perms.filter(codename__in=("view_camera", "add_camera", "change_camera", "view_atividadecamera", "add_atividadecamera", "change_atividadecamera"))
-        administrador = camera_perms.exclude(codename__startswith="delete_") | Permission.objects.filter(content_type__app_label="auth", codename__in=("view_user", "add_user", "change_user", "view_group", "add_group", "change_group", "view_permission")) | Permission.objects.filter(content_type__app_label="usuarios", codename__in=("view_perfilusuario", "change_perfilusuario"))
+        monitoramento = camera_perms.filter(codename__in=("view_camera", "view_atividadecamera", "view_eventoauditoria", "consultar_eventos"))
+        operador = camera_perms.filter(codename__in=("view_camera", "add_camera", "change_camera", "view_atividadecamera", "add_atividadecamera", "change_atividadecamera", "view_eventoauditoria", "consultar_eventos"))
+        administrador = camera_perms.exclude(codename__startswith="delete_").exclude(codename__in=("add_eventoauditoria", "change_eventoauditoria")) | Permission.objects.filter(content_type__app_label="auth", codename__in=("view_user", "add_user", "change_user", "view_group", "add_group", "change_group", "view_permission")) | Permission.objects.filter(content_type__app_label="usuarios", codename__in=("view_perfilusuario", "change_perfilusuario"))
         for nome, permissoes in (("Monitoramento ARGOS", monitoramento), ("Operador ARGOS", operador), ("Administrador ARGOS", administrador)):
             grupo, _ = Group.objects.get_or_create(name=nome)
             grupo.permissions.set(permissoes)

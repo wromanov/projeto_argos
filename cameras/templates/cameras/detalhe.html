@@ -99,5 +99,10 @@
             <div class="inventory-panel__header"><div><span class="inventory-eyebrow">07</span><h2>Histórico de atividades</h2></div><div class="activity-card__actions"><a class="button button--secondary" href="{% url 'cameras:lista_atividades' camera.pk %}">Ver histórico completo</a><a class="button button--primary" href="{% url 'cameras:criar_atividade' camera.pk %}">Registrar atividade</a></div></div>
             <div class="activity-list">{% for atividade in atividades %}<article class="activity-card"><div class="activity-card__header"><div>{% include "cameras/partials/_atividade_tipo_badge.html" %}<h3 class="activity-card__title">{{ atividade.titulo }}</h3></div><a class="button button--secondary" href="{% url 'cameras:editar_atividade' atividade.pk %}">Editar</a></div><p class="activity-card__description">{{ atividade.descricao|truncatechars:180 }}</p><p class="activity-card__meta">{{ atividade.ocorrida_em|date:"d/m/Y H:i" }} · Responsável: {{ atividade.responsavel|default:"—" }}</p></article>{% empty %}<div class="detail-empty-area"><p>Nenhuma atividade registrada para esta câmera.</p></div>{% endfor %}</div>
         </section>
-    </div>
+        {% if perms.cameras.consultar_eventos %}
+        <section class="inventory-panel detail-card detail-card--full activity-section">
+            <div class="inventory-panel__header"><div><span class="inventory-eyebrow">08</span><h2>Eventos de auditoria</h2></div><a class="button button--secondary" href="{% url 'cameras:eventos_camera' camera.pk %}">Ver todos os eventos</a></div>
+            <div class="activity-list">{% for evento in eventos_auditoria %}<article class="activity-card"><div class="activity-card__header"><div><span class="activity-badge activity-badge--info">{{ evento.get_categoria_display }}</span><h3 class="activity-card__title"><a href="{% url 'cameras:detalhe_evento' evento.pk %}">{{ evento.codigo }}</a></h3></div><span class="activity-card__meta">{{ evento.ocorrido_em|date:"d/m/Y H:i:s" }}</span></div><p class="activity-card__description">{{ evento.resumo }}</p><p class="activity-card__meta">{{ evento.usuario_username|default:"Sistema" }} · {{ evento.get_origem_display }}</p></article>{% empty %}<div class="detail-empty-area"><p>Nenhum evento registrado para esta câmera.</p></div>{% endfor %}</div>
+        </section>
+        {% endif %}    </div>
 {% endblock %}
