@@ -18,6 +18,14 @@
         <div class="detail-heading__actions">
             {% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}
             <a class="button button--secondary" href="{% url 'cameras:editar' camera.pk %}">Editar</a>
+            <form method="post" action="{% url 'cameras:alternar_atividade' camera.pk %}">
+                {% csrf_token %}
+                {% if camera.ativo %}
+                    <button class="button button--danger" type="submit">Inativar</button>
+                {% else %}
+                    <button class="button button--success" type="submit">Reativar</button>
+                {% endif %}
+            </form>
         </div>
     </section>
 
@@ -32,7 +40,7 @@
                 <dt>Serial</dt><dd>{{ camera.serial|default:"—" }}</dd>
                 <dt>MAC</dt><dd class="monospace">{{ camera.mac|default:"—" }}</dd>
                 <dt>Tipo</dt><dd>{{ camera.get_tipo_display|default:"—" }}</dd>
-                <dt>Ativo</dt><dd>{% if camera.ativo %}Sim{% else %}Não{% endif %}</dd>
+                <dt>Ativo</dt><dd>{% if camera.ativo %}<span class="state-badge state-badge--active">Ativa</span>{% else %}<span class="state-badge state-badge--inactive">Inativa</span>{% endif %}</dd>
             </dl>
         </section>
 

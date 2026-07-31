@@ -9,5 +9,6 @@ urlpatterns = [
     path("", views.lista_cameras, name="lista"),
     path("nova/", views.criar_camera, name="criar"),
     path("<int:pk>/editar/", views.editar_camera, name="editar"),
+    path("<int:pk>/alternar-atividade/", views.alternar_atividade_camera, name="alternar_atividade"),
     path("<int:pk>/", views.detalhe_camera, name="detalhe"),
 ]

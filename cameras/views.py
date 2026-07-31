@@ -1,5 +1,6 @@
-﻿from django.contrib import messages
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 
 from .forms import CameraForm
 from .models import Camera
@@ -60,6 +61,25 @@ def editar_camera(request, pk):
 
     return render(request, "cameras/formulario.html", contexto)
 
+
+@require_POST
+def alternar_atividade_camera(request, pk):
+    camera = get_object_or_404(Camera, pk=pk)
+    camera.ativo = not camera.ativo
+
+    campos_atualizados = ["ativo", "atualizado_em"]
+    if request.user.is_authenticated:
+        camera.atualizado_por = request.user
+        campos_atualizados.append("atualizado_por")
+
+    camera.save(update_fields=campos_atualizados)
+
+    if camera.ativo:
+        messages.success(request, "Câmera reativada com sucesso.")
+    else:
+        messages.success(request, "Câmera inativada com sucesso.")
+
+    return redirect("cameras:detalhe", pk=camera.pk)
 
 def detalhe_camera(request, pk):
     camera = get_object_or_404(Camera, pk=pk)
