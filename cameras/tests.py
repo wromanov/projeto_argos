@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from .models import Camera
@@ -5,6 +6,8 @@ from .models import Camera
 
 class ListaCamerasTests(TestCase):
     def setUp(self):
+        self.user = get_user_model().objects.create_superuser(username="teste-lista", password="senha", email="")
+        self.client.force_login(self.user)
         self.online = self.criar_camera(
             1,
             nome="CAM-ALFA",

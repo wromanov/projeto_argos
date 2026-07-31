@@ -14,7 +14,8 @@ class AtividadesCameraTests(TestCase):
     def setUp(self):
         self.camera = self.criar_camera()
         self.outra_camera = self.criar_camera("B")
-        self.user = get_user_model().objects.create_user(username="operador", password="senha")
+        self.user = get_user_model().objects.create_superuser(username="operador", password="senha", email="")
+        self.client.force_login(self.user)
 
     def criar_camera(self, sufixo="A"):
         return Camera.objects.create(nome=f"Camera {sufixo}", fabricante="Axis", modelo="M1", ip=f"10.0.0.{1 if sufixo == 'A' else 2}", mascara_subrede="255.255.255.0", vlan=100, patrimonio=f"PAT-{sufixo}")

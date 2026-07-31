@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
@@ -21,6 +22,7 @@ ORDENACOES_PERMITIDAS = {
 }
 
 
+@permission_required("cameras.view_camera", raise_exception=True)
 def lista_cameras(request):
     queryset = Camera.objects.all()
 
@@ -118,6 +120,7 @@ def lista_cameras(request):
     return render(request, "cameras/lista.html", contexto)
 
 
+@permission_required("cameras.add_camera", raise_exception=True)
 def criar_camera(request):
     if request.method == "POST":
         form = CameraForm(request.POST)
@@ -136,6 +139,7 @@ def criar_camera(request):
     return render(request, "cameras/formulario.html", contexto)
 
 
+@permission_required("cameras.change_camera", raise_exception=True)
 def editar_camera(request, pk):
     camera = get_object_or_404(Camera, pk=pk)
 
@@ -156,6 +160,7 @@ def editar_camera(request, pk):
 
 
 @require_POST
+@permission_required("cameras.change_camera", raise_exception=True)
 def alternar_atividade_camera(request, pk):
     camera = get_object_or_404(Camera, pk=pk)
     camera.ativo = not camera.ativo
@@ -175,12 +180,14 @@ def alternar_atividade_camera(request, pk):
     return redirect("cameras:detalhe", pk=camera.pk)
 
 
+@permission_required("cameras.view_camera", raise_exception=True)
 def detalhe_camera(request, pk):
     camera = get_object_or_404(Camera, pk=pk)
     atividades = camera.atividades.select_related("criado_por", "atualizado_por")[:10]
     return render(request, "cameras/detalhe.html", {"camera": camera, "atividades": atividades})
 
 
+@permission_required("cameras.view_atividadecamera", raise_exception=True)
 def lista_atividades_camera(request, camera_pk):
     camera = get_object_or_404(Camera, pk=camera_pk)
     queryset = camera.atividades.select_related("criado_por", "atualizado_por").all()
@@ -189,6 +196,7 @@ def lista_atividades_camera(request, camera_pk):
     return render(request, "cameras/atividades/lista.html", {"camera": camera, "atividades": page_obj, "page_obj": page_obj, "total_atividades": paginator.count})
 
 
+@permission_required("cameras.add_atividadecamera", raise_exception=True)
 def criar_atividade_camera(request, camera_pk):
     camera = get_object_or_404(Camera, pk=camera_pk)
     if request.method == "POST":
@@ -208,6 +216,7 @@ def criar_atividade_camera(request, camera_pk):
     return render(request, "cameras/atividades/formulario.html", {"form": form, "camera": camera, "titulo_pagina": "Registrar atividade", "modo_edicao": False})
 
 
+@permission_required("cameras.change_atividadecamera", raise_exception=True)
 def editar_atividade_camera(request, pk):
     atividade = get_object_or_404(AtividadeCamera.objects.select_related("camera"), pk=pk)
     camera_original_id = atividade.camera_id
