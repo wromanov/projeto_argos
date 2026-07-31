@@ -1,4 +1,5 @@
-﻿from django.conf import settings
+from django.conf import settings
+from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 
@@ -154,3 +155,14 @@ class Camera(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+class AtividadeCamera(models.Model):
+    class TipoAtividade(models.TextChoices):
+        AVARIA="AVARIA","Avaria identificada"; RETIRADA="RETIRADA","Retirada do local"; ENVIO_CONSERTO="ENVIO_CONSERTO","Enviada para conserto"; RETORNO_CONSERTO="RETORNO_CONSERTO","Retorno do conserto"; REINSTALACAO="REINSTALACAO","Reinstalação"; MANUTENCAO="MANUTENCAO","Manutenção"; LIMPEZA="LIMPEZA","Limpeza"; REPOSICIONAMENTO="REPOSICIONAMENTO","Reposicionamento"; SUBSTITUICAO="SUBSTITUICAO","Substituição"; INSPECAO="INSPECAO","Inspeção"; OUTRO="OUTRO","Outro"
+    camera=models.ForeignKey(Camera,on_delete=models.PROTECT,related_name="atividades",verbose_name="Câmera")
+    tipo=models.CharField(max_length=30,choices=TipoAtividade.choices,default=TipoAtividade.OUTRO,verbose_name="Tipo de atividade")
+    titulo=models.CharField(max_length=150,verbose_name="Título"); descricao=models.TextField(verbose_name="Descrição"); ocorrida_em=models.DateTimeField(default=timezone.now,verbose_name="Data e hora da atividade"); responsavel=models.CharField(max_length=150,blank=True,default="",verbose_name="Responsável")
+    criado_por=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,blank=True,editable=False,related_name="atividades_camera_criadas",verbose_name="Criado por"); criado_em=models.DateTimeField(auto_now_add=True,verbose_name="Criado em"); atualizado_por=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,blank=True,editable=False,related_name="atividades_camera_atualizadas",verbose_name="Atualizado por"); atualizado_em=models.DateTimeField(auto_now=True,verbose_name="Atualizado em")
+    class Meta: ordering=["-ocorrida_em","-pk"]; verbose_name="Atividade da câmera"; verbose_name_plural="Atividades das câmeras"
+    def __str__(self): return f"{self.camera.nome} — {self.get_tipo_display()}"
