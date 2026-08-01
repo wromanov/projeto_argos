@@ -1,8 +1,11 @@
 /* Tokens */
+/* Tokens oficiais globais. Aliases históricos permanecem em CSS de contexto. */
 :root {
+    --color-primary-950: #10243e; --color-primary-900: #173251; --color-primary-700: #255d8f;
+    --color-accent-600: #2563eb; --color-accent-100: #dbeafe;
     --color-brand: #1d5e89; --color-brand-dark: #123b59; --color-brand-light: #ddecf7;
-    --color-background: #f5f7fa; --color-surface: #ffffff; --color-surface-secondary: #eef3f7;
-    --color-text: #17212b; --color-text-secondary: #465563; --color-text-muted: #667785; --color-border: #c9d4de;
+    --color-background: #f4f7fb; --color-surface: #ffffff; --color-surface-secondary: #eef3f7; --color-table-header: #f8fafc;
+    --color-text: #1d2939; --color-text-secondary: #667085; --color-text-muted: #667785; --color-text-light: #ffffff; --color-border: #dce4ec;
     --color-focus: #146ebe;
     --color-success: #13735b; --color-success-surface: #e8f6f0; --color-success-border: #9bd5c2;
     --color-info: #1b6394; --color-info-surface: #e8f3fa; --color-info-border: #a8cde4;
@@ -14,9 +17,11 @@
     --font-size-xs: .75rem; --font-size-sm: .875rem; --font-size-base: 1rem; --font-size-lg: 1.125rem; --font-size-xl: 1.5rem; --font-size-2xl: 2rem;
     --line-height-tight: 1.2; --line-height-base: 1.5; --line-height-relaxed: 1.7;
     --border-width: 1px; --radius-sm: .375rem; --radius-md: .625rem; --radius-lg: .875rem;
-    --shadow-sm: 0 1px 2px rgb(23 33 43 / 8%); --shadow-md: 0 8px 24px rgb(23 33 43 / 10%); --shadow-menu: 0 12px 32px rgb(23 33 43 / 16%);
+    --shadow-sm: 0 1px 2px rgba(16, 24, 40, .04); --shadow-md: 0 8px 24px rgba(16, 24, 40, .07); --shadow-menu: 0 12px 32px rgb(23 33 43 / 16%);
     --content-max-width: 90rem; --reading-max-width: 48rem; --control-min-height: 2.75rem; --header-height: 4.625rem; --z-header: 100; --z-menu: 200;
 }
+
+/* Breakpoints oficiais do ARGOS: compacto até 30rem, móvel até 44rem, tablet até 56rem e contexto amplo até 900px. */
 
 /* Normalização, tipografia e acessibilidade */
 *, *::before, *::after { box-sizing: border-box; }
