@@ -3,6 +3,7 @@
   <summary aria-label="Abrir menu de {{ request.user|nome_exibicao_usuario }}">
     <span class="portal-avatar" aria-hidden="true">{{ request.user|iniciais_usuario }}</span>
     <span class="portal-user__name">{{ request.user|nome_exibicao_usuario }}</span>
+    <span class="user-menu__indicator" aria-hidden="true"></span>
   </summary>
   <div class="user-menu__panel">
     <a href="{% url 'usuarios:perfil' %}"{% if current_namespace == 'usuarios' and current_url_name == 'perfil' %} aria-current="page"{% endif %}>Meu perfil</a>

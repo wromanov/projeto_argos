@@ -1,4 +1,4 @@
-/* Estrutura global histórica; tokens e componentes pertencem ao design system. */
+/* Shell global; tokens e componentes compartilhados pertencem ao design system. */
 html {
     min-height: 100%;
     background-color: var(--color-background);
@@ -11,15 +11,7 @@ body {
     display: flex;
     flex-direction: column;
 
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
-        sans-serif;
+    font-family: var(--font-family-base);
 
     background-color: var(--color-background);
     color: var(--color-text);
@@ -36,99 +28,208 @@ a {
 .app-header {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: var(--argos-z-header);
 
-    background-color: var(--color-primary-950);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: var(--argos-header-surface);
+    border-bottom: 1px solid var(--argos-header-border);
+    box-shadow: 0 1px 0 rgb(0 0 0 / 12%);
 }
 
 .app-header__content {
-    width: min(100% - 40px, 1440px);
-    min-height: 74px;
-    margin: 0 auto;
+    width: min(calc(100% - (2 * var(--argos-shell-gutter))), var(--argos-shell-max-width));
+    min-height: var(--argos-header-height);
+    margin-inline: auto;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 32px;
+    gap: clamp(var(--space-4), 2vw, var(--space-8));
 }
 
 .brand {
+    flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-3);
 
-    color: var(--color-text-light);
+    color: var(--argos-header-text);
 }
 
 .brand__symbol {
-    width: 42px;
-    height: 42px;
+    width: 2.25rem;
+    height: 2.25rem;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 10px;
+    border: 1px solid rgb(255 255 255 / 24%);
+    border-radius: var(--radius-sm);
     background-color: var(--color-accent-600);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 18%);
 
-    font-size: 21px;
+    font-size: var(--font-size-lg);
     font-weight: 800;
+    letter-spacing: -.03em;
 }
 
 .brand__text {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
 }
 
 .brand__text strong {
-    font-size: 17px;
-    line-height: 1.2;
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-tight);
+    letter-spacing: .08em;
 }
 
 .brand__text small {
-    color: rgba(255, 255, 255, 0.68);
-    font-size: 12px;
+    color: var(--argos-header-text-muted);
+    font-size: var(--font-size-xs);
+    white-space: nowrap;
 }
 
 .main-navigation {
+    min-width: 0;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-1);
 }
 
 .main-navigation__link {
-    padding: 10px 14px;
+    position: relative;
+    min-height: var(--argos-nav-min-height);
+    padding: var(--space-2) var(--space-3);
 
+    display: inline-flex;
+    align-items: center;
+
+    border: 1px solid transparent;
     border-radius: var(--radius-sm);
 
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 14px;
-    font-weight: 600;
+    color: var(--argos-header-text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: 650;
+    white-space: nowrap;
 
-    transition:
-        background-color 160ms ease,
-        color 160ms ease;
+    transition: background-color var(--argos-transition), border-color var(--argos-transition), color var(--argos-transition);
 }
 
-.main-navigation__link:hover,
-.main-navigation__link--active {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--color-text-light);
+.main-navigation__link:hover {
+    color: var(--argos-header-text);
+    background-color: var(--argos-nav-hover);
 }
 
+.main-navigation__link[aria-current="page"] {
+    color: var(--argos-header-text);
+    background-color: var(--argos-nav-active);
+    border-color: rgb(255 255 255 / 12%);
+    box-shadow: inset 0 -2px 0 var(--argos-nav-active-border);
+}
+
+.user-menu {
+    position: relative;
+    flex: 0 0 auto;
+    margin-left: auto;
+}
+
+.user-menu summary {
+    min-height: var(--argos-nav-min-height);
+    padding: var(--space-1) var(--space-2);
+
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    color: var(--argos-header-text);
+    cursor: pointer;
+    list-style: none;
+
+    transition: background-color var(--argos-transition), border-color var(--argos-transition);
+}
+
+.user-menu summary::-webkit-details-marker { display: none; }
+.user-menu summary:hover,
+.user-menu[open] summary { background-color: var(--argos-nav-hover); border-color: var(--argos-header-border); }
+
+.portal-avatar {
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / 18%);
+    border-radius: 50%;
+    color: var(--argos-header-text);
+    background-color: rgb(255 255 255 / 11%);
+    font-size: var(--font-size-xs);
+    font-weight: 800;
+}
+
+.portal-user__name {
+    max-width: 11rem;
+    overflow: hidden;
+    font-size: var(--font-size-sm);
+    font-weight: 650;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-menu__indicator {
+    width: .45rem;
+    height: .45rem;
+    border-right: 2px solid var(--argos-header-text-muted);
+    border-bottom: 2px solid var(--argos-header-text-muted);
+    transform: rotate(45deg) translateY(-2px);
+    transition: transform var(--argos-transition);
+}
+
+.user-menu[open] .user-menu__indicator { transform: rotate(225deg) translate(-1px, -1px); }
+
+.user-menu__panel {
+    position: absolute;
+    top: calc(100% + var(--space-2));
+    right: 0;
+    z-index: var(--argos-z-menu);
+
+    display: grid;
+    width: min(18rem, calc(100vw - (2 * var(--argos-shell-gutter))));
+    padding: var(--space-2);
+
+    background: var(--argos-elevated-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--argos-shadow-menu);
+}
+
+.user-menu__panel a,
+.user-menu__panel button {
+    width: 100%;
+    min-height: 2.5rem;
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-text);
+    text-align: left;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+}
+
+.user-menu__panel a:hover,
+.user-menu__panel button:hover { background: var(--color-surface-secondary); }
+.user-menu__panel a[aria-current="page"] { color: var(--color-brand-dark); background: var(--color-brand-light); font-weight: 700; }
+.user-menu__panel form { margin: var(--space-1) 0 0; padding-top: var(--space-1); border-top: 1px solid var(--color-border); }
+.user-menu__panel .button { justify-content: flex-start; font-weight: 600; }
 
 /* Conteúdo principal */
 
-.page-container {
-    width: min(100% - 40px, 1440px);
-    margin: 0 auto;
-    padding: 40px 0 56px;
+.page-container.app-shell__main {
+    width: min(calc(100% - (2 * var(--argos-shell-gutter))), var(--argos-shell-max-width));
+    margin-inline: auto;
+    padding-block: var(--argos-shell-space-block) var(--space-12);
 
     flex: 1;
 }
-
 .page-heading {
     margin-bottom: 28px;
 
@@ -447,30 +548,42 @@ a {
 /* Rodapé */
 
 .app-footer {
-    padding: 22px 20px;
-
     border-top: 1px solid var(--color-border);
-
     color: var(--color-text-secondary);
-    font-size: 12px;
-    text-align: center;
+    background-color: var(--color-surface);
+    font-size: var(--font-size-xs);
 }
 
-.app-footer p {
-    margin: 0;
+.app-footer__content {
+    width: min(calc(100% - (2 * var(--argos-shell-gutter))), var(--argos-shell-max-width));
+    margin-inline: auto;
+    padding-block: var(--space-4);
 }
 
+.app-footer p { margin: 0; }
 
-/* Responsividade */
 
-@media (max-width: 700px) {
-    .app-header__content { width: min(100% - 28px, 1440px); min-height: 66px; flex-wrap: wrap; padding-block: 10px; }
+/* Responsividade global */
+
+@media (max-width: 56rem) {
+    .app-header__content { flex-wrap: wrap; padding-block: var(--space-2); }
+    .brand { min-height: var(--argos-nav-min-height); }
+    .main-navigation { order: 3; width: 100%; padding-top: var(--space-2); border-top: 1px solid var(--argos-header-border); }
+}
+
+@media (max-width: 44rem) {
+    .app-header__content { width: min(calc(100% - (2 * var(--argos-shell-gutter))), var(--argos-shell-max-width)); gap: var(--space-3); }
     .brand__text small { display: none; }
-    .main-navigation { order: 3; width: 100%; justify-content: flex-start; overflow-x: auto; }
-    .main-navigation__link { min-height: 42px; white-space: nowrap; }
-    .page-container { width: min(100% - 28px, 1440px); padding-top: 28px; }
+    .main-navigation { overflow-x: auto; overscroll-behavior-inline: contain; scrollbar-width: thin; }
+    .main-navigation__link { flex: 0 0 auto; }
     .page-heading { align-items: flex-start; flex-direction: column; }
     .record-counter { justify-content: flex-start; }
-    .content-panel__header { padding: 18px; }
-    .camera-table th, .camera-table td { padding: 14px 16px; }
+    .content-panel__header { padding: var(--space-4); }
+    .camera-table th, .camera-table td { padding: var(--space-3) var(--space-4); }
+}
+
+@media (max-width: 30rem) {
+    .portal-user__name { display: none; }
+    .user-menu__panel { right: 0; }
+    .app-shell__main { padding-bottom: var(--space-8); }
 }

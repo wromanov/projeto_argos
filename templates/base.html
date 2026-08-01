@@ -10,16 +10,16 @@
   <link rel="stylesheet" href="{% static 'css/portal.css' %}">
   {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="app-shell">
   <a class="skip-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
   {% with current_namespace=request.resolver_match.namespace current_url_name=request.resolver_match.url_name %}
   {% include "components/cabecalho.html" %}
   {% endwith %}
-  <main id="conteudo-principal" class="page-container" tabindex="-1">
+  <main id="conteudo-principal" class="page-container app-shell__main" tabindex="-1">
     {% include "components/mensagens.html" %}
     {% block conteudo %}{% endblock %}
   </main>
-  <footer class="app-footer"><p>Projeto ARGOS — Sistema de Inventário e Monitoramento de Câmeras</p></footer>
+  <footer class="app-footer"><div class="app-footer__content"><p>Projeto ARGOS — Sistema de Inventário e Monitoramento de Câmeras</p></div></footer>
   {% block extra_js %}{% endblock %}
 </body>
 </html>

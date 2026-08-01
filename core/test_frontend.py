@@ -81,6 +81,8 @@ class BaseAndPortalFrontendTests(TestCase):
         response = self.client.get(reverse("core:inicio"))
         self.assertContains(response, 'href="#conteudo-principal"')
         self.assertContains(response, 'id="conteudo-principal"')
+        self.assertContains(response, 'class="app-shell"')
+        self.assertContains(response, 'class="page-container app-shell__main"')
         self.assertContains(response, 'aria-live="polite"')
         self.assertContains(response, '<form method="post" action="/logout/"', html=False)
         self.assertContains(response, "csrfmiddlewaretoken")
@@ -95,8 +97,9 @@ class BaseAndPortalFrontendTests(TestCase):
         self.assertContains(dashboard, 'aria-label="Navegação principal"')
         css = open("static/css/argos.css", encoding="utf-8").read()
         self.assertNotRegex(css, r"\.main-navigation\s*\{\s*display:\s*none")
-        self.assertIn("@media (max-width: 700px)", css)
+        self.assertIn("@media (max-width: 44rem)", css)
         self.assertIn(".main-navigation", css)
+        self.assertIn("overflow-x: auto", css)
 
     def test_inicio_exibe_cartoes_permitidos_com_links_unicos_e_acessiveis(self):
         self.login_monitoramento()
