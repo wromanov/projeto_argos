@@ -1,0 +1,8 @@
+<nav class="main-navigation" aria-label="Navegação principal">
+  <a class="main-navigation__link" href="{% url 'core:inicio' %}"{% if current_namespace == 'core' and current_url_name == 'inicio' %} aria-current="page"{% endif %}>Início</a>
+  {% if perms.cameras.view_camera %}
+    <a class="main-navigation__link" href="{% url 'core:dashboard' %}"{% if current_namespace == 'core' and current_url_name == 'dashboard' %} aria-current="page"{% endif %}>Dashboard</a>
+    <a class="main-navigation__link" href="{% url 'cameras:lista' %}"{% if current_namespace == 'cameras' %} aria-current="page"{% endif %}>Inventário</a>
+  {% endif %}
+  {% if perms.cameras.consultar_eventos %}<a class="main-navigation__link" href="{% url 'eventos:lista' %}"{% if current_namespace == 'eventos' %} aria-current="page"{% endif %}>Eventos</a>{% endif %}
+</nav>

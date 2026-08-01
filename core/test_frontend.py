@@ -132,6 +132,19 @@ class BaseAndPortalFrontendTests(TestCase):
             self.assertContains(response, parametro)
         self.assertNotContains(response, 'href="/cameras/?ip_duplicado=')
 
+    def test_base_compoe_componentes_globais(self):
+        self.login_monitoramento()
+        response = self.client.get(reverse("core:inicio"))
+        for template_name in (
+            "components/cabecalho.html",
+            "components/navegacao_principal.html",
+            "components/menu_usuario.html",
+            "components/mensagens.html",
+        ):
+            self.assertTemplateUsed(response, template_name)
+        self.assertContains(response, 'class="main-navigation"')
+        self.assertContains(response, '<form method="post" action="/logout/"', html=False)
+
     def test_dashboard_diferencia_cards_clicaveis_e_informativos(self):
         self.login_monitoramento()
         response = self.client.get(reverse("core:dashboard"))
