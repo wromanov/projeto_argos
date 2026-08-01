@@ -59,6 +59,45 @@ class ListaCamerasFrontendTests(TestCase):
         self.assertContains(vazio, "Não há câmeras correspondentes aos filtros informados.")
         self.assertContains(vazio, "Limpar filtros")
 
+    def test_lista_agrupa_informacoes_sem_remover_dados(self):
+        response = self.client.get(reverse("cameras:lista"))
+
+        for cabecalho in ("Status", "Câmera", "Localização", "Rede", "Equipamento", "Ações"):
+            self.assertContains(response, f'<th scope="col">{cabecalho}</th>')
+        self.assertContains(response, '<th class="camera-table__heading--governance" scope="col">Governança</th>')
+        for valor in (
+            "CAM-FRONTEND",
+            "PAT-001",
+            "TPS1",
+            "Sala de monitoramento",
+            "10.10.0.1",
+            "VLAN:",
+            "100",
+            "Axis",
+            "Modelo de teste",
+            "Dome",
+            "Produção",
+            "Cadastro completo",
+        ):
+            self.assertContains(response, valor)
+
+    def test_resumo_aparece_somente_com_filtros_ativos(self):
+        sem_filtros = self.client.get(reverse("cameras:lista"), {"page": "1"})
+        self.assertNotContains(sem_filtros, 'aria-label="Resumo da consulta"')
+
+        filtrada = self.client.get(reverse("cameras:lista"), {"q": "CAM-FRONTEND"})
+        self.assertContains(filtrada, 'aria-label="Resumo da consulta"')
+        self.assertContains(filtrada, "Consulta filtrada no inventário.")
+        self.assertContains(filtrada, "1 resultado")
+
+    def test_estado_vazio_distingue_inventario_sem_cameras(self):
+        Camera.objects.all().delete()
+        response = self.client.get(reverse("cameras:lista"))
+
+        self.assertContains(response, "Nenhuma câmera cadastrada")
+        self.assertContains(response, "Cadastre o primeiro equipamento do inventário.")
+        self.assertNotContains(response, "Consulta filtrada no inventário.")
+
     def test_paginacao_camera_preserva_filtros(self):
         for indice in range(2, 22):
             self.criar_camera(indice, nome=f"CAM-PAG-{indice:03d}")

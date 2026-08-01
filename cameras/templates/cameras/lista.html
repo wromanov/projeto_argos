@@ -43,19 +43,41 @@
   </form>
 </section>
 
+{% if q or status_selecionado or situacao_selecionada or completude_selecionada or terminal_selecionado or tipo_selecionado or fabricante_selecionado or vlan_selecionada or farm_selecionada or ordenacao != "nome" %}
+<section class="inventory-query-summary" aria-label="Resumo da consulta">
+  <div><strong>{{ total_resultados }} resultado{{ total_resultados|pluralize:"s" }}</strong><span>Consulta filtrada no inventário.</span></div>
+  <a class="button button--secondary button--small" href="{{ lista_url }}">Limpar filtros</a>
+</section>
+{% endif %}
+
 {% if total_resultados %}
 <section class="card inventory-panel" aria-labelledby="tabela-cameras-heading">
-  <div class="inventory-panel__header"><div><span class="inventory-eyebrow">Resultados encontrados</span><h2 id="tabela-cameras-heading">Câmeras</h2></div><span class="inventory-panel__summary">{{ total_resultados }} no total</span></div>
+  <div class="inventory-panel__header"><div><span class="inventory-eyebrow">Resultados encontrados</span><h2 id="tabela-cameras-heading">Câmeras</h2></div></div>
   <div class="table-region" role="region" aria-label="Câmeras encontradas" tabindex="0">
     <table class="data-table camera-table">
       <caption>Relação de câmeras encontradas no inventário</caption>
-      <thead><tr><th scope="col">Câmera</th><th scope="col">Patrimônio</th><th scope="col">Localização</th><th scope="col">Situação operacional</th><th scope="col">Completude</th><th scope="col">Status técnico</th><th scope="col">Tipo</th><th scope="col">IP</th><th scope="col">VLAN</th><th scope="col">Fabricante</th><th scope="col">Modelo</th><th scope="col">Ações</th></tr></thead>
-      <tbody>{% for camera in cameras %}<tr class="camera-row--{{ camera.situacao_operacional|lower }}"><td><a class="camera-name-link" href="{% url 'cameras:detalhe' camera.pk %}">{{ camera.nome }}</a></td><td class="technical-value">{{ camera.patrimonio|default:"—" }}</td><td><span class="camera-location">{{ camera.terminal|default:"—" }}</span>{% if camera.ambiente %}<small>{{ camera.ambiente }}</small>{% endif %}</td><td><span class="badge badge--{{ camera.situacao_operacional|lower }}">{{ camera.get_situacao_operacional_display }}</span></td><td>{% if camera.cadastro_completo %}<span class="badge badge--completo">Cadastro completo</span>{% else %}<span class="badge badge--incompleto" title="{{ camera.rotulos_campos_incompletos|join:', ' }}">Cadastro incompleto</span>{% endif %}</td><td>{% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}</td><td>{{ camera.get_tipo_display|default:"—" }}</td><td class="technical-value">{{ camera.ip|default:"—" }}</td><td class="technical-value">{{ camera.vlan|default:"—" }}</td><td>{{ camera.fabricante|default:"—" }}</td><td>{{ camera.modelo|default:"—" }}</td><td><div class="table-actions"><a class="button button--secondary button--small" href="{% url 'cameras:detalhe' camera.pk %}">Ver detalhes<span class="visually-hidden"> da câmera {{ camera.nome }}</span></a></div></td></tr>{% endfor %}</tbody>
+      <colgroup>
+        <col class="camera-table__col--status"><col class="camera-table__col--camera"><col class="camera-table__col--location"><col class="camera-table__col--network"><col class="camera-table__col--equipment"><col class="camera-table__col--governance"><col class="camera-table__col--actions">
+      </colgroup>
+      <thead><tr><th scope="col">Status</th><th scope="col">Câmera</th><th scope="col">Localização</th><th scope="col">Rede</th><th scope="col">Equipamento</th><th class="camera-table__heading--governance" scope="col">Governança</th><th scope="col">Ações</th></tr></thead>
+      <tbody>
+        {% for camera in cameras %}
+        <tr class="camera-row--{{ camera.situacao_operacional|lower }}">
+          <td>{% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}</td>
+          <td><a class="camera-name-link" href="{% url 'cameras:detalhe' camera.pk %}">{{ camera.nome }}</a><small>Patrimônio: <span class="technical-value">{{ camera.patrimonio|default:"—" }}</span></small></td>
+          <td><span class="camera-location">{{ camera.terminal|default:"—" }}</span>{% if camera.ambiente %}<small>{{ camera.ambiente }}</small>{% endif %}</td>
+          <td><span class="technical-value inventory-cell__primary">{{ camera.ip|default:"—" }}</span><small>VLAN: <span class="technical-value">{{ camera.vlan|default:"—" }}</span></small></td>
+          <td><span class="inventory-cell__primary">{% if camera.fabricante %}{{ camera.fabricante }}{% endif %}{% if camera.fabricante and camera.modelo %}<span aria-hidden="true"> · </span>{% endif %}{% if camera.modelo %}{{ camera.modelo }}{% endif %}{% if not camera.fabricante and not camera.modelo %}—{% endif %}</span><small>Tipo: {{ camera.get_tipo_display|default:"—" }}</small></td>
+          <td class="camera-table__cell--governance"><div class="inventory-governance"><span class="badge badge--{{ camera.situacao_operacional|lower }}">{{ camera.get_situacao_operacional_display }}</span>{% if camera.cadastro_completo %}<span class="badge badge--completo">Cadastro completo</span>{% else %}<span class="badge badge--incompleto" title="{{ camera.rotulos_campos_incompletos|join:', ' }}">Cadastro incompleto</span>{% endif %}</div></td>
+          <td><div class="table-actions"><a class="button button--secondary button--small" href="{% url 'cameras:detalhe' camera.pk %}">Ver detalhes<span class="visually-hidden"> da câmera {{ camera.nome }}</span></a></div></td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
   </div>
 </section>
 {% include "components/paginacao.html" with page_obj=page_obj %}
 {% else %}
-  {% if possui_cameras_cadastradas %}{% include "components/estado_vazio.html" with empty_title="Nenhuma câmera encontrada" empty_text="Não há câmeras correspondentes aos filtros informados." empty_action_url=lista_url empty_action_label="Limpar filtros" %}{% elif perms.cameras.add_camera %}{% include "components/estado_vazio.html" with empty_title="Nenhuma câmera cadastrada" empty_text="Cadastre o primeiro equipamento do inventário." empty_action_url=criar_url empty_action_label="Cadastrar câmera" %}{% else %}{% include "components/estado_vazio.html" with empty_title="Nenhuma câmera cadastrada" empty_text="Não há câmeras disponíveis no inventário." %}{% endif %}
+  {% if q or status_selecionado or situacao_selecionada or completude_selecionada or terminal_selecionado or tipo_selecionado or fabricante_selecionado or vlan_selecionada or farm_selecionada or ordenacao != "nome" %}{% include "components/estado_vazio.html" with empty_title="Nenhuma câmera encontrada" empty_text="Não há câmeras correspondentes aos filtros informados." empty_action_url=lista_url empty_action_label="Limpar filtros" %}{% elif possui_cameras_cadastradas %}{% include "components/estado_vazio.html" with empty_title="Nenhuma câmera encontrada" empty_text="Não há câmeras disponíveis para esta consulta." empty_action_url=lista_url empty_action_label="Limpar filtros" %}{% elif perms.cameras.add_camera %}{% include "components/estado_vazio.html" with empty_title="Nenhuma câmera cadastrada" empty_text="Cadastre o primeiro equipamento do inventário." empty_action_url=criar_url empty_action_label="Cadastrar câmera" %}{% else %}{% include "components/estado_vazio.html" with empty_title="Nenhuma câmera cadastrada" empty_text="Não há câmeras disponíveis no inventário." %}{% endif %}
 {% endif %}
 {% endblock %}
