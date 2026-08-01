@@ -37,3 +37,13 @@ A ordem do base autenticado é `design-system.css`, `argos.css`, `portal.css` e 
 A navegação usa uma lista única e, em telas menores, quebra de linha com rolagem interna quando necessária; ela não pode ser ocultada. O menu do usuário mantém `<details>` e `<summary>`, preservando logout via formulário POST com CSRF.
 
 Mensagens usam `.messages`, `aria-live="polite"` e classes semânticas. O login independente carrega design system e CSS de autenticação, mantém autocomplete de usuário e senha e usa erro genérico. Cartões de módulos devem ser um único link `.module-card` com SVG decorativo.
+
+## Dashboard e inventário
+
+O dashboard é dividido nas seções Inventário, Monitoramento técnico, Qualidade cadastral e Atividade. Use `.metric-card--link` somente em links integrais com destino existente; cartões informativos usam `article.metric-card` sem `href`, cursor ou indicação de navegação.
+
+A lista de câmeras usa breadcrumb estrutural, `.form-container` com filtros GET, `.form-grid`, `.form-field`, `.form-label` e `.form-actions`. A tabela deve permanecer dentro de `.table-region` com `role="region"`, rótulo e foco; use `.data-table`, caption e `scope="col"`. Dados de IP, patrimônio, VLAN e valores equivalentes usam `.technical-value`.
+
+Badges preservam texto completo: `.badge--producao`, `.badge--estoque`, `.badge--desativada`, `.badge--online`, `.badge--offline`, `.badge--nao-verificada`, `.badge--completo` e `.badge--incompleto`. Não comunicar estados apenas pela cor.
+
+Use os partials compartilhados `components/paginacao.html` e `components/estado_vazio.html`. A paginação preserva todos os filtros GET por meio da template tag `querystring`; não duplicar sua implementação em telas individuais.

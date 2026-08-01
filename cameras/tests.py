@@ -141,7 +141,7 @@ class ListaCamerasTests(TestCase):
         pagina_com_filtros = self.buscar(q="CAM", terminal="TPS1", ordenacao="-nome")
         self.assertContains(
             pagina_com_filtros,
-            "?page=2&q=CAM&amp;terminal=TPS1&amp;ordenacao=-nome",
+            "?q=CAM&amp;terminal=TPS1&amp;ordenacao=-nome&amp;page=2",
         )
 
     def test_pagina_invalida_nao_gera_erro(self):

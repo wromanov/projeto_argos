@@ -108,3 +108,35 @@ class BaseAndPortalFrontendTests(TestCase):
         self.assertContains(response, 'aria-hidden="true"')
         self.assertNotContains(response, "Credenciais")
         self.assertNotContains(response, "RTSP")
+
+    def test_dashboard_separa_inventario_monitoramento_e_qualidade(self):
+        self.login_monitoramento()
+        response = self.client.get(reverse("core:dashboard"))
+        self.assertContains(response, 'id="inventario-heading"')
+        self.assertContains(response, "Monitoramento técnico")
+        self.assertContains(response, "Qualidade cadastral")
+        self.assertContains(response, "Produção")
+        self.assertContains(response, "Online")
+        self.assertContains(response, "Cadastro completo")
+
+    def test_cards_dashboard_usam_filtros_existentes(self):
+        self.login_monitoramento()
+        response = self.client.get(reverse("core:dashboard"))
+        for parametro in (
+            "situacao_operacional=PRODUCAO",
+            "situacao_operacional=ESTOQUE",
+            "situacao_operacional=DESATIVADA",
+            "completude=COMPLETO",
+            "completude=INCOMPLETO",
+        ):
+            self.assertContains(response, parametro)
+        self.assertNotContains(response, 'href="/cameras/?ip_duplicado=')
+
+    def test_dashboard_diferencia_cards_clicaveis_e_informativos(self):
+        self.login_monitoramento()
+        response = self.client.get(reverse("core:dashboard"))
+        html = response.content.decode()
+        self.assertIn('class="metric-card metric-card--link dashboard-metric"', html)
+        self.assertIn('<article class="metric-card dashboard-metric"><span>Total de câmeras</span>', html)
+        self.assertIn('<article class="metric-card dashboard-metric"><span>Câmeras com IP duplicado</span>', html)
+        self.assertNotIn('<a class="metric-card metric-card--link dashboard-metric"><a ', html)

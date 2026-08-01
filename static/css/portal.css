@@ -33,3 +33,23 @@
 .forbidden-page > span { color: var(--color-info); font-size: 3.5rem; font-weight: 800; }
 @media (max-width: 56rem) { .module-grid, .dashboard-grid { grid-template-columns: 1fr; } .portal-user__name { max-width: 10rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .dashboard-heading { align-items: flex-start; flex-direction: column; } }
 @media (max-width: 32.5rem) { .user-menu { margin-left: 0; } .user-menu__panel { right: 0; } .portal-user__name { display: none; } .module-card { padding: var(--space-5); } .dashboard-actions { width: 100%; flex-direction: column; } .dashboard-actions .button { width: 100%; } }
+
+/* Sprint 4C.1-C — dashboard */
+.dashboard-section { margin-top: var(--space-10); }
+.dashboard-section__heading { display: flex; align-items: end; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-4); }
+.dashboard-section__heading h2 { margin: var(--space-1) 0 0; font-size: var(--font-size-xl); }
+.dashboard-section__heading .portal-eyebrow { display: block; }
+.dashboard-metric { display: grid; min-height: 8.5rem; padding: var(--space-5); color: var(--color-text); text-decoration: none; }
+.dashboard-metric > span { color: var(--color-text-secondary); font-size: var(--font-size-sm); }
+.dashboard-metric > strong { align-self: center; font-size: clamp(var(--font-size-xl), 4vw, var(--font-size-2xl)); line-height: var(--line-height-tight); }
+.dashboard-metric > small { color: var(--color-text-muted); font-size: var(--font-size-xs); }
+.metric-card--link { border-color: var(--color-info-border); }
+.metric-card--link:hover { color: var(--color-text); border-color: var(--color-brand); box-shadow: var(--shadow-md); }
+.metric-card--link small::after { margin-left: var(--space-2); content: "→"; }
+.dashboard-metric--compact { min-height: auto; min-width: 12rem; }
+.portal-panel h3 { margin-top: 0; font-size: var(--font-size-lg); }
+
+@media (max-width: 44rem) {
+  .dashboard-section__heading { align-items: flex-start; flex-direction: column; }
+  .dashboard-metric--compact { width: 100%; }
+}

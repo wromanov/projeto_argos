@@ -45,3 +45,15 @@ O defeito móvel foi confirmado em `static/css/argos.css`: a regra de `@media (m
 Foram adicionados skip link, destino do conteúdo principal, identificação de página atual, região acessível de mensagens, menu de usuário responsivo e logout POST preservado. Login e portal receberam estrutura visual e semântica atualizada. A validação visual foi estrutural, por test client e CSS; não houve inspeção humana em navegador nesta sessão.
 
 Pendências para 4C.1-C: dashboard e telas do inventário.
+
+## Etapa 4C.1-C — Dashboard e listagem de câmeras
+
+Arquivos revisados: `core/templates/core/dashboard.html`, `cameras/templates/cameras/lista.html`, `cameras/templates/cameras/partials/_status_badge.html`, `static/css/portal.css`, `static/css/inventario.css`, `core/test_frontend.py` e `cameras/test_frontend.py`.
+
+O dashboard anterior agrupava indicadores de inventário, monitoramento e completude em uma única grade. A nova estrutura separa Inventário, Monitoramento técnico, Qualidade cadastral e Atividade. Os cartões de Produção, Estoque, Desativadas, cadastros completos e incompletos são links integrais para filtros já existentes (`situacao_operacional` e `completude`). IP duplicado, substituições e monitoramento permanecem informativos porque não possuem filtro compatível.
+
+A listagem recebeu breadcrumb, cabeçalho com total, painel de filtros GET com `role="search"`, labels associados e ação segura para limpar filtros. A tabela passou a usar região focalizável, caption, cabeçalhos com `scope`, valores técnicos monoespaçados, badges textuais e ação explícita. A paginação local foi substituída por `components/paginacao.html`, preservando a query string; o vazio usa `components/estado_vazio.html` com ações condicionadas à permissão.
+
+A responsividade reorganiza cartões e filtros, mantendo todas as colunas na tabela com rolagem exclusiva da região. A validação visual humana em navegador permaneceu indisponível nesta sessão; foram executados testes de renderização e validações estruturais de CSS.
+
+Pendências para 4C.1-D: formulários, detalhe de câmera, atividades, eventos e governança permanecem fora desta revisão.

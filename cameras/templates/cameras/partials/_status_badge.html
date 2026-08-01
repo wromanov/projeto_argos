@@ -1,1 +1,7 @@
-﻿{% if status == "ONLINE" %}<span class="status-badge status-badge--online"><span class="status-dot" aria-hidden="true"></span>{{ status_label|default:"Online" }}</span>{% elif status == "OFFLINE" %}<span class="status-badge status-badge--offline"><span class="status-dot" aria-hidden="true"></span>{{ status_label|default:"Offline" }}</span>{% else %}<span class="status-badge status-badge--unknown"><span class="status-dot" aria-hidden="true"></span>Não verificado</span>{% endif %}
+{% if status == "ONLINE" %}
+  <span class="badge badge--online">{{ status_label|default:"Online" }}</span>
+{% elif status == "OFFLINE" %}
+  <span class="badge badge--offline">{{ status_label|default:"Offline" }}</span>
+{% else %}
+  <span class="badge badge--nao-verificada">Não verificado</span>
+{% endif %}
