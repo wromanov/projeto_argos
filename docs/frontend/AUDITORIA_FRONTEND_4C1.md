@@ -35,3 +35,13 @@ As etapas B a F tratarão base/navegação, portal e dashboard, inventário/form
 - testes de renderização e documentação inicial.
 
 A validação visual manual fica para quando os componentes forem aplicados às telas.
+
+## Etapa 4C.1-B — Base, autenticação e portal
+
+Arquivos revisados: `templates/base.html`, `core/templates/core/inicio.html`, `usuarios/templates/usuarios/login.html`, `static/css/argos.css`, `static/css/portal.css` e `static/css/autenticacao.css`.
+
+O defeito móvel foi confirmado em `static/css/argos.css`: a regra de `@media (max-width: 700px)` aplicava `display: none` a `.main-navigation`. Ela foi substituída por quebra de linha e rolagem interna da própria navegação, mantendo uma única lista de links disponível.
+
+Foram adicionados skip link, destino do conteúdo principal, identificação de página atual, região acessível de mensagens, menu de usuário responsivo e logout POST preservado. Login e portal receberam estrutura visual e semântica atualizada. A validação visual foi estrutural, por test client e CSS; não houve inspeção humana em navegador nesta sessão.
+
+Pendências para 4C.1-C: dashboard e telas do inventário.

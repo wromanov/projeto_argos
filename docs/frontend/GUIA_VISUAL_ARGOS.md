@@ -29,3 +29,11 @@ O foco visível é global por `:focus-visible`; `.skip-link` e `.visually-hidden
 Não usar CSS inline, CDN, fontes externas, `@import` ou dependência externa sem aprovação. Aplicar classes explicitamente; não transformar links globais em botões. Manter valores de IP, MAC, VLAN e dados similares em `.technical-value`.
 
 As folhas existentes permanecem responsáveis pelas telas atuais; a adoção gradual do design system ocorrerá nas próximas etapas.
+
+## Base, navegação, login e portal
+
+A ordem do base autenticado é `design-system.css`, `argos.css`, `portal.css` e CSS específico do template. Use o skip link para `#conteudo-principal`, `aria-current="page"` em apenas um item da navegação e `<nav aria-label="Navegação principal">`.
+
+A navegação usa uma lista única e, em telas menores, quebra de linha com rolagem interna quando necessária; ela não pode ser ocultada. O menu do usuário mantém `<details>` e `<summary>`, preservando logout via formulário POST com CSRF.
+
+Mensagens usam `.messages`, `aria-live="polite"` e classes semânticas. O login independente carrega design system e CSS de autenticação, mantém autocomplete de usuário e senha e usa erro genérico. Cartões de módulos devem ser um único link `.module-card` com SVG decorativo.

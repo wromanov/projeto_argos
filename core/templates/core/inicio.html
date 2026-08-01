@@ -1,1 +1,18 @@
-{% extends "base.html" %}{% block titulo %}Início — ARGOS{% endblock %}{% block conteudo %}<section class="portal-hero"><span class="portal-eyebrow">Portal ARGOS</span><h1>Olá, {{ nome_exibicao }}</h1><p>Escolha um módulo para continuar</p></section><section class="module-grid">{% if pode_inventario %}<a class="module-card" href="{% url 'cameras:lista' %}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h11v10H4zM15 10l5-3v10l-5-3z"/></svg><div><h2>Inventário</h2><p>Consulte e gerencie as câmeras.</p></div></a><a class="module-card" href="{% url 'core:dashboard' %}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h7v7H4zM13 4h7v16h-7zM4 4h7v7H4z"/></svg><div><h2>Dashboard</h2><p>Acompanhe os indicadores operacionais.</p></div></a>{% endif %}{% if pode_eventos %}<a class="module-card" href="{% url 'eventos:lista' %}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg><div><h2>Eventos</h2><p>Consulte o histórico de auditoria.</p></div></a>{% endif %}<a class="module-card" href="{% url 'usuarios:perfil' %}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7 8a7 7 0 0 1 14 0z"/></svg><div><h2>Meu Perfil</h2><p>Dados pessoais, acesso e segurança da conta.</p></div></a></section>{% if not pode_inventario %}<p class="portal-empty">Seu usuário ainda não possui permissões para acessar os módulos operacionais do ARGOS.</p>{% endif %}{% endblock %}
+﻿{% extends "base.html" %}
+{% block titulo %}Início — ARGOS{% endblock %}
+{% block conteudo %}
+<section class="portal-hero">
+  <span class="portal-eyebrow">Portal ARGOS</span>
+  <h1>Olá, {{ nome_exibicao }}</h1>
+  <p>Escolha um módulo para continuar no sistema de inventário e monitoramento.</p>
+</section>
+<section class="module-grid" aria-label="Módulos disponíveis">
+  {% if pode_inventario %}
+  <a class="module-card" href="{% url 'cameras:lista' %}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h11v10H4zM15 10l5-3v10l-5-3z"/></svg><span><h2>Inventário</h2><p>Consulte e gerencie as câmeras.</p></span></a>
+  <a class="module-card" href="{% url 'core:dashboard' %}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 13h7v7H4zM13 4h7v16h-7zM4 4h7v7H4z"/></svg><span><h2>Dashboard</h2><p>Acompanhe os indicadores operacionais.</p></span></a>
+  {% endif %}
+  {% if pode_eventos %}<a class="module-card" href="{% url 'eventos:lista' %}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg><span><h2>Eventos</h2><p>Consulte o histórico de auditoria.</p></span></a>{% endif %}
+  <a class="module-card" href="{% url 'usuarios:perfil' %}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7 8a7 7 0 0 1 14 0z"/></svg><span><h2>Meu Perfil</h2><p>Dados pessoais, acesso e segurança da conta.</p></span></a>
+</section>
+{% if not pode_inventario %}<section class="info-card portal-empty"><h2>Acesso operacional indisponível</h2><p>Seu usuário ainda não possui permissões para acessar os módulos operacionais do ARGOS.</p></section>{% endif %}
+{% endblock %}

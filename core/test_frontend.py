@@ -1,10 +1,16 @@
+from io import StringIO
+
 from django import forms
 from django.contrib.staticfiles import finders
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
+from django.core.management import call_command
 from django.core.paginator import Paginator
 from django.http import QueryDict
 from django.template import RequestContext
 from django.template.loader import render_to_string
-from django.test import RequestFactory, SimpleTestCase
+from django.urls import reverse
+from django.test import RequestFactory, SimpleTestCase, TestCase
 
 from core.templatetags.ui_extras import querystring
 
@@ -60,3 +66,45 @@ class FrontendSharedComponentsTests(SimpleTestCase):
         self.assertIn("Senha", html)
         self.assertIn("Certifique-se", html)
         self.assertNotIn("segredo-curto", html)
+
+class BaseAndPortalFrontendTests(TestCase):
+    def setUp(self):
+        call_command("configurar_perfis_argos", stdout=StringIO())
+        self.user = get_user_model().objects.create_user(username="frontend", password="senha-forte")
+
+    def login_monitoramento(self):
+        self.user.groups.set([Group.objects.get(name="Monitoramento ARGOS")])
+        self.client.force_login(self.user)
+
+    def test_base_possui_skip_link_main_mensagens_e_logout_post(self):
+        self.login_monitoramento()
+        response = self.client.get(reverse("core:inicio"))
+        self.assertContains(response, 'href="#conteudo-principal"')
+        self.assertContains(response, 'id="conteudo-principal"')
+        self.assertContains(response, 'aria-live="polite"')
+        self.assertContains(response, '<form method="post" action="/logout/"', html=False)
+        self.assertContains(response, "csrfmiddlewaretoken")
+        self.assertNotContains(response, 'href="/logout/"')
+
+    def test_navegacao_marca_pagina_atual_e_css_movel_nao_oculta_menu(self):
+        self.login_monitoramento()
+        inicio = self.client.get(reverse("core:inicio"))
+        dashboard = self.client.get(reverse("core:dashboard"))
+        self.assertEqual(inicio.content.count(b'aria-current="page"'), 1)
+        self.assertEqual(dashboard.content.count(b'aria-current="page"'), 1)
+        self.assertContains(dashboard, 'aria-label="Navegação principal"')
+        css = open("static/css/argos.css", encoding="utf-8").read()
+        self.assertNotRegex(css, r"\.main-navigation\s*\{\s*display:\s*none")
+        self.assertIn("@media (max-width: 700px)", css)
+        self.assertIn(".main-navigation", css)
+
+    def test_inicio_exibe_cartoes_permitidos_com_links_unicos_e_acessiveis(self):
+        self.login_monitoramento()
+        response = self.client.get(reverse("core:inicio"))
+        for nome, url in (("Inventário", reverse("cameras:lista")), ("Dashboard", reverse("core:dashboard")), ("Eventos", reverse("eventos:lista")), ("Meu Perfil", reverse("usuarios:perfil"))):
+            self.assertContains(response, nome)
+            self.assertEqual(response.content.count((f'class="module-card" href="{url}"').encode()), 1)
+        self.assertContains(response, 'class="module-card"')
+        self.assertContains(response, 'aria-hidden="true"')
+        self.assertNotContains(response, "Credenciais")
+        self.assertNotContains(response, "RTSP")

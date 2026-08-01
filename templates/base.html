@@ -1,4 +1,55 @@
 {% load static usuarios_extras %}
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>{% block titulo %}Projeto ARGOS{% endblock %}</title><link rel="stylesheet" href="{% static 'css/argos.css' %}"><link rel="stylesheet" href="{% static 'css/portal.css' %}">{% block extra_css %}{% endblock %}</head><body>
-<header class="app-header portal-header"><div class="app-header__content"><a class="brand" href="{% url 'core:inicio' %}"><span class="brand__symbol">A</span><span class="brand__text"><strong>ARGOS</strong><small>Inventário e monitoramento de câmeras</small></span></a><nav class="main-navigation"><a class="main-navigation__link" href="{% url 'core:inicio' %}">Início</a>{% if perms.cameras.view_camera %}<a class="main-navigation__link" href="{% url 'core:dashboard' %}">Dashboard</a><a class="main-navigation__link" href="{% url 'cameras:lista' %}">Inventário</a>{% endif %}{% if perms.cameras.consultar_eventos %}<a class="main-navigation__link" href="{% url 'eventos:lista' %}">Eventos</a>{% endif %}</nav><details class="user-menu"><summary><span class="portal-avatar">{{ request.user|iniciais_usuario }}</span><span class="portal-user__name">{{ request.user|nome_exibicao_usuario }}</span></summary><div class="user-menu__panel"><a href="{% url 'usuarios:perfil' %}">Meu perfil</a><a href="{% url 'usuarios:editar_perfil' %}">Editar perfil</a><a href="{% url 'usuarios:alterar_senha' %}">Alterar senha</a>{% if request.user.is_staff %}<a href="{% url 'admin:index' %}">Administração</a>{% endif %}<form method="post" action="{% url 'usuarios:logout' %}">{% csrf_token %}<button type="submit">Sair</button></form></div></details></div></header>
-<main class="page-container">{% if messages %}<div class="messages-container">{% for message in messages %}<div class="message message--{{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% block conteudo %}{% endblock %}</main><footer class="app-footer"><p>Projeto ARGOS — Sistema de Inventário e Monitoramento de Câmeras</p></footer>{% block extra_js %}{% endblock %}</body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titulo %}ARGOS{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/design-system.css' %}">
+  <link rel="stylesheet" href="{% static 'css/argos.css' %}">
+  <link rel="stylesheet" href="{% static 'css/portal.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <a class="skip-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
+  {% with current_namespace=request.resolver_match.namespace current_url_name=request.resolver_match.url_name %}
+  <header class="app-header portal-header">
+    <div class="app-header__content">
+      <a class="brand" href="{% url 'core:inicio' %}">
+        <span class="brand__symbol" aria-hidden="true">A</span>
+        <span class="brand__text"><strong>ARGOS</strong><small>Inventário e monitoramento de câmeras</small></span>
+      </a>
+      <nav class="main-navigation" aria-label="Navegação principal">
+        <a class="main-navigation__link" href="{% url 'core:inicio' %}"{% if current_namespace == 'core' and current_url_name == 'inicio' %} aria-current="page"{% endif %}>Início</a>
+        {% if perms.cameras.view_camera %}
+          <a class="main-navigation__link" href="{% url 'core:dashboard' %}"{% if current_namespace == 'core' and current_url_name == 'dashboard' %} aria-current="page"{% endif %}>Dashboard</a>
+          <a class="main-navigation__link" href="{% url 'cameras:lista' %}"{% if current_namespace == 'cameras' %} aria-current="page"{% endif %}>Inventário</a>
+        {% endif %}
+        {% if perms.cameras.consultar_eventos %}<a class="main-navigation__link" href="{% url 'eventos:lista' %}"{% if current_namespace == 'eventos' %} aria-current="page"{% endif %}>Eventos</a>{% endif %}
+      </nav>
+      <details class="user-menu">
+        <summary aria-label="Abrir menu de {{ request.user|nome_exibicao_usuario }}">
+          <span class="portal-avatar" aria-hidden="true">{{ request.user|iniciais_usuario }}</span>
+          <span class="portal-user__name">{{ request.user|nome_exibicao_usuario }}</span>
+        </summary>
+        <div class="user-menu__panel">
+          <a href="{% url 'usuarios:perfil' %}"{% if current_namespace == 'usuarios' and current_url_name == 'perfil' %} aria-current="page"{% endif %}>Meu perfil</a>
+          <a href="{% url 'usuarios:editar_perfil' %}">Editar perfil</a>
+          <a href="{% url 'usuarios:alterar_senha' %}">Alterar senha</a>
+          {% if request.user.is_staff %}<a href="{% url 'admin:index' %}">Administração</a>{% endif %}
+          <form method="post" action="{% url 'usuarios:logout' %}">{% csrf_token %}<button class="button button--ghost" type="submit">Sair</button></form>
+        </div>
+      </details>
+    </div>
+  </header>
+  {% endwith %}
+  <main id="conteudo-principal" class="page-container" tabindex="-1">
+    <div class="messages" aria-live="polite" aria-atomic="true">
+      {% for message in messages %}<div class="message message--{{ message.tags|default:'info' }}"{% if 'error' in message.tags or 'warning' in message.tags %} role="alert"{% else %} role="status"{% endif %}>{{ message }}</div>{% endfor %}
+    </div>
+    {% block conteudo %}{% endblock %}
+  </main>
+  <footer class="app-footer"><p>Projeto ARGOS — Sistema de Inventário e Monitoramento de Câmeras</p></footer>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

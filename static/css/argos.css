@@ -491,39 +491,13 @@ a {
 /* Responsividade */
 
 @media (max-width: 700px) {
-    .app-header__content {
-        width: min(100% - 28px, 1440px);
-        min-height: 66px;
-    }
-
-    .brand__text small {
-        display: none;
-    }
-
-    .main-navigation {
-        display: none;
-    }
-
-    .page-container {
-        width: min(100% - 28px, 1440px);
-        padding-top: 28px;
-    }
-
-    .page-heading {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .record-counter {
-        justify-content: flex-start;
-    }
-
-    .content-panel__header {
-        padding: 18px;
-    }
-
-    .camera-table th,
-    .camera-table td {
-        padding: 14px 16px;
-    }
+    .app-header__content { width: min(100% - 28px, 1440px); min-height: 66px; flex-wrap: wrap; padding-block: 10px; }
+    .brand__text small { display: none; }
+    .main-navigation { order: 3; width: 100%; justify-content: flex-start; overflow-x: auto; }
+    .main-navigation__link { min-height: 42px; white-space: nowrap; }
+    .page-container { width: min(100% - 28px, 1440px); padding-top: 28px; }
+    .page-heading { align-items: flex-start; flex-direction: column; }
+    .record-counter { justify-content: flex-start; }
+    .content-panel__header { padding: 18px; }
+    .camera-table th, .camera-table td { padding: 14px 16px; }
 }
