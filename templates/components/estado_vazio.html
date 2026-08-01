@@ -1,0 +1,6 @@
+﻿<section class="empty-state">
+  <svg class="empty-state__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M4 4h16v2H4zm2 5h12v2H6zm0 5h8v2H6z"/></svg>
+  <h2 class="empty-state__title">{{ empty_title }}</h2>
+  <p class="empty-state__text">{{ empty_text }}</p>
+  {% if empty_action_url and empty_action_label %}<a class="button button--primary empty-state__action" href="{{ empty_action_url }}">{{ empty_action_label }}</a>{% endif %}
+</section>

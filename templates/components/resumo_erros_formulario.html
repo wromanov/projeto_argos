@@ -1,0 +1,9 @@
+﻿{% if form.errors %}
+<section class="form-errors-summary" role="alert">
+  <h2>{{ errors_title|default:"Revise os campos destacados." }}</h2>
+  {% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
+  <ul>
+    {% for field in form %}{% if field.errors %}<li>{% if field.id_for_label %}<a href="#{{ field.id_for_label }}">{{ field.label }}</a>{% else %}{{ field.label }}{% endif %}: {{ field.errors|join:", " }}</li>{% endif %}{% endfor %}
+  </ul>
+</section>
+{% endif %}
