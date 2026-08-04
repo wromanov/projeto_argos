@@ -1288,3 +1288,287 @@
         width: 100%;
     }
 }
+
+/* Visual 2A - camera list hierarchy and responsive behavior */
+
+.inventory-panel__header {
+    padding: var(--space-4) var(--space-5);
+}
+
+.camera-table.data-table {
+    min-width: 64rem;
+    table-layout: fixed;
+}
+
+.camera-table.data-table caption {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.camera-table.data-table th,
+.camera-table.data-table td {
+    padding: var(--space-3);
+    vertical-align: middle;
+}
+
+.camera-table.data-table th {
+    font-size: .6875rem;
+    line-height: var(--line-height-tight);
+}
+
+.camera-table.data-table td {
+    font-size: .8125rem;
+    line-height: 1.35;
+}
+
+.camera-table__col--status {
+    width: 7.5rem;
+}
+
+.camera-table__col--camera {
+    width: 18%;
+}
+
+.camera-table__col--location {
+    width: 14%;
+}
+
+.camera-table__col--network {
+    width: 13%;
+}
+
+.camera-table__col--equipment {
+    width: 18%;
+}
+
+.camera-table__col--governance {
+    width: 12.5rem;
+    min-width: 12.5rem;
+}
+
+.camera-table__col--actions {
+    width: 7.5rem;
+}
+
+.camera-table .camera-name-link,
+.camera-table .camera-location,
+.camera-table .inventory-cell__primary {
+    line-height: 1.3;
+}
+
+.camera-table td small {
+    margin-top: var(--space-1);
+    font-size: var(--font-size-xs);
+    line-height: 1.35;
+}
+
+.camera-table__cell--status .badge {
+    padding: .25rem .5rem;
+    font-size: .6875rem;
+}
+
+.inventory-governance {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+}
+
+.inventory-governance .badge {
+    padding: .15rem .4rem;
+    font-size: .6875rem;
+}
+
+.camera-table .table-actions {
+    justify-content: flex-end;
+}
+
+.camera-table .table-actions .button {
+    width: auto;
+    min-width: 6.75rem;
+}
+
+/* Notebook and tablet */
+@media (max-width: 75rem) {
+    .table-region {
+        overflow-x: visible;
+        border-top: 0;
+    }
+
+    .camera-table.data-table {
+        min-width: 0;
+        table-layout: auto;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .camera-table.data-table colgroup,
+    .camera-table.data-table thead {
+        display: none;
+    }
+
+    .camera-table.data-table tbody {
+        display: grid;
+        gap: .625rem;
+        padding: .625rem;
+        background: var(--color-surface-secondary);
+        border-top: var(--border-width) solid var(--color-border);
+    }
+
+    .camera-table.data-table tr {
+        display: grid;
+        grid-template-columns:
+            minmax(0, 1.4fr)
+            minmax(0, 1fr)
+            minmax(0, 1fr);
+        grid-template-areas:
+            "camera camera status"
+            "location network equipment"
+            "governance governance actions";
+        overflow: hidden;
+        background: var(--color-surface);
+        border: var(--border-width) solid var(--color-border);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .camera-table.data-table tr:hover {
+        background: var(--color-surface);
+        border-color: var(--color-info-border);
+        box-shadow: var(--shadow-md);
+    }
+
+    .camera-table.data-table td {
+        display: grid;
+        align-content: start;
+        gap: .1875rem;
+        min-width: 0;
+        padding: .625rem .75rem;
+        border: 0;
+        background: transparent;
+    }
+
+    .camera-table.data-table td::before {
+        color: var(--color-text-muted);
+        font-size: .65625rem;
+        font-weight: 800;
+        line-height: var(--line-height-tight);
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        content: attr(data-label);
+    }
+
+    .camera-table__cell--status {
+        grid-area: status;
+        justify-items: end;
+        text-align: right;
+    }
+
+    .camera-table__cell--camera {
+        grid-area: camera;
+    }
+
+    .camera-table__cell--location {
+        grid-area: location;
+    }
+
+    .camera-table__cell--network {
+        grid-area: network;
+    }
+
+    .camera-table__cell--equipment {
+        grid-area: equipment;
+    }
+
+    .camera-table__cell--governance {
+        grid-area: governance;
+        min-width: 0;
+    }
+
+    .camera-table__cell--actions {
+        grid-area: actions;
+        align-self: end;
+        justify-self: end;
+    }
+
+    .camera-table__cell--location,
+    .camera-table__cell--network,
+    .camera-table__cell--equipment,
+    .camera-table__cell--governance,
+    .camera-table__cell--actions {
+        border-top: var(--border-width) solid var(--color-border);
+    }
+
+    .camera-table__cell--actions .table-actions {
+        justify-content: flex-end;
+    }
+
+    .inventory-governance {
+        align-items: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
+/* Small tablet */
+@media (max-width: 44rem) {
+    .camera-table.data-table tbody {
+        padding: var(--space-2);
+    }
+
+    .camera-table.data-table tr {
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(9rem, .75fr);
+        grid-template-areas:
+            "camera status"
+            "location network"
+            "equipment equipment"
+            "governance governance"
+            "actions actions";
+    }
+
+    .camera-table__cell--actions {
+        width: 100%;
+        justify-self: stretch;
+    }
+
+    .camera-table__cell--actions .table-actions {
+        justify-content: flex-end;
+    }
+}
+
+/* Phone */
+@media (max-width: 34rem) {
+    .camera-table.data-table tr {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "camera"
+            "status"
+            "location"
+            "network"
+            "equipment"
+            "governance"
+            "actions";
+    }
+
+    .camera-table.data-table td + td {
+        border-top: var(--border-width) solid var(--color-border);
+    }
+
+    .camera-table__cell--status {
+        justify-items: start;
+        text-align: left;
+    }
+
+    .camera-table.data-table .camera-table__cell--actions .table-actions,
+    .camera-table.data-table .camera-table__cell--actions .button {
+        width: 100%;
+    }
+}
