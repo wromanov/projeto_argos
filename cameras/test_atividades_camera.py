@@ -100,3 +100,43 @@ class AtividadesCameraTests(TestCase):
     def test_historico_pagina_invalida_nao_falha(self): self.assertEqual(self.client.get(reverse("cameras:lista_atividades",args=[self.camera.pk]),{"page":"invalida"}).status_code,200)
     def test_historico_camera_inexistente_retorna_404(self): self.assertEqual(self.client.get(reverse("cameras:lista_atividades",args=[99999])).status_code,404)
     def test_historico_exibe_total(self): self.atividade(); self.assertContains(self.client.get(reverse("cameras:lista_atividades",args=[self.camera.pk])),"1 registro")
+
+    def test_historico_usa_paginacao_compartilhada(self):
+        for indice in range(21):
+            self.atividade(titulo=f"Registro {indice}")
+
+        response = self.client.get(
+            reverse(
+                "cameras:lista_atividades",
+                args=[self.camera.pk],
+            ),
+            {"page": 2},
+        )
+
+        self.assertTemplateUsed(
+            response,
+            "components/paginacao.html",
+        )
+        self.assertContains(
+            response,
+            'aria-label="Paginação do histórico"',
+        )
+        self.assertContains(
+            response,
+            'aria-current="page"',
+        )
+        self.assertContains(
+            response,
+            'aria-label="Página atual: 2"',
+        )
+        self.assertContains(response, 'rel="prev"')
+        self.assertContains(response, "Anterior")
+        self.assertContains(response, "Próxima")
+        self.assertNotContains(
+            response,
+            "pagination__button",
+        )
+        self.assertNotContains(
+            response,
+            "pagination__status",
+        )

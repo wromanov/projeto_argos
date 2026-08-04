@@ -37,14 +37,43 @@
 
 {% if q or status_selecionado or situacao_selecionada or completude_selecionada or terminal_selecionado or tipo_selecionado or fabricante_selecionado or vlan_selecionada or farm_selecionada or ordenacao != "nome" %}
 <section class="inventory-query-summary" aria-label="Resumo da consulta">
-  <div><strong>{{ total_resultados }} resultado{{ total_resultados|pluralize:"s" }}</strong><span>Consulta filtrada no inventário.</span></div>
-  <a class="button button--secondary button--small" href="{{ lista_url }}">Limpar filtros</a>
+  <div class="inventory-query-summary__copy">
+    <span class="inventory-query-summary__label">Filtros ativos</span>
+
+    <div class="inventory-query-summary__message">
+      <strong>{{ total_resultados }} resultado{{ total_resultados|pluralize:"s" }}</strong>
+      <span>Consulta filtrada no inventário.</span>
+    </div>
+  </div>
+
+  <a
+    class="button button--secondary button--small"
+    href="{{ lista_url }}"
+  >
+    Limpar filtros
+  </a>
 </section>
 {% endif %}
 
 {% if total_resultados %}
 <section class="card inventory-panel" aria-labelledby="tabela-cameras-heading">
-  <div class="inventory-panel__header"><div><span class="inventory-eyebrow">Resultados encontrados</span><h2 id="tabela-cameras-heading">Câmeras</h2></div></div>
+  <div class="inventory-panel__header inventory-results-header">
+    <div>
+      <span class="inventory-eyebrow">Resultados encontrados</span>
+      <h2 id="tabela-cameras-heading">Câmeras</h2>
+    </div>
+
+    <p
+      class="inventory-results-header__meta"
+      aria-label="Faixa exibida nesta página"
+    >
+      <strong>{{ page_obj.start_index }}–{{ page_obj.end_index }}</strong>
+      <span>
+        de {{ total_resultados }}
+        registro{{ total_resultados|pluralize:"s" }}
+      </span>
+    </p>
+  </div>
   <div class="table-region" role="region" aria-label="Câmeras encontradas" tabindex="0">
     <table class="data-table camera-table">
       <caption>Relação de câmeras encontradas no inventário</caption>
