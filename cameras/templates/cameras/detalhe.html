@@ -2,16 +2,138 @@
 {% block titulo %}{{ camera.nome }} — ARGOS{% endblock %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/inventario.css' %}"><link rel="stylesheet" href="{% static 'css/governanca.css' %}">{% endblock %}
 {% block conteudo %}
-<section class="inventory-hero detail-heading"><div><a class="detail-back-link" href="{% url 'cameras:lista' %}">← Voltar para câmeras</a><span class="inventory-eyebrow">Inventário CFTV</span><h1>{{ camera.nome }}</h1><p>Dados completos do equipamento inventariado.</p></div><div class="detail-heading__actions">{% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}{% if perms.cameras.change_camera %}<a class="button button--secondary" href="{% url 'cameras:editar' camera.pk %}">Editar</a>{% endif %}</div></section>
+<section
+  class="inventory-hero detail-heading camera-detail-hero"
+  aria-labelledby="camera-detail-title"
+>
+  <a
+    class="detail-back-link camera-detail-hero__back"
+    href="{% url 'cameras:lista' %}"
+  >
+    ← Voltar ao inventário
+  </a>
+
+  <div class="camera-detail-hero__content">
+    <div class="camera-detail-hero__identity">
+      <span class="inventory-eyebrow">
+        Inventário CFTV
+      </span>
+
+      <h1 id="camera-detail-title">
+        {{ camera.nome }}
+      </h1>
+
+      <p class="camera-detail-hero__equipment">
+        {% if camera.fabricante %}
+          {{ camera.fabricante }}
+        {% endif %}
+
+        {% if camera.fabricante and camera.modelo %}
+          <span aria-hidden="true"> · </span>
+        {% endif %}
+
+        {% if camera.modelo %}
+          {{ camera.modelo }}
+        {% endif %}
+
+        {% if camera.tipo %}
+          {% if camera.fabricante or camera.modelo %}
+            <span aria-hidden="true"> · </span>
+          {% endif %}
+          {{ camera.get_tipo_display }}
+        {% endif %}
+
+        {% if not camera.fabricante and not camera.modelo and not camera.tipo %}
+          —
+        {% endif %}
+      </p>
+    </div>
+
+    <div class="detail-heading__actions camera-detail-hero__aside">
+      <div
+        class="camera-detail-hero__badges"
+        aria-label="Estados da câmera"
+      >
+        {% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}
+
+        <span
+          class="governance-badge governance-badge--{{ camera.situacao_operacional|lower }}"
+        >
+          {{ camera.get_situacao_operacional_display }}
+        </span>
+
+        {% if camera.cadastro_completo %}
+          <span class="completeness completeness--ok">
+            Cadastro completo
+          </span>
+        {% else %}
+          <span class="completeness completeness--warning">
+            Cadastro incompleto
+          </span>
+        {% endif %}
+      </div>
+
+      {% if perms.cameras.change_camera %}
+        <a
+          class="button button--secondary"
+          href="{% url 'cameras:editar' camera.pk %}"
+        >
+          Editar câmera
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <dl
+    class="camera-detail-summary"
+    aria-label="Resumo da câmera"
+  >
+    <div class="camera-detail-summary__item">
+      <dt>Patrimônio</dt>
+      <dd class="technical-value">
+        {{ camera.patrimonio|default:"—" }}
+      </dd>
+    </div>
+
+    <div class="camera-detail-summary__item">
+      <dt>Endereço IP</dt>
+      <dd class="technical-value">
+        {{ camera.ip|default:"—" }}
+      </dd>
+    </div>
+
+    <div class="camera-detail-summary__item">
+      <dt>Localização</dt>
+      <dd>
+        {% if camera.terminal or camera.ambiente %}
+          {% if camera.terminal %}
+            {{ camera.terminal }}
+          {% endif %}
+
+          {% if camera.terminal and camera.ambiente %}
+            <span aria-hidden="true"> · </span>
+          {% endif %}
+
+          {% if camera.ambiente %}
+            {{ camera.ambiente }}
+          {% endif %}
+        {% else %}
+          —
+        {% endif %}
+      </dd>
+    </div>
+  </dl>
+</section>
+
 <div class="detail-layout">
-<section class="inventory-panel detail-card"><div class="inventory-panel__header"><h2>Identificação</h2></div><dl class="detail-grid"><dt>Patrimônio</dt><dd>{{ camera.patrimonio|default:"—" }}</dd><dt>Nome</dt><dd>{{ camera.nome }}</dd><dt>Fabricante</dt><dd>{{ camera.fabricante }}</dd><dt>Modelo</dt><dd>{{ camera.modelo }}</dd><dt>Serial</dt><dd>{{ camera.serial|default:"—" }}</dd><dt>MAC</dt><dd>{{ camera.mac|default:"—" }}</dd><dt>Tipo</dt><dd>{{ camera.get_tipo_display|default:"—" }}</dd></dl></section>
-<section class="inventory-panel detail-card"><div class="inventory-panel__header"><h2>Localização</h2></div><dl class="detail-grid"><dt>Terminal</dt><dd>{{ camera.terminal|default:"—" }}</dd><dt>Pavimento</dt><dd>{{ camera.pavimento|default:"—" }}</dd><dt>Setor</dt><dd>{{ camera.setor|default:"—" }}</dd><dt>Ambiente</dt><dd>{{ camera.ambiente|default:"—" }}</dd><dt>Descrição detalhada</dt><dd>{{ camera.descricao_detalhada|default:"—" }}</dd><dt>Ponto de referência</dt><dd>{{ camera.ponto_referencia|default:"—" }}</dd></dl></section>
-<section class="inventory-panel detail-card"><div class="inventory-panel__header"><h2>Rede</h2></div><dl class="detail-grid"><dt>IP</dt><dd>{{ camera.ip|default:"—" }}</dd><dt>Máscara</dt><dd>{{ camera.mascara_subrede|default:"—" }}</dd><dt>Gateway</dt><dd>{{ camera.gateway|default:"—" }}</dd><dt>VLAN</dt><dd>{{ camera.vlan|default:"—" }}</dd></dl></section>
-<section class="inventory-panel detail-card"><div class="inventory-panel__header"><h2>Gravação</h2></div><dl class="detail-grid"><dt>Farm</dt><dd>{{ camera.farm|default:"—" }}</dd><dt>Retenção esperada</dt><dd>{{ camera.retencao_esperada_dias|default:"—" }}</dd><dt>Codec</dt><dd>{{ camera.codec|default:"—" }}</dd></dl></section>
-<section class="inventory-panel detail-card"><div class="inventory-panel__header"><h2>Monitoramento técnico</h2></div><dl class="detail-grid"><dt>Status</dt><dd>{% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}</dd><dt>Status desde</dt><dd>{{ camera.status_em|date:"d/m/Y H:i"|default:"—" }}</dd><dt>Última verificação</dt><dd>{{ camera.ultima_verificacao|date:"d/m/Y H:i"|default:"—" }}</dd></dl></section>
-<section class="inventory-panel detail-card"><div class="inventory-panel__header"><h2>Governança cadastral</h2></div><dl class="detail-grid"><dt>Criado por</dt><dd>{{ camera.criado_por|default:"—" }}</dd><dt>Criado em</dt><dd>{{ camera.criado_em|date:"d/m/Y H:i" }}</dd><dt>Atualizado por</dt><dd>{{ camera.atualizado_por|default:"—" }}</dd><dt>Atualizado em</dt><dd>{{ camera.atualizado_em|date:"d/m/Y H:i" }}</dd><dt>Origem</dt><dd>{{ camera.get_origem_cadastro_display }}</dd><dt>Observações</dt><dd>{{ camera.observacoes|default:"—" }}</dd></dl></section>
-<section class="inventory-panel detail-card detail-card--full governance-section"><div class="inventory-panel__header"><div><span class="inventory-eyebrow">Governança operacional</span><h2>Situação e completude</h2></div><div class="governance-actions">{% if camera.situacao_operacional == "PRODUCAO" %}{% if perms.cameras.alterar_situacao_camera %}<a class="button button--secondary" href="{% url 'cameras:alterar_situacao' camera.pk %}">Mover para Estoque</a>{% endif %}{% if perms.cameras.desativar_camera %}<a class="button button--danger" href="{% url 'cameras:desativar' camera.pk %}">Desativar</a>{% endif %}{% if perms.cameras.registrar_substituicao_camera %}<a class="button button--primary" href="{% url 'cameras:substituir' camera.pk %}">Substituir</a>{% endif %}{% elif camera.situacao_operacional == "ESTOQUE" %}{% if perms.cameras.alterar_situacao_camera %}<a class="button button--primary" href="{% url 'cameras:alterar_situacao' camera.pk %}">Colocar em Produção</a>{% endif %}{% if perms.cameras.desativar_camera %}<a class="button button--danger" href="{% url 'cameras:desativar' camera.pk %}">Desativar</a>{% endif %}{% else %}{% if perms.cameras.reativar_camera %}<a class="button button--success" href="{% url 'cameras:reativar' camera.pk %}">Reativar</a>{% endif %}{% endif %}</div></div><dl class="detail-grid"><dt>Situação</dt><dd><span class="governance-badge governance-badge--{{ camera.situacao_operacional|lower }}">{{ camera.get_situacao_operacional_display }}</span></dd><dt>Completude</dt><dd>{% if camera.cadastro_completo %}<span class="completeness completeness--ok">Cadastro completo</span>{% else %}<span class="completeness completeness--warning">Cadastro incompleto</span>{% endif %}</dd>{% if not camera.cadastro_completo %}<dt>Campos faltantes</dt><dd>{{ camera.rotulos_campos_incompletos|join:", " }}</dd>{% endif %}<dt>Motivo da última desativação</dt><dd>{{ camera.motivo_desativacao|default:"—" }}</dd><dt>Desativada em</dt><dd>{{ camera.desativada_em|date:"d/m/Y H:i"|default:"—" }}</dd><dt>Desativada por</dt><dd>{{ camera.desativada_por|default:"—" }}</dd></dl></section>
-<section class="inventory-panel detail-card detail-card--full"><div class="inventory-panel__header"><h2>Histórico de atividades</h2><div><a class="button button--secondary" href="{% url 'cameras:lista_atividades' camera.pk %}">Ver histórico completo</a>{% if perms.cameras.add_atividadecamera %}<a class="button button--primary" href="{% url 'cameras:criar_atividade' camera.pk %}">Registrar atividade</a>{% endif %}</div></div><div class="activity-list">{% for atividade in atividades %}<article class="activity-card"><div class="activity-card__heading"><h3>{{ atividade.titulo }}</h3>{% if perms.cameras.change_atividadecamera %}<a href="{% url 'cameras:editar_atividade' atividade.pk %}">Editar</a>{% endif %}</div><p>{{ atividade.descricao|truncatechars:180 }}</p></article>{% empty %}<p>Nenhuma atividade registrada para esta câmera.</p>{% endfor %}</div></section>
-{% if perms.cameras.consultar_substituicoescamera %}<section class="inventory-panel detail-card detail-card--full"><div class="inventory-panel__header"><h2>Histórico de substituições</h2><a class="button button--secondary" href="{% url 'cameras:lista_substituicoes' %}">Ver todas as substituições</a></div><div class="replacement-list">{% for item in substituicoes %}<a href="{% url 'cameras:detalhe_substituicao' item.pk %}">{{ item.ocorrida_em|date:"d/m/Y H:i" }} · {{ item.camera_anterior }} → {{ item.camera_substituta }}</a>{% empty %}<p>Nenhuma substituição registrada.</p>{% endfor %}</div></section>{% endif %}
-{% if perms.cameras.consultar_eventos %}<section class="inventory-panel detail-card detail-card--full"><div class="inventory-panel__header"><h2>Eventos de auditoria</h2><a class="button button--secondary" href="{% url 'cameras:eventos_camera' camera.pk %}">Ver todos os eventos</a></div><div class="activity-list">{% for evento in eventos_auditoria %}<a href="{% url 'eventos:detalhe' evento.pk %}">{{ evento.codigo }} · {{ evento.resumo }}</a>{% empty %}<p>Nenhum evento.</p>{% endfor %}</div></section>{% endif %}
+<section class="inventory-panel detail-card detail-card--identity"><div class="inventory-panel__header"><h2>Identificação</h2></div><dl class="detail-grid"><dt>Patrimônio</dt><dd class="technical-value{% if not camera.patrimonio %} detail-value--empty{% endif %}">{{ camera.patrimonio|default:"—" }}</dd><dt>Nome</dt><dd class="detail-value--strong">{{ camera.nome }}</dd><dt>Fabricante</dt><dd class="detail-value--strong">{{ camera.fabricante }}</dd><dt>Modelo</dt><dd class="detail-value--strong">{{ camera.modelo }}</dd><dt>Serial</dt><dd class="technical-value{% if not camera.serial %} detail-value--empty{% endif %}">{{ camera.serial|default:"—" }}</dd><dt>MAC</dt><dd class="technical-value{% if not camera.mac %} detail-value--empty{% endif %}">{{ camera.mac|default:"—" }}</dd><dt>Tipo</dt><dd class="detail-value--strong{% if not camera.tipo %} detail-value--empty{% endif %}">{{ camera.get_tipo_display|default:"—" }}</dd></dl></section>
+<section class="inventory-panel detail-card detail-card--location"><div class="inventory-panel__header"><h2>Localização</h2></div><dl class="detail-grid"><dt>Terminal</dt><dd {% if not camera.terminal %}class="detail-value--empty"{% endif %}>{{ camera.terminal|default:"—" }}</dd><dt>Pavimento</dt><dd {% if not camera.pavimento %}class="detail-value--empty"{% endif %}>{{ camera.pavimento|default:"—" }}</dd><dt>Setor</dt><dd {% if not camera.setor %}class="detail-value--empty"{% endif %}>{{ camera.setor|default:"—" }}</dd><dt>Ambiente</dt><dd {% if not camera.ambiente %}class="detail-value--empty"{% endif %}>{{ camera.ambiente|default:"—" }}</dd><dt>Descrição detalhada</dt><dd {% if not camera.descricao_detalhada %}class="detail-value--empty"{% endif %}>{{ camera.descricao_detalhada|default:"—" }}</dd><dt>Ponto de referência</dt><dd {% if not camera.ponto_referencia %}class="detail-value--empty"{% endif %}>{{ camera.ponto_referencia|default:"—" }}</dd></dl></section>
+<section class="inventory-panel detail-card detail-card--network"><div class="inventory-panel__header"><h2>Rede</h2></div><dl class="detail-grid"><dt>IP</dt><dd class="technical-value{% if not camera.ip %} detail-value--empty{% endif %}">{{ camera.ip|default:"—" }}</dd><dt>Máscara</dt><dd class="technical-value{% if not camera.mascara_subrede %} detail-value--empty{% endif %}">{{ camera.mascara_subrede|default:"—" }}</dd><dt>Gateway</dt><dd class="technical-value{% if not camera.gateway %} detail-value--empty{% endif %}">{{ camera.gateway|default:"—" }}</dd><dt>VLAN</dt><dd class="technical-value{% if not camera.vlan %} detail-value--empty{% endif %}">{{ camera.vlan|default:"—" }}</dd></dl></section>
+<section class="inventory-panel detail-card detail-card--recording"><div class="inventory-panel__header"><h2>Gravação</h2></div><dl class="detail-grid"><dt>Farm</dt><dd class="technical-value{% if not camera.farm %} detail-value--empty{% endif %}">{{ camera.farm|default:"—" }}</dd><dt>Retenção esperada</dt><dd class="technical-value{% if not camera.retencao_esperada_dias %} detail-value--empty{% endif %}">{{ camera.retencao_esperada_dias|default:"—" }}</dd><dt>Codec</dt><dd class="technical-value{% if not camera.codec %} detail-value--empty{% endif %}">{{ camera.codec|default:"—" }}</dd></dl></section>
+<section class="inventory-panel detail-card detail-card--monitoring detail-card--status-{{ camera.status|default:'NAO_VERIFICADO'|lower }}"><div class="inventory-panel__header"><h2>Monitoramento técnico</h2></div><dl class="detail-grid"><dt>Status</dt><dd>{% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}</dd><dt>Status desde</dt><dd {% if not camera.status_em %}class="detail-value--empty"{% endif %}>{{ camera.status_em|date:"d/m/Y H:i"|default:"—" }}</dd><dt>Última verificação</dt><dd {% if not camera.ultima_verificacao %}class="detail-value--empty"{% endif %}>{{ camera.ultima_verificacao|date:"d/m/Y H:i"|default:"—" }}</dd></dl></section>
+<section class="inventory-panel detail-card detail-card--registration{% if not camera.cadastro_completo %} detail-card--warning{% endif %}"><div class="inventory-panel__header"><h2>Governança cadastral</h2></div><dl class="detail-grid"><dt>Criado por</dt><dd>{{ camera.criado_por|default:"—" }}</dd><dt>Criado em</dt><dd>{{ camera.criado_em|date:"d/m/Y H:i" }}</dd><dt>Atualizado por</dt><dd>{{ camera.atualizado_por|default:"—" }}</dd><dt>Atualizado em</dt><dd>{{ camera.atualizado_em|date:"d/m/Y H:i" }}</dd><dt>Origem</dt><dd>{{ camera.get_origem_cadastro_display }}</dd><dt>Observações</dt><dd>{{ camera.observacoes|default:"—" }}</dd></dl></section>
+<section class="inventory-panel detail-card detail-card--full governance-section camera-governance-panel{% if not camera.cadastro_completo %} camera-governance-panel--warning{% endif %}"><div class="inventory-panel__header"><div><span class="inventory-eyebrow">Governança operacional</span><h2>Situação e completude</h2></div><div class="governance-actions camera-governance-actions" aria-label="Ações de governança">{% if camera.situacao_operacional == "PRODUCAO" %}{% if perms.cameras.alterar_situacao_camera %}<a class="button button--secondary" href="{% url 'cameras:alterar_situacao' camera.pk %}">Mover para Estoque</a>{% endif %}{% if perms.cameras.desativar_camera %}<a class="button button--danger" href="{% url 'cameras:desativar' camera.pk %}">Desativar</a>{% endif %}{% if perms.cameras.registrar_substituicao_camera %}<a class="button button--primary" href="{% url 'cameras:substituir' camera.pk %}">Substituir</a>{% endif %}{% elif camera.situacao_operacional == "ESTOQUE" %}{% if perms.cameras.alterar_situacao_camera %}<a class="button button--primary" href="{% url 'cameras:alterar_situacao' camera.pk %}">Colocar em Produção</a>{% endif %}{% if perms.cameras.desativar_camera %}<a class="button button--danger" href="{% url 'cameras:desativar' camera.pk %}">Desativar</a>{% endif %}{% else %}{% if perms.cameras.reativar_camera %}<a class="button button--success" href="{% url 'cameras:reativar' camera.pk %}">Reativar</a>{% endif %}{% endif %}</div></div><dl class="detail-grid"><dt>Situação</dt><dd><span class="governance-badge governance-badge--{{ camera.situacao_operacional|lower }}">{{ camera.get_situacao_operacional_display }}</span></dd><dt>Completude</dt><dd>{% if camera.cadastro_completo %}<span class="completeness completeness--ok">Cadastro completo</span>{% else %}<span class="completeness completeness--warning">Cadastro incompleto</span>{% endif %}</dd>{% if not camera.cadastro_completo %}<dt class="governance-missing-fields__label">Campos faltantes</dt><dd class="governance-missing-fields">{{ camera.rotulos_campos_incompletos|join:", " }}</dd>{% endif %}<dt>Motivo da última desativação</dt><dd>{{ camera.motivo_desativacao|default:"—" }}</dd><dt>Desativada em</dt><dd>{{ camera.desativada_em|date:"d/m/Y H:i"|default:"—" }}</dd><dt>Desativada por</dt><dd>{{ camera.desativada_por|default:"—" }}</dd></dl></section>
+<section class="inventory-panel detail-card detail-card--full detail-history-card detail-history-card--activities"><div class="inventory-panel__header"><h2>Histórico de atividades</h2><div class="detail-history-actions" aria-label="Ações do histórico"><a class="button button--secondary" href="{% url 'cameras:lista_atividades' camera.pk %}">Ver histórico completo</a>{% if perms.cameras.add_atividadecamera %}<a class="button button--primary" href="{% url 'cameras:criar_atividade' camera.pk %}">Registrar atividade</a>{% endif %}</div></div><div class="activity-list detail-history-list">{% for atividade in atividades %}<article class="activity-card"><div class="activity-card__heading"><h3>{{ atividade.titulo }}</h3>{% if perms.cameras.change_atividadecamera %}<a href="{% url 'cameras:editar_atividade' atividade.pk %}">Editar</a>{% endif %}</div><p>{{ atividade.descricao|truncatechars:180 }}</p></article>{% empty %}<p class="detail-empty-state">Nenhuma atividade registrada para esta câmera.</p>{% endfor %}</div></section>
+{% if perms.cameras.consultar_substituicoescamera %}<section class="inventory-panel detail-card detail-card--full detail-history-card detail-history-card--replacements"><div class="inventory-panel__header"><h2>Histórico de substituições</h2><a class="button button--secondary" href="{% url 'cameras:lista_substituicoes' %}">Ver todas as substituições</a></div><div class="replacement-list detail-history-list">{% for item in substituicoes %}<a href="{% url 'cameras:detalhe_substituicao' item.pk %}">{{ item.ocorrida_em|date:"d/m/Y H:i" }} · {{ item.camera_anterior }} → {{ item.camera_substituta }}</a>{% empty %}<p class="detail-empty-state">Nenhuma substituição registrada.</p>{% endfor %}</div></section>{% endif %}
+{% if perms.cameras.consultar_eventos %}<section class="inventory-panel detail-card detail-card--full detail-history-card detail-history-card--audit"><div class="inventory-panel__header"><h2>Eventos de auditoria</h2><a class="button button--secondary" href="{% url 'cameras:eventos_camera' camera.pk %}">Ver todos os eventos</a></div><div class="activity-list detail-history-list">{% for evento in eventos_auditoria %}<a href="{% url 'eventos:detalhe' evento.pk %}">{{ evento.codigo }} · {{ evento.resumo }}</a>{% empty %}<p class="detail-empty-state">Nenhum evento registrado.</p>{% endfor %}</div></section>{% endif %}
 </div>{% endblock %}
