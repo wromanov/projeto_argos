@@ -244,3 +244,253 @@
         width: 100%;
     }
 }
+
+/* Visual 3A.1 - operational dashboard hierarchy */
+
+.portal-hero.dashboard-hero {
+    max-width: none;
+    margin-bottom: var(--space-2);
+    padding-bottom: var(--space-6);
+    gap: var(--space-6);
+    border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.dashboard-hero > div:first-child {
+    max-width: var(--reading-max-width);
+}
+
+.dashboard-section {
+    margin-top: var(--space-6);
+}
+
+.dashboard-section__heading {
+    align-items: center;
+    margin-bottom: var(--space-4);
+}
+
+.dashboard-section--monitoring {
+    padding: var(--space-5);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(24, 90, 133, .055),
+            rgba(47, 128, 237, .025)
+        );
+    border: var(--border-width) solid rgba(24, 90, 133, .18);
+    border-radius: var(--radius-md);
+}
+
+.dashboard-metric-grid {
+    gap: var(--space-3);
+}
+
+.dashboard-metric-grid--inventory {
+    grid-template-columns:
+        minmax(11rem, 1.25fr)
+        repeat(4, minmax(9rem, 1fr));
+}
+
+.dashboard-metric-grid--monitoring,
+.dashboard-metric-grid--quality {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dashboard-metric-grid .dashboard-metric {
+    --dashboard-accent: #185a85;
+    --dashboard-tint: rgba(24, 90, 133, .045);
+
+    position: relative;
+    min-height: 7.75rem;
+    overflow: hidden;
+    border-top: .25rem solid var(--dashboard-accent);
+    background:
+        linear-gradient(
+            180deg,
+            var(--dashboard-tint) 0,
+            var(--color-surface) 48%
+        );
+}
+
+.dashboard-metric-grid .dashboard-metric > span {
+    font-weight: 650;
+}
+
+.dashboard-metric-grid .dashboard-metric > strong {
+    align-self: center;
+    justify-self: start;
+    color: var(--dashboard-accent);
+    font-size: clamp(2rem, 2.8vw, 2.4rem);
+    text-align: left;
+}
+
+.dashboard-metric-grid .dashboard-metric > small {
+    min-height: 1rem;
+}
+
+.dashboard-metric-grid .metric-card--link {
+    transition:
+        transform var(--transition-fast),
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+.dashboard-metric-grid .metric-card--link:hover {
+    transform: translateY(-2px);
+    border-color: var(--dashboard-accent);
+    box-shadow: var(--shadow-md);
+}
+
+.dashboard-metric-grid .metric-card--link:focus-visible {
+    outline: 3px solid var(--color-focus-ring);
+    outline-offset: 3px;
+}
+
+/* Inventario */
+.dashboard-metric-grid--inventory > :nth-child(1) {
+    --dashboard-accent: #185a85;
+    --dashboard-tint: rgba(24, 90, 133, .07);
+}
+
+.dashboard-metric-grid--inventory > :nth-child(2) {
+    --dashboard-accent: #245faf;
+    --dashboard-tint: rgba(36, 95, 175, .065);
+}
+
+.dashboard-metric-grid--inventory > :nth-child(3) {
+    --dashboard-accent: #946200;
+    --dashboard-tint: rgba(148, 98, 0, .065);
+}
+
+.dashboard-metric-grid--inventory > :nth-child(4) {
+    --dashboard-accent: #5f6b76;
+    --dashboard-tint: rgba(95, 107, 118, .065);
+}
+
+.dashboard-metric-grid--inventory > :nth-child(5) {
+    --dashboard-accent: #2f80ed;
+    --dashboard-tint: rgba(47, 128, 237, .055);
+}
+
+/* Monitoramento */
+.dashboard-metric-grid--monitoring > :nth-child(1) {
+    --dashboard-accent: #167d5a;
+    --dashboard-tint: rgba(22, 125, 90, .075);
+}
+
+.dashboard-metric-grid--monitoring > :nth-child(2) {
+    --dashboard-accent: #c23b32;
+    --dashboard-tint: rgba(194, 59, 50, .075);
+}
+
+.dashboard-metric-grid--monitoring > :nth-child(3) {
+    --dashboard-accent: #5f6b76;
+    --dashboard-tint: rgba(95, 107, 118, .065);
+}
+
+/* Qualidade cadastral */
+.dashboard-metric-grid--quality > :nth-child(1) {
+    --dashboard-accent: #167d5a;
+    --dashboard-tint: rgba(22, 125, 90, .065);
+}
+
+.dashboard-metric-grid--quality > :nth-child(2) {
+    --dashboard-accent: #946200;
+    --dashboard-tint: rgba(148, 98, 0, .07);
+}
+
+.dashboard-metric-grid--quality > :nth-child(3) {
+    --dashboard-accent: #c23b32;
+    --dashboard-tint: rgba(194, 59, 50, .065);
+}
+
+/* Atividade recente */
+.dashboard-section--activity .portal-panel {
+    padding: 0;
+    overflow: hidden;
+}
+
+.dashboard-section--activity .portal-panel h3 {
+    margin: 0;
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-surface-secondary);
+    border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.dashboard-section--activity .recent-item {
+    padding: var(--space-3) var(--space-5);
+}
+
+.dashboard-section--activity .recent-item:last-child {
+    border-bottom: 0;
+}
+
+.dashboard-section--activity .portal-empty {
+    margin: 0;
+    padding: var(--space-5);
+}
+
+@media (max-width: 64rem) {
+    .dashboard-metric-grid--inventory,
+    .dashboard-metric-grid--monitoring,
+    .dashboard-metric-grid--quality {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-metric-grid--inventory > :first-child {
+        grid-column: 1 / -1;
+    }
+
+    .dashboard-metric-grid--monitoring > :last-child,
+    .dashboard-metric-grid--quality > :last-child {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 44rem) {
+    .portal-hero.dashboard-hero {
+        padding-bottom: var(--space-5);
+    }
+
+    .dashboard-section--monitoring {
+        padding: var(--space-3);
+    }
+
+    .dashboard-metric-grid--inventory,
+    .dashboard-metric-grid--monitoring,
+    .dashboard-metric-grid--quality {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-metric-grid--inventory > :first-child,
+    .dashboard-metric-grid--monitoring > :last-child,
+    .dashboard-metric-grid--quality > :last-child {
+        grid-column: auto;
+    }
+
+    .dashboard-metric-grid .dashboard-metric {
+        min-height: 7rem;
+    }
+}
+
+/* Visual 3A.2 - dynamic dashboard severity */
+
+/* Ausencia de ocorrencias representa estado operacional adequado. */
+.dashboard-metric-grid--monitoring > :nth-child(2),
+.dashboard-metric-grid--monitoring > :nth-child(3),
+.dashboard-metric-grid--quality > :nth-child(2),
+.dashboard-metric-grid--quality > :nth-child(3) {
+    --dashboard-accent: #167d5a;
+    --dashboard-tint: rgba(22, 125, 90, .065);
+}
+
+/* Pendencias que exigem acompanhamento. */
+.dashboard-metric-grid .dashboard-metric--warning {
+    --dashboard-accent: #946200;
+    --dashboard-tint: rgba(148, 98, 0, .075);
+}
+
+/* Ocorrencias operacionais criticas. */
+.dashboard-metric-grid .dashboard-metric--alert {
+    --dashboard-accent: #c23b32;
+    --dashboard-tint: rgba(194, 59, 50, .075);
+}

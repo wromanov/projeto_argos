@@ -138,6 +138,9 @@ class BaseAndPortalFrontendTests(TestCase):
             "situacao_operacional=PRODUCAO",
             "situacao_operacional=ESTOQUE",
             "situacao_operacional=DESATIVADA",
+            "status=ONLINE",
+            "status=OFFLINE",
+            "status=NAO_VERIFICADO",
             "completude=COMPLETO",
             "completude=INCOMPLETO",
         ):

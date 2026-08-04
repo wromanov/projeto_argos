@@ -3,7 +3,7 @@
 {% block titulo %}Dashboard — ARGOS{% endblock %}
 
 {% block conteudo %}
-<section class="portal-hero dashboard-heading">
+<section class="portal-hero dashboard-heading dashboard-hero">
   <div>
     <span class="page-heading__eyebrow">Visão operacional</span>
     <h1 class="page-heading__title">Dashboard</h1>
@@ -15,9 +15,9 @@
   </div>
 </section>
 
-<section class="dashboard-section" aria-labelledby="inventario-heading">
+<section class="dashboard-section dashboard-section--inventory" aria-labelledby="inventario-heading">
   <div class="dashboard-section__heading"><div><span class="section-heading__eyebrow">Visão patrimonial</span><h2 class="section-heading__title" id="inventario-heading">Inventário</h2></div></div>
-  <div class="metric-grid">
+  <div class="metric-grid dashboard-metric-grid dashboard-metric-grid--inventory">
     <article class="metric-card dashboard-metric"><span>Total de câmeras</span><strong>{{ total_cameras }}</strong></article>
     <a class="metric-card metric-card--link dashboard-metric" href="{% url 'cameras:lista' %}?situacao_operacional=PRODUCAO"><span>Produção</span><strong>{{ cameras_producao }}</strong><small>Ver câmeras em produção</small></a>
     <a class="metric-card metric-card--link dashboard-metric" href="{% url 'cameras:lista' %}?situacao_operacional=ESTOQUE"><span>Estoque</span><strong>{{ cameras_estoque }}</strong><small>Ver câmeras em estoque</small></a>
@@ -26,25 +26,25 @@
   </div>
 </section>
 
-<section class="dashboard-section" aria-labelledby="monitoramento-heading">
+<section class="dashboard-section dashboard-section--monitoring" aria-labelledby="monitoramento-heading">
   <div class="dashboard-section__heading"><div><span class="section-heading__eyebrow">Disponibilidade técnica</span><h2 class="section-heading__title" id="monitoramento-heading">Monitoramento técnico</h2></div></div>
-  <div class="metric-grid">
-    <article class="metric-card dashboard-metric"><span>Online</span><strong>{{ cameras_online }}</strong></article>
-    <article class="metric-card dashboard-metric"><span>Offline</span><strong>{{ cameras_offline }}</strong></article>
-    <article class="metric-card dashboard-metric"><span>Não verificadas</span><strong>{{ cameras_nao_verificadas }}</strong></article>
+  <div class="metric-grid dashboard-metric-grid dashboard-metric-grid--monitoring">
+    <a class="metric-card metric-card--link dashboard-metric" href="{% url 'cameras:lista' %}?status=ONLINE"><span>Online</span><strong>{{ cameras_online }}</strong><small>Ver câmeras online</small></a>
+        <a class="metric-card metric-card--link dashboard-metric{% if cameras_offline %} dashboard-metric--alert{% endif %}" href="{% url 'cameras:lista' %}?status=OFFLINE"><span>Offline</span><strong>{{ cameras_offline }}</strong><small>{% if cameras_offline %}Ver câmeras offline{% else %}Nenhuma indisponibilidade{% endif %}</small></a>
+        <a class="metric-card metric-card--link dashboard-metric{% if cameras_nao_verificadas %} dashboard-metric--warning{% endif %}" href="{% url 'cameras:lista' %}?status=NAO_VERIFICADO"><span>Não verificadas</span><strong>{{ cameras_nao_verificadas }}</strong><small>{% if cameras_nao_verificadas %}Ver pendências de verificação{% else %}Monitoramento verificado{% endif %}</small></a>
   </div>
 </section>
 
-<section class="dashboard-section" aria-labelledby="qualidade-heading">
+<section class="dashboard-section dashboard-section--quality" aria-labelledby="qualidade-heading">
   <div class="dashboard-section__heading"><div><span class="section-heading__eyebrow">Consistência do inventário</span><h2 class="section-heading__title" id="qualidade-heading">Qualidade cadastral</h2></div></div>
-  <div class="metric-grid">
+  <div class="metric-grid dashboard-metric-grid dashboard-metric-grid--quality">
     <a class="metric-card metric-card--link dashboard-metric" href="{% url 'cameras:lista' %}?completude=COMPLETO"><span>Cadastro completo</span><strong>{{ cameras_completas }}</strong><small>Ver cadastros completos</small></a>
-    <a class="metric-card metric-card--link dashboard-metric" href="{% url 'cameras:lista' %}?completude=INCOMPLETO"><span>Cadastro incompleto</span><strong>{{ cameras_incompletas }}</strong><small>Ver cadastros incompletos</small></a>
-    <article class="metric-card dashboard-metric"><span>Câmeras com IP duplicado</span><strong>{{ cameras_com_ip_duplicado }}</strong></article>
+        <a class="metric-card metric-card--link dashboard-metric{% if cameras_incompletas %} dashboard-metric--warning{% endif %}" href="{% url 'cameras:lista' %}?completude=INCOMPLETO"><span>Cadastro incompleto</span><strong>{{ cameras_incompletas }}</strong><small>{% if cameras_incompletas %}Ver cadastros incompletos{% else %}Nenhuma pendência cadastral{% endif %}</small></a>
+        <article class="metric-card dashboard-metric{% if cameras_com_ip_duplicado %} dashboard-metric--alert{% endif %}"><span>Câmeras com IP duplicado</span><strong>{{ cameras_com_ip_duplicado }}</strong><small>{% if cameras_com_ip_duplicado %}Conflito de endereçamento detectado{% else %}Nenhum conflito identificado{% endif %}</small></article>
   </div>
 </section>
 
-<section class="dashboard-section" aria-labelledby="atividade-heading">
+<section class="dashboard-section dashboard-section--activity" aria-labelledby="atividade-heading">
   <div class="dashboard-section__heading"><div><span class="section-heading__eyebrow">Acompanhamento recente</span><h2 class="section-heading__title" id="atividade-heading">Atividade</h2></div><article class="metric-card dashboard-metric dashboard-metric--compact"><span>Atividades registradas</span><strong>{{ total_atividades }}</strong></article></div>
   <div class="dashboard-grid">
     <section class="portal-panel"><h3>Últimas atividades</h3>{% for atividade in atividades_recentes %}<a class="recent-item" href="{% url 'cameras:detalhe' atividade.camera.pk %}"><strong>{{ atividade.titulo }}</strong><span>{{ atividade.camera.nome }} · {{ atividade.ocorrida_em|date:"d/m/Y H:i" }}</span></a>{% empty %}<p class="portal-empty">Nenhuma atividade registrada.</p>{% endfor %}</section>
