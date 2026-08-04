@@ -1,191 +1,184 @@
-/* Shell global; tokens e componentes compartilhados pertencem ao design system. */
-html {
-    min-height: 100%;
-    background-color: var(--color-background);
-}
+/* Shell estrutural da Central Operacional ARGOS. */
+html { min-height: 100%; background: var(--argos-app-bg); }
 
 body {
+    min-width: 0;
     min-height: 100vh;
     margin: 0;
-
-    display: flex;
-    flex-direction: column;
-
-    font-family: var(--font-family-base);
-
-    background-color: var(--color-background);
     color: var(--color-text);
+    background: var(--argos-app-bg);
+    font-family: var(--font-family-base);
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
+a { color: inherit; text-decoration: none; }
+
+.app-layout {
+    min-width: 0;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: var(--argos-sidebar-width) minmax(0, 1fr);
 }
 
-
-/* Cabeçalho */
-
-.app-header {
+.app-sidebar {
     position: sticky;
     top: 0;
-    z-index: var(--argos-z-header);
-
-    background-color: var(--argos-header-surface);
-    border-bottom: 1px solid var(--argos-header-border);
-    box-shadow: 0 1px 0 rgb(0 0 0 / 12%);
+    height: 100dvh;
+    min-width: 0;
+    color: var(--argos-sidebar-text);
+    background: var(--argos-sidebar-bg);
 }
 
-.app-header__content {
-    width: min(calc(100% - (2 * var(--argos-shell-gutter))), var(--argos-shell-max-width));
-    min-height: var(--argos-header-height);
-    margin-inline: auto;
-
+.app-sidebar__content {
+    height: 100%;
+    min-width: 0;
+    padding: var(--space-5) var(--space-3);
     display: flex;
-    align-items: center;
-    gap: clamp(var(--space-4), 2vw, var(--space-8));
+    flex-direction: column;
+    gap: var(--space-8);
 }
 
 .brand {
-    flex: 0 0 auto;
+    min-width: 0;
+    padding-inline: var(--space-2);
     display: inline-flex;
     align-items: center;
     gap: var(--space-3);
-
-    color: var(--argos-header-text);
+    color: var(--argos-sidebar-text);
 }
+
+.brand:focus-visible { border-radius: var(--radius-sm); }
 
 .brand__symbol {
     width: 2.25rem;
     height: 2.25rem;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
+    flex: 0 0 auto;
+    display: inline-grid;
+    place-items: center;
     border: 1px solid rgb(255 255 255 / 24%);
     border-radius: var(--radius-sm);
-    background-color: var(--color-accent-600);
+    background: var(--color-accent-600);
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 18%);
-
     font-size: var(--font-size-lg);
     font-weight: 800;
     letter-spacing: -.03em;
 }
 
-.brand__text {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-}
-
-.brand__text strong {
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-tight);
-    letter-spacing: .08em;
-}
-
-.brand__text small {
-    color: var(--argos-header-text-muted);
-    font-size: var(--font-size-xs);
-    white-space: nowrap;
-}
+.brand__text { min-width: 0; display: grid; gap: 1px; }
+.brand__text strong { font-size: var(--font-size-base); line-height: var(--line-height-tight); letter-spacing: .08em; }
+.brand__text small { overflow: hidden; color: var(--argos-sidebar-muted); font-size: var(--font-size-xs); text-overflow: ellipsis; white-space: nowrap; }
 
 .main-navigation {
     min-width: 0;
-    display: flex;
-    align-items: center;
+    display: grid;
     gap: var(--space-1);
 }
 
 .main-navigation__link {
     position: relative;
+    min-width: 0;
     min-height: var(--argos-nav-min-height);
     padding: var(--space-2) var(--space-3);
-
-    display: inline-flex;
+    display: flex;
     align-items: center;
-
+    gap: var(--space-3);
     border: 1px solid transparent;
     border-radius: var(--radius-sm);
-
-    color: var(--argos-header-text-muted);
+    color: var(--argos-sidebar-muted);
     font-size: var(--font-size-sm);
     font-weight: 650;
-    white-space: nowrap;
-
-    transition: background-color var(--argos-transition), border-color var(--argos-transition), color var(--argos-transition);
+    transition: background-color var(--argos-transition), color var(--argos-transition);
 }
 
-.main-navigation__link:hover {
-    color: var(--argos-header-text);
-    background-color: var(--argos-nav-hover);
+.main-navigation__link svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
 }
+
+.main-navigation__link:hover { color: var(--argos-sidebar-text); background: var(--argos-sidebar-surface); }
 
 .main-navigation__link[aria-current="page"] {
-    color: var(--argos-header-text);
-    background-color: var(--argos-nav-active);
-    border-color: rgb(255 255 255 / 12%);
-    box-shadow: inset 0 -2px 0 var(--argos-nav-active-border);
+    color: var(--argos-sidebar-text);
+    background: var(--argos-sidebar-surface);
+    font-weight: 750;
 }
 
-.user-menu {
-    position: relative;
-    flex: 0 0 auto;
-    margin-left: auto;
+.main-navigation__link[aria-current="page"]::before {
+    position: absolute;
+    top: var(--space-2);
+    bottom: var(--space-2);
+    left: -0.75rem;
+    width: .1875rem;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background: var(--color-accent-600);
+    content: "";
 }
 
+.app-workspace {
+    min-width: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-topbar {
+    position: sticky;
+    top: 0;
+    z-index: var(--argos-z-header);
+    min-width: 0;
+    background: var(--argos-topbar-bg);
+    border-bottom: 1px solid var(--argos-border);
+}
+
+.app-topbar__content {
+    min-height: var(--argos-topbar-height);
+    padding-inline: var(--argos-shell-gutter);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.app-topbar__context { min-width: 0; display: grid; gap: 0; }
+.app-topbar__label { color: var(--color-text-secondary); font-size: .6875rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.app-topbar__context strong { overflow: hidden; font-size: var(--font-size-sm); text-overflow: ellipsis; white-space: nowrap; }
+
+.user-menu { position: relative; flex: 0 0 auto; }
 .user-menu summary {
-    min-height: var(--argos-nav-min-height);
+    min-height: 2.5rem;
     padding: var(--space-1) var(--space-2);
-
     display: flex;
     align-items: center;
     gap: var(--space-2);
-
     border: 1px solid transparent;
     border-radius: var(--radius-sm);
-    color: var(--argos-header-text);
+    color: var(--color-text);
     cursor: pointer;
     list-style: none;
-
-    transition: background-color var(--argos-transition), border-color var(--argos-transition);
 }
-
 .user-menu summary::-webkit-details-marker { display: none; }
-.user-menu summary:hover,
-.user-menu[open] summary { background-color: var(--argos-nav-hover); border-color: var(--argos-header-border); }
+.user-menu summary:hover, .user-menu[open] summary { border-color: var(--color-border); background: var(--color-surface-secondary); }
 
 .portal-avatar {
     width: 2rem;
     height: 2rem;
+    flex: 0 0 auto;
     display: grid;
     place-items: center;
-    border: 1px solid rgb(255 255 255 / 18%);
+    border: 1px solid var(--color-info-border);
     border-radius: 50%;
-    color: var(--argos-header-text);
-    background-color: rgb(255 255 255 / 11%);
+    color: var(--color-brand-dark);
+    background: var(--color-brand-light);
     font-size: var(--font-size-xs);
     font-weight: 800;
 }
-
-.portal-user__name {
-    max-width: 11rem;
-    overflow: hidden;
-    font-size: var(--font-size-sm);
-    font-weight: 650;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.user-menu__indicator {
-    width: .45rem;
-    height: .45rem;
-    border-right: 2px solid var(--argos-header-text-muted);
-    border-bottom: 2px solid var(--argos-header-text-muted);
-    transform: rotate(45deg) translateY(-2px);
-    transition: transform var(--argos-transition);
-}
-
+.portal-user__name { max-width: 11rem; overflow: hidden; font-size: var(--font-size-sm); font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.user-menu__indicator { width: .45rem; height: .45rem; border-right: 2px solid var(--color-text-secondary); border-bottom: 2px solid var(--color-text-secondary); transform: rotate(45deg) translateY(-2px); transition: transform var(--argos-transition); }
 .user-menu[open] .user-menu__indicator { transform: rotate(225deg) translate(-1px, -1px); }
 
 .user-menu__panel {
@@ -193,397 +186,63 @@ a {
     top: calc(100% + var(--space-2));
     right: 0;
     z-index: var(--argos-z-menu);
-
-    display: grid;
     width: min(18rem, calc(100vw - (2 * var(--argos-shell-gutter))));
     padding: var(--space-2);
-
-    background: var(--argos-elevated-surface);
+    display: grid;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
+    background: var(--argos-elevated-surface);
     box-shadow: var(--argos-shadow-menu);
 }
-
-.user-menu__panel a,
-.user-menu__panel button {
-    width: 100%;
-    min-height: 2.5rem;
-    padding: var(--space-2) var(--space-3);
-    color: var(--color-text);
-    text-align: left;
-    text-decoration: none;
-    border-radius: var(--radius-sm);
-}
-
-.user-menu__panel a:hover,
-.user-menu__panel button:hover { background: var(--color-surface-secondary); }
+.user-menu__panel a, .user-menu__panel button { width: 100%; min-height: 2.5rem; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); color: var(--color-text); text-align: left; }
+.user-menu__panel a:hover, .user-menu__panel button:hover { background: var(--color-surface-secondary); }
 .user-menu__panel a[aria-current="page"] { color: var(--color-brand-dark); background: var(--color-brand-light); font-weight: 700; }
 .user-menu__panel form { margin: var(--space-1) 0 0; padding-top: var(--space-1); border-top: 1px solid var(--color-border); }
 .user-menu__panel .button { justify-content: flex-start; font-weight: 600; }
 
-/* Conteúdo principal */
-
 .page-container.app-shell__main {
-    width: min(calc(100% - (2 * var(--argos-shell-gutter))), var(--argos-shell-max-width));
+    width: min(100% - (2 * var(--argos-shell-gutter)), var(--argos-shell-max-width));
+    min-width: 0;
     margin-inline: auto;
     padding-block: var(--argos-shell-space-block) var(--space-12);
-
-    flex: 1;
-}
-.page-heading {
-    margin-bottom: 28px;
-
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 24px;
+    flex: 1 0 auto;
 }
 
-.page-heading__eyebrow {
-    display: inline-block;
-    margin-bottom: 8px;
-
-    color: var(--color-accent-600);
-
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.page-heading h1 {
-    margin: 0;
-
-    font-size: clamp(28px, 4vw, 38px);
-    line-height: 1.15;
-    letter-spacing: -0.03em;
-}
-
-.page-heading p {
-    margin: 10px 0 0;
-
-    color: var(--color-text-secondary);
-    font-size: 15px;
-}
-
-.record-counter {
-    min-width: 118px;
-    padding: 13px 18px;
-
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 6px;
-
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background-color: var(--color-surface);
-    box-shadow: var(--shadow-sm);
-}
-
-.record-counter strong {
-    font-size: 22px;
-}
-
-.record-counter span {
-    color: var(--color-text-secondary);
-    font-size: 13px;
-}
-
-
-/* Painel */
-
-.content-panel {
-    overflow: hidden;
-
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    background-color: var(--color-surface);
-    box-shadow: var(--shadow-md);
-}
-
-.content-panel__header {
-    padding: 22px 24px;
-
-    border-bottom: 1px solid var(--color-border);
-}
-
-.content-panel__header h2 {
-    margin: 0;
-
-    font-size: 17px;
-}
-
-.content-panel__header p {
-    margin: 5px 0 0;
-
-    color: var(--color-text-secondary);
-    font-size: 13px;
-}
-
-
-/* Tabela */
-
-.table-container {
-    overflow-x: auto;
-}
-
-.camera-table {
-    width: 100%;
-    min-width: 1120px;
-
-    border-collapse: collapse;
-}
-
-.camera-table th,
-.camera-table td {
-    padding: 16px 20px;
-
-    border-bottom: 1px solid #edf1f5;
-
-    text-align: left;
-    vertical-align: middle;
-    white-space: nowrap;
-}
-
-.camera-table th {
-    background-color: #f8fafc;
-    color: #475467;
-
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.035em;
-    text-transform: uppercase;
-}
-
-.camera-table td {
-    color: #344054;
-    font-size: 14px;
-}
-
-.camera-table tbody tr {
-    transition: background-color 140ms ease;
-}
-
-.camera-table tbody tr:hover {
-    background-color: #f8fbff;
-}
-
-.camera-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-
-/* Identificação da câmera */
-
-.camera-identification {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-}
-
-.camera-identification__icon {
-    width: 34px;
-    height: 34px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-
-    border-radius: 9px;
-    background-color: var(--color-accent-100);
-    color: var(--color-accent-600);
-
-    font-size: 13px;
-    font-weight: 800;
-}
-
-.camera-identification strong {
-    color: var(--color-text);
-}
-
-
-/* Informações técnicas */
-
-.monospace {
-    font-family:
-        "SFMono-Regular",
-        Consolas,
-        "Liberation Mono",
-        monospace;
-
-    font-variant-numeric: tabular-nums;
-}
-
-.vlan-badge {
-    display: inline-flex;
-    align-items: center;
-
-    padding: 5px 9px;
-
-    border-radius: 999px;
-    background-color: #eef4ff;
-    color: #3538cd;
-
-    font-size: 12px;
-    font-weight: 700;
-}
-
-
-/* Status */
-
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-
-    padding: 6px 10px;
-
-    border-radius: 999px;
-
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1;
-}
-
-.status-dot {
-    width: 7px;
-    height: 7px;
-
-    flex-shrink: 0;
-
-    border-radius: 50%;
-    background-color: currentColor;
-}
-
-.status-badge--online {
-    background-color: #dcfae6;
-    color: #067647;
-}
-
-.status-badge--offline {
-    background-color: #fee4e2;
-    color: #b42318;
-}
-
-.status-badge--unknown {
-    background-color: #f2f4f7;
-    color: #667085;
-}
-
-
-/* Data do status */
-
-.status-date {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-
-    font-variant-numeric: tabular-nums;
-}
-
-.status-date span {
-    color: var(--color-text);
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.status-date small {
-    color: var(--color-text-secondary);
-    font-size: 12px;
-}
-
-.empty-value {
-    color: #98a2b3;
-}
-
-
-/* Estado vazio */
-
-.empty-state {
-    padding: 64px 24px;
-
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    background-color: var(--color-surface);
-    box-shadow: var(--shadow-md);
-
-    text-align: center;
-}
-
-.empty-state__icon {
-    width: 52px;
-    height: 52px;
-    margin: 0 auto 18px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 14px;
-    background-color: var(--color-accent-100);
-    color: var(--color-accent-600);
-
-    font-size: 20px;
-    font-weight: 800;
-}
-
-.empty-state h2 {
-    margin: 0;
-
-    font-size: 20px;
-}
-
-.empty-state p {
-    max-width: 440px;
-    margin: 10px auto 0;
-
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-}
-
-
-/* Rodapé */
-
-.app-footer {
-    border-top: 1px solid var(--color-border);
-    color: var(--color-text-secondary);
-    background-color: var(--color-surface);
-    font-size: var(--font-size-xs);
-}
-
-.app-footer__content {
-    width: min(calc(100% - (2 * var(--argos-shell-gutter))), var(--argos-shell-max-width));
-    margin-inline: auto;
-    padding-block: var(--space-4);
-}
-
+.page-heading { margin-bottom: var(--space-8); display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-6); }
+.page-heading h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.375rem); line-height: 1.15; letter-spacing: -.03em; }
+.page-heading p { margin: var(--space-2) 0 0; color: var(--color-text-secondary); font-size: .9375rem; }
+
+.app-footer { border-top: 1px solid var(--color-border); color: var(--color-text-secondary); background: var(--color-surface); font-size: var(--font-size-xs); }
+.app-footer__content { width: min(100% - (2 * var(--argos-shell-gutter)), var(--argos-shell-max-width)); margin-inline: auto; padding-block: var(--space-4); }
 .app-footer p { margin: 0; }
 
+/* A rolagem da tabela é um contexto local: sua largura operacional não participa do documento. */
+.table-region { min-width: 0; max-width: 100%; overflow-x: auto; contain: inline-size; }
 
-/* Responsividade global */
+@media (max-width: 64rem) {
+    .app-layout { grid-template-columns: 14.5rem minmax(0, 1fr); }
+    .app-sidebar__content { padding-inline: var(--space-2); }
+    .main-navigation__link[aria-current="page"]::before { left: -.5rem; }
+}
 
 @media (max-width: 56rem) {
-    .app-header__content { flex-wrap: wrap; padding-block: var(--space-2); }
-    .brand { min-height: var(--argos-nav-min-height); }
-    .main-navigation { order: 3; width: 100%; padding-top: var(--space-2); border-top: 1px solid var(--argos-header-border); }
+    .app-layout { display: block; }
+    .app-sidebar { position: static; width: 100%; height: auto; }
+    .app-sidebar__content { min-height: 0; padding: var(--space-3) var(--argos-shell-gutter); gap: var(--space-3); }
+    .brand { padding-inline: 0; }
+    .main-navigation { display: flex; max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; scrollbar-width: thin; }
+    .main-navigation__link { flex: 0 0 auto; }
+    .main-navigation__link[aria-current="page"]::before { top: auto; right: var(--space-3); bottom: 0; left: var(--space-3); width: auto; height: .1875rem; border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+
 }
 
 @media (max-width: 44rem) {
-    .app-header__content { width: min(calc(100% - (2 * var(--argos-shell-gutter))), var(--argos-shell-max-width)); gap: var(--space-3); }
-    .brand__text small { display: none; }
-    .main-navigation { overflow-x: auto; overscroll-behavior-inline: contain; scrollbar-width: thin; }
-    .main-navigation__link { flex: 0 0 auto; }
+    .app-topbar__content { padding-inline: var(--space-4); }
+    .page-container.app-shell__main { width: min(100% - (2 * var(--space-4)), var(--argos-shell-max-width)); padding-block: var(--space-6) var(--space-8); }
     .page-heading { align-items: flex-start; flex-direction: column; }
-    .record-counter { justify-content: flex-start; }
-    .content-panel__header { padding: var(--space-4); }
-    .camera-table th, .camera-table td { padding: var(--space-3) var(--space-4); }
 }
 
 @media (max-width: 30rem) {
-    .portal-user__name { display: none; }
-    .user-menu__panel { right: 0; }
-    .app-shell__main { padding-bottom: var(--space-8); }
+    .brand__text small, .portal-user__name { display: none; }
+    .user-menu__panel { width: min(18rem, calc(100vw - (2 * var(--space-4)))); }
 }

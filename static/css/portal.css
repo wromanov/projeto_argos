@@ -1,45 +1,246 @@
-.portal-hero { max-width: var(--reading-max-width); margin-bottom: var(--space-8); }
-.portal-eyebrow { color: var(--color-info); font-size: var(--font-size-xs); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-.portal-hero h1 { margin: var(--space-2) 0; font-size: clamp(var(--font-size-2xl), 5vw, 2.5rem); }
-.portal-hero p, .portal-empty { color: var(--color-text-secondary); }
-.module-grid, .metric-grid, .dashboard-grid { display: grid; gap: var(--space-5); }
-.module-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.module-card { min-height: 10rem; padding: var(--space-6); display: flex; align-items: flex-start; gap: var(--space-5); }
-.module-card svg { flex: 0 0 auto; width: 2.75rem; fill: var(--color-info); }
-.module-card h2 { margin: 0 0 var(--space-2); font-size: var(--font-size-lg); }
-.module-card p { margin: 0; color: var(--color-text-secondary); }
-.portal-empty { padding: var(--space-5); margin-top: var(--space-6); }
-.metric-grid { grid-template-columns: repeat(auto-fit, minmax(8.75rem, 1fr)); margin-bottom: var(--space-6); }
-.metric-grid article, .portal-panel { padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
-.metric-grid span { display: block; color: var(--color-text-secondary); font-size: var(--font-size-sm); }
-.metric-grid strong { font-size: var(--font-size-2xl); }
-.dashboard-heading { display: flex; align-items: end; justify-content: space-between; }
-.dashboard-actions { display: flex; gap: var(--space-2); }
-.dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.portal-panel h2 { margin-top: 0; }
-.recent-item { display: grid; gap: var(--space-1); padding: var(--space-3) 0; color: var(--color-text); border-bottom: 1px solid var(--color-border); }
-.recent-item span { color: var(--color-text-secondary); font-size: var(--font-size-sm); }
-.forbidden-page { max-width: 38rem; margin: 5rem auto; text-align: center; }
-.forbidden-page > span { color: var(--color-info); font-size: 3.5rem; font-weight: 800; }
-@media (max-width: 56rem) { .module-grid, .dashboard-grid { grid-template-columns: 1fr; } .dashboard-heading { align-items: flex-start; flex-direction: column; } }
-@media (max-width: 32.5rem) { .module-card { padding: var(--space-5); } .dashboard-actions { width: 100%; flex-direction: column; } .dashboard-actions .button { width: 100%; } }
+.portal-hero {
+    max-width: var(--reading-max-width);
+    margin-bottom: var(--space-8);
+}
+
+.portal-hero p, .portal-empty {
+    color: var(--color-text-secondary);
+}
+
+.module-grid, .metric-grid, .dashboard-grid {
+    display: grid;
+    gap: var(--space-5);
+}
+
+.module-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.module-card {
+    min-height: 10rem;
+    padding: var(--space-6);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-5);
+}
+
+.module-card svg {
+    flex: 0 0 auto;
+    width: 2.75rem;
+    fill: var(--color-info);
+}
+
+.module-card h2 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-size-lg);
+}
+
+.module-card p {
+    margin: 0;
+    color: var(--color-text-secondary);
+}
+
+.portal-empty {
+    padding: var(--space-5);
+    margin-top: var(--space-6);
+}
+
+.metric-grid {
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: var(--space-4);
+    margin-bottom: 0;
+}
+
+.portal-panel {
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+}
+
+.metric-grid span {
+    display: block;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.metric-grid strong {
+    font-size: var(--font-size-2xl);
+}
+
+.dashboard-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+}
+
+.dashboard-actions {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.portal-panel h2 {
+    margin-top: 0;
+}
+
+.recent-item {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-3) 0;
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.recent-item span {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.forbidden-page {
+    max-width: 38rem;
+    margin: 5rem auto;
+    text-align: center;
+}
+
+.forbidden-page > span {
+    color: var(--color-info);
+    font-size: 3.5rem;
+    font-weight: 800;
+}
+
+@media (max-width: 56rem) {
+    .module-grid, .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 32.5rem) {
+    .module-card {
+        padding: var(--space-5);
+    }
+
+    .dashboard-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .dashboard-actions .button {
+        width: 100%;
+    }
+}
 
 /* Sprint 4C.1-C — dashboard */
-.dashboard-section { margin-top: var(--space-10); }
-.dashboard-section__heading { display: flex; align-items: end; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-4); }
-.dashboard-section__heading h2 { margin: var(--space-1) 0 0; font-size: var(--font-size-xl); }
-.dashboard-section__heading .portal-eyebrow { display: block; }
-.dashboard-metric { display: grid; min-height: 8.5rem; padding: var(--space-5); color: var(--color-text); text-decoration: none; }
-.dashboard-metric > span { color: var(--color-text-secondary); font-size: var(--font-size-sm); }
-.dashboard-metric > strong { align-self: center; font-size: clamp(var(--font-size-xl), 4vw, var(--font-size-2xl)); line-height: var(--line-height-tight); }
-.dashboard-metric > small { color: var(--color-text-muted); font-size: var(--font-size-xs); }
-.metric-card--link { border-color: var(--color-info-border); }
-.metric-card--link:hover { color: var(--color-text); border-color: var(--color-brand); box-shadow: var(--shadow-md); }
-.metric-card--link small::after { margin-left: var(--space-2); content: "→"; }
-.dashboard-metric--compact { min-height: auto; min-width: 12rem; }
-.portal-panel h3 { margin-top: 0; font-size: var(--font-size-lg); }
+.dashboard-section {
+    margin-top: var(--space-8);
+}
+
+.dashboard-section__heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
+}
+
+.metric-card.dashboard-metric {
+    display: grid;
+    grid-template-rows:
+        minmax(1.75rem, auto)
+        2.75rem
+        minmax(1rem, auto);
+    gap: var(--space-1);
+    min-height: 0;
+    padding: var(--space-3) var(--space-4);
+    color: var(--color-text);
+    text-align: left;
+    text-decoration: none;
+}
+
+.metric-card.dashboard-metric > span {
+    align-self: start;
+    justify-self: start;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-tight);
+}
+
+.metric-card.dashboard-metric > strong {
+    width: 100%;
+    align-self: center;
+    justify-self: center;
+    font-size: clamp(1.75rem, 2.4vw, 2rem);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    text-align: center;
+}
+
+.metric-card.dashboard-metric > small {
+    align-self: end;
+    justify-self: start;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-tight);
+}
+
+.metric-card--link {
+    border-color: var(--color-border);
+}
+
+.metric-card--link:hover {
+    color: var(--color-text);
+    border-color: var(--color-brand);
+    box-shadow: var(--shadow-sm);
+}
+
+.metric-card--link small::after {
+    margin-left: var(--space-2);
+    content: "→";
+}
+
+.metric-card.dashboard-metric--compact {
+    min-width: 11rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto;
+    align-items: center;
+    column-gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+}
+
+.metric-card.dashboard-metric--compact > span {
+    align-self: center;
+}
+
+.metric-card.dashboard-metric--compact > strong {
+    width: auto;
+    justify-self: end;
+    font-size: 1.75rem;
+}
+
+.portal-panel h3 {
+    margin-top: 0;
+    font-size: var(--font-size-lg);
+}
 
 @media (max-width: 44rem) {
-  .dashboard-section__heading { align-items: flex-start; flex-direction: column; }
-  .dashboard-metric--compact { width: 100%; }
+    .metric-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-section__heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .dashboard-metric--compact {
+        width: 100%;
+    }
 }

@@ -5,8 +5,8 @@
 {% block conteudo %}
 <section class="portal-hero dashboard-heading">
   <div>
-    <span class="portal-eyebrow">Visão operacional</span>
-    <h1>Dashboard</h1>
+    <span class="page-heading__eyebrow">Visão operacional</span>
+    <h1 class="page-heading__title">Dashboard</h1>
     <p>Situação operacional, monitoramento técnico e qualidade do inventário.</p>
   </div>
   <div class="dashboard-actions">
@@ -16,7 +16,7 @@
 </section>
 
 <section class="dashboard-section" aria-labelledby="inventario-heading">
-  <div class="dashboard-section__heading"><div><span class="portal-eyebrow">Visão patrimonial</span><h2 id="inventario-heading">Inventário</h2></div></div>
+  <div class="dashboard-section__heading"><div><span class="section-heading__eyebrow">Visão patrimonial</span><h2 class="section-heading__title" id="inventario-heading">Inventário</h2></div></div>
   <div class="metric-grid">
     <article class="metric-card dashboard-metric"><span>Total de câmeras</span><strong>{{ total_cameras }}</strong></article>
     <a class="metric-card metric-card--link dashboard-metric" href="{% url 'cameras:lista' %}?situacao_operacional=PRODUCAO"><span>Produção</span><strong>{{ cameras_producao }}</strong><small>Ver câmeras em produção</small></a>
@@ -27,7 +27,7 @@
 </section>
 
 <section class="dashboard-section" aria-labelledby="monitoramento-heading">
-  <div class="dashboard-section__heading"><div><span class="portal-eyebrow">Disponibilidade técnica</span><h2 id="monitoramento-heading">Monitoramento técnico</h2></div></div>
+  <div class="dashboard-section__heading"><div><span class="section-heading__eyebrow">Disponibilidade técnica</span><h2 class="section-heading__title" id="monitoramento-heading">Monitoramento técnico</h2></div></div>
   <div class="metric-grid">
     <article class="metric-card dashboard-metric"><span>Online</span><strong>{{ cameras_online }}</strong></article>
     <article class="metric-card dashboard-metric"><span>Offline</span><strong>{{ cameras_offline }}</strong></article>
@@ -36,7 +36,7 @@
 </section>
 
 <section class="dashboard-section" aria-labelledby="qualidade-heading">
-  <div class="dashboard-section__heading"><div><span class="portal-eyebrow">Consistência do inventário</span><h2 id="qualidade-heading">Qualidade cadastral</h2></div></div>
+  <div class="dashboard-section__heading"><div><span class="section-heading__eyebrow">Consistência do inventário</span><h2 class="section-heading__title" id="qualidade-heading">Qualidade cadastral</h2></div></div>
   <div class="metric-grid">
     <a class="metric-card metric-card--link dashboard-metric" href="{% url 'cameras:lista' %}?completude=COMPLETO"><span>Cadastro completo</span><strong>{{ cameras_completas }}</strong><small>Ver cadastros completos</small></a>
     <a class="metric-card metric-card--link dashboard-metric" href="{% url 'cameras:lista' %}?completude=INCOMPLETO"><span>Cadastro incompleto</span><strong>{{ cameras_incompletas }}</strong><small>Ver cadastros incompletos</small></a>
@@ -45,7 +45,7 @@
 </section>
 
 <section class="dashboard-section" aria-labelledby="atividade-heading">
-  <div class="dashboard-section__heading"><div><span class="portal-eyebrow">Acompanhamento recente</span><h2 id="atividade-heading">Atividade</h2></div><article class="metric-card dashboard-metric dashboard-metric--compact"><span>Atividades registradas</span><strong>{{ total_atividades }}</strong></article></div>
+  <div class="dashboard-section__heading"><div><span class="section-heading__eyebrow">Acompanhamento recente</span><h2 class="section-heading__title" id="atividade-heading">Atividade</h2></div><article class="metric-card dashboard-metric dashboard-metric--compact"><span>Atividades registradas</span><strong>{{ total_atividades }}</strong></article></div>
   <div class="dashboard-grid">
     <section class="portal-panel"><h3>Últimas atividades</h3>{% for atividade in atividades_recentes %}<a class="recent-item" href="{% url 'cameras:detalhe' atividade.camera.pk %}"><strong>{{ atividade.titulo }}</strong><span>{{ atividade.camera.nome }} · {{ atividade.ocorrida_em|date:"d/m/Y H:i" }}</span></a>{% empty %}<p class="portal-empty">Nenhuma atividade registrada.</p>{% endfor %}</section>
     <section class="portal-panel"><h3>Câmeras atualizadas recentemente</h3>{% for camera in cameras_recentes %}<a class="recent-item" href="{% url 'cameras:detalhe' camera.pk %}"><strong>{{ camera.nome }}</strong><span>{{ camera.get_situacao_operacional_display }} · {{ camera.atualizado_em|date:"d/m/Y H:i" }}</span></a>{% empty %}<p class="portal-empty">Nenhuma câmera cadastrada.</p>{% endfor %}</section>

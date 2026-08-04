@@ -37,6 +37,12 @@ class ListaCamerasFrontendTests(TestCase):
 
     def test_lista_camera_possui_filtros_e_tabela_acessiveis(self):
         response = self.client.get(reverse("cameras:lista"))
+        self.assertNotContains(response, 'aria-label="Navegação estrutural"')
+        self.assertContains(response, 'class="page-heading__title"')
+        self.assertContains(response, 'class="page-heading__eyebrow"')
+        self.assertContains(response, 'class="form-container filter-panel inventory-filters-card"')
+        self.assertContains(response, 'class="filter-panel__grid inventory-filter-form"')
+        self.assertContains(response, 'class="filter-panel__actions inventory-filter-actions"')
         self.assertContains(response, 'role="search"')
         self.assertContains(response, 'aria-label="Filtros do inventário de câmeras"')
         self.assertContains(response, 'for="id_situacao_operacional"')
@@ -108,3 +114,14 @@ class ListaCamerasFrontendTests(TestCase):
         self.assertContains(response, "situacao_operacional=PRODUCAO")
         self.assertContains(response, "completude=COMPLETO")
         self.assertContains(response, 'aria-current="page"')
+
+    def test_eventos_compartilham_contrato_visual_de_filtros_sem_alterar_parametros(self):
+        response = self.client.get(reverse("eventos:lista"), {"q": "camera", "categoria": "CAMERA", "origem": "WEB"})
+
+        self.assertContains(response, 'class="page-heading__eyebrow"')
+        self.assertContains(response, 'class="filter-panel event-filter-panel"')
+        self.assertContains(response, 'class="filter-panel__grid event-filters"')
+        self.assertContains(response, 'class="filter-panel__actions event-filter-actions"')
+        for parametro in ('name="q"', 'name="categoria"', 'name="origem"', 'name="data_inicial"', 'name="data_final"'):
+            self.assertContains(response, parametro)
+        self.assertContains(response, 'role="search"')

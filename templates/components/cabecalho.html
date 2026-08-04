@@ -1,11 +1,9 @@
-<header class="app-header">
-  <div class="app-header__content">
-    <a class="brand" href="{% url 'core:inicio' %}">
-      <span class="brand__symbol" aria-hidden="true">A</span>
-      <span class="brand__text"><strong>ARGOS</strong><small>Inventário e monitoramento de câmeras</small></span>
-    </a>
-
-    {% include "components/navegacao_principal.html" %}
+<header class="app-topbar">
+  <div class="app-topbar__content">
+    <div class="app-topbar__context">
+      <span class="app-topbar__label">Central operacional</span>
+      <strong>{% if current_namespace == 'core' and current_url_name == 'inicio' %}Início{% elif current_namespace == 'core' and current_url_name == 'dashboard' %}Dashboard{% elif current_namespace == 'cameras' %}Inventário{% elif current_namespace == 'eventos' %}Eventos{% elif current_namespace == 'usuarios' %}Minha conta{% else %}ARGOS{% endif %}</strong>
+    </div>
     {% include "components/menu_usuario.html" %}
   </div>
 </header>

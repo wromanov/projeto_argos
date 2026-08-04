@@ -1,16 +1,85 @@
 {% extends "base.html" %}{% load static %}
 {% block titulo %}Eventos de auditoria — ARGOS{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/eventos.css' %}">{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/eventos.css' %}">{% endblock %}
 {% block conteudo %}
-<section class="event-hero"><div><span class="event-eyebrow">Governança</span><h1>Eventos de auditoria</h1><p>Histórico imutável das ações relevantes no ARGOS.</p></div><strong>{{ total_eventos }} evento{{ total_eventos|pluralize }}</strong></section>
-<form method="get" class="event-filters">
-<label>Pesquisa<input name="q" value="{{ q }}" placeholder="Código, resumo, usuário ou câmera"></label>
-<label>Categoria<select name="categoria"><option value="">Todas</option>{% for value,label in categorias %}<option value="{{ value }}"{% if categoria_selecionada == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
-<label>Origem<select name="origem"><option value="">Todas</option>{% for value,label in origens %}<option value="{{ value }}"{% if origem_selecionada == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
-<label>De<input type="date" name="data_inicial" value="{{ data_inicial }}"></label><label>Até<input type="date" name="data_final" value="{{ data_final }}"></label>
-<button class="button button--primary" type="submit">Filtrar</button><a class="button button--secondary" href="{% url 'eventos:lista' %}">Limpar</a>
-</form>
+<section class="event-hero">
+    <div><span class="page-heading__eyebrow">Governança</span>
+        <h1 class="page-heading__title">Eventos de auditoria</h1>
+        <p>Histórico imutável das ações relevantes no ARGOS.</p></div>
+    <strong>{{ total_eventos }} evento{{ total_eventos|pluralize }}</strong></section>
+<section class="filter-panel event-filter-panel" aria-labelledby="filtros-eventos-heading">
+    <div class="filter-panel__header"><span class="filter-panel__eyebrow">Refine a consulta</span>
+        <h2 class="filter-panel__title" id="filtros-eventos-heading">Filtros de eventos</h2></div>
+    <form method="get" class="filter-panel__grid event-filters" role="search"
+          aria-label="Filtros de eventos de auditoria">
+        <div class="form-field event-filter-search"><label class="form-label" for="id_event_q">Pesquisar</label><input
+                id="id_event_q" type="search" name="q" value="{{ q }}" placeholder="Código, resumo, usuário ou câmera">
+        </div>
+        <div class="form-field">
+            <label class="form-label" for="id_event_categoria">Categoria</label>
+            <select id="id_event_categoria" name="categoria">
+                <option value="">Todas</option>
+                {% for value, label in categorias %}
+                <option value="{{ value }}" {% if categoria_selecionada == value %} selected{% endif %}>
+                    {{ label }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-field">
+            <label class="form-label" for="id_event_origem">Origem</label>
+            <select id="id_event_origem" name="origem">
+                <option value="">Todas</option>
+                {% for value, label in origens %}
+                <option value="{{ value }}" {% if origem_selecionada == value %} selected{% endif %}>
+                    {{ label }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-field"><label class="form-label" for="id_event_data_inicial">De</label><input
+                id="id_event_data_inicial" type="date" name="data_inicial" value="{{ data_inicial }}"></div>
+        <div class="form-field"><label class="form-label" for="id_event_data_final">Até</label><input
+                id="id_event_data_final" type="date" name="data_final" value="{{ data_final }}"></div>
+        <div class="filter-panel__actions event-filter-actions">
+            <button class="button button--primary" type="submit">Filtrar</button>
+            <a class="button button--secondary" href="{% url 'eventos:lista' %}">Limpar filtros</a></div>
+    </form>
+</section>
 {% if periodo_invalido %}<p class="event-alert">Informe um período válido.</p>{% endif %}
-<section class="event-panel"><div class="event-table-wrap"><table class="event-table"><thead><tr><th>Data</th><th>Evento</th><th>Categoria</th><th>Usuário</th><th>Entidade</th><th>Origem</th></tr></thead><tbody>{% for evento in eventos %}<tr><td>{{ evento.ocorrido_em|date:"d/m/Y H:i:s" }}</td><td><a href="{% url 'eventos:detalhe' evento.pk %}"><strong>{{ evento.codigo }}</strong><small>{{ evento.resumo }}</small></a></td><td><span class="event-badge event-badge--{{ evento.categoria|lower }}">{{ evento.get_categoria_display }}</span></td><td>{{ evento.usuario_username|default:"—" }}</td><td>{{ evento.entidade_descricao|default:"—" }}</td><td>{{ evento.get_origem_display }}</td></tr>{% empty %}<tr><td colspan="6" class="event-empty">Nenhum evento encontrado.</td></tr>{% endfor %}</tbody></table></div></section>
+<section class="event-panel">
+    <div class="event-table-wrap">
+        <table class="event-table">
+            <thead>
+            <tr>
+                <th>Data</th>
+                <th>Evento</th>
+                <th>Categoria</th>
+                <th>Usuário</th>
+                <th>Entidade</th>
+                <th>Origem</th>
+            </tr>
+            </thead>
+            <tbody>{% for evento in eventos %}
+            <tr>
+                <td>{{ evento.ocorrido_em|date:"d/m/Y H:i:s" }}</td>
+                <td><a href="{% url 'eventos:detalhe' evento.pk %}"><strong>{{ evento.codigo }}</strong><small>{{ evento.resumo }}</small></a></td>
+                <td><span class="event-badge event-badge--{{ evento.categoria|lower }}">{{ evento.get_categoria_display }}</span>
+                </td>
+                <td>{{ evento.usuario_username|default:"—" }}</td>
+                <td>{{ evento.entidade_descricao|default:"—" }}</td>
+                <td>{{ evento.get_origem_display }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="event-empty">Nenhum evento encontrado.</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 {% include "cameras/eventos/_paginacao.html" %}
 {% endblock %}

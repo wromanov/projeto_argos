@@ -5,20 +5,12 @@
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/inventario.css' %}"><link rel="stylesheet" href="{% static 'css/governanca.css' %}">{% endblock %}
 
 {% block conteudo %}
-{% url 'core:inicio' as inicio_url %}
 {% url 'cameras:lista' as lista_url %}
 {% url 'cameras:criar' as criar_url %}
-<nav class="inventory-breadcrumb" aria-label="Navegação estrutural">
-  <ol class="breadcrumb__list">
-    <li class="breadcrumb__item"><a class="breadcrumb__link" href="{{ inicio_url }}">Início</a></li>
-    <li class="breadcrumb__item"><span class="breadcrumb__current" aria-current="page">Inventário</span></li>
-  </ol>
-</nav>
-
 <section class="inventory-hero inventory-page-header">
   <div>
-    <span class="inventory-eyebrow">Inventário CFTV</span>
-    <h1>Câmeras</h1>
+    <span class="page-heading__eyebrow">Inventário CFTV</span>
+    <h1 class="page-heading__title">Câmeras</h1>
     <p>Consulte, filtre e acompanhe os equipamentos cadastrados.</p>
   </div>
   <div class="inventory-hero__actions">
@@ -27,9 +19,9 @@
   </div>
 </section>
 
-<section class="form-container inventory-filters-card" aria-labelledby="filtros-heading">
-  <div class="inventory-filters-card__header"><div><span class="inventory-eyebrow">Refine a consulta</span><h2 id="filtros-heading">Filtros do inventário</h2></div></div>
-  <form class="form-grid inventory-filter-form" method="get" role="search" aria-label="Filtros do inventário de câmeras">
+<section class="form-container filter-panel inventory-filters-card" aria-labelledby="filtros-heading">
+  <div class="filter-panel__header inventory-filters-card__header"><span class="filter-panel__eyebrow">Refine a consulta</span><h2 class="filter-panel__title" id="filtros-heading">Filtros do inventário</h2></div>
+  <form class="filter-panel__grid inventory-filter-form" method="get" role="search" aria-label="Filtros do inventário de câmeras">
     <div class="form-field form-field--search"><label class="form-label" for="id_q">Pesquisar</label><input id="id_q" type="search" name="q" value="{{ q }}" placeholder="Nome, patrimônio, IP ou fabricante"></div>
     <div class="form-field"><label class="form-label" for="id_status">Status técnico</label><select id="id_status" name="status"><option value="">Todos</option><option value="ONLINE"{% if status_selecionado == "ONLINE" %} selected{% endif %}>Online</option><option value="OFFLINE"{% if status_selecionado == "OFFLINE" %} selected{% endif %}>Offline</option><option value="NAO_VERIFICADO"{% if status_selecionado == "NAO_VERIFICADO" %} selected{% endif %}>Não verificado</option></select></div>
     <div class="form-field"><label class="form-label" for="id_situacao_operacional">Situação operacional</label><select id="id_situacao_operacional" name="situacao_operacional"><option value="">Todas</option>{% for valor, rotulo in situacoes_operacionais %}<option value="{{ valor }}"{% if situacao_selecionada == valor %} selected{% endif %}>{{ rotulo }}</option>{% endfor %}</select></div>
@@ -39,7 +31,7 @@
     <div class="form-field"><label class="form-label" for="id_fabricante">Fabricante</label><select id="id_fabricante" name="fabricante"><option value="">Todos</option>{% for fabricante in fabricantes %}<option value="{{ fabricante }}"{% if fabricante_selecionado == fabricante %} selected{% endif %}>{{ fabricante }}</option>{% endfor %}</select></div>
     <div class="form-field"><label class="form-label" for="id_vlan">VLAN</label><select id="id_vlan" name="vlan"><option value="">Todas</option>{% for vlan in vlans %}<option value="{{ vlan }}"{% if vlan_selecionada == vlan|stringformat:"s" %} selected{% endif %}>{{ vlan }}</option>{% endfor %}</select></div>
     <div class="form-field"><label class="form-label" for="id_farm">Farm</label><select id="id_farm" name="farm"><option value="">Todas</option>{% for farm in farms %}<option value="{{ farm }}"{% if farm_selecionada == farm %} selected{% endif %}>{{ farm }}</option>{% endfor %}</select></div>
-    <div class="form-actions inventory-filter-actions"><button class="button button--primary" type="submit">Filtrar</button><a class="button button--secondary" href="{{ lista_url }}">Limpar filtros</a></div>
+    <div class="filter-panel__actions inventory-filter-actions"><button class="button button--primary" type="submit">Filtrar</button><a class="button button--secondary" href="{{ lista_url }}">Limpar filtros</a></div>
   </form>
 </section>
 

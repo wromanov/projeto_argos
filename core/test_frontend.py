@@ -82,6 +82,11 @@ class BaseAndPortalFrontendTests(TestCase):
         self.assertContains(response, 'href="#conteudo-principal"')
         self.assertContains(response, 'id="conteudo-principal"')
         self.assertContains(response, 'class="app-shell"')
+        self.assertContains(response, 'class="app-layout"')
+        self.assertContains(response, 'class="app-sidebar"')
+        self.assertContains(response, 'class="app-topbar"')
+        self.assertNotContains(response, 'class="app-sidebar__user"')
+        self.assertContains(response, 'class="user-menu"')
         self.assertContains(response, 'class="page-container app-shell__main"')
         self.assertContains(response, 'aria-live="polite"')
         self.assertContains(response, '<form method="post" action="/logout/"', html=False)
@@ -115,6 +120,10 @@ class BaseAndPortalFrontendTests(TestCase):
     def test_dashboard_separa_inventario_monitoramento_e_qualidade(self):
         self.login_monitoramento()
         response = self.client.get(reverse("core:dashboard"))
+        self.assertContains(response, 'class="page-heading__title"')
+        self.assertContains(response, 'class="page-heading__eyebrow"')
+        self.assertEqual(response.content.count(b'class="section-heading__eyebrow"'), 4)
+        self.assertEqual(response.content.count(b'class="section-heading__title"'), 4)
         self.assertContains(response, 'id="inventario-heading"')
         self.assertContains(response, "Monitoramento técnico")
         self.assertContains(response, "Qualidade cadastral")
@@ -140,6 +149,7 @@ class BaseAndPortalFrontendTests(TestCase):
         response = self.client.get(reverse("core:inicio"))
         for template_name in (
             "components/cabecalho.html",
+            "components/sidebar.html",
             "components/navegacao_principal.html",
             "components/menu_usuario.html",
             "components/mensagens.html",
@@ -147,6 +157,16 @@ class BaseAndPortalFrontendTests(TestCase):
             self.assertTemplateUsed(response, template_name)
         self.assertContains(response, 'class="main-navigation"')
         self.assertContains(response, '<form method="post" action="/logout/"', html=False)
+
+    def test_sidebar_preserva_links_condicionais_por_permissao(self):
+        self.client.force_login(self.user)
+        response = self.client.get(reverse("core:inicio"))
+
+        self.assertContains(response, 'class="app-sidebar"')
+        self.assertContains(response, 'href="/"')
+        self.assertNotContains(response, 'href="/dashboard/"')
+        self.assertNotContains(response, 'href="/cameras/"')
+        self.assertNotContains(response, 'href="/eventos/"')
 
     def test_dashboard_diferencia_cards_clicaveis_e_informativos(self):
         self.login_monitoramento()
