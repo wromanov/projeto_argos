@@ -74,7 +74,7 @@ class NormalizacaoCameraModeloTests(TestCase):
             "C?mera instalada acima da porta principal."
         )
         observacoes = (
-            "Validar posicionamento ap?s manuten??o."
+            "Validar posicionamento após manutenção."
         )
 
         camera = Camera.objects.create(
@@ -169,7 +169,7 @@ class NormalizacaoCameraFormularioTests(TestCase):
         )
 
         observacoes = (
-            "Validar novamente ap?s manuten??o."
+            "Validar novamente após manutenção."
         )
 
         form = CameraEdicaoForm(
