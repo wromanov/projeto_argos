@@ -330,31 +330,6 @@ class CameraBaseForm(forms.ModelForm):
                 if hasattr(self.instance, campo):
                     setattr(self.instance, campo, valor)
 
-            situacao = cleaned.get(
-                "situacao_operacional",
-                self.instance.situacao_operacional,
-            )
-
-            faltantes = self.instance.campos_incompletos(
-                situacao
-            )
-
-            if faltantes:
-                rotulos = ", ".join(
-                    str(
-                        self.instance
-                        ._meta
-                        .get_field(campo)
-                        .verbose_name
-                    )
-                    for campo in faltantes
-                )
-
-                raise forms.ValidationError(
-                    "Complete os seguintes campos "
-                    f"antes de continuar: {rotulos}."
-                )
-
         return cleaned
 
 

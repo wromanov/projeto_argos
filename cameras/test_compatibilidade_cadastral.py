@@ -1,7 +1,7 @@
-﻿from django.test import TestCase
+from django.test import TestCase
 
 from .catalogos import VALOR_PERSONALIZADO
-from .forms import CameraEdicaoForm
+from .forms import CameraCriacaoForm, CameraEdicaoForm
 from .models import Camera
 
 
@@ -222,4 +222,65 @@ class CompatibilidadeCadastralTests(TestCase):
 
         self.assertIsNone(
             camera.retencao_esperada_dias,
+        )
+
+    def test_criacao_permite_producao_com_cadastro_incompleto(self):
+        form = CameraCriacaoForm(
+            data=self.dados_formulario(
+                situacao_operacional=(
+                    Camera.SituacaoOperacional.PRODUCAO
+                ),
+            )
+        )
+
+        self.assertTrue(
+            form.is_valid(),
+            form.errors.as_json(),
+        )
+
+        camera = form.save(
+            commit=False
+        )
+
+        self.assertEqual(
+            camera.situacao_operacional,
+            Camera.SituacaoOperacional.PRODUCAO,
+        )
+
+        self.assertFalse(
+            camera.cadastro_completo
+        )
+
+        self.assertTrue(
+            camera.campos_incompletos()
+        )
+
+
+    def test_edicao_permite_salvar_camera_incompleta(self):
+        camera = self.criar_camera(
+            situacao_operacional=(
+                Camera.SituacaoOperacional.PRODUCAO
+            ),
+        )
+
+        form = CameraEdicaoForm(
+            data=self.dados_formulario(),
+            instance=camera,
+        )
+
+        self.assertTrue(
+            form.is_valid(),
+            form.errors.as_json(),
+        )
+
+        camera = form.save(
+            commit=False
+        )
+
+        self.assertFalse(
+            camera.cadastro_completo
+        )
+
+        self.assertTrue(
+            camera.campos_incompletos()
         )
