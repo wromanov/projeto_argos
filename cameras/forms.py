@@ -1,5 +1,10 @@
 from django import forms
 
+from .catalogos import (
+    FARM_CHOICES,
+    FARMS_CATALOGO,
+    VALOR_PERSONALIZADO,
+)
 from .models import AtividadeCamera, Camera
 from .validadores import normalizar_mac, normalizar_texto_cadastral
 
@@ -12,7 +17,32 @@ CAMPOS_CAMERA = (
 )
 
 
+class EscolhaTextoNormalizadaField(forms.ChoiceField):
+    """
+    ChoiceField que normaliza texto antes de validar as choices.
+
+    Mantem compatibilidade com entradas legadas contendo
+    espacos nas extremidades ou diferenca de caixa.
+    """
+
+    def clean(self, value):
+        if value not in self.empty_values:
+            value = normalizar_texto_cadastral(value)
+
+        return super().clean(value)
+
+
 class CameraBaseForm(forms.ModelForm):
+    farm_personalizado = forms.CharField(
+        required=False,
+        label="Farm personalizada",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "autocomplete": "off",
+            }
+        ),
+    )
     class Meta:
         model = Camera
         fields = CAMPOS_CAMERA
@@ -27,11 +57,78 @@ class CameraBaseForm(forms.ModelForm):
             for campo in CAMPOS_CAMERA
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["farm"] = EscolhaTextoNormalizadaField(
+            required=False,
+            label="Farm",
+            choices=FARM_CHOICES,
+            widget=forms.Select(
+                attrs={
+                    "class": "form-control",
+                    "data-farm-select": "",
+                    "aria-controls": (
+                        "farm-personalizado-container"
+                    ),
+                }
+            ),
+        )
+
+        if self.is_bound:
+            return
+
+        valor_atual = normalizar_texto_cadastral(
+            self.initial.get("farm")
+        )
+
+        if not valor_atual:
+            self.initial["farm"] = ""
+            self.initial["farm_personalizado"] = ""
+            return
+
+        if valor_atual in FARMS_CATALOGO:
+            self.initial["farm"] = valor_atual
+            self.initial["farm_personalizado"] = ""
+            return
+
+        self.initial["farm"] = VALOR_PERSONALIZADO
+        self.initial["farm_personalizado"] = valor_atual
+
     def clean_mac(self):
         return normalizar_mac(self.cleaned_data.get("mac"))
 
     def clean(self):
         cleaned = super().clean()
+
+        farm_selecionada = cleaned.get("farm")
+
+        if farm_selecionada == VALOR_PERSONALIZADO:
+            farm_personalizada = normalizar_texto_cadastral(
+                cleaned.get("farm_personalizado")
+            )
+
+            if not farm_personalizada:
+                self.add_error(
+                    "farm_personalizado",
+                    "Informe a farm personalizada.",
+                )
+                cleaned["farm"] = ""
+
+            elif farm_personalizada == "PERSONALIZADO":
+                self.add_error(
+                    "farm_personalizado",
+                    "Informe o nome real da farm.",
+                )
+                cleaned["farm"] = ""
+
+            else:
+                cleaned["farm"] = farm_personalizada
+
+        elif farm_selecionada is not None:
+            cleaned["farm"] = normalizar_texto_cadastral(
+                farm_selecionada
+            )
 
         for campo in Camera.CAMPOS_CAIXA_ALTA:
             if campo not in cleaned:
