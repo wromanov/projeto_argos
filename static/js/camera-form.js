@@ -3,13 +3,27 @@
 
     const VALOR_PERSONALIZADO = "__PERSONALIZADO__";
 
-    function inicializarFarmPersonalizada() {
+    const CAMPOS_PERSONALIZADOS = [
+        {
+            select: "[data-farm-select]",
+            container: "[data-farm-personalizado]",
+        },
+        {
+            select: "[data-codec-select]",
+            container: "[data-codec-personalizado]",
+        },
+    ];
+
+    function inicializarCampoPersonalizado({
+        select: seletorSelect,
+        container: seletorContainer,
+    }) {
         const select = document.querySelector(
-            "[data-farm-select]"
+            seletorSelect
         );
 
         const container = document.querySelector(
-            "[data-farm-personalizado]"
+            seletorContainer
         );
 
         if (!select || !container) {
@@ -20,7 +34,9 @@
             "input"
         );
 
-        function atualizarInterface({ focar = false } = {}) {
+        function atualizarInterface({
+            focar = false,
+        } = {}) {
             const personalizado = (
                 select.value === VALOR_PERSONALIZADO
             );
@@ -56,14 +72,20 @@
         atualizarInterface();
     }
 
+    function inicializarFormularioCamera() {
+        CAMPOS_PERSONALIZADOS.forEach(
+            inicializarCampoPersonalizado
+        );
+    }
+
     if (
         document.readyState === "loading"
     ) {
         document.addEventListener(
             "DOMContentLoaded",
-            inicializarFarmPersonalizada
+            inicializarFormularioCamera
         );
     } else {
-        inicializarFarmPersonalizada();
+        inicializarFormularioCamera();
     }
 })();

@@ -24,3 +24,23 @@ FARM_CHOICES = (
         "PERSONALIZADO",
     ),
 )
+
+CODECS_CATALOGO = (
+    "H.263",
+    "H.264",
+    "H.265",
+    "H.265+",
+)
+
+
+CODEC_CHOICES = (
+    ("", "---------"),
+    *(
+        (valor, valor)
+        for valor in CODECS_CATALOGO
+    ),
+    (
+        VALOR_PERSONALIZADO,
+        "PERSONALIZADO",
+    ),
+)

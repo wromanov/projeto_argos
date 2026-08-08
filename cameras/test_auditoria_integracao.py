@@ -16,7 +16,7 @@ class AuditoriaIntegracaoTests(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(username="integracao", password="Senha-segura-123", first_name="Nome", last_name="Teste", email="teste@example.com")
         self.user.user_permissions.add(*self._permissoes("add_camera", "change_camera", "view_camera", "add_atividadecamera", "change_atividadecamera", "view_atividadecamera", "desativar_camera", "reativar_camera"))
-        self.camera = Camera.objects.create(nome="CAM-INT", fabricante="Axis", modelo="M", serial="SER-INT", mac="AA:BB:CC:DD:EE:99", tipo="DOME", terminal="T1", pavimento="1", setor="S", ambiente="A", ip="10.22.0.1", mascara_subrede="255.255.255.0", gateway="10.22.0.254", vlan=100, farm="STVV", retencao_esperada_dias=30, codec="H265")
+        self.camera = Camera.objects.create(nome="CAM-INT", fabricante="Axis", modelo="M", serial="SER-INT", mac="AA:BB:CC:DD:EE:99", tipo="DOME", terminal="T1", pavimento="1", setor="S", ambiente="A", ip="10.22.0.1", mascara_subrede="255.255.255.0", gateway="10.22.0.254", vlan=100, farm="STVV", retencao_esperada_dias=30, codec="H.265")
         self.factory = RequestFactory()
 
     def _permissoes(self, *codenames):
@@ -24,7 +24,7 @@ class AuditoriaIntegracaoTests(TestCase):
         return Permission.objects.filter(codename__in=codenames, content_type__app_label="cameras")
 
     def dados_camera(self, **kwargs):
-        dados = {"nome": "CAM-NOVA", "fabricante": "Axis", "modelo": "M2", "serial": "SER-NOVA", "mac": "AA:BB:CC:DD:EE:98", "tipo": "DOME", "terminal": "T1", "pavimento": "1", "setor": "S", "ambiente": "A", "ip": "10.22.0.2", "mascara_subrede": "255.255.255.0", "gateway": "10.22.0.254", "vlan": "101", "farm": "STVV", "retencao_esperada_dias": "30", "codec": "H265", "origem_cadastro": "MANUAL", "situacao_operacional": "PRODUCAO"}
+        dados = {"nome": "CAM-NOVA", "fabricante": "Axis", "modelo": "M2", "serial": "SER-NOVA", "mac": "AA:BB:CC:DD:EE:98", "tipo": "DOME", "terminal": "T1", "pavimento": "1", "setor": "S", "ambiente": "A", "ip": "10.22.0.2", "mascara_subrede": "255.255.255.0", "gateway": "10.22.0.254", "vlan": "101", "farm": "STVV", "retencao_esperada_dias": "30", "codec": "H.265", "origem_cadastro": "MANUAL", "situacao_operacional": "PRODUCAO"}
         dados.update(kwargs); return dados
 
     def test_01_login_sucesso(self):

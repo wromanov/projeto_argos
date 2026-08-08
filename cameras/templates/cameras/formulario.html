@@ -268,6 +268,14 @@
           {% include "components/campo_formulario.html" with field=form.retencao_esperada_dias field_class="camera-form-field--technical" %}
 
           {% include "components/campo_formulario.html" with field=form.codec field_class="camera-form-field--technical" %}
+
+          <div
+            id="codec-personalizado-container"
+            data-codec-personalizado
+            {% if form.codec.value != "__PERSONALIZADO__" %}hidden{% endif %}
+          >
+            {% include "components/campo_formulario.html" with field=form.codec_personalizado %}
+          </div>
         </div>
       </fieldset>
 

@@ -1,6 +1,8 @@
 from django import forms
 
 from .catalogos import (
+    CODEC_CHOICES,
+    CODECS_CATALOGO,
     FARM_CHOICES,
     FARMS_CATALOGO,
     VALOR_PERSONALIZADO,
@@ -43,6 +45,17 @@ class CameraBaseForm(forms.ModelForm):
             }
         ),
     )
+
+    codec_personalizado = forms.CharField(
+        required=False,
+        label="Codec personalizado",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "autocomplete": "off",
+            }
+        ),
+    )
     class Meta:
         model = Camera
         fields = CAMPOS_CAMERA
@@ -75,25 +88,57 @@ class CameraBaseForm(forms.ModelForm):
             ),
         )
 
-        if self.is_bound:
-            return
+        self.fields["codec"] = EscolhaTextoNormalizadaField(
+            required=False,
+            label="Codec",
+            choices=CODEC_CHOICES,
+            widget=forms.Select(
+                attrs={
+                    "class": "form-control",
+                    "data-codec-select": "",
+                    "aria-controls": (
+                        "codec-personalizado-container"
+                    ),
+                }
+            ),
+        )
 
+        if not self.is_bound:
+            self._configurar_valor_catalogado(
+                campo="farm",
+                campo_personalizado="farm_personalizado",
+                catalogo=FARMS_CATALOGO,
+            )
+
+            self._configurar_valor_catalogado(
+                campo="codec",
+                campo_personalizado="codec_personalizado",
+                catalogo=CODECS_CATALOGO,
+            )
+
+    def _configurar_valor_catalogado(
+        self,
+        *,
+        campo,
+        campo_personalizado,
+        catalogo,
+    ):
         valor_atual = normalizar_texto_cadastral(
-            self.initial.get("farm")
+            self.initial.get(campo)
         )
 
         if not valor_atual:
-            self.initial["farm"] = ""
-            self.initial["farm_personalizado"] = ""
+            self.initial[campo] = ""
+            self.initial[campo_personalizado] = ""
             return
 
-        if valor_atual in FARMS_CATALOGO:
-            self.initial["farm"] = valor_atual
-            self.initial["farm_personalizado"] = ""
+        if valor_atual in catalogo:
+            self.initial[campo] = valor_atual
+            self.initial[campo_personalizado] = ""
             return
 
-        self.initial["farm"] = VALOR_PERSONALIZADO
-        self.initial["farm_personalizado"] = valor_atual
+        self.initial[campo] = VALOR_PERSONALIZADO
+        self.initial[campo_personalizado] = valor_atual
 
     def clean_mac(self):
         return normalizar_mac(self.cleaned_data.get("mac"))
@@ -128,6 +173,35 @@ class CameraBaseForm(forms.ModelForm):
         elif farm_selecionada is not None:
             cleaned["farm"] = normalizar_texto_cadastral(
                 farm_selecionada
+            )
+
+        codec_selecionado = cleaned.get("codec")
+
+        if codec_selecionado == VALOR_PERSONALIZADO:
+            codec_personalizado = normalizar_texto_cadastral(
+                cleaned.get("codec_personalizado")
+            )
+
+            if not codec_personalizado:
+                self.add_error(
+                    "codec_personalizado",
+                    "Informe o codec personalizado.",
+                )
+                cleaned["codec"] = ""
+
+            elif codec_personalizado == "PERSONALIZADO":
+                self.add_error(
+                    "codec_personalizado",
+                    "Informe o nome real do codec.",
+                )
+                cleaned["codec"] = ""
+
+            else:
+                cleaned["codec"] = codec_personalizado
+
+        elif codec_selecionado is not None:
+            cleaned["codec"] = normalizar_texto_cadastral(
+                codec_selecionado
             )
 
         for campo in Camera.CAMPOS_CAIXA_ALTA:
