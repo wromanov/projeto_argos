@@ -16,6 +16,7 @@ from .governanca import (
     q_camera_completa, q_camera_incompleta, reativar_camera, substituir_camera,
 )
 from .models import AtividadeCamera, Camera, EventoAuditoria, SubstituicaoCamera
+from .validadores import normalizar_texto_cadastral
 
 ORDENACOES_PERMITIDAS = {"nome", "-nome", "status", "-status", "ip", "-ip", "atualizado_em", "-atualizado_em"}
 
@@ -27,11 +28,17 @@ def lista_cameras(request):
     status_selecionado = request.GET.get("status", "")
     situacao_selecionada = request.GET.get("situacao_operacional", "")
     completude_selecionada = request.GET.get("completude", "")
-    terminal_selecionado = request.GET.get("terminal", "")
+    terminal_selecionado = normalizar_texto_cadastral(
+        request.GET.get("terminal", "")
+    )
     tipo_selecionado = request.GET.get("tipo", "")
-    fabricante_selecionado = request.GET.get("fabricante", "")
+    fabricante_selecionado = normalizar_texto_cadastral(
+        request.GET.get("fabricante", "")
+    )
     vlan_selecionada = request.GET.get("vlan", "")
-    farm_selecionada = request.GET.get("farm", "")
+    farm_selecionada = normalizar_texto_cadastral(
+        request.GET.get("farm", "")
+    )
     ordenacao = request.GET.get("ordenacao", "nome")
     if q:
         queryset = queryset.filter(Q(nome__icontains=q) | Q(patrimonio__icontains=q) | Q(ip__icontains=q) | Q(serial__icontains=q) | Q(mac__icontains=q) | Q(fabricante__icontains=q) | Q(modelo__icontains=q) | Q(terminal__icontains=q) | Q(pavimento__icontains=q) | Q(setor__icontains=q) | Q(ambiente__icontains=q) | Q(farm__icontains=q))

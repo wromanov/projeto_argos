@@ -37,7 +37,34 @@ class SegurancaTests(TestCase):
     def test_login_rejeita_next_externo(self): self.assertEqual(self.login_next("https://evil.example/")["Location"],"/")
     def test_login_rejeita_next_iniciado_por_duas_barras(self): self.assertEqual(self.login_next("//evil.example/")["Location"],"/")
     def test_login_rejeita_next_javascript(self): self.assertEqual(self.login_next("javascript:alert(1)")["Location"],"/")
-    def test_nome_da_camera_e_escapado_no_html(self): self.camera.nome="<script>x</script>"; self.camera.save(); self.user.user_permissions.add(Permission.objects.get(codename="view_camera")); self.client.force_login(self.user); self.assertContains(self.client.get(reverse("cameras:detalhe",args=[self.camera.pk])),"&lt;script&gt;x&lt;/script&gt;")
+    def test_nome_da_camera_e_escapado_no_html(self):
+        self.camera.nome = "<script>x</script>"
+        self.camera.save()
+
+        self.user.user_permissions.add(
+            Permission.objects.get(
+                codename="view_camera"
+            )
+        )
+
+        self.client.force_login(self.user)
+
+        response = self.client.get(
+            reverse(
+                "cameras:detalhe",
+                args=[self.camera.pk],
+            )
+        )
+
+        self.assertContains(
+            response,
+            "&lt;SCRIPT&gt;X&lt;/SCRIPT&gt;",
+        )
+
+        self.assertNotContains(
+            response,
+            "<SCRIPT>X</SCRIPT>",
+        )
     def test_titulo_da_atividade_e_escapado_no_html(self): self.atividade.titulo="<b>x</b>"; self.atividade.save(); self.user.user_permissions.add(Permission.objects.get(codename="view_camera")); self.client.force_login(self.user); self.assertContains(self.client.get(reverse("cameras:detalhe",args=[self.camera.pk])),"&lt;b&gt;x&lt;/b&gt;")
     def test_nome_do_usuario_e_escapado_no_html(self): self.user.first_name="<img>"; self.user.save(); self.client.force_login(self.user); self.assertContains(self.client.get("/perfil/"),"&lt;img&gt;")
     def test_pagina_403_nao_exibe_codename_da_permissao(self): self.client.force_login(self.user); self.assertNotContains(self.client.get("/cameras/"),"cameras.view_camera",status_code=403)

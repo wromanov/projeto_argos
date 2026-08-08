@@ -3,6 +3,19 @@ import re
 from django.core.exceptions import ValidationError
 
 
+def normalizar_texto_cadastral(valor):
+    """
+    Normaliza dados cadastrais estruturados.
+
+    Preserva None, remove espacos nas extremidades
+    e converte texto para caixa alta.
+    """
+    if valor is None:
+        return None
+
+    return str(valor).strip().upper()
+
+
 def normalizar_mac(valor):
     if valor is None or not str(valor).strip():
         return None

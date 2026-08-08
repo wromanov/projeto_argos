@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import AtividadeCamera, Camera
-from .validadores import normalizar_mac
+from .validadores import normalizar_mac, normalizar_texto_cadastral
 
 
 CAMPOS_CAMERA = (
@@ -32,15 +32,53 @@ class CameraBaseForm(forms.ModelForm):
 
     def clean(self):
         cleaned = super().clean()
+
+        for campo in Camera.CAMPOS_CAIXA_ALTA:
+            if campo not in cleaned:
+                continue
+
+            valor = normalizar_texto_cadastral(
+                cleaned[campo]
+            )
+
+            if (
+                campo in ("patrimonio", "serial")
+                and valor == ""
+            ):
+                valor = None
+
+            cleaned[campo] = valor
+
         if not self.errors:
             for campo, valor in cleaned.items():
                 if hasattr(self.instance, campo):
                     setattr(self.instance, campo, valor)
-            situacao = cleaned.get("situacao_operacional", self.instance.situacao_operacional)
-            faltantes = self.instance.campos_incompletos(situacao)
+
+            situacao = cleaned.get(
+                "situacao_operacional",
+                self.instance.situacao_operacional,
+            )
+
+            faltantes = self.instance.campos_incompletos(
+                situacao
+            )
+
             if faltantes:
-                rotulos = ", ".join(str(self.instance._meta.get_field(campo).verbose_name) for campo in faltantes)
-                raise forms.ValidationError(f"Complete os seguintes campos antes de continuar: {rotulos}.")
+                rotulos = ", ".join(
+                    str(
+                        self.instance
+                        ._meta
+                        .get_field(campo)
+                        .verbose_name
+                    )
+                    for campo in faltantes
+                )
+
+                raise forms.ValidationError(
+                    "Complete os seguintes campos "
+                    f"antes de continuar: {rotulos}."
+                )
+
         return cleaned
 
 

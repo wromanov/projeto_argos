@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.functions import Lower
 
-from .validadores import normalizar_mac, validar_mac
+from .validadores import normalizar_mac, normalizar_texto_cadastral, validar_mac
 
 
 class Camera(models.Model):
@@ -158,6 +158,21 @@ class Camera(models.Model):
             models.UniqueConstraint(Lower("mac"), condition=Q(mac__isnull=False), name="uniq_camera_mac_ci_nao_nulo"),
         ]
 
+    CAMPOS_CAIXA_ALTA = (
+        "patrimonio",
+        "nome",
+        "fabricante",
+        "modelo",
+        "serial",
+        "terminal",
+        "pavimento",
+        "setor",
+        "ambiente",
+        "ponto_referencia",
+        "farm",
+        "codec",
+    )
+
     CAMPOS_PRODUCAO = (
         "nome", "fabricante", "modelo", "serial", "mac", "tipo", "terminal",
         "pavimento", "setor", "ambiente", "ip", "mascara_subrede", "gateway",
@@ -190,7 +205,38 @@ class Camera(models.Model):
         return not self.campos_incompletos()
 
     def save(self, *args, **kwargs):
-        self.mac = normalizar_mac(self.mac)
+        update_fields = kwargs.get("update_fields")
+
+        if update_fields is None:
+            campos_caixa_alta = self.CAMPOS_CAIXA_ALTA
+            normalizar_mac_atual = True
+        else:
+            update_fields = set(update_fields)
+
+            campos_caixa_alta = tuple(
+                campo
+                for campo in self.CAMPOS_CAIXA_ALTA
+                if campo in update_fields
+            )
+
+            normalizar_mac_atual = "mac" in update_fields
+
+        for campo in campos_caixa_alta:
+            valor = normalizar_texto_cadastral(
+                getattr(self, campo, None)
+            )
+
+            if (
+                campo in ("patrimonio", "serial")
+                and valor == ""
+            ):
+                valor = None
+
+            setattr(self, campo, valor)
+
+        if normalizar_mac_atual:
+            self.mac = normalizar_mac(self.mac)
+
         return super().save(*args, **kwargs)
 
     def __str__(self):
