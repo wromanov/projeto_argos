@@ -1,0 +1,44 @@
+{% load formulario_extras %}
+
+<div
+  class="
+    field
+    {% if field_class %}{{ field_class }}{% endif %}
+    {% if field.errors %}field--invalid{% endif %}
+  "
+>
+  <label
+    class="field__label"
+    for="{{ field.id_for_label }}"
+  >
+    <span>{{ field.label }}</span>
+
+    {% if field.field.required %}
+      <span
+        class="required-marker"
+        aria-hidden="true"
+        title="Campo obrigat?rio"
+      >*</span>
+    {% endif %}
+  </label>
+
+  {{ field|campo_com_attrs }}
+
+  {% if field.help_text %}
+    <p
+      class="field-help"
+      id="{{ field.id_for_label }}_help"
+    >
+      {{ field.help_text }}
+    </p>
+  {% endif %}
+
+  {% if field.errors %}
+    <div
+      class="field-errors"
+      id="{{ field.id_for_label }}_errors"
+    >
+      {{ field.errors }}
+    </div>
+  {% endif %}
+</div>

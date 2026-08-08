@@ -2244,3 +2244,424 @@
         padding: var(--space-3);
     }
 }
+
+/* Visual 4B.1 - camera form shell */
+
+.camera-form-page {
+    width: 100%;
+    max-width: 88rem;
+    margin-inline: auto;
+}
+
+.inventory-hero.camera-form-hero {
+    width: 100%;
+    max-width: none;
+    margin-bottom: var(--space-5);
+    padding: var(--space-5);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+    justify-content: stretch;
+    gap: var(--space-4);
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.camera-form-hero__back {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--color-brand);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.camera-form-hero__back:hover {
+    color: var(--color-brand-dark);
+    text-decoration: underline;
+}
+
+.camera-form-hero__content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-6);
+}
+
+.camera-form-hero__heading {
+    min-width: 0;
+    max-width: 48rem;
+}
+
+.camera-form-hero__heading .inventory-eyebrow {
+    display: block;
+    margin-bottom: var(--space-1);
+}
+
+.camera-form-hero__heading h1 {
+    margin: 0;
+    color: var(--color-text);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    line-height: var(--line-height-tight);
+}
+
+.inventory-hero.camera-form-hero
+.camera-form-hero__heading p {
+    max-width: 44rem;
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.55;
+}
+
+.camera-form-hero__aside {
+    min-width: 15rem;
+    max-width: 20rem;
+    padding: var(--space-3) var(--space-4);
+    display: grid;
+    justify-items: start;
+    gap: var(--space-1);
+    background: var(--color-surface-secondary);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.camera-form-hero__mode {
+    color: var(--color-text-muted);
+    font-size: .6875rem;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.camera-form-hero__camera {
+    min-width: 0;
+    color: var(--color-text);
+    font-size: var(--font-size-base);
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.camera-form-hero__hint {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-xs);
+    line-height: 1.45;
+}
+
+.camera-form-hero__status {
+    margin-top: var(--space-1);
+    padding: .25rem .5rem;
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    border-radius: 999px;
+    font-size: .6875rem;
+    font-weight: 800;
+}
+
+.camera-form-hero__status--producao {
+    color: #245faf;
+    background: #eaf2ff;
+}
+
+.camera-form-hero__status--estoque {
+    color: #946200;
+    background: #fff4d6;
+}
+
+.camera-form-hero__status--desativada {
+    color: #5f6b76;
+    background: #eef1f4;
+}
+
+.camera-form {
+    display: grid;
+    gap: var(--space-4);
+}
+
+.camera-form .camera-form-section {
+    min-width: 0;
+    margin: 0;
+}
+
+.camera-form-initial-state {
+    border-top: .25rem solid #245faf;
+}
+
+.camera-form-main-section {
+    border-top: .25rem solid var(--color-brand);
+}
+
+.camera-form-section__description {
+    max-width: 48rem;
+    margin: 0 0 var(--space-4);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+}
+
+.camera-form-initial-state__grid {
+    max-width: 42rem;
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.camera-form-actions {
+    margin-top: 0;
+    padding: var(--space-4);
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.camera-form-actions__note {
+    max-width: 42rem;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+}
+
+.camera-form-actions__buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.camera-form-actions__buttons .button {
+    min-width: 9.5rem;
+}
+
+@media (max-width: 56rem) {
+    .camera-form-hero__content {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .camera-form-hero__aside {
+        width: 100%;
+        max-width: none;
+    }
+
+    .camera-form-actions {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .camera-form-actions__buttons {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 44rem) {
+    .inventory-hero.camera-form-hero {
+        padding: var(--space-4);
+    }
+
+    .camera-form-actions__buttons {
+        align-items: stretch;
+        flex-direction: column-reverse;
+    }
+
+    .camera-form-actions__buttons .button {
+        width: 100%;
+    }
+}
+
+/* Visual 4B.2 - camera form semantic sections */
+
+.camera-form-section {
+    overflow: hidden;
+}
+
+.camera-form-section legend {
+    color: var(--color-text);
+}
+
+.camera-form-section--identity {
+    border-top: .25rem solid var(--color-brand);
+}
+
+.camera-form-section--location {
+    border-top: .25rem solid #5f6b76;
+}
+
+.camera-form-section--network {
+    border-top: .25rem solid #2f80ed;
+}
+
+.camera-form-section--recording {
+    border-top: .25rem solid #245faf;
+}
+
+.camera-form-section--metadata {
+    border-top: .25rem solid #60708a;
+}
+
+.camera-form-grid {
+    align-items: start;
+}
+
+.camera-form-grid--three {
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+}
+
+.camera-form-field--technical input,
+.camera-form-field--technical select {
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        "Liberation Mono",
+        monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.015em;
+}
+
+.camera-form-section--network
+.camera-form-section__description,
+.camera-form-section--recording
+.camera-form-section__description {
+    max-width: 54rem;
+}
+
+@media (max-width: 64rem) {
+    .camera-form-grid--three {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 44rem) {
+    .camera-form-grid,
+    .camera-form-grid--three {
+        grid-template-columns:
+            minmax(0, 1fr);
+    }
+
+    .camera-form-section {
+        padding: var(--space-4);
+    }
+}
+
+/* Visual 4B.3 - validation and accessibility */
+
+.camera-form-required-note {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.camera-form .field__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    width: max-content;
+    max-width: 100%;
+}
+
+.camera-form .required-marker {
+    flex: 0 0 auto;
+    font-weight: 800;
+}
+
+.camera-form .field-help {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+}
+
+.camera-form .field--invalid input,
+.camera-form .field--invalid select,
+.camera-form .field--invalid textarea {
+    border-color: var(--color-danger-border);
+    background-color: var(--color-danger-surface);
+}
+
+.camera-form .field--invalid input:focus-visible,
+.camera-form .field--invalid select:focus-visible,
+.camera-form .field--invalid textarea:focus-visible {
+    border-color: var(--color-danger);
+}
+
+.camera-form .field-errors {
+    margin-top: var(--space-1);
+}
+
+.camera-form .field-errors .errorlist {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    color: var(--color-danger);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    line-height: 1.45;
+    list-style: none;
+}
+
+.camera-form .form-errors-summary {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: var(--space-4);
+}
+
+.camera-form .form-errors-summary h2 {
+    margin: 0;
+    font-size: var(--font-size-base);
+    line-height: 1.4;
+}
+
+.camera-form .form-errors-summary ul {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding-left: var(--space-5);
+}
+
+.camera-form .form-errors-summary a {
+    color: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: .15em;
+}
+
+.camera-form .form-errors-summary a:hover {
+    text-decoration-thickness: .125rem;
+}
+
+.camera-form .form-errors-summary a:focus-visible {
+    border-radius: var(--radius-sm);
+}
+
+@media (max-width: 44rem) {
+    .camera-form-required-note {
+        align-items: flex-start;
+    }
+
+    .camera-form .field__label {
+        width: 100%;
+    }
+
+    .camera-form .form-errors-summary {
+        padding: var(--space-3);
+    }
+}
