@@ -1,0 +1,401 @@
+PROJETO ARGOS
+PENDÊNCIAS ABERTAS E DECISÕES A DEFINIR
+
+Data de consolidação: 31/07/2026
+
+
+1. POLÍTICA DE RETENÇÃO DOS DADOS
+
+Definir por quanto tempo cada tipo de informação será mantido:
+
+- eventos de auditoria;
+- atividades das câmeras;
+- verificações RTSP;
+- períodos de indisponibilidade;
+- snapshots;
+- logs técnicos;
+- históricos de substituição.
+
+Também precisa ser decidido:
+
+- se os registros serão excluídos ou arquivados;
+- quem poderá executar a limpeza;
+- se a limpeza será automática;
+- quais dados deverão ser permanentes.
+
+
+2. ESTRATÉGIA DE BACKUP E RESTAURAÇÃO
+
+Definir:
+
+- periodicidade do backup do banco;
+- retenção dos backups;
+- backup dos snapshots e demais arquivos;
+- backup separado da chave de criptografia;
+- local de armazenamento;
+- criptografia dos backups;
+- responsável pela rotina;
+- periodicidade dos testes de restauração.
+
+Também devem ser definidos:
+
+- RPO: quanto dado o ARGOS pode perder;
+- RTO: quanto tempo pode levar para restaurar o sistema.
+
+
+3. AMBIENTE DEFINITIVO DE PRODUÇÃO
+
+Ainda precisa ser definido:
+
+- servidor Windows ou Linux;
+- banco de dados de produção, preferencialmente PostgreSQL;
+- servidor web da aplicação;
+- proxy reverso;
+- endereço DNS do ARGOS;
+- certificado HTTPS;
+- conta de serviço que executará o sistema;
+- local de armazenamento dos arquivos;
+- mecanismo de execução agendada;
+- centralização dos logs;
+- monitoramento do próprio ARGOS;
+- capacidade de CPU, memória, disco e rede.
+
+O ambiente de produção não deverá utilizar runserver nem depender da sessão de um usuário conectado.
+
+
+4. CUSTÓDIA DA CHAVE DE CRIPTOGRAFIA
+
+Antes de armazenar senhas das câmeras, definir:
+
+- onde ficará a chave Fernet;
+- quem poderá acessá-la;
+- como será fornecida ao ARGOS;
+- como será feito seu backup;
+- como será feita a rotação;
+- o que fazer em caso de perda;
+- o que fazer em caso de exposição;
+- como separar as chaves de desenvolvimento, homologação e produção.
+
+A chave não poderá ficar no código, banco, GitHub ou migration.
+
+
+5. CONTROLES PARA REVELAR A SENHA DA CÂMERA
+
+Já está definido que o Operador e o Administrador poderão consultar a senha.
+
+Ainda falta decidir se a revelação também exigirá:
+
+- justificativa obrigatória;
+- confirmação da senha do próprio usuário;
+- exibição temporária;
+- limitação de consultas em determinado intervalo;
+- registro do endereço IP de origem;
+- bloqueio de cache da página;
+- ocultação automática após alguns segundos.
+
+A revelação sempre deverá gerar um evento de auditoria, sem registrar a senha.
+
+
+6. FERRAMENTA DEFINITIVA PARA O TESTE RTSP
+
+Ainda será necessária uma prova técnica para escolher entre:
+
+- ffprobe executado como processo externo;
+- biblioteca integrada ao Python baseada em FFmpeg.
+
+A solução escolhida deverá comprovar que:
+
+- autentica no RTSP;
+- identifica pelo menos um stream de vídeo;
+- respeita o timeout;
+- encerra a conexão imediatamente;
+- não expõe a senha na lista de processos;
+- não grava a senha em logs;
+- não inclui a senha nos eventos;
+- funciona com os fabricantes presentes no parque.
+
+
+7. CRITÉRIO TÉCNICO DE DISPONIBILIDADE
+
+Está definido que o dashboard terá um estado principal simples, mas ainda falta fechar a lista exata de resultados técnicos.
+
+Proposta pendente de aprovação:
+
+Status principal:
+- Online;
+- Offline;
+- Não verificada.
+
+Resultado técnico:
+- Disponível;
+- Timeout;
+- Conexão recusada;
+- Falha de autenticação;
+- Configuração RTSP incompleta;
+- Stream sem vídeo;
+- Erro de execução do ARGOS.
+
+Também precisa ser decidido quais resultados técnicos devem colocar a câmera como Offline.
+
+
+8. PARÂMETROS DEFINITIVOS DO KEEP ALIVE
+
+Configuração inicial proposta:
+
+- execuções: 08:00 e 18:00;
+- câmeras aproximadas: 2.300;
+- concorrência: 20 verificações simultâneas;
+- tentativas por câmera: 2;
+- timeout por tentativa: 5 segundos.
+
+Antes da produção, realizar testes com:
+
+- 50 câmeras;
+- 100 câmeras;
+- 500 câmeras;
+- parque completo.
+
+Com base nesses testes, definir:
+
+- concorrência definitiva;
+- timeout definitivo;
+- consumo de CPU e memória;
+- quantidade de processos externos;
+- impacto na rede;
+- duração máxima aceitável da rodada;
+- comportamento quando a rodada anterior ainda estiver em execução.
+
+
+9. FREQUÊNCIA FUTURA DO MONITORAMENTO
+
+Por enquanto, permanecem duas verificações por dia.
+
+Fica pendente avaliar futuramente se o intervalo deverá ser reduzido para:
+
+- 15 minutos;
+- 30 minutos;
+- 1 hora;
+- outro intervalo.
+
+Essa decisão dependerá do desempenho medido com as 2.300 câmeras e da criticidade operacional desejada.
+
+
+10. MATRIZ DEFINITIVA DE CAMPOS OBRIGATÓRIOS
+
+Já foi decidido que nem todos os campos serão obrigatórios indiscriminadamente.
+
+Ainda falta fechar uma matriz formal por situação.
+
+Produção:
+Definir a lista final de campos obrigatórios, especialmente:
+
+- gateway;
+- patrimônio;
+- número de série;
+- descrição detalhada;
+- ponto de referência;
+- observações;
+- configuração web;
+- configuração RTSP;
+- credencial de monitoramento.
+
+Estoque:
+Definir quais campos mínimos identificam adequadamente o equipamento sem exigir configuração de rede.
+
+Desativada:
+Definir quais dados antigos podem continuar incompletos e quais devem ser obrigatórios durante a desativação.
+
+
+11. REGRA DE REUTILIZAÇÃO DO NOME DA CÂMERA
+
+Como o nome operacional será o mesmo configurado no SecurOS, é necessário decidir formalmente se uma nova câmera poderá reutilizar o nome de uma câmera desativada.
+
+Exemplo:
+
+Câmera antiga desativada:
+EST-TPS2-CM77
+
+Câmera substituta em produção:
+EST-TPS2-CM77
+
+Recomendação:
+
+- nome único entre câmeras em Produção ou Estoque;
+- nome reutilizável quando a câmera anterior estiver Desativada;
+- MAC sempre único;
+- IP não único.
+
+Essa decisão afeta diretamente a constraint do banco.
+
+
+12. FLUXO DEFINITIVO DE SUBSTITUIÇÃO FÍSICA
+
+Já foi aprovada a criação do histórico de substituição, mas ainda precisam ser confirmadas as regras:
+
+- a câmera anterior será desativada automaticamente?
+- o motivo da substituição servirá também como motivo da desativação?
+- a câmera substituta será colocada automaticamente em Produção?
+- o nome operacional será transferido automaticamente?
+- será permitido substituir uma câmera por outra já cadastrada?
+- uma câmera poderá participar de mais de uma substituição ao longo do tempo?
+- quem terá permissão para registrar a substituição?
+
+
+13. POLÍTICA DE DESATIVAÇÃO E REATIVAÇÃO
+
+Está definido que a desativação exigirá motivo.
+
+Ainda falta definir:
+
+- tamanho mínimo do motivo;
+- tamanho máximo;
+- se o motivo poderá ser editado posteriormente;
+- se a reativação exigirá justificativa;
+- se a reativação poderá ser feita diretamente para Produção;
+- se a câmera deverá estar com cadastro completo antes de voltar para Produção;
+- se o histórico de motivos ficará somente nos eventos ou também em um modelo próprio.
+
+
+14. INTEGRAÇÃO CONTÍNUA
+
+Ainda falta confirmar a implementação de uma pipeline no GitHub Actions.
+
+Validações recomendadas em cada push:
+
+- python manage.py check;
+- python manage.py makemigrations --check --dry-run;
+- python manage.py test;
+- Bandit;
+- pip-audit;
+- busca por segredos;
+- verificação de formatação;
+- cobertura de testes.
+
+Também precisa ser definida uma política para impedir merge ou implantação quando a pipeline falhar.
+
+
+15. POLÍTICA DE DEPENDÊNCIAS E ATUALIZAÇÕES
+
+Definir:
+
+- arquivo oficial de dependências;
+- separação entre produção e desenvolvimento;
+- periodicidade de atualização;
+- procedimento para vulnerabilidades críticas;
+- responsável pela aprovação das versões;
+- política para Django, cryptography, ferramenta RTSP e demais bibliotecas.
+
+
+16. MÉTRICAS DEFINITIVAS DO DASHBOARD
+
+Já está decidido que o dashboard mostrará quantidade e qualidade dos dados.
+
+Falta selecionar os indicadores da primeira versão.
+
+Sugestão:
+
+- total de câmeras;
+- Produção;
+- Estoque;
+- Desativadas;
+- Online;
+- Offline;
+- Não verificadas;
+- cadastros incompletos;
+- sem credencial;
+- sem configuração RTSP;
+- falhas de autenticação;
+- indisponibilidades abertas;
+- última rodada do keep alive;
+- câmeras não processadas;
+- possíveis IPs duplicados.
+
+Também falta definir quais indicadores serão clicáveis e abrirão a listagem já filtrada.
+
+
+17. POLÍTICA DE LOGS
+
+Definir:
+
+- quais eventos irão para log técnico;
+- nível de detalhamento;
+- prazo de retenção;
+- rotação dos arquivos;
+- local de armazenamento;
+- quem poderá consultar;
+- tratamento de erros do RTSP;
+- sanitização de senhas e URLs;
+- integração futura com SIEM ou outra central de logs.
+
+Nenhum log poderá conter senhas, chaves ou URLs RTSP com credenciais.
+
+
+18. OBSERVABILIDADE DO PRÓPRIO ARGOS
+
+Definir como será verificado se:
+
+- a aplicação está disponível;
+- o banco está acessível;
+- o disco está próximo do limite;
+- a rodada das 08:00 foi executada;
+- a rodada das 18:00 foi executada;
+- o processo ficou travado;
+- o executável RTSP está disponível;
+- o backup foi realizado;
+- ocorreu aumento anormal de erros.
+
+Mesmo sem notificações externas para falhas de câmeras, o dashboard precisa mostrar falhas do próprio ARGOS.
+
+
+19. POLÍTICA DE SEGURANÇA DA INFRAESTRUTURA
+
+A restrição de redes será feita no firewall.
+
+Ainda deve ser documentado:
+
+- quais servidores poderão acessar as VLANs das câmeras;
+- quais portas serão permitidas;
+- quais usuários administrarão o firewall;
+- se o servidor ARGOS terá acesso HTTP, HTTPS e RTSP;
+- se o acesso será bidirecional ou somente iniciado pelo ARGOS;
+- como os acessos serão registrados;
+- se ambientes de desenvolvimento e homologação poderão acessar câmeras reais.
+
+
+20. GATE FINAL ANTES DA PRODUÇÃO
+
+Antes da implantação, deverá ser realizada uma validação formal contendo:
+
+- testes completos;
+- auditoria de permissões;
+- busca por segredos;
+- Bandit;
+- pip-audit;
+- Django check --deploy;
+- teste de carga com o parque;
+- teste de backup;
+- teste de restauração;
+- teste da chave de criptografia;
+- teste do keep alive;
+- teste de HTTPS;
+- revisão das regras de firewall;
+- revisão dos logs;
+- validação da pipeline.
+
+
+RESUMO DAS PENDÊNCIAS PRIORITÁRIAS
+
+1. Matriz definitiva dos campos obrigatórios.
+2. Reutilização do nome após substituição.
+3. Regras completas da substituição física.
+4. Lista dos resultados técnicos do monitoramento.
+5. Ferramenta definitiva para o teste RTSP.
+6. Controles adicionais para revelação de senha.
+7. Custódia e rotação da chave Fernet.
+8. Política de retenção.
+9. Backup e restauração.
+10. Ambiente de produção.
+11. Parâmetros definitivos do keep alive.
+12. Integração contínua.
+13. Métricas da primeira versão do dashboard.
+14. Política de logs e observabilidade.

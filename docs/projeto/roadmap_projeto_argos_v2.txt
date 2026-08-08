@@ -1,0 +1,593 @@
+ROADMAP DO PROJETO ARGOS
+Sistema de Inventário e Monitoramento de Câmeras
+
+Atualizado em: 03/08/2026
+
+======================================================================
+1. ROADMAP DE MODERNIZAÇÃO VISUAL
+======================================================================
+
+ETAPAS DE FUNDAÇÃO JÁ CONCLUÍDAS
+
+[CONCLUÍDA] Etapa 2A — Governança e consolidação do CSS
+
+Objetivos:
+- Consolidar tokens.
+- Reduzir valores literais.
+- Organizar responsabilidades dos arquivos CSS.
+- Evitar componentes globais duplicados.
+
+Commit:
+3d67c2e
+refactor(frontend): consolidar tokens do design system
+
+Observação:
+Essa etapa teve pouca mudança visual, pois preparou a arquitetura.
+
+
+[CONCLUÍDA] Etapa 2B — Componentização do template base
+
+Foram extraídos componentes como:
+- Cabeçalho.
+- Navegação.
+- Menu do usuário.
+- Mensagens Django.
+
+Commit:
+2c8a57c
+refactor(frontend): extrair componentes globais do template base
+
+Observação:
+Foi uma alteração estrutural, praticamente invisível.
+
+
+[CONCLUÍDA] Etapa 2C — Modernização inicial do shell
+
+Foram modernizados:
+- Cabeçalho horizontal.
+- Navegação.
+- Menu do usuário.
+- Mensagens.
+- Área principal.
+- Comportamento responsivo inicial.
+
+Commit:
+15ea34c
+feat(frontend): modernizar estrutura global do ARGOS
+
+Observação:
+A mudança ainda foi conservadora e não criou uma identidade visual nova.
+
+
+[CONCLUÍDA] Etapa 3A — Reorganização da listagem de câmeras
+
+A tabela passou de 12 colunas visuais independentes para sete grupos:
+1. Status.
+2. Câmera.
+3. Localização.
+4. Rede.
+5. Equipamento.
+6. Governança.
+7. Ações.
+
+Os 12 dados foram preservados:
+- Nome.
+- Patrimônio.
+- Localização.
+- Situação.
+- Completude.
+- Status.
+- Tipo.
+- IP.
+- VLAN.
+- Fabricante.
+- Modelo.
+- Ações.
+
+Commit:
+ae8256b
+fix(frontend): corrigir badges de governança
+
+Observação:
+Apesar da mensagem limitada, o commit contém toda a Etapa 3A.
+
+
+======================================================================
+2. NOVA FASE VISUAL PERCEPTÍVEL
+======================================================================
+
+[EM IMPLEMENTAÇÃO LOCAL] Visual 1A — Novo shell operacional
+
+Estado atual:
+- Implementada localmente.
+- Ainda não commitada.
+
+Inclui:
+- Sidebar azul-marinho.
+- Topbar clara.
+- Navegação vertical.
+- Ícones SVG.
+- Item ativo.
+- Menu do usuário.
+- Permissões preservadas.
+- Logout POST com CSRF.
+- Novo sidebar.html.
+- Correção do overflow horizontal global.
+- Títulos principais compartilhados.
+- Funcionamento em desktop, tablet e celular.
+
+Arquivos atualmente envolvidos:
+- templates/base.html
+- templates/components/cabecalho.html
+- templates/components/navegacao_principal.html
+- templates/components/sidebar.html
+- static/css/argos.css
+- static/css/design-system.css
+- core/test_frontend.py
+
+Essa entrega representa a primeira mudança visual realmente evidente.
+
+
+[EM ANDAMENTO] Visual 1A.1 — Consistência dos componentes de conteúdo
+
+Já concluído:
+- Padronização dos títulos azuis/eyebrows.
+- Padronização de Dashboard, Inventário e Eventos.
+- Remoção do breadcrumb isolado.
+- Contrato global .page-heading__title.
+- Correção do legado portal-eyebrow.
+
+Ainda falta:
+
+1. Compactar os cards do Dashboard
+
+Objetivos:
+- Reduzir altura.
+- Remover espaço vazio excessivo.
+- Aumentar a importância visual dos números.
+- Centralizar os valores.
+- Alinhar cards com e sem link.
+- Reduzir bordas decorativas.
+
+2. Padronizar os filtros
+
+Objetivos:
+- Inventário e Eventos parecerem o mesmo componente.
+- Mesmo cabeçalho.
+- Mesmo padding.
+- Mesmo raio.
+- Mesma borda.
+- Mesmos espaçamentos.
+- Botões agrupados.
+- Reduzir espaço vazio no Inventário.
+
+Ao terminar:
+- Validar visualmente.
+- Executar a suíte completa.
+- Revisar todo o diff.
+- Criar um único commit para o shell e seus refinamentos.
+
+Mensagem planejada:
+feat(frontend): implementar novo shell operacional do ARGOS
+
+
+[PLANEJADA] Visual 1B — Refinamento responsivo do shell
+
+Escopo previsto:
+- Comportamento da sidebar em tablet.
+- Navegação móvel mais elegante.
+- Possível botão para recolher a sidebar.
+- Foco ao abrir e fechar navegação.
+- Comportamento do menu do usuário.
+- Transições discretas.
+- Preferência de sidebar recolhida, possivelmente com localStorage.
+- Acessibilidade do controle móvel.
+
+Observação:
+Essa etapa só será necessária depois de validar o shell no uso diário.
+
+
+[PLANEJADA] Visual 2 — Redesign interno da listagem de câmeras
+
+Escopo:
+- Busca com prioridade visual.
+- Filtros mais compactos.
+- Resumo de filtros ativos.
+- Contador de resultados.
+- Cabeçalho da tabela.
+- Densidade das linhas.
+- Nome como informação principal.
+- IP em destaque técnico.
+- Dados secundários com menor ênfase.
+- Ações mais compactas.
+- Badges refinados.
+- Paginação.
+- Estados vazios.
+- Uso operacional em notebook.
+
+A tabela continuará sem cards no desktop.
+
+
+[PLANEJADA] Visual 3 — Dashboard operacional
+
+Escopo:
+- Cards de indicadores.
+- Inventário patrimonial.
+- Online, Offline e Não verificadas.
+- Produção, Estoque e Desativadas.
+- Qualidade cadastral.
+- Atividades recentes.
+- Câmeras atualizadas recentemente.
+- Ações rápidas.
+- Hierarquia entre indicadores normais, alertas e riscos.
+
+Dependências futuras:
+Distribuições por fabricante, tipo e farm dependerão de agregações no back-end.
+
+
+[PLANEJADA] Visual 4 — Página de detalhes da câmera
+
+Escopo:
+- Resumo operacional no topo.
+- Nome, patrimônio, equipamento e localização.
+- Status técnico.
+- Situação operacional.
+- Ações de edição e governança próximas ao cabeçalho.
+- Identificação.
+- Rede.
+- Localização.
+- Características técnicas.
+- Gravação.
+- Atividades.
+- Eventos.
+- Substituições.
+- Estados vazios contextuais.
+
+Essa etapa também resolverá a baixa descoberta das ações de:
+- Mover para estoque.
+- Mover para produção.
+- Desativar.
+- Reativar.
+- Substituir.
+
+
+[PLANEJADA] Visual 5 — Formulários
+
+Escopo:
+- Cadastro e edição de câmera.
+- Formulários de atividades.
+- Transições de governança.
+- Substituições.
+- Demais formulários operacionais.
+
+Direção:
+- Dividir campos em seções.
+- Identificação.
+- Equipamento.
+- Localização.
+- Rede.
+- Gravação.
+- Observações.
+- Erros junto aos campos.
+- Resumo de erros.
+- Ações consistentes.
+- Campos somente leitura claramente diferenciados.
+- Confirmação das ações críticas.
+
+
+[PLANEJADA] Visual 6 — Eventos, atividades, perfil e autenticação
+
+Escopo:
+- Listagem e detalhe de eventos.
+- Atividades.
+- Substituições.
+- Perfil.
+- Edição de perfil.
+- Alteração de senha.
+- Login.
+- Página 403.
+- Futuras páginas 404 e 500.
+
+Objetivo:
+- Levar a nova identidade a todas as páginas.
+- Remover padrões antigos restantes.
+- Eliminar paginações e estados vazios paralelos.
+
+
+[PLANEJADA] Visual 7 — Consolidação final do front-end
+
+Escopo:
+- Remover classes sem consumidor.
+- Eliminar CSS legado.
+- Consolidar badges.
+- Consolidar cards.
+- Consolidar paginação.
+- Consolidar estados vazios.
+- Revisar breakpoints.
+- Localizar tokens indefinidos.
+- Verificar seletores duplicados.
+- Executar validação visual geral.
+- Garantir ausência de overflow.
+- Executar a suíte completa.
+
+
+======================================================================
+3. ORGANIZAÇÃO TÉCNICA FUTURA
+======================================================================
+
+[PLANEJADA] Organização de testes e documentação
+
+Situação atual:
+- Os documentos já estão majoritariamente em docs/.
+- Os testes continuam em arquivos distribuídos pelas aplicações.
+
+Exemplos atuais:
+- cameras/test_frontend.py
+- core/test_frontend.py
+- usuarios/tests.py
+
+Estrutura futura conceitual:
+
+cameras/
+└── tests/
+    ├── test_models.py
+    ├── test_forms.py
+    ├── test_views.py
+    ├── test_permissions.py
+    └── test_frontend.py
+
+core/
+└── tests/
+    ├── test_views.py
+    └── test_frontend.py
+
+usuarios/
+└── tests/
+    ├── test_authentication.py
+    ├── test_permissions.py
+    └── test_frontend.py
+
+Essa etapa deverá:
+- Usar git mv.
+- Preservar a contagem dos testes.
+- Atualizar imports.
+- Atualizar comandos da CI.
+- Atualizar caminhos documentados.
+- Não alterar comportamentos.
+
+Observação:
+Ela deve ficar separada do redesign para não misturar movimentação estrutural com mudanças visuais.
+
+
+======================================================================
+4. ROADMAP FUNCIONAL JÁ PLANEJADO
+======================================================================
+
+FUNCIONALIDADES JÁ IMPLEMENTADAS
+
+Entre as principais:
+- Cadastro de câmeras.
+- Fabricante, modelo, tipo e dados técnicos.
+- Status técnico.
+- Atividades.
+- Autenticação.
+- Perfis e permissões.
+- Perfil do usuário.
+- Auditoria.
+- Eventos.
+- Situação operacional.
+- Produção, Estoque e Desativada.
+- Desativação e reativação.
+- Substituição de câmeras.
+- Histórico de indisponibilidade.
+- Regras de integridade cadastral.
+- Dashboard atual.
+- Rotas protegidas.
+- Testes e CI.
+
+
+[PLANEJADA] Funcional 4D — Credenciais e configuração de monitoramento
+
+Objetivo:
+- Armazenar credenciais utilizadas para consultar as câmeras.
+- Proteger os dados sensíveis.
+- Restringir acesso por perfil.
+- Impedir exposição ao perfil Monitoramento.
+- Disponibilizar configuração pela interface para Operador e Administrador.
+- Auditar alterações.
+- Preparar a composição das URLs de monitoramento.
+
+Pontos essenciais:
+- Senha nunca em texto aberto.
+- Uso de criptografia.
+- Chave fora do banco.
+- Nenhuma senha em logs, templates ou mensagens.
+- Acesso restrito.
+- Testes de segurança.
+
+
+[PLANEJADA] Funcional 4E — Integração RTSP
+
+Objetivo:
+- Configurar os dados de RTSP.
+- Montar a URL de cada câmera.
+- Validar conexão.
+- Tratar fabricantes e padrões diferentes.
+- Não expor credenciais na interface.
+- Registrar falhas técnicas.
+- Preparar captura de imagem.
+
+Essa etapa deve separar:
+- Configuração.
+- Montagem da URL.
+- Teste de conexão.
+- Consumo do stream.
+- Tratamento de timeout.
+
+
+[PLANEJADA] Funcional 4F — Keepalive e monitoramento de disponibilidade
+
+Objetivo:
+- Verificar periodicamente aproximadamente 2.300 câmeras.
+- Atualizar Online/Offline.
+- Registrar início e fim das indisponibilidades.
+- Evitar verificações concorrentes duplicadas.
+- Controlar timeout e tentativas.
+- Gerar logs da rodada.
+
+Parâmetros inicialmente planejados:
+- Execuções: 08:00 e 18:00.
+- Concorrência inicial: 20.
+- Tentativas por câmera: 2.
+- Timeout inicial: 5 segundos.
+
+Implantação progressiva:
+- 50 câmeras.
+- 100 câmeras.
+- 500 câmeras.
+- Parque completo.
+
+Os valores serão ajustados após testes reais de rede e desempenho.
+
+
+[PLANEJADA] Funcional 4G — Snapshots
+
+Regras já definidas:
+
+Snapshot automático:
+Gerar quando ocorrer:
+Offline → Online
+
+Também gerar:
+- Na primeira detecção Online.
+- Após o primeiro cadastro detectado como Online.
+
+Não gerar:
+- Ao entrar em Offline.
+- Em cada verificação repetida enquanto continuar Online.
+
+Retenção:
+- Manter as três imagens automáticas mais recentes por câmera.
+- Quando surgir a quarta, excluir a automática mais antiga.
+- Preservar imagem manual protegida.
+
+Snapshot manual:
+O operador poderá:
+- Capturar manualmente.
+- Escolher uma imagem principal/oficial.
+- Proteger a imagem da exclusão automática.
+
+Também serão necessários:
+- Armazenamento.
+- Controle de tamanho.
+- Tratamento de erro.
+- Permissões.
+- Limpeza segura.
+- Auditoria.
+
+
+[PLANEJADA] Funcional 4H — Importação em lote
+
+Objetivo:
+- Cadastrar grandes volumes por planilha.
+- Atender cargas de 100 ou mais câmeras.
+- Validar dados antes da gravação.
+- Apresentar erros por linha.
+- Evitar importação parcial inconsistente.
+- Preservar regras de MAC, nome, situação e completude.
+- Gerar relatório da operação.
+
+A importação deverá possuir:
+- Modelo de planilha.
+- Pré-validação.
+- Pré-visualização.
+- Confirmação.
+- Relatório de erros.
+- Auditoria.
+
+
+[PLANEJADA] Funcional 4I — Produção, backup e observabilidade
+
+Preparação para o ambiente definitivo.
+
+Banco e aplicação:
+- PostgreSQL.
+- Variáveis de ambiente.
+- Servidor de aplicação adequado.
+- Fim do uso de runserver em produção.
+- Configuração de estáticos.
+- Proteção de segredos.
+- Separação de ambientes.
+
+Backup:
+- Definir RPO.
+- Definir RTO.
+- Retenção.
+- Backup do banco.
+- Backup dos snapshots.
+- Cópia segura da chave criptográfica.
+- Teste de restauração.
+- Documentação do processo.
+
+Logs e monitoramento:
+- Aplicação.
+- Banco.
+- Disco.
+- Tarefas de keepalive.
+- Tempo das rodadas.
+- Erros RTSP.
+- Snapshots.
+- Backups.
+- Filas ou workers.
+- Falhas consecutivas.
+- Uso de armazenamento.
+
+Gate de produção:
+- Suíte completa.
+- Segurança.
+- Teste de carga.
+- Teste de restauração.
+- Documentação de implantação.
+- Plano de rollback.
+- Observabilidade validada.
+
+
+======================================================================
+5. ORDEM RECOMENDADA ATUAL
+======================================================================
+
+1. Finalizar Visual 1A.1.
+2. Validar e versionar o novo shell.
+3. Visual 2 — Listagem.
+4. Visual 3 — Dashboard.
+5. Visual 4 — Detalhes.
+6. Visual 5 — Formulários.
+7. Visual 6 — Demais telas.
+8. Visual 7 — Consolidação.
+9. Organização dos testes e documentos.
+10. Funcional 4D — Credenciais.
+11. Funcional 4E — RTSP.
+12. Funcional 4F — Keepalive.
+13. Funcional 4G — Snapshots.
+14. Funcional 4H — Importação.
+15. Funcional 4I — Produção e observabilidade.
+
+Observação:
+Não é necessário terminar todo o front-end antes de qualquer funcionalidade.
+Depois que listagem, dashboard, detalhe e formulários estiverem consistentes,
+podemos alternar entre melhorias visuais e funcionalidades.
+
+
+======================================================================
+6. PRÓXIMO PASSO IMEDIATO
+======================================================================
+
+Visual 1A.1 — Compactação dos cards do Dashboard.
+
+Depois:
+Visual 1A.1 — Padronização dos filtros de Inventário e Eventos.
+
+Somente então:
+- Executar os 322 testes.
+- Revisar o diff completo.
+- Versionar o novo shell.

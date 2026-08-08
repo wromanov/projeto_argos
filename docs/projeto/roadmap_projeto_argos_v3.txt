@@ -1,0 +1,594 @@
+ROADMAP DO PROJETO ARGOS — V3
+Sistema de Inventário e Monitoramento de Câmeras
+
+Atualizado em: 07/08/2026
+Status de referência: branch master, working tree limpa, 1 commit à frente de origin/master.
+Último commit local: 6751c68 — feat(frontend): redesenhar detalhe operacional da câmera
+
+======================================================================
+1. ESTADO EXECUTIVO ATUAL
+======================================================================
+
+O ARGOS está na fase de modernização visual e consolidação de UX/UI.
+
+Já foram concluídos:
+- Fundação do design system e consolidação inicial do CSS.
+- Componentização do shell.
+- Novo shell operacional.
+- Redesign da listagem de câmeras.
+- Refinamento de resultados, filtros e paginação.
+- Redesign do Dashboard operacional.
+- Redesign completo da página de detalhes da câmera.
+
+Etapa atual:
+- Visual 4B — Cadastro e edição de câmera.
+
+Situação do repositório:
+- Branch: master.
+- Working tree: limpa.
+- master...origin/master [ahead 1].
+- Push do commit 6751c68 ainda não realizado.
+- Última suíte completa reportada: 324 testes aprovados.
+- Gate direcionado da Visual 4A: 72 testes aprovados.
+
+======================================================================
+2. FUNDAÇÃO FRONT-END CONCLUÍDA
+======================================================================
+
+[CONCLUÍDA] Etapa 2A — Governança e consolidação do CSS
+
+Objetivos:
+- Consolidar tokens.
+- Reduzir valores literais.
+- Organizar responsabilidades dos arquivos CSS.
+- Evitar componentes globais duplicados.
+
+Commit:
+3d67c2e
+refactor(frontend): consolidar tokens do design system
+
+
+[CONCLUÍDA] Etapa 2B — Componentização do template base
+
+Foram extraídos componentes como:
+- Cabeçalho.
+- Navegação.
+- Menu do usuário.
+- Mensagens Django.
+
+Commit:
+2c8a57c
+refactor(frontend): extrair componentes globais do template base
+
+
+[CONCLUÍDA] Etapa 2C — Modernização inicial do shell
+
+Foram modernizados:
+- Cabeçalho horizontal.
+- Navegação.
+- Menu do usuário.
+- Mensagens.
+- Área principal.
+- Responsividade inicial.
+
+Commit:
+15ea34c
+feat(frontend): modernizar estrutura global do ARGOS
+
+
+======================================================================
+3. FASE VISUAL — ENTREGAS CONCLUÍDAS
+======================================================================
+
+[CONCLUÍDA] Visual 1 — Novo shell operacional
+
+Resultado:
+- Sidebar azul-marinho.
+- Topbar clara.
+- Navegação vertical.
+- Ícones SVG.
+- Item ativo.
+- Menu do usuário.
+- Permissões preservadas.
+- Logout POST com CSRF.
+- Correção de overflow horizontal.
+- Responsividade para desktop, tablet e celular.
+- Hierarquia de títulos compartilhada.
+
+Commit:
+5100448
+feat(frontend): implementar novo shell operacional do ARGOS
+
+Observação:
+O refinamento avançado da sidebar em tablet/mobile pode ser revisitado no futuro
+após uso operacional real. Não é bloqueador da fase atual.
+
+
+[CONCLUÍDA] Visual 2 — Redesign da listagem de câmeras
+
+Entregas:
+- Redesign responsivo da listagem.
+- Hierarquia de nome, patrimônio, localização, rede e equipamento.
+- Badges refinados.
+- Ações mais compactas.
+- Melhor uso em notebook.
+- Filtros e resultado mais coerentes.
+- Resumo de consulta.
+- Contador de resultados.
+- Paginação consolidada.
+- Estados vazios consistentes.
+
+Commits principais:
+51d8250
+feat(frontend): redesenhar listagem responsiva de câmeras
+
+22be61b
+feat(frontend): aprimorar resultados e consolidar paginação
+
+
+[CONCLUÍDA] Visual 3 — Dashboard operacional
+
+Entregas:
+- Nova hierarquia operacional.
+- Indicadores com melhor prioridade visual.
+- Severidade dinâmica.
+- Destaque de estados de risco e atenção.
+- Redução de ruído visual.
+- Melhor densidade das informações.
+
+Commit:
+5548bd3
+feat(frontend): aprimorar hierarquia operacional do dashboard
+
+
+[CONCLUÍDA] Visual 4A — Detalhes da câmera
+
+Microetapas concluídas:
+
+4A.1 — Cabeçalho e resumo operacional
+- Link de retorno ao inventário.
+- Nome da câmera como identidade principal.
+- Fabricante, modelo e tipo no cabeçalho.
+- Badges de status técnico, situação e completude.
+- Botão de edição próximo à identidade.
+- Resumo de patrimônio, IP e localização.
+
+4A.2 — Densidade dos dados técnicos
+- Cards mais compactos.
+- Identificação, Localização, Rede, Gravação, Monitoramento e Governança cadastral.
+- Tipografia monoespaçada para dados técnicos.
+- Campos vazios atenuados.
+- Faixas superiores de identificação visual por domínio.
+- Monitoramento com cor dinâmica.
+
+4A.3 — Governança e históricos
+- Hierarquia das ações de governança.
+- Ação destrutiva posicionada por último.
+- Campos faltantes destacados.
+- Históricos de atividades, substituições e auditoria padronizados.
+- Estados vazios compactos e contextuais.
+- Responsividade dos grupos de ações.
+
+Commit:
+6751c68
+feat(frontend): redesenhar detalhe operacional da câmera
+
+Arquivos do commit:
+- cameras/templates/cameras/detalhe.html
+- static/css/inventario.css
+
+Gate:
+- Suíte completa aprovada antes do commit.
+- Gate direcionado com 72 testes aprovado.
+- git diff --check sem erros.
+- Avisos LF/CRLF no Windows são informativos.
+
+
+======================================================================
+4. ETAPA ATUAL — VISUAL 4B
+======================================================================
+
+[EM DIAGNÓSTICO / PRÓXIMA IMPLEMENTAÇÃO]
+Visual 4B — Cadastro e edição de câmera
+
+Objetivo:
+Levar o padrão visual estabelecido na página de detalhes para os formulários
+de criação e edição, preservando integralmente comportamento, permissões,
+validações e governança.
+
+Mapeamento confirmado:
+
+Template:
+- cameras/templates/cameras/formulario.html
+
+Views:
+- criar_camera
+- editar_camera
+
+Forms:
+- CameraBaseForm
+- CameraCriacaoForm
+- CameraEdicaoForm
+
+Comportamento:
+- Criação e edição reutilizam o mesmo template.
+- Criação inclui situacao_operacional.
+- Edição não altera situação operacional pelo formulário comum.
+- Mudanças de situação permanecem nos fluxos próprios de governança.
+
+Problemas atuais:
+- Quase todos os campos ficam em um único fieldset "Dados da câmera".
+- O template usa um loop genérico sobre os campos.
+- Identificação, localização, rede e gravação não possuem separação semântica.
+- Apenas descricao_detalhada e observacoes ocupam largura total.
+- Erros ainda têm hierarquia visual limitada.
+- Ações são simples e pouco contextuais.
+- O template está excessivamente comprimido, prejudicando manutenção.
+
+Microetapas planejadas:
+
+4B.1 — Shell e cabeçalho do formulário
+- Link de retorno.
+- Título e descrição contextual.
+- Contexto da câmera no modo edição.
+- Situação operacional como informação de governança.
+- Painel principal consistente.
+- Ações Salvar/Cancelar com hierarquia clara.
+
+4B.2 — Agrupamento e hierarquia dos campos
+- Identificação.
+- Localização.
+- Rede.
+- Gravação.
+- Cadastro/origem.
+- Observações.
+- Manter os mesmos objetos form.campo.
+- Evitar mudança funcional desnecessária.
+
+4B.3 — Validação e responsividade
+- Marcador de obrigatório.
+- Erro junto ao campo.
+- Resumo de erros.
+- Estados focus/invalid/disabled.
+- Layout de uma coluna em telas estreitas.
+- Botões responsivos.
+
+Próximo passo visual obrigatório antes de alterar código:
+- Captura em tela larga de "Nova câmera".
+- Captura em tela larga de "Editar câmera".
+- Preferencialmente do cabeçalho até as ações finais.
+
+Escopo inicialmente esperado:
+- cameras/templates/cameras/formulario.html
+- static/css/inventario.css
+
+Não alterar views.py ou forms.py sem necessidade funcional comprovada.
+
+
+======================================================================
+5. PRÓXIMAS ETAPAS VISUAIS
+======================================================================
+
+[PLANEJADA] Visual 5 — Demais formulários operacionais
+
+Escopo:
+- Formulários de atividades.
+- Alteração de situação.
+- Desativação.
+- Reativação.
+- Substituição.
+- Outros fluxos de governança.
+
+Direção:
+- Mesmo padrão de cabeçalho.
+- Seções semânticas.
+- Campos somente leitura claramente diferenciados.
+- Confirmação adequada para ações críticas.
+- Erros consistentes.
+- Ações previsíveis.
+
+
+[PLANEJADA] Visual 6 — Eventos, atividades, perfil e autenticação
+
+Escopo:
+- Listagem e detalhe de eventos.
+- Atividades.
+- Substituições.
+- Perfil.
+- Edição de perfil.
+- Alteração de senha.
+- Login.
+- Página 403.
+- Futuras páginas 404 e 500.
+
+Objetivo:
+- Levar a identidade visual atual a todas as páginas.
+- Remover padrões antigos restantes.
+- Eliminar paginações e estados vazios paralelos.
+
+
+[PLANEJADA] Visual 7 — Consolidação final do front-end
+
+Escopo:
+- Remover classes sem consumidor.
+- Eliminar CSS legado.
+- Consolidar badges.
+- Consolidar cards.
+- Consolidar paginação.
+- Consolidar estados vazios.
+- Revisar breakpoints.
+- Localizar tokens indefinidos.
+- Verificar seletores duplicados.
+- Executar validação visual geral.
+- Garantir ausência de overflow.
+- Executar a suíte completa.
+
+
+======================================================================
+6. ORGANIZAÇÃO TÉCNICA FUTURA
+======================================================================
+
+[PLANEJADA] Organização de testes e documentação
+
+Situação:
+- Documentos majoritariamente em docs/.
+- Testes ainda distribuídos pelas aplicações.
+
+Estrutura futura conceitual:
+
+cameras/
+└── tests/
+    ├── test_models.py
+    ├── test_forms.py
+    ├── test_views.py
+    ├── test_permissions.py
+    └── test_frontend.py
+
+core/
+└── tests/
+    ├── test_views.py
+    └── test_frontend.py
+
+usuarios/
+└── tests/
+    ├── test_authentication.py
+    ├── test_permissions.py
+    └── test_frontend.py
+
+Regras:
+- Usar git mv.
+- Preservar a contagem dos testes.
+- Atualizar imports.
+- Atualizar CI.
+- Atualizar caminhos documentados.
+- Não misturar essa mudança estrutural com redesign visual.
+
+
+======================================================================
+7. ROADMAP FUNCIONAL
+======================================================================
+
+FUNCIONALIDADES JÁ IMPLEMENTADAS
+
+Entre as principais:
+- Cadastro de câmeras.
+- Fabricante, modelo, tipo e dados técnicos.
+- Status técnico.
+- Atividades.
+- Autenticação.
+- Perfis e permissões.
+- Perfil do usuário.
+- Auditoria.
+- Eventos.
+- Situação operacional.
+- Produção, Estoque e Desativada.
+- Desativação e reativação.
+- Substituição de câmeras.
+- Histórico de indisponibilidade.
+- Regras de integridade cadastral.
+- Dashboard.
+- Rotas protegidas.
+- Testes e CI.
+
+
+[PLANEJADA] Funcional 4D — Credenciais e configuração de monitoramento
+
+Objetivo:
+- Armazenar credenciais utilizadas para consultar as câmeras.
+- Proteger os dados sensíveis.
+- Restringir acesso por perfil.
+- Impedir exposição ao perfil Monitoramento.
+- Disponibilizar configuração para Operador e Administrador.
+- Auditar alterações.
+- Preparar composição das URLs de monitoramento.
+
+Pontos essenciais:
+- Senha nunca em texto aberto.
+- Criptografia.
+- Chave fora do banco.
+- Nenhuma senha em logs, templates ou mensagens.
+- Acesso restrito.
+- Testes de segurança.
+
+
+[PLANEJADA] Funcional 4E — Integração RTSP
+
+Objetivo:
+- Configurar dados RTSP.
+- Montar a URL de cada câmera.
+- Validar conexão.
+- Tratar fabricantes e padrões diferentes.
+- Não expor credenciais.
+- Registrar falhas.
+- Preparar captura de imagem.
+
+Separar:
+- Configuração.
+- Montagem da URL.
+- Teste de conexão.
+- Consumo do stream.
+- Timeout e tratamento de erro.
+
+
+[PLANEJADA] Funcional 4F — Keepalive e monitoramento de disponibilidade
+
+Objetivo:
+- Verificar periodicamente aproximadamente 2.300 câmeras.
+- Atualizar Online/Offline.
+- Registrar início e fim das indisponibilidades.
+- Evitar verificações concorrentes duplicadas.
+- Controlar timeout e tentativas.
+- Gerar logs por rodada.
+
+Parâmetros iniciais:
+- Execuções: 08:00 e 18:00.
+- Concorrência inicial: 20.
+- Tentativas por câmera: 2.
+- Timeout inicial: 5 segundos.
+
+Implantação progressiva:
+- 50 câmeras.
+- 100 câmeras.
+- 500 câmeras.
+- Parque completo.
+
+Os valores serão ajustados após testes reais.
+
+
+[PLANEJADA] Funcional 4G — Snapshots
+
+Snapshot automático:
+- Offline -> Online.
+- Primeira detecção Online.
+- Primeiro cadastro detectado como Online.
+
+Não gerar:
+- Ao entrar em Offline.
+- Em verificações repetidas enquanto continuar Online.
+
+Retenção:
+- Manter as três imagens automáticas mais recentes por câmera.
+- Excluir a automática mais antiga ao criar a quarta.
+- Preservar imagem manual protegida.
+
+Snapshot manual:
+- Captura manual.
+- Imagem principal/oficial.
+- Proteção contra exclusão automática.
+
+Também serão necessários:
+- Armazenamento.
+- Controle de tamanho.
+- Tratamento de erro.
+- Permissões.
+- Limpeza segura.
+- Auditoria.
+
+
+[PLANEJADA] Funcional 4H — Importação em lote
+
+Objetivo:
+- Cadastrar grandes volumes por planilha.
+- Atender cargas de 100 ou mais câmeras.
+- Validar antes da gravação.
+- Apresentar erros por linha.
+- Evitar importação parcial inconsistente.
+- Preservar regras de MAC, nome, situação e completude.
+- Gerar relatório.
+
+Fluxo:
+- Modelo de planilha.
+- Pré-validação.
+- Pré-visualização.
+- Confirmação.
+- Relatório de erros.
+- Auditoria.
+
+
+[PLANEJADA] Funcional 4I — Produção, backup e observabilidade
+
+Banco e aplicação:
+- PostgreSQL.
+- Variáveis de ambiente.
+- Servidor de aplicação adequado.
+- Fim do uso de runserver em produção.
+- Estáticos.
+- Proteção de segredos.
+- Separação de ambientes.
+
+Backup:
+- RPO.
+- RTO.
+- Retenção.
+- Banco.
+- Snapshots.
+- Chave criptográfica.
+- Teste de restauração.
+- Processo documentado.
+
+Observabilidade:
+- Aplicação.
+- Banco.
+- Disco.
+- Keepalive.
+- Tempo das rodadas.
+- Erros RTSP.
+- Snapshots.
+- Backups.
+- Filas/workers.
+- Falhas consecutivas.
+- Uso de armazenamento.
+
+Gate de produção:
+- Suíte completa.
+- Segurança.
+- Teste de carga.
+- Teste de restauração.
+- Documentação de implantação.
+- Plano de rollback.
+- Observabilidade validada.
+
+
+======================================================================
+8. ORDEM RECOMENDADA ATUAL
+======================================================================
+
+1. Visual 4B — Cadastro e edição de câmera.
+2. Visual 5 — Demais formulários operacionais.
+3. Visual 6 — Demais telas.
+4. Visual 7 — Consolidação do front-end.
+5. Organização de testes e documentação.
+6. Funcional 4D — Credenciais.
+7. Funcional 4E — RTSP.
+8. Funcional 4F — Keepalive.
+9. Funcional 4G — Snapshots.
+10. Funcional 4H — Importação em lote.
+11. Funcional 4I — Produção e observabilidade.
+
+Observação:
+Depois que o formulário principal de câmera estiver consistente com listagem,
+dashboard e detalhe, o projeto poderá alternar entre melhorias visuais e
+funcionalidades sem necessidade de finalizar todo o front-end primeiro.
+
+
+======================================================================
+9. PRÓXIMO PASSO IMEDIATO
+======================================================================
+
+Visual 4B.1 — Shell e cabeçalho do formulário.
+
+Antes de alterar arquivos:
+1. Obter captura da tela "Nova câmera".
+2. Obter captura da tela "Editar câmera".
+3. Fazer diagnóstico comparativo.
+4. Definir patch mínimo inicialmente restrito a:
+   - cameras/templates/cameras/formulario.html
+   - static/css/inventario.css
+
+Política:
+- Implementação incremental.
+- Validar visualmente após cada microetapa.
+- Rodar testes direcionados.
+- Executar suíte completa antes do commit.
+- Revisar git diff --check.
+- Não fazer push sem solicitação explícita.
