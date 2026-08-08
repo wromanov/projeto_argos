@@ -5,6 +5,8 @@ from .catalogos import (
     CODECS_CATALOGO,
     FARM_CHOICES,
     FARMS_CATALOGO,
+    RETENCAO_CHOICES,
+    RETENCOES_CATALOGO,
     VALOR_PERSONALIZADO,
 )
 from .models import AtividadeCamera, Camera
@@ -56,6 +58,19 @@ class CameraBaseForm(forms.ModelForm):
             }
         ),
     )
+
+    retencao_personalizada_dias = forms.IntegerField(
+        required=False,
+        min_value=1,
+        label="Retenção personalizada em dias",
+        widget=forms.NumberInput(
+            attrs={
+                "class": "form-control",
+                "min": "1",
+                "step": "1",
+            }
+        ),
+    )
     class Meta:
         model = Camera
         fields = CAMPOS_CAMERA
@@ -103,6 +118,21 @@ class CameraBaseForm(forms.ModelForm):
             ),
         )
 
+        self.fields["retencao_esperada_dias"] = forms.ChoiceField(
+            required=False,
+            label="Retenção esperada em dias",
+            choices=RETENCAO_CHOICES,
+            widget=forms.Select(
+                attrs={
+                    "class": "form-control",
+                    "data-retencao-select": "",
+                    "aria-controls": (
+                        "retencao-personalizada-container"
+                    ),
+                }
+            ),
+        )
+
         if not self.is_bound:
             self._configurar_valor_catalogado(
                 campo="farm",
@@ -115,6 +145,8 @@ class CameraBaseForm(forms.ModelForm):
                 campo_personalizado="codec_personalizado",
                 catalogo=CODECS_CATALOGO,
             )
+
+            self._configurar_retencao()
 
     def _configurar_valor_catalogado(
         self,
@@ -139,6 +171,41 @@ class CameraBaseForm(forms.ModelForm):
 
         self.initial[campo] = VALOR_PERSONALIZADO
         self.initial[campo_personalizado] = valor_atual
+
+    def _configurar_retencao(self):
+        valor_atual = self.initial.get(
+            "retencao_esperada_dias"
+        )
+
+        if valor_atual in (None, ""):
+            self.initial["retencao_esperada_dias"] = ""
+            self.initial["retencao_personalizada_dias"] = ""
+            return
+
+        try:
+            valor_atual = int(valor_atual)
+        except (TypeError, ValueError):
+            self.initial["retencao_esperada_dias"] = (
+                VALOR_PERSONALIZADO
+            )
+            self.initial["retencao_personalizada_dias"] = (
+                valor_atual
+            )
+            return
+
+        if valor_atual in RETENCOES_CATALOGO:
+            self.initial["retencao_esperada_dias"] = str(
+                valor_atual
+            )
+            self.initial["retencao_personalizada_dias"] = ""
+            return
+
+        self.initial["retencao_esperada_dias"] = (
+            VALOR_PERSONALIZADO
+        )
+        self.initial["retencao_personalizada_dias"] = (
+            valor_atual
+        )
 
     def clean_mac(self):
         return normalizar_mac(self.cleaned_data.get("mac"))
@@ -202,6 +269,44 @@ class CameraBaseForm(forms.ModelForm):
         elif codec_selecionado is not None:
             cleaned["codec"] = normalizar_texto_cadastral(
                 codec_selecionado
+            )
+
+        retencao_selecionada = cleaned.get(
+            "retencao_esperada_dias"
+        )
+
+        if retencao_selecionada == VALOR_PERSONALIZADO:
+            if self.has_error(
+                "retencao_personalizada_dias"
+            ):
+                cleaned["retencao_esperada_dias"] = None
+
+            else:
+                retencao_personalizada = cleaned.get(
+                    "retencao_personalizada_dias"
+                )
+
+                if retencao_personalizada is None:
+                    self.add_error(
+                        "retencao_personalizada_dias",
+                        (
+                            "Informe a retenção "
+                            "personalizada em dias."
+                        ),
+                    )
+                    cleaned["retencao_esperada_dias"] = None
+
+                else:
+                    cleaned["retencao_esperada_dias"] = (
+                        retencao_personalizada
+                    )
+
+        elif retencao_selecionada in (None, ""):
+            cleaned["retencao_esperada_dias"] = None
+
+        else:
+            cleaned["retencao_esperada_dias"] = int(
+                retencao_selecionada
             )
 
         for campo in Camera.CAMPOS_CAIXA_ALTA:

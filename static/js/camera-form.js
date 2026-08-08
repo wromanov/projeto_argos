@@ -12,6 +12,10 @@
             select: "[data-codec-select]",
             container: "[data-codec-personalizado]",
         },
+        {
+            select: "[data-retencao-select]",
+            container: "[data-retencao-personalizada]",
+        },
     ];
 
     function inicializarCampoPersonalizado({

@@ -44,3 +44,25 @@ CODEC_CHOICES = (
         "PERSONALIZADO",
     ),
 )
+
+RETENCOES_CATALOGO = (
+    15,
+    30,
+    90,
+    180,
+    360,
+    540,
+)
+
+
+RETENCAO_CHOICES = (
+    ("", "---------"),
+    *(
+        (str(valor), f"{valor} dias")
+        for valor in RETENCOES_CATALOGO
+    ),
+    (
+        VALOR_PERSONALIZADO,
+        "PERSONALIZADO",
+    ),
+)
