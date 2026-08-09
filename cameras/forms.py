@@ -378,9 +378,23 @@ class AlterarSituacaoCameraForm(forms.Form):
 
 
 class SubstituirCameraForm(forms.Form):
-    camera_substituta = forms.ModelChoiceField(queryset=Camera.objects.none(), widget=forms.Select(attrs={"class": "form-control"}))
-    motivo = forms.CharField(min_length=10, max_length=1000, strip=True, widget=forms.Textarea(attrs={"class": "form-control", "rows": 5}))
-    observacoes = forms.CharField(required=False, strip=True, widget=forms.Textarea(attrs={"class": "form-control", "rows": 4}))
+    camera_substituta = forms.ModelChoiceField(
+        label="Câmera substituta",
+        queryset=Camera.objects.none(),
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+    motivo = forms.CharField(
+        min_length=10,
+        max_length=1000,
+        strip=True,
+        widget=forms.Textarea(attrs={"class": "form-control", "rows": 5}),
+    )
+    observacoes = forms.CharField(
+        label="Observações",
+        required=False,
+        strip=True,
+        widget=forms.Textarea(attrs={"class": "form-control", "rows": 4}),
+    )
 
     def __init__(self, *args, camera_anterior=None, **kwargs):
         super().__init__(*args, **kwargs)
