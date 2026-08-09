@@ -1,1 +1,225 @@
-{% extends "base.html" %}{% load static %}{% block titulo %}Substituição #{{ substituicao.pk }} — ARGOS{% endblock %}{% block extra_css %}<link rel="stylesheet" href="{% static 'css/governanca.css' %}">{% endblock %}{% block conteudo %}<section class="replacement-detail"><a href="{% url 'cameras:lista_substituicoes' %}">← Voltar</a><h1>Substituição #{{ substituicao.pk }}</h1><dl><dt>Câmera anterior</dt><dd><a href="{% url 'cameras:detalhe' substituicao.camera_anterior.pk %}">{{ substituicao.camera_anterior }}</a></dd><dt>Câmera substituta</dt><dd><a href="{% url 'cameras:detalhe' substituicao.camera_substituta.pk %}">{{ substituicao.camera_substituta }}</a></dd><dt>Nome operacional</dt><dd>{{ substituicao.nome_operacional }}</dd><dt>Nome anterior da substituta</dt><dd>{{ substituicao.nome_anterior_substituta }}</dd><dt>Data</dt><dd>{{ substituicao.ocorrida_em|date:"d/m/Y H:i" }}</dd><dt>Motivo</dt><dd>{{ substituicao.motivo }}</dd><dt>Observações</dt><dd>{{ substituicao.observacoes|default:"—" }}</dd><dt>Usuário atual</dt><dd>{{ substituicao.registrado_por|default:"—" }}</dd><dt>Username congelado</dt><dd>{{ substituicao.registrado_por_username|default:"—" }}</dd><dt>Nome congelado</dt><dd>{{ substituicao.registrado_por_nome|default:"—" }}</dd><dt>Registrado em</dt><dd>{{ substituicao.criado_em|date:"d/m/Y H:i" }}</dd></dl></section>{% endblock %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block titulo %}Substituição #{{ substituicao.pk }} — ARGOS{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/governanca.css' %}">
+{% endblock %}
+
+{% block conteudo %}
+<section class="replacement-record" aria-labelledby="replacement-detail-title">
+
+    <a
+        class="governance-back replacement-record__back"
+        href="{% url 'cameras:lista_substituicoes' %}"
+    >
+        ← Voltar para substituições
+    </a>
+
+    <header class="replacement-record__hero">
+        <div>
+            <p class="replacement-eyebrow">Governança operacional</p>
+            <h1 id="replacement-detail-title">
+                Substituição #{{ substituicao.pk }}
+            </h1>
+        </div>
+
+        <span class="replacement-record__immutable">
+            Registro histórico imutável
+        </span>
+    </header>
+
+    <section
+        class="replacement-transfer"
+        aria-labelledby="replacement-transfer-title"
+    >
+        <header class="replacement-transfer__header">
+            <div>
+                <p class="replacement-transfer__eyebrow">
+                    Transição de equipamento
+                </p>
+                <h2 id="replacement-transfer-title">
+                    Substituição física
+                </h2>
+            </div>
+
+            <time
+                class="replacement-transfer__date"
+                datetime="{{ substituicao.ocorrida_em|date:'c' }}"
+            >
+                <span>Realizada em</span>
+                <strong>{{ substituicao.ocorrida_em|date:"d/m/Y H:i" }}</strong>
+            </time>
+        </header>
+
+        <div class="replacement-transfer__flow">
+
+            <article class="replacement-device replacement-device--previous">
+                <div class="replacement-device__heading">
+                    <span class="replacement-device__role">
+                        Equipamento substituído
+                    </span>
+                    <span class="replacement-device__state">
+                        Câmera anterior
+                    </span>
+                </div>
+
+                <a
+                    class="replacement-device__name"
+                    href="{% url 'cameras:detalhe' substituicao.camera_anterior.pk %}"
+                >
+                    {{ substituicao.camera_anterior }}
+                </a>
+
+                <dl class="replacement-device__meta">
+                    <div>
+                        <dt>Patrimônio</dt>
+                        <dd class="technical-value">
+                            {{ substituicao.camera_anterior.patrimonio|default:"—" }}
+                        </dd>
+                    </div>
+
+                    <div>
+                        <dt>Serial</dt>
+                        <dd class="technical-value">
+                            {{ substituicao.camera_anterior.serial|default:"—" }}
+                        </dd>
+                    </div>
+                </dl>
+            </article>
+
+            <div
+                class="replacement-transfer__connector"
+                aria-hidden="true"
+            >
+                <span>→</span>
+            </div>
+
+            <article class="replacement-device replacement-device--next">
+                <div class="replacement-device__heading">
+                    <span class="replacement-device__role">
+                        Equipamento que assumiu a posição
+                    </span>
+                    <span class="replacement-device__state">
+                        Câmera substituta
+                    </span>
+                </div>
+
+                <a
+                    class="replacement-device__name"
+                    href="{% url 'cameras:detalhe' substituicao.camera_substituta.pk %}"
+                >
+                    {{ substituicao.camera_substituta }}
+                </a>
+
+                <dl class="replacement-device__meta">
+                    <div>
+                        <dt>Patrimônio</dt>
+                        <dd class="technical-value">
+                            {{ substituicao.camera_substituta.patrimonio|default:"—" }}
+                        </dd>
+                    </div>
+
+                    <div>
+                        <dt>Serial</dt>
+                        <dd class="technical-value">
+                            {{ substituicao.camera_substituta.serial|default:"—" }}
+                        </dd>
+                    </div>
+                </dl>
+            </article>
+
+        </div>
+    </section>
+
+    <section
+        class="replacement-context"
+        aria-labelledby="replacement-context-title"
+    >
+        <header class="replacement-section-heading">
+            <p class="replacement-section-heading__eyebrow">
+                Contexto operacional
+            </p>
+            <h2 id="replacement-context-title">
+                Informações da substituição
+            </h2>
+        </header>
+
+        <dl class="replacement-context__grid">
+            <div>
+                <dt>Nome operacional</dt>
+                <dd>{{ substituicao.nome_operacional }}</dd>
+            </div>
+
+            <div>
+                <dt>Nome anterior da substituta</dt>
+                <dd>{{ substituicao.nome_anterior_substituta }}</dd>
+            </div>
+        </dl>
+    </section>
+
+    <section
+        class="replacement-narrative"
+        aria-labelledby="replacement-narrative-title"
+    >
+        <header class="replacement-section-heading">
+            <p class="replacement-section-heading__eyebrow">
+                Registro operacional
+            </p>
+            <h2 id="replacement-narrative-title">
+                Motivo e observações
+            </h2>
+        </header>
+
+        <dl class="replacement-narrative__content">
+            <div>
+                <dt>Motivo</dt>
+                <dd>{{ substituicao.motivo }}</dd>
+            </div>
+
+            <div>
+                <dt>Observações</dt>
+                <dd>{{ substituicao.observacoes|default:"—" }}</dd>
+            </div>
+        </dl>
+    </section>
+
+    <section
+        class="replacement-audit"
+        aria-labelledby="replacement-audit-title"
+    >
+        <header class="replacement-section-heading">
+            <p class="replacement-section-heading__eyebrow">
+                Rastreabilidade
+            </p>
+            <h2 id="replacement-audit-title">
+                Auditoria
+            </h2>
+        </header>
+
+        <dl class="replacement-audit__grid">
+            <div>
+                <dt>Usuário atual</dt>
+                <dd>{{ substituicao.registrado_por|default:"—" }}</dd>
+            </div>
+
+            <div>
+                <dt>Username congelado</dt>
+                <dd>{{ substituicao.registrado_por_username|default:"—" }}</dd>
+            </div>
+
+            <div>
+                <dt>Nome congelado</dt>
+                <dd>{{ substituicao.registrado_por_nome|default:"—" }}</dd>
+            </div>
+
+            <div>
+                <dt>Registrado em</dt>
+                <dd>{{ substituicao.criado_em|date:"d/m/Y H:i" }}</dd>
+            </div>
+        </dl>
+    </section>
+
+</section>
+{% endblock %}
