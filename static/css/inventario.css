@@ -863,8 +863,8 @@
 
 .activity-list, .activity-timeline {
     display: grid;
-    gap: 14px;
-    padding: 18px 20px;
+    gap: var(--space-4);
+    padding: var(--space-5);
 }
 
 .activity-timeline {
@@ -872,75 +872,99 @@
 }
 
 .activity-card {
-    padding: 18px;
-    border: 1px solid #e7ecf2;
-    border-radius: 10px;
-    background: #fff;
+    min-width: 0;
+    padding: var(--space-5);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
 }
 
 .activity-card__header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 16px;
+    gap: var(--space-4);
+}
+
+.activity-card__header > div {
+    min-width: 0;
+}
+
+.activity-card__header > .button {
+    flex: 0 0 auto;
 }
 
 .activity-card__title {
-    margin: 9px 0 0;
-    color: var(--inv-text);
-    font-size: 16px;
+    margin: var(--space-2) 0 0;
+    color: var(--color-text);
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-tight);
+    overflow-wrap: anywhere;
 }
 
 .activity-card__meta {
-    margin: 14px 0 0;
-    color: var(--inv-muted);
-    font-size: 12px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-4) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-xs);
 }
 
 .activity-card__meta div {
-    display: inline-block;
-    margin: 0 18px 8px 0;
+    min-width: 0;
 }
 
 .activity-card__meta dt {
+    color: var(--color-text-muted);
     font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
 }
 
 .activity-card__meta dd {
-    margin: 3px 0 0;
+    margin: var(--space-1) 0 0;
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    overflow-wrap: anywhere;
 }
 
 .activity-card__description {
-    margin: 14px 0 0;
-    color: #475467;
-    line-height: 1.6;
+    margin: var(--space-4) 0 0;
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    overflow-wrap: anywhere;
     white-space: pre-line;
 }
 
 .activity-card__actions {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-3);
     flex-wrap: wrap;
 }
 
 .activity-badge {
     display: inline-flex;
-    padding: 5px 9px;
+    align-items: center;
+    max-width: 100%;
+    padding: var(--space-1) var(--space-2);
     border-radius: 999px;
-    font-size: 11px;
+    font-size: var(--font-size-xs);
     font-weight: 700;
-    line-height: 1;
+    line-height: var(--line-height-tight);
+    overflow-wrap: anywhere;
 }
 
 .activity-badge--danger {
-    background: #fee4e2;
-    color: #b42318;
+    background: var(--color-danger-surface);
+    color: var(--color-danger);
 }
 
 .activity-badge--warning {
-    background: #fffaeb;
-    color: #b54708;
+    background: var(--color-warning-surface);
+    color: var(--color-warning);
 }
 
 .activity-badge--special {
@@ -949,31 +973,128 @@
 }
 
 .activity-badge--neutral {
-    background: #f2f4f7;
-    color: #475467;
+    background: var(--color-neutral-surface);
+    color: var(--color-neutral);
 }
 
 .activity-badge--info {
-    background: #eff8ff;
-    color: #175cd3;
+    background: var(--color-info-surface);
+    color: var(--color-info);
 }
 
 .activity-form {
-    padding: 0 0 20px;
+    padding: 0 0 var(--space-5);
+}
+
+.activity-hero__eyebrow {
+    display: block;
+    margin-top: var(--space-2);
+}
+
+.activity-form .field__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    width: max-content;
+    max-width: 100%;
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+}
+
+.activity-form .required-marker {
+    flex: 0 0 auto;
+    font-weight: 800;
+}
+
+.activity-form .field-help {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+}
+
+.activity-form .field--invalid input,
+.activity-form .field--invalid select,
+.activity-form .field--invalid textarea {
+    border-color: var(--color-danger-border);
+    background-color: var(--color-danger-surface);
+}
+
+.activity-form .field--invalid input:focus-visible,
+.activity-form .field--invalid select:focus-visible,
+.activity-form .field--invalid textarea:focus-visible {
+    border-color: var(--color-danger);
+}
+
+.activity-form .field-errors {
+    margin-top: var(--space-1);
+}
+
+.activity-form .field-errors .errorlist {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    color: var(--color-danger);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    line-height: 1.45;
+    list-style: none;
+}
+
+.activity-form .form-errors-summary {
+    display: grid;
+    gap: var(--space-2);
+    margin: var(--space-5) var(--space-5) 0;
+    padding: var(--space-4);
+}
+
+.activity-form .form-errors-summary h2 {
+    margin: 0;
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+}
+
+.activity-form .form-errors-summary ul {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding-left: var(--space-5);
+}
+
+.activity-form .form-errors-summary a {
+    color: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: .15em;
 }
 
 .activity-form .form-actions {
-    padding: 0 20px;
-    gap: 10px;
+    padding: 0 var(--space-5);
+    gap: var(--space-3);
 }
 
-@media (max-width: 760px) {
+@media (max-width: 56rem) {
+    .activity-card__meta {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 44rem) {
     .activity-section {
         grid-column: auto;
     }
 
     .activity-card__header {
         flex-direction: column;
+    }
+
+    .activity-card__header > .button {
+        width: 100%;
+    }
+
+    .activity-card__meta {
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .activity-card__actions {
@@ -985,7 +1106,30 @@
     }
 
     .activity-list {
-        padding: 14px;
+        padding: var(--space-4);
+    }
+
+    .activity-form .form-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .activity-form .field__label {
+        width: 100%;
+    }
+
+    .activity-form .form-errors-summary {
+        margin: var(--space-4) var(--space-4) 0;
+        padding: var(--space-3);
+    }
+
+    .activity-form .form-actions {
+        align-items: stretch;
+        flex-direction: column;
+        padding-inline: var(--space-4);
+    }
+
+    .activity-form .form-actions .button {
+        width: 100%;
     }
 }
 
