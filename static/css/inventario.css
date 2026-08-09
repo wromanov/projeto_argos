@@ -861,7 +861,33 @@
     grid-column: 1 / -1;
 }
 
-.activity-list, .activity-timeline {
+.activity-history-page {
+    width: min(100%, 76rem);
+    margin-inline: auto;
+}
+
+.activity-history-hero {
+    align-items: flex-end;
+    margin-bottom: var(--space-5);
+}
+
+.activity-history-hero__content {
+    min-width: 0;
+}
+
+.activity-history-hero h1 {
+    margin: var(--space-1) 0 0;
+    color: var(--color-text);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    line-height: var(--line-height-tight);
+}
+
+.activity-history-hero__actions {
+    flex: 0 0 auto;
+}
+
+.activity-list,
+.activity-timeline {
     display: grid;
     gap: var(--space-4);
     padding: var(--space-5);
@@ -873,11 +899,17 @@
 
 .activity-card {
     min-width: 0;
-    padding: var(--space-5);
     border: var(--border-width) solid var(--color-border);
     border-radius: var(--radius-md);
     background: var(--color-surface);
     box-shadow: var(--shadow-sm);
+}
+
+.activity-card__heading {
+    min-width: 0;
+    display: grid;
+    justify-items: start;
+    gap: var(--space-2);
 }
 
 .activity-card__header {
@@ -887,55 +919,147 @@
     gap: var(--space-4);
 }
 
-.activity-card__header > div {
-    min-width: 0;
-}
-
 .activity-card__header > .button {
     flex: 0 0 auto;
 }
 
 .activity-card__title {
-    margin: var(--space-2) 0 0;
+    margin: 0;
     color: var(--color-text);
     font-size: var(--font-size-lg);
     line-height: var(--line-height-tight);
     overflow-wrap: anywhere;
 }
 
-.activity-card__meta {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--space-4);
-    margin: var(--space-4) 0 0;
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-xs);
-}
-
-.activity-card__meta div {
-    min-width: 0;
-}
-
-.activity-card__meta dt {
-    color: var(--color-text-muted);
-    font-weight: 700;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-}
-
-.activity-card__meta dd {
-    margin: var(--space-1) 0 0;
-    color: var(--color-text);
-    font-size: var(--font-size-sm);
-    overflow-wrap: anywhere;
-}
-
 .activity-card__description {
-    margin: var(--space-4) 0 0;
     color: var(--color-text-secondary);
     line-height: var(--line-height-relaxed);
     overflow-wrap: anywhere;
     white-space: pre-line;
+}
+
+.activity-card--history {
+    overflow: hidden;
+}
+
+.activity-card--history .activity-card__header {
+    padding: var(--space-4) var(--space-5);
+    align-items: center;
+    border-bottom: var(--border-width) solid var(--color-border);
+    background: var(--color-surface-secondary);
+}
+
+.activity-card--history .activity-card__header > .button {
+    min-height: 2.25rem;
+    padding-inline: var(--space-3);
+}
+
+.activity-card--history .activity-card__body {
+    padding: var(--space-4) var(--space-5);
+}
+
+.activity-card--history .activity-card__description {
+    margin: 0;
+    max-width: 58rem;
+    color: var(--color-text);
+}
+
+.activity-card__meta {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: var(--space-3) var(--space-5);
+    border-top: var(--border-width) solid var(--color-border);
+    background: var(--color-surface-secondary);
+}
+
+.activity-card__meta div,
+.activity-card__preview-meta div {
+    min-width: 0;
+}
+
+.activity-card__meta dt,
+.activity-card__preview-meta dt {
+    color: var(--color-text-muted);
+    font-size: .6875rem;
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.activity-card__meta dd,
+.activity-card__preview-meta dd {
+    margin: var(--space-1) 0 0;
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.activity-card--preview {
+    padding: var(--space-4);
+    border-left: .25rem solid var(--color-brand);
+    box-shadow: none;
+}
+
+.activity-card__preview-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.activity-card--preview .activity-card__heading {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.activity-card--preview .activity-card__title {
+    font-size: var(--font-size-base);
+}
+
+.activity-card--preview .activity-card__description {
+    margin: var(--space-3) 0 0;
+}
+
+.activity-card__edit-link {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2rem;
+    padding: 0 var(--space-3);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.activity-card__edit-link:hover {
+    color: var(--color-brand-dark);
+    border-color: var(--color-info-border);
+    background: var(--color-surface-secondary);
+}
+
+.activity-card__edit-link:focus-visible {
+    outline: 3px solid var(--color-info-border);
+    outline-offset: 2px;
+}
+
+.activity-card__preview-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-3) 0 0;
+    padding-top: var(--space-3);
+    border-top: var(--border-width) solid var(--color-border);
 }
 
 .activity-card__actions {
@@ -1085,15 +1209,28 @@
         grid-column: auto;
     }
 
-    .activity-card__header {
-        flex-direction: column;
+    .activity-history-hero {
+        align-items: stretch;
     }
 
-    .activity-card__header > .button {
+    .activity-history-hero__actions,
+    .activity-history-hero__actions .button {
         width: 100%;
     }
 
-    .activity-card__meta {
+    .activity-card--history .activity-card__header,
+    .activity-card__preview-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .activity-card--history .activity-card__header > .button,
+    .activity-card__edit-link {
+        width: 100%;
+    }
+
+    .activity-card__meta,
+    .activity-card__preview-meta {
         grid-template-columns: minmax(0, 1fr);
     }
 

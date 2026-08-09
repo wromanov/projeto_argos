@@ -1,9 +1,77 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block titulo %}Histórico de atividades — ARGOS{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/inventario.css' %}">{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/inventario.css' %}">
+{% endblock %}
+
 {% block conteudo %}
-<section class="inventory-hero"><div><a class="detail-back-link" href="{% url 'cameras:detalhe' camera.pk %}">← Voltar para câmera</a><span class="inventory-eyebrow activity-hero__eyebrow">Histórico</span><h1>Histórico de atividades</h1><p>{{ camera.nome }}{% if camera.patrimonio %} · {{ camera.patrimonio }}{% endif %} · {{ total_atividades }} registro{{ total_atividades|pluralize }}</p></div><div class="inventory-hero__actions"><a class="button button--primary" href="{% url 'cameras:criar_atividade' camera.pk %}">Registrar atividade</a></div></section>
-<section class="activity-timeline">{% for atividade in atividades %}<article class="activity-card"><div class="activity-card__header"><div>{% include "cameras/partials/_atividade_tipo_badge.html" %}<h2 class="activity-card__title">{{ atividade.titulo }}</h2></div><a class="button button--secondary" href="{% url 'cameras:editar_atividade' atividade.pk %}">Editar</a></div><p class="activity-card__description">{{ atividade.descricao }}</p><dl class="activity-card__meta"><div><dt>Ocorrida em</dt><dd>{{ atividade.ocorrida_em|date:"d/m/Y H:i" }}</dd></div><div><dt>Responsável</dt><dd>{{ atividade.responsavel|default:"—" }}</dd></div><div><dt>Criado por</dt><dd>{{ atividade.criado_por|default:"—" }}</dd></div><div><dt>Registrado em</dt><dd>{{ atividade.criado_em|date:"d/m/Y H:i" }}</dd></div></dl></article>{% empty %}{% include "components/estado_vazio.html" with empty_title="Nenhuma atividade registrada" empty_text="Esta câmera ainda não possui atividades em seu histórico." %}{% endfor %}</section>
-{% include "components/paginacao.html" with page_obj=page_obj pagination_label="Paginação do histórico" %}
+<section class="activity-history-page" aria-labelledby="activity-history-title">
+  <header class="inventory-hero activity-history-hero">
+    <div class="activity-history-hero__content">
+      <a class="detail-back-link" href="{% url 'cameras:detalhe' camera.pk %}">
+        ← Voltar para câmera
+      </a>
+      <span class="inventory-eyebrow activity-hero__eyebrow">Histórico</span>
+      <h1 id="activity-history-title">Histórico de atividades</h1>
+      <p>
+        {{ camera.nome }}
+        {% if camera.patrimonio %} · {{ camera.patrimonio }}{% endif %}
+        · {{ total_atividades }} registro{{ total_atividades|pluralize }}
+      </p>
+    </div>
+
+    <div class="inventory-hero__actions activity-history-hero__actions">
+      <a class="button button--primary" href="{% url 'cameras:criar_atividade' camera.pk %}">
+        Registrar atividade
+      </a>
+    </div>
+  </header>
+
+  <section class="activity-timeline" aria-label="Atividades registradas">
+    {% for atividade in atividades %}
+      <article class="activity-card activity-card--history">
+        <header class="activity-card__header">
+          <div class="activity-card__heading">
+            {% include "cameras/partials/_atividade_tipo_badge.html" %}
+            <h2 class="activity-card__title">{{ atividade.titulo }}</h2>
+          </div>
+
+          <a class="button button--secondary" href="{% url 'cameras:editar_atividade' atividade.pk %}">
+            Editar
+          </a>
+        </header>
+
+        <div class="activity-card__body">
+          <p class="activity-card__description">{{ atividade.descricao }}</p>
+        </div>
+
+        <dl class="activity-card__meta" aria-label="Metadados da atividade">
+          <div>
+            <dt>Ocorrida em</dt>
+            <dd>{{ atividade.ocorrida_em|date:"d/m/Y H:i" }}</dd>
+          </div>
+          <div>
+            <dt>Responsável</dt>
+            <dd>{{ atividade.responsavel|default:"—" }}</dd>
+          </div>
+          <div>
+            <dt>Criado por</dt>
+            <dd>{{ atividade.criado_por|default:"—" }}</dd>
+          </div>
+          <div>
+            <dt>Registrado em</dt>
+            <dd>{{ atividade.criado_em|date:"d/m/Y H:i" }}</dd>
+          </div>
+        </dl>
+      </article>
+    {% empty %}
+      {% include "components/estado_vazio.html" with empty_title="Nenhuma atividade registrada" empty_text="Esta câmera ainda não possui atividades em seu histórico." %}
+    {% endfor %}
+  </section>
+
+  {% include "components/paginacao.html" with page_obj=page_obj pagination_label="Paginação do histórico" %}
+</section>
 {% endblock %}
