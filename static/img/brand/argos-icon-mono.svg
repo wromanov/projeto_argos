@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="gradA" x1="80" y1="420" x2="380" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#12233E"/>
+      <stop offset="1" stop-color="#12233E"/>
+    </linearGradient>
+    <linearGradient id="gradBars" x1="300" y1="380" x2="430" y2="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#12233E"/>
+      <stop offset="1" stop-color="#53A9FF"/>
+    </linearGradient>
+    
+  </defs>
+  <rect width="512" height="512" fill="none"/>
+  <g>
+    <path d="M133 386 L254 126 H285 L407 386 H331 L269 251 V229 L255 208 L188 386 Z" fill="url(#gradA)"/>
+    <path d="M234 218 L268 151 L285 151 L250 218 Z" fill="#EEF3FA" opacity="0.35"/>
+    <circle cx="255" cy="289" r="62" fill="#0A1F3D"/>
+    <circle cx="255" cy="289" r="49" fill="none" stroke="#12233E" stroke-width="10"/>
+    <circle cx="255" cy="289" r="28" fill="#12233E"/>
+    <circle cx="273" cy="272" r="14" fill="#12233E"/>
+    <circle cx="279" cy="266" r="5" fill="#BFE3FF" opacity="0.9"/>
+    <path d="M316 353 H350 L366 386 H332 Z" fill="url(#gradBars)"/>
+    <path d="M351 353 H386 L404 386 H369 Z" fill="url(#gradBars)" opacity="0.88"/>
+    <path d="M386 353 H423 L441 386 H404 Z" fill="url(#gradBars)" opacity="0.76"/>
+  </g>
+</svg>

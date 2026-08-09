@@ -1,7 +1,16 @@
+{% load static %}
+
 <aside class="app-sidebar" aria-label="Navegação da aplicação">
   <div class="app-sidebar__content">
     <a class="brand" href="{% url 'core:inicio' %}">
-      <span class="brand__symbol" aria-hidden="true">A</span>
+      <span class="brand__symbol" aria-hidden="true">
+        <img
+          src="{% static 'img/brand/argos-icon.svg' %}"
+          alt=""
+          width="36"
+          height="36"
+        >
+      </span>
       <span class="brand__text">
         <strong>ARGOS</strong>
         <small>Central operacional</small>

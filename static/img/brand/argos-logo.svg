@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 420" fill="none">
+  <rect width="1600" height="420" fill="none"/>
+  <g transform="translate(40,24) scale(0.72)">
+    
+  <defs>
+    <linearGradient id="gradA" x1="80" y1="420" x2="380" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0B2A52"/>
+      <stop offset="1" stop-color="#1E63B8"/>
+    </linearGradient>
+    <linearGradient id="gradBars" x1="300" y1="380" x2="430" y2="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1E63B8"/>
+      <stop offset="1" stop-color="#53A9FF"/>
+    </linearGradient>
+    
+  </defs>
+  <rect width="512" height="512" fill="none"/>
+  <g>
+    <path d="M133 386 L254 126 H285 L407 386 H331 L269 251 V229 L255 208 L188 386 Z" fill="url(#gradA)"/>
+    <path d="M234 218 L268 151 L285 151 L250 218 Z" fill="#EEF3FA" opacity="0.35"/>
+    <circle cx="255" cy="289" r="62" fill="#0A1F3D"/>
+    <circle cx="255" cy="289" r="49" fill="none" stroke="#1E63B8" stroke-width="10"/>
+    <circle cx="255" cy="289" r="28" fill="#0B2A52"/>
+    <circle cx="273" cy="272" r="14" fill="#2A97FF"/>
+    <circle cx="279" cy="266" r="5" fill="#BFE3FF" opacity="0.9"/>
+    <path d="M316 353 H350 L366 386 H332 Z" fill="url(#gradBars)"/>
+    <path d="M351 353 H386 L404 386 H369 Z" fill="url(#gradBars)" opacity="0.88"/>
+    <path d="M386 353 H423 L441 386 H404 Z" fill="url(#gradBars)" opacity="0.76"/>
+  </g>
+
+  </g>
+  <g fill="#0B2A52">
+    <path d="M560 269 L616 154 H645 L701 269 H669 L652 232 H594 L577 269 Z M605 208 H640 L623 172 Z"/>
+    <path d="M742 154 H851 Q884 154 902 172 Q920 190 920 219 Q920 242 908 257 Q896 271 874 277 L921 269 L876 269 L833 234 H777 V269 H742 Z M777 207 H840 Q856 207 864 201 Q872 195 872 181 Q872 169 865 162 Q858 155 843 155 H777 Z"/>
+    <path d="M975 182 Q987 168 1008 160 Q1028 152 1052 152 H1155 V180 H1054 Q1031 180 1018 192 Q1006 204 1006 227 Q1006 249 1019 261 Q1032 273 1056 273 H1111 Q1130 273 1139 265 Q1148 257 1148 241 H1072 V216 H1182 V241 Q1182 278 1163 293 Q1144 308 1101 308 H1055 Q1005 308 976 282 Q947 256 947 227 Q947 201 975 182 Z"/>
+    <path d="M1249 152 H1345 Q1394 152 1424 181 Q1453 209 1453 230 Q1453 253 1424 282 Q1395 310 1345 310 H1249 Q1199 310 1170 282 Q1141 253 1141 230 Q1141 209 1170 181 Q1199 152 1249 152 Z M1260 182 Q1232 182 1218 195 Q1204 208 1204 230 Q1204 253 1218 266 Q1232 280 1260 280 H1334 Q1362 280 1376 266 Q1391 252 1391 230 Q1391 209 1376 195 Q1362 182 1334 182 Z"/>
+    <path d="M1499 182 Q1486 182 1478 188 Q1470 194 1470 203 Q1470 213 1478 218 Q1487 223 1508 223 H1556 Q1606 223 1626 237 Q1646 251 1646 279 Q1646 306 1625 320 Q1604 334 1561 334 H1471 V305 H1562 Q1581 305 1589 299 Q1598 293 1598 282 Q1598 272 1589 267 Q1580 262 1558 262 H1510 Q1464 262 1445 248 Q1427 234 1427 206 Q1427 179 1447 165 Q1467 151 1511 151 H1605 V182 Z" transform="translate(-26,-26) scale(0.95)"/>
+  </g>
+  <text x="560" y="346" font-family="Arial, Helvetica, sans-serif" font-size="42" letter-spacing="2" fill="#6C7F98">INVENTÁRIO • MONITORAMENTO • GOVERNANÇA • CONTROLE</text>
+</svg>
