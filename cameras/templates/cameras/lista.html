@@ -4,6 +4,10 @@
 {% block titulo %}Câmeras — ARGOS{% endblock %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/inventario.css' %}"><link rel="stylesheet" href="{% static 'css/governanca.css' %}">{% endblock %}
 
+{% block extra_js %}
+<script src="{% static 'js/filtros.js' %}" defer></script>
+{% endblock %}
+
 {% block conteudo %}
 {% url 'cameras:lista' as lista_url %}
 {% url 'cameras:criar' as criar_url %}
@@ -23,14 +27,14 @@
   <div class="filter-panel__header inventory-filters-card__header"><span class="filter-panel__eyebrow">Refine a consulta</span><h2 class="filter-panel__title" id="filtros-heading">Filtros do inventário</h2></div>
   <form class="filter-panel__grid inventory-filter-form" method="get" role="search" aria-label="Filtros do inventário de câmeras">
     <div class="form-field form-field--search"><label class="form-label" for="id_q">Pesquisar</label><input id="id_q" type="search" name="q" value="{{ q }}" placeholder="Nome, patrimônio, IP ou fabricante"></div>
-    <div class="form-field"><label class="form-label" for="id_status">Status técnico</label><select id="id_status" name="status"><option value="">Todos</option><option value="ONLINE"{% if status_selecionado == "ONLINE" %} selected{% endif %}>Online</option><option value="OFFLINE"{% if status_selecionado == "OFFLINE" %} selected{% endif %}>Offline</option><option value="NAO_VERIFICADO"{% if status_selecionado == "NAO_VERIFICADO" %} selected{% endif %}>Não verificado</option></select></div>
-    <div class="form-field"><label class="form-label" for="id_situacao_operacional">Situação operacional</label><select id="id_situacao_operacional" name="situacao_operacional"><option value="">Todas</option>{% for valor, rotulo in situacoes_operacionais %}<option value="{{ valor }}"{% if situacao_selecionada == valor %} selected{% endif %}>{{ rotulo }}</option>{% endfor %}</select></div>
-    <div class="form-field"><label class="form-label" for="id_completude">Completude</label><select id="id_completude" name="completude"><option value="">Todos</option><option value="COMPLETO"{% if completude_selecionada == "COMPLETO" %} selected{% endif %}>Completo</option><option value="INCOMPLETO"{% if completude_selecionada == "INCOMPLETO" %} selected{% endif %}>Incompleto</option></select></div>
-    <div class="form-field"><label class="form-label" for="id_terminal">Terminal</label><select id="id_terminal" name="terminal"><option value="">Todos</option>{% for terminal in terminais %}<option value="{{ terminal }}"{% if terminal_selecionado == terminal %} selected{% endif %}>{{ terminal }}</option>{% endfor %}</select></div>
-    <div class="form-field"><label class="form-label" for="id_tipo">Tipo</label><select id="id_tipo" name="tipo"><option value="">Todos</option>{% for valor, rotulo in tipos_camera %}<option value="{{ valor }}"{% if tipo_selecionado == valor %} selected{% endif %}>{{ rotulo }}</option>{% endfor %}</select></div>
-    <div class="form-field"><label class="form-label" for="id_fabricante">Fabricante</label><select id="id_fabricante" name="fabricante"><option value="">Todos</option>{% for fabricante in fabricantes %}<option value="{{ fabricante }}"{% if fabricante_selecionado == fabricante %} selected{% endif %}>{{ fabricante }}</option>{% endfor %}</select></div>
-    <div class="form-field"><label class="form-label" for="id_vlan">VLAN</label><select id="id_vlan" name="vlan"><option value="">Todas</option>{% for vlan in vlans %}<option value="{{ vlan }}"{% if vlan_selecionada == vlan|stringformat:"s" %} selected{% endif %}>{{ vlan }}</option>{% endfor %}</select></div>
-    <div class="form-field"><label class="form-label" for="id_farm">Farm</label><select id="id_farm" name="farm"><option value="">Todas</option>{% for farm in farms %}<option value="{{ farm }}"{% if farm_selecionada == farm %} selected{% endif %}>{{ farm }}</option>{% endfor %}</select></div>
+    {% include "components/filtro_multisselecao.html" with label="Status técnico" name="status" opcoes=status_filtro_opcoes selecionados=status_selecionados empty_label="Todos" %}
+    {% include "components/filtro_multisselecao.html" with label="Situação operacional" name="situacao_operacional" opcoes=situacoes_operacionais selecionados=situacoes_selecionadas empty_label="Todas" %}
+    {% include "components/filtro_multisselecao.html" with label="Completude" name="completude" opcoes=completude_filtro_opcoes selecionados=completudes_selecionadas empty_label="Todos" %}
+    {% include "components/filtro_multisselecao.html" with label="Terminal" name="terminal" opcoes=terminais_filtro_opcoes selecionados=terminais_selecionados empty_label="Todos" %}
+    {% include "components/filtro_multisselecao.html" with label="Tipo" name="tipo" opcoes=tipos_camera selecionados=tipos_selecionados empty_label="Todos" %}
+    {% include "components/filtro_multisselecao.html" with label="Fabricante" name="fabricante" opcoes=fabricantes_filtro_opcoes selecionados=fabricantes_selecionados empty_label="Todos" %}
+    {% include "components/filtro_multisselecao.html" with label="VLAN" name="vlan" opcoes=vlans_filtro_opcoes selecionados=vlans_selecionadas empty_label="Todas" %}
+    {% include "components/filtro_multisselecao.html" with label="Farm" name="farm" opcoes=farms_filtro_opcoes selecionados=farms_selecionadas empty_label="Todas" %}
     <div class="filter-panel__actions inventory-filter-actions"><button class="button button--primary" type="submit">Filtrar</button><a class="button button--secondary" href="{{ lista_url }}">Limpar filtros</a></div>
   </form>
 </section>

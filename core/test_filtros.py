@@ -125,6 +125,25 @@ class GlobalFilterInfrastructureTests(SimpleTestCase):
             html,
         )
 
+    def test_multisselecao_uma_opcao_exibe_rotulo_da_opcao(self):
+        html = render_to_string(
+            "components/filtro_multisselecao.html",
+            {
+                "label": "Status tecnico",
+                "name": "status",
+                "empty_label": "Todos",
+                "opcoes": [
+                    ("ONLINE", "Online"),
+                    ("OFFLINE", "Offline"),
+                ],
+                "selecionados": ["ONLINE"],
+            },
+        )
+
+        self.assertIn("Online", html)
+        self.assertIn('value="ONLINE"', html)
+        self.assertIn("checked", html)
+
     def test_filtros_ativos_renderizam_remocao_individual_e_limpeza_total(self):
         request = self.factory.get(
             "/cameras/",

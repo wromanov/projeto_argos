@@ -15,7 +15,9 @@
       >
         {% if selecionados %}
           {% if selecionados|length == 1 %}
-            1 seleção
+            {% for valor, rotulo in opcoes %}
+              {% if valor in selecionados %}{{ rotulo }}{% endif %}
+            {% endfor %}
           {% else %}
             {{ selecionados|length }} seleções
           {% endif %}

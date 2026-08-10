@@ -45,10 +45,32 @@ class ListaCamerasFrontendTests(TestCase):
         self.assertContains(response, 'class="filter-panel__actions inventory-filter-actions"')
         self.assertContains(response, 'role="search"')
         self.assertContains(response, 'aria-label="Filtros do inventário de câmeras"')
-        self.assertContains(response, 'for="id_situacao_operacional"')
+        self.assertContains(response, 'data-filter-multiselect', count=8)
+        for parametro in (
+            "status",
+            "situacao_operacional",
+            "completude",
+            "terminal",
+            "tipo",
+            "fabricante",
+            "vlan",
+            "farm",
+        ):
+            self.assertContains(response, f'name="{parametro}"')
+        self.assertContains(response, "js/filtros.js")
         self.assertContains(response, 'role="region" aria-label="Câmeras encontradas" tabindex="0"')
         self.assertContains(response, "Relação de câmeras encontradas no inventário")
         self.assertContains(response, 'scope="col"')
+
+    def test_multisselecao_mantem_multiplos_valores_marcados(self):
+        response = self.client.get(
+            reverse("cameras:lista"),
+            {"status": ["ONLINE", "OFFLINE"]},
+        )
+
+        self.assertContains(response, 'value="ONLINE"')
+        self.assertContains(response, 'value="OFFLINE"')
+        self.assertContains(response, "2 seleções")
 
     def test_lista_camera_exibe_badges_textuais_e_estado_vazio(self):
         incompleta = self.criar_camera(2, nome="CAM-INCOMPLETA", ip="", status=Camera.StatusCamera.OFFLINE)

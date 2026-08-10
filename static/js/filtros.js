@@ -3,6 +3,18 @@
 
   const selector = "[data-filter-multiselect]";
 
+  function selectedInputs(details) {
+    return Array.from(
+      details.querySelectorAll('input[type="checkbox"]')
+    ).filter((input) => input.checked);
+  }
+
+  function optionLabel(input) {
+    const option = input.closest(".filter-multiselect__option");
+    const label = option ? option.querySelector("span") : null;
+    return label ? label.textContent.trim() : input.value;
+  }
+
   function updateSummary(details) {
     const summaryText = details.querySelector(
       "[data-filter-summary-text]"
@@ -12,26 +24,20 @@
       return;
     }
 
-    const inputs = details.querySelectorAll(
-      'input[type="checkbox"]'
-    );
+    const selected = selectedInputs(details);
+    const emptyLabel = summaryText.dataset.emptyLabel || "Todos";
 
-    const selectedCount = Array.from(inputs).filter(
-      (input) => input.checked
-    ).length;
-
-    const emptyLabel =
-      summaryText.dataset.emptyLabel || "Todos";
-
-    if (selectedCount === 0) {
+    if (selected.length === 0) {
       summaryText.textContent = emptyLabel;
       return;
     }
 
-    summaryText.textContent =
-      selectedCount === 1
-        ? "1 sele\u00e7\u00e3o"
-        : `${selectedCount} sele\u00e7\u00f5es`;
+    if (selected.length === 1) {
+      summaryText.textContent = optionLabel(selected[0]);
+      return;
+    }
+
+    summaryText.textContent = `${selected.length} seleções`;
   }
 
   function initializeMultiselect(details, allDetails) {

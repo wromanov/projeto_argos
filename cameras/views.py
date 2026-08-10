@@ -142,6 +142,43 @@ def lista_cameras(request):
         "fabricantes_selecionados": fabricantes_selecionados,
         "vlans_selecionadas": vlans_selecionadas,
         "farms_selecionadas": farms_selecionadas,
+        "status_filtro_opcoes": [
+            ("ONLINE", "Online"),
+            ("OFFLINE", "Offline"),
+            ("NAO_VERIFICADO", "Não verificado"),
+        ],
+        "completude_filtro_opcoes": [
+            ("COMPLETO", "Completo"),
+            ("INCOMPLETO", "Incompleto"),
+        ],
+        "terminais_filtro_opcoes": [
+            (valor, valor)
+            for valor in Camera.objects.exclude(terminal="")
+            .values_list("terminal", flat=True)
+            .distinct()
+            .order_by("terminal")
+        ],
+        "fabricantes_filtro_opcoes": [
+            (valor, valor)
+            for valor in Camera.objects.exclude(fabricante="")
+            .values_list("fabricante", flat=True)
+            .distinct()
+            .order_by("fabricante")
+        ],
+        "vlans_filtro_opcoes": [
+            (str(valor), str(valor))
+            for valor in Camera.objects.exclude(vlan__isnull=True)
+            .values_list("vlan", flat=True)
+            .distinct()
+            .order_by("vlan")
+        ],
+        "farms_filtro_opcoes": [
+            (valor, valor)
+            for valor in Camera.objects.exclude(farm="")
+            .values_list("farm", flat=True)
+            .distinct()
+            .order_by("farm")
+        ],
         "terminais": Camera.objects.exclude(terminal="").values_list("terminal", flat=True).distinct().order_by("terminal"),
         "tipos_camera": Camera.TipoCamera.choices,
         "situacoes_operacionais": Camera.SituacaoOperacional.choices,
