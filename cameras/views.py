@@ -472,18 +472,76 @@ def editar_atividade_camera(request, pk):
 
 
 def _filtrar_eventos(request, queryset):
-    q = request.GET.get("q", "").strip(); categoria = request.GET.get("categoria", ""); origem = request.GET.get("origem", "")
-    data_inicial = request.GET.get("data_inicial", ""); data_final = request.GET.get("data_final", ""); periodo_invalido = False
-    if q: queryset = queryset.filter(Q(codigo__icontains=q) | Q(resumo__icontains=q) | Q(usuario_username__icontains=q) | Q(usuario_nome__icontains=q) | Q(entidade_descricao__icontains=q) | Q(camera__nome__icontains=q))
-    if categoria in EventoAuditoria.Categoria.values: queryset = queryset.filter(categoria=categoria)
-    if origem in EventoAuditoria.Origem.values: queryset = queryset.filter(origem=origem)
-    inicio = parse_date(data_inicial) if data_inicial else None; fim = parse_date(data_final) if data_final else None
-    if (data_inicial and not inicio) or (data_final and not fim) or (inicio and fim and inicio > fim): periodo_invalido = True
-    else:
-        if inicio: queryset = queryset.filter(ocorrido_em__date__gte=inicio)
-        if fim: queryset = queryset.filter(ocorrido_em__date__lte=fim)
-    return queryset, {"q": q, "categoria_selecionada": categoria, "origem_selecionada": origem, "data_inicial": data_inicial, "data_final": data_final, "periodo_invalido": periodo_invalido}
+    q = request.GET.get("q", "").strip()
 
+    categorias_selecionadas = [
+        valor
+        for valor in _valores_get_unicos(request, "categoria")
+        if valor in EventoAuditoria.Categoria.values
+    ]
+    origens_selecionadas = [
+        valor
+        for valor in _valores_get_unicos(request, "origem")
+        if valor in EventoAuditoria.Origem.values
+    ]
+
+    data_inicial = request.GET.get("data_inicial", "")
+    data_final = request.GET.get("data_final", "")
+    periodo_invalido = False
+
+    if q:
+        queryset = queryset.filter(
+            Q(codigo__icontains=q)
+            | Q(resumo__icontains=q)
+            | Q(usuario_username__icontains=q)
+            | Q(usuario_nome__icontains=q)
+            | Q(entidade_descricao__icontains=q)
+            | Q(camera__nome__icontains=q)
+        )
+
+    if categorias_selecionadas:
+        queryset = queryset.filter(
+            categoria__in=categorias_selecionadas
+        )
+
+    if origens_selecionadas:
+        queryset = queryset.filter(
+            origem__in=origens_selecionadas
+        )
+
+    inicio = parse_date(data_inicial) if data_inicial else None
+    fim = parse_date(data_final) if data_final else None
+
+    if (
+        (data_inicial and not inicio)
+        or (data_final and not fim)
+        or (inicio and fim and inicio > fim)
+    ):
+        periodo_invalido = True
+    else:
+        if inicio:
+            queryset = queryset.filter(
+                ocorrido_em__date__gte=inicio
+            )
+        if fim:
+            queryset = queryset.filter(
+                ocorrido_em__date__lte=fim
+            )
+
+    return queryset, {
+        "q": q,
+        "categoria_selecionada": _primeiro_valor(
+            categorias_selecionadas
+        ),
+        "origem_selecionada": _primeiro_valor(
+            origens_selecionadas
+        ),
+        "categorias_selecionadas": categorias_selecionadas,
+        "origens_selecionadas": origens_selecionadas,
+        "data_inicial": data_inicial,
+        "data_final": data_final,
+        "periodo_invalido": periodo_invalido,
+    }
 
 @permission_required("cameras.consultar_eventos", raise_exception=True)
 def lista_eventos(request):
