@@ -2,7 +2,7 @@
   <div class="app-topbar__content">
     <div class="app-topbar__context">
       <span class="app-topbar__label">Central operacional</span>
-      <strong>{% if current_namespace == 'core' and current_url_name == 'inicio' %}Início{% elif current_namespace == 'core' and current_url_name == 'dashboard' %}Dashboard{% elif current_namespace == 'cameras' %}Inventário{% elif current_namespace == 'eventos' %}Eventos{% elif current_namespace == 'usuarios' %}Minha conta{% else %}ARGOS{% endif %}</strong>
+      <strong>{% if current_namespace == 'core' and current_url_name == 'inicio' %}Início{% elif current_namespace == 'core' and current_url_name == 'dashboard' %}Dashboard{% elif current_namespace == 'cameras' and current_url_name == 'lista_substituicoes' %}Governança{% elif current_namespace == 'cameras' and current_url_name == 'detalhe_substituicao' %}Governança{% elif current_namespace == 'cameras' %}Inventário{% elif current_namespace == 'eventos' %}Eventos{% elif current_namespace == 'usuarios' %}Minha conta{% else %}ARGOS{% endif %}</strong>
     </div>
     {% include "components/menu_usuario.html" %}
   </div>

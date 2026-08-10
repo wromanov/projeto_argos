@@ -18,19 +18,30 @@
             <path d="M4 13h7v7H4zM13 4h7v16h-7zM4 4h7v7H4z"/>
         </svg>
         <span><h2>Dashboard</h2><p>Acompanhe os indicadores operacionais.</p></span></a>
+
     {% endif %}
+
+
     {% if pode_eventos %}<a class="module-card" href="{% url 'eventos:lista' %}">
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/>
     </svg>
     <span><h2>Eventos</h2><p>Consulte o histórico de auditoria.</p></span></a>{% endif %}
+{% if perms.cameras.consultar_substituicoescamera %}
+    <a class="module-card" href="{% url 'cameras:lista_substituicoes' %}">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/>
+        </svg>
+        <span><h2>Governança</h2><p>Consulte o histórico de substituições de câmeras.</p></span></a>
+    {% endif %}
+
     <a class="module-card" href="{% url 'usuarios:perfil' %}">
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7 8a7 7 0 0 1 14 0z"/>
         </svg>
         <span><h2>Meu Perfil</h2><p>Dados pessoais, acesso e segurança da conta.</p></span></a>
 </section>
-{% if not pode_inventario %}
+{% if not pode_inventario and not pode_eventos and not perms.cameras.consultar_substituicoescamera %}
 <section class="info-card portal-empty"><h2>Acesso operacional indisponível</h2>
     <p>Seu usuário ainda não possui permissões para acessar os módulos operacionais do ARGOS.</p></section>{% endif %}
 {% endblock %}
