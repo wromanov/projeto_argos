@@ -14,6 +14,85 @@ class GovernancaSubstituicoesTests(TestCase):
     def par(self): return self.camera(1,"PRODUCAO"),self.camera(2,"ESTOQUE")
     def trocar(self): a,s=self.par(); return a,s,substituir_camera(camera_anterior=a,camera_substituta=s,motivo="Falha física confirmada",usuario=self.user)
     def test_criacao_substituicao_valida(self): self.assertIsNotNone(self.trocar()[2].pk)
+    def test_substituicao_aceita_substituta_com_apenas_dados_basicos(self):
+        anterior = self.camera(1, "PRODUCAO")
+
+        substituta = Camera.objects.create(
+            nome="CAM-2",
+            fabricante="Fab-2",
+            modelo="Mod-2",
+            situacao_operacional=Camera.SituacaoOperacional.ESTOQUE,
+        )
+
+        registro = substituir_camera(
+            camera_anterior=anterior,
+            camera_substituta=substituta,
+            motivo="Falha fisica confirmada",
+            usuario=self.user,
+        )
+
+        substituta.refresh_from_db()
+
+        self.assertEqual(
+            registro.camera_substituta_id,
+            substituta.pk,
+        )
+
+        self.assertEqual(
+            substituta.situacao_operacional,
+            Camera.SituacaoOperacional.PRODUCAO,
+        )
+
+        self.assertEqual(
+            (
+                substituta.ip,
+                substituta.mascara_subrede,
+                substituta.gateway,
+                substituta.vlan,
+                substituta.terminal,
+                substituta.pavimento,
+                substituta.setor,
+                substituta.ambiente,
+                substituta.farm,
+                substituta.retencao_esperada_dias,
+                substituta.codec,
+            ),
+            (
+                anterior.ip,
+                anterior.mascara_subrede,
+                anterior.gateway,
+                anterior.vlan,
+                anterior.terminal,
+                anterior.pavimento,
+                anterior.setor,
+                anterior.ambiente,
+                anterior.farm,
+                anterior.retencao_esperada_dias,
+                anterior.codec,
+            ),
+        )
+
+        # Dados fisicos opcionais nao sao inventados pelo processo.
+        self.assertIsNone(substituta.patrimonio)
+        self.assertIsNone(substituta.serial)
+        self.assertIsNone(substituta.mac)
+        self.assertEqual(substituta.tipo, "")
+    def test_substituicao_exige_dados_fisicos_obrigatorios_da_substituta(self):
+        anterior = self.camera(1, "PRODUCAO")
+        substituta = Camera.objects.create(
+            nome="CAM-2",
+            fabricante="",
+            modelo="",
+            situacao_operacional=Camera.SituacaoOperacional.ESTOQUE,
+        )
+
+        with self.assertRaises(ErroGovernancaCamera):
+            substituir_camera(
+                camera_anterior=anterior,
+                camera_substituta=substituta,
+                motivo="Falha fisica confirmada",
+                usuario=self.user,
+            )
     def test_substituicao_bloqueia_mesma_camera(self):
         a=self.camera(1,"PRODUCAO")
         with self.assertRaises(ErroGovernancaCamera): substituir_camera(camera_anterior=a,camera_substituta=a,motivo="Falha física confirmada",usuario=self.user)
@@ -24,8 +103,46 @@ class GovernancaSubstituicoesTests(TestCase):
         a,s=self.camera(1,"PRODUCAO"),self.camera(2,"PRODUCAO")
         with self.assertRaises(ErroGovernancaCamera): substituir_camera(camera_anterior=a,camera_substituta=s,motivo="Falha física confirmada",usuario=self.user)
     def test_substituicao_transfere_nome_operacional(self): a,s,_=self.trocar(); s.refresh_from_db(); self.assertEqual(s.nome,a.nome)
-    def test_substituicao_transfere_localizacao(self): a,s,_=self.trocar(); s.refresh_from_db(); self.assertEqual((s.terminal,s.pavimento,s.setor,s.ambiente),(a.terminal,a.pavimento,a.setor,a.ambiente))
-    def test_substituicao_transfere_rede(self): a,s,_=self.trocar(); s.refresh_from_db(); self.assertEqual((s.ip,s.gateway,s.vlan),(a.ip,a.gateway,a.vlan))
+    def test_substituicao_transfere_localizacao(self):
+        a, s, _ = self.trocar()
+        s.refresh_from_db()
+
+        self.assertEqual(
+            (
+                s.terminal,
+                s.pavimento,
+                s.setor,
+                s.ambiente,
+                s.descricao_detalhada,
+                s.ponto_referencia,
+            ),
+            (
+                a.terminal,
+                a.pavimento,
+                a.setor,
+                a.ambiente,
+                a.descricao_detalhada,
+                a.ponto_referencia,
+            ),
+        )
+    def test_substituicao_transfere_rede(self):
+        a, s, _ = self.trocar()
+        s.refresh_from_db()
+
+        self.assertEqual(
+            (
+                s.ip,
+                s.mascara_subrede,
+                s.gateway,
+                s.vlan,
+            ),
+            (
+                a.ip,
+                a.mascara_subrede,
+                a.gateway,
+                a.vlan,
+            ),
+        )
     def test_substituicao_transfere_configuracao_de_gravacao(self): a,s,_=self.trocar(); s.refresh_from_db(); self.assertEqual((s.farm,s.retencao_esperada_dias,s.codec),(a.farm,a.retencao_esperada_dias,a.codec))
     def test_substituicao_preserva_identidade_fisica_da_substituta(self): a,s,_=self.trocar(); original=(s.patrimonio,s.fabricante,s.modelo,s.serial,s.mac,s.tipo); s.refresh_from_db(); self.assertEqual((s.patrimonio,s.fabricante,s.modelo,s.serial,s.mac,s.tipo),original)
     def test_substituicao_desativa_camera_anterior(self): a,s,_=self.trocar(); a.refresh_from_db(); self.assertEqual(a.situacao_operacional,"DESATIVADA")

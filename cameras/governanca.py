@@ -125,7 +125,19 @@ def substituir_camera(*, camera_anterior, camera_substituta, motivo, observacoes
         raise ErroGovernancaCamera("A câmera anterior deve estar em Produção.")
     if substituta.situacao_operacional != Camera.SituacaoOperacional.ESTOQUE:
         raise ErroGovernancaCamera("A câmera substituta deve estar em Estoque.")
-    validar_completude(substituta, Camera.SituacaoOperacional.ESTOQUE)
+
+    campos_fisicos_obrigatorios = ("nome", "fabricante", "modelo")
+    faltantes = [
+        substituta._meta.get_field(campo).verbose_name
+        for campo in campos_fisicos_obrigatorios
+        if not str(getattr(substituta, campo, "") or "").strip()
+    ]
+    if faltantes:
+        raise ErroGovernancaCamera(
+            "Complete os seguintes dados da câmera substituta: "
+            + ", ".join(str(item) for item in faltantes)
+            + "."
+        )
     motivo = _validar_texto(motivo, 10, 1000, "O motivo")
     observacoes = (observacoes or "").strip()
     nome_operacional = anterior.nome
@@ -144,7 +156,6 @@ def substituir_camera(*, camera_anterior, camera_substituta, motivo, observacoes
     substituta.situacao_operacional = Camera.SituacaoOperacional.PRODUCAO
     if getattr(usuario, "is_authenticated", False):
         substituta.atualizado_por = usuario
-    validar_completude(substituta, Camera.SituacaoOperacional.PRODUCAO)
     substituta.save()
 
     substituicao = SubstituicaoCamera.objects.create(
