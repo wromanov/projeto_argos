@@ -208,10 +208,16 @@ class ListaCamerasTests(TestCase):
         self.assertEqual(len(primeira_pagina.context["cameras"]), 20)
         self.assertEqual(len(segunda_pagina.context["cameras"]), 4)
         self.assertTrue(segunda_pagina.context["page_obj"].has_previous())
-        pagina_com_filtros = self.buscar(q="CAM", terminal="TPS1", ordenacao="-nome")
+        pagina_com_filtros = self.buscar(
+            q="CAM",
+            situacao_operacional=["PRODUCAO", "DESATIVADA"],
+            ordenacao="-nome",
+        )
         self.assertContains(
             pagina_com_filtros,
-            "?q=CAM&amp;terminal=TPS1&amp;ordenacao=-nome&amp;page=2",
+            "?q=CAM&amp;situacao_operacional=PRODUCAO"
+            "&amp;situacao_operacional=DESATIVADA"
+            "&amp;ordenacao=-nome&amp;page=2",
         )
 
     def test_pagina_invalida_nao_gera_erro(self):

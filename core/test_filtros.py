@@ -87,6 +87,43 @@ class GlobalFilterInfrastructureTests(SimpleTestCase):
             resultado,
         )
 
+    def test_querystring_sem_valor_respeita_normalizacao(self):
+        request = self.factory.get(
+            "/cameras/",
+            {
+                "fabricante": [" axis ", "AXIS"],
+                "status": "ONLINE",
+                "page": "2",
+            },
+        )
+
+        query = querystring_sem_valor(
+            {"request": request},
+            "fabricante",
+            "AXIS",
+            True,
+        )
+
+        self.assertEqual(query, "status=ONLINE")
+
+    def test_multisselecao_exibe_valor_stale_como_fallback(self):
+        html = render_to_string(
+            "components/filtro_multisselecao.html",
+            {
+                "label": "Terminal",
+                "name": "terminal",
+                "opcoes": [("TPS1", "TPS1")],
+                "selecionados": ["TPS-LEGADO"],
+                "empty_label": "Todos",
+            },
+        )
+
+        self.assertRegex(
+            html,
+            r"(?s)data-filter-summary-text[^>]*>"
+            r"\s*TPS-LEGADO\s*</span>",
+        )
+
     def test_multisselecao_renderiza_checkboxes_e_estado_selecionado(self):
         html = render_to_string(
             "components/filtro_multisselecao.html",
@@ -223,4 +260,18 @@ class GlobalFilterInfrastructureTests(SimpleTestCase):
         self.assertNotIn(
             "fetch(",
             javascript,
+        )
+        # initializeMultiselect deve preservar o resumo server-rendered.
+        self.assertNotRegex(
+            javascript,
+            r"(?s)function initializeMultiselect"
+            r"\(details, allDetails\)\s*\{\s*"
+            r"updateSummary\(details\);",
+        )
+
+        # A melhoria progressiva continua atualizando apos interacao.
+        self.assertRegex(
+            javascript,
+            r'(?s)details\.addEventListener\("change".*?'
+            r"updateSummary\(details\);",
         )

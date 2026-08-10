@@ -22,7 +22,7 @@
 
   <div class="active-filters__list">
     {% for filtro in filtros_ativos %}
-      {% querystring_sem_valor filtro.nome filtro.valor as query_sem_filtro %}
+      {% querystring_sem_valor filtro.nome filtro.valor filtro.ignorar_caixa as query_sem_filtro %}
 
       <a
         class="active-filter-chip"

@@ -1,3 +1,5 @@
+{% load ui_extras %}
+
 <fieldset class="form-field filter-multiselect-field">
   <legend class="form-label">
     {{ label }}
@@ -15,9 +17,7 @@
       >
         {% if selecionados %}
           {% if selecionados|length == 1 %}
-            {% for valor, rotulo in opcoes %}
-              {% if valor in selecionados %}{{ rotulo }}{% endif %}
-            {% endfor %}
+            {{ selecionados.0|rotulo_opcao:opcoes }}
           {% else %}
             {{ selecionados|length }} seleções
           {% endif %}

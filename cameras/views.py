@@ -44,18 +44,22 @@ def _adicionar_filtros_ativos(
     valores,
     grupo,
     rotulos=None,
+    ignorar_caixa=False,
 ):
     rotulos = rotulos or {}
 
     for valor in valores:
-        destino.append(
-            {
-                "nome": nome,
-                "valor": valor,
-                "grupo": grupo,
-                "rotulo": rotulos.get(valor, valor),
-            }
-        )
+        filtro = {
+            "nome": nome,
+            "valor": valor,
+            "grupo": grupo,
+            "rotulo": rotulos.get(valor, valor),
+        }
+
+        if ignorar_caixa:
+            filtro["ignorar_caixa"] = True
+
+        destino.append(filtro)
 
 
 @permission_required("cameras.view_camera", raise_exception=True)
@@ -190,6 +194,7 @@ def lista_cameras(request):
         "terminal",
         terminais_selecionados,
         "Terminal",
+        ignorar_caixa=True,
     )
     _adicionar_filtros_ativos(
         filtros_ativos,
@@ -206,6 +211,7 @@ def lista_cameras(request):
         "fabricante",
         fabricantes_selecionados,
         "Fabricante",
+        ignorar_caixa=True,
     )
     _adicionar_filtros_ativos(
         filtros_ativos,
@@ -218,6 +224,7 @@ def lista_cameras(request):
         "farm",
         farms_selecionadas,
         "Farm",
+        ignorar_caixa=True,
     )
 
     return render(request, "cameras/lista.html", {

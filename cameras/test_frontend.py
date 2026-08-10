@@ -158,6 +158,41 @@ class ListaCamerasFrontendTests(TestCase):
         self.assertContains(response, "Cadastre o primeiro equipamento do inventário.")
         self.assertNotContains(response, "Consulta filtrada no inventário.")
 
+    def test_chip_remove_filtro_textual_normalizado(self):
+        response = self.client.get(
+            reverse("cameras:lista"),
+            {
+                "fabricante": "axis",
+                "status": "ONLINE",
+                "page": "2",
+            },
+        )
+
+        self.assertContains(
+            response,
+            'aria-label="Remover filtro Fabricante: AXIS"',
+        )
+        self.assertContains(
+            response,
+            'href="?status=ONLINE"',
+        )
+
+    def test_multisselecao_stale_mantem_resumo_legivel(self):
+        response = self.client.get(
+            reverse("cameras:lista"),
+            {"terminal": "TPS-LEGADO"},
+        )
+
+        html = response.content.decode("utf-8")
+
+        self.assertRegex(
+            html,
+            r'(?s)<fieldset class="form-field filter-multiselect-field">'
+            r'\s*<legend class="form-label">\s*Terminal\s*</legend>'
+            r'.*?data-filter-summary-text[^>]*>'
+            r'\s*TPS-LEGADO\s*</span>',
+        )
+
     def test_paginacao_camera_preserva_filtros(self):
         for indice in range(2, 22):
             self.criar_camera(indice, nome=f"CAM-PAG-{indice:03d}")

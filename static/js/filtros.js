@@ -41,7 +41,6 @@
   }
 
   function initializeMultiselect(details, allDetails) {
-    updateSummary(details);
 
     details.addEventListener("change", (event) => {
       if (event.target.matches('input[type="checkbox"]')) {
