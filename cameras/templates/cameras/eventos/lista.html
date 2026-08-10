@@ -2,6 +2,9 @@
 {% block titulo %}Eventos de auditoria — ARGOS{% endblock %}
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/eventos.css' %}">{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/filtros.js' %}" defer></script>
+{% endblock %}
 {% block conteudo %}
 <section class="event-hero">
     <div><span class="page-heading__eyebrow">Governança</span>
@@ -16,29 +19,9 @@
         <div class="form-field event-filter-search"><label class="form-label" for="id_event_q">Pesquisar</label><input
                 id="id_event_q" type="search" name="q" value="{{ q }}" placeholder="Código, resumo, usuário ou câmera">
         </div>
-        <div class="form-field">
-            <label class="form-label" for="id_event_categoria">Categoria</label>
-            <select id="id_event_categoria" name="categoria">
-                <option value="">Todas</option>
-                {% for value, label in categorias %}
-                <option value="{{ value }}" {% if categoria_selecionada == value %} selected{% endif %}>
-                    {{ label }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
+        {% include "components/filtro_multisselecao.html" with label="Categoria" name="categoria" opcoes=categorias selecionados=categorias_selecionadas empty_label="Todas" %}
 
-        <div class="form-field">
-            <label class="form-label" for="id_event_origem">Origem</label>
-            <select id="id_event_origem" name="origem">
-                <option value="">Todas</option>
-                {% for value, label in origens %}
-                <option value="{{ value }}" {% if origem_selecionada == value %} selected{% endif %}>
-                    {{ label }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
+        {% include "components/filtro_multisselecao.html" with label="Origem" name="origem" opcoes=origens selecionados=origens_selecionadas empty_label="Todas" %}
         <div class="form-field"><label class="form-label" for="id_event_data_inicial">De</label><input
                 id="id_event_data_inicial" type="date" name="data_inicial" value="{{ data_inicial }}"></div>
         <div class="form-field"><label class="form-label" for="id_event_data_final">Até</label><input

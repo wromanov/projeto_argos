@@ -205,12 +205,100 @@ class ListaCamerasFrontendTests(TestCase):
         self.assertContains(response, 'aria-current="page"')
 
     def test_eventos_compartilham_contrato_visual_de_filtros_sem_alterar_parametros(self):
-        response = self.client.get(reverse("eventos:lista"), {"q": "camera", "categoria": "CAMERA", "origem": "WEB"})
+        response = self.client.get(
+            reverse("eventos:lista"),
+            {
+                "q": "camera",
+                "categoria": [
+                    "CAMERA",
+                    "SISTEMA",
+                ],
+                "origem": [
+                    "WEB",
+                    "ADMIN",
+                ],
+                "data_inicial": "2026-08-01",
+                "data_final": "2026-08-10",
+            },
+        )
 
-        self.assertContains(response, 'class="page-heading__eyebrow"')
-        self.assertContains(response, 'class="filter-panel event-filter-panel"')
-        self.assertContains(response, 'class="filter-panel__grid event-filters"')
-        self.assertContains(response, 'class="filter-panel__actions event-filter-actions"')
-        for parametro in ('name="q"', 'name="categoria"', 'name="origem"', 'name="data_inicial"', 'name="data_final"'):
-            self.assertContains(response, parametro)
-        self.assertContains(response, 'role="search"')
+        html = response.content.decode("utf-8")
+
+        self.assertContains(
+            response,
+            'class="page-heading__eyebrow"',
+        )
+        self.assertContains(
+            response,
+            'class="filter-panel event-filter-panel"',
+        )
+        self.assertContains(
+            response,
+            'class="filter-panel__grid event-filters"',
+        )
+        self.assertContains(
+            response,
+            'class="filter-panel__actions event-filter-actions"',
+        )
+        self.assertContains(
+            response,
+            'role="search"',
+        )
+
+        for parametro in (
+            'name="q"',
+            'name="categoria"',
+            'name="origem"',
+            'name="data_inicial"',
+            'name="data_final"',
+        ):
+            self.assertContains(
+                response,
+                parametro,
+            )
+
+        self.assertEqual(
+            html.count('data-filter-multiselect'),
+            2,
+        )
+
+        self.assertEqual(
+            html.count('name="categoria"'),
+            len(response.context["categorias"]),
+        )
+        self.assertEqual(
+            html.count('name="origem"'),
+            len(response.context["origens"]),
+        )
+
+        self.assertRegex(
+            html,
+            r'(?s)<legend class="form-label">\s*Categoria\s*</legend>'
+            r'.*?data-filter-summary-text[^>]*>\s*2 sele\u00e7\u00f5es\s*</span>',
+        )
+        self.assertRegex(
+            html,
+            r'(?s)<legend class="form-label">\s*Origem\s*</legend>'
+            r'.*?data-filter-summary-text[^>]*>\s*2 sele\u00e7\u00f5es\s*</span>',
+        )
+
+        for valor in (
+            "CAMERA",
+            "SISTEMA",
+            "WEB",
+            "ADMIN",
+        ):
+            self.assertRegex(
+                html,
+                rf'value="{valor}"[^>]*checked',
+            )
+
+        self.assertNotRegex(
+            html,
+            r'<select[^>]+name="(?:categoria|origem)"',
+        )
+
+        self.assertContains(
+            response,
+            'static/js/filtros.js',
+        )
