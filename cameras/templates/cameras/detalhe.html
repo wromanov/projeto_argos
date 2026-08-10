@@ -184,6 +184,45 @@
     {% endfor %}
   </div>
 </section>
-{% if perms.cameras.consultar_substituicoescamera %}<section class="inventory-panel detail-card detail-card--full detail-history-card detail-history-card--replacements"><div class="inventory-panel__header"><h2>Histórico de substituições</h2><a class="button button--secondary" href="{% url 'cameras:lista_substituicoes' %}">Ver todas as substituições</a></div><div class="replacement-list detail-history-list">{% for item in substituicoes %}<a href="{% url 'cameras:detalhe_substituicao' item.pk %}">{{ item.ocorrida_em|date:"d/m/Y H:i" }} · {{ item.camera_anterior }} → {{ item.camera_substituta }}</a>{% empty %}<p class="detail-empty-state">Nenhuma substituição registrada.</p>{% endfor %}</div></section>{% endif %}
+{% if perms.cameras.consultar_substituicoescamera %}
+<section class="inventory-panel detail-card detail-card--full detail-history-card detail-history-card--replacements">
+  <div class="inventory-panel__header">
+    <div>
+      <h2>Histórico de substituições</h2>
+    </div>
+
+    <a
+      class="button button--secondary"
+      href="{% url 'cameras:lista_substituicoes_camera' camera.pk %}"
+    >
+      Ver histórico completo
+    </a>
+  </div>
+
+  <div class="replacement-list detail-history-list">
+    {% for item in substituicoes %}
+
+      {% if camera.pk == item.camera_anterior_id %}
+        <a href="{% url 'cameras:detalhe_substituicao' item.pk %}">
+          {{ item.ocorrida_em|date:"d/m/Y H:i" }}
+          &middot; Foi substituída
+          &middot; {{ item.nome_operacional }} &rarr; {{ item.nome_anterior_substituta }}
+        </a>
+      {% else %}
+        <a href="{% url 'cameras:detalhe_substituicao' item.pk %}">
+          {{ item.ocorrida_em|date:"d/m/Y H:i" }}
+          &middot; Entrou como substituta
+          &middot; {{ item.nome_operacional }} &rarr; {{ item.nome_anterior_substituta }}
+        </a>
+      {% endif %}
+
+    {% empty %}
+      <p class="detail-empty-state">
+        Nenhuma substituição registrada para esta câmera.
+      </p>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
 {% if perms.cameras.consultar_eventos %}<section class="inventory-panel detail-card detail-card--full detail-history-card detail-history-card--audit"><div class="inventory-panel__header"><h2>Eventos de auditoria</h2><a class="button button--secondary" href="{% url 'cameras:eventos_camera' camera.pk %}">Ver todos os eventos</a></div><div class="activity-list detail-history-list">{% for evento in eventos_auditoria %}<a href="{% url 'eventos:detalhe' evento.pk %}">{{ evento.codigo }} · {{ evento.resumo }}</a>{% empty %}<p class="detail-empty-state">Nenhum evento registrado.</p>{% endfor %}</div></section>{% endif %}
 </div>{% endblock %}

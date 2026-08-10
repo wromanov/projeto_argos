@@ -39,7 +39,7 @@ class GovernancaViewsPermissoesTests(TestCase):
         substituir_camera(
             camera_anterior=self.camera,
             camera_substituta=self.estoque,
-            motivo="Falha f?sica confirmada",
+            motivo="Falha física confirmada",
             usuario=self.user,
         )
 
@@ -59,7 +59,7 @@ class GovernancaViewsPermissoesTests(TestCase):
         substituir_camera(
             camera_anterior=self.camera,
             camera_substituta=self.estoque,
-            motivo="Falha f?sica confirmada",
+            motivo="Falha física confirmada",
             usuario=self.user,
         )
 
@@ -71,6 +71,161 @@ class GovernancaViewsPermissoesTests(TestCase):
         self.assertEqual(
             response.context["page_obj"].paginator.count,
             1,
+        )
+
+    def test_historico_local_exibe_apenas_substituicoes_da_camera(self):
+        self.grupo("Operador ARGOS")
+
+        relacionada = substituir_camera(
+            camera_anterior=self.camera,
+            camera_substituta=self.estoque,
+            motivo="Substituição relacionada",
+            usuario=self.user,
+        )
+
+        outra_anterior = self.criar(3, "PRODUCAO")
+        outra_substituta = self.criar(4, "ESTOQUE")
+
+        nao_relacionada = substituir_camera(
+            camera_anterior=outra_anterior,
+            camera_substituta=outra_substituta,
+            motivo="Substituição de outra câmera",
+            usuario=self.user,
+        )
+
+        response = self.client.get(
+            reverse(
+                "cameras:lista_substituicoes_camera",
+                args=[self.camera.pk],
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(
+            response,
+            relacionada.motivo,
+        )
+
+        self.assertNotContains(
+            response,
+            nao_relacionada.motivo,
+        )
+
+        self.assertEqual(
+            response.context["total_substituicoes"],
+            1,
+        )
+
+    def test_historico_local_identifica_camera_como_substituta(self):
+        self.grupo("Operador ARGOS")
+
+        substituir_camera(
+            camera_anterior=self.camera,
+            camera_substituta=self.estoque,
+            motivo="Falha física confirmada",
+            usuario=self.user,
+        )
+
+        response = self.client.get(
+            reverse(
+                "cameras:lista_substituicoes_camera",
+                args=[self.estoque.pk],
+            )
+        )
+
+        self.assertContains(
+            response,
+            'data-replacement-role="substituta"',
+            html=False,
+        )
+
+        self.assertContains(
+            response,
+            "Entrou como substituta",
+        )
+
+    def test_historico_local_camera_intermediaria_exibe_os_dois_papeis(self):
+        self.grupo("Operador ARGOS")
+
+        substituir_camera(
+            camera_anterior=self.camera,
+            camera_substituta=self.estoque,
+            motivo="Primeira substituição",
+            usuario=self.user,
+        )
+
+        terceira = self.criar(
+            3,
+            "ESTOQUE",
+        )
+
+        substituir_camera(
+            camera_anterior=self.estoque,
+            camera_substituta=terceira,
+            motivo="Segunda substituição",
+            usuario=self.user,
+        )
+
+        response = self.client.get(
+            reverse(
+                "cameras:lista_substituicoes_camera",
+                args=[self.estoque.pk],
+            )
+        )
+
+        self.assertContains(
+            response,
+            'data-replacement-role="substituta"',
+            count=1,
+            html=False,
+        )
+
+        self.assertContains(
+            response,
+            'data-replacement-role="anterior"',
+            count=1,
+            html=False,
+        )
+
+        self.assertContains(
+            response,
+            "Entrou como substituta",
+        )
+
+        self.assertContains(
+            response,
+            "Foi substituída",
+        )
+
+    def test_detalhe_camera_aponta_para_historico_local(self):
+        self.grupo("Operador ARGOS")
+
+        response = self.client.get(
+            reverse(
+                "cameras:detalhe",
+                args=[self.camera.pk],
+            )
+        )
+
+        url = reverse(
+            "cameras:lista_substituicoes_camera",
+            args=[self.camera.pk],
+        )
+
+        self.assertContains(
+            response,
+            url,
+        )
+
+        self.assertContains(
+            response,
+            "Ver histórico completo",
+        )
+
+        self.assertNotContains(
+            response,
+            "Ver todas as substituições",
         )
 
     def test_admin_substituicao_nao_permite_adicionar_editar_ou_excluir(self): a=SubstituicaoCameraAdmin(SubstituicaoCamera,admin.site); req=RequestFactory().get("/"); req.user=self.superuser; self.assertFalse(a.has_add_permission(req)); self.assertFalse(a.has_change_permission(req)); self.assertFalse(a.has_delete_permission(req))

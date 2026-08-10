@@ -160,6 +160,42 @@ def substituir_camera_view(request, pk):
     return render(request, "cameras/governanca/substituir.html", {"camera": camera, "form": form})
 
 
+@permission_required(
+    "cameras.consultar_substituicoescamera",
+    raise_exception=True,
+)
+def lista_substituicoes_camera(request, camera_pk):
+    camera = get_object_or_404(Camera, pk=camera_pk)
+
+    queryset = (
+        SubstituicaoCamera.objects
+        .filter(
+            Q(camera_anterior=camera)
+            | Q(camera_substituta=camera)
+        )
+        .select_related(
+            "camera_anterior",
+            "camera_substituta",
+            "registrado_por",
+        )
+        .order_by("-ocorrida_em", "-pk")
+    )
+
+    paginator = Paginator(queryset, 20)
+    page_obj = paginator.get_page(request.GET.get("page"))
+
+    return render(
+        request,
+        "cameras/substituicoes/lista_camera.html",
+        {
+            "camera": camera,
+            "substituicoes": page_obj,
+            "page_obj": page_obj,
+            "total_substituicoes": paginator.count,
+        },
+    )
+
+
 @permission_required("cameras.consultar_substituicoescamera", raise_exception=True)
 def lista_substituicoes(request):
     queryset = SubstituicaoCamera.objects.select_related("camera_anterior", "camera_substituta", "registrado_por")

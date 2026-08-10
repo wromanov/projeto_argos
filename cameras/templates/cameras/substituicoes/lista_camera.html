@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titulo %}Histórico de substituições ? {{ camera.nome }} ? ARGOS{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/inventario.css' %}">
+<link rel="stylesheet" href="{% static 'css/governanca.css' %}">
+{% endblock %}
+
+{% block conteudo %}
+<section
+  class="replacement-page"
+  aria-labelledby="camera-replacement-title"
+>
+  <header class="replacement-hero">
+
+    <a
+      class="detail-back-link"
+      href="{% url 'cameras:detalhe' camera.pk %}"
+    >
+      &larr; Voltar para câmera
+    </a>
+
+    <p class="replacement-eyebrow">
+      Histórico da câmera
+    </p>
+
+    <h1 id="camera-replacement-title">
+      Histórico de substituições
+    </h1>
+
+    <p>
+      {{ camera.nome }}
+      {% if camera.patrimonio %}
+        &middot; {{ camera.patrimonio }}
+      {% endif %}
+    </p>
+
+  </header>
+
+  <div class="replacement-results-header">
+    <p>
+      <strong>{{ total_substituicoes }}</strong>
+      registro{{ total_substituicoes|pluralize }}
+      relacionado{{ total_substituicoes|pluralize }}
+      a esta câmera
+    </p>
+  </div>
+
+  <section
+    class="replacement-list replacement-list--archive"
+    aria-label="Histórico de substituições desta câmera"
+  >
+
+    {% for item in substituicoes %}
+
+      <article
+        class="replacement-card"
+        {% if item.camera_substituta_id == camera.pk %}
+          data-replacement-role="substituta"
+        {% else %}
+          data-replacement-role="anterior"
+        {% endif %}
+      >
+
+        <header class="replacement-card__header">
+
+          <div class="replacement-card__date">
+            <span>Substituição registrada em</span>
+            <time datetime="{{ item.ocorrida_em|date:'c' }}">
+              {{ item.ocorrida_em|date:"d/m/Y H:i" }}
+            </time>
+          </div>
+
+          {% if item.camera_substituta_id == camera.pk %}
+            <span class="replacement-card__status">
+              Entrou como substituta
+            </span>
+          {% else %}
+            <span class="replacement-card__status">
+              Foi substituída
+            </span>
+          {% endif %}
+
+        </header>
+
+        <section
+          class="replacement-card__transition"
+          aria-label="Transi??o de equipamento"
+        >
+
+          <article
+            class="replacement-card__camera replacement-card__camera--previous"
+          >
+
+            <div class="replacement-card__camera-heading">
+              <span class="replacement-card__camera-role">
+                Equipamento substituído
+              </span>
+
+              <span class="replacement-camera__label">
+                Câmera anterior
+              </span>
+            </div>
+
+            <a
+              class="replacement-card__camera-name"
+              href="{% url 'cameras:detalhe' item.camera_anterior.pk %}"
+            >
+              {{ item.nome_operacional }}
+            </a>
+
+            <dl class="replacement-camera__identity">
+
+              <div>
+                <dt>Patrimônio</dt>
+                <dd class="technical-value">
+                  {{ item.camera_anterior.patrimonio|default:"?" }}
+                </dd>
+              </div>
+
+              <div>
+                <dt>Serial</dt>
+                <dd class="technical-value">
+                  {{ item.camera_anterior.serial|default:"?" }}
+                </dd>
+              </div>
+
+            </dl>
+          </article>
+
+          <div
+            class="replacement-card__arrow"
+            aria-hidden="true"
+          >
+            <span>&rarr;</span>
+          </div>
+
+          <article
+            class="replacement-card__camera replacement-card__camera--next"
+          >
+
+            <div class="replacement-card__camera-heading">
+              <span class="replacement-card__camera-role">
+                Equipamento que assumiu a posição
+              </span>
+
+              <span class="replacement-camera__label">
+                Câmera substituta
+              </span>
+            </div>
+
+            <a
+              class="replacement-card__camera-name"
+              href="{% url 'cameras:detalhe' item.camera_substituta.pk %}"
+            >
+              {{ item.nome_anterior_substituta }}
+            </a>
+
+            <dl class="replacement-camera__identity">
+
+              <div>
+                <dt>Patrimônio</dt>
+                <dd class="technical-value">
+                  {{ item.camera_substituta.patrimonio|default:"?" }}
+                </dd>
+              </div>
+
+              <div>
+                <dt>Serial</dt>
+                <dd class="technical-value">
+                  {{ item.camera_substituta.serial|default:"?" }}
+                </dd>
+              </div>
+
+            </dl>
+          </article>
+
+        </section>
+
+        <section
+          class="replacement-card__context"
+          aria-label="Contexto do registro"
+        >
+          <p class="replacement-card__section-label">
+            Contexto do registro
+          </p>
+
+          <dl class="replacement-card__meta">
+
+            <div>
+              <dt>Nome operacional</dt>
+              <dd>{{ item.nome_operacional }}</dd>
+            </div>
+
+            <div>
+              <dt>Responsável</dt>
+              <dd>
+                {{ item.registrado_por_username|default:"?" }}
+              </dd>
+            </div>
+
+          </dl>
+        </section>
+
+        <div class="replacement-card__closing">
+
+          <section
+            class="replacement-card__reason"
+            aria-label="Motivo da substituição"
+          >
+            <p class="replacement-card__section-label">
+              Motivo
+            </p>
+
+            <p>
+              {{ item.motivo|truncatechars:180 }}
+            </p>
+          </section>
+
+          <footer class="replacement-card__footer">
+
+            <a
+              class="button button--secondary replacement-card__detail"
+              href="{% url 'cameras:detalhe_substituicao' item.pk %}"
+            >
+              Ver detalhes
+            </a>
+
+          </footer>
+        </div>
+
+      </article>
+
+    {% empty %}
+
+      {% include "components/estado_vazio.html" with empty_title="Nenhuma substituição registrada" empty_text="Esta câmera ainda não participou de nenhuma substituição." %}
+
+    {% endfor %}
+
+  </section>
+
+  {% include "components/paginacao.html" with page_obj=page_obj pagination_label="Paginação do histórico de substituições desta câmera" %}
+
+</section>
+{% endblock %}

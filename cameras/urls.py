@@ -18,6 +18,11 @@ urlpatterns = [
     path("<int:pk>/eventos/", views.eventos_camera, name="eventos_camera"),
     path("atividades/<int:pk>/editar/", views.editar_atividade_camera, name="editar_atividade"),
     path("<int:camera_pk>/atividades/nova/", views.criar_atividade_camera, name="criar_atividade"),
+    path(
+        "<int:camera_pk>/substituicoes/",
+        views.lista_substituicoes_camera,
+        name="lista_substituicoes_camera",
+    ),
     path("<int:camera_pk>/atividades/", views.lista_atividades_camera, name="lista_atividades"),
     path("<int:pk>/", views.detalhe_camera, name="detalhe"),
 ]
