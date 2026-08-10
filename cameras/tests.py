@@ -121,6 +121,32 @@ class ListaCamerasTests(TestCase):
         response = self.buscar(q="CAM", terminal="TPS2", situacao_operacional="PRODUCAO", fabricante="Axis")
         self.assertEqual(self.nomes_da_pagina(response), ["CAM-CHARLIE"])
 
+    def test_multifiltro_status_combina_valores_com_or(self):
+        response = self.buscar(status=["ONLINE", "OFFLINE"])
+        self.assertEqual(self.nomes_da_pagina(response), ["CAM-ALFA", "CAM-BRAVO"])
+
+    def test_multifiltro_situacao_combina_valores_com_or(self):
+        response = self.buscar(situacao_operacional=["PRODUCAO", "DESATIVADA"])
+        self.assertEqual(self.nomes_da_pagina(response), ["CAM-ALFA", "CAM-BRAVO", "CAM-CHARLIE"])
+
+    def test_multifiltro_terminal_combina_valores_com_or(self):
+        response = self.buscar(terminal=["TPS1", "TPS2"])
+        self.assertEqual(self.nomes_da_pagina(response), ["CAM-ALFA", "CAM-BRAVO", "CAM-CHARLIE"])
+
+    def test_multifiltro_combina_categorias_com_and(self):
+        response = self.buscar(situacao_operacional=["PRODUCAO"], terminal=["TPS2"], fabricante=["Axis"])
+        self.assertEqual(self.nomes_da_pagina(response), ["CAM-CHARLIE"])
+
+    def test_multifiltro_enum_invalido_preserva_valor_valido(self):
+        response = self.buscar(status=["INVALIDO", "ONLINE"])
+        self.assertEqual(self.nomes_da_pagina(response), ["CAM-ALFA"])
+        self.assertEqual(response.context["status_selecionados"], ["ONLINE"])
+
+    def test_multifiltro_expoe_contexto_plural_e_legado(self):
+        response = self.buscar(status=["ONLINE", "OFFLINE"])
+        self.assertEqual(response.context["status_selecionados"], ["ONLINE", "OFFLINE"])
+        self.assertEqual(response.context["status_selecionado"], "ONLINE")
+
     def test_ordenacao_por_nome(self):
         response = self.buscar(ordenacao="-nome")
         self.assertEqual(self.nomes_da_pagina(response), ["CAM-CHARLIE", "CAM-BRAVO", "CAM-ALFA"])

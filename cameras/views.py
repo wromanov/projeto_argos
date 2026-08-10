@@ -21,57 +21,137 @@ from .validadores import normalizar_texto_cadastral
 ORDENACOES_PERMITIDAS = {"nome", "-nome", "status", "-status", "ip", "-ip", "atualizado_em", "-atualizado_em"}
 
 
+def _valores_get_unicos(request, nome, normalizar=False):
+    valores = []
+    for bruto in request.GET.getlist(nome):
+        valor = bruto.strip()
+        if not valor:
+            continue
+        if normalizar:
+            valor = normalizar_texto_cadastral(valor)
+        if valor and valor not in valores:
+            valores.append(valor)
+    return valores
+
+
+def _primeiro_valor(valores):
+    return valores[0] if valores else ""
+
+
 @permission_required("cameras.view_camera", raise_exception=True)
 def lista_cameras(request):
     queryset = Camera.objects.all()
     q = request.GET.get("q", "").strip()
-    status_selecionado = request.GET.get("status", "")
-    situacao_selecionada = request.GET.get("situacao_operacional", "")
-    completude_selecionada = request.GET.get("completude", "")
-    terminal_selecionado = normalizar_texto_cadastral(
-        request.GET.get("terminal", "")
-    )
-    tipo_selecionado = request.GET.get("tipo", "")
-    fabricante_selecionado = normalizar_texto_cadastral(
-        request.GET.get("fabricante", "")
-    )
-    vlan_selecionada = request.GET.get("vlan", "")
-    farm_selecionada = normalizar_texto_cadastral(
-        request.GET.get("farm", "")
-    )
+
+    status_selecionados = [
+        valor for valor in _valores_get_unicos(request, "status")
+        if valor in {"ONLINE", "OFFLINE", "NAO_VERIFICADO"}
+    ]
+    situacoes_selecionadas = [
+        valor for valor in _valores_get_unicos(request, "situacao_operacional")
+        if valor in Camera.SituacaoOperacional.values
+    ]
+    completudes_selecionadas = [
+        valor for valor in _valores_get_unicos(request, "completude")
+        if valor in {"COMPLETO", "INCOMPLETO"}
+    ]
+    terminais_selecionados = _valores_get_unicos(request, "terminal", normalizar=True)
+    tipos_selecionados = [
+        valor for valor in _valores_get_unicos(request, "tipo")
+        if valor in Camera.TipoCamera.values
+    ]
+    fabricantes_selecionados = _valores_get_unicos(request, "fabricante", normalizar=True)
+    farms_selecionadas = _valores_get_unicos(request, "farm", normalizar=True)
+
+    vlans_selecionadas = []
+    for valor in _valores_get_unicos(request, "vlan"):
+        try:
+            vlan = int(valor)
+        except (TypeError, ValueError):
+            continue
+        if 1 <= vlan <= 4094:
+            vlan_texto = str(vlan)
+            if vlan_texto not in vlans_selecionadas:
+                vlans_selecionadas.append(vlan_texto)
+
     ordenacao = request.GET.get("ordenacao", "nome")
+
     if q:
-        queryset = queryset.filter(Q(nome__icontains=q) | Q(patrimonio__icontains=q) | Q(ip__icontains=q) | Q(serial__icontains=q) | Q(mac__icontains=q) | Q(fabricante__icontains=q) | Q(modelo__icontains=q) | Q(terminal__icontains=q) | Q(pavimento__icontains=q) | Q(setor__icontains=q) | Q(ambiente__icontains=q) | Q(farm__icontains=q))
-    if status_selecionado == "ONLINE": queryset = queryset.filter(status="ONLINE")
-    elif status_selecionado == "OFFLINE": queryset = queryset.filter(status="OFFLINE")
-    elif status_selecionado == "NAO_VERIFICADO": queryset = queryset.filter(Q(status__isnull=True) | Q(status=""))
-    if situacao_selecionada in Camera.SituacaoOperacional.values: queryset = queryset.filter(situacao_operacional=situacao_selecionada)
-    if completude_selecionada == "COMPLETO": queryset = queryset.filter(q_camera_completa())
-    elif completude_selecionada == "INCOMPLETO": queryset = queryset.filter(q_camera_incompleta())
-    if terminal_selecionado: queryset = queryset.filter(terminal=terminal_selecionado)
-    if tipo_selecionado in Camera.TipoCamera.values: queryset = queryset.filter(tipo=tipo_selecionado)
-    if fabricante_selecionado: queryset = queryset.filter(fabricante=fabricante_selecionado)
-    try: vlan = int(vlan_selecionada)
-    except (TypeError, ValueError): vlan = None
-    if vlan is not None and 1 <= vlan <= 4094: queryset = queryset.filter(vlan=vlan)
-    if farm_selecionada: queryset = queryset.filter(farm=farm_selecionada)
-    if ordenacao not in ORDENACOES_PERMITIDAS: ordenacao = "nome"
+        queryset = queryset.filter(
+            Q(nome__icontains=q) | Q(patrimonio__icontains=q) | Q(ip__icontains=q)
+            | Q(serial__icontains=q) | Q(mac__icontains=q) | Q(fabricante__icontains=q)
+            | Q(modelo__icontains=q) | Q(terminal__icontains=q) | Q(pavimento__icontains=q)
+            | Q(setor__icontains=q) | Q(ambiente__icontains=q) | Q(farm__icontains=q)
+        )
+
+    if status_selecionados:
+        filtro_status = Q()
+        status_diretos = [v for v in status_selecionados if v in {"ONLINE", "OFFLINE"}]
+        if status_diretos:
+            filtro_status |= Q(status__in=status_diretos)
+        if "NAO_VERIFICADO" in status_selecionados:
+            filtro_status |= Q(status__isnull=True) | Q(status="")
+        queryset = queryset.filter(filtro_status)
+
+    if situacoes_selecionadas:
+        queryset = queryset.filter(situacao_operacional__in=situacoes_selecionadas)
+
+    if completudes_selecionadas:
+        filtro_completude = Q()
+        if "COMPLETO" in completudes_selecionadas:
+            filtro_completude |= q_camera_completa()
+        if "INCOMPLETO" in completudes_selecionadas:
+            filtro_completude |= q_camera_incompleta()
+        queryset = queryset.filter(filtro_completude)
+
+    if terminais_selecionados:
+        queryset = queryset.filter(terminal__in=terminais_selecionados)
+    if tipos_selecionados:
+        queryset = queryset.filter(tipo__in=tipos_selecionados)
+    if fabricantes_selecionados:
+        queryset = queryset.filter(fabricante__in=fabricantes_selecionados)
+    if vlans_selecionadas:
+        queryset = queryset.filter(vlan__in=[int(v) for v in vlans_selecionadas])
+    if farms_selecionadas:
+        queryset = queryset.filter(farm__in=farms_selecionadas)
+
+    if ordenacao not in ORDENACOES_PERMITIDAS:
+        ordenacao = "nome"
     queryset = queryset.order_by(ordenacao, "pk")
-    paginator = Paginator(queryset, 20); page_obj = paginator.get_page(request.GET.get("page"))
-    parametros = request.GET.copy(); parametros.pop("page", None)
+
+    paginator = Paginator(queryset, 20)
+    page_obj = paginator.get_page(request.GET.get("page"))
+    parametros = request.GET.copy()
+    parametros.pop("page", None)
+
     return render(request, "cameras/lista.html", {
         "cameras": page_obj, "page_obj": page_obj, "paginator": paginator, "q": q,
-        "status_selecionado": status_selecionado, "situacao_selecionada": situacao_selecionada,
-        "completude_selecionada": completude_selecionada, "terminal_selecionado": terminal_selecionado,
-        "tipo_selecionado": tipo_selecionado, "fabricante_selecionado": fabricante_selecionado,
-        "vlan_selecionada": vlan_selecionada, "farm_selecionada": farm_selecionada,
+        "status_selecionado": _primeiro_valor(status_selecionados),
+        "situacao_selecionada": _primeiro_valor(situacoes_selecionadas),
+        "completude_selecionada": _primeiro_valor(completudes_selecionadas),
+        "terminal_selecionado": _primeiro_valor(terminais_selecionados),
+        "tipo_selecionado": _primeiro_valor(tipos_selecionados),
+        "fabricante_selecionado": _primeiro_valor(fabricantes_selecionados),
+        "vlan_selecionada": _primeiro_valor(vlans_selecionadas),
+        "farm_selecionada": _primeiro_valor(farms_selecionadas),
+        "status_selecionados": status_selecionados,
+        "situacoes_selecionadas": situacoes_selecionadas,
+        "completudes_selecionadas": completudes_selecionadas,
+        "terminais_selecionados": terminais_selecionados,
+        "tipos_selecionados": tipos_selecionados,
+        "fabricantes_selecionados": fabricantes_selecionados,
+        "vlans_selecionadas": vlans_selecionadas,
+        "farms_selecionadas": farms_selecionadas,
         "terminais": Camera.objects.exclude(terminal="").values_list("terminal", flat=True).distinct().order_by("terminal"),
-        "tipos_camera": Camera.TipoCamera.choices, "situacoes_operacionais": Camera.SituacaoOperacional.choices,
+        "tipos_camera": Camera.TipoCamera.choices,
+        "situacoes_operacionais": Camera.SituacaoOperacional.choices,
         "fabricantes": Camera.objects.exclude(fabricante="").values_list("fabricante", flat=True).distinct().order_by("fabricante"),
         "vlans": Camera.objects.exclude(vlan__isnull=True).values_list("vlan", flat=True).distinct().order_by("vlan"),
         "farms": Camera.objects.exclude(farm="").values_list("farm", flat=True).distinct().order_by("farm"),
-        "total_resultados": paginator.count, "possui_cameras_cadastradas": Camera.objects.exists(),
-        "ordenacao": ordenacao, "query_string": parametros.urlencode(),
+        "total_resultados": paginator.count,
+        "possui_cameras_cadastradas": Camera.objects.exists(),
+        "ordenacao": ordenacao,
+        "query_string": parametros.urlencode(),
     })
 
 
