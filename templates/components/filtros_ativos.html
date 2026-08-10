@@ -1,0 +1,50 @@
+{% load ui_extras %}
+
+{% if filtros_ativos %}
+<section
+  class="active-filters"
+  aria-label="Filtros ativos"
+>
+  <div class="active-filters__header">
+    <span class="active-filters__label">
+      Filtros ativos
+    </span>
+
+    {% if clear_url %}
+      <a
+        class="active-filters__clear"
+        href="{{ clear_url }}"
+      >
+        Limpar todos
+      </a>
+    {% endif %}
+  </div>
+
+  <div class="active-filters__list">
+    {% for filtro in filtros_ativos %}
+      {% querystring_sem_valor filtro.nome filtro.valor as query_sem_filtro %}
+
+      <a
+        class="active-filter-chip"
+        href="{% if query_sem_filtro %}?{{ query_sem_filtro }}{% else %}{{ clear_url }}{% endif %}"
+        aria-label="Remover filtro {{ filtro.grupo }}: {{ filtro.rotulo }}"
+      >
+        <span class="active-filter-chip__group">
+          {{ filtro.grupo }}:
+        </span>
+
+        <span class="active-filter-chip__value">
+          {{ filtro.rotulo }}
+        </span>
+
+        <span
+          class="active-filter-chip__remove"
+          aria-hidden="true"
+        >
+          &times;
+        </span>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

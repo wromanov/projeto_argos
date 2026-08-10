@@ -1,0 +1,51 @@
+<fieldset class="form-field filter-multiselect-field">
+  <legend class="form-label">
+    {{ label }}
+  </legend>
+
+  <details
+    class="filter-multiselect"
+    data-filter-multiselect
+  >
+    <summary class="filter-multiselect__summary">
+      <span
+        class="filter-multiselect__summary-text"
+        data-filter-summary-text
+        data-empty-label="{{ empty_label|default:'Todos' }}"
+      >
+        {% if selecionados %}
+          {% if selecionados|length == 1 %}
+            1 seleção
+          {% else %}
+            {{ selecionados|length }} seleções
+          {% endif %}
+        {% else %}
+          {{ empty_label|default:"Todos" }}
+        {% endif %}
+      </span>
+
+      <span
+        class="filter-multiselect__indicator"
+        aria-hidden="true"
+      ></span>
+    </summary>
+
+    <div class="filter-multiselect__menu">
+      {% for valor, rotulo in opcoes %}
+        <label class="filter-multiselect__option">
+          <input
+            type="checkbox"
+            name="{{ name }}"
+            value="{{ valor }}"
+            {% if valor in selecionados %}checked{% endif %}
+          >
+          <span>{{ rotulo }}</span>
+        </label>
+      {% empty %}
+        <p class="filter-multiselect__empty">
+          Nenhuma opção disponível.
+        </p>
+      {% endfor %}
+    </div>
+  </details>
+</fieldset>
