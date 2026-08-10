@@ -39,24 +39,8 @@
   </form>
 </section>
 
-{% if q or status_selecionado or situacao_selecionada or completude_selecionada or terminal_selecionado or tipo_selecionado or fabricante_selecionado or vlan_selecionada or farm_selecionada or ordenacao != "nome" %}
-<section class="inventory-query-summary" aria-label="Resumo da consulta">
-  <div class="inventory-query-summary__copy">
-    <span class="inventory-query-summary__label">Filtros ativos</span>
-
-    <div class="inventory-query-summary__message">
-      <strong>{{ total_resultados }} resultado{{ total_resultados|pluralize:"s" }}</strong>
-      <span>Consulta filtrada no inventário.</span>
-    </div>
-  </div>
-
-  <a
-    class="button button--secondary button--small"
-    href="{{ lista_url }}"
-  >
-    Limpar filtros
-  </a>
-</section>
+{% if filtros_ativos %}
+{% include "components/filtros_ativos.html" with filtros_ativos=filtros_ativos clear_url=lista_url %}
 {% endif %}
 
 {% if total_resultados %}

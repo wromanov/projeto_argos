@@ -38,6 +38,26 @@ def _primeiro_valor(valores):
     return valores[0] if valores else ""
 
 
+def _adicionar_filtros_ativos(
+    destino,
+    nome,
+    valores,
+    grupo,
+    rotulos=None,
+):
+    rotulos = rotulos or {}
+
+    for valor in valores:
+        destino.append(
+            {
+                "nome": nome,
+                "valor": valor,
+                "grupo": grupo,
+                "rotulo": rotulos.get(valor, valor),
+            }
+        )
+
+
 @permission_required("cameras.view_camera", raise_exception=True)
 def lista_cameras(request):
     queryset = Camera.objects.all()
@@ -124,6 +144,82 @@ def lista_cameras(request):
     parametros = request.GET.copy()
     parametros.pop("page", None)
 
+    filtros_ativos = []
+
+    if q:
+        _adicionar_filtros_ativos(
+            filtros_ativos,
+            "q",
+            [q],
+            "Pesquisa",
+        )
+
+    _adicionar_filtros_ativos(
+        filtros_ativos,
+        "status",
+        status_selecionados,
+        "Status técnico",
+        {
+            "ONLINE": "Online",
+            "OFFLINE": "Offline",
+            "NAO_VERIFICADO": "Não verificado",
+        },
+    )
+    _adicionar_filtros_ativos(
+        filtros_ativos,
+        "situacao_operacional",
+        situacoes_selecionadas,
+        "Situação operacional",
+        {
+            str(valor): str(rotulo)
+            for valor, rotulo in Camera.SituacaoOperacional.choices
+        },
+    )
+    _adicionar_filtros_ativos(
+        filtros_ativos,
+        "completude",
+        completudes_selecionadas,
+        "Completude",
+        {
+            "COMPLETO": "Completo",
+            "INCOMPLETO": "Incompleto",
+        },
+    )
+    _adicionar_filtros_ativos(
+        filtros_ativos,
+        "terminal",
+        terminais_selecionados,
+        "Terminal",
+    )
+    _adicionar_filtros_ativos(
+        filtros_ativos,
+        "tipo",
+        tipos_selecionados,
+        "Tipo",
+        {
+            str(valor): str(rotulo)
+            for valor, rotulo in Camera.TipoCamera.choices
+        },
+    )
+    _adicionar_filtros_ativos(
+        filtros_ativos,
+        "fabricante",
+        fabricantes_selecionados,
+        "Fabricante",
+    )
+    _adicionar_filtros_ativos(
+        filtros_ativos,
+        "vlan",
+        vlans_selecionadas,
+        "VLAN",
+    )
+    _adicionar_filtros_ativos(
+        filtros_ativos,
+        "farm",
+        farms_selecionadas,
+        "Farm",
+    )
+
     return render(request, "cameras/lista.html", {
         "cameras": page_obj, "page_obj": page_obj, "paginator": paginator, "q": q,
         "status_selecionado": _primeiro_valor(status_selecionados),
@@ -142,6 +238,7 @@ def lista_cameras(request):
         "fabricantes_selecionados": fabricantes_selecionados,
         "vlans_selecionadas": vlans_selecionadas,
         "farms_selecionadas": farms_selecionadas,
+        "filtros_ativos": filtros_ativos,
         "status_filtro_opcoes": [
             ("ONLINE", "Online"),
             ("OFFLINE", "Offline"),

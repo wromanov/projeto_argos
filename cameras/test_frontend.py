@@ -111,12 +111,44 @@ class ListaCamerasFrontendTests(TestCase):
 
     def test_resumo_aparece_somente_com_filtros_ativos(self):
         sem_filtros = self.client.get(reverse("cameras:lista"), {"page": "1"})
-        self.assertNotContains(sem_filtros, 'aria-label="Resumo da consulta"')
+        self.assertNotContains(sem_filtros, 'class="active-filters"')
 
-        filtrada = self.client.get(reverse("cameras:lista"), {"q": "CAM-FRONTEND"})
-        self.assertContains(filtrada, 'aria-label="Resumo da consulta"')
-        self.assertContains(filtrada, "Consulta filtrada no inventário.")
-        self.assertContains(filtrada, "1 resultado")
+        filtrada = self.client.get(
+            reverse("cameras:lista"),
+            {"q": "CAM-FRONTEND"},
+        )
+        self.assertContains(filtrada, 'class="active-filters"')
+        self.assertContains(filtrada, "Filtros ativos")
+        self.assertContains(filtrada, "Pesquisa")
+        self.assertContains(filtrada, "CAM-FRONTEND")
+        self.assertContains(filtrada, "Limpar todos")
+        self.assertNotContains(
+            filtrada,
+            "Consulta filtrada no inventário.",
+        )
+
+    def test_chip_remove_um_valor_e_preserva_os_demais(self):
+        response = self.client.get(
+            reverse("cameras:lista"),
+            {
+                "status": ["ONLINE", "OFFLINE"],
+                "situacao_operacional": "PRODUCAO",
+                "page": "2",
+            },
+        )
+
+        self.assertContains(
+            response,
+            'href="?status=OFFLINE&amp;situacao_operacional=PRODUCAO"',
+        )
+        self.assertContains(
+            response,
+            'href="?status=ONLINE&amp;situacao_operacional=PRODUCAO"',
+        )
+        self.assertNotContains(
+            response,
+            'href="?status=OFFLINE&amp;situacao_operacional=PRODUCAO&amp;page=2"',
+        )
 
     def test_estado_vazio_distingue_inventario_sem_cameras(self):
         Camera.objects.all().delete()

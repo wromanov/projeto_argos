@@ -147,6 +147,50 @@ class ListaCamerasTests(TestCase):
         self.assertEqual(response.context["status_selecionados"], ["ONLINE", "OFFLINE"])
         self.assertEqual(response.context["status_selecionado"], "ONLINE")
 
+    def test_filtros_ativos_expoem_um_chip_por_valor(self):
+        response = self.buscar(
+            q="CAM",
+            status=["ONLINE", "OFFLINE"],
+            situacao_operacional=["PRODUCAO"],
+            tipo=["DOME"],
+        )
+
+        self.assertEqual(
+            response.context["filtros_ativos"],
+            [
+                {
+                    "nome": "q",
+                    "valor": "CAM",
+                    "grupo": "Pesquisa",
+                    "rotulo": "CAM",
+                },
+                {
+                    "nome": "status",
+                    "valor": "ONLINE",
+                    "grupo": "Status técnico",
+                    "rotulo": "Online",
+                },
+                {
+                    "nome": "status",
+                    "valor": "OFFLINE",
+                    "grupo": "Status técnico",
+                    "rotulo": "Offline",
+                },
+                {
+                    "nome": "situacao_operacional",
+                    "valor": "PRODUCAO",
+                    "grupo": "Situação operacional",
+                    "rotulo": "Produção",
+                },
+                {
+                    "nome": "tipo",
+                    "valor": "DOME",
+                    "grupo": "Tipo",
+                    "rotulo": "Dome",
+                },
+            ],
+        )
+
     def test_ordenacao_por_nome(self):
         response = self.buscar(ordenacao="-nome")
         self.assertEqual(self.nomes_da_pagina(response), ["CAM-CHARLIE", "CAM-BRAVO", "CAM-ALFA"])
