@@ -32,6 +32,47 @@ class GovernancaViewsPermissoesTests(TestCase):
     def test_operador_pode_alterar_situacao(self): self.grupo("Operador ARGOS"); self.client.post(reverse("cameras:alterar_situacao",args=[self.camera.pk]),{"destino":"ESTOQUE","justificativa":"Movimento planejado"}); self.camera.refresh_from_db(); self.assertEqual(self.camera.situacao_operacional,"ESTOQUE")
     def test_operador_pode_registrar_substituicao(self): self.grupo("Operador ARGOS"); self.client.post(reverse("cameras:substituir",args=[self.camera.pk]),{"camera_substituta":self.estoque.pk,"motivo":"Falha física confirmada","observacoes":""}); self.assertEqual(SubstituicaoCamera.objects.count(),1)
     def test_lista_de_substituicoes_e_somente_leitura(self): self.grupo("Operador ARGOS"); substituir_camera(camera_anterior=self.camera,camera_substituta=self.estoque,motivo="Falha física confirmada",usuario=self.user); r=self.client.get(reverse("cameras:lista_substituicoes")); self.assertEqual(r.status_code,200); self.assertNotContains(r,"Excluir")
+    def test_lista_substituicoes_exibe_nome_historico_da_substituta(self):
+        self.grupo("Operador ARGOS")
+        nome_original = self.estoque.nome
+
+        substituir_camera(
+            camera_anterior=self.camera,
+            camera_substituta=self.estoque,
+            motivo="Falha f?sica confirmada",
+            usuario=self.user,
+        )
+
+        response = self.client.get(
+            reverse("cameras:lista_substituicoes")
+        )
+
+        self.assertContains(response, nome_original)
+
+        self.estoque.refresh_from_db()
+        self.assertEqual(self.estoque.nome, self.camera.nome)
+
+    def test_lista_substituicoes_busca_nome_historico_da_substituta(self):
+        self.grupo("Operador ARGOS")
+        nome_original = self.estoque.nome
+
+        substituir_camera(
+            camera_anterior=self.camera,
+            camera_substituta=self.estoque,
+            motivo="Falha f?sica confirmada",
+            usuario=self.user,
+        )
+
+        response = self.client.get(
+            reverse("cameras:lista_substituicoes"),
+            {"q": nome_original},
+        )
+
+        self.assertEqual(
+            response.context["page_obj"].paginator.count,
+            1,
+        )
+
     def test_admin_substituicao_nao_permite_adicionar_editar_ou_excluir(self): a=SubstituicaoCameraAdmin(SubstituicaoCamera,admin.site); req=RequestFactory().get("/"); req.user=self.superuser; self.assertFalse(a.has_add_permission(req)); self.assertFalse(a.has_change_permission(req)); self.assertFalse(a.has_delete_permission(req))
     def test_dashboard_exibe_situacoes_completude_e_ips_duplicados(self): self.criar(3,"ESTOQUE",ip=self.camera.ip); self.client.force_login(self.superuser); r=self.client.get(reverse("core:dashboard")); self.assertContains(r,"Produção"); self.assertContains(r,"Cadastro completo"); self.assertContains(r,"IP duplicado")
     def test_grupos_possuem_matriz_de_governanca_sem_delete(self):

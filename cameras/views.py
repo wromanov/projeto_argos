@@ -164,7 +164,7 @@ def substituir_camera_view(request, pk):
 def lista_substituicoes(request):
     queryset = SubstituicaoCamera.objects.select_related("camera_anterior", "camera_substituta", "registrado_por")
     q = request.GET.get("q", "").strip(); data_inicial = request.GET.get("data_inicial", ""); data_final = request.GET.get("data_final", "")
-    if q: queryset = queryset.filter(Q(camera_anterior__nome__icontains=q) | Q(camera_anterior__patrimonio__icontains=q) | Q(camera_anterior__serial__icontains=q) | Q(camera_substituta__nome__icontains=q) | Q(camera_substituta__patrimonio__icontains=q) | Q(camera_substituta__serial__icontains=q) | Q(motivo__icontains=q))
+    if q: queryset = queryset.filter(Q(camera_anterior__nome__icontains=q) | Q(camera_anterior__patrimonio__icontains=q) | Q(camera_anterior__serial__icontains=q) | Q(camera_substituta__nome__icontains=q) | Q(camera_substituta__patrimonio__icontains=q) | Q(camera_substituta__serial__icontains=q) | Q(nome_operacional__icontains=q) | Q(nome_anterior_substituta__icontains=q) | Q(motivo__icontains=q))
     inicio = parse_date(data_inicial) if data_inicial else None; fim = parse_date(data_final) if data_final else None
     if inicio: queryset = queryset.filter(ocorrida_em__date__gte=inicio)
     if fim: queryset = queryset.filter(ocorrida_em__date__lte=fim)
