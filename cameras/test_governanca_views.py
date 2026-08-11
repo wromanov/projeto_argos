@@ -453,6 +453,12 @@ class GovernancaViewsPermissoesTests(TestCase):
 
         self.assertContains(
             response,
+            f"<title>Histórico de substituições — {self.camera.nome} — ARGOS</title>",
+            html=True,
+        )
+
+        self.assertContains(
+            response,
             relacionada.motivo,
         )
 
