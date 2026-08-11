@@ -26,23 +26,22 @@ Models Django
 Banco de dados
 ```
 
-As futuras funções de monitoramento acrescentarão uma camada assíncrona:
+Como evolução prevista, as funções operacionais acrescentarão processamento independente da aplicação web:
 
 ```text
-Scheduler
+ARGOS WEB
   |
-  v
-Workers / tarefas
+  +--> consulta o estado persistido pelo ARGOS
+                         ^
+                         |
+              worker futuro de monitoramento
+                         |
+                    parque de câmeras
+
+Processamento futuro de captura
   |
-  +--> RTSP / câmera
-  |
-  +--> atualização de status
-  |
-  +--> indisponibilidades
-  |
-  +--> snapshots
-  |
-  +--> logs / observabilidade
+  +--> captura sob demanda ou importação manual
+  +--> gestão de evidências visuais
 ```
 
 ## 2. Stack atual
@@ -155,6 +154,18 @@ templates/base.html
 templates/components/
 ```
 
+### Contrato global de filtros
+
+O Sistema Global de Filtros é uma camada de consulta e UX server-rendered. Filtros categóricos aceitam parâmetros GET repetidos, por exemplo `?tipo=DOME&tipo=BULLET`, lidos no backend com `request.GET.getlist(...)`. A semântica é OR entre valores da mesma faceta e AND entre facetas diferentes; URLs antigas de valor único permanecem compatíveis.
+
+A multiseleção não usa `<select multiple>` nativo: utiliza uma interface compacta com `<details>`, `<summary>` e checkboxes. O botão **Filtrar** envia a consulta. O servidor é a fonte da verdade; JavaScript somente melhora a interação, sem dependência funcional de `fetch`, SPA ou requisições automáticas por checkbox.
+
+Filtros aplicados são exibidos como chips server-rendered e removíveis individualmente. Sua remoção elimina também `page`; há uma única ação global **Limpar todos**. A paginação compartilhada em `templates/components/paginacao.html` preserva filtros válidos e é usada também por Eventos; o partial local antigo de Eventos foi removido.
+
+As views expõem em `query_params` a representação canônica dos filtros aceitos. As tags `querystring()` e `querystring_sem_valor()` a priorizam, com fallback para `request.GET` quando ela não existe. A canonicalização descarta enums inválidos, parâmetros desconhecidos e valores vazios; deduplica e normaliza valores efetivos; preserva parâmetros repetidos válidos; e controla `page` separadamente, com exatamente um `page` nos links de paginação.
+
+Datas inválidas ou um período com **De > Até** são um estado visível e corrigível: não filtram o queryset, definem `periodo_invalido=True`, permanecem visíveis, são exibidas nos chips e podem ser removidas. Diferentemente, enums inválidos são ruído e não pertencem à query canônica.
+
 O design system é baseado em:
 
 - tokens;
@@ -176,34 +187,26 @@ Regras importantes:
 - alterações de situação não podem apagar histórico;
 - operações críticas devem preferir transações.
 
-## 7. Arquitetura futura de monitoramento
+## 7. Arquitetura planejada de monitoramento e imagens
 
-Separar conceitualmente:
+O monitoramento de disponibilidade será responsabilidade de worker(s) ou processo(s) futuros, independentes do ciclo HTTP do Django e do navegador. A aplicação web consultará o estado conhecido pelo ARGOS; ela não realizará probes diretamente no parque de câmeras.
 
-1. configuração;
-2. credenciais;
-3. composição da URL;
-4. teste de conexão;
-5. consumo do stream;
-6. keepalive;
-7. transição de status;
-8. indisponibilidade;
-9. snapshot;
-10. observabilidade.
+O monitoramento deverá persistir principalmente estado e transições relevantes, como `ONLINE -> OFFLINE` e `OFFLINE -> ONLINE`; probes normais repetidos não devem gerar novo histórico por si só. Mecanismo anti-flapping, parâmetros configuráveis e testes de carga são requisitos futuros de discovery, não escolhas já implementadas.
 
-Não acoplar tudo em uma única função.
+O processamento de captura de imagem é uma responsabilidade independente: captura lenta ou falha não poderá bloquear nem degradar o monitoramento. A captura ocorrerá sob demanda e poderá ser complementada por importação manual; proveniência deverá distinguir captura da câmera e upload manual.
+
+Esta arquitetura planejada não define tecnologia de fila/worker, scheduler, protocolo de probe, limites de concorrência, timeouts, política de retry nem mecanismo de atualização da interface. Essas decisões serão feitas em `MON-01` e nas fases de imagens do Roadmap v5.
 
 ## 8. Escalabilidade
 
 O parque alvo possui aproximadamente 2.300 câmeras.
 
-As tarefas de monitoramento devem:
+O futuro monitoramento deverá:
 
 - limitar concorrência;
-- possuir timeout;
-- possuir tentativas controladas;
+- ter parâmetros de timeout e tentativas configuráveis;
 - evitar execução duplicada;
-- registrar duração da rodada;
+- registrar métricas operacionais relevantes;
 - não travar a aplicação web;
 - permitir evolução para worker dedicado.
 
@@ -220,4 +223,4 @@ Credenciais de câmera devem:
 
 ---
 
-**A arquitetura deve permanecer modular o suficiente para separar operação web, governança e monitoramento assíncrono.**
+**A arquitetura deve permanecer modular o suficiente para separar operação web, governança, monitoramento de disponibilidade e processamento de imagens.**

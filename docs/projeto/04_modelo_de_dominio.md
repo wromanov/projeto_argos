@@ -174,7 +174,7 @@ Cada registro deve possuir:
 
 ## 9. Snapshot
 
-Entidade planejada.
+Registro conceitual histórico de uma entidade planejada. A política automática descrita nesta seção foi substituída para o trabalho futuro pelo [ADR-019 — Monitoramento de Disponibilidade e Gestão de Imagens](ADR-019_monitoramento_disponibilidade_gestao_imagens.md); a captura e a importação passam a ocorrer somente sob demanda do operador. O registro abaixo é preservado para documentar a evolução da decisão.
 
 Relacionamento:
 

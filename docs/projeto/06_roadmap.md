@@ -1,8 +1,14 @@
-# 06 — Roadmap do Projeto ARGOS
+# 06 — Roadmap histórico do Projeto ARGOS
 
-Atualizado em: 07/08/2026
+Atualizado em: 11/08/2026
 
-## Estado atual
+## Papel deste documento
+
+Este documento preserva o histórico dos roadmaps visuais e funcionais anteriores. A fonte operacional vigente para o trabalho futuro é o [Roadmap ARGOS v5](ROADMAP_ARGOS_V5.md), adotado a partir do rebaseline documental A0.
+
+Requisitos aqui registrados refletem seu contexto original. Em especial, as propostas históricas de snapshots automáticos foram substituídas para o futuro pelo [ADR-019](ADR-019_monitoramento_disponibilidade_gestao_imagens.md); não devem ser lidas como trabalho pendente.
+
+## Fotografia histórica consolidada
 
 Concluídos:
 
@@ -13,10 +19,42 @@ Concluídos:
 - Consolidação de paginação e resultados.
 - Redesign do dashboard.
 - Redesign do detalhe da câmera.
+- GF — Sistema Global de Filtros.
 
-Etapa atual:
+Baseline pós-GF:
 
-**Visual 4B — Cadastro e edição de câmera.**
+```text
+master = origin/master = 84f4bb9
+438 testes OK
+```
+
+Para a sequência operacional atual, consultar o [Roadmap ARGOS v5](ROADMAP_ARGOS_V5.md).
+
+## Entrega concluída — GF: Sistema Global de Filtros
+
+A frente GF foi concluída, validada e publicada na branch `master`.
+
+O ARGOS possui um contrato global e consistente de filtragem aplicado ao Inventário de Câmeras, Eventos de Auditoria e Histórico Global de Substituições. Foram consolidados filtros multivalorados, chips removíveis, paginação que preserva estado, query string canônica, tratamento de valores inválidos e stale, progressive enhancement e infraestrutura compartilhada.
+
+Roadmap final da frente:
+
+- GF-01 — Discovery global — **CONCLUÍDA**
+- GF-02 — Contrato global — **CONCLUÍDA**
+- GF-03 — Infraestrutura compartilhada — **CONCLUÍDA**
+- GF-04 — Inventário de câmeras — **CONCLUÍDA**
+- GF-05 — Eventos — **CONCLUÍDA**
+- GF-06 — Substituições — **CONCLUÍDA**
+- GF-07 — Hardening global — **CONCLUÍDA**
+
+Validação final: 438 testes executados com sucesso, `python manage.py check` sem issues, nenhuma migration pendente e `git diff --check` aprovado.
+
+Commit de fechamento:
+
+```text
+84f4bb9 fix(filtros): canonicalizar parametros globais
+```
+
+Status: entrega concluída, publicada e sem pendências BLOCKER ou MAJOR conhecidas.
 
 ## Roadmap visual
 
@@ -61,7 +99,7 @@ Commit:
 6751c68 feat(frontend): redesenhar detalhe operacional da câmera
 ```
 
-### Atual — Visual 4B
+### Histórico — Visual 4B
 
 Cadastro e edição de câmera.
 
@@ -125,7 +163,7 @@ Após o redesign:
 - atualizar CI;
 - atualizar documentação.
 
-## Roadmap funcional
+## Roadmap funcional histórico
 
 ### 4D — Credenciais
 
@@ -209,7 +247,7 @@ não entra na rotação automática
 - teste de restauração;
 - rollback.
 
-## Ordem recomendada
+## Ordem recomendada histórica
 
 1. Visual 4B.
 2. Visual 5.
@@ -223,6 +261,8 @@ não entra na rotação automática
 10. Importação.
 11. Produção/observabilidade.
 
+Esta sequência foi posteriormente substituída pelo Roadmap ARGOS v5.
+
 ---
 
-**Próximo passo imediato: obter as capturas de Nova câmera e Editar câmera e iniciar a Visual 4B.1.**
+**Documento histórico. Próxima sequência operacional: [Roadmap ARGOS v5](ROADMAP_ARGOS_V5.md).**

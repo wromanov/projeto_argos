@@ -252,4 +252,28 @@ Uma mudança só é considerada aprovada quando houver evidência suficiente:
 
 ---
 
+## ADR-018 — Contrato global e canônico de filtros
+
+**Status:** Aceita
+
+O Sistema Global de Filtros é uma camada de consulta/UX; não altera permissões, modelos, migrations, contratos de auditoria, imutabilidade histórica, regras de substituição, situação operacional, status técnico ou regras de negócio do inventário.
+
+Inventário disponibiliza as facetas status técnico, situação operacional, completude, terminal, tipo, fabricante, VLAN e farm. Terminal, fabricante e farm seguem sujeitos à normalização cadastral; valores stale/legados de facetas textuais podem permanecer visíveis e removíveis. VLAN válida está no intervalo de 1 a 4094.
+
+Eventos disponibiliza pesquisa, categoria, origem, data inicial e data final; categoria e origem são multivaloradas e usam a paginação compartilhada. Substituições disponibiliza pesquisa, data inicial, data final e filtros ativos na lista global; o histórico local de uma câmera deliberadamente não recebe painel de filtros.
+
+Links devem ser construídos a partir de `query_params`, a representação canônica dos filtros aceitos, para que lixo da query original não se propague. `querystring()` e `querystring_sem_valor()` usam essa fonte com fallback para `request.GET`. Enums inválidos são descartados; datas inválidas e períodos invertidos permanecem visíveis e removíveis como estado corrigível da consulta.
+
+---
+
+## ADR-019 (documento autônomo) — Monitoramento de Disponibilidade e Gestão de Imagens
+
+**Status:** Aprovado
+
+A decisão vigente está detalhada em [ADR-019_monitoramento_disponibilidade_gestao_imagens.md](ADR-019_monitoramento_disponibilidade_gestao_imagens.md). Ela estabelece monitoramento futuro por processamento independente da aplicação web, separação obrigatória entre status técnico e situação operacional, e gestão de imagens exclusivamente sob demanda do operador.
+
+As decisões históricas deste índice sobre snapshots automáticos e sua rotação permanecem como registro de evolução, mas foram substituídas para trabalho futuro pelo ADR-019 autônomo. A referência não renumera os identificadores históricos já registrados neste índice.
+
+---
+
 **Qualquer agente que assumir o ARGOS deve respeitar estas decisões como estado arquitetural oficial.**

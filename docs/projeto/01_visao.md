@@ -18,8 +18,8 @@ O ARGOS deve permitir responder rapidamente perguntas como:
 - Quem alterou determinado dado?
 - O cadastro está completo?
 - Quais informações ainda faltam?
-- Quais credenciais e parâmetros técnicos devem ser usados para monitoramento?
-- Qual é a imagem recente do ponto monitorado?
+- Qual é o estado técnico conhecido da câmera?
+- Há uma evidência visual obtida ou importada sob demanda para o ponto?
 
 ## 2. Problema que o ARGOS resolve
 
@@ -92,21 +92,25 @@ O sistema já possui:
 - testes automatizados;
 - CI;
 - redesign visual de shell, listagem, dashboard e detalhe da câmera.
+- Sistema Global de Filtros concluído para Inventário, Eventos de Auditoria e Histórico Global de Substituições.
 
-A etapa visual atual é:
+A próxima frente permanece planejada:
 
-**Visual 4B — Cadastro e edição de câmera.**
+**A1 / BR-01 — Consolidação da identidade visual existente do ARGOS.**
+
+A identidade ARGOS já existe; esta frente consolida e formaliza o que foi
+confirmado no discovery BR-01A. Visual 5 será tratado posteriormente.
 
 ## 6. Direção futura
 
-As próximas capacidades funcionais principais são:
+O ARGOS evoluirá o inventário e a governança existentes para operação em escala:
 
-1. credenciais seguras de monitoramento;
-2. integração RTSP;
-3. keepalive de aproximadamente 2.300 câmeras;
-4. snapshots automáticos e manuais;
-5. importação em lote;
-6. preparação para produção, backup e observabilidade.
+- monitoramento de disponibilidade técnica de aproximadamente 2.300 câmeras, por processamento independente da aplicação web;
+- preservação de status técnico, transições relevantes e histórico de indisponibilidade, sem confundi-los com a situação operacional;
+- evidências visuais obtidas exclusivamente sob demanda do operador, por captura direta quando possível ou importação manual com proveniência;
+- importação controlada de ativos, integração técnica, hardening, observabilidade e preparação para produção.
+
+O detalhamento sequencial dessas capacidades está no [Roadmap ARGOS v5](ROADMAP_ARGOS_V5.md). A decisão de monitoramento e imagens está registrada no [ADR-019](ADR-019_monitoramento_disponibilidade_gestao_imagens.md).
 
 ---
 
