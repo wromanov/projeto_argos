@@ -1,0 +1,24 @@
+{% load static %}
+
+{% if href %}
+<a class="argos-brand" href="{{ href }}">
+{% else %}
+<div class="argos-brand">
+{% endif %}
+  <span class="argos-brand__icon" aria-hidden="true">
+    <img
+      src="{% static 'img/brand/argos-icon.svg' %}"
+      alt=""
+      width="36"
+      height="36"
+    >
+  </span>
+  <span class="argos-brand__content">
+    <strong class="argos-brand__name">ARGOS</strong>
+    {% if subtitle %}<span class="argos-brand__subtitle">{{ subtitle }}</span>{% endif %}
+  </span>
+{% if href %}
+</a>
+{% else %}
+</div>
+{% endif %}

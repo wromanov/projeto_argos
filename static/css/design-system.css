@@ -163,6 +163,44 @@ body {
     gap: var(--space-3);
 }
 
+/* Marca institucional compartilhada; o layout externo fica a cargo do consumidor. */
+.argos-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: inherit;
+    text-decoration: none;
+}
+
+.argos-brand__icon {
+    display: inline-grid;
+    flex: 0 0 auto;
+    place-items: center;
+}
+
+.argos-brand__icon img {
+    display: block;
+    width: 2.25rem;
+    height: 2.25rem;
+    object-fit: contain;
+}
+
+.argos-brand__content {
+    display: grid;
+    min-width: 0;
+    gap: var(--space-1);
+}
+
+.argos-brand__name {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-tight);
+}
+
+.argos-brand__subtitle {
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-tight);
+}
+
 .technical-value {
     font-family: var(--font-family-monospace);
     overflow-wrap: anywhere;

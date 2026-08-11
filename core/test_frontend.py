@@ -15,6 +15,47 @@ from django.test import RequestFactory, SimpleTestCase, TestCase
 from core.templatetags.ui_extras import querystring
 
 
+class BrandComponentTests(SimpleTestCase):
+    template_name = "components/brand.html"
+
+    def render_brand(self, **context):
+        return render_to_string(self.template_name, context)
+
+    def test_renderizacao_basica_exibe_nome_e_simbolo_institucional(self):
+        html = self.render_brand()
+
+        self.assertIn("ARGOS", html)
+        self.assertIn("argos-icon.svg", html)
+        self.assertIn('class="argos-brand"', html)
+
+    def test_subtitle_e_opcional(self):
+        com_subtitle = self.render_brand(subtitle="Central operacional")
+        sem_subtitle = self.render_brand()
+
+        self.assertIn("Central operacional", com_subtitle)
+        self.assertIn('class="argos-brand__subtitle"', com_subtitle)
+        self.assertNotIn("argos-brand__subtitle", sem_subtitle)
+
+    def test_href_torna_marca_um_link(self):
+        html = self.render_brand(href="/inicio/")
+
+        self.assertIn('<a class="argos-brand" href="/inicio/">', html)
+        self.assertNotIn('<div class="argos-brand">', html)
+
+    def test_sem_href_nao_cria_link_artificial(self):
+        html = self.render_brand()
+
+        self.assertIn('<div class="argos-brand">', html)
+        self.assertNotIn("<a ", html)
+
+    def test_simbolo_e_decorativo_e_nome_permanece_disponivel(self):
+        html = self.render_brand()
+
+        self.assertIn('aria-hidden="true"', html)
+        self.assertIn('alt=""', html)
+        self.assertIn("ARGOS", html)
+
+
 class FrontendSharedComponentsTests(SimpleTestCase):
     def setUp(self):
         self.factory = RequestFactory()
