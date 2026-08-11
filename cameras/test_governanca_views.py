@@ -364,6 +364,38 @@ class GovernancaViewsPermissoesTests(TestCase):
         self.assertIn("page=1", href)
         self.assertEqual(href.count("page="), 1)
 
+    def test_lista_substituicoes_canoniza_q_descarta_desconhecido_e_preserva_datas(self):
+        self.grupo("Operador ARGOS")
+
+        for indice in range(51):
+            anterior = self.criar(100 + indice * 2, "PRODUCAO")
+            substituta = self.criar(101 + indice * 2, "ESTOQUE")
+            substituir_camera(
+                camera_anterior=anterior,
+                camera_substituta=substituta,
+                motivo="Filtro canonico",
+                usuario=self.user,
+            )
+
+        response = self.client.get(
+            reverse("cameras:lista_substituicoes"),
+            {
+                "q": "  Filtro canonico  ",
+                "data_inicial": "2999-01-02",
+                "data_final": "2999-01-01",
+                "foo": "bar",
+                "page": ["2", "3"],
+            },
+        )
+        html = response.content.decode("utf-8").replace("&amp;", "&")
+
+        self.assertEqual(response.context["q"], "Filtro canonico")
+        self.assertTrue(response.context["periodo_invalido"])
+        self.assertIn("data_inicial=2999-01-02", html)
+        self.assertIn("data_final=2999-01-01", html)
+        self.assertNotIn("foo=bar", html)
+        self.assertEqual(html.count("page="), 1)
+
     def test_historico_local_permanece_sem_interface_de_filtros(self):
         self.grupo("Operador ARGOS")
         substituir_camera(

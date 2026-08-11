@@ -51,6 +51,52 @@ class GlobalFilterInfrastructureTests(SimpleTestCase):
             "2",
         )
 
+    def test_querystring_prioriza_query_params_e_descarta_request_get(self):
+        request = self.factory.get(
+            "/cameras/",
+            {"status": ["INVALIDO", "ONLINE"], "page": "3"},
+        )
+        query_params = QueryDict("status=ONLINE")
+
+        resultado = QueryDict(
+            querystring(
+                {"request": request, "query_params": query_params},
+                page=2,
+            )
+        )
+
+        self.assertEqual(resultado.getlist("status"), ["ONLINE"])
+        self.assertEqual(resultado["page"], "2")
+        self.assertNotIn("INVALIDO", resultado.urlencode())
+        self.assertEqual(query_params.urlencode(), "status=ONLINE")
+
+    def test_querystring_sem_valor_usa_query_params_sem_request(self):
+        resultado = QueryDict(
+            querystring_sem_valor(
+                {"query_params": QueryDict("status=ONLINE&status=OFFLINE&page=3")},
+                "status",
+                "ONLINE",
+            )
+        )
+
+        self.assertEqual(resultado.getlist("status"), ["OFFLINE"])
+        self.assertNotIn("page", resultado)
+
+    def test_querystring_sem_valor_preserva_outros_valores_e_remove_page(self):
+        query_params = QueryDict("status=ONLINE&status=OFFLINE&tipo=DOME&page=3")
+        resultado = QueryDict(
+            querystring_sem_valor(
+                {"request": None, "query_params": query_params},
+                "status",
+                "ONLINE",
+            )
+        )
+
+        self.assertEqual(resultado.getlist("status"), ["OFFLINE"])
+        self.assertEqual(resultado["tipo"], "DOME")
+        self.assertNotIn("page", resultado)
+        self.assertEqual(query_params.urlencode(), "status=ONLINE&status=OFFLINE&tipo=DOME&page=3")
+
     def test_querystring_sem_valor_remove_apenas_valor_solicitado(self):
         request = self.factory.get(
             "/cameras/",

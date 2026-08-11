@@ -35,7 +35,7 @@
     {% include "components/filtro_multisselecao.html" with label="Fabricante" name="fabricante" opcoes=fabricantes_filtro_opcoes selecionados=fabricantes_selecionados empty_label="Todos" %}
     {% include "components/filtro_multisselecao.html" with label="VLAN" name="vlan" opcoes=vlans_filtro_opcoes selecionados=vlans_selecionadas empty_label="Todas" %}
     {% include "components/filtro_multisselecao.html" with label="Farm" name="farm" opcoes=farms_filtro_opcoes selecionados=farms_selecionadas empty_label="Todas" %}
-    <div class="filter-panel__actions inventory-filter-actions"><button class="button button--primary" type="submit">Filtrar</button><a class="button button--secondary" href="{{ lista_url }}">Limpar filtros</a></div>
+    <div class="filter-panel__actions inventory-filter-actions"><button class="button button--primary" type="submit">Filtrar</button></div>
   </form>
 </section>
 

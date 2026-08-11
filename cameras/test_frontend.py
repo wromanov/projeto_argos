@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -203,6 +205,44 @@ class ListaCamerasFrontendTests(TestCase):
         self.assertContains(response, "situacao_operacional=PRODUCAO")
         self.assertContains(response, "completude=COMPLETO")
         self.assertContains(response, 'aria-current="page"')
+
+    def test_lista_canoniza_filtros_e_descarta_valores_invalidos_e_desconhecidos(self):
+        for indice in range(2, 22):
+            self.criar_camera(
+                indice,
+                nome=f"CAM-PAG-{indice:03d}",
+                status=Camera.StatusCamera.ONLINE,
+            )
+
+        response = self.client.get(
+            reverse("cameras:lista"),
+            {
+                "status": ["INVALIDO", "ONLINE", "ONLINE"],
+                "vlan": ["99999", "0100"],
+                "ordenacao": "invalida",
+                "q": "  CAM  ",
+                "foo": "bar",
+                "page": ["2", "3"],
+            },
+        )
+
+        html = response.content.decode("utf-8").replace("&amp;", "&")
+        self.assertEqual(response.context["status_selecionados"], ["ONLINE"])
+        self.assertEqual(response.context["vlans_selecionadas"], ["100"])
+        self.assertEqual(response.context["q"], "CAM")
+        self.assertEqual(response.context["ordenacao"], "nome")
+        self.assertNotIn("INVALIDO", html)
+        self.assertNotIn("vlan=99999", html)
+        self.assertNotIn("ordenacao=invalida", html)
+        self.assertNotIn("foo=bar", html)
+        self.assertIn("q=CAM", html)
+        self.assertIn("vlan=100", html)
+        links = re.findall(r'href="([^"]+)"', html)
+        links_com_page = [link for link in links if "page=" in link]
+        self.assertTrue(links_com_page)
+        for link in links_com_page:
+            self.assertEqual(link.count("status=ONLINE"), 1)
+            self.assertEqual(link.count("page="), 1)
 
     def test_eventos_compartilham_contrato_visual_de_filtros_sem_alterar_parametros(self):
         response = self.client.get(

@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import QueryDict
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.dateparse import parse_date
@@ -60,6 +61,19 @@ def _adicionar_filtros_ativos(
             filtro["ignorar_caixa"] = True
 
         destino.append(filtro)
+
+
+def _query_params(**params):
+    query = QueryDict(mutable=True)
+    for key, values in params.items():
+        if values is None:
+            continue
+        if not isinstance(values, (list, tuple)):
+            values = [values]
+        for value in values:
+            if value != "":
+                query.appendlist(key, str(value))
+    return query
 
 
 @permission_required("cameras.view_camera", raise_exception=True)
@@ -145,8 +159,12 @@ def lista_cameras(request):
 
     paginator = Paginator(queryset, 20)
     page_obj = paginator.get_page(request.GET.get("page"))
-    parametros = request.GET.copy()
-    parametros.pop("page", None)
+    query_params = _query_params(q=q, status=status_selecionados,
+        situacao_operacional=situacoes_selecionadas, completude=completudes_selecionadas,
+        terminal=terminais_selecionados, tipo=tipos_selecionados,
+        fabricante=fabricantes_selecionados, vlan=vlans_selecionadas,
+        farm=farms_selecionadas,
+        ordenacao=ordenacao if request.GET.get("ordenacao") in ORDENACOES_PERMITIDAS else None)
 
     filtros_ativos = []
 
@@ -292,7 +310,7 @@ def lista_cameras(request):
         "total_resultados": paginator.count,
         "possui_cameras_cadastradas": Camera.objects.exists(),
         "ordenacao": ordenacao,
-        "query_string": parametros.urlencode(),
+        "query_params": query_params,
     })
 
 
@@ -475,7 +493,7 @@ def lista_substituicoes(request):
         )
 
     paginator = Paginator(queryset, 50); page_obj = paginator.get_page(request.GET.get("page"))
-    return render(request, "cameras/substituicoes/lista.html", {"substituicoes": page_obj, "page_obj": page_obj, "q": q, "data_inicial": data_inicial, "data_final": data_final, "periodo_invalido": periodo_invalido, "filtros_ativos": filtros_ativos})
+    return render(request, "cameras/substituicoes/lista.html", {"substituicoes": page_obj, "page_obj": page_obj, "q": q, "data_inicial": data_inicial, "data_final": data_final, "periodo_invalido": periodo_invalido, "filtros_ativos": filtros_ativos, "query_params": _query_params(q=q, data_inicial=data_inicial, data_final=data_final)})
 
 
 @permission_required("cameras.consultar_substituicoescamera", raise_exception=True)
@@ -648,13 +666,14 @@ def _filtrar_eventos(request, queryset):
         "data_final": data_final,
         "periodo_invalido": periodo_invalido,
         "filtros_ativos": filtros_ativos,
+        "query_params": _query_params(q=q, categoria=categorias_selecionadas, origem=origens_selecionadas, data_inicial=data_inicial, data_final=data_final),
     }
 
 @permission_required("cameras.consultar_eventos", raise_exception=True)
 def lista_eventos(request):
     queryset, filtros = _filtrar_eventos(request, EventoAuditoria.objects.select_related("camera", "usuario"))
-    paginator = Paginator(queryset, 50); page_obj = paginator.get_page(request.GET.get("page")); parametros = request.GET.copy(); parametros.pop("page", None)
-    return render(request, "cameras/eventos/lista.html", {**filtros, "eventos": page_obj, "page_obj": page_obj, "paginator": paginator, "total_eventos": paginator.count, "categorias": EventoAuditoria.Categoria.choices, "origens": EventoAuditoria.Origem.choices, "query_string": parametros.urlencode()})
+    paginator = Paginator(queryset, 50); page_obj = paginator.get_page(request.GET.get("page"))
+    return render(request, "cameras/eventos/lista.html", {**filtros, "eventos": page_obj, "page_obj": page_obj, "paginator": paginator, "total_eventos": paginator.count, "categorias": EventoAuditoria.Categoria.choices, "origens": EventoAuditoria.Origem.choices})
 
 
 @permission_required("cameras.consultar_eventos", raise_exception=True)
@@ -665,5 +684,5 @@ def detalhe_evento(request, pk):
 @permission_required("cameras.consultar_eventos", raise_exception=True)
 def eventos_camera(request, pk):
     camera = get_object_or_404(Camera, pk=pk); queryset, filtros = _filtrar_eventos(request, camera.eventos_auditoria.select_related("usuario"))
-    paginator = Paginator(queryset, 50); page_obj = paginator.get_page(request.GET.get("page")); parametros = request.GET.copy(); parametros.pop("page", None)
-    return render(request, "cameras/eventos/camera.html", {**filtros, "camera": camera, "eventos": page_obj, "page_obj": page_obj, "paginator": paginator, "total_eventos": paginator.count, "categorias": EventoAuditoria.Categoria.choices, "origens": EventoAuditoria.Origem.choices, "query_string": parametros.urlencode()})
+    paginator = Paginator(queryset, 50); page_obj = paginator.get_page(request.GET.get("page"))
+    return render(request, "cameras/eventos/camera.html", {**filtros, "camera": camera, "eventos": page_obj, "page_obj": page_obj, "paginator": paginator, "total_eventos": paginator.count, "categorias": EventoAuditoria.Categoria.choices, "origens": EventoAuditoria.Origem.choices})

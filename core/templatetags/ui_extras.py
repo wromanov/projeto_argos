@@ -7,7 +7,8 @@ register = template.Library()
 def querystring(context, **updates):
     """Retorna a query string atual com parâmetros atualizados, sem o '?'."""
     request = getattr(context, "request", None) or context.get("request")
-    query = request.GET.copy() if request is not None else {}
+    source = context.get("query_params") if hasattr(context, "get") else None
+    query = (source if source is not None else (request.GET if request is not None else {})).copy()
     for key, value in updates.items():
         if value is None:
             query.pop(key, None)
@@ -38,10 +39,13 @@ def querystring_sem_valor(
 ):
     # Remove apenas o valor solicitado, preservando os demais parametros.
     request = getattr(context, "request", None) or context.get("request")
-    if request is None:
+    source = context.get("query_params") if hasattr(context, "get") else None
+    if source is not None:
+        query = source.copy()
+    elif request is not None:
+        query = request.GET.copy()
+    else:
         return ""
-
-    query = request.GET.copy()
 
     def comparavel(item):
         item = str(item).strip()

@@ -28,12 +28,12 @@
                 id="id_event_data_final" type="date" name="data_final" value="{{ data_final }}"></div>
         <div class="filter-panel__actions event-filter-actions">
             <button class="button button--primary" type="submit">Filtrar</button>
-            <a class="button button--secondary" href="{% url 'eventos:lista' %}">Limpar filtros</a></div>
+            </div>
     </form>
 </section>
 {% url 'eventos:lista' as eventos_clear_url %}
 {% include "components/filtros_ativos.html" with filtros_ativos=filtros_ativos clear_url=eventos_clear_url %}
-{% if periodo_invalido %}<p class="event-alert">Informe um período válido.</p>{% endif %}
+{% if periodo_invalido %}<p class="event-alert" role="alert">Informe um período válido.</p>{% endif %}
 <section class="event-panel">
     <div class="event-table-wrap">
         <table class="event-table">
@@ -66,5 +66,5 @@
         </table>
     </div>
 </section>
-{% include "cameras/eventos/_paginacao.html" %}
+{% include "components/paginacao.html" with page_obj=page_obj pagination_label="Paginação" %}
 {% endblock %}

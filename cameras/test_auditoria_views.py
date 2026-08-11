@@ -1,4 +1,5 @@
 from datetime import timedelta
+import re
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
@@ -365,6 +366,64 @@ class AuditoriaViewsTests(TestCase):
             len(filtros_origem),
             1,
         )
+
+    def test_links_de_eventos_usam_apenas_query_canonica_e_paginacao_compartilhada(self):
+        for indice in range(51):
+            EventoAuditoria.objects.create(
+                categoria="CAMERA",
+                codigo=f"camera.canonica.{indice}",
+                resumo="Canonica",
+                origem="WEB",
+            )
+
+        self.autenticar()
+        response = self.client.get(
+            reverse("eventos:lista"),
+            {
+                "categoria": ["INVALIDA", "CAMERA", "CAMERA"],
+                "origem": ["INVALIDA", "WEB", "WEB"],
+                "data_inicial": "invalida",
+                "data_final": "2999-01-01",
+                "foo": "bar",
+                "page": ["2", "3"],
+            },
+        )
+
+        html = response.content.decode("utf-8").replace("&amp;", "&")
+        self.assertContains(response, 'role="alert"')
+        self.assertTemplateUsed(response, "components/paginacao.html")
+        self.assertNotIn("INVALIDA", html.split("<nav", 1)[-1])
+        self.assertNotIn("foo=bar", html)
+        self.assertIn("data_inicial=invalida", html)
+        self.assertIn("data_final=2999-01-01", html)
+        links = re.findall(r'href="([^"]+)"', html)
+        links_com_page = [link for link in links if "page=" in link]
+        self.assertTrue(links_com_page)
+        for link in links_com_page:
+            self.assertEqual(link.count("categoria=CAMERA"), 1)
+            self.assertEqual(link.count("origem=WEB"), 1)
+            self.assertEqual(link.count("page="), 1)
+
+    def test_eventos_camera_pagina_filtros_get_com_componente_compartilhado(self):
+        for indice in range(51):
+            EventoAuditoria.objects.create(
+                categoria="CAMERA",
+                codigo=f"camera.historico.{indice}",
+                resumo="Historico",
+                camera=self.camera,
+                origem="WEB",
+            )
+
+        self.autenticar()
+        response = self.client.get(
+            reverse("cameras:eventos_camera", args=[self.camera.pk]),
+            {"categoria": "CAMERA", "origem": "WEB", "page": "2"},
+        )
+
+        self.assertTemplateUsed(response, "components/paginacao.html")
+        self.assertContains(response, "categoria=CAMERA")
+        self.assertContains(response, "origem=WEB")
+        self.assertNotContains(response, "eventos/_paginacao.html")
 
     def test_periodo_parcial_aplica_limite_individual(self):
         self.autenticar()

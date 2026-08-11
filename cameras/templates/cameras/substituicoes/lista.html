@@ -34,9 +34,6 @@
 
     <div class="replacement-filter-actions">
       <button class="button button--primary" type="submit">Filtrar</button>
-      {% if q or data_inicial or data_final %}
-        <a class="button button--secondary" href="{% url 'cameras:lista_substituicoes' %}">Limpar filtros</a>
-      {% endif %}
     </div>
   </form>
 
