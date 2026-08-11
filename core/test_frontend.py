@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.http import QueryDict
 from django.template import RequestContext
 from django.template.loader import render_to_string
+from django.templatetags.static import static
 from django.urls import reverse
 from django.test import RequestFactory, SimpleTestCase, TestCase
 
@@ -120,6 +121,8 @@ class BaseAndPortalFrontendTests(TestCase):
     def test_base_possui_skip_link_main_mensagens_e_logout_post(self):
         self.login_monitoramento()
         response = self.client.get(reverse("core:inicio"))
+        self.assertContains(response, '<title>Início — ARGOS</title>')
+        self.assertContains(response, f'href="{static("img/brand/favicon.ico")}"')
         self.assertContains(response, 'href="#conteudo-principal"')
         self.assertContains(response, 'id="conteudo-principal"')
         self.assertContains(response, 'class="app-shell"')

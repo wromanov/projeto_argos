@@ -1,4 +1,5 @@
 ﻿from django.contrib.auth import get_user_model
+from django.templatetags.static import static
 from django.test import TestCase
 from django.urls import reverse
 
@@ -16,6 +17,8 @@ class LoginFrontendTests(TestCase):
 
     def test_login_consumes_brand_shared_and_preserves_identity(self):
         response = self.client.get(self.login_url)
+        self.assertContains(response, "<title>Entrar — ARGOS</title>")
+        self.assertContains(response, f'href="{static("img/brand/favicon.ico")}"')
         for texto in ("ARGOS", "Sistema de Inventário e Monitoramento de Câmeras", "Acesso restrito", "Usuário", "Senha", "Entrar"):
             self.assertContains(response, texto)
         self.assertContains(response, 'class="argos-brand"')
