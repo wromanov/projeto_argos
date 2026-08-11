@@ -252,6 +252,144 @@ class GovernancaViewsPermissoesTests(TestCase):
             "Informe um período válido.",
         )
 
+    def test_lista_substituicoes_sem_filtros_nao_renderiza_filtros_ativos(self):
+        self.grupo("Operador ARGOS")
+
+        response = self.client.get(
+            reverse("cameras:lista_substituicoes")
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["filtros_ativos"], [])
+        self.assertNotContains(
+            response,
+            'aria-label="Filtros ativos"',
+        )
+
+    def test_lista_substituicoes_data_final_invalida_mantem_contrato(self):
+        self.grupo("Operador ARGOS")
+        substituir_camera(
+            camera_anterior=self.camera,
+            camera_substituta=self.estoque,
+            motivo="Falha fisica confirmada",
+            usuario=self.user,
+        )
+
+        response = self.client.get(
+            reverse("cameras:lista_substituicoes"),
+            {
+                "q": "CAM",
+                "data_final": "invalida",
+                "page": "2",
+            },
+        )
+
+        self.assertTrue(response.context["periodo_invalido"])
+        self.assertEqual(
+            response.context["page_obj"].paginator.count,
+            1,
+        )
+        self.assertContains(
+            response,
+            "Remover filtro Até: invalida",
+        )
+        self.assertContains(
+            response,
+            'href="?q=CAM"',
+        )
+
+    def test_lista_substituicoes_periodo_valido_nao_exibe_alerta(self):
+        self.grupo("Operador ARGOS")
+        substituir_camera(
+            camera_anterior=self.camera,
+            camera_substituta=self.estoque,
+            motivo="Falha fisica confirmada",
+            usuario=self.user,
+        )
+
+        response = self.client.get(
+            reverse("cameras:lista_substituicoes"),
+            {
+                "data_inicial": "2020-01-01",
+                "data_final": "2999-01-01",
+            },
+        )
+
+        self.assertFalse(response.context["periodo_invalido"])
+        self.assertNotContains(
+            response,
+            "Informe um período válido.",
+        )
+
+    def test_lista_substituicoes_paginacao_preserva_filtros(self):
+        self.grupo("Operador ARGOS")
+
+        for indice in range(51):
+            anterior = self.criar(
+                3 + indice * 2,
+                "PRODUCAO",
+            )
+            substituta = self.criar(
+                4 + indice * 2,
+                "ESTOQUE",
+            )
+            substituir_camera(
+                camera_anterior=anterior,
+                camera_substituta=substituta,
+                motivo="Filtro paginacao",
+                usuario=self.user,
+            )
+
+        response = self.client.get(
+            reverse("cameras:lista_substituicoes"),
+            {
+                "q": "Filtro paginacao",
+                "data_inicial": "2020-01-01",
+                "data_final": "2999-01-01",
+                "page": "2",
+            },
+        )
+
+        self.assertEqual(response.context["page_obj"].number, 2)
+
+        html = response.content.decode()
+        indice_page = html.index("page=1")
+        inicio_href = html.rfind('href="', 0, indice_page) + len('href="')
+        fim_href = html.index('"', inicio_href)
+        href = html[inicio_href:fim_href].replace("&amp;", "&")
+
+        self.assertIn("q=Filtro+paginacao", href)
+        self.assertIn("data_inicial=2020-01-01", href)
+        self.assertIn("data_final=2999-01-01", href)
+        self.assertIn("page=1", href)
+        self.assertEqual(href.count("page="), 1)
+
+    def test_historico_local_permanece_sem_interface_de_filtros(self):
+        self.grupo("Operador ARGOS")
+        substituir_camera(
+            camera_anterior=self.camera,
+            camera_substituta=self.estoque,
+            motivo="Falha fisica confirmada",
+            usuario=self.user,
+        )
+
+        response = self.client.get(
+            reverse(
+                "cameras:lista_substituicoes_camera",
+                args=[self.camera.pk],
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(
+            response,
+            'class="replacement-filters"',
+        )
+        self.assertNotContains(
+            response,
+            'aria-label="Filtros ativos"',
+        )
+
     def test_historico_local_exibe_apenas_substituicoes_da_camera(self):
         self.grupo("Operador ARGOS")
 
