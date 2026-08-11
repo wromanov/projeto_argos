@@ -302,6 +302,16 @@ class ListaCamerasFrontendTests(TestCase):
             response,
             'static/js/filtros.js',
         )
+    def test_eventos_sem_filtros_nao_exibem_filtros_ativos(self):
+        response = self.client.get(
+            reverse("eventos:lista"),
+        )
+
+        self.assertNotContains(
+            response,
+            'class="active-filters"',
+        )
+
     def test_eventos_exibem_filtros_ativos_com_remocao_individual(self):
         response = self.client.get(
             reverse("eventos:lista"),

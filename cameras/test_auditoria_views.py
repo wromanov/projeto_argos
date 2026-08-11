@@ -47,12 +47,44 @@ class AuditoriaViewsTests(TestCase):
         self.assertEqual(response.context["total_eventos"], 1)
 
     def test_07_filtro_categoria(self):
-        self.autenticar(); response = self.client.get(reverse("eventos:lista"), {"categoria": "CAMERA"})
-        self.assertEqual(response.context["total_eventos"], 1)
+        self.autenticar()
+        response = self.client.get(
+            reverse("eventos:lista"),
+            {"categoria": "CAMERA"},
+        )
+
+        self.assertEqual(
+            response.context["total_eventos"],
+            1,
+        )
+        self.assertEqual(
+            response.context["categoria_selecionada"],
+            "CAMERA",
+        )
+        self.assertEqual(
+            response.context["categorias_selecionadas"],
+            ["CAMERA"],
+        )
 
     def test_08_filtro_origem(self):
-        self.autenticar(); response = self.client.get(reverse("eventos:lista"), {"origem": "ADMIN"})
-        self.assertEqual(response.context["total_eventos"], 0)
+        self.autenticar()
+        response = self.client.get(
+            reverse("eventos:lista"),
+            {"origem": "ADMIN"},
+        )
+
+        self.assertEqual(
+            response.context["total_eventos"],
+            0,
+        )
+        self.assertEqual(
+            response.context["origem_selecionada"],
+            "ADMIN",
+        )
+        self.assertEqual(
+            response.context["origens_selecionadas"],
+            ["ADMIN"],
+        )
 
     def test_07_categoria_multivalorada_aplica_or(self):
         EventoAuditoria.objects.create(
@@ -288,13 +320,185 @@ class AuditoriaViewsTests(TestCase):
             "&amp;page=2",
         )
 
+    def test_multivalores_duplicados_sao_deduplicados(self):
+        self.autenticar()
+
+        response = self.client.get(
+            reverse("eventos:lista"),
+            {
+                "categoria": [
+                    "CAMERA",
+                    "CAMERA",
+                ],
+                "origem": [
+                    "WEB",
+                    "WEB",
+                ],
+            },
+        )
+
+        self.assertEqual(
+            response.context["categorias_selecionadas"],
+            ["CAMERA"],
+        )
+        self.assertEqual(
+            response.context["origens_selecionadas"],
+            ["WEB"],
+        )
+
+        filtros_categoria = [
+            filtro
+            for filtro in response.context["filtros_ativos"]
+            if filtro["nome"] == "categoria"
+        ]
+        filtros_origem = [
+            filtro
+            for filtro in response.context["filtros_ativos"]
+            if filtro["nome"] == "origem"
+        ]
+
+        self.assertEqual(
+            len(filtros_categoria),
+            1,
+        )
+        self.assertEqual(
+            len(filtros_origem),
+            1,
+        )
+
+    def test_periodo_parcial_aplica_limite_individual(self):
+        self.autenticar()
+
+        somente_inicio = self.client.get(
+            reverse("eventos:lista"),
+            {
+                "data_inicial": "2999-01-01",
+            },
+        )
+
+        self.assertFalse(
+            somente_inicio.context["periodo_invalido"],
+        )
+        self.assertEqual(
+            somente_inicio.context["total_eventos"],
+            0,
+        )
+
+        somente_fim = self.client.get(
+            reverse("eventos:lista"),
+            {
+                "data_final": "2999-01-01",
+            },
+        )
+
+        self.assertFalse(
+            somente_fim.context["periodo_invalido"],
+        )
+        self.assertEqual(
+            somente_fim.context["total_eventos"],
+            1,
+        )
+
+    def test_historico_camera_aplica_multifiltros_e_isolamento(self):
+        EventoAuditoria.objects.create(
+            categoria="SISTEMA",
+            codigo="sistema.camera.web",
+            resumo="Sistema Web",
+            camera=self.camera,
+            origem="WEB",
+        )
+        EventoAuditoria.objects.create(
+            categoria="CAMERA",
+            codigo="camera.admin",
+            resumo="Camera Admin",
+            camera=self.camera,
+            origem="ADMIN",
+        )
+
+        outra = Camera.objects.create(
+            nome="CAM-GF05D-OUTRA",
+            fabricante="Axis",
+            modelo="M",
+            ip="10.21.0.99",
+            mascara_subrede="255.255.255.0",
+            vlan=199,
+        )
+
+        EventoAuditoria.objects.create(
+            categoria="CAMERA",
+            codigo="camera.outra.web",
+            resumo="Outra Camera Web",
+            camera=outra,
+            origem="WEB",
+        )
+
+        self.autenticar()
+
+        response = self.client.get(
+            reverse(
+                "cameras:eventos_camera",
+                args=[self.camera.pk],
+            ),
+            {
+                "categoria": [
+                    "CAMERA",
+                    "SISTEMA",
+                ],
+                "origem": ["WEB"],
+            },
+        )
+
+        self.assertEqual(
+            response.context["total_eventos"],
+            2,
+        )
+        self.assertContains(
+            response,
+            "camera.criada",
+        )
+        self.assertContains(
+            response,
+            "sistema.camera.web",
+        )
+        self.assertNotContains(
+            response,
+            "camera.admin",
+        )
+        self.assertNotContains(
+            response,
+            "camera.outra.web",
+        )
+
     def test_09_filtro_periodo(self):
         self.autenticar(); hoje = timezone.localdate().isoformat()
         self.assertEqual(self.client.get(reverse("eventos:lista"), {"data_inicial": hoje, "data_final": hoje}).context["total_eventos"], 1)
 
     def test_10_periodo_invalido(self):
-        self.autenticar(); response = self.client.get(reverse("eventos:lista"), {"data_inicial": "invalida"})
-        self.assertTrue(response.context["periodo_invalido"])
+        self.autenticar()
+        response = self.client.get(
+            reverse("eventos:lista"),
+            {
+                "data_inicial": "invalida",
+                "page": "2",
+            },
+        )
+
+        self.assertTrue(
+            response.context["periodo_invalido"],
+        )
+        self.assertIn(
+            {
+                "nome": "data_inicial",
+                "valor": "invalida",
+                "grupo": "De",
+                "rotulo": "invalida",
+            },
+            response.context["filtros_ativos"],
+        )
+        self.assertContains(
+            response,
+            'href="/eventos/"',
+        )
 
     def test_11_paginacao_de_50(self):
         for indice in range(51):
