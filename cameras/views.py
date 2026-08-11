@@ -420,13 +420,20 @@ def lista_substituicoes_camera(request, camera_pk):
 @permission_required("cameras.consultar_substituicoescamera", raise_exception=True)
 def lista_substituicoes(request):
     queryset = SubstituicaoCamera.objects.select_related("camera_anterior", "camera_substituta", "registrado_por")
-    q = request.GET.get("q", "").strip(); data_inicial = request.GET.get("data_inicial", ""); data_final = request.GET.get("data_final", "")
+    q = request.GET.get("q", "").strip(); data_inicial = request.GET.get("data_inicial", ""); data_final = request.GET.get("data_final", ""); periodo_invalido = False
     if q: queryset = queryset.filter(Q(camera_anterior__nome__icontains=q) | Q(camera_anterior__patrimonio__icontains=q) | Q(camera_anterior__serial__icontains=q) | Q(camera_substituta__nome__icontains=q) | Q(camera_substituta__patrimonio__icontains=q) | Q(camera_substituta__serial__icontains=q) | Q(nome_operacional__icontains=q) | Q(nome_anterior_substituta__icontains=q) | Q(motivo__icontains=q))
     inicio = parse_date(data_inicial) if data_inicial else None; fim = parse_date(data_final) if data_final else None
-    if inicio: queryset = queryset.filter(ocorrida_em__date__gte=inicio)
-    if fim: queryset = queryset.filter(ocorrida_em__date__lte=fim)
+    if (
+        (data_inicial and not inicio)
+        or (data_final and not fim)
+        or (inicio and fim and inicio > fim)
+    ):
+        periodo_invalido = True
+    else:
+        if inicio: queryset = queryset.filter(ocorrida_em__date__gte=inicio)
+        if fim: queryset = queryset.filter(ocorrida_em__date__lte=fim)
     paginator = Paginator(queryset, 50); page_obj = paginator.get_page(request.GET.get("page"))
-    return render(request, "cameras/substituicoes/lista.html", {"substituicoes": page_obj, "page_obj": page_obj, "q": q, "data_inicial": data_inicial, "data_final": data_final})
+    return render(request, "cameras/substituicoes/lista.html", {"substituicoes": page_obj, "page_obj": page_obj, "q": q, "data_inicial": data_inicial, "data_final": data_final, "periodo_invalido": periodo_invalido})
 
 
 @permission_required("cameras.consultar_substituicoescamera", raise_exception=True)

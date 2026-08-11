@@ -73,6 +73,82 @@ class GovernancaViewsPermissoesTests(TestCase):
             1,
         )
 
+    def test_lista_substituicoes_rejeita_data_malformada(self):
+        self.grupo("Operador ARGOS")
+        substituir_camera(
+            camera_anterior=self.camera,
+            camera_substituta=self.estoque,
+            motivo="Falha fisica confirmada",
+            usuario=self.user,
+        )
+
+        response = self.client.get(
+            reverse("cameras:lista_substituicoes"),
+            {"data_inicial": "invalida"},
+        )
+
+        self.assertTrue(response.context["periodo_invalido"])
+        self.assertEqual(
+            response.context["page_obj"].paginator.count,
+            1,
+        )
+
+    def test_lista_substituicoes_rejeita_periodo_invertido(self):
+        self.grupo("Operador ARGOS")
+        substituir_camera(
+            camera_anterior=self.camera,
+            camera_substituta=self.estoque,
+            motivo="Falha fisica confirmada",
+            usuario=self.user,
+        )
+
+        response = self.client.get(
+            reverse("cameras:lista_substituicoes"),
+            {
+                "data_inicial": "2999-01-02",
+                "data_final": "2999-01-01",
+            },
+        )
+
+        self.assertTrue(response.context["periodo_invalido"])
+        self.assertEqual(
+            response.context["page_obj"].paginator.count,
+            1,
+        )
+
+    def test_lista_substituicoes_aceita_periodo_parcial(self):
+        self.grupo("Operador ARGOS")
+        substituir_camera(
+            camera_anterior=self.camera,
+            camera_substituta=self.estoque,
+            motivo="Falha fisica confirmada",
+            usuario=self.user,
+        )
+
+        somente_inicio = self.client.get(
+            reverse("cameras:lista_substituicoes"),
+            {"data_inicial": "2999-01-01"},
+        )
+        somente_fim = self.client.get(
+            reverse("cameras:lista_substituicoes"),
+            {"data_final": "2999-01-01"},
+        )
+
+        self.assertFalse(
+            somente_inicio.context["periodo_invalido"],
+        )
+        self.assertEqual(
+            somente_inicio.context["page_obj"].paginator.count,
+            0,
+        )
+        self.assertFalse(
+            somente_fim.context["periodo_invalido"],
+        )
+        self.assertEqual(
+            somente_fim.context["page_obj"].paginator.count,
+            1,
+        )
+
     def test_historico_local_exibe_apenas_substituicoes_da_camera(self):
         self.grupo("Operador ARGOS")
 
