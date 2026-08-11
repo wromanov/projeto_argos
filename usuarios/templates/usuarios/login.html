@@ -11,17 +11,7 @@
 </head>
 <body class="auth-page">
   <main class="auth-panel" aria-labelledby="titulo-login">
-    <div class="auth-brand">
-      <span class="auth-brand__symbol" aria-hidden="true">
-        <img
-          src="{% static 'img/brand/argos-icon.svg' %}"
-          alt=""
-          width="44"
-          height="44"
-        >
-      </span>
-      <div><strong>ARGOS</strong><small>Sistema de Inventário e Monitoramento de Câmeras</small></div>
-    </div>
+    {% include "components/brand.html" with subtitle="Sistema de Inventário e Monitoramento de Câmeras" %}
     <h1 id="titulo-login">Acessar o sistema</h1>
     <p class="auth-description">Use suas credenciais institucionais para continuar.</p>
     <p class="auth-notice">Acesso restrito a usuários autorizados.</p>
