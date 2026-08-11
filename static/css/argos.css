@@ -37,23 +37,17 @@ a { color: inherit; text-decoration: none; }
     gap: var(--space-8);
 }
 
-.brand {
+.app-sidebar .argos-brand {
     min-width: 0;
     padding-inline: var(--space-2);
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-3);
     color: var(--argos-sidebar-text);
 }
 
-.brand:focus-visible { border-radius: var(--radius-sm); }
+.app-sidebar .argos-brand:focus-visible { border-radius: var(--radius-sm); }
 
-.brand__symbol {
+.app-sidebar .argos-brand__icon {
     width: 2.25rem;
     height: 2.25rem;
-    flex: 0 0 auto;
-    display: inline-grid;
-    place-items: center;
     overflow: hidden;
     border: 1px solid rgb(255 255 255 / 18%);
     border-radius: var(--radius-sm);
@@ -61,17 +55,15 @@ a { color: inherit; text-decoration: none; }
     box-shadow: 0 2px 8px rgb(0 0 0 / 18%);
 }
 
-.brand__symbol img {
-    display: block;
+.app-sidebar .argos-brand__icon img {
     width: 100%;
     height: 100%;
     padding: .15rem;
-    object-fit: contain;
 }
 
-.brand__text { min-width: 0; display: grid; gap: 1px; }
-.brand__text strong { font-size: var(--font-size-base); line-height: var(--line-height-tight); letter-spacing: .08em; }
-.brand__text small { overflow: hidden; color: var(--argos-sidebar-muted); font-size: var(--font-size-xs); text-overflow: ellipsis; white-space: nowrap; }
+.app-sidebar .argos-brand__content { gap: 1px; }
+.app-sidebar .argos-brand__name { letter-spacing: .08em; }
+.app-sidebar .argos-brand__subtitle { overflow: hidden; color: var(--argos-sidebar-muted); text-overflow: ellipsis; white-space: nowrap; }
 
 .main-navigation {
     min-width: 0;
@@ -235,7 +227,7 @@ a { color: inherit; text-decoration: none; }
     .app-layout { display: block; }
     .app-sidebar { position: static; width: 100%; height: auto; }
     .app-sidebar__content { min-height: 0; padding: var(--space-3) var(--argos-shell-gutter); gap: var(--space-3); }
-    .brand { padding-inline: 0; }
+    .app-sidebar .argos-brand { padding-inline: 0; }
     .main-navigation { display: flex; max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; scrollbar-width: thin; }
     .main-navigation__link { flex: 0 0 auto; }
     .main-navigation__link[aria-current="page"]::before { top: auto; right: var(--space-3); bottom: 0; left: var(--space-3); width: auto; height: .1875rem; border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
@@ -249,7 +241,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 30rem) {
-    .brand__text small, .portal-user__name { display: none; }
+    .app-sidebar .argos-brand__subtitle, .portal-user__name { display: none; }
     .user-menu__panel { width: min(18rem, calc(100vw - (2 * var(--space-4)))); }
 }
 

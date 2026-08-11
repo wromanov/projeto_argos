@@ -194,6 +194,7 @@ class BaseAndPortalFrontendTests(TestCase):
         for template_name in (
             "components/cabecalho.html",
             "components/sidebar.html",
+            "components/brand.html",
             "components/navegacao_principal.html",
             "components/menu_usuario.html",
             "components/mensagens.html",
@@ -202,12 +203,31 @@ class BaseAndPortalFrontendTests(TestCase):
         self.assertContains(response, 'class="main-navigation"')
         self.assertContains(response, '<form method="post" action="/logout/"', html=False)
 
+    def test_sidebar_consumes_brand_shared_and_preserves_identity(self):
+        self.login_monitoramento()
+        response = self.client.get(reverse("core:inicio"))
+
+        self.assertContains(response, 'class="argos-brand"')
+        self.assertContains(response, 'class="argos-brand__icon"')
+        self.assertContains(response, "argos-icon.svg")
+        self.assertContains(response, "ARGOS")
+        self.assertContains(response, "Central operacional")
+        self.assertContains(
+            response,
+            f'href="{reverse("core:inicio")}"',
+        )
+        self.assertNotContains(response, 'class="brand"')
+        self.assertNotContains(response, 'class="brand__symbol"')
+
     def test_sidebar_preserva_links_condicionais_por_permissao(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse("core:inicio"))
 
         self.assertContains(response, 'class="app-sidebar"')
-        self.assertContains(response, 'href="/"')
+        self.assertContains(
+            response,
+            f'href="{reverse("core:inicio")}"',
+        )
         self.assertNotContains(response, 'href="/dashboard/"')
         self.assertNotContains(response, 'href="/cameras/"')
         self.assertNotContains(response, 'href="/eventos/"')
