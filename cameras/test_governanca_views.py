@@ -149,6 +149,109 @@ class GovernancaViewsPermissoesTests(TestCase):
             1,
         )
 
+    def test_lista_substituicoes_exibe_filtros_ativos(self):
+        self.grupo("Operador ARGOS")
+        substituir_camera(
+            camera_anterior=self.camera,
+            camera_substituta=self.estoque,
+            motivo="Falha fisica confirmada",
+            usuario=self.user,
+        )
+
+        response = self.client.get(
+            reverse("cameras:lista_substituicoes"),
+            {
+                "q": "Falha",
+                "data_inicial": "2020-01-01",
+                "data_final": "2999-01-01",
+            },
+        )
+
+        filtros = [
+            (
+                filtro["nome"],
+                filtro["valor"],
+                filtro["grupo"],
+                filtro["rotulo"],
+            )
+            for filtro in response.context["filtros_ativos"]
+        ]
+
+        self.assertIn(
+            ("q", "Falha", "Pesquisa", "Falha"),
+            filtros,
+        )
+        self.assertIn(
+            (
+                "data_inicial",
+                "2020-01-01",
+                "De",
+                "01/01/2020",
+            ),
+            filtros,
+        )
+        self.assertIn(
+            (
+                "data_final",
+                "2999-01-01",
+                "Até",
+                "01/01/2999",
+            ),
+            filtros,
+        )
+
+    def test_lista_substituicoes_renderiza_remocao_individual_e_periodo_invalido(self):
+        self.grupo("Operador ARGOS")
+        substituir_camera(
+            camera_anterior=self.camera,
+            camera_substituta=self.estoque,
+            motivo="Falha fisica confirmada",
+            usuario=self.user,
+        )
+
+        response = self.client.get(
+            reverse("cameras:lista_substituicoes"),
+            {
+                "q": "CAM",
+                "data_inicial": "invalida",
+                "page": "2",
+            },
+        )
+
+        self.assertTrue(response.context["periodo_invalido"])
+        self.assertContains(
+            response,
+            'aria-label="Filtros ativos"',
+        )
+        self.assertContains(
+            response,
+            "Remover filtro Pesquisa: CAM",
+        )
+        self.assertContains(
+            response,
+            "Remover filtro De: invalida",
+        )
+        self.assertContains(
+            response,
+            'href="?q=CAM"',
+        )
+        self.assertContains(
+            response,
+            'href="?data_inicial=invalida"',
+        )
+        self.assertContains(
+            response,
+            "Limpar todos",
+        )
+        self.assertContains(
+            response,
+            'role="alert"',
+        )
+        self.assertContains(
+            response,
+            "Informe um período válido.",
+        )
+
     def test_historico_local_exibe_apenas_substituicoes_da_camera(self):
         self.grupo("Operador ARGOS")
 

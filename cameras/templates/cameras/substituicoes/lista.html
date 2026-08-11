@@ -40,6 +40,14 @@
     </div>
   </form>
 
+  {% include "components/filtros_ativos.html" with filtros_ativos=filtros_ativos clear_url=clear_url %}
+
+  {% if periodo_invalido %}
+    <div class="form-errors-summary" role="alert">
+      Informe um período válido.
+    </div>
+  {% endif %}
+
   <div class="replacement-results-header">
     <p>
       <strong>{{ page_obj.paginator.count }}</strong>

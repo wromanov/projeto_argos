@@ -432,8 +432,50 @@ def lista_substituicoes(request):
     else:
         if inicio: queryset = queryset.filter(ocorrida_em__date__gte=inicio)
         if fim: queryset = queryset.filter(ocorrida_em__date__lte=fim)
+    filtros_ativos = []
+
+    if q:
+        _adicionar_filtros_ativos(
+            filtros_ativos,
+            "q",
+            [q],
+            "Pesquisa",
+        )
+
+    if data_inicial:
+        rotulo_data_inicial = (
+            inicio.strftime("%d/%m/%Y")
+            if inicio
+            else data_inicial
+        )
+        _adicionar_filtros_ativos(
+            filtros_ativos,
+            "data_inicial",
+            [data_inicial],
+            "De",
+            {
+                data_inicial: rotulo_data_inicial,
+            },
+        )
+
+    if data_final:
+        rotulo_data_final = (
+            fim.strftime("%d/%m/%Y")
+            if fim
+            else data_final
+        )
+        _adicionar_filtros_ativos(
+            filtros_ativos,
+            "data_final",
+            [data_final],
+            "Até",
+            {
+                data_final: rotulo_data_final,
+            },
+        )
+
     paginator = Paginator(queryset, 50); page_obj = paginator.get_page(request.GET.get("page"))
-    return render(request, "cameras/substituicoes/lista.html", {"substituicoes": page_obj, "page_obj": page_obj, "q": q, "data_inicial": data_inicial, "data_final": data_final, "periodo_invalido": periodo_invalido})
+    return render(request, "cameras/substituicoes/lista.html", {"substituicoes": page_obj, "page_obj": page_obj, "q": q, "data_inicial": data_inicial, "data_final": data_final, "periodo_invalido": periodo_invalido, "filtros_ativos": filtros_ativos})
 
 
 @permission_required("cameras.consultar_substituicoescamera", raise_exception=True)
