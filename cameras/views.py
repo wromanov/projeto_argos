@@ -528,6 +528,63 @@ def _filtrar_eventos(request, queryset):
                 ocorrido_em__date__lte=fim
             )
 
+    filtros_ativos = []
+
+    if q:
+        _adicionar_filtros_ativos(
+            filtros_ativos,
+            "q",
+            [q],
+            "Pesquisa",
+        )
+
+    _adicionar_filtros_ativos(
+        filtros_ativos,
+        "categoria",
+        categorias_selecionadas,
+        "Categoria",
+        dict(EventoAuditoria.Categoria.choices),
+    )
+    _adicionar_filtros_ativos(
+        filtros_ativos,
+        "origem",
+        origens_selecionadas,
+        "Origem",
+        dict(EventoAuditoria.Origem.choices),
+    )
+
+    if data_inicial:
+        rotulo_data_inicial = (
+            inicio.strftime("%d/%m/%Y")
+            if inicio
+            else data_inicial
+        )
+        _adicionar_filtros_ativos(
+            filtros_ativos,
+            "data_inicial",
+            [data_inicial],
+            "De",
+            {
+                data_inicial: rotulo_data_inicial,
+            },
+        )
+
+    if data_final:
+        rotulo_data_final = (
+            fim.strftime("%d/%m/%Y")
+            if fim
+            else data_final
+        )
+        _adicionar_filtros_ativos(
+            filtros_ativos,
+            "data_final",
+            [data_final],
+            "At\u00e9",
+            {
+                data_final: rotulo_data_final,
+            },
+        )
+
     return queryset, {
         "q": q,
         "categoria_selecionada": _primeiro_valor(
@@ -541,6 +598,7 @@ def _filtrar_eventos(request, queryset):
         "data_inicial": data_inicial,
         "data_final": data_final,
         "periodo_invalido": periodo_invalido,
+        "filtros_ativos": filtros_ativos,
     }
 
 @permission_required("cameras.consultar_eventos", raise_exception=True)

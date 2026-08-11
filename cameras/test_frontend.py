@@ -302,3 +302,32 @@ class ListaCamerasFrontendTests(TestCase):
             response,
             'static/js/filtros.js',
         )
+    def test_eventos_exibem_filtros_ativos_com_remocao_individual(self):
+        response = self.client.get(
+            reverse("eventos:lista"),
+            {
+                "categoria": [
+                    "CAMERA",
+                    "SISTEMA",
+                ],
+                "origem": ["WEB"],
+                "page": "2",
+            },
+        )
+
+        self.assertContains(
+            response,
+            'aria-label="Filtros ativos"',
+        )
+        self.assertContains(
+            response,
+            "Remover filtro Categoria: Sistema",
+        )
+        self.assertContains(
+            response,
+            'href="?categoria=CAMERA&amp;origem=WEB"',
+        )
+        self.assertContains(
+            response,
+            'href="/eventos/"',
+        )

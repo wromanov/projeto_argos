@@ -177,6 +177,117 @@ class AuditoriaViewsTests(TestCase):
             "WEB",
         )
 
+    def test_filtros_ativos_refletem_eventos(self):
+        self.autenticar()
+
+        response = self.client.get(
+            reverse("eventos:lista"),
+            {
+                "q": "CAM-VIEW",
+                "categoria": [
+                    "CAMERA",
+                    "SISTEMA",
+                ],
+                "origem": ["WEB"],
+                "data_inicial": "2026-08-01",
+                "data_final": "2026-08-10",
+            },
+        )
+
+        filtros = [
+            (
+                filtro["nome"],
+                filtro["valor"],
+                filtro["grupo"],
+                filtro["rotulo"],
+            )
+            for filtro in response.context["filtros_ativos"]
+        ]
+
+        self.assertIn(
+            (
+                "q",
+                "CAM-VIEW",
+                "Pesquisa",
+                "CAM-VIEW",
+            ),
+            filtros,
+        )
+        self.assertIn(
+            (
+                "categoria",
+                "SISTEMA",
+                "Categoria",
+                "Sistema",
+            ),
+            filtros,
+        )
+        self.assertIn(
+            (
+                "origem",
+                "WEB",
+                "Origem",
+                "Web",
+            ),
+            filtros,
+        )
+        self.assertIn(
+            (
+                "data_inicial",
+                "2026-08-01",
+                "De",
+                "01/08/2026",
+            ),
+            filtros,
+        )
+        self.assertIn(
+            (
+                "data_final",
+                "2026-08-10",
+                "At\u00e9",
+                "10/08/2026",
+            ),
+            filtros,
+        )
+
+    def test_paginacao_eventos_preserva_parametros_repetidos(self):
+        for indice in range(51):
+            EventoAuditoria.objects.create(
+                categoria="SISTEMA",
+                codigo=f"sistema.paginacao.{indice}",
+                resumo="Paginacao",
+                origem="ADMIN",
+            )
+
+        self.autenticar()
+
+        response = self.client.get(
+            reverse("eventos:lista"),
+            {
+                "categoria": [
+                    "CAMERA",
+                    "SISTEMA",
+                ],
+                "origem": [
+                    "WEB",
+                    "ADMIN",
+                ],
+            },
+        )
+
+        self.assertEqual(
+            response.context["paginator"].num_pages,
+            2,
+        )
+        self.assertContains(
+            response,
+            "categoria=CAMERA"
+            "&amp;categoria=SISTEMA"
+            "&amp;origem=WEB"
+            "&amp;origem=ADMIN"
+            "&amp;page=2",
+        )
+
     def test_09_filtro_periodo(self):
         self.autenticar(); hoje = timezone.localdate().isoformat()
         self.assertEqual(self.client.get(reverse("eventos:lista"), {"data_inicial": hoje, "data_final": hoje}).context["total_eventos"], 1)

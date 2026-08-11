@@ -31,6 +31,8 @@
             <a class="button button--secondary" href="{% url 'eventos:lista' %}">Limpar filtros</a></div>
     </form>
 </section>
+{% url 'eventos:lista' as eventos_clear_url %}
+{% include "components/filtros_ativos.html" with filtros_ativos=filtros_ativos clear_url=eventos_clear_url %}
 {% if periodo_invalido %}<p class="event-alert">Informe um período válido.</p>{% endif %}
 <section class="event-panel">
     <div class="event-table-wrap">
