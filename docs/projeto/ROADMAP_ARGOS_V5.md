@@ -301,10 +301,14 @@ com captura. A implementação permanece fora do escopo.
 
 ## MON-02 — Segurança e capacidade de equipamento
 
-Próxima frente: definir custódia de credenciais, allowlist de rede, catálogo
-de capacidades, protocolos/portas suportados, política de logs e autorização
-do worker. A definição concreta da configuração necessária para elegibilidade
-deve ser fechada nesta etapa.
+**Estado:** concluída e aprovada.
+
+O contrato foi formalizado no
+`docs/projeto/ADR-021_seguranca_capacidade_monitoramento.md`, cobrindo
+custódia de credenciais, allowlist de rede, catálogo de capacidades,
+protocolos/portas, política de logs, autorização do worker e elegibilidade
+concreta. A MON-02 não implementa worker,
+probe, model, migration ou infraestrutura.
 
 Não fixar antecipadamente Celery, Redis, ICMP, TCP, RTSP ou outra tecnologia
 sem evidência de laboratório.
@@ -313,9 +317,30 @@ sem evidência de laboratório.
 
 ---
 
-## MON-03 — Motor de monitoramento
+## MON-03 — Abstração de probe e laboratório sintético
 
-Implementar processo independente do servidor web, orientado a I/O concorrente e probes leves.
+Definir a abstração técnica mínima para probes e validar o contrato em
+laboratório sintético, sem implementar ainda o processo completo de
+worker/scheduler.
+
+O escopo desta frente compreende:
+
+- `ProbeAdapter`;
+- `ProbeResult`;
+- resultados técnicos normalizados;
+- `FakeProbe`;
+- relógio e timeout controláveis;
+- testes sintéticos;
+- nenhuma câmera real.
+
+Não antecipar nesta frente:
+
+- scheduler completo;
+- serviço de monitoramento;
+- concorrência de produção;
+- leases;
+- supervisão;
+- deployment.
 
 **Codex recomendado:** 🌎 Terra Alto
 
@@ -791,7 +816,8 @@ As fases representam dependências predominantes e não um modelo waterfall ríg
 6. A5 — RF-01 — Rebaseline funcional
 7. MON-00 — Discovery do monitoramento (concluída)
 8. MON-01 — Contrato de disponibilidade (concluída)
-9. MON-02 — Segurança e capacidade de equipamento (próxima)
+9. MON-02 — Segurança e capacidade de equipamento (concluída)
+10. MON-03 — Abstração de probe e laboratório sintético (próxima)
 ```
 
 Após `MON-01`, o foco principal do projeto passa de modernização visual para backend operacional, concorrência, integrações, segurança, observabilidade e escala.
@@ -928,7 +954,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
-FASE B — Monitoramento operacional             🔄 EM CURSO (MON-01 concluída; MON-02 próxima)
+FASE B — Monitoramento operacional             🔄 EM CURSO (MON-01 concluída; MON-02 concluída e aprovada; MON-03 próxima)
 FASE C — Captura manual e imagens              ⏳ PLANEJADA
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
