@@ -286,36 +286,30 @@ A interface consulta o estado persistido/conhecido pelo ARGOS. Ela não monitora
 
 ---
 
-## MON-01 — Discovery e arquitetura
+## MON-01 — Contrato de disponibilidade
 
-Definir com evidência:
+**Estado:** concluída e aprovada.
 
-- tecnologia de worker;
-- estratégia de probe;
-- concorrência;
-- scheduler;
-- timeout;
-- retries;
-- supervisão;
-- persistência;
-- comportamento de falha.
-
-Não fixar antecipadamente Celery, Redis, ICMP, TCP, RTSP ou outra tecnologia.
+O contrato foi formalizado no
+`docs/projeto/ADR-020_contrato_estado_tecnico_monitoramento.md`, incluindo
+estados técnicos, elegibilidade, freshness, ownership, histórico e relação
+com captura. A implementação permanece fora do escopo.
 
 **Codex recomendado:** 🌎 Terra Alto
 
 ---
 
-## MON-02 — Contrato de disponibilidade
+## MON-02 — Segurança e capacidade de equipamento
 
-Definir formalmente os estados e suas transições, incluindo o comportamento de `NAO_VERIFICADO` quando aplicável.
+Próxima frente: definir custódia de credenciais, allowlist de rede, catálogo
+de capacidades, protocolos/portas suportados, política de logs e autorização
+do worker. A definição concreta da configuração necessária para elegibilidade
+deve ser fechada nesta etapa.
 
-Preservar a separação entre:
+Não fixar antecipadamente Celery, Redis, ICMP, TCP, RTSP ou outra tecnologia
+sem evidência de laboratório.
 
-- **status técnico**;
-- **situação operacional**.
-
-**Codex recomendado:** 🌎 Terra Médio
+**Codex recomendado:** 🌎 Terra Alto
 
 ---
 
@@ -795,7 +789,9 @@ As fases representam dependências predominantes e não um modelo waterfall ríg
 4. A3 — Visual 6 — Páginas complementares
 5. A4 — Visual 7 — Consolidação frontend
 6. A5 — RF-01 — Rebaseline funcional
-7. MON-01 — Discovery do monitoramento
+7. MON-00 — Discovery do monitoramento (concluída)
+8. MON-01 — Contrato de disponibilidade (concluída)
+9. MON-02 — Segurança e capacidade de equipamento (próxima)
 ```
 
 Após `MON-01`, o foco principal do projeto passa de modernização visual para backend operacional, concorrência, integrações, segurança, observabilidade e escala.
@@ -932,7 +928,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
-FASE B — Monitoramento operacional             ⏳ PLANEJADA
+FASE B — Monitoramento operacional             🔄 EM CURSO (MON-01 concluída; MON-02 próxima)
 FASE C — Captura manual e imagens              ⏳ PLANEJADA
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
