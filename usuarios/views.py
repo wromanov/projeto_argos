@@ -17,6 +17,10 @@ from .forms import ArgosAuthenticationForm, ArgosPasswordChangeForm, DadosPessoa
 from .models import PerfilUsuario
 
 
+def _perfil_usuario_existente_ou_novo(usuario):
+    return PerfilUsuario.objects.filter(usuario=usuario).first() or PerfilUsuario(usuario=usuario)
+
+
 @method_decorator(login_not_required, name="dispatch")
 class ArgosLoginView(LoginView):
     template_name = "usuarios/login.html"
@@ -44,7 +48,7 @@ def logout_argos(request):
 @login_required
 @never_cache
 def perfil(request):
-    perfil_usuario, _ = PerfilUsuario.objects.get_or_create(usuario=request.user)
+    perfil_usuario = _perfil_usuario_existente_ou_novo(request.user)
     grupos = request.user.groups.order_by("name")
     permissoes = Permission.objects.select_related("content_type").order_by("content_type__app_label", "name") if request.user.is_superuser else Permission.objects.filter(Q(user=request.user) | Q(group__user=request.user)).select_related("content_type").distinct().order_by("content_type__app_label", "name")
     return render(request, "usuarios/perfil.html", {"perfil_usuario": perfil_usuario, "grupos": grupos, "permissoes": permissoes})
@@ -54,7 +58,7 @@ def perfil(request):
 @never_cache
 @transaction.atomic
 def editar_perfil(request):
-    perfil_usuario, _ = PerfilUsuario.objects.get_or_create(usuario=request.user)
+    perfil_usuario = _perfil_usuario_existente_ou_novo(request.user)
     anteriores = {campo: getattr(request.user, campo, None) for campo in ("first_name", "last_name", "email")}
     anteriores.update({campo: getattr(perfil_usuario, campo, None) for campo in ("telefone", "ramal")})
     dados_form = DadosPessoaisForm(request.POST or None, instance=request.user); perfil_form = PerfilProprioForm(request.POST or None, instance=perfil_usuario)
