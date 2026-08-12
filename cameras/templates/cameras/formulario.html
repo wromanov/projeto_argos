@@ -250,6 +250,8 @@
           retenção esperada e codec do equipamento.
         </p>
 
+        <script src="{% static 'js/camera-form.js' %}" defer></script>
+
         <div
           class="
             form-grid
@@ -257,32 +259,36 @@
             camera-form-grid--three
           "
         >
-          {% include "components/campo_formulario.html" with field=form.farm field_class="camera-form-field--technical" %}
+          <div class="camera-form-field-group" data-recording-group="farm">
+            {% include "components/campo_formulario.html" with field=form.farm field_class="camera-form-field--technical" %}
 
-          <div id="farm-personalizado-container" data-farm-personalizado {% if form.farm.value != "__PERSONALIZADO__" %}hidden{% endif %}>
-            {% include "components/campo_formulario.html" with field=form.farm_personalizado %}
+            <div id="farm-personalizado-container" data-farm-personalizado {% if form.farm.value != "__PERSONALIZADO__" %}hidden{% endif %}>
+              {% include "components/campo_formulario.html" with field=form.farm_personalizado %}
+            </div>
           </div>
 
-          <script src="{% static 'js/camera-form.js' %}" defer></script>
+          <div class="camera-form-field-group" data-recording-group="retencao">
+            {% include "components/campo_formulario.html" with field=form.retencao_esperada_dias field_class="camera-form-field--technical" %}
 
-          {% include "components/campo_formulario.html" with field=form.retencao_esperada_dias field_class="camera-form-field--technical" %}
-
-          <div
-            id="retencao-personalizada-container"
-            data-retencao-personalizada
-            {% if form.retencao_esperada_dias.value != "__PERSONALIZADO__" %}hidden{% endif %}
-          >
-            {% include "components/campo_formulario.html" with field=form.retencao_personalizada_dias field_class="camera-form-field--technical" %}
+            <div
+              id="retencao-personalizada-container"
+              data-retencao-personalizada
+              {% if form.retencao_esperada_dias.value != "__PERSONALIZADO__" %}hidden{% endif %}
+            >
+              {% include "components/campo_formulario.html" with field=form.retencao_personalizada_dias field_class="camera-form-field--technical" %}
+            </div>
           </div>
 
-          {% include "components/campo_formulario.html" with field=form.codec field_class="camera-form-field--technical" %}
+          <div class="camera-form-field-group" data-recording-group="codec">
+            {% include "components/campo_formulario.html" with field=form.codec field_class="camera-form-field--technical" %}
 
-          <div
-            id="codec-personalizado-container"
-            data-codec-personalizado
-            {% if form.codec.value != "__PERSONALIZADO__" %}hidden{% endif %}
-          >
-            {% include "components/campo_formulario.html" with field=form.codec_personalizado %}
+            <div
+              id="codec-personalizado-container"
+              data-codec-personalizado
+              {% if form.codec.value != "__PERSONALIZADO__" %}hidden{% endif %}
+            >
+              {% include "components/campo_formulario.html" with field=form.codec_personalizado %}
+            </div>
           </div>
         </div>
       </fieldset>

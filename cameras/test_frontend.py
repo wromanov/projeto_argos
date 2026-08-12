@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+from .catalogos import VALOR_PERSONALIZADO
+from .forms import CameraEdicaoForm
 from .models import Camera
 
 
@@ -380,4 +382,146 @@ class ListaCamerasFrontendTests(TestCase):
         self.assertContains(
             response,
             'href="/eventos/"',
+        )
+
+    def assert_recording_groups(self, response):
+        html = response.content.decode("utf-8")
+
+        self.assertEqual(
+            html.count('class="camera-form-field-group"'),
+            3,
+        )
+
+        grupos = (
+            ("farm", "farm", "farm_personalizado"),
+            (
+                "retencao",
+                "retencao_esperada_dias",
+                "retencao_personalizada_dias",
+            ),
+            ("codec", "codec", "codec_personalizado"),
+        )
+
+        for indice_grupo, (
+            grupo,
+            campo_principal,
+            campo_personalizado,
+        ) in enumerate(grupos):
+            marcador = (
+                '<div class="camera-form-field-group" '
+                f'data-recording-group="{grupo}">'
+            )
+            inicio_grupo = html.index(marcador)
+            inicio_principal = html.index(
+                f'name="{campo_principal}"',
+                inicio_grupo,
+            )
+            inicio_personalizado = html.index(
+                f'id="id_{campo_personalizado}"',
+                inicio_grupo,
+            )
+
+            self.assertLess(inicio_grupo, inicio_principal)
+            self.assertLess(inicio_principal, inicio_personalizado)
+
+            if indice_grupo < len(grupos) - 1:
+                proximo_grupo = grupos[indice_grupo + 1][0]
+                inicio_proximo_grupo = html.index(
+                    '<div class="camera-form-field-group" '
+                    f'data-recording-group="{proximo_grupo}">',
+                    inicio_grupo + 1,
+                )
+                self.assertLess(
+                    inicio_personalizado,
+                    inicio_proximo_grupo,
+                )
+
+        for nome in (
+            "farm",
+            "farm_personalizado",
+            "retencao_esperada_dias",
+            "retencao_personalizada_dias",
+            "codec",
+            "codec_personalizado",
+        ):
+            self.assertContains(response, f'name="{nome}"')
+
+        self.assertContains(response, 'static/js/camera-form.js')
+        self.assertContains(response, 'class="field__label"')
+
+    def test_formulario_de_criacao_agrupa_pares_de_gravacao(self):
+        response = self.client.get(reverse("cameras:criar"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assert_recording_groups(response)
+
+    def test_formulario_de_edicao_exibe_personalizados_legados_no_grupo(self):
+        self.camera.farm = "FARM-TPS2-02"
+        self.camera.retencao_esperada_dias = 365
+        self.camera.codec = "H265"
+        self.camera.save(
+            update_fields=(
+                "farm",
+                "retencao_esperada_dias",
+                "codec",
+            )
+        )
+
+        response = self.client.get(
+            reverse("cameras:editar", args=[self.camera.pk])
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assert_recording_groups(response)
+        for container_id in (
+            "farm-personalizado-container",
+            "retencao-personalizada-container",
+            "codec-personalizado-container",
+        ):
+            self.assertNotRegex(
+                response.content.decode("utf-8"),
+                rf'id="{container_id}"[^>]*\bhidden\b',
+            )
+
+    def test_erro_em_personalizado_mantem_par_visivel_e_aria_associada(self):
+        form = CameraEdicaoForm(instance=self.camera)
+        dados = {
+            nome: form[nome].value() or ""
+            for nome in form.fields
+        }
+        dados.update(
+            {
+                "farm": VALOR_PERSONALIZADO,
+                "farm_personalizado": "",
+            }
+        )
+
+        response = self.client.post(
+            reverse("cameras:editar", args=[self.camera.pk]),
+            dados,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assert_recording_groups(response)
+        self.assertContains(
+            response,
+            'id="farm-personalizado-container" '
+            'data-farm-personalizado',
+        )
+        self.assertNotRegex(
+            response.content.decode("utf-8"),
+            r'id="farm-personalizado-container" '
+            r'[^>]*\bhidden\b',
+        )
+        self.assertContains(
+            response,
+            'id="id_farm_personalizado_errors"',
+        )
+        self.assertContains(
+            response,
+            'aria-invalid="true"',
+        )
+        self.assertContains(
+            response,
+            'aria-errormessage="id_farm_personalizado_errors"',
         )
