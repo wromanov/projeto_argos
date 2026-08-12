@@ -118,3 +118,9 @@ class ProfileFormsFrontendTests(TestCase):
         self.assertContains(response, 'href="#id_old_password"')
         self.assertContains(response, 'id="id_old_password_errors"')
         self.assertContains(response, 'aria-errormessage="id_old_password_errors"')
+
+    def test_perfil_quebra_valores_longos_sem_estourar_o_cartao(self):
+        css = open("static/css/perfil.css", encoding="utf-8").read()
+
+        self.assertIn(".profile-card{min-width:0", css)
+        self.assertIn(".profile-card dd{margin:0;overflow-wrap:anywhere}", css)
