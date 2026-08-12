@@ -12,7 +12,7 @@ from django.template.loader import render_to_string
 from django.templatetags.static import static
 from django.urls import reverse
 from django.test import RequestFactory, SimpleTestCase, TestCase
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
 
 from core.templatetags.ui_extras import querystring
 
@@ -79,7 +79,10 @@ class FrontendSharedComponentsTests(SimpleTestCase):
     def test_campo_formulario_renderiza_help_estruturado_fora_de_paragrafo(self):
         class Formulario(forms.Form):
             senha = forms.CharField(
-                help_text=mark_safe("<ul><li>Use uma senha longa.</li></ul>")
+                help_text=format_html(
+                    "<ul><li>{}</li></ul>",
+                    "Use uma senha longa.",
+                )
             )
 
         html = self.render_field(Formulario()["senha"])
