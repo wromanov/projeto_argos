@@ -1,0 +1,40 @@
+<div class="governance-page">
+  <section
+    class="governance-form-card"
+    aria-labelledby="governance-action-title"
+  >
+    <a class="governance-back" href="{{ url_cancelamento }}">
+      ← Voltar para câmera
+    </a>
+
+    <div class="governance-hero">
+      <span class="inventory-eyebrow">Governança operacional</span>
+      <h1 id="governance-action-title">{{ titulo_acao }}</h1>
+      <p>{{ descricao_acao }}</p>
+    </div>
+
+    <div class="governance-camera-context">
+      <span class="governance-camera-context__label">Câmera</span>
+      <strong>{{ camera.nome }}</strong>
+      <span>Situação atual: {{ camera.get_situacao_operacional_display }}</span>
+    </div>
+
+    <div class="governance-notice" role="note">{{ aviso_acao }}</div>
+
+    <form class="governance-form" method="post" novalidate>
+      {% csrf_token %}
+      {% include "components/resumo_erros_formulario.html" with errors_title="Revise os dados antes de confirmar." %}
+
+      <div class="governance-fields">
+        {% for field in form %}
+          {% include "components/campo_formulario.html" with field=field %}
+        {% endfor %}
+      </div>
+
+      <div class="governance-actions">
+        <a class="button button--secondary" href="{{ url_cancelamento }}">Cancelar</a>
+        <button class="{{ classe_acao }}" type="submit">{{ label_acao }}</button>
+      </div>
+    </form>
+  </section>
+</div>

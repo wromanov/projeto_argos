@@ -525,3 +525,148 @@ class ListaCamerasFrontendTests(TestCase):
             response,
             'aria-errormessage="id_farm_personalizado_errors"',
         )
+
+
+class GovernancaActionShellFrontendTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_superuser(
+            username="frontend-governanca",
+            password="senha-forte",
+            email="",
+        )
+        self.client.force_login(self.user)
+        self.camera = self.criar_camera(1, "PRODUCAO")
+        self.estoque = self.criar_camera(2, "ESTOQUE")
+        self.desativada = self.criar_camera(3, "DESATIVADA")
+
+    def criar_camera(self, indice, situacao):
+        return Camera.objects.create(
+            nome=f"CAM-GOV-{indice}",
+            patrimonio=f"PAT-GOV-{indice}",
+            ip=f"10.20.0.{indice}",
+            mascara_subrede="255.255.255.0",
+            vlan=100,
+            fabricante="AXIS",
+            modelo="MODELO DE TESTE",
+            serial=f"SERIAL-GOV-{indice}",
+            mac=f"AA:BB:CC:DD:{indice:02X}:01",
+            tipo=Camera.TipoCamera.DOME,
+            situacao_operacional=situacao,
+            terminal="TPS1",
+            pavimento="Terreo",
+            setor="Seguranca",
+            ambiente="SALA DE MONITORAMENTO",
+            gateway="10.20.0.254",
+            farm="Farm A",
+            retencao_esperada_dias=30,
+            codec="H.264",
+        )
+
+    def casos(self):
+        return (
+            {
+                "nome": "alterar_situacao",
+                "url": reverse("cameras:alterar_situacao", args=[self.camera.pk]),
+                "titulo": "Alterar situação operacional",
+                "descricao": "Atualize o destino operacional sem alterar o monitoramento técnico.",
+                "aviso": "A movimentação não altera o status técnico de monitoramento.",
+                "label": "Confirmar movimentação",
+                "classe": "button button--primary",
+                "campos": ("destino", "justificativa"),
+            },
+            {
+                "nome": "desativar",
+                "url": reverse("cameras:desativar", args=[self.camera.pk]),
+                "titulo": "Desativar câmera",
+                "descricao": "Retire a câmera da operação mantendo seu registro histórico.",
+                "aviso": "A câmera permanecerá no histórico e não será excluída.",
+                "label": "Confirmar desativação",
+                "classe": "button button--danger",
+                "campos": ("motivo",),
+            },
+            {
+                "nome": "reativar",
+                "url": reverse("cameras:reativar", args=[self.desativada.pk]),
+                "titulo": "Reativar câmera",
+                "descricao": "Escolha o destino operacional para retornar a câmera ao uso.",
+                "aviso": "Escolha o destino operacional. A completude será validada antes da reativação.",
+                "label": "Confirmar reativação",
+                "classe": "button button--primary",
+                "campos": ("destino", "justificativa"),
+            },
+            {
+                "nome": "substituir",
+                "url": reverse("cameras:substituir", args=[self.camera.pk]),
+                "titulo": "Substituir câmera",
+                "descricao": "Transfira a operação preservando os dados físicos e o histórico.",
+                "aviso": "Os campos operacionais serão transferidos; patrimônio, fabricante, modelo, serial, MAC e tipo da substituta serão preservados. A operação é transacional e o histórico não poderá ser editado ou excluído.",
+                "label": "Registrar substituição",
+                "classe": "button button--primary",
+                "campos": ("camera_substituta", "motivo", "observacoes"),
+            },
+        )
+
+    def test_quatro_fluxos_renderizam_o_shell_compartilhado_com_seus_contratos(self):
+        casos = self.casos()
+
+        for caso in casos:
+            with self.subTest(fluxo=caso["nome"]):
+                response = self.client.get(caso["url"])
+                html = response.content.decode("utf-8")
+                url_cancelamento = reverse(
+                    "cameras:detalhe",
+                    args=[self.desativada.pk if caso["nome"] == "reativar" else self.camera.pk],
+                )
+
+                self.assertEqual(response.status_code, 200)
+                self.assertTemplateUsed(
+                    response,
+                    "components/governanca_action_shell.html",
+                )
+                self.assertContains(
+                    response,
+                    f'<h1 id="governance-action-title">{caso["titulo"]}</h1>',
+                    html=False,
+                )
+                self.assertContains(response, caso["descricao"])
+                self.assertContains(
+                    response,
+                    f'<div class="governance-notice" role="note">{caso["aviso"]}</div>',
+                    html=False,
+                )
+                self.assertContains(
+                    response,
+                    f'<button class="{caso["classe"]}" type="submit">{caso["label"]}</button>',
+                    html=False,
+                )
+                self.assertContains(
+                    response,
+                    'aria-labelledby="governance-action-title"',
+                )
+                self.assertContains(response, 'role="note"')
+                self.assertContains(response, 'method="post"')
+                self.assertContains(response, 'name="csrfmiddlewaretoken"')
+                self.assertRegex(
+                    html,
+                    r'<form class="governance-form" method="post" novalidate>',
+                )
+                self.assertContains(
+                    response,
+                    f'class="governance-back" href="{url_cancelamento}"',
+                    html=False,
+                )
+                self.assertContains(
+                    response,
+                    f'class="button button--secondary" href="{url_cancelamento}"',
+                    html=False,
+                )
+                for campo in caso["campos"]:
+                    self.assertContains(response, f'name="{campo}"')
+                self.assertContains(response, 'class="field__label"')
+
+                for outro in casos:
+                    if outro is caso:
+                        continue
+                    self.assertNotIn(outro["titulo"], html)
+                    self.assertNotIn(outro["aviso"], html)
+                    self.assertNotIn(outro["label"], html)
