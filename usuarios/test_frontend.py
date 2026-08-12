@@ -46,3 +46,75 @@ class LoginFrontendTests(TestCase):
         self.assertContains(response, "Usuário ou senha inválidos.")
         self.assertNotContains(response, "senha-invalida")
         self.assertNotContains(response, "não existe")
+
+
+class ProfileFormsFrontendTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="perfil-frontend",
+            password="Senha-forte-123",
+            first_name="Pessoa",
+            last_name="Usuária",
+            email="pessoa@example.com",
+        )
+        self.client.force_login(self.user)
+
+    def test_editar_perfil_usa_renderer_e_resumos_compartilhados_para_os_dois_forms(self):
+        response = self.client.get(reverse("usuarios:editar_perfil"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<fieldset class="form-section">', count=2)
+        self.assertContains(response, 'class="field__label"', count=5)
+        self.assertContains(response, 'name="first_name"')
+        self.assertContains(response, 'name="telefone"')
+        self.assertNotContains(response, 'class="profile-field"')
+        self.assertContains(response, '<div class="form-actions">')
+        self.assertNotContains(response, 'profile-form-actions')
+
+        response = self.client.post(
+            reverse("usuarios:editar_perfil"),
+            {
+                "first_name": "Pessoa",
+                "last_name": "Usuária",
+                "email": "invalido",
+                "telefone": "11999990000",
+                "ramal": "123",
+            },
+        )
+
+        self.assertContains(response, 'role="alert"')
+        self.assertContains(response, "Revise seus dados pessoais.")
+        self.assertContains(response, 'href="#id_email"')
+        self.assertContains(response, 'id="id_email_errors"')
+        self.assertContains(response, 'aria-describedby="id_email_errors"')
+
+    def test_alterar_senha_preserva_help_text_estruturado_e_aria(self):
+        response = self.client.get(reverse("usuarios:alterar_senha"))
+        html = response.content.decode()
+
+        self.assertEqual(response.status_code, 200)
+        for nome in ("old_password", "new_password1", "new_password2"):
+            self.assertContains(response, f'name="{nome}"')
+        self.assertIn('id="id_new_password1_help"', html)
+        self.assertIn('aria-describedby="id_new_password1_help"', html)
+        self.assertIn("<ul>", html)
+        self.assertContains(response, '<div class="form-actions">')
+        self.assertNotContains(response, 'profile-form-actions')
+        self.assertNotRegex(html, r'<p\b[^>]*class="field-help"')
+        self.assertNotRegex(html, r'<p\b[^>]*>\s*<ul>')
+
+    def test_alterar_senha_invalida_preserva_resumo_e_erros_por_campo(self):
+        response = self.client.post(
+            reverse("usuarios:alterar_senha"),
+            {
+                "old_password": "senha-incorreta",
+                "new_password1": "curta",
+                "new_password2": "diferente",
+            },
+        )
+
+        self.assertContains(response, 'role="alert"')
+        self.assertContains(response, "Revise os dados da sua senha.")
+        self.assertContains(response, 'href="#id_old_password"')
+        self.assertContains(response, 'id="id_old_password_errors"')
+        self.assertContains(response, 'aria-errormessage="id_old_password_errors"')

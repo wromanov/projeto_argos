@@ -1,1 +1,36 @@
-{% extends "base.html" %}{% load static %}{% block titulo %}Alterar minha senha — ARGOS{% endblock %}{% block extra_css %}<link rel="stylesheet" href="{% static 'css/perfil.css' %}">{% endblock %}{% block conteudo %}<section class="profile-form-heading"><h1>Alterar minha senha</h1><p>Informe sua senha atual e escolha uma nova senha segura.</p></section><form method="post" class="profile-form password-form">{% csrf_token %}{{ form.non_field_errors }}{% for field in form %}<div class="profile-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}{{ field.errors }}</div>{% endfor %}<div class="profile-form-actions"><a class="button button--secondary" href="{% url 'usuarios:perfil' %}">Cancelar</a><button class="button button--primary" type="submit">Alterar senha</button></div></form>{% endblock %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block titulo %}Alterar minha senha — ARGOS{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/perfil.css' %}">
+{% endblock %}
+
+{% block conteudo %}
+  <section class="profile-form-heading" aria-labelledby="password-change-title">
+    <h1 id="password-change-title">Alterar minha senha</h1>
+    <p>Informe sua senha atual e escolha uma nova senha segura.</p>
+  </section>
+
+  <form method="post" class="profile-form password-form" novalidate>
+    {% csrf_token %}
+
+    {% include "components/resumo_erros_formulario.html" with form=form errors_title="Revise os dados da sua senha." %}
+
+    <fieldset class="form-section">
+      <legend>Credenciais</legend>
+
+      <div class="form-grid">
+        {% for field in form %}
+          {% include "components/campo_formulario.html" with field=field %}
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <div class="form-actions">
+      <a class="button button--secondary" href="{% url 'usuarios:perfil' %}">Cancelar</a>
+      <button class="button button--primary" type="submit">Alterar senha</button>
+    </div>
+  </form>
+{% endblock %}

@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 from django.templatetags.static import static
 from django.urls import reverse
 from django.test import RequestFactory, SimpleTestCase, TestCase
+from django.utils.safestring import mark_safe
 
 from core.templatetags.ui_extras import querystring
 
@@ -60,6 +61,57 @@ class BrandComponentTests(SimpleTestCase):
 class FrontendSharedComponentsTests(SimpleTestCase):
     def setUp(self):
         self.factory = RequestFactory()
+
+    def render_field(self, field):
+        return render_to_string("components/campo_formulario.html", {"field": field})
+
+    def test_campo_formulario_renderiza_help_textual_em_conteiner_compartilhado(self):
+        class Formulario(forms.Form):
+            nome = forms.CharField(help_text="Informe seu nome.")
+
+        html = self.render_field(Formulario()["nome"])
+
+        self.assertIn('class="field-help"', html)
+        self.assertIn('id="id_nome_help"', html)
+        self.assertIn("Informe seu nome.", html)
+        self.assertIn('aria-describedby="id_nome_help"', html)
+
+    def test_campo_formulario_renderiza_help_estruturado_fora_de_paragrafo(self):
+        class Formulario(forms.Form):
+            senha = forms.CharField(
+                help_text=mark_safe("<ul><li>Use uma senha longa.</li></ul>")
+            )
+
+        html = self.render_field(Formulario()["senha"])
+
+        self.assertIn("<ul>", html)
+        self.assertIn("<li>Use uma senha longa.</li>", html)
+        self.assertIn('id="id_senha_help"', html)
+        self.assertIn('aria-describedby="id_senha_help"', html)
+        self.assertNotRegex(html, r'<p\b[^>]*class="field-help"')
+        self.assertNotRegex(html, r'<p\b[^>]*>\s*<ul>')
+
+    def test_campo_formulario_preserva_escaping_para_help_text_nao_seguro(self):
+        class Formulario(forms.Form):
+            nome = forms.CharField(help_text='<script>alert("x")</script>')
+
+        html = self.render_field(Formulario()["nome"])
+
+        self.assertIn("&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;", html)
+        self.assertNotIn("<script>", html)
+
+    def test_campo_formulario_preserva_aria_de_erro_e_help(self):
+        class Formulario(forms.Form):
+            nome = forms.CharField(help_text="Informe seu nome.")
+
+        formulario = Formulario(data={"nome": ""})
+        self.assertFalse(formulario.is_valid())
+        html = self.render_field(formulario["nome"])
+
+        self.assertIn('aria-invalid="true"', html)
+        self.assertIn('aria-errormessage="id_nome_errors"', html)
+        self.assertIn('aria-describedby="id_nome_help id_nome_errors"', html)
+        self.assertIn('id="id_nome_errors"', html)
 
     def test_design_system_e_encontrado_pelo_staticfiles(self):
         self.assertIsNotNone(finders.find("css/design-system.css"))

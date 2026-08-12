@@ -25,12 +25,12 @@
   {{ field|campo_com_attrs }}
 
   {% if field.help_text %}
-    <p
+    <div
       class="field-help"
       id="{{ field.id_for_label }}_help"
     >
       {{ field.help_text }}
-    </p>
+    </div>
   {% endif %}
 
   {% if field.errors %}

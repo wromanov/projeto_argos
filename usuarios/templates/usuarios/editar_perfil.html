@@ -1,1 +1,57 @@
-{% extends "base.html" %}{% load static %}{% block titulo %}Editar meu perfil — ARGOS{% endblock %}{% block extra_css %}<link rel="stylesheet" href="{% static 'css/perfil.css' %}">{% endblock %}{% block conteudo %}<section class="profile-form-heading"><h1>Editar meu perfil</h1><p>Atualize seus dados pessoais e de contato.</p></section><form method="post" class="profile-form">{% csrf_token %}{{ dados_form.non_field_errors }}{{ perfil_form.non_field_errors }}<section><h2>Dados pessoais</h2>{% for field in dados_form %}<div class="profile-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}{{ field.errors }}</div>{% endfor %}</section><section><h2>Contato</h2>{% for field in perfil_form %}<div class="profile-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}{{ field.errors }}</div>{% endfor %}<dl class="profile-readonly"><dt>Username</dt><dd>{{ request.user.username }}</dd><dt>Cargo</dt><dd>{{ perfil_usuario.cargo|default:"—" }}</dd><dt>Setor</dt><dd>{{ perfil_usuario.setor|default:"—" }}</dd></dl></section><div class="profile-form-actions"><a class="button button--secondary" href="{% url 'usuarios:perfil' %}">Cancelar</a><button class="button button--primary" type="submit">Salvar alterações</button></div></form>{% endblock %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block titulo %}Editar meu perfil — ARGOS{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/perfil.css' %}">
+{% endblock %}
+
+{% block conteudo %}
+  <section class="profile-form-heading" aria-labelledby="profile-edit-title">
+    <h1 id="profile-edit-title">Editar meu perfil</h1>
+    <p>Atualize seus dados pessoais e de contato.</p>
+  </section>
+
+  <form method="post" class="profile-form" novalidate>
+    {% csrf_token %}
+
+    <fieldset class="form-section">
+      <legend>Dados pessoais</legend>
+
+      {% include "components/resumo_erros_formulario.html" with form=dados_form errors_title="Revise seus dados pessoais." %}
+
+      <div class="form-grid">
+        {% for field in dados_form %}
+          {% include "components/campo_formulario.html" with field=field %}
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <fieldset class="form-section">
+      <legend>Contato</legend>
+
+      {% include "components/resumo_erros_formulario.html" with form=perfil_form errors_title="Revise seus dados de contato." %}
+
+      <div class="form-grid">
+        {% for field in perfil_form %}
+          {% include "components/campo_formulario.html" with field=field %}
+        {% endfor %}
+      </div>
+
+      <dl class="profile-readonly field-readonly">
+        <dt>Username</dt>
+        <dd>{{ request.user.username }}</dd>
+        <dt>Cargo</dt>
+        <dd>{{ perfil_usuario.cargo|default:"—" }}</dd>
+        <dt>Setor</dt>
+        <dd>{{ perfil_usuario.setor|default:"—" }}</dd>
+      </dl>
+    </fieldset>
+
+    <div class="form-actions">
+      <a class="button button--secondary" href="{% url 'usuarios:perfil' %}">Cancelar</a>
+      <button class="button button--primary" type="submit">Salvar alterações</button>
+    </div>
+  </form>
+{% endblock %}
