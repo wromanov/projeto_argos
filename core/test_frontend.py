@@ -64,6 +64,22 @@ class FrontendSharedComponentsTests(SimpleTestCase):
     def test_design_system_e_encontrado_pelo_staticfiles(self):
         self.assertIsNotNone(finders.find("css/design-system.css"))
 
+    def test_design_system_concentra_primitives_de_formulario_compartilhadas(self):
+        css = open("static/css/design-system.css", encoding="utf-8").read()
+
+        for seletor in (
+            ".form-section",
+            ".form-grid",
+            ".field__label",
+            ".field-help",
+            ".field-errors .errorlist",
+            ".form-errors-summary h2",
+            ".form-actions",
+            ".field :is(input, select, textarea)[aria-invalid=\"true\"]",
+            ".field :is(input, select, textarea):disabled",
+        ):
+            self.assertIn(seletor, css)
+
     def test_querystring_preserva_filtros_e_substitui_pagina(self):
         request = self.factory.get("/cameras/", {"q": "TPS2", "situacao_operacional": "PRODUCAO", "page": "1"})
         original = request.GET.copy()
