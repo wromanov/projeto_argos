@@ -3,6 +3,7 @@ from .environment import get_env_bool, get_env_int, get_env_list, get_required_s
 from .settings import *  # noqa: F403,F401
 
 DEBUG = False
+validate_visual_qa_configuration(DEBUG, VISUAL_QA_ENABLED)
 SECRET_KEY = get_required_secret("ARGOS_SECRET_KEY", minimum_length=50)
 ALLOWED_HOSTS = get_env_list("ARGOS_ALLOWED_HOSTS")
 if not ALLOWED_HOSTS: raise ImproperlyConfigured("ARGOS_ALLOWED_HOSTS deve possuir ao menos um host.")

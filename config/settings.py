@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
+from django.core.exceptions import ImproperlyConfigured
+
 from .environment import get_env_bool, get_env_list
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,7 +32,23 @@ SECRET_KEY = os.environ.get("ARGOS_SECRET_KEY", DEVELOPMENT_SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = get_env_bool("ARGOS_DEBUG", True)
 
-ALLOWED_HOSTS = get_env_list("ARGOS_ALLOWED_HOSTS", default=["127.0.0.1", "localhost", "testserver"])
+ALLOWED_HOSTS = get_env_list(
+    "ARGOS_ALLOWED_HOSTS",
+    default=["127.0.0.1", "localhost", "::1", "[::1]", "testserver"],
+)
+
+
+def validate_visual_qa_configuration(debug, enabled):
+    if enabled and not debug:
+        raise ImproperlyConfigured(
+            "ARGOS_VISUAL_QA_ENABLED exige ARGOS_DEBUG ativo; Visual QA não pode operar fora do desenvolvimento local."
+        )
+
+VISUAL_QA_ENABLED = get_env_bool("ARGOS_VISUAL_QA_ENABLED", False)
+VISUAL_QA_USERNAME = os.environ.get("ARGOS_VISUAL_QA_USERNAME", "").strip()
+VISUAL_QA_PASSWORD = os.environ.get("ARGOS_VISUAL_QA_PASSWORD", "")
+
+validate_visual_qa_configuration(DEBUG, VISUAL_QA_ENABLED)
 
 
 # Application definition
@@ -55,6 +73,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'core.middleware.VisualQAMiddleware',
     'django.contrib.auth.middleware.LoginRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
