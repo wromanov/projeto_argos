@@ -11,9 +11,44 @@
 - Último commit técnico publicado de referência: `9cf1964` — `test(monitoramento): validar laboratorio de confirmacao`
 - Origin: `master` sincronizada com `origin/master`
 - Suíte canônica: `569` testes PASS local; não afirmar CI remoto
-- Última entrega: MON-04C concluída e publicada
-- Próxima atividade documental: MON-04D — fechamento documental
+- Última entrega técnica: MON-04C concluída e publicada
+- Fechamento documental: MON-04D concluída
 - Commits de evidência: `26a8925` e `9cf1964`
+
+## Estado vigente após MON-04D
+
+MON-04 — Confirmação de estado e anti-flapping — **CONCLUÍDA / APROVADA**.
+
+- MON-04A — Discovery: concluída / aprovada / local-only;
+- MON-04B — reducer puro de confirmação: concluída / aprovada / publicada;
+- MON-04C — laboratório de sequências: concluída / aprovada / publicada;
+- MON-04D — fechamento documental: concluída.
+
+A última entrega técnica continua sendo `9cf1964`. MON-04D é o fechamento
+documental desta frente e não implementa código. A cadeia validada termina em
+`TechnicalDecision`:
+
+```text
+ProbeAdapter → ProbeResult → confirmation / anti-flapping reducer
+             → TechnicalDecision → persistência futura
+```
+
+O reducer é puro, determinístico, imutável e O(1) por resultado, sem ORM,
+rede, worker, scheduler ou persistência. Os estados estáveis são UNKNOWN,
+ONLINE e OFFLINE; SUSPECT é efêmero e freshness/stale permanece separado.
+Os thresholds são obrigatórios e configuráveis (`failures_to_offline >= 2`,
+`successes_to_online >= 1`), ainda sem homologação operacional final.
+Resultados fora de ordem ou com ordenação ambígua são rejeitados sem alterar
+estado, streak, watermark ou memória. A classificação de ProbeResult,
+`policy_version` e as demais fronteiras não implementadas permanecem conforme
+o ROADMAP_ARGOS_V5 e os ADR-020/ADR-021.
+
+Evidências locais preservadas: MON-04B com 15 testes focados, 59 testes
+MON-03 + MON-04B e suíte global 541/541 PASS; MON-04C com laboratório
+adicional de 28 testes, 43/43 MON-04B + MON-04C, 87/87 MON-03 + MON-04 e
+suíte global 569/569 PASS. `manage.py check`, verificação de migrations,
+Bandit (0 findings) e diff checks foram registrados como PASS. Isso não
+afirma CI remoto, homologação em produção ou teste com câmera real.
 
 ## Estado de segurança e produção
 
@@ -29,8 +64,11 @@ Frente corretiva obrigatória: **SEC-R01 / SEC-007**. Ela deverá eliminar a
 escalada confirmada e incluir teste de regressão; depois, o Agente de Segurança
 deverá executar VERIFY. A solução não está definida neste handoff.
 
-MON-04D permanece válida e não é cancelada. MON-05 — scheduler + concorrência
-permanece planejada, mas não autorizada enquanto o gate estiver BLOCKED.
+MON-04D está concluída e não é cancelada. A próxima frente é **SEC-R01**,
+para discovery/remediação do SEC-007, seguida de teste de regressão e VERIFY
+independente pelo Agente de Segurança. MON-05 — scheduler + concorrência —
+permanece planejada, mas não autorizada enquanto o gate estiver BLOCKED; ela
+não é automaticamente liberada após o VERIFY.
 
 SEC-001 a SEC-006 permanecem findings existentes, tratados por prioridade; não
 foram declarados corrigidos e não são todos blockers imediatos. SEC-007 é o
@@ -51,6 +89,11 @@ tem a decisão final. Findings não autorizam alterações automáticas.
 **Projeto:** ARGOS — Sistema de Inventário e Monitoramento de Câmeras  
 **Atualizado em:** 13/08/2026
 **Finalidade:** permitir que outro agente continue o projeto em uma nova conversa sem perder decisões técnicas, estado do código, governança, UX/UI ou histórico recente.
+
+> **Nota de histórico.** As seções subsequentes preservam snapshots de
+> continuidade anteriores e não substituem o bloco vigente acima. Quando
+> houver divergência sobre etapa atual, MON-04, segurança ou próxima frente,
+> prevalece sempre o estado vigente após MON-04D.
 
 ---
 

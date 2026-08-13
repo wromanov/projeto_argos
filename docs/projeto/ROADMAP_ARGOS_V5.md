@@ -250,7 +250,7 @@ Produzir uma fotografia funcional confiável antes da abertura da Fase B.
 
 # 5. FASE B — Monitoramento operacional
 
-**Estado:** EM CURSO — MON-01, MON-02 e MON-03 concluídas e aprovadas; MON-04 é a próxima frente.
+**Estado:** EM CURSO — MON-01, MON-02, MON-03 e MON-04 concluídas e aprovadas. SEC-R01 é a próxima frente; MON-05 permanece planejada e bloqueada pelo Security Gate.
 
 ## Objetivo
 
@@ -352,51 +352,95 @@ incidentes; credenciais; e preflight/allowlist real.
 
 ## MON-04 — Confirmação de estado e anti-flapping
 
-**Estado:** MON-04A concluída; MON-04B e MON-04C concluídas/publicadas; MON-04D próxima.
+**Estado:** CONCLUÍDA / APROVADA.
 
-Interpretar sequências de `ProbeResult` de forma pura e determinística,
-aplicando confirmação suficiente para produzir decisões técnicas sem misturar
-execução de I/O. A frente deverá tratar conceitualmente `UNKNOWN`, `ONLINE`,
-`OFFLINE`, `SUSPECT` efêmero, confirmação, anti-flapping e freshness separada
-do estado.
+MON-04A — Discovery: CONCLUÍDA / APROVADA / LOCAL-ONLY.
 
-`SUCCESS`, `TIMEOUT`, `AUTH_FAILURE`, `TARGET_BLOCKED` e `INCONCLUSIVE` são
-evidências individuais; nenhum deles equivale imediatamente a `ONLINE`,
-`OFFLINE` ou `UNKNOWN`. A política futura deverá interpretar a sequência e o
-contexto, preservando `SUSPECT` como condição efêmera e freshness como
-propriedade distinta do estado.
+MON-04B — reducer puro de confirmação: CONCLUÍDA / APROVADA / PUBLICADA.
+Evidência: `26a8925` (`feat(monitoramento): implementar confirmacao e anti-flapping`).
 
-MON-04 ainda não é worker nem scheduler. A arquitetura pretendida permanece:
+MON-04C — laboratório de sequências: CONCLUÍDA / APROVADA / PUBLICADA.
+Evidência: `9cf1964` (`test(monitoramento): validar laboratorio de confirmacao`).
+
+MON-04D — fechamento documental: CONCLUÍDA.
+
+A cadeia arquitetural validada é:
 
 ```text
 ProbeAdapter
     ↓
 ProbeResult
     ↓
-confirmador / anti-flapping futuro
+ confirmation / anti-flapping reducer
     ↓
-decisão técnica
+ TechnicalDecision
     ↓
 persistência futura
 ```
 
-A implementação desta camada pertence à MON-04 e deve preceder
-a introdução do worker, scheduler e concorrência de produção.
+MON-04 termina em `TechnicalDecision`. Persistência de estado técnico ainda
+não foi implementada por esta frente; o reducer não é um serviço de
+monitoramento completo.
 
-MON-04A — Discovery: CONCLUÍDA. MON-04B — reducer puro: CONCLUÍDA/PUBLICADA.
-MON-04C — laboratório completo: CONCLUÍDA/PUBLICADA. MON-04D — fechamento
-documental da confirmação/anti-flapping: PRÓXIMA. Evidências: `26a8925`
-(`feat(monitoramento): implementar confirmacao e anti-flapping`) e `9cf1964`
-(`test(monitoramento): validar laboratorio de confirmacao`). A suíte local
-após MON-04C foi 569/569 PASS; isso não afirma CI remoto.
+Os estados técnicos estáveis reconhecidos são `UNKNOWN`, `ONLINE` e `OFFLINE`.
+`SUSPECT` é condição interna e efêmera, derivada de streak pendente, e não é
+um quarto estado persistente. Freshness/stale permanece conceito separado;
+`STALE` não é quarto estado técnico e freshness concreta não foi implementada
+nesta frente.
 
-MON-04C confirmou `ProbeResultCode` completo, thresholds configuráveis,
-UNKNOWN/ONLINE/OFFLINE, anti-flapping, evidência oposta, barreiras neutras,
-CANCELLED, ordenação temporal estrita, OUT_OF_ORDER, AMBIGUOUS_ORDER,
-`policy_version`, canonicalização, SUSPECT derivado, determinismo/replay e
-isolamento entre memórias. Permaneceram fora do escopo freshness concreta,
-worker, scheduler, persistência, incidentes, scope/eligibility,
-deduplicação/attempt identity, câmera real e captura.
+A classificação de `ProbeResult` é:
+
+- evidência positiva: `SUCCESS`;
+- evidências negativas: `TIMEOUT`, `CONNECTION_REFUSED`;
+- barreiras neutras: `AUTH_FAILURE`, `TLS_ERROR`, `PROTOCOL_ERROR`,
+  `CONFIG_ERROR`, `TARGET_BLOCKED`, `INCONCLUSIVE`;
+- `CANCELLED`: barreira conservadora, sem transição, preserva o estado estável,
+  zera streak/pendência e não fabrica `ONLINE` ou `OFFLINE`.
+
+O reducer é puro, determinístico, imutável e O(1) por resultado, sem ORM,
+rede, worker, scheduler ou persistência. Os thresholds obrigatórios e
+configuráveis são `failures_to_offline >= 2` e `successes_to_online >= 1`.
+Eles não são valores operacionais finais homologados: a política exata ainda
+deve ser homologada antes da integração em produção. O laboratório validou
+thresholds variados, inclusive políticas assimétricas.
+
+A ordenação temporal preserva a regra `observed_at > last_observed_at` para
+aceitação, `observed_at < last_observed_at` para `OUT_OF_ORDER` e igualdade
+para `AMBIGUOUS_ORDER`. Resultados rejeitados não alteram estado, streak,
+watermark ou memória, nem executam reset de `policy_version`. Igualdade
+temporal não é `DUPLICATE`; deduplicação real depende de identidade futura de
+execução e permanece fora da MON-04.
+
+`ConfirmationPolicy` possui `version` e `ConfirmationMemory` registra
+`policy_version`. Em resultado aceito após mudança de versão, o estado
+estável é preservado, o watermark anterior permanece como base, streaks
+pendentes são zerados, a nova versão passa a ser usada e o resultado corrente
+é processado normalmente. `policy_version` não é mecanismo de persistência ou
+deployment.
+
+Evidências locais documentadas, sem afirmação de CI remoto, homologação em
+produção ou teste com câmera real:
+
+- MON-04B: 15 testes focados; MON-03 + MON-04B: 59 testes PASS; suíte global:
+  541/541 PASS; `manage.py check`, `makemigrations --check --dry-run`,
+  Bandit (0 findings) e diff checks: PASS;
+- MON-04C: laboratório adicional com 28 testes; MON-04B + MON-04C: 43/43
+  PASS; MON-03 + MON-04: 87/87 PASS; suíte global local: 569/569 PASS;
+  `manage.py check`, `makemigrations --check --dry-run`, Bandit (0 findings)
+  e diff checks: PASS.
+
+Permaneceram fora do escopo: câmera ou protocolo reais; execução de
+`ProbeAdapter` de produção; worker; scheduler; concorrência de produção;
+leases; supervisão; deployment; persistência técnica; atualização de `Camera`
+via ORM; incidentes; abertura/fechamento de indisponibilidade;
+freshness/stale concreto; scope/eligibility operacional; credenciais reais;
+secret backend; preflight real; allowlist/SSRF enforcement real;
+deduplicação por attempt/execution identity; captura de imagens e snapshots;
+MON-05.
+
+MON-04D não altera os contratos do ADR-020 ou ADR-021. Permanecem válidos
+UNKNOWN/ONLINE/OFFLINE, SUSPECT efêmero, stale separado, as salvaguardas de
+falha de worker e os requisitos de segurança de monitoramento.
 
 **Codex recomendado:** 🌎 Terra Alto
 
@@ -857,18 +901,19 @@ As fases representam dependências predominantes e não um modelo waterfall ríg
 # 13. Sequência operacional de curto prazo
 
 ```text
-1. MON-04A — concluída
-2. MON-04B — concluída/publicada
-3. MON-04C — concluída/publicada
-4. Registrar Security Audit 001
-5. MON-04D — fechamento documental
-6. SEC-R01 — corrigir SEC-007
+1. MON-04A — concluída / aprovada / local-only
+2. MON-04B — concluída / aprovada / publicada
+3. MON-04C — concluída / aprovada / publicada
+4. MON-04D — concluída
+5. SEC-R01 — discovery/remediação do SEC-007
+6. teste de regressão
 7. SEC-R01 VERIFY — agente independente de segurança revalida
-8. Security Gate precisa deixar de BLOCKED
-9. MON-05 — scheduler + concorrência
+8. Security Gate deixa de BLOCKED somente se o VERIFY e a governança aprovarem
+9. MON-05 — poderá ser reconsiderada/autorizada após a liberação do gate
 10. SEC-001..SEC-006 tratados segundo prioridade e antes dos gates de produção aplicáveis
 
-MON-05 não é a próxima implementação liberada enquanto SEC-007 permanecer aberto.
+SEC-R01 é a próxima frente. MON-05 permanece planejada e bloqueada; não é
+automaticamente liberada após o VERIFY.
 
 ## 13.1 — Continuidade de segurança e governança
 
@@ -908,12 +953,21 @@ VERIFY independente executado e Security Gate fora de BLOCKED.
 
 ### Findings preservados
 
-SEC-001: ARCHITECTURAL RISK / High / POTENCIAL / P1; SEC-002: SECURITY DEBT /
-Medium / CONFIRMADO / P1; SEC-003: VULNERABILITY / Medium / CONFIRMADO / P1;
-SEC-004: VULNERABILITY / Medium / CONFIRMADO / P1; SEC-005: VULNERABILITY /
-Medium / POTENCIAL / P2; SEC-006: SECURITY DEBT / Medium / CONFIRMADO / P2.
-Serão tratados por prioridade e conforme os gates de produção aplicáveis.
-SEC-007 é o único finding atualmente responsável pelo Security Gate BLOCKED.
+Sem reclassificação e sem declaração de correção:
+
+```text
+SEC-001 — ARCHITECTURAL RISK / High / POTENCIAL / P1
+SEC-002 — SECURITY DEBT / Medium / CONFIRMADO / P1
+SEC-003 — VULNERABILITY / Medium / CONFIRMADO / P1
+SEC-004 — VULNERABILITY / Medium / CONFIRMADO / P1
+SEC-005 — VULNERABILITY / Medium / POTENCIAL / P2
+SEC-006 — SECURITY DEBT / Medium / CONFIRMADO / P2
+SEC-007 — VULNERABILITY / High / CONFIRMADO / P0
+```
+
+SEC-007 permanece o finding responsável pelo Security Gate BLOCKED. A
+auditoria publicada em `docs/security_audit/auditoria_segurança_001.md` não é
+alterada por MON-04D.
 
 ### Decisões GOV-SEC
 
@@ -1066,7 +1120,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
-FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-03 concluídas; MON-04A/B/C concluídas; MON-04D próxima; SEC-R01 bloqueante antes da MON-05)
+FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-04 concluídas; SEC-R01 próxima; MON-05 bloqueada pelo Security Gate)
 FASE C — Captura manual e imagens              ⏳ PLANEJADA
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
