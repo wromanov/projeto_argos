@@ -250,6 +250,8 @@ Produzir uma fotografia funcional confiável antes da abertura da Fase B.
 
 # 5. FASE B — Monitoramento operacional
 
+**Estado:** EM CURSO — MON-01, MON-02 e MON-03 concluídas e aprovadas; MON-04 é a próxima frente.
+
 ## Objetivo
 
 Monitorar continuamente a disponibilidade técnica de aproximadamente **2.300 câmeras**, mantendo o estado conhecido pelo ARGOS sem acoplar o monitoramento às requisições HTTP do Django ou ao navegador.
@@ -319,34 +321,73 @@ sem evidência de laboratório.
 
 ## MON-03 — Abstração de probe e laboratório sintético
 
-Definir a abstração técnica mínima para probes e validar o contrato em
-laboratório sintético, sem implementar ainda o processo completo de
-worker/scheduler.
+**Estado:** concluída e aprovada.
 
-O escopo desta frente compreende:
+A frente implementou e validou, em `cameras/monitoramento/`, o contrato puro
+de probe e seu laboratório sintético: `ProbeRequest`, `ProbeResult`,
+`ProbeResultCode`, `ProbeAdapter`, `Clock`, `SystemClock`, `FakeClock` e
+`FakeProbe`. Também foram entregues timeout sintético determinístico, matriz
+completa de resultados, sequências FIFO e testes sem ORM, rede ou câmera real.
+O contrato permanece independente do Django ORM.
 
-- `ProbeAdapter`;
-- `ProbeResult`;
-- resultados técnicos normalizados;
-- `FakeProbe`;
-- relógio e timeout controláveis;
-- testes sintéticos;
-- nenhuma câmera real.
+`ProbeResult` continua sendo somente evidência de uma tentativa. Um resultado
+isolado não é estado técnico e não produz, por si só, `ONLINE`, `OFFLINE`,
+`UNKNOWN`, incidente ou transição de domínio.
 
-Não antecipar nesta frente:
+Como evidência discreta da implementação e validação, permanecem os commits
+`0dd7b2e` (`feat(monitoramento): criar contrato puro de probes`) e `3863d7b`
+(`test(monitoramento): validar laboratorio sintetico de probes`). A validação
+de encerramento registrou 21 testes focados na MON-03B, 44 testes MON-03 após
+a MON-03C, 526 testes na suíte completa, zero findings do Bandit no package de
+monitoramento e nenhuma migration.
 
-- scheduler completo;
-- serviço de monitoramento;
-- concorrência de produção;
-- leases;
-- supervisão;
-- deployment.
+Permaneceram fora desta frente: câmera real; protocolos TCP, HTTP, RTSP,
+ONVIF; worker; scheduler; concorrência de produção; leases; supervisão;
+deployment; persistência de monitoramento; máquina de estado; anti-flapping;
+incidentes; credenciais; e preflight/allowlist real.
 
 **Codex recomendado:** 🌎 Terra Alto
 
 ---
 
-## MON-04 — Concorrência e scheduler
+## MON-04 — Confirmação de estado e anti-flapping
+
+**Estado:** próxima frente.
+
+Interpretar sequências de `ProbeResult` de forma pura e determinística,
+aplicando confirmação suficiente para produzir decisões técnicas sem misturar
+execução de I/O. A frente deverá tratar conceitualmente `UNKNOWN`, `ONLINE`,
+`OFFLINE`, `SUSPECT` efêmero, confirmação, anti-flapping e freshness separada
+do estado.
+
+`SUCCESS`, `TIMEOUT`, `AUTH_FAILURE`, `TARGET_BLOCKED` e `INCONCLUSIVE` são
+evidências individuais; nenhum deles equivale imediatamente a `ONLINE`,
+`OFFLINE` ou `UNKNOWN`. A política futura deverá interpretar a sequência e o
+contexto, preservando `SUSPECT` como condição efêmera e freshness como
+propriedade distinta do estado.
+
+MON-04 ainda não é worker nem scheduler. A arquitetura pretendida permanece:
+
+```text
+ProbeAdapter
+    ↓
+ProbeResult
+    ↓
+confirmador / anti-flapping futuro
+    ↓
+decisão técnica
+    ↓
+persistência futura
+```
+
+A implementação desta camada pertence à MON-04 e deve preceder
+a introdução do worker, scheduler e concorrência de produção.
+
+**Codex recomendado:** 🌎 Terra Alto
+
+---
+
+## MON-05 — Concorrência e scheduler
 
 Distribuir verificações do parque ao longo do ciclo com concorrência limitada e configurável.
 
@@ -356,16 +397,6 @@ Evitar:
 - 2.300 conexões simultâneas sem controle.
 
 **Codex recomendado:** 🌎 Terra Alto
-
----
-
-## MON-05 — Anti-flapping
-
-Implementar mecanismo de confirmação/debounce/histerese para impedir alterações excessivas de estado provocadas por falhas transitórias.
-
-Valores exatos de falhas e sucessos consecutivos devem ser homologados posteriormente.
-
-**Codex recomendado:** 🌎 Terra Médio
 
 ---
 
@@ -817,7 +848,8 @@ As fases representam dependências predominantes e não um modelo waterfall ríg
 7. MON-00 — Discovery do monitoramento (concluída)
 8. MON-01 — Contrato de disponibilidade (concluída)
 9. MON-02 — Segurança e capacidade de equipamento (concluída)
-10. MON-03 — Abstração de probe e laboratório sintético (próxima)
+10. MON-03 — Abstração de probe e laboratório sintético (concluída)
+11. MON-04 — Confirmação de estado e anti-flapping (próxima)
 ```
 
 Após `MON-01`, o foco principal do projeto passa de modernização visual para backend operacional, concorrência, integrações, segurança, observabilidade e escala.
@@ -954,7 +986,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
-FASE B — Monitoramento operacional             🔄 EM CURSO (MON-01 concluída; MON-02 concluída e aprovada; MON-03 próxima)
+FASE B — Monitoramento operacional             🔄 EM CURSO (MON-01, MON-02 e MON-03 concluídas e aprovadas; MON-04 próxima)
 FASE C — Captura manual e imagens              ⏳ PLANEJADA
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
