@@ -72,9 +72,9 @@ O desenvolvimento do ARGOS continua seguindo os seguintes princípios:
 
 ```text
 Branch: master
-HEAD: 84f4bb9 fix(filtros): canonicalizar parametros globais
+HEAD técnico de referência: 9cf1964 test(monitoramento): validar laboratorio de confirmacao
 master = origin/master
-Suíte global validada: 438/438 testes
+Suíte canônica após MON-04C: 569/569 testes PASS local
 ```
 
 Este baseline é uma fotografia do momento de elaboração do roadmap e deverá ser atualizado pelo processo documental quando novos commits de documentação forem publicados.
@@ -352,7 +352,7 @@ incidentes; credenciais; e preflight/allowlist real.
 
 ## MON-04 — Confirmação de estado e anti-flapping
 
-**Estado:** próxima frente.
+**Estado:** MON-04A concluída; MON-04B e MON-04C concluídas/publicadas; MON-04D próxima.
 
 Interpretar sequências de `ProbeResult` de forma pura e determinística,
 aplicando confirmação suficiente para produzir decisões técnicas sem misturar
@@ -383,11 +383,29 @@ persistência futura
 A implementação desta camada pertence à MON-04 e deve preceder
 a introdução do worker, scheduler e concorrência de produção.
 
+MON-04A — Discovery: CONCLUÍDA. MON-04B — reducer puro: CONCLUÍDA/PUBLICADA.
+MON-04C — laboratório completo: CONCLUÍDA/PUBLICADA. MON-04D — fechamento
+documental da confirmação/anti-flapping: PRÓXIMA. Evidências: `26a8925`
+(`feat(monitoramento): implementar confirmacao e anti-flapping`) e `9cf1964`
+(`test(monitoramento): validar laboratorio de confirmacao`). A suíte local
+após MON-04C foi 569/569 PASS; isso não afirma CI remoto.
+
+MON-04C confirmou `ProbeResultCode` completo, thresholds configuráveis,
+UNKNOWN/ONLINE/OFFLINE, anti-flapping, evidência oposta, barreiras neutras,
+CANCELLED, ordenação temporal estrita, OUT_OF_ORDER, AMBIGUOUS_ORDER,
+`policy_version`, canonicalização, SUSPECT derivado, determinismo/replay e
+isolamento entre memórias. Permaneceram fora do escopo freshness concreta,
+worker, scheduler, persistência, incidentes, scope/eligibility,
+deduplicação/attempt identity, câmera real e captura.
+
 **Codex recomendado:** 🌎 Terra Alto
 
 ---
 
 ## MON-05 — Concorrência e scheduler
+
+**Estado:** PLANEJADA, bloqueada pelo Security Gate enquanto SEC-007 estiver
+aberto. Não está liberada para implementação operacional.
 
 Distribuir verificações do parque ao longo do ciclo com concorrência limitada e configurável.
 
@@ -839,17 +857,79 @@ As fases representam dependências predominantes e não um modelo waterfall ríg
 # 13. Sequência operacional de curto prazo
 
 ```text
-1. A0 — Documentação e rebaseline inicial
-2. A1 / BR-01 — Consolidação da identidade existente
-3. A2 — Visual 5 — Formulários operacionais
-4. A3 — Visual 6 — Páginas complementares
-5. A4 — Visual 7 — Consolidação frontend
-6. A5 — RF-01 — Rebaseline funcional
-7. MON-00 — Discovery do monitoramento (concluída)
-8. MON-01 — Contrato de disponibilidade (concluída)
-9. MON-02 — Segurança e capacidade de equipamento (concluída)
-10. MON-03 — Abstração de probe e laboratório sintético (concluída)
-11. MON-04 — Confirmação de estado e anti-flapping (próxima)
+1. MON-04A — concluída
+2. MON-04B — concluída/publicada
+3. MON-04C — concluída/publicada
+4. Registrar Security Audit 001
+5. MON-04D — fechamento documental
+6. SEC-R01 — corrigir SEC-007
+7. SEC-R01 VERIFY — agente independente de segurança revalida
+8. Security Gate precisa deixar de BLOCKED
+9. MON-05 — scheduler + concorrência
+10. SEC-001..SEC-006 tratados segundo prioridade e antes dos gates de produção aplicáveis
+
+MON-05 não é a próxima implementação liberada enquanto SEC-007 permanecer aberto.
+
+## 13.1 — Continuidade de segurança e governança
+
+**Security Gate: BLOCKED.** A auditoria independente registrada em
+`docs/security_audit/auditoria_segurança_001.md` confirmou SEC-007 como:
+
+```text
+SEC-007 — Gestão administrativa de usuários permite escalada vertical de privilégio
+Categoria: VULNERABILITY | Severidade: High | Confiança: Alta
+Status: CONFIRMADO | Prioridade: P0
+```
+
+Foi demonstrado, em ambiente local autorizado, que usuário ativo com
+`is_staff=True`, `is_superuser=False`, membro de Administrador ARGOS e suas
+permissões atuais conseguiu promover contas e a própria conta a
+`is_superuser=True`, alterar `is_staff`, atribuir grupo privilegiado e
+permissão arbitrária no endpoint real `POST /admin/auth/user/<id>/change/`.
+O Django Admin atual não possui `UserAdmin` específico que restrinja esses
+campos para esse perfil. Esta é uma síntese de governança, não um relatório
+de pentest.
+
+O gate impede homologação, promoção ou exposição em produção enquanto SEC-007
+High confirmado permanecer aberto. Não congela desenvolvimento local, testes,
+MON-04 ou trabalho documental, nem autoriza alteração arquitetural automática.
+
+### SEC-R01 — Remediação de segurança prioritária
+
+**PRÓXIMA / P0 / BLOQUEANTE PARA PRODUÇÃO.** Escopo inicial: SEC-007. O
+objetivo é eliminar a escalada vertical confirmada no Django Admin e criar
+testes de regressão que preservem a administração legítima. A solução será
+definida em discovery/implementação específica; este roadmap não antecipa
+UserAdmin, grupos, permissões, separação de funções ou outra arquitetura.
+
+MON-04D permanece como fechamento documental e não é cancelada. MON-05 só
+poderá avançar após SEC-007 corrigido, teste de regressão existente,
+VERIFY independente executado e Security Gate fora de BLOCKED.
+
+### Findings preservados
+
+SEC-001: ARCHITECTURAL RISK / High / POTENCIAL / P1; SEC-002: SECURITY DEBT /
+Medium / CONFIRMADO / P1; SEC-003: VULNERABILITY / Medium / CONFIRMADO / P1;
+SEC-004: VULNERABILITY / Medium / CONFIRMADO / P1; SEC-005: VULNERABILITY /
+Medium / POTENCIAL / P2; SEC-006: SECURITY DEBT / Medium / CONFIRMADO / P2.
+Serão tratados por prioridade e conforme os gates de produção aplicáveis.
+SEC-007 é o único finding atualmente responsável pelo Security Gate BLOCKED.
+
+### Decisões GOV-SEC
+
+- GOV-SEC-01 — contrato de inicialização de produção e backend de banco ainda precisa ser definido;
+- GOV-SEC-02 — garantia read-only da identidade Visual QA não deve depender exclusivamente de middleware/flag;
+- GOV-SEC-03 — política de brute force/throttling ainda precisa ser definida;
+- GOV-SEC-04 — limites de conteúdo e atomicidade da auditoria ainda precisam de decisão.
+
+O Projeto ARGOS passa a operar com Agente ARGOS (arquitetura, continuidade e
+governança técnica), Agente de Segurança (auditoria, findings e VERIFY) e
+responsável humano (decisão final). Todo SEC-XXX é entrada técnica para
+governança; finding não autoriza alteração automática.
+
+`docs/security_audit/` é área versionável de documentação interna de segurança
+do repositório privado. Uma futura publicação/open source exigirá sanitização
+dos relatórios e tratamento do histórico Git em processo específico.
 ```
 
 Após `MON-01`, o foco principal do projeto passa de modernização visual para backend operacional, concorrência, integrações, segurança, observabilidade e escala.
@@ -986,7 +1066,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
-FASE B — Monitoramento operacional             🔄 EM CURSO (MON-01, MON-02 e MON-03 concluídas e aprovadas; MON-04 próxima)
+FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-03 concluídas; MON-04A/B/C concluídas; MON-04D próxima; SEC-R01 bloqueante antes da MON-05)
 FASE C — Captura manual e imagens              ⏳ PLANEJADA
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA

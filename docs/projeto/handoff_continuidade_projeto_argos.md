@@ -1,7 +1,55 @@
 # HANDOFF DE CONTINUIDADE — PROJETO ARGOS
 
+> **Atualização de continuidade — 13/08/2026.** Esta seção prevalece sobre
+> snapshots históricos abaixo quando houver divergência de branch, HEAD,
+> MON-04, segurança ou próxima atividade.
+
+## Baseline técnico atual de referência
+
+- Data de referência: **13/08/2026**
+- Branch: `master`
+- Último commit técnico publicado de referência: `9cf1964` — `test(monitoramento): validar laboratorio de confirmacao`
+- Origin: `master` sincronizada com `origin/master`
+- Suíte canônica: `569` testes PASS local; não afirmar CI remoto
+- Última entrega: MON-04C concluída e publicada
+- Próxima atividade documental: MON-04D — fechamento documental
+- Commits de evidência: `26a8925` e `9cf1964`
+
+## Estado de segurança e produção
+
+Existe auditoria independente em `docs/security_audit/auditoria_segurança_001.md`.
+SEC-007 foi confirmado como vulnerabilidade **High**, confiança alta,
+prioridade **P0**, envolvendo escalada vertical via Django Admin.
+
+**SECURITY GATE: BLOCKED para produção.** Homologação, promoção e exposição
+em produção estão proibidas até SEC-007 ser corrigido e revalidado. O
+desenvolvimento local, testes e fechamento documental de MON-04 podem continuar.
+
+Frente corretiva obrigatória: **SEC-R01 / SEC-007**. Ela deverá eliminar a
+escalada confirmada e incluir teste de regressão; depois, o Agente de Segurança
+deverá executar VERIFY. A solução não está definida neste handoff.
+
+MON-04D permanece válida e não é cancelada. MON-05 — scheduler + concorrência
+permanece planejada, mas não autorizada enquanto o gate estiver BLOCKED.
+
+SEC-001 a SEC-006 permanecem findings existentes, tratados por prioridade; não
+foram declarados corrigidos e não são todos blockers imediatos. SEC-007 é o
+único finding atualmente responsável pelo Security Gate BLOCKED.
+
+## Governança de segurança
+
+GOV-SEC-01: contrato de inicialização de produção + backend de banco ainda
+precisa ser definido. GOV-SEC-02: read-only da identidade Visual QA não deve
+depender exclusivamente de middleware/flag. GOV-SEC-03: política de brute
+force/throttling ainda precisa ser definida. GOV-SEC-04: limites de conteúdo e
+atomicidade da auditoria ainda precisam de decisão.
+
+O Agente ARGOS cuida de arquitetura, continuidade e governança técnica; o
+Agente de Segurança conduz auditoria, findings e VERIFY; o responsável humano
+tem a decisão final. Findings não autorizam alterações automáticas.
+
 **Projeto:** ARGOS — Sistema de Inventário e Monitoramento de Câmeras  
-**Atualizado em:** 07/08/2026  
+**Atualizado em:** 13/08/2026
 **Finalidade:** permitir que outro agente continue o projeto em uma nova conversa sem perder decisões técnicas, estado do código, governança, UX/UI ou histórico recente.
 
 ---
