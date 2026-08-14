@@ -10,6 +10,9 @@ from django.contrib.auth.models import Group, Permission
 from django.core.exceptions import PermissionDenied
 from django.db.models import Exists, OuterRef
 
+from cameras.auditoria import calcular_alteracoes, registrar_evento
+from cameras.models import EventoAuditoria
+
 from .models import PerfilUsuario
 from .admin_security import (
     ARGOS_OPERATIONAL_GROUP_NAMES,
@@ -229,17 +232,73 @@ class PerfilUsuarioAdmin(admin.ModelAdmin):
     readonly_fields = ("usuario", "criado_em", "atualizado_em")
     fieldsets = (("Usuário", {"fields": ("usuario",)}), ("Dados organizacionais", {"fields": ("telefone", "ramal", "cargo", "setor")}), ("Governança", {"fields": ("criado_em", "atualizado_em")}))
 
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request).select_related("usuario")
+        if request.user.is_superuser:
+            return queryset
+        if not is_argos_admin(request.user):
+            return queryset.none()
+
+        through_groups = User.groups.through
+        through_permissions = User.user_permissions.through
+        groups_protegidos = through_groups.objects.filter(
+            user_id=OuterRef("usuario_id")
+        ).exclude(group__name__in=ARGOS_OPERATIONAL_GROUP_NAMES)
+        permissoes_diretas = through_permissions.objects.filter(
+            user_id=OuterRef("usuario_id")
+        )
+        return (
+            queryset.filter(usuario__is_superuser=False, usuario__is_staff=False)
+            .annotate(
+                _argos_grupos_protegidos=Exists(groups_protegidos),
+                _argos_permissoes_diretas=Exists(permissoes_diretas),
+            )
+            .filter(
+                _argos_grupos_protegidos=False,
+                _argos_permissoes_diretas=False,
+            )
+            .exclude(usuario_id=request.user.pk)
+        )
+
+    def _can_manage_profile(self, actor, obj):
+        try:
+            return can_manage_user(actor, obj.usuario)
+        except Exception:
+            return False
+
+    def has_view_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return super().has_view_permission(request, obj)
+        if not is_argos_admin(request.user):
+            return False
+        if obj is not None and not self._can_manage_profile(request.user, obj):
+            return False
+        return super().has_view_permission(request, obj)
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return super().has_change_permission(request, obj)
+        if not is_argos_admin(request.user):
+            return False
+        if obj is not None and not self._can_manage_profile(request.user, obj):
+            return False
+        return super().has_change_permission(request, obj)
+
     def save_model(self, request, obj, form, change):
         anterior = PerfilUsuario.objects.get(pk=obj.pk) if change else None
         super().save_model(request, obj, form, change)
-        alteracoes = calcular_alteracoes(anterior, obj, ("telefone", "ramal")) if anterior else {}
+        alteracoes = calcular_alteracoes(
+            anterior,
+            obj,
+            ("telefone", "ramal", "cargo", "setor"),
+        ) if anterior else {}
         if alteracoes:
             registrar_evento(
                 codigo="perfil.atualizado",
                 resumo="Perfil atualizado pelo Admin",
                 categoria=EventoAuditoria.Categoria.PERFIL,
                 request=request,
-                usuario=obj.usuario,
+                usuario=request.user,
                 entidade=obj.usuario,
                 alteracoes=alteracoes,
                 origem=EventoAuditoria.Origem.ADMIN,
