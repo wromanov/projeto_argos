@@ -250,7 +250,7 @@ Produzir uma fotografia funcional confiável antes da abertura da Fase B.
 
 # 5. FASE B — Monitoramento operacional
 
-**Estado:** EM CURSO — MON-01, MON-02, MON-03 e MON-04 concluídas e aprovadas. SEC-R01 concluída / VERIFIED; SEC-R02 é a próxima frente; MON-05 permanece planejada e bloqueada pelo Security Gate.
+**Estado:** EM CURSO — MON-01, MON-02, MON-03 e MON-04 concluídas e aprovadas. SEC-R01 concluída / VERIFIED / PUBLICADA; SEC-R02 concluída / VERIFIED; o Security Gate permanece BLOCKED — REAVALIAÇÃO NECESSÁRIA; MON-05 permanece planejada e não autorizada.
 
 ## Objetivo
 
@@ -448,8 +448,9 @@ falha de worker e os requisitos de segurança de monitoramento.
 
 ## MON-05 — Concorrência e scheduler
 
-**Estado:** PLANEJADA, bloqueada pelo Security Gate enquanto SEC-R02 estiver
-pendente. Não está liberada para implementação operacional.
+**Estado:** PLANEJADA / NÃO AUTORIZADA. O Security Gate permanece BLOCKED —
+REAVALIAÇÃO NECESSÁRIA; SEC-R02 não libera MON-05 automaticamente. Não está
+liberada para implementação operacional.
 
 Distribuir verificações do parque ao longo do ciclo com concorrência limitada e configurável.
 
@@ -905,25 +906,30 @@ As fases representam dependências predominantes e não um modelo waterfall ríg
 2. MON-04B — concluída / aprovada / publicada
 3. MON-04C — concluída / aprovada / publicada
 4. MON-04D — concluída
-5. SEC-R01 — discovery/remediação do SEC-007
-6. teste de regressão
-7. SEC-R01 VERIFY — agente independente de segurança revalida
-8. Security Gate deixa de BLOCKED somente se o VERIFY e a governança aprovarem
-9. MON-05 — poderá ser reconsiderada/autorizada após a liberação do gate
-10. SEC-001..SEC-006 tratados segundo prioridade e antes dos gates de produção aplicáveis
+5. SEC-R01 — concluída / VERIFIED / PUBLICADA em 3103cec
+6. SEC-R02 — concluída / VERIFIED no commit técnico 227f691
+7. Fechamento documental SEC-R02D — aguardando publicação conjunta
+8. Security Gate — BLOCKED — REAVALIAÇÃO NECESSÁRIA
+9. SEC-GATE-01 — Reavaliação do Security Gate
+10. MON-05 — permanece planejada / não autorizada até decisão explícita do gate
 
-SEC-R01 está CONCLUÍDA / VERIFIED no commit `9b58885`. Evidências: SEC-R01B
-com 8 testes PASS, SEC-R01C com 11 testes PASS, suíte global com 588 testes
-PASS e Independent VERIFY PASS. MON-05 permanece planejada e não autorizada;
-não é automaticamente liberada após o VERIFY.
+SEC-R01 está CONCLUÍDA / VERIFIED / PUBLICADA: a implementação foi registrada
+no commit `9b58885` e o fechamento documental foi publicado em `3103cec`.
+SEC-R02 está CONCLUÍDA / VERIFIED no commit técnico local `227f691`, aguardando
+publicação conjunta com este fechamento documental. MON-05 permanece planejada
+e não autorizada; não é automaticamente liberada após o VERIFY.
 
 ## 13.1 — Continuidade de segurança e governança
 
-**Security Gate: BLOCKED.** SEC-007 foi confirmado historicamente, corrigido
-no commit `9b58885` e está REMEDIADO / VERIFIED. A auditoria independente
-registrada em `docs/security_audit/auditoria_segurança_001.md` confirma que o
-exploit original não é mais reproduzível. O bloqueio atual decorre do novo
-front SEC-R02, não do SEC-007.
+**Security Gate: BLOCKED — REAVALIAÇÃO NECESSÁRIA.** SEC-007 foi confirmado
+historicamente, corrigido no commit `9b58885` e está REMEDIADO / VERIFIED. A
+auditoria independente registrada em `docs/security_audit/auditoria_segurança_001.md`
+confirma que o exploit original não é mais reproduzível. SEC-R02 também não é
+mais motivo do bloqueio; SEC-001 a SEC-006 permanecem abertos, mas ainda não
+foram classificados individualmente quanto ao efeito sobre o Security Gate. O
+gate permanece BLOCKED enquanto a reavaliação de governança não for concluída.
+Não declarar OPEN ou RELEASED automaticamente e não classificar todos esses
+findings como blockers sem essa revisão.
 
 ```text
 SEC-007 — Gestão administrativa de usuários permite escalada vertical de privilégio
@@ -940,9 +946,11 @@ O Django Admin atual não possui `UserAdmin` específico que restrinja esses
 campos para esse perfil. Esta é uma síntese de governança, não um relatório
 de pentest.
 
-O gate impede homologação, promoção ou exposição em produção enquanto SEC-R02
-estiver pendente. Não congela desenvolvimento local, testes, MON-04 ou trabalho
-documental, nem autoriza alteração arquitetural automática.
+O gate permanece BLOCKED enquanto a reavaliação de governança não for
+concluída. Essa reavaliação deverá distinguir impacto em desenvolvimento local,
+homologação, deployment e produção; não congela automaticamente desenvolvimento
+local, testes, MON-04 ou trabalho documental, nem autoriza alteração
+arquitetural automática.
 
 ### SEC-R01 — Remediação de segurança prioritária
 
@@ -955,15 +963,18 @@ NÃO AUTORIZADA enquanto o Security Gate estiver BLOCKED.
 
 ### SEC-R02 — Endurecimento do PerfilUsuarioAdmin
 
-**PRÓXIMA FRENTE / BLOQUEANTE PARA O SECURITY GATE.** SEC-R02 cobre SEC-008,
-SEC-009 e SEC-010. A sequência é SEC-R02A Discovery → SEC-R02B Implementação
-→ SEC-R02C Regressão → VERIFY → decisão do Security Gate. Esta abertura não
-implementa a correção nem antecipa a solução antes da Discovery.
+**CONCLUÍDA / VERIFIED.** SEC-R02 cobre SEC-008, SEC-009 e SEC-010 e foi
+implementada no commit técnico local `227f691`, aguardando publicação conjunta
+com o fechamento documental SEC-R02D. As evidências registradas são SEC-R02B
+com 5 testes PASS, SEC-R02C com 11 testes PASS, `usuarios` com 106 testes PASS,
+recorte de segurança com 65 testes PASS, suíte global com 604 testes PASS,
+`manage.py check` PASS, migrations sem alterações, Independent VERIFY PASS e
+harness independente 5/5 PASS.
 
-Direção arquitetural: avaliar a reutilização da fronteira fail-closed da SEC-R01
-no `PerfilUsuarioAdmin`, incluindo queryset, permissões por objeto, acessos
-protegidos, POST direto por ID, `save_model`, `calcular_alteracoes`, auditoria,
-atomicidade e comportamento legítimo do Administrador ARGOS.
+Resultado arquitetural: a implementação reutilizou a fronteira fail-closed da
+SEC-R01 no `PerfilUsuarioAdmin`, cobrindo queryset, permissões por objeto,
+acessos protegidos, POST direto por ID, `save_model`, `calcular_alteracoes`,
+auditoria, atomicidade e comportamento legítimo do Administrador ARGOS.
 
 ### Findings preservados
 
@@ -977,13 +988,22 @@ SEC-004 — VULNERABILITY / Medium / CONFIRMADO / P1
 SEC-005 — VULNERABILITY / Medium / POTENCIAL / P2
 SEC-006 — SECURITY DEBT / Medium / CONFIRMADO / P2
 SEC-007 — VULNERABILITY / High / REMEDIADO / VERIFIED / P0
-SEC-008 — SECURITY DEBT / Medium / CONFIRMADO
-SEC-009 — HARDENING / Medium / CONFIRMADO
-SEC-010 — ARCHITECTURAL RISK / Medium / POTENCIAL
+SEC-008 — SECURITY DEBT / Medium / historicamente CONFIRMADO / REMEDIADO / VERIFIED
+SEC-009 — HARDENING / Medium / historicamente CONFIRMADO / REMEDIADO / VERIFIED
+SEC-010 — ARCHITECTURAL RISK / Medium / historicamente POTENCIAL / MITIGADO / VERIFIED
 ```
 
-SEC-007 não mantém mais o gate bloqueado. O gate permanece BLOCKED devido a
-SEC-R02 e aos findings SEC-008/009/010.
+SEC-007, SEC-008 e SEC-009 não mantêm mais o gate bloqueado; SEC-010 está
+MITIGADO / VERIFIED. SEC-001..SEC-006 permanecem abertos, sem classificação
+individual quanto ao efeito sobre o Security Gate. O gate permanece BLOCKED —
+REAVALIAÇÃO NECESSÁRIA enquanto a reavaliação de governança não for concluída.
+
+Próxima frente: **SEC-GATE-01 — Reavaliação do Security Gate**, sem antecipar
+implementação. O objetivo é revisar SEC-001..SEC-006, identificar blockers reais
+por ambiente, separar backlog e decidir a próxima remediação, distinguindo
+desenvolvimento local, homologação, deployment e produção. SEC-R03 fica
+reservado para eventual remediação concreta determinada posteriormente pela
+SEC-GATE-01. MON-05 continua PLANEJADA / NÃO AUTORIZADA.
 
 ### Decisões GOV-SEC
 
@@ -1136,7 +1156,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
-FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-04 concluídas; SEC-R01 VERIFIED; SEC-R02 próxima; MON-05 bloqueada pelo Security Gate)
+FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-04 concluídas; SEC-R01 VERIFIED/PUBLICADA; SEC-R02 CONCLUÍDA/VERIFIED; Security Gate BLOCKED — REAVALIAÇÃO NECESSÁRIA; MON-05 planejada/não autorizada)
 FASE C — Captura manual e imagens              ⏳ PLANEJADA
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA

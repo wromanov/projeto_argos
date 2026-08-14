@@ -357,7 +357,9 @@ atualmente aberta.
 **Categoria:** SECURITY DEBT
 **Severidade:** Medium
 **Confiança:** Alta
-**Status:** CONFIRMADO
+**Status histórico:** CONFIRMADO
+
+**Status atual:** REMEDIADO / VERIFIED
 
 Administrador ARGOS recebe HTTP 200 ao acessar por ID direto o perfil associado
 a superuser e o próprio `PerfilUsuario`. O `PerfilUsuarioAdmin` não aplica
@@ -372,7 +374,9 @@ mutação persistida durante o VERIFY.
 **Categoria:** HARDENING
 **Severidade:** Medium
 **Confiança:** Alta
-**Status:** CONFIRMADO
+**Status histórico:** CONFIRMADO
+
+**Status atual:** REMEDIADO / VERIFIED
 
 POST de edição de `PerfilUsuario` alcança `save_model` e retorna HTTP 500 por
 `NameError`: o símbolo `calcular_alteracoes` não está definido em
@@ -386,7 +390,9 @@ autorização por objeto. SEC-009 não é reabertura do SEC-007.
 **Categoria:** ARCHITECTURAL RISK
 **Severidade:** Medium
 **Confiança:** Alta
-**Status:** POTENCIAL
+**Status histórico:** POTENCIAL
+
+**Status atual:** MITIGADO / VERIFIED
 
 Se o erro de SEC-009 for corrigido sem controle por objeto, um Administrador
 ARGOS poderá potencialmente alterar o próprio `PerfilUsuario`, o perfil de um
@@ -462,19 +468,29 @@ Isso não substitui atualização planejada nem validação de dependências tra
 
 ## Security Gate
 
-**SECURITY GATE: BLOCKED**
+**SECURITY GATE: BLOCKED — REAVALIAÇÃO NECESSÁRIA**
 
 **Motivo:**
-SEC-007 não mantém mais o gate bloqueado: está REMEDIADO / VERIFIED. O gate
-permanece BLOCKED devido ao novo front SEC-R02, que trata SEC-008, SEC-009 e
-SEC-010.
+SEC-R02 não é mais motivo do bloqueio: SEC-008 e SEC-009 estão REMEDIADOS /
+VERIFIED e SEC-010 está MITIGADO / VERIFIED. SEC-001 a SEC-006 permanecem
+abertos, mas ainda não foram classificados individualmente quanto ao efeito
+sobre o Security Gate. O gate permanece BLOCKED enquanto essa reavaliação de
+governança não for concluída.
+
+Esta atualização não declara o Security Gate OPEN ou RELEASED automaticamente.
+A próxima decisão de governança deverá identificar, com revisão específica,
+quais findings bloqueiam desenvolvimento local, homologação, deployment ou
+produção. Não se atribui automaticamente a classificação de blocker a todos
+os findings SEC-001 a SEC-006.
 
 ## SEC-R02 — Endurecimento do PerfilUsuarioAdmin
 
+### Registro histórico da abertura
+
 SEC-R02 foi aberto formalmente para tratar conjuntamente SEC-008, SEC-009 e
-SEC-010. A sequência prevista é: SEC-R02A Discovery, SEC-R02B Implementação,
-SEC-R02C Regressão, VERIFY independente e decisão do Security Gate. Esta tarefa
-não implementa SEC-R02 e não antecipa sua solução definitiva.
+SEC-010. A sequência prevista era: SEC-R02A Discovery, SEC-R02B Implementação,
+SEC-R02C Regressão, VERIFY independente e decisão do Security Gate. O registro
+abaixo preserva o estado e a motivação originais da abertura.
 
 Na Discovery deverão ser avaliados queryset, permissões por objeto, acesso ao
 próprio perfil, perfil de superuser, perfil de outro Administrador ARGOS, POST
@@ -488,6 +504,103 @@ executado de forma controlada em cada banco existente para reconciliar
 produção/homologação deve existir inventário das contas historicamente
 privilegiadas e decisão humana sobre eventual remediação; não fazer demotion
 automática.
+
+### SEC-R02D — Fechamento documental
+
+**Estado:** CONCLUÍDA / VERIFIED
+
+O commit técnico `227f691` (`fix(security): endurecer administracao de perfis`)
+registra a implementação e está **COMMITADO LOCALMENTE**. Ele ainda não foi
+publicado: `master` está `ahead 1` de `origin/master`, e o commit documental
+conjunto ainda não existe.
+
+#### Evidências registradas
+
+- SEC-R02B: 5 testes PASS;
+- SEC-R02C: 11 testes PASS;
+- suíte `usuarios`: 106 testes PASS;
+- recorte de segurança: 65 testes PASS;
+- suíte global: 604 testes PASS;
+- `manage.py check`: PASS;
+- `makemigrations --check --dry-run`: `No changes detected`;
+- Independent VERIFY: PASS;
+- harness independente: 5/5 PASS.
+
+#### Resultado técnico
+
+`PerfilUsuarioAdmin` passou a:
+
+- aplicar queryset fail-closed e autorização por objeto;
+- reutilizar `can_manage_user`;
+- bloquear self, target superuser, staff, outro Administrador ARGOS,
+  `Permission` direta e grupos fora da allowlist;
+- preservar Monitoramento e Operador como targets administráveis;
+- preservar o superuser pleno;
+- proteger a associação `usuario` e os timestamps;
+- permitir edição somente de `telefone`, `ramal`, `cargo` e `setor`;
+- corrigir os imports de auditoria;
+- registrar `request.user` como ator e `obj.usuario` como entidade alvo;
+- auditar os quatro campos permitidos;
+- preservar o rollback transacional do fluxo Django Admin.
+
+#### Risco residual de hardening
+
+`_can_manage_profile()` contém `except Exception: return False`. O comportamento
+é fail-closed, nenhum bypass foi demonstrado e o VERIFY não demonstrou
+vulnerabilidade. O broad except pode, porém, ocultar erro operacional e
+prejudicar o diagnóstico. Ele permanece como hardening/backlog técnico, sem ser
+blocker nesta etapa e sem criação de SEC-011.
+
+### Estado dos findings após SEC-R02
+
+A contagem histórica total permanece preservada e não diminui quando um finding
+é remediado:
+
+```text
+Critical: 0
+High: 2
+Medium: 8
+Low: 0
+Info: 0
+```
+
+Findings ainda abertos, sem alteração de severidade, confiança ou prioridade:
+
+```text
+SEC-001 — ARCHITECTURAL RISK / High / POTENCIAL / P1
+SEC-002 — SECURITY DEBT / Medium / CONFIRMADO / P1
+SEC-003 — VULNERABILITY / Medium / CONFIRMADO / P1
+SEC-004 — VULNERABILITY / Medium / CONFIRMADO / P1
+SEC-005 — VULNERABILITY / Medium / POTENCIAL / P2
+SEC-006 — SECURITY DEBT / Medium / CONFIRMADO / P2
+```
+
+Remediados ou mitigados e verificados:
+
+```text
+SEC-007 — REMEDIADO / VERIFIED
+SEC-008 — REMEDIADO / VERIFIED
+SEC-009 — REMEDIADO / VERIFIED
+SEC-010 — MITIGADO / VERIFIED
+```
+
+SEC-R02 está formalmente **CONCLUÍDA / VERIFIED**, mas ainda não está
+**PUBLICADA**, pois o commit técnico `227f691` não foi enviado ao `origin` e o
+commit documental ainda não existe.
+
+### Próxima frente de governança
+
+Não abrir automaticamente uma correção SEC-R03 específica nem antecipar sua
+implementação. A próxima frente é **SEC-GATE-01 — Reavaliação do Security
+Gate**, para revisar SEC-001..SEC-006, identificar blockers reais por ambiente,
+separar backlog e decidir a próxima remediação. A reavaliação deverá distinguir
+impacto em desenvolvimento local, homologação, deployment e produção. SEC-R03
+fica reservado para eventual remediação concreta determinada posteriormente
+pela SEC-GATE-01.
+
+MON-05 continua **PLANEJADA / NÃO AUTORIZADA**. SEC-R02 não a libera
+automaticamente; sua autorização depende da próxima decisão explícita do
+Security Gate.
 
 ## Integridade da auditoria
 

@@ -1,21 +1,63 @@
 # HANDOFF DE CONTINUIDADE — PROJETO ARGOS
 
-> **Atualização de continuidade — 13/08/2026.** Esta seção prevalece sobre
+> **Atualização de continuidade — 14/08/2026.** Esta seção prevalece sobre
 > snapshots históricos abaixo quando houver divergência de branch, HEAD,
 > MON-04, segurança ou próxima atividade.
 
 ## Baseline técnico atual de referência
 
-- Data de referência: **13/08/2026**
+- Data de referência: **14/08/2026**
 - Branch: `master`
-- Último commit técnico publicado de referência: `9cf1964` — `test(monitoramento): validar laboratorio de confirmacao`
-- Origin: `master` sincronizada com `origin/master`
-- Suíte canônica: `569` testes PASS local; não afirmar CI remoto
-- Última entrega técnica: MON-04C concluída e publicada
-- Fechamento documental: MON-04D concluída
-- Commits de evidência: `26a8925` e `9cf1964`
+- Último commit técnico local: `227f691` — `fix(security): endurecer administracao de perfis`
+- Origin: `3103cec` — `docs(security): encerrar sec-r01 e abrir sec-r02`
+- Estado Git: `master...origin/master [ahead 1]`
+- Suíte global: `604` testes PASS local; não afirmar CI remoto
+- Última entrega técnica: SEC-R02 concluída / VERIFIED localmente
+- Fechamento documental: SEC-R02D em andamento, ainda sem commit
+- SEC-R01: concluída / VERIFIED / PUBLICADA em `3103cec`
 
-## Estado vigente após MON-04D
+## Estado vigente após SEC-R02D
+
+SEC-R02 está **CONCLUÍDA / VERIFIED**, com a implementação técnica no commit
+local `227f691`. SEC-008 e SEC-009 estão **REMEDIADOS / VERIFIED**; SEC-010
+está **MITIGADO / VERIFIED**. O commit técnico ainda não foi enviado ao
+`origin`, e o fechamento documental atual ainda não foi commitado.
+
+Evidências registradas: SEC-R02B com 5 testes PASS; SEC-R02C com 11 testes
+PASS; suíte `usuarios` com 106 testes PASS; recorte de segurança com 65 testes
+PASS; suíte global com 604 testes PASS; `manage.py check` PASS;
+`makemigrations --check --dry-run` com `No changes detected`; Independent
+VERIFY PASS; harness independente 5/5 PASS.
+
+O `PerfilUsuarioAdmin` aplica queryset fail-closed, autorização por objeto e
+`can_manage_user`; bloqueia self, superuser target, staff, outro Administrador
+ARGOS, `Permission` direta e grupos fora da allowlist; preserva Monitoramento,
+Operador e superuser pleno; protege associação `usuario` e timestamps; limita
+a edição a telefone, ramal, cargo e setor; corrige os imports de auditoria;
+registra ator, entidade alvo e os quatro campos; e preserva rollback
+transacional no Django Admin.
+
+O broad except em `_can_manage_profile()` permanece risco residual de
+HARDENING: falha fechada, sem bypass demonstrado, mas com potencial de ocultar
+erro operacional e prejudicar diagnóstico. Não criar SEC-011 nesta etapa.
+
+**SECURITY GATE: BLOCKED — REAVALIAÇÃO NECESSÁRIA.** SEC-R02 não é mais motivo
+do bloqueio. SEC-001 a SEC-006 permanecem abertos e não devem ser classificados
+individualmente quanto ao efeito sobre o Security Gate. O gate permanece BLOCKED
+enquanto essa reavaliação de governança não for concluída. A próxima decisão
+deverá distinguir impacto em desenvolvimento local, homologação, deployment e
+produção, sem afirmar que todos são blockers ou que todos precisam ser
+encerrados para liberar o gate.
+
+Próxima frente: **SEC-GATE-01 — Reavaliação do Security Gate**, sem antecipar
+implementação. O objetivo é revisar SEC-001..SEC-006, identificar blockers reais
+por ambiente, separar backlog e decidir a próxima remediação. SEC-R03 fica
+reservado para eventual remediação concreta determinada posteriormente pela
+SEC-GATE-01. SEC-007 foi corrigido em
+`9b58885`; SEC-R01 foi publicada em `3103cec`. MON-05 continua **PLANEJADA /
+NÃO AUTORIZADA** e não é liberada automaticamente por SEC-R02.
+
+## Snapshot histórico após MON-04D
 
 MON-04 — Confirmação de estado e anti-flapping — **CONCLUÍDA / APROVADA**.
 
@@ -75,8 +117,9 @@ BLOCKED; ela não é automaticamente liberada após o VERIFY.
 
 SEC-001 a SEC-006 permanecem findings existentes, tratados por prioridade; não
 foram declarados corrigidos e não são todos blockers imediatos. SEC-008 e
-SEC-009 estão confirmados; SEC-010 é potencial. SEC-R02 é o motivo atual do
-Security Gate BLOCKED.
+SEC-009 estão confirmados; SEC-010 é potencial. Naquele snapshot, SEC-R02 era
+o motivo então registrado para o Security Gate BLOCKED; essa formulação não
+representa o estado vigente após SEC-R02D.
 
 Risco residual de implantação: `configurar_perfis_argos` deve ser executado de
 forma controlada em cada banco existente para reconciliar `Group.permissions`.
