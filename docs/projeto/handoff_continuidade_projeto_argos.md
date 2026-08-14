@@ -53,26 +53,37 @@ afirma CI remoto, homologação em produção ou teste com câmera real.
 ## Estado de segurança e produção
 
 Existe auditoria independente em `docs/security_audit/auditoria_segurança_001.md`.
-SEC-007 foi confirmado como vulnerabilidade **High**, confiança alta,
-prioridade **P0**, envolvendo escalada vertical via Django Admin.
+SEC-007 foi confirmado historicamente como vulnerabilidade **High**, confiança
+alta, prioridade **P0**, envolvendo escalada vertical via Django Admin. Foi
+corrigido pelo commit `9b58885` e está **REMEDIADO / VERIFIED**. A regressão
+SEC-R01C passou e o VERIFY independente passou; o exploit original não é mais
+reproduzível.
 
-**SECURITY GATE: BLOCKED para produção.** Homologação, promoção e exposição
-em produção estão proibidas até SEC-007 ser corrigido e revalidado. O
-desenvolvimento local, testes e fechamento documental de MON-04 podem continuar.
+**SECURITY GATE: BLOCKED para produção.** SEC-007 não mantém mais o gate
+bloqueado. O gate permanece bloqueado devido ao novo front SEC-R02, que cobre
+SEC-008, SEC-009 e SEC-010.
 
-Frente corretiva obrigatória: **SEC-R01 / SEC-007**. Ela deverá eliminar a
-escalada confirmada e incluir teste de regressão; depois, o Agente de Segurança
-deverá executar VERIFY. A solução não está definida neste handoff.
+SEC-R01 está **CONCLUÍDA / VERIFIED** no commit `9b58885`, com SEC-R01B (8
+testes), SEC-R01C (11 testes), suíte global (588 testes) e Independent VERIFY
+PASS.
 
-MON-04D está concluída e não é cancelada. A próxima frente é **SEC-R01**,
-para discovery/remediação do SEC-007, seguida de teste de regressão e VERIFY
-independente pelo Agente de Segurança. MON-05 — scheduler + concorrência —
-permanece planejada, mas não autorizada enquanto o gate estiver BLOCKED; ela
-não é automaticamente liberada após o VERIFY.
+MON-04D está concluída e não é cancelada. A próxima frente é **SEC-R02A —
+Discovery**, para tratar SEC-008/009/010, seguida de implementação, regressão,
+VERIFY independente e decisão do Security Gate. MON-05 — scheduler +
+concorrência — permanece planejada, mas não autorizada enquanto o gate estiver
+BLOCKED; ela não é automaticamente liberada após o VERIFY.
 
 SEC-001 a SEC-006 permanecem findings existentes, tratados por prioridade; não
-foram declarados corrigidos e não são todos blockers imediatos. SEC-007 é o
-único finding atualmente responsável pelo Security Gate BLOCKED.
+foram declarados corrigidos e não são todos blockers imediatos. SEC-008 e
+SEC-009 estão confirmados; SEC-010 é potencial. SEC-R02 é o motivo atual do
+Security Gate BLOCKED.
+
+Risco residual de implantação: `configurar_perfis_argos` deve ser executado de
+forma controlada em cada banco existente para reconciliar `Group.permissions`.
+Não deve remover automaticamente `is_superuser`, `is_staff` ou
+`user_permissions` individuais. Antes de produção/homologação, inventariar
+contas historicamente privilegiadas e obter decisão humana; não fazer demotion
+automática.
 
 ## Governança de segurança
 

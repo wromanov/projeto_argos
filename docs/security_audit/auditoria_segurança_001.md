@@ -2,13 +2,13 @@
 
 **Baseline auditado:** `26a8925c6968cf61551d524e233679a1a2771993`
 **Branch:** `master`
-**Escopo:** auditoria de segurança inicialmente somente leitura, com VERIFY ativo posterior, local e explicitamente autorizado para SEC-007.
+**Escopo:** auditoria de segurança inicialmente somente leitura, com VERIFY ativo posterior, local e explicitamente autorizado para SEC-007 e os findings derivados do VERIFY.
 
 ## Resumo executivo
 
 Critical: 0
-High: 2 — 1 confirmado; 1 potencial
-Medium: 5 — 4 confirmados; 1 potencial
+High: 2 — 1 confirmado historicamente e REMEDIADO / VERIFIED; 1 potencial
+Medium: 8 — 6 confirmados; 2 potenciais
 Low: 0
 Info: 0
 
@@ -296,7 +296,8 @@ Forçar falha controlada em `registrar_evento()` e confirmar que a alteração p
 **Categoria:** VULNERABILITY
 **Severidade:** High
 **Confiança:** Alta
-**Status:** CONFIRMADO
+**Status histórico:** CONFIRMADO
+**Status atual:** REMEDIADO / VERIFIED
 **Prioridade sugerida:** P0
 **Baseline:** `26a8925c6968cf61551d524e233679a1a2771993`
 
@@ -338,6 +339,59 @@ Criar formulário administrativo restrito para gestão de usuários, removendo `
 **Teste recomendado:**
 
 Criar teste de regressão que confirme que um administrador ARGOS não consegue promover usuário a superusuário, promover a própria conta, alterar `is_staff`, atribuir grupos privilegiados ou atribuir permissões fora da política aprovada.
+
+**Fechamento SEC-R01:**
+
+SEC-007 foi confirmado historicamente e corrigido pelo commit `9b58885`
+(`fix(security): restringir administracao de usuarios`). A regressão adversarial
+SEC-R01C passou com 11 testes, a implementação SEC-R01B passou com 8 testes,
+a suíte `usuarios` passou com 90 testes, o recorte `usuarios +
+core.test_seguranca` passou com 120 testes e a suíte global passou com 588
+testes. O VERIFY independente passou; o exploit original não é mais
+reproduzível. Não apagar este histórico: SEC-007 não é vulnerabilidade
+atualmente aberta.
+
+### SEC-008 — PerfilUsuarioAdmin expõe perfis protegidos por ID direto
+
+**Origem:** VERIFY-01
+**Categoria:** SECURITY DEBT
+**Severidade:** Medium
+**Confiança:** Alta
+**Status:** CONFIRMADO
+
+Administrador ARGOS recebe HTTP 200 ao acessar por ID direto o perfil associado
+a superuser e o próprio `PerfilUsuario`. O `PerfilUsuarioAdmin` não aplica
+queryset por objeto, `has_view_permission` por objeto,
+`has_change_permission` por objeto ou `can_manage_user`. O impacto confirmado é
+exposição de dados administrativos de contas protegidas. Não houve escalada nem
+mutação persistida durante o VERIFY.
+
+### SEC-009 — Edição de PerfilUsuarioAdmin falha com erro interno
+
+**Origem:** VERIFY-02
+**Categoria:** HARDENING
+**Severidade:** Medium
+**Confiança:** Alta
+**Status:** CONFIRMADO
+
+POST de edição de `PerfilUsuario` alcança `save_model` e retorna HTTP 500 por
+`NameError`: o símbolo `calcular_alteracoes` não está definido em
+`usuarios/admin.py`. O fluxo transacional dos probes impediu persistência.
+O impacto é função administrativa quebrada e mascaramento da ausência de
+autorização por objeto. SEC-009 não é reabertura do SEC-007.
+
+### SEC-010 — Correção isolada do PerfilUsuarioAdmin pode permitir mutação privilegiada
+
+**Origem:** VERIFY-03
+**Categoria:** ARCHITECTURAL RISK
+**Severidade:** Medium
+**Confiança:** Alta
+**Status:** POTENCIAL
+
+Se o erro de SEC-009 for corrigido sem controle por objeto, um Administrador
+ARGOS poderá potencialmente alterar o próprio `PerfilUsuario`, o perfil de um
+superuser ou o perfil de outra conta protegida. A futura correção deve
+reutilizar a política fail-closed existente para administração de usuários.
 
 ## Hardening recomendado
 
@@ -411,7 +465,29 @@ Isso não substitui atualização planejada nem validação de dependências tra
 **SECURITY GATE: BLOCKED**
 
 **Motivo:**
-SEC-007 — escalada vertical High confirmada.
+SEC-007 não mantém mais o gate bloqueado: está REMEDIADO / VERIFIED. O gate
+permanece BLOCKED devido ao novo front SEC-R02, que trata SEC-008, SEC-009 e
+SEC-010.
+
+## SEC-R02 — Endurecimento do PerfilUsuarioAdmin
+
+SEC-R02 foi aberto formalmente para tratar conjuntamente SEC-008, SEC-009 e
+SEC-010. A sequência prevista é: SEC-R02A Discovery, SEC-R02B Implementação,
+SEC-R02C Regressão, VERIFY independente e decisão do Security Gate. Esta tarefa
+não implementa SEC-R02 e não antecipa sua solução definitiva.
+
+Na Discovery deverão ser avaliados queryset, permissões por objeto, acesso ao
+próprio perfil, perfil de superuser, perfil de outro Administrador ARGOS, POST
+direto por ID, `save_model`, `calcular_alteracoes`, auditoria, atomicidade e
+comportamento legítimo do administrador.
+
+Como risco residual de implantação, `configurar_perfis_argos` deve ser
+executado de forma controlada em cada banco existente para reconciliar
+`Group.permissions`. O comando não deve remover automaticamente
+`is_superuser`, `is_staff` ou `user_permissions` individuais. Antes de
+produção/homologação deve existir inventário das contas historicamente
+privilegiadas e decisão humana sobre eventual remediação; não fazer demotion
+automática.
 
 ## Integridade da auditoria
 
