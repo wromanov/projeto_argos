@@ -418,3 +418,74 @@ class SubstituicaoCamera(models.Model):
 
     def delete(self, *args, **kwargs):
         raise ValidationError("Substituições de câmera não podem ser excluídas.")
+
+
+class EstadoMonitoramento(models.Model):
+    """Estado canônico local do monitoramento, isolado dos campos legados de Camera."""
+
+    class EstadoEstavel(models.TextChoices):
+        UNKNOWN = "UNKNOWN", "Desconhecido"
+        ONLINE = "ONLINE", "Online"
+        OFFLINE = "OFFLINE", "Offline"
+
+    camera = models.OneToOneField(
+        Camera,
+        on_delete=models.CASCADE,
+        related_name="estado_monitoramento",
+    )
+    estado_estavel = models.CharField(
+        max_length=7,
+        choices=EstadoEstavel.choices,
+        default=EstadoEstavel.UNKNOWN,
+    )
+    estado_alterado_em = models.DateTimeField(null=True, blank=True)
+    ultima_evidencia_util_em = models.DateTimeField(null=True, blank=True)
+    proximo_vencimento_em = models.DateTimeField(null=True, blank=True, db_index=True)
+    ultima_geracao_configuracao = models.PositiveIntegerField(default=1)
+    sequencia_positiva = models.PositiveIntegerField(default=0)
+    sequencia_negativa = models.PositiveIntegerField(default=0)
+    confirmacao_ultima_observacao_em = models.DateTimeField(null=True, blank=True)
+    versao_politica_confirmacao = models.CharField(max_length=64, default="initial")
+    em_escopo = models.BooleanField(default=True, db_index=True)
+    criado_em = models.DateTimeField(auto_now_add=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Estado de monitoramento"
+        verbose_name_plural = "Estados de monitoramento"
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(estado_estavel__in=["UNKNOWN", "ONLINE", "OFFLINE"]),
+                name="estado_monitoramento_estado_estavel_valid",
+            ),
+        ]
+
+
+class TransicaoEstadoMonitoramento(models.Model):
+    """Histórico enxuto: somente mudanças de estado técnico estável."""
+
+    camera = models.ForeignKey(
+        Camera,
+        on_delete=models.CASCADE,
+        related_name="transicoes_monitoramento",
+    )
+    estado_anterior = models.CharField(max_length=7, choices=EstadoMonitoramento.EstadoEstavel.choices)
+    estado_atual = models.CharField(max_length=7, choices=EstadoMonitoramento.EstadoEstavel.choices)
+    ocorrida_em = models.DateTimeField(db_index=True)
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["ocorrida_em", "pk"]
+        indexes = [models.Index(fields=["camera", "ocorrida_em"])]
+        verbose_name = "Transição de estado de monitoramento"
+        verbose_name_plural = "Transições de estado de monitoramento"
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(estado_anterior__in=["UNKNOWN", "ONLINE", "OFFLINE"]),
+                name="transicao_estado_anterior_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(estado_atual__in=["UNKNOWN", "ONLINE", "OFFLINE"]),
+                name="transicao_estado_atual_valid",
+            ),
+        ]

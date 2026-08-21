@@ -34,7 +34,9 @@ class ConfirmationStatePort(Protocol):
         result: ProbeResult,
         memory: ConfirmationMemory,
         decision: TechnicalDecision,
-    ) -> None:
+        next_due_at: datetime,
+    ) -> bool | None:
+        """Persists the completion; ``False`` means its generation is stale."""
         ...
 
 

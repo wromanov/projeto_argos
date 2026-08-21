@@ -53,7 +53,7 @@ class MemoryConfirmationPort:
     def load(self, candidate: ScheduleCandidate, policy: ConfirmationPolicy) -> ConfirmationMemory:
         return self.memory.setdefault(candidate.camera_id, ConfirmationMemory.initial(policy.version))
 
-    def store(self, candidate: ScheduleCandidate, _result: ProbeResult, memory: ConfirmationMemory, _decision: object) -> None:
+    def store(self, candidate: ScheduleCandidate, _result: ProbeResult, memory: ConfirmationMemory, _decision: object, _next_due_at: datetime) -> None:
         self.stores += 1
         self.memory[candidate.camera_id] = memory
 

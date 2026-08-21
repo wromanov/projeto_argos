@@ -315,18 +315,24 @@ class DueScheduler:
             return self._discard(attempt, CompletionDisposition.CANCELLED, now)
         candidate = self._candidate_by_attempt[attempt_id]
         decision = None
+        epoch = self._schedule_epoch.get(attempt.camera_id, 0) + 1
+        scheduled_next = next_due_at(result.observed_at, attempt.camera_id, epoch, self._config)
         if self._confirmation_port is not None:
             if self._confirmation_policy is None:
                 raise ValueError("confirmation_policy is required with confirmation_port")
-            memory = self._confirmation_port.load(candidate, self._confirmation_policy)
-            memory, decision = reduce_confirmation(memory, result, self._confirmation_policy)
-            self._confirmation_port.store(candidate, result, memory, decision)
+            try:
+                memory = self._confirmation_port.load(candidate, self._confirmation_policy)
+                memory, decision = reduce_confirmation(memory, result, self._confirmation_policy)
+                stored = self._confirmation_port.store(candidate, result, memory, decision, scheduled_next)
+                if stored is False:
+                    return self._discard(attempt, CompletionDisposition.CONFIG_CHANGED, now)
+            except Exception as exc:
+                self.report_repository_failure(type(exc).__name__)
+                return CompletionOutcome(attempt, CompletionDisposition.OPERATIONAL_FAILURE)
         completed = self._replace_attempt(attempt, state=AttemptState.COMPLETED)
         self._active_by_camera.pop(attempt.camera_id, None)
         self._current_by_camera.pop(attempt.camera_id, None)
-        epoch = self._schedule_epoch.get(attempt.camera_id, 0) + 1
         self._schedule_epoch[attempt.camera_id] = epoch
-        scheduled_next = next_due_at(result.observed_at, attempt.camera_id, epoch, self._config)
         self._next_due[attempt.camera_id] = scheduled_next
         self._start_from_queue(now)
         self._finish_shutdown_if_due(now)
