@@ -21,10 +21,9 @@ Principais riscos:
 
 ## Validações executadas
 
-- 569 testes: PASS (contagem da working tree; não é a contagem canônica do baseline auditado — ver Integridade da auditoria).
 - `manage.py check`: PASS.
-- `check --deploy`: PASS, com aviso de HSTS preload quando desativado.
 - `makemigrations --check --dry-run`: PASS.
+- Recortes de segurança: STARTED; NOT COMPLETED; NOT COUNTED AS PASS.
 - Bandit: 0 findings médios/altos.
 - `pip-audit`: nenhuma vulnerabilidade conhecida.
 - `detect-secrets`: somente falsos positivos já presentes na baseline.
@@ -482,6 +481,59 @@ A próxima decisão de governança deverá identificar, com revisão específica
 quais findings bloqueiam desenvolvimento local, homologação, deployment ou
 produção. Não se atribui automaticamente a classificação de blocker a todos
 os findings SEC-001 a SEC-006.
+
+## SEC-GATE-01D — Estado vigente por ambiente
+
+Esta seção substitui o estado anterior do gate para a decisão documental vigente.
+
+```text
+SECURITY_GATE_LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS
+SECURITY_GATE_HOMOLOGATION      = BLOCKED
+SECURITY_GATE_DEPLOYMENT        = BLOCKED
+SECURITY_GATE_PRODUCTION        = BLOCKED
+```
+
+**DESENVOLVIMENTO LOCAL AUTORIZADO COM CONTROLES.** HOMOLOGAÇÃO / DEPLOYMENT /
+PRODUÇÃO: **BLOCKED**. Não há `SECURITY GATE = RELEASED` global.
+
+### MON-05
+
+```text
+MON-05 LOCAL DEVELOPMENT = AUTHORIZED_CONTROLLED
+MON-05 HOMOLOGATION      = NOT_AUTHORIZED
+MON-05 DEPLOYMENT        = NOT_AUTHORIZED
+MON-05 PRODUCTION        = NOT_AUTHORIZED
+```
+
+A autorização limita-se à implementação e aos testes locais do contrato MON-05:
+sem ambiente compartilhado, câmeras ou credenciais reais, scheduler operacional
+real, deployment ou produção.
+
+### Matriz vigente de findings
+
+| Finding | Classificação | Local | Homologação | Deployment | Produção | MON05 local |
+|---|---|---:|---:|---:|---:|---:|
+| SEC-001 | ARCHITECTURAL RISK / High / POTENCIAL / P1 | ALLOW | BLOCK | BLOCK | BLOCK | ALLOW |
+| SEC-002 | SECURITY DEBT / Medium / CONFIRMADO / P1 | ALLOW | BLOCK | BLOCK | BLOCK | ALLOW |
+| SEC-003 | VULNERABILITY / Medium / CONFIRMADO / P1 | ALLOW_WITH_CONTROLS | BLOCK | BLOCK | BLOCK | ALLOW_WITH_CONTROLS |
+| SEC-004 | VULNERABILITY / Medium / CONFIRMADO / P1 | ALLOW | BLOCK | BLOCK | BLOCK | ALLOW |
+| SEC-005 | VULNERABILITY / Medium / POTENCIAL / P2 | ALLOW | ALLOW | ALLOW | ALLOW | ALLOW |
+| SEC-006 | SECURITY DEBT / Medium / CONFIRMADO / P2 | ALLOW | BLOCK | BLOCK | BLOCK | ALLOW |
+
+SEC-001, SEC-002, SEC-003, SEC-004 e SEC-006 bloqueiam homologação,
+deployment e produção. SEC-005 permanece em BACKLOG como VULNERABILITY /
+POTENCIAL / P2; não está remediado nem VERIFIED e não é SECURITY DEBT.
+
+### SEC-R03 e sequência
+
+**SEC-R03 — Hardening da configuração de produção** é a próxima remediação
+recomendada, cobrindo SEC-001 e SEC-002: seleção fail-closed de settings,
+configuração segura de produção, backend apropriado e rejeição de SQLite.
+
+Sequência: 1. SEC-GATE-01 concluída; 2. SEC-GATE-01D — fechamento documental
+atual; 3. MON-05 autorizada para desenvolvimento local controlado; 4. SEC-R03;
+5. SEC-003; 6. SEC-004; 7. SEC-006; 8. SEC-005 — backlog P2 / discovery de
+limites. A ordem não autoriza homologação.
 
 ## SEC-R02 — Endurecimento do PerfilUsuarioAdmin
 

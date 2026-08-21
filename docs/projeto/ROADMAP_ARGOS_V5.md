@@ -250,7 +250,7 @@ Produzir uma fotografia funcional confiável antes da abertura da Fase B.
 
 # 5. FASE B — Monitoramento operacional
 
-**Estado:** EM CURSO — MON-01, MON-02, MON-03 e MON-04 concluídas e aprovadas. SEC-R01 concluída / VERIFIED / PUBLICADA; SEC-R02 concluída / VERIFIED; o Security Gate permanece BLOCKED — REAVALIAÇÃO NECESSÁRIA; MON-05 permanece planejada e não autorizada.
+**Estado:** EM CURSO — SEC-GATE-01D em fechamento documental. Security Gate local RELEASED_WITH_CONTROLS; homologação, deployment e produção BLOCKED. MON-05 autorizada somente para desenvolvimento local controlado.
 
 ## Objetivo
 

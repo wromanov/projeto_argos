@@ -141,7 +141,7 @@ Agente de Segurança conduz auditoria, findings e VERIFY; o responsável humano
 tem a decisão final. Findings não autorizam alterações automáticas.
 
 **Projeto:** ARGOS — Sistema de Inventário e Monitoramento de Câmeras  
-**Atualizado em:** 13/08/2026
+**Atualizado em:** 21/08/2026
 **Finalidade:** permitir que outro agente continue o projeto em uma nova conversa sem perder decisões técnicas, estado do código, governança, UX/UI ou histórico recente.
 
 > **Nota de histórico.** As seções subsequentes preservam snapshots de
@@ -796,3 +796,31 @@ roadmap_projeto_argos_v3.txt
 ---
 
 **Fim do handoff.**
+
+## SEC-GATE-01D — Estado vigente
+
+O Security Gate está **RELEASED_WITH_CONTROLS** somente para desenvolvimento
+local. Homologação, deployment e produção permanecem **BLOCKED**; não existe
+liberação global do gate.
+
+MON-05 está **AUTHORIZED_CONTROLLED** em desenvolvimento local e
+**NOT_AUTHORIZED** em homologação, deployment e produção. O escopo local não
+inclui ambiente compartilhado, câmeras ou credenciais reais, scheduler
+operacional real, deployment ou produção.
+
+SEC-001, SEC-002, SEC-003, SEC-004 e SEC-006 bloqueiam homologação, deployment
+e produção. SEC-005 permanece **VULNERABILITY / Medium / POTENCIAL / P2** em
+backlog; não é SECURITY DEBT, nem remediado ou VERIFIED.
+
+SEC-R03 — **Hardening da configuração de produção** — é a próxima remediação
+recomendada para SEC-001 e SEC-002, cobrindo seleção fail-closed de settings,
+configuração segura, backend apropriado e rejeição de SQLite.
+
+Sequência vigente: SEC-GATE-01 concluída; SEC-GATE-01D — fechamento documental;
+MON-05 autorizada para desenvolvimento local controlado; SEC-R03; SEC-003;
+SEC-004; SEC-006; SEC-005 como backlog P2 / discovery de limites. A sequência
+não autoriza homologação.
+
+Validações documentadas: `manage.py check` PASS e
+`makemigrations --check --dry-run` PASS. Recortes de segurança ficaram
+STARTED, NOT COMPLETED e NOT COUNTED AS PASS.
