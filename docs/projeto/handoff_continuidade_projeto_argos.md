@@ -797,6 +797,66 @@ roadmap_projeto_argos_v3.txt
 
 **Fim do handoff.**
 
+---
+
+## HANDOFF MON-05 — FECHAMENTO DOCUMENTAL
+
+### Estado de continuidade
+
+Baseline vigente: `fbc0164` (`origin/master` e `origin/HEAD`).
+
+MON-05A, MON-05B e MON-05C estão `COMPLETE / PASS / PUBLISHED`. A sprint
+MON-05 está `COMPLETE`, com scheduler due-based, concorrência/fila bounded,
+attempt identity e deduplicação, revalidação, lifecycle/draining/shutdown,
+persistência local do estado técnico, `ConfirmationMemory`, freshness,
+`next_due`, atomicidade, rollback, CAS monotônico e CHECKs SQLite.
+
+### Contratos preservados e limites
+
+Os estados estáveis continuam `UNKNOWN`, `ONLINE` e `OFFLINE`; `SUSPECT` é
+efêmero e `STALE` é dimensão separada. `STALE` não vira `OFFLINE`, não cria
+transição e não cria incidente automaticamente. Monitoramento não altera o
+`Camera.status` legado e probe não é `EventoAuditoria`.
+
+O envelope aprovado é somente local, single-instance e SQLite, com defaults
+experimentais: concurrency 20, queue bound 40, intervalo 300 s, probe timeout
+5 s, connect timeout 3 s, jitter 10%, `stale_after` 900 s e shutdown timeout
+30 s. Não há suporte declarado a multi-worker ou PostgreSQL pronto.
+
+Não foram implementados ProbeAdapter/rede/câmera/credencial real, worker,
+management command operacional, supervisão, deployment, PostgreSQL,
+multi-worker, lease distribuído, heartbeat persistente, incident engine
+completo ou UI operacional.
+
+### Governança e evidência
+
+```text
+SECURITY_GATE_LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS
+SECURITY_GATE_HOMOLOGATION      = BLOCKED
+SECURITY_GATE_DEPLOYMENT        = BLOCKED
+SECURITY_GATE_PRODUCTION        = BLOCKED
+```
+
+Findings de segurança abertos permanecem inalterados; SEC-R03 continua sendo
+necessidade futura para o boundary de produção. Os hardenings
+`HARDENING_TRANSITION_REAL` e `HARDENING_SCOPE_BATCH_NPLUS1` permanecem
+`DEFERRED / NON-BLOCKING`.
+
+Evidência final conhecida da MON-05C: `GLOBAL TESTS = 641 PASSED`,
+`BLOCKER = 0`, `MAJOR = 0`, `MINOR = 0`, dois hardenings deferred. Não foi
+reexecutada a suíte global no fechamento documental.
+
+### Próxima frente e boundary
+
+A próxima frente formalizada no roadmap vigente é `MON-06 — Histórico de
+indisponibilidade`. Qualquer implementação futura deve receber gate próprio e
+não pode incluir automaticamente câmera real, credencial real, produção,
+deployment, multi-worker, PostgreSQL ou lease distribuído.
+
+Não alterar ADR-019, ADR-020 ou ADR-021 retrospectivamente para este
+fechamento. O estado acima é documental e não autoriza staging, commit, push,
+homologação ou deployment.
+
 ## SEC-GATE-01D — Estado vigente
 
 O Security Gate está **RELEASED_WITH_CONTROLS** somente para desenvolvimento

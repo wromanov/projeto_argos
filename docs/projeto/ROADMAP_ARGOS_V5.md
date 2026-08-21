@@ -250,7 +250,7 @@ Produzir uma fotografia funcional confiável antes da abertura da Fase B.
 
 # 5. FASE B — Monitoramento operacional
 
-**Estado:** EM CURSO — SEC-GATE-01D em fechamento documental. Security Gate local RELEASED_WITH_CONTROLS; homologação, deployment e produção BLOCKED. MON-05 autorizada somente para desenvolvimento local controlado.
+**Estado:** EM CURSO — MON-05 concluída em desenvolvimento local controlado. Security Gate local RELEASED_WITH_CONTROLS; homologação, deployment e produção BLOCKED.
 
 ## Objetivo
 
@@ -448,9 +448,40 @@ falha de worker e os requisitos de segurança de monitoramento.
 
 ## MON-05 — Concorrência e scheduler
 
-**Estado:** PLANEJADA / NÃO AUTORIZADA. O Security Gate permanece BLOCKED —
-REAVALIAÇÃO NECESSÁRIA; SEC-R02 não libera MON-05 automaticamente. Não está
-liberada para implementação operacional.
+**Estado:** COMPLETE / PASS / PUBLISHED. Fechamento MON-05 concluído na
+baseline `fbc0164`, restrito a desenvolvimento local controlado, single-instance
+e SQLite. O encerramento não libera homologação, deployment ou produção.
+
+MON-05A, MON-05B e MON-05C estão COMPLETE / PASS / PUBLISHED. A entrega
+consolidou scheduler due-based contínuo, ordenação oldest-due-first,
+concorrência e fila bounded, identidade/deduplicação de attempts, proteção
+contra attempts antigos, revalidação de eligibility, `config_generation`,
+lifecycle com draining, graceful shutdown e restart bounded, integração com
+MON-04, persistência local do estado técnico e da `ConfirmationMemory`,
+freshness derivada, last usable evidence, `next_due`, transições estáveis,
+atomicidade/rollback, CAS monotônico e CHECKs SQLite.
+
+Os contratos preservados são `UNKNOWN`, `ONLINE` e `OFFLINE` como estados
+estáveis; `SUSPECT` efêmero; `STALE` separado, sem conversão para `OFFLINE`,
+transição ou incidente automático. O estado de monitoramento permanece
+separado de `Camera.status` legado e `EventoAuditoria` permanece separado da
+telemetria de probe.
+
+Permanecem fora da MON-05: `ProbeAdapter` real, rede/câmeras/credenciais
+reais, worker e management command operacionais, supervisão, deployment,
+PostgreSQL, multi-worker, lease distribuído, heartbeat persistente, incident
+engine completo e UI operacional.
+
+Envelope local experimental: concurrency 20, queue bound 40, intervalo alvo
+300 s, probe timeout 5 s, connect timeout 3 s, jitter 10%, `stale_after` 900 s
+e shutdown timeout 30 s. Isso não constitui homologação de produção.
+
+Hardenings deferred e não bloqueantes: `HARDENING_TRANSITION_REAL` e
+`HARDENING_SCOPE_BATCH_NPLUS1`.
+
+Evidência final conhecida da re-review independente MON-05C: 641 testes globais
+PASS, zero BLOCKER/MAJOR/MINOR e dois hardenings deferred. Ruff permaneceu
+indisponível.
 
 Distribuir verificações do parque ao longo do ciclo com concorrência limitada e configurável.
 
@@ -1156,7 +1187,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
-FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-04 concluídas; SEC-R01 VERIFIED/PUBLICADA; SEC-R02 CONCLUÍDA/VERIFIED; Security Gate BLOCKED — REAVALIAÇÃO NECESSÁRIA; MON-05 planejada/não autorizada)
+FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-05 concluídas; Security Gate local RELEASED_WITH_CONTROLS; homologação, deployment e produção BLOCKED)
 FASE C — Captura manual e imagens              ⏳ PLANEJADA
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
