@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.db.models import Q
+from django.db.models import F, Q
 from django.db.models.functions import Lower
 
 from .validadores import normalizar_mac, normalizar_texto_cadastral, validar_mac
@@ -487,5 +487,123 @@ class TransicaoEstadoMonitoramento(models.Model):
             models.CheckConstraint(
                 condition=models.Q(estado_atual__in=["UNKNOWN", "ONLINE", "OFFLINE"]),
                 name="transicao_estado_atual_valid",
+            ),
+        ]
+
+
+class Indisponibilidade(models.Model):
+    """Intervalo técnico confirmado de indisponibilidade de uma câmera."""
+
+    class OrigemAbertura(models.TextChoices):
+        INITIAL_OFFLINE = "INITIAL_OFFLINE", "Offline inicial"
+        ONLINE_TO_OFFLINE = "ONLINE_TO_OFFLINE", "Online para offline"
+
+    class MotivoFechamento(models.TextChoices):
+        RECUPERADA = "RECUPERADA", "Recuperada"
+        SAIU_DO_ESCOPO = "SAIU_DO_ESCOPO", "Saiu do escopo"
+
+    camera = models.ForeignKey(
+        Camera,
+        on_delete=models.PROTECT,
+        related_name="indisponibilidades",
+        verbose_name="Câmera",
+    )
+    opened_at = models.DateTimeField(db_index=True, verbose_name="Aberta em")
+    closed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        db_index=True,
+        verbose_name="Encerrada em",
+    )
+    open_origin = models.CharField(
+        max_length=20,
+        choices=OrigemAbertura.choices,
+        verbose_name="Origem da abertura",
+    )
+    close_reason = models.CharField(
+        max_length=20,
+        choices=MotivoFechamento.choices,
+        null=True,
+        blank=True,
+        verbose_name="Motivo do encerramento",
+    )
+    opening_transition = models.OneToOneField(
+        TransicaoEstadoMonitoramento,
+        on_delete=models.PROTECT,
+        related_name="indisponibilidade_aberta",
+        verbose_name="Transição de abertura",
+    )
+    closing_transition = models.OneToOneField(
+        TransicaoEstadoMonitoramento,
+        on_delete=models.PROTECT,
+        related_name="indisponibilidade_fechada",
+        null=True,
+        blank=True,
+        verbose_name="Transição de encerramento",
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Criada em")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Atualizada em")
+
+    class Meta:
+        ordering = ["-opened_at", "-pk"]
+        verbose_name = "Indisponibilidade"
+        verbose_name_plural = "Indisponibilidades"
+        indexes = [
+            models.Index(fields=["camera", "-opened_at"], name="indisp_camera_opened_idx"),
+        ]
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(
+                    open_origin__in=[
+                        "INITIAL_OFFLINE",
+                        "ONLINE_TO_OFFLINE",
+                    ]
+                ),
+                name="indisp_open_origin_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(close_reason__isnull=True)
+                | models.Q(
+                    close_reason__in=[
+                        "RECUPERADA",
+                        "SAIU_DO_ESCOPO",
+                    ]
+                ),
+                name="indisp_close_reason_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(closed_at__isnull=True)
+                | models.Q(closed_at__gte=F("opened_at")),
+                name="indisp_closed_at_after_opened_at",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    models.Q(
+                        closed_at__isnull=True,
+                        close_reason__isnull=True,
+                        closing_transition__isnull=True,
+                    )
+                    | models.Q(closed_at__isnull=False, close_reason__isnull=False)
+                ),
+                name="indisp_open_closed_coherent",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    models.Q(close_reason__isnull=True, closing_transition__isnull=True)
+                    | models.Q(
+                        close_reason="RECUPERADA",
+                        closing_transition__isnull=False,
+                    )
+                    | models.Q(
+                        close_reason="SAIU_DO_ESCOPO",
+                        closing_transition__isnull=True,
+                    )
+                ),
+                name="indisp_close_reason_transition_coherent",
+            ),
+            models.UniqueConstraint(
+                fields=["camera"],
+                condition=models.Q(closed_at__isnull=True),
+                name="indisp_one_open_camera",
             ),
         ]
