@@ -598,6 +598,18 @@ Não gerar histórico persistente para cada probe normal.
 
 A interface deve consumir dados agregados e/ou somente os registros em exibição.
 
+**Estado:** `COMPLETE / PASS / PUBLISHED`.
+
+O fechamento formal MON-07E confirmou a integração do inventário, detalhe,
+histórico e dashboard com a `MonitoringReadService` como boundary canônica,
+sem probes no ciclo HTTP ou no navegador, sem dependência do estado legado da
+`Camera` e sem regressão de permissões, projeção de segurança ou N+1. A
+validação final registrou MON-07B e MON-07C aprovadas, 695 testes globais
+passando, `DJANGO_CHECK = PASS`, `COMPILEALL = PASS` e ausência de alterações
+de migration. A entrega permanece restrita ao desenvolvimento local com
+controles; homologação, deployment e produção continuam bloqueados por seus
+gates próprios.
+
 Estratégias permitidas para avaliação:
 
 - polling leve;
@@ -1272,7 +1284,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
-FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-06 concluídas; próxima frente MON-07; Security Gate local RELEASED_WITH_CONTROLS; homologação, deployment e produção BLOCKED)
+FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-07 concluídas; próxima frente MON-08; Security Gate local RELEASED_WITH_CONTROLS; homologação, deployment e produção BLOCKED)
 FASE C — Captura manual e imagens              ⏳ PLANEJADA
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
@@ -1286,15 +1298,17 @@ FASE H — Produção e Go-Live                    ⏳ PLANEJADA
 **Documento:** Roadmap ARGOS v5
 **Estado:** adotado como roadmap operacional vigente do Projeto ARGOS.
 
-## Atualização vigente após o fechamento MON-06
+## Atualização vigente após o fechamento MON-07
 
-MON-06 está `COMPLETE / PASS / PUBLISHED`, com baseline final `395a543`.
+MON-07 está `COMPLETE / PASS / PUBLISHED`, com o gate formal MON-07E
+concluído. MON-06 permanece `COMPLETE / PASS / PUBLISHED`, com baseline final
+`395a543`.
 Esta atualização prevalece para o estado atual; seções anteriores que
 registram checkpoints e sequências históricas permanecem preservadas como
 histórico documental.
 
-**Próxima frente oficial:** `MON-07 — Integração eficiente com UI`.
+**Próxima frente oficial:** `MON-08 — Escala e carga`.
 
-O início de MON-07 não autoriza câmeras ou credenciais reais, homologação,
-deployment, produção, multi-worker, PostgreSQL ou lease distribuído; esses
-limites continuam sujeitos a gates próprios.
+O fechamento de MON-07 não autoriza câmeras ou credenciais reais,
+homologação, deployment, produção, multi-worker, PostgreSQL ou lease
+distribuído; esses limites continuam sujeitos a gates próprios.

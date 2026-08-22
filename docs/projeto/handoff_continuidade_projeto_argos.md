@@ -993,3 +993,28 @@ Este fechamento alterou somente documentação oficial e criou os relatórios
 local-only `ARGOS_MON_06_CLOSE_REPORT.txt` e
 `ARGOS_INVENTARIO_EXPORT_DEFERRED_REPORT.txt`; não alterou código, migration ou
 testes.
+
+## HANDOFF MON-07 — FECHAMENTO DOCUMENTAL
+
+MON-07 — Integração eficiente com UI — está `COMPLETE / PASS / PUBLISHED`.
+O gate formal MON-07E foi concluído após a validação da integração do
+inventário, detalhe, histórico e dashboard pela `MonitoringReadService`, com
+projeções canônicas de estado, stale e fora de escopo, preservação de
+permissões e proteção contra N+1. O fechamento registrou MON-07B e MON-07C
+aprovadas e 695 testes globais passando.
+
+Os limites operacionais permanecem inalterados:
+
+```text
+LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS
+HOMOLOGATION      = BLOCKED
+DEPLOYMENT        = BLOCKED
+PRODUCTION        = BLOCKED
+```
+
+A próxima frente oficial é `MON-08 — Escala e carga`. MON-08 deverá avaliar
+carga representativa e seus efeitos em ciclo, conexões, CPU, memória, banco,
+volume de transições, falhas em massa e recuperação, conforme o roadmap
+vigente. Nenhuma autorização para câmeras ou credenciais reais, homologação,
+deployment, produção, multi-worker, PostgreSQL ou lease distribuído é
+inferida pelo fechamento de MON-07.
