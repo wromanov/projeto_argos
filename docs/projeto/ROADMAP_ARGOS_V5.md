@@ -68,7 +68,44 @@ O desenvolvimento do ARGOS continua seguindo os seguintes princípios:
 | Observabilidade | ⏳ Futuro |
 | Arquitetura de produção | ⏳ Futuro |
 
-### 3.2 Baseline técnico de referência no momento da elaboração
+### 3.2 Requisito aprovado — exportação configurável do inventário
+
+Requisito aprovado e deliberadamente `DEFERRED / FINAL SPRINT`.
+
+```text
+STATUS = APPROVED / DEFERRED
+IMPLEMENTATION = NOT_STARTED
+TARGET = FINAL SPRINT / FINALIZATION
+SPRINT_NUMBER = TO_BE_DEFINED
+```
+
+A futura funcionalidade deverá permitir exportar o inventário em CSV e PDF,
+com seleção explícita e ordenada dos campos, preservando os filtros aplicados
+na listagem. Uma eventual opção de exportar todo o inventário permitido ao
+usuário deverá ser avaliada posteriormente.
+
+A exportação deverá reutilizar o mesmo boundary de autorização do inventário e
+nunca ampliar a visibilidade do usuário. O registro exportável é somente o
+registro que o usuário pode visualizar. A implementação deverá usar whitelist
+explícita de campos exportáveis: campo existente no model não implica campo
+exportável. Campos internos, sensíveis, credenciais e secrets deverão permanecer
+excluídos salvo autorização explícita do contrato de exportação.
+
+Para CSV, a discovery deverá definir encoding e cabeçalhos compreensíveis,
+compatibilidade tabular e proteção contra CSV/Formula Injection. Para PDF, a
+solução deverá ser orientada a relatório, contemplando quando aplicável título,
+data/hora, quantidade, filtros, campos selecionados, tabela e paginação. A
+geração deverá preferencialmente ocorrer sob demanda, sem persistência
+permanente desnecessária; biblioteca e estratégia definitiva ficam para a
+discovery.
+
+Antes da implementação, a sprint correspondente deverá fazer discovery dos
+models, campos permitidos e proibidos, permissões, filtros, volume, estratégias
+CSV/PDF, comportamento para grandes volumes, testes de segurança/autorização e
+UX. Nenhuma numeração de sprint é criada nesta etapa. MON-07 permanece a
+próxima frente oficial.
+
+### 3.3 Baseline técnico de referência no momento da elaboração
 
 ```text
 Branch: master

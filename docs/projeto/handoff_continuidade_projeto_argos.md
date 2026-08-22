@@ -963,6 +963,33 @@ MON-07 não recebe autorização automática para câmeras ou credenciais reais,
 homologação, deployment, produção, multi-worker, PostgreSQL ou lease
 distribuído. Esses itens exigem gates próprios.
 
-Este fechamento alterou somente documentação oficial e criou o relatório
-local-only `ARGOS_MON_06_CLOSE_REPORT.txt`; não alterou código, migration ou
+### Requisito deferido — exportação configurável do inventário
+
+Foi aprovado, mas deferido para a sprint final/finalização, o requisito de
+exportação configurável do inventário. A implementação permanece `NOT_STARTED`
+e a numeração da sprint fica `TO_BE_DEFINED`; MON-07 não deve ser interrompida.
+
+A futura entrega deverá oferecer CSV e PDF, seleção explícita e ordenada de
+campos e exportação do resultado correspondente aos filtros aplicados. Uma
+opção de exportar todo o inventário permitido poderá ser avaliada depois.
+
+A exportação deverá preservar integralmente as permissões do inventário,
+reutilizando o mesmo boundary de autorização e sem ampliar a visibilidade do
+usuário. Será necessária whitelist explícita de campos exportáveis, sem
+introspecção automática do model, mantendo campos internos, sensíveis,
+credenciais e secrets excluídos salvo autorização contratual explícita.
+
+CSV deverá prever compatibilidade tabular, encoding, cabeçalhos e proteção
+contra CSV/Formula Injection. PDF deverá ser relatório com metadados, filtros,
+campos selecionados, registros e paginação quando aplicável. A geração deverá
+ser preferencialmente sob demanda.
+
+Antes de implementar, será obrigatória discovery de models, campos, permissões,
+filtros, volume, estratégias CSV/PDF, grandes volumes, segurança, autorização
+e UX. Nenhuma tela, endpoint, biblioteca ou código de exportação foi criado
+neste fechamento.
+
+Este fechamento alterou somente documentação oficial e criou os relatórios
+local-only `ARGOS_MON_06_CLOSE_REPORT.txt` e
+`ARGOS_INVENTARIO_EXPORT_DEFERRED_REPORT.txt`; não alterou código, migration ou
 testes.
