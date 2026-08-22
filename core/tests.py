@@ -27,7 +27,7 @@ class CoreTests(TestCase):
         self.client.force_login(self.user); response=self.client.get("/"); [self.assertNotContains(response,nome) for nome in ("Eventos","Credenciais","Snapshots","RTSP")]
     def test_dashboard_retorna_200_com_permissao(self): self.login_grupo("Monitoramento ARGOS"); self.assertEqual(self.client.get("/dashboard/").status_code,200)
     def test_dashboard_exibe_contadores_de_camera(self): self.login_grupo("Monitoramento ARGOS"); response=self.client.get("/dashboard/"); self.assertContains(response,"Total"); self.assertContains(response,"Produção")
-    def test_dashboard_exibe_status_de_monitoramento(self): self.login_grupo("Monitoramento ARGOS"); response=self.client.get("/dashboard/"); self.assertContains(response,"Online"); self.assertContains(response,"Offline"); self.assertContains(response,"Não verificadas")
+    def test_dashboard_exibe_status_de_monitoramento(self): self.login_grupo("Monitoramento ARGOS"); response=self.client.get("/dashboard/"); [self.assertContains(response, label) for label in ("Monitoramento técnico", "Online", "Offline", "Unknown", "Não monitoradas")]
     def test_dashboard_exibe_atividades_recentes(self): self.login_grupo("Monitoramento ARGOS"); self.assertContains(self.client.get("/dashboard/"),"Inspeção")
     def test_dashboard_exibe_cameras_atualizadas(self): self.login_grupo("Monitoramento ARGOS"); self.assertContains(self.client.get("/dashboard/"),"CAM-PORTAL")
     def test_monitoramento_possui_acesso_somente_leitura(self):

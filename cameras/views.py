@@ -17,9 +17,51 @@ from .governanca import (
     q_camera_completa, q_camera_incompleta, reativar_camera, substituir_camera,
 )
 from .models import AtividadeCamera, Camera, EventoAuditoria, SubstituicaoCamera
+from .monitoramento.read_service import MonitoringReadService
 from .validadores import normalizar_texto_cadastral
 
 ORDENACOES_PERMITIDAS = {"nome", "-nome", "status", "-status", "ip", "-ip", "atualizado_em", "-atualizado_em"}
+
+
+def _duracao_textual(inicio, fim=None):
+    """Representação humana derivada; nunca é persistida."""
+    if not inicio:
+        return "—"
+    segundos = max(0, int(((fim or timezone.now()) - inicio).total_seconds()))
+    if segundos < 3600:
+        return f"{max(1, segundos // 60)} min"
+    if segundos < 86400:
+        return f"{segundos // 3600} h"
+    return f"{segundos // 86400} dia(s)"
+
+
+def _monitoramento_ui(projecao):
+    """Adapta o contrato MON-07B a texto seguro para os templates."""
+    labels = {"ONLINE": "ONLINE", "OFFLINE": "OFFLINE", "UNKNOWN": "UNKNOWN", "OUT_OF_SCOPE": "NÃO MONITORADA"}
+    efetivo = str(projecao.effective_state)
+    stable = str(projecao.stable_state)
+    if efetivo == "OUT_OF_SCOPE":
+        contexto = "Configuração incompleta" if str(projecao.scope_reason) == "INCOMPLETE_CONFIGURATION" else "Fora do escopo"
+    elif projecao.is_stale:
+        contexto = f"Dados desatualizados · último estado {labels.get(stable, stable)}"
+    elif projecao.open_outage and efetivo == "OFFLINE":
+        contexto = f"Offline há {_duracao_textual(projecao.open_outage.opened_at)}"
+    else:
+        contexto = ""
+    return {"label": labels[efetivo], "effective_state": efetivo, "stable_label": labels.get(stable, stable),
+            "freshness": str(projecao.freshness), "is_stale": projecao.is_stale, "em_escopo": projecao.em_escopo,
+            "contexto": contexto, "evidence_at": projecao.evidence_at, "state_since": projecao.state_since,
+            "scope_reason": str(projecao.scope_reason or ""), "open_outage": projecao.open_outage,
+            "outage_duration": _duracao_textual(projecao.open_outage.opened_at) if projecao.open_outage else ""}
+
+
+def _historico_indisponibilidade_ui(item):
+    origem = {"INITIAL_OFFLINE": "Offline inicial", "ONLINE_TO_OFFLINE": "Online para offline"}
+    fechamento = {"RECUPERADA": "Recuperada", "SAIU_DO_ESCOPO": "Saiu do escopo"}
+    return {"opened_at": item.opened_at, "closed_at": item.closed_at,
+            "open_origin": origem.get(item.open_origin, "—"),
+            "close_reason": fechamento.get(item.close_reason, "") if item.close_reason else "",
+            "duration": _duracao_textual(item.opened_at, item.closed_at)}
 
 
 def _valores_get_unicos(request, nome, normalizar=False):
@@ -159,6 +201,11 @@ def lista_cameras(request):
 
     paginator = Paginator(queryset, 20)
     page_obj = paginator.get_page(request.GET.get("page"))
+    monitoring_service = MonitoringReadService()
+    camera_rows = tuple(
+        {"camera": camera, "monitoring": _monitoramento_ui(monitoring_service.project(camera))}
+        for camera in monitoring_service.camera_queryset(page_obj.object_list)
+    )
     query_params = _query_params(q=q, status=status_selecionados,
         situacao_operacional=situacoes_selecionadas, completude=completudes_selecionadas,
         terminal=terminais_selecionados, tipo=tipos_selecionados,
@@ -246,7 +293,7 @@ def lista_cameras(request):
     )
 
     return render(request, "cameras/lista.html", {
-        "cameras": page_obj, "page_obj": page_obj, "paginator": paginator, "q": q,
+        "cameras": page_obj, "camera_rows": camera_rows, "page_obj": page_obj, "paginator": paginator, "q": q,
         "status_selecionado": _primeiro_valor(status_selecionados),
         "situacao_selecionada": _primeiro_valor(situacoes_selecionadas),
         "completude_selecionada": _primeiro_valor(completudes_selecionadas),
@@ -343,13 +390,36 @@ def editar_camera(request, pk):
 
 @permission_required("cameras.view_camera", raise_exception=True)
 def detalhe_camera(request, pk):
-    camera = get_object_or_404(Camera, pk=pk)
-    contexto = {"camera": camera, "atividades": camera.atividades.select_related("criado_por", "atualizado_por")[:10]}
+    service = MonitoringReadService()
+    camera = get_object_or_404(service.camera_queryset(Camera.objects.all()), pk=pk)
+    monitoring = _monitoramento_ui(service.project(camera))
+    history = service.history_page(camera.pk, limit=5)
+    outage_preview = tuple(_historico_indisponibilidade_ui(item) for item in history.items)
+    contexto = {"camera": camera, "monitoring": monitoring, "outage_preview": outage_preview,
+                "atividades": camera.atividades.select_related("criado_por", "atualizado_por")[:10]}
     if request.user.has_perm("cameras.consultar_eventos"):
         contexto["eventos_auditoria"] = camera.eventos_auditoria.select_related("usuario")[:10]
     if request.user.has_perm("cameras.consultar_substituicoescamera"):
         contexto["substituicoes"] = SubstituicaoCamera.objects.filter(Q(camera_anterior=camera) | Q(camera_substituta=camera)).select_related("camera_anterior", "camera_substituta")[:10]
     return render(request, "cameras/detalhe.html", contexto)
+
+
+@permission_required("cameras.view_camera", raise_exception=True)
+def historico_monitoramento(request, pk):
+    camera = get_object_or_404(Camera.objects.all(), pk=pk)
+    service = MonitoringReadService()
+    try:
+        requested_page = max(1, int(request.GET.get("page", 1)))
+    except (TypeError, ValueError):
+        requested_page = 1
+    page_size = 20
+    first_page = service.history_page(camera.pk, limit=page_size, offset=(requested_page - 1) * page_size)
+    paginator = Paginator(range(first_page.total), page_size)
+    page_obj = paginator.get_page(requested_page)
+    page = first_page if page_obj.number == requested_page else service.history_page(camera.pk, limit=page_size, offset=(page_obj.number - 1) * page_size)
+    history_items = tuple(_historico_indisponibilidade_ui(item) for item in page.items)
+    return render(request, "cameras/monitoramento/historico.html", {"camera": camera, "history_items": history_items,
+        "page_obj": page_obj, "total_indisponibilidades": page.total})
 
 
 def _processar_governanca(request, camera, form, operacao, sucesso, template, **kwargs):

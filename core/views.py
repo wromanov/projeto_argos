@@ -4,6 +4,7 @@ from django.shortcuts import render
 
 from cameras.governanca import q_camera_completa, q_camera_incompleta
 from cameras.models import AtividadeCamera, Camera, SubstituicaoCamera
+from cameras.monitoramento.read_service import MonitoringReadService
 
 
 def inicio(request):
@@ -15,6 +16,7 @@ def inicio(request):
 @permission_required("cameras.view_camera", raise_exception=True)
 def dashboard(request):
     cameras = Camera.objects.all()
+    monitoring = MonitoringReadService().aggregate(cameras)
     ips_duplicados = cameras.exclude(ip__isnull=True).exclude(ip="").values("ip").annotate(total=Count("pk")).filter(total__gt=1)
     cameras_com_ip_duplicado = sum(item["total"] for item in ips_duplicados)
     contexto = {
@@ -24,9 +26,7 @@ def dashboard(request):
         "cameras_desativadas": cameras.filter(situacao_operacional=Camera.SituacaoOperacional.DESATIVADA).count(),
         "cameras_completas": cameras.filter(q_camera_completa()).count(),
         "cameras_incompletas": cameras.filter(q_camera_incompleta()).count(),
-        "cameras_online": cameras.filter(status=Camera.StatusCamera.ONLINE).count(),
-        "cameras_offline": cameras.filter(status=Camera.StatusCamera.OFFLINE).count(),
-        "cameras_nao_verificadas": cameras.filter(Q(status__isnull=True) | Q(status="")).count(),
+        "monitoring": monitoring,
         "cameras_com_ip_duplicado": cameras_com_ip_duplicado,
         "total_substituicoes": SubstituicaoCamera.objects.count(),
         "total_atividades": AtividadeCamera.objects.count(),

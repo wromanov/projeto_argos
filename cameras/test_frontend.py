@@ -80,11 +80,13 @@ class ListaCamerasFrontendTests(TestCase):
         incompleta = self.criar_camera(2, nome="CAM-INCOMPLETA", ip="", status=Camera.StatusCamera.OFFLINE)
         response = self.client.get(reverse("cameras:lista"))
         self.assertContains(response, "Produção")
-        self.assertContains(response, "Online")
+        self.assertContains(response, "UNKNOWN")
+        self.assertContains(response, "NÃO MONITORADA")
         self.assertContains(response, "Cadastro completo")
         self.assertContains(response, "Cadastro incompleto")
         self.assertContains(response, 'badge badge--producao')
-        self.assertContains(response, 'badge badge--online')
+        self.assertContains(response, 'badge badge--unknown')
+        self.assertContains(response, 'badge badge--out_of_scope')
         self.assertContains(response, 'badge badge--incompleto')
         vazio = self.client.get(reverse("cameras:lista"), {"q": "sem-correspondencia"})
         self.assertContains(vazio, "Nenhuma câmera encontrada")
@@ -94,7 +96,7 @@ class ListaCamerasFrontendTests(TestCase):
     def test_lista_agrupa_informacoes_sem_remover_dados(self):
         response = self.client.get(reverse("cameras:lista"))
 
-        for cabecalho in ("Status", "Câmera", "Localização", "Rede", "Equipamento", "Ações"):
+        for cabecalho in ("Monitoramento", "Câmera", "Localização", "Rede", "Equipamento", "Ações"):
             self.assertContains(response, f'<th scope="col">{cabecalho}</th>')
         self.assertContains(response, '<th class="camera-table__heading--governance" scope="col">Governança</th>')
         for valor in (

@@ -253,13 +253,12 @@ class BaseAndPortalFrontendTests(TestCase):
             "situacao_operacional=PRODUCAO",
             "situacao_operacional=ESTOQUE",
             "situacao_operacional=DESATIVADA",
-            "status=ONLINE",
-            "status=OFFLINE",
-            "status=NAO_VERIFICADO",
             "completude=COMPLETO",
             "completude=INCOMPLETO",
         ):
             self.assertContains(response, parametro)
+        for label in ("Monitoramento técnico", "Online", "Offline", "Unknown", "Não monitoradas"):
+            self.assertContains(response, label)
         self.assertNotContains(response, 'href="/cameras/?ip_duplicado=')
 
     def test_base_compoe_componentes_globais(self):

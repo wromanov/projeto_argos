@@ -29,9 +29,10 @@
 <section class="dashboard-section dashboard-section--monitoring" aria-labelledby="monitoramento-heading">
   <div class="dashboard-section__heading"><div><span class="section-heading__eyebrow">Disponibilidade técnica</span><h2 class="section-heading__title" id="monitoramento-heading">Monitoramento técnico</h2></div></div>
   <div class="metric-grid dashboard-metric-grid dashboard-metric-grid--monitoring">
-    <a class="metric-card metric-card--link dashboard-metric" href="{% url 'cameras:lista' %}?status=ONLINE"><span>Online</span><strong>{{ cameras_online }}</strong><small>Ver câmeras online</small></a>
-        <a class="metric-card metric-card--link dashboard-metric{% if cameras_offline %} dashboard-metric--alert{% endif %}" href="{% url 'cameras:lista' %}?status=OFFLINE"><span>Offline</span><strong>{{ cameras_offline }}</strong><small>{% if cameras_offline %}Ver câmeras offline{% else %}Nenhuma indisponibilidade{% endif %}</small></a>
-        <a class="metric-card metric-card--link dashboard-metric{% if cameras_nao_verificadas %} dashboard-metric--warning{% endif %}" href="{% url 'cameras:lista' %}?status=NAO_VERIFICADO"><span>Não verificadas</span><strong>{{ cameras_nao_verificadas }}</strong><small>{% if cameras_nao_verificadas %}Ver pendências de verificação{% else %}Monitoramento verificado{% endif %}</small></a>
+    <article class="metric-card dashboard-metric"><span>Online</span><strong>{{ monitoring.online }}</strong><small>Estado técnico efetivo</small></article>
+    <article class="metric-card dashboard-metric{% if monitoring.offline %} dashboard-metric--alert{% endif %}"><span>Offline</span><strong>{{ monitoring.offline }}</strong><small>{% if monitoring.offline %}Indisponibilidades efetivas{% else %}Nenhuma indisponibilidade{% endif %}</small></article>
+    <article class="metric-card dashboard-metric{% if monitoring.unknown %} dashboard-metric--warning{% endif %}"><span>Unknown</span><strong>{{ monitoring.unknown }}</strong><small>{{ monitoring.stale }} com dados desatualizados</small></article>
+    <article class="metric-card dashboard-metric"><span>Não monitoradas</span><strong>{{ monitoring.out_of_scope }}</strong><small>Fora do escopo técnico</small></article>
   </div>
 </section>
 

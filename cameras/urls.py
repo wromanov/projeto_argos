@@ -16,6 +16,7 @@ urlpatterns = [
     path("<int:pk>/alterar-situacao/", views.alterar_situacao_camera_view, name="alterar_situacao"),
     path("<int:pk>/substituir/", views.substituir_camera_view, name="substituir"),
     path("<int:pk>/eventos/", views.eventos_camera, name="eventos_camera"),
+    path("<int:pk>/monitoramento/historico/", views.historico_monitoramento, name="historico_monitoramento"),
     path("atividades/<int:pk>/editar/", views.editar_atividade_camera, name="editar_atividade"),
     path("<int:camera_pk>/atividades/nova/", views.criar_atividade_camera, name="criar_atividade"),
     path(

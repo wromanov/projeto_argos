@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% load static %}
+{% block titulo %}Histórico técnico — {{ camera.nome }}{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/inventario.css' %}">{% endblock %}
+{% block conteudo %}
+<section class="inventory-hero"><div><a class="detail-back-link" href="{% url 'cameras:detalhe' camera.pk %}">← Voltar para a câmera</a><span class="inventory-eyebrow">Monitoramento técnico</span><h1>Histórico de indisponibilidades</h1><p>{{ camera.nome }} · {{ total_indisponibilidades }} registro{{ total_indisponibilidades|pluralize:"s" }}</p></div></section>
+<section class="inventory-panel"><div class="table-region" role="region" aria-label="Histórico técnico"><table class="data-table"><thead><tr><th>Início</th><th>Fim</th><th>Duração</th><th>Origem</th><th>Fechamento</th></tr></thead><tbody>{% for item in history_items %}<tr><td>{{ item.opened_at|date:"d/m/Y H:i" }}</td><td>{{ item.closed_at|date:"d/m/Y H:i"|default:"Em aberto" }}</td><td>{{ item.duration }}</td><td>{{ item.open_origin }}</td><td>{{ item.close_reason|default:"—" }}</td></tr>{% empty %}<tr><td colspan="5">Nenhuma indisponibilidade técnica registrada.</td></tr>{% endfor %}</tbody></table></div></section>
+{% include "components/paginacao.html" with page_obj=page_obj pagination_label="Paginação do histórico técnico" %}
+{% endblock %}

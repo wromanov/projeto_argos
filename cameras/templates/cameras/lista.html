@@ -27,7 +27,7 @@
   <div class="filter-panel__header inventory-filters-card__header"><span class="filter-panel__eyebrow">Refine a consulta</span><h2 class="filter-panel__title" id="filtros-heading">Filtros do inventário</h2></div>
   <form class="filter-panel__grid inventory-filter-form" method="get" role="search" aria-label="Filtros do inventário de câmeras">
     <div class="form-field form-field--search"><label class="form-label" for="id_q">Pesquisar</label><input id="id_q" type="search" name="q" value="{{ q }}" placeholder="Nome, patrimônio, IP ou fabricante"></div>
-    {% include "components/filtro_multisselecao.html" with label="Status técnico" name="status" opcoes=status_filtro_opcoes selecionados=status_selecionados empty_label="Todos" %}
+    {% include "components/filtro_multisselecao.html" with label="Status legado (histórico)" name="status" opcoes=status_filtro_opcoes selecionados=status_selecionados empty_label="Todos" %}
     {% include "components/filtro_multisselecao.html" with label="Situação operacional" name="situacao_operacional" opcoes=situacoes_operacionais selecionados=situacoes_selecionadas empty_label="Todas" %}
     {% include "components/filtro_multisselecao.html" with label="Completude" name="completude" opcoes=completude_filtro_opcoes selecionados=completudes_selecionadas empty_label="Todos" %}
     {% include "components/filtro_multisselecao.html" with label="Terminal" name="terminal" opcoes=terminais_filtro_opcoes selecionados=terminais_selecionados empty_label="Todos" %}
@@ -68,11 +68,11 @@
       <colgroup>
         <col class="camera-table__col--status"><col class="camera-table__col--camera"><col class="camera-table__col--location"><col class="camera-table__col--network"><col class="camera-table__col--equipment"><col class="camera-table__col--governance"><col class="camera-table__col--actions">
       </colgroup>
-      <thead><tr><th scope="col">Status</th><th scope="col">Câmera</th><th scope="col">Localização</th><th scope="col">Rede</th><th scope="col">Equipamento</th><th class="camera-table__heading--governance" scope="col">Governança</th><th scope="col">Ações</th></tr></thead>
+      <thead><tr><th scope="col">Monitoramento</th><th scope="col">Câmera</th><th scope="col">Localização</th><th scope="col">Rede</th><th scope="col">Equipamento</th><th class="camera-table__heading--governance" scope="col">Governança</th><th scope="col">Ações</th></tr></thead>
       <tbody>
-        {% for camera in cameras %}
+        {% for row in camera_rows %}{% with camera=row.camera %}
         <tr class="camera-row--{{ camera.situacao_operacional|lower }}">
-          <td class="camera-table__cell camera-table__cell--status" data-label="Status">{% include "cameras/partials/_status_badge.html" with status=camera.status status_label=camera.get_status_display %}</td>
+          <td class="camera-table__cell camera-table__cell--status" data-label="Monitoramento">{% include "cameras/partials/_monitoring_badge.html" with monitoring=row.monitoring %}</td>
           <td class="camera-table__cell camera-table__cell--camera" data-label="Câmera"><a class="camera-name-link" href="{% url 'cameras:detalhe' camera.pk %}">{{ camera.nome }}</a><small>Patrimônio: <span class="technical-value">{{ camera.patrimonio|default:"—" }}</span></small></td>
           <td class="camera-table__cell camera-table__cell--location" data-label="Localização"><span class="camera-location">{{ camera.terminal|default:"—" }}</span>{% if camera.ambiente %}<small>{{ camera.ambiente }}</small>{% endif %}</td>
           <td class="camera-table__cell camera-table__cell--network" data-label="Rede"><span class="technical-value inventory-cell__primary">{{ camera.ip|default:"—" }}</span><small>VLAN: <span class="technical-value">{{ camera.vlan|default:"—" }}</span></small></td>
@@ -80,7 +80,7 @@
           <td class="camera-table__cell camera-table__cell--governance" data-label="Governança"><div class="inventory-governance"><span class="badge badge--{{ camera.situacao_operacional|lower }}">{{ camera.get_situacao_operacional_display }}</span>{% if camera.cadastro_completo %}<span class="badge badge--completo">Cadastro completo</span>{% else %}<span class="badge badge--incompleto" title="{{ camera.rotulos_campos_incompletos|join:', ' }}">Cadastro incompleto</span>{% endif %}</div></td>
           <td class="camera-table__cell camera-table__cell--actions" data-label="Ações"><div class="table-actions"><a class="button button--secondary button--small" href="{% url 'cameras:detalhe' camera.pk %}">Ver detalhes<span class="visually-hidden"> da câmera {{ camera.nome }}</span></a></div></td>
         </tr>
-        {% endfor %}
+        {% endwith %}{% endfor %}
       </tbody>
     </table>
   </div>

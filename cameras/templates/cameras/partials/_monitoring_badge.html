@@ -1,0 +1,4 @@
+<span class="badge badge--{{ monitoring.effective_state|lower }}"{% if monitoring.contexto %} title="{{ monitoring.contexto }}"{% endif %}>
+  {{ monitoring.label }}
+</span>
+{% if monitoring.contexto %}<small>{{ monitoring.contexto }}</small>{% endif %}
