@@ -884,3 +884,85 @@ não autoriza homologação.
 Validações documentadas: `manage.py check` PASS e
 `makemigrations --check --dry-run` PASS. Recortes de segurança ficaram
 STARTED, NOT COMPLETED e NOT COUNTED AS PASS.
+
+## HANDOFF MON-06 — FECHAMENTO DOCUMENTAL
+
+### Estado final
+
+Baseline vigente: `395a543` (`master`, `origin/master` e `origin/HEAD`).
+
+MON-06A = `COMPLETE / PASS`.
+MON-06B = `COMPLETE / PASS / PUBLISHED`.
+MON-06C = `COMPLETE / PASS / PUBLISHED`.
+MON-06 = `COMPLETE / PASS / PUBLISHED`.
+
+### Entregas e fonte de verdade
+
+A sprint entregou o histórico materializado de indisponibilidade, o modelo
+`Indisponibilidade`, migration `0011`, origins `INITIAL_OFFLINE` e
+`ONLINE_TO_OFFLINE`, close reasons `RECUPERADA` e `SAIU_DO_ESCOPO`, no máximo
+uma indisponibilidade aberta por câmera, lifecycle protegido no SQLite,
+lineage por `TransicaoEstadoMonitoramento`, proteção `PROTECT`, timestamps
+canônicos, duração derivada, invariant cross-table, integração atômica,
+rollback, CAS/generation, idempotência e restart sem duplicação.
+
+`EstadoMonitoramento` é a fonte da condição técnica corrente;
+`Indisponibilidade` é a fonte dos intervalos históricos;
+`TransicaoEstadoMonitoramento` é a linhagem das mudanças estáveis;
+`EventoAuditoria` não é histórico de indisponibilidade; e os campos legados
+de `Camera` não são fonte canônica do monitoramento técnico.
+
+`UNKNOWN -> OFFLINE` abre `INITIAL_OFFLINE`; `ONLINE -> OFFLINE` abre
+`ONLINE_TO_OFFLINE`; `OFFLINE -> ONLINE` fecha `RECUPERADA`; saída real de
+escopo fecha `SAIU_DO_ESCOPO` sem criar `ONLINE` artificial; retorno ao escopo
+reinicia `UNKNOWN` sem reabrir o intervalo anterior; novo offline confirmado
+abre novo intervalo. `STALE`, `SUSPECT`, `CANCELLED`, `CONFIG_CHANGED`,
+`ELIGIBILITY_LOST`, duplicidades, ordenação inválida, falhas operacionais e
+falhas de worker são neutros para o histórico.
+
+Completion válida preserva CAS, estado, memória/evidência, next_due,
+transição e indisponibilidade no mesmo `transaction.atomic`; `leave_scope`
+também é atômico. Probe/I-O permanece fora da transação.
+
+### Evidências e governança
+
+MON-06B: `GLOBAL TESTS = 659 PASSED`.
+MON-06C: `TESTS MON-06C = 19 PASSED`, `FOCUSED = 161 PASSED`,
+`GLOBAL TESTS = 678 PASSED`. Review MON-06C: `BLOCKER = 0`, `MAJOR = 0`,
+`MINOR = 0`.
+
+`HARDENING_TRANSITION_REAL` e `HARDENING_SCOPE_BATCH_NPLUS1` permanecem
+`DEFERRED / NON-BLOCKING`. Os security findings não tratados permanecem
+abertos, incluindo a necessidade futura de `SEC-R03`; nenhum finding foi
+reclassificado nesta etapa.
+
+Gates preservados:
+
+```text
+SECURITY_GATE_LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS
+SECURITY_GATE_HOMOLOGATION      = BLOCKED
+SECURITY_GATE_DEPLOYMENT        = BLOCKED
+SECURITY_GATE_PRODUCTION        = BLOCKED
+```
+
+Envelope suportado: `LOCAL / SINGLE-INSTANCE / SQLite`. Permanecem fora do
+que MON-06 entregou worker operacional, command, ProbeAdapter real,
+rede/socket, câmeras, credenciais, secret manager, dashboard, API,
+notificações, incident engine completo, Celery, Redis, PostgreSQL,
+multi-worker, lease distribuído, deployment, homologação e produção.
+
+### Próxima frente e limites
+
+A próxima frente oficial indicada pelo roadmap vigente é
+`MON-07 — Integração eficiente com UI`. O roadmap permite avaliar polling
+leve, atualização agregada, atualização dos itens visíveis ou mecanismo
+orientado a eventos; WebSocket/SSE não são obrigatórios na primeira
+implementação.
+
+MON-07 não recebe autorização automática para câmeras ou credenciais reais,
+homologação, deployment, produção, multi-worker, PostgreSQL ou lease
+distribuído. Esses itens exigem gates próprios.
+
+Este fechamento alterou somente documentação oficial e criou o relatório
+local-only `ARGOS_MON_06_CLOSE_REPORT.txt`; não alterou código, migration ou
+testes.

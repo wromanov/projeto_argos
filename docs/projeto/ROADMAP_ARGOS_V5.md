@@ -496,6 +496,54 @@ Evitar:
 
 ## MON-06 — Histórico de indisponibilidade
 
+**Estado:** COMPLETE / PASS / PUBLISHED.
+
+Baseline final da sprint: `395a543`.
+
+MON-06A, MON-06B e MON-06C estão `COMPLETE / PASS / PUBLISHED`. A entrega
+consolidou o histórico materializado de indisponibilidade, a integração
+transacional com `EstadoMonitoramento`, lineage por
+`TransicaoEstadoMonitoramento`, idempotência, restart sem duplicação,
+neutralidade de `STALE`/`SUSPECT` e isolamento de `Camera` legado e
+`EventoAuditoria`.
+
+O contrato canônico é:
+
+- `EstadoMonitoramento`: fonte da condição técnica corrente;
+- `Indisponibilidade`: fonte dos intervalos históricos;
+- `TransicaoEstadoMonitoramento`: linhagem das mudanças estáveis;
+- `EventoAuditoria`: não é histórico de indisponibilidade;
+- `Camera.status`, `status_em` e `ultima_verificacao`: não são fonte canônica.
+
+As regras principais são:
+
+- `UNKNOWN -> OFFLINE` abre `INITIAL_OFFLINE`;
+- `ONLINE -> OFFLINE` abre `ONLINE_TO_OFFLINE`;
+- `OFFLINE -> ONLINE` fecha `RECUPERADA`;
+- saída real de escopo fecha `SAIU_DO_ESCOPO`, sem criar `ONLINE` artificial;
+- retorno ao escopo reinicia em `UNKNOWN`, sem reabrir o intervalo anterior;
+- `STALE`, `SUSPECT`, descartes, falhas operacionais e falhas de worker são neutros.
+
+Completion válida mantém CAS/generation, estado, memória/evidência, due,
+transição e indisponibilidade no mesmo boundary transacional; probe/I-O fica
+fora da transação. A duração é derivada dos timestamps e não persistida.
+
+Evidência final conhecida: MON-06B `GLOBAL TESTS = 659 PASSED`; MON-06C
+`TESTS MON-06C = 19 PASSED`, `FOCUSED = 161 PASSED`, `GLOBAL TESTS = 678
+PASSED`; review MON-06C com `BLOCKER = 0`, `MAJOR = 0`, `MINOR = 0`.
+
+O envelope permanece `LOCAL / SINGLE-INSTANCE / SQLite`. Não foram entregues
+worker operacional, management command, ProbeAdapter real, rede, câmeras ou
+credenciais reais, secret manager operacional, dashboard, API, notificações,
+incident engine completo, Celery, Redis, PostgreSQL, multi-worker, lease
+distribuído, deployment, homologação ou produção.
+
+Os hardenings `HARDENING_TRANSITION_REAL` e
+`HARDENING_SCOPE_BATCH_NPLUS1` permanecem `DEFERRED / NON-BLOCKING`.
+
+Não houve alteração nos gates: desenvolvimento local
+`RELEASED_WITH_CONTROLS`; homologação, deployment e produção `BLOCKED`.
+
 Persistir eventos operacionalmente relevantes, principalmente:
 
 ```text
@@ -1187,7 +1235,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
-FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-05 concluídas; Security Gate local RELEASED_WITH_CONTROLS; homologação, deployment e produção BLOCKED)
+FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-06 concluídas; próxima frente MON-07; Security Gate local RELEASED_WITH_CONTROLS; homologação, deployment e produção BLOCKED)
 FASE C — Captura manual e imagens              ⏳ PLANEJADA
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
@@ -1200,3 +1248,16 @@ FASE H — Produção e Go-Live                    ⏳ PLANEJADA
 
 **Documento:** Roadmap ARGOS v5
 **Estado:** adotado como roadmap operacional vigente do Projeto ARGOS.
+
+## Atualização vigente após o fechamento MON-06
+
+MON-06 está `COMPLETE / PASS / PUBLISHED`, com baseline final `395a543`.
+Esta atualização prevalece para o estado atual; seções anteriores que
+registram checkpoints e sequências históricas permanecem preservadas como
+histórico documental.
+
+**Próxima frente oficial:** `MON-07 — Integração eficiente com UI`.
+
+O início de MON-07 não autoriza câmeras ou credenciais reais, homologação,
+deployment, produção, multi-worker, PostgreSQL ou lease distribuído; esses
+limites continuam sujeitos a gates próprios.
