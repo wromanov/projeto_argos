@@ -280,7 +280,7 @@ class MonitoringPersistenceTests(TestCase):
         camera = self.camera()
         self.complete(camera, ProbeResultCode.SUCCESS)
         repository = DjangoMonitoringRepository()
-        repository.leave_scope(camera.pk)
+        repository.leave_scope(camera.pk, START + timedelta(seconds=1))
         state = EstadoMonitoramento.objects.get(camera=camera)
         self.assertFalse(state.em_escopo)
         self.assertEqual(state.estado_estavel, TechnicalState.ONLINE)

@@ -6,12 +6,17 @@ probes e não altera os campos legados ``Camera.status``, ``status_em`` ou
 """
 
 from collections.abc import Callable, Iterable
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone as datetime_timezone
 
 from django.db import transaction
 from django.utils import timezone
 
-from cameras.models import Camera, EstadoMonitoramento, TransicaoEstadoMonitoramento
+from cameras.models import (
+    Camera,
+    EstadoMonitoramento,
+    Indisponibilidade,
+    TransicaoEstadoMonitoramento,
+)
 
 from .confirmation import ConfirmationMemory, ConfirmationPolicy, ProcessingDisposition, TechnicalDecision, TechnicalState
 from .contracts import ProbeResult
@@ -23,6 +28,19 @@ class DjangoMonitoringRepository:
 
     def __init__(self, *, before_transition: Callable[[], None] | None = None) -> None:
         self._before_transition = before_transition
+
+    @staticmethod
+    def _utc_timestamp(value: datetime, field_name: str) -> datetime:
+        if not isinstance(value, datetime):
+            raise TypeError(f"{field_name} must be a datetime")
+        if timezone.is_naive(value):
+            raise ValueError(f"{field_name} must be timezone-aware")
+        return value.astimezone(datetime_timezone.utc)
+
+    @staticmethod
+    def _validate_camera_boundary(expected_camera_id: int, actual_camera_id: int, field_name: str) -> None:
+        if actual_camera_id != expected_camera_id:
+            raise ValueError(f"{field_name} camera does not match monitoring state")
 
     @staticmethod
     def _eligible(camera: Camera) -> bool:
@@ -101,6 +119,7 @@ class DjangoMonitoringRepository:
                 camera_id=candidate.camera_id,
                 defaults={"versao_politica_confirmacao": memory.policy_version},
             )
+            self._validate_camera_boundary(candidate.camera_id, state.camera_id, "state")
             previous = TechnicalState(state.estado_estavel)
             changed = previous is not memory.state
             updates = {
@@ -130,18 +149,88 @@ class DjangoMonitoringRepository:
             if changed:
                 if self._before_transition is not None:
                     self._before_transition()
-                TransicaoEstadoMonitoramento.objects.create(
+                transition = TransicaoEstadoMonitoramento.objects.create(
                     camera_id=candidate.camera_id,
                     estado_anterior=previous.value,
                     estado_atual=memory.state.value,
                     ocorrida_em=decision.observed_at,
                 )
+                self._validate_camera_boundary(state.camera_id, transition.camera_id, "transition")
+
+                if memory.state is TechnicalState.OFFLINE:
+                    if previous not in (TechnicalState.UNKNOWN, TechnicalState.ONLINE):
+                        raise ValueError("unsupported transition into OFFLINE")
+                    open_interval = (
+                        Indisponibilidade.objects.select_for_update()
+                        .filter(camera_id=state.camera_id, closed_at__isnull=True)
+                        .first()
+                    )
+                    if open_interval is not None:
+                        self._validate_camera_boundary(state.camera_id, open_interval.camera_id, "open interval")
+                        raise ValueError("camera already has an open unavailability interval")
+                    origin = (
+                        Indisponibilidade.OrigemAbertura.INITIAL_OFFLINE
+                        if previous is TechnicalState.UNKNOWN
+                        else Indisponibilidade.OrigemAbertura.ONLINE_TO_OFFLINE
+                    )
+                    interval = Indisponibilidade.objects.create(
+                        camera_id=state.camera_id,
+                        opened_at=decision.observed_at,
+                        open_origin=origin,
+                        opening_transition=transition,
+                    )
+                    self._validate_camera_boundary(state.camera_id, interval.camera_id, "opened interval")
+                    self._validate_camera_boundary(state.camera_id, interval.opening_transition.camera_id, "opening transition")
+                elif memory.state is TechnicalState.ONLINE and previous is TechnicalState.OFFLINE:
+                    open_interval = (
+                        Indisponibilidade.objects.select_for_update()
+                        .filter(camera_id=state.camera_id, closed_at__isnull=True)
+                        .first()
+                    )
+                    if open_interval is None:
+                        raise ValueError("offline state has no open unavailability interval")
+                    self._validate_camera_boundary(state.camera_id, open_interval.camera_id, "open interval")
+                    self._validate_camera_boundary(
+                        state.camera_id,
+                        open_interval.opening_transition.camera_id,
+                        "opening transition",
+                    )
+                    open_interval.closed_at = decision.observed_at
+                    open_interval.close_reason = Indisponibilidade.MotivoFechamento.RECUPERADA
+                    open_interval.closing_transition = transition
+                    open_interval.save(
+                        update_fields=[
+                            "closed_at",
+                            "close_reason",
+                            "closing_transition",
+                            "updated_at",
+                        ]
+                    )
+                elif not (previous is TechnicalState.UNKNOWN and memory.state is TechnicalState.ONLINE):
+                    raise ValueError("unsupported stable monitoring transition")
         return True
 
-    def leave_scope(self, camera_id: int) -> None:
-        """Marca retirada administrativa sem convertê-la em OFFLINE."""
+    def leave_scope(self, camera_id: int, occurred_at: datetime) -> None:
+        """Fecha o intervalo aberto e marca retirada administrativa atomicamente."""
 
-        EstadoMonitoramento.objects.filter(camera_id=camera_id).update(em_escopo=False)
+        occurred_at = self._utc_timestamp(occurred_at, "occurred_at")
+        with transaction.atomic():
+            state, _ = EstadoMonitoramento.objects.select_for_update().get_or_create(camera_id=camera_id)
+            self._validate_camera_boundary(camera_id, state.camera_id, "state")
+            open_interval = (
+                Indisponibilidade.objects.select_for_update()
+                .filter(camera_id=state.camera_id, closed_at__isnull=True)
+                .first()
+            )
+            if open_interval is not None:
+                self._validate_camera_boundary(state.camera_id, open_interval.camera_id, "open interval")
+                open_interval.closed_at = occurred_at
+                open_interval.close_reason = Indisponibilidade.MotivoFechamento.SAIU_DO_ESCOPO
+                open_interval.closing_transition = None
+                open_interval.save(update_fields=["closed_at", "close_reason", "closing_transition", "updated_at"])
+            if state.em_escopo:
+                state.em_escopo = False
+                state.save(update_fields=["em_escopo", "atualizado_em"])
 
     def enter_scope(self, camera_id: int, now: datetime | None = None) -> None:
         """Retorno ao escopo reinicia a verdade corrente como UNKNOWN."""
