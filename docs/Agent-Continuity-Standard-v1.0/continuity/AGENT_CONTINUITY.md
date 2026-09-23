@@ -5,7 +5,7 @@ DOCUMENT_TYPE = PROJECT_SPECIFIC_CONTINUITY_INSTANCE
 CONTINUITY_STANDARD = Agent Continuity Standard v1.0
 CONTINUITY_PROTOCOL_PACKAGE = Protocolo Continuidade Projeto Em Andamento Com Novo Agente 2.0
 CONTINUITY_ADOPTION_MODE = RETROFIT_REQUIRED
-CONTINUITY_RETROFIT_GATE = NOT_PASSED
+CONTINUITY_RETROFIT_GATE = PASS
 USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
@@ -44,9 +44,9 @@ PRIMARY_REPOSITORY = https://github.com/wromanov/projeto_argos.git
 
 LAST_VERIFIED_LOCAL_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
 LAST_VERIFIED_BRANCH = master
-LAST_VERIFIED_HEAD = 92023b2520573d76a98f4cb647c20699fcd30bfe
-LAST_VERIFIED_ORIGIN_MASTER = 079baee48eaaa0a90ef05c320e081363e1941c62
-LAST_VERIFIED_DIVERGENCE = HEAD ahead 1 / behind 0
+LAST_VERIFIED_HEAD = 5310c5ec931d9b8227bd2c281d823dffb2b12c31
+LAST_VERIFIED_ORIGIN_MASTER = 5310c5ec931d9b8227bd2c281d823dffb2b12c31
+LAST_VERIFIED_DIVERGENCE = HEAD ahead 0 / behind 0
 LAST_VERIFIED_WORKTREE = CLEAN
 LAST_VERIFIED_STAGING = CLEAN
 
@@ -58,10 +58,10 @@ revalidá-los com Git antes de usá-los como facts atuais.
 
 As políticas operacionais atuais são:
 
-- `Politica-Prompts-Agente-v1.7-R2.4.md`
-- `AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`
-- `Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md`
-- `Independencia-Analitica-Agente-v1.md`
+- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.4.md`
+- `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`
+- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md`
+- `docs/Agent-Continuity-Standard-v1.0/policies/Independencia-Analitica-Agente-v1.md`
 
 Regras de version hygiene:
 - R2.4 substitui operacionalmente R2.3;
@@ -78,7 +78,7 @@ MON-08A = PASS
 MON-08B_PREVIOUS_IMPLEMENTATION = LOST_WITH_FORMATTED_LOCAL_WORKTREE
 MON-08B_REQUIREMENTS = PRESERVED
 MON-08B_PREVIOUS_EVIDENCE = HISTORICAL_REFERENCE_ONLY
-MON-08B_CURRENT_IMPLEMENTATION = NOT_PRESENT_IN_CURRENT_CLONE
+MON-08B_CURRENT_IMPLEMENTATION = NOT_PRESENT
 MON-08B_CURRENT_GATE = RECOVERY_REQUIRED
 
 O antigo checkout local foi perdido após formatação do computador. A implementação
@@ -148,10 +148,10 @@ COMPARE_AUTHORITIES = YES
 
 O novo agente deve:
 1. ler `AGENTS.md`;
-2. ler este documento;
-3. ler `PROJECT_STATE.md`;
-4. ler `continuity/ACTIVE_DOCUMENT_MAP.md`;
-5. ler as policies canônicas relevantes;
+2. ler `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`;
+3. ler `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`;
+4. ler `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`;
+5. ler as policies canônicas relevantes em `docs/Agent-Continuity-Standard-v1.0/policies/`;
 6. revalidar Git;
 7. apresentar divergências e itens UNVERIFIED;
 8. aguardar validação humana.
@@ -186,5 +186,5 @@ KNOWN_BLOCKERS_RECORDED = YES
 KNOWN_DIVERGENCES_RECORDED = YES
 NEXT_REQUIRED_ACTIVITY_RECORDED = YES
 
-Até a verificação:
-CONTINUITY_RETROFIT_GATE = NOT_PASSED
+Verificação factual concluída:
+CONTINUITY_RETROFIT_GATE = PASS

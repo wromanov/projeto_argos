@@ -3,43 +3,42 @@
 STATUS = CURRENT
 DOCUMENT_TYPE = PROJECT_SPECIFIC_AUTHORITY_MAP
 PROJECT = ARGOS
+ACTIVE_DOCUMENT_MAP_READY = YES
 
 ## 1. Project continuity authorities
 
 | Path | Role | Status |
 |---|---|---|
-| `AGENTS.md` | Project entrypoint / agent authority map | PRESENT in commit 92023b2; content must be inspected by executor |
-| `AGENT_CONTINUITY.md` | Project-specific continuity instance | TO_MATERIALIZE |
-| `PROJECT_STATE.md` | Current operational snapshot | TO_MATERIALIZE |
-| `continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | New-chat recovery contract | TO_MATERIALIZE |
-| `continuity/ACTIVE_DOCUMENT_MAP.md` | Active authority/document map | TO_MATERIALIZE |
+| `AGENTS.md` | Project entrypoint / agent authority map | PRESENT / CURRENT CHECKOUT |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Project-specific continuity instance | PRESENT / ACTIVE |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Current operational snapshot | PRESENT / CURRENT_SNAPSHOT |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Active authority/document map | PRESENT / CURRENT |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | New-chat recovery contract | PRESENT / ACTIVE |
 
 ## 2. Known project canonical documents
 
 | Path / identity | Role | Status |
 |---|---|---|
-| `docs/projeto/ROADMAP_ARGOS_V5.md` | Project roadmap / workstream direction | KNOWN_CANONICAL; verify current content |
-| `docs/projeto/ADR-021_seguranca_capacidade_monitoramento.md` | Monitoring security/capability ADR | KNOWN_CANONICAL; verify current content |
-| ADR-019 | Monitoring architecture/behavior authority | EXACT_PATH_UNVERIFIED |
-| ADR-020 | Monitoring state/read semantics authority | EXACT_PATH_UNVERIFIED |
-
-Do not invent exact paths for ADR-019/ADR-020. Resolve them from the repository
-during read-only recovery.
+| `docs/projeto/ROADMAP_ARGOS_V5.md` | Project roadmap / workstream direction | PRESENT / CANONICAL; verify current content |
+| `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | Monitoring architecture/behavior authority | PRESENT; verify current content |
+| `docs/projeto/ADR-020_contrato_estado_tecnico_monitoramento.md` | Monitoring state/read semantics authority | PRESENT; verify current content |
+| `docs/projeto/ADR-021_seguranca_capacidade_monitoramento.md` | Monitoring security/capability authority | PRESENT / CANONICAL; verify current content |
 
 ## 3. Transversal policy set
 
 CURRENT / ACTIVE:
 
-- `Politica-Prompts-Agente-v1.7-R2.4.md`
-- `AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`
-- `Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md`
-- `Independencia-Analitica-Agente-v1.md`
+- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.4.md`
+- `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`
+- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md`
+- `docs/Agent-Continuity-Standard-v1.0/policies/Independencia-Analitica-Agente-v1.md`
 
 SUPERSEDED / HISTORICAL ONLY:
 
 - `Politica-Prompts-Agente-v1.7-R2.3.md`
 - prior AGENTS baseline v1.7-R2
 - `Politica-de-Uso-de-Skills-Codex-Work-v1.0.md`
+- `docs/Agent-Continuity-Standard-v1.0/policies/Prompt para internalização de politicas para Agentes.txt` — auxiliary historical prompt; it references R2.3 and is not an active authority
 
 Rules:
 - historical references are allowed as evidence;
@@ -51,14 +50,15 @@ Rules:
 
 Git controls factual repository state.
 
-Last verified:
+Last verified snapshot:
+
 - repository: `C:\Users\walac\desenvolvimento\projeto_argos`
 - branch: `master`
-- HEAD: `92023b2`
-- origin/master: `079baee`
-- divergence: ahead 1 / behind 0
-- worktree: clean
-- staging: clean
+- HEAD: `5310c5ec931d9b8227bd2c281d823dffb2b12c31`
+- origin/master: `5310c5ec931d9b8227bd2c281d823dffb2b12c31`
+- divergence: ahead 0 / behind 0
+- worktree: clean at snapshot verification point
+- staging: clean at snapshot verification point
 
 A future agent must reverify these values before relying on them.
 
@@ -71,4 +71,7 @@ MON-08C = NOT_STARTED
 MON-08D = BLOCKED
 MON-08E = NOT_STARTED
 
-Historical MON-08B implementation evidence is not a current source-code authority.
+MON-08B_CURRENT_IMPLEMENTATION = NOT_PRESENT
+MON-08B_CURRENT_GATE = RECOVERY_REQUIRED
+MON-08B previous implementation and evidence are historical only and are not a
+current source-code authority.

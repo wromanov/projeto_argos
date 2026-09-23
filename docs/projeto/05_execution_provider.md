@@ -38,7 +38,7 @@ Framework: Django 5.2.16
 Repositório:
 
 ```text
-C:\Users\walac\PycharmProjects\projeto_argos
+C:\Users\walac\desenvolvimento\projeto_argos
 ```
 
 Branch principal de trabalho:

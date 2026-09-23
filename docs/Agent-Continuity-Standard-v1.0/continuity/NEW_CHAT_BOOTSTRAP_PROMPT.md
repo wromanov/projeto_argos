@@ -8,18 +8,18 @@ Você continuará o Projeto ARGOS. Antes de qualquer implementação, edição,
 stage, commit, push, deploy ou avanço de fase:
 
 1. leia `AGENTS.md`;
-2. leia `AGENT_CONTINUITY.md`;
-3. leia `PROJECT_STATE.md`;
-4. leia `continuity/ACTIVE_DOCUMENT_MAP.md`;
+2. leia `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`;
+3. leia `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`;
+4. leia `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`;
 5. resolva e leia as authorities canônicas aplicáveis no repositório;
 6. aplique as políticas transversais vigentes;
 7. valide Git diretamente.
 
 Políticas transversais ativas:
-- `Politica-Prompts-Agente-v1.7-R2.4.md`;
-- `AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`;
-- `Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md`;
-- `Independencia-Analitica-Agente-v1.md`.
+- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.4.md`;
+- `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`;
+- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md`;
+- `docs/Agent-Continuity-Standard-v1.0/policies/Independencia-Analitica-Agente-v1.md`.
 
 Não use versões superseded como authority operacional.
 
@@ -50,10 +50,11 @@ O último baseline publicado conhecido é:
 079baee
 docs(monitoramento): encerrar mon-07 e direcionar mon-08
 
-O clone atual possuía, na última evidência conhecida, um commit local adicional:
+O checkout atualmente verificado está alinhado ao remoto:
 
-92023b2
-(docs): atualização arquivos agentes codex
+HEAD = 5310c5ec931d9b8227bd2c281d823dffb2b12c31
+ORIGIN_MASTER = 5310c5ec931d9b8227bd2c281d823dffb2b12c31
+DIVERGENCE = ahead 0 / behind 0
 
 MON-08A = PASS.
 
@@ -80,7 +81,7 @@ Verifique, no mínimo:
 - últimos commits;
 - presença/ausência dos artifacts MON-08B.
 
-Se qualquer fact divergir de `PROJECT_STATE.md`, o Git atual prevalece para
+Se qualquer fact divergir de `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, o Git atual prevalece para
 estado do repositório e a divergência deve ser reportada.
 
 ## First response contract

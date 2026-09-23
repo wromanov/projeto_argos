@@ -14,11 +14,13 @@ uma segunda política extensa.
 
 1. `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`
 2. `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`
-3. `docs/Agent-Continuity-Standard-v1.0/policies/Independencia-Analitica-Agente-v1.md`
-4. `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.4.md`
-5. `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md`
-6. `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`
-7. `Documentos específicos da atividade atual.`
+3. `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`
+4. `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md`
+5. `docs/Agent-Continuity-Standard-v1.0/policies/Independencia-Analitica-Agente-v1.md`
+6. `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.4.md`
+7. `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md`
+8. `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`
+9. `Documentos específicos da atividade atual.`
 Se existir uma política canônica de delegação multiagente, referenciá-la pelo path exato em vez de reproduzi-la.
 
 ## 3. Autoridade
@@ -82,7 +84,7 @@ Segredos locais permanecem fora do Git.
 
 Git é a fonte de verdade para repo root, branch, `HEAD` e worktree.
 
-`PROJECT_STATE.md` é o snapshot lógico/técnico. A documentação canônica
+`docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` é o snapshot lógico/técnico. A documentação canônica
 
 mais recente prevalece sobre memória conversacional; divergências devem ser
 
