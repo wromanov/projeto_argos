@@ -44,10 +44,11 @@ PRIMARY_REPOSITORY = https://github.com/wromanov/projeto_argos.git
 
 LAST_VERIFIED_LOCAL_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
 LAST_VERIFIED_BRANCH = master
-LAST_VERIFIED_HEAD = 14a1c40e8d431ff6f253f6d306677dc5e0eb7970
-LAST_VERIFIED_ORIGIN_MASTER = 14a1c40e8d431ff6f253f6d306677dc5e0eb7970
+CURRENT_BASELINE_BEFORE_CHECKPOINT = 40c77c4c988c960000773d3830d8e1915bbcbc59
+LAST_VERIFIED_HEAD = 40c77c4c988c960000773d3830d8e1915bbcbc59
+LAST_VERIFIED_ORIGIN_MASTER = 40c77c4c988c960000773d3830d8e1915bbcbc59
 LAST_VERIFIED_DIVERGENCE = HEAD ahead 0 / behind 0
-LAST_VERIFIED_WORKTREE = 2 expected MON-08B files untracked + 4 continuity documents modified by formal closure
+LAST_VERIFIED_WORKTREE = 1 expected MON-08C harness untracked + 4 continuity documents modified by this checkpoint
 LAST_VERIFIED_STAGING = CLEAN
 
 Observação:
@@ -73,32 +74,37 @@ Regras de version hygiene:
 
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-07
 LAST_PUBLISHED_BASELINE = 079baee
+CURRENT_ACTIVITY_COMPLETED = MON-08C-H2 — PASS
+NEXT_REQUIRED_ACTIVITY = MON-08C-6 — CONSOLIDATED MEASUREMENT / FINAL ADJUDICATION
+MON08C6_STATUS = NOT_STARTED
+MON08C6_IMPLEMENTATION_AUTHORIZATION = NO
+CHECKPOINT_STAGE_COMMIT_AUTHORIZATION = YES
+PUSH = NOT_AUTHORIZED
 
 MON-08A = PASS
-MON-08B_PREVIOUS_IMPLEMENTATION = LOST_WITH_FORMATTED_LOCAL_WORKTREE (HISTORICAL)
-MON-08B_CURRENT_IMPLEMENTATION = COMPLETE / TECHNICALLY_APPROVED
-MON-08B_REQUIREMENTS = PRESERVED_AND_IMPLEMENTED
-MON-08B_PREVIOUS_EVIDENCE = HISTORICAL_REFERENCE_ONLY
-MON-08B_SELF_VALIDATION_GATE = PASS
-MON-08B_FINAL_INDEPENDENT_REVIEW = PASS
-MON-08B_CURRENT_GATE = COMPLETE / TECHNICALLY_APPROVED
+MON-08B = COMPLETE / TECHNICALLY_APPROVED (HISTORICAL)
+MON08C_DISCOVERY_PREFLIGHT = PASS
+MON08C1_NORMAL_PERSISTENCE = PASS
+MON08C2_MASS_FAILURE = PASS
+MON08C3_MASS_RECOVERY = PASS
+MON08C4_RESTART_IDEMPOTENCY = PASS
+MON08C5_STALE_GENERATION_CAS = PASS
+MON08C_H1_HARNESS_DISCOVERY = PASS
+MON08C_H2_HARNESS_REFACTOR = PASS
 
-O checkout local anterior foi perdido após formatação antes de stage/commit/push.
-Esse fato histórico descreve somente a implementação anterior. A implementação
-atual foi reconstruída nos dois arquivos MON-08B esperados, autovalidada no runtime
-canônico e aprovada por revisão independente. A evidência antiga não foi promovida
-como evidência da implementação atual.
-
-Evidência atual da MON-08B:
-- 2.300 ativos sintéticos; 0 missing; 0 duplicates;
-- concorrência configurada = 20; máximo observado = 20;
-- cenário normal = 2.300 requests/results;
-- falha em massa = duas rodadas reais, 4.600 requests/results; rodada 1 = 0 OFFLINE,
-  rodada 2 = 2.300 OFFLINE;
-- recuperação = uma rodada, 2.300 requests/results e 2.300 ONLINE;
-- 10 testes MON-08B PASS; 188 testes focados PASS; 705 testes globais PASS;
-- Django check, migration check, compileall, git diff check e whitespace check = PASS;
-- Python canônico = 3.14.7; Ruff não disponível.
+Evidência factual aprovada da MON-08C-H2:
+- FAST_TEST_COUNT = 1; SCALE_TEST_COUNT = 4;
+- FAST_DATASET_SIZE = 3; SCALE_DATASET_SIZE = 2300;
+- DATASET_2300_CREATION_COUNT = 6 → 4;
+- COMPLETION_CALLS_APPROX = 39101 → 27607;
+- STRUCTURAL_REDUCTION_APPROX = 29.4%;
+- MASS_FAILURE_RECOVERY_CONSOLIDATED = YES;
+- FAST_TESTS = PASS — aproximadamente 0.067 s;
+- REPRESENTATIVE_SCALE_TEST = PASS — 2300 ativos — aproximadamente 270.869 s;
+- FULL_MON08C_RERUN = NOT_REQUIRED; GLOBAL_SUITE_RUN = NO;
+- PRODUCTION_SOURCE_CHANGED = NO; CI_CHANGED = NO; SCHEMA_CHANGED = NO;
+- CI_SCALE_OPT_IN = DEFERRED / NON-BLOCKING;
+- BLOCKERS = 0; MAJOR = 0; MINOR = 0.
 
 ## 5. Gates de segurança e operação preservados
 
@@ -160,10 +166,11 @@ O novo agente deve:
 ## 8. Próxima atividade requerida
 
 NEXT_REQUIRED_ACTIVITY =
-MON-08B CONTROLLED GIT CHECKPOINT
+MON-08C-6 — CONSOLIDATED MEASUREMENT / FINAL ADJUDICATION
 
-A atividade acima NÃO está autorizada automaticamente. Revalidar o snapshot Git
-após esse checkpoint antes de atualizar o estado novamente.
+MON-08C-6 é o próximo passo técnico e não está autorizado por este checkpoint.
+O stage/commit deste checkpoint é autorizado conforme o contrato da atividade;
+push permanece não autorizado. O Git pós-commit será a fonte factual do novo HEAD.
 
 ## 9. Retrofit gate
 

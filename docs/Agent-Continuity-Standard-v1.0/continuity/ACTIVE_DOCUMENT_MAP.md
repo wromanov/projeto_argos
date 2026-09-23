@@ -54,12 +54,12 @@ Last verified snapshot:
 
 - repository: `C:\Users\walac\desenvolvimento\projeto_argos`
 - branch: `master`
-- HEAD: `14a1c40e8d431ff6f253f6d306677dc5e0eb7970`
-- origin/master: `14a1c40e8d431ff6f253f6d306677dc5e0eb7970`
+- HEAD: `40c77c4c988c960000773d3830d8e1915bbcbc59` (baseline pré-checkpoint)
+- origin/master: `40c77c4c988c960000773d3830d8e1915bbcbc59`
 - divergence: ahead 0 / behind 0
-- worktree: two expected MON-08B files untracked; four continuity documents modified for formal closure
+- worktree: um harness MON-08C esperado untracked; quatro documentos de continuidade modificados neste checkpoint
 - staging: empty
-- snapshot: pre-stage; revalidate after the controlled Git checkpoint
+- snapshot: pre-commit; Git pós-commit deve ser revalidado diretamente
 
 A future agent must reverify these values before relying on them.
 
@@ -67,18 +67,32 @@ A future agent must reverify these values before relying on them.
 
 MON-07 = COMPLETE / PUBLISHED
 MON-08A = PASS
-MON-08B = COMPLETE / TECHNICALLY_APPROVED
-MON-08C = NOT_STARTED
+MON-08B = COMPLETE / TECHNICALLY_APPROVED (HISTORICAL)
+MON-08C-H1 = PASS
+MON-08C-H2 = PASS
+MON-08C-1 = PASS
+MON-08C-2 = PASS
+MON-08C-3 = PASS
+MON-08C-4 = PASS
+MON-08C-5 = PASS
+MON-08C = H2 COMPLETE / TECHNICALLY APPROVED; MON-08C-6 NOT_STARTED
 MON-08D = BLOCKED_BY_ENVIRONMENT_AND_SECURITY_GATES
 MON-08E = NOT_STARTED
 
-MON-08B_CURRENT_IMPLEMENTATION = COMPLETE
-MON-08B_SELF_VALIDATION_GATE = PASS
-MON-08B_FINAL_INDEPENDENT_REVIEW = PASS
-MON-08B_REV_001 = RESOLVED
-MON-08B_REV_002 = RESOLVED
-MON-08B prior implementation loss and evidence are historical; current status is
-based on the reconstructed files, canonical-runtime validation and final independent review.
-MON-08 = IN_PROGRESS; MON-08B completion does not close MON-08C/MON-08D/MON-08E.
-NEXT_REQUIRED_ACTIVITY = MON-08B CONTROLLED GIT CHECKPOINT
+FAST_TEST_COUNT = 1
+SCALE_TEST_COUNT = 4
+FAST_DATASET_SIZE = 3
+SCALE_DATASET_SIZE = 2300
+DATASET_2300_CREATION_COUNT = 6 → 4
+COMPLETION_CALLS_APPROX = 39101 → 27607
+STRUCTURAL_REDUCTION_APPROX = 29.4%
+CI_SCALE_OPT_IN = DEFERRED / NON-BLOCKING
+PRODUCTION_SOURCE_CHANGED = NO
+CI_CHANGED = NO
+SCHEMA_CHANGED = NO
+MON-08 = IN_PROGRESS; H2 não inicia MON-08C-6.
+NEXT_REQUIRED_ACTIVITY = MON-08C-6 — CONSOLIDATED MEASUREMENT / FINAL ADJUDICATION
 NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION
+MON08C6_STATUS = NOT_STARTED
+MON08C6_IMPLEMENTATION_AUTHORIZATION = NO
+PUSH = NOT_AUTHORIZED
