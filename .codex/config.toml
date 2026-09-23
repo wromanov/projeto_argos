@@ -1,0 +1,11 @@
+[agents]
+# O modelo escolhido na interface do Codex continua sendo o ROOT / ORCHESTRATOR.
+# Baseline recomendado: GPT-5.6 Terra / Medium.
+# v1.7-R2.1: escolha do root precede subagentes e delegação exige ganho líquido material.
+# Para atividades de alto julgamento, Terra / High pode ser escolhido como root.
+# O root não é fixado aqui para preservar a escolha explícita feita no aplicativo.
+#
+# Defaults abaixo afetam apenas subagentes sem perfil especializado explícito.
+max_concurrent_threads_per_session = 2
+default_subagent_model = "gpt-5.6-luna"
+default_subagent_reasoning_effort = "high"

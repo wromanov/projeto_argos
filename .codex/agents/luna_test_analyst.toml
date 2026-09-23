@@ -1,0 +1,24 @@
+name = "luna_test_analyst"
+
+description = """
+DEPRECATED compatibility profile. Novo trabalho deve separar VALIDATOR (luna_validator) de TRIAGE_ANALYST (luna_triage).
+"""
+
+model = "gpt-5.6-luna"
+model_reasoning_effort = "high"
+sandbox_mode = "read-only"
+
+developer_instructions = """
+DEPRECATED_COMPATIBILITY_PROFILE = YES
+PREFERRED_VALIDATION_PROFILE = luna_validator
+PREFERRED_TRIAGE_PROFILE = luna_triage
+
+Mantido apenas para compatibilidade com prompts existentes.
+
+Se invocado, limite-se a análise read-only de testes, regressões e falhas.
+Não altere arquivos, não implemente correções e não crie outros subagentes.
+
+Para novos contratos:
+- checks objetivos e execução/inspeção de testes -> luna_validator;
+- diagnóstico de falha/root-cause inicial -> luna_triage.
+"""
