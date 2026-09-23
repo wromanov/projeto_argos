@@ -1,0 +1,477 @@
+ATIVIDADE — ADOÇÃO E INTERNALIZAÇÃO CONTROLADA DE POLÍTICAS
+
+Você recebeu duas políticas transversais atualizadas:
+
+1. `Politica-Prompts-Agente-v1.7-R2.3.md`
+2. `AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`
+
+OBJETIVO
+
+Ler integralmente os dois documentos, compreender suas responsabilidades distintas, reconciliar suas regras e passar a utilizá-los como referência operacional para atividades futuras, dentro do escopo e do status de autoridade explicitamente informado nesta atividade.
+
+IMPORTANTE
+
+Não trate “internalizar” como simplesmente resumir os documentos.
+
+Você deve demonstrar que consegue aplicar as políticas corretamente em decisões futuras.
+
+Não altere os documentos.
+
+Não invente regras ausentes.
+
+Não importe regras da v1.8 ou de Bounded Cyclic Execution.
+
+Não misture políticas históricas substituídas com as regras atuais.
+
+---
+
+## 1. ESCOPO DAS DUAS POLÍTICAS
+
+Interprete:
+
+### `Politica-Prompts-Agente-v1.7-R2.3.md`
+
+Responsável principalmente por:
+
+- geração de prompts de atividade;
+- seleção inicial de modelo e esforço;
+- definição do ROOT / ORCHESTRATOR;
+- estruturação da recomendação de execução;
+- aplicação dos gates de multiagente;
+- seleção de Skills / Capabilities;
+- contratos de delegação;
+- estrutura obrigatória dos prompts;
+- critérios de escalonamento, validação e relatório.
+
+### `AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico`
+
+Responsável principalmente por:
+
+- arquitetura operacional multiagente;
+- DIRECT vs MULTIAGENT;
+- roteamento econômico de inteligência;
+- escolha e função dos perfis registrados;
+- economic tiering;
+- cognitive hotspots;
+- mechanical implementation;
+- validation;
+- triage;
+- independent review;
+- redundancy control;
+- authority preservation;
+- limites operacionais dos agentes.
+
+As duas políticas são complementares.
+
+A política de geração de prompts deve produzir atividades coerentes com a política operacional multiagente.
+
+---
+
+## 2. PRINCÍPIOS QUE DEVEM SER INCORPORADOS
+
+Você deve compreender e aplicar, entre outros, os seguintes princípios:
+
+```text
+ROOT_CAN_EXECUTE
+!=
+ROOT_SHOULD_EXECUTE
+```
+
+```text
+LOWER_TIER_CAN_EXECUTE
+!=
+LOWER_TIER_SHOULD_EXECUTE
+```
+
+```text
+MULTIAGENT
+!=
+PARALLELISM
+```
+
+```text
+CAPABILITY
+!=
+AUTHORITY
+```
+
+```text
+DELEGATION
+!=
+AUTHORITY_TRANSFER
+```
+
+```text
+IMPLEMENTATION_COMPLETE
+!=
+REVIEWER_REQUIRED
+```
+
+```text
+TEST_FAIL
+!=
+TRIAGE_REQUIRED
+```
+
+O objetivo econômico principal é:
+
+```text
+MINIMIZE EXPECTED_COST_PER_SUCCESSFUL_TASK
+```
+
+preservando:
+
+```text
+QUALITY
+RELIABILITY
+RISK_CONTROL
+VERIFIABILITY
+AUTHORITY
+SCOPE
+```
+
+---
+
+## 3. ROOT ANTES DOS SUBAGENTES
+
+Antes de selecionar subagentes, determine:
+
+```text
+ORCHESTRATOR_MODEL
+ORCHESTRATOR_EFFORT
+```
+
+Depois identifique:
+
+```text
+COGNITIVE_HOTSPOTS
+MECHANICAL_WORK
+OBJECTIVE_VALIDATION_WORK
+```
+
+Somente então avalie DIRECT ou MULTIAGENT.
+
+Não selecione subagentes isoladamente da inteligência já presente no ROOT.
+
+---
+
+## 4. REDUNDANCY GATE
+
+Antes de criar qualquer subagente, avalie:
+
+```text
+DOES_ROOT_ALREADY_COVER_THIS_ROLE_SUFFICIENTLY?
+```
+
+Se sim, só crie outro agente quando houver valor distinto, por exemplo:
+
+```text
+INDEPENDENCE_REQUIRED = YES
+```
+
+ou:
+
+```text
+DISTINCT_SPECIALIZATION_GAIN = YES
+```
+
+ou:
+
+```text
+MATERIAL_ECONOMIC_GAIN = YES
+```
+
+Não duplique inteligência cara sem benefício distinto.
+
+Exemplo:
+
+```text
+TERRA/HIGH ROOT
++
+TERRA/HIGH REVIEWER
+```
+
+não deve ocorrer por rotina.
+
+Se não houver requisito de independência e o ROOT possuir capacidade suficiente:
+
+```text
+ROOT_SELF_REVIEW = YES
+REVIEWER = NO
+```
+
+---
+
+## 5. ROTEAMENTO ECONÔMICO
+
+Inteligência mais cara deve permanecer onde produz ganho cognitivo material.
+
+Trabalho bounded, prescrito e objetivamente verificável deve ser avaliado para tier inferior.
+
+Exemplo admissível:
+
+```text
+TERRA/HIGH ROOT
+→ LUNA/HIGH MECHANICAL_IMPLEMENTER
+→ LUNA/HIGH VALIDATOR
+→ TERRA/HIGH ROOT SELF-REVIEW
+```
+
+Esse padrão não é obrigatório.
+
+Ele só deve ser escolhido quando:
+
+```text
+EXPECTED_TIERING_GAIN
+>
+HANDOFF_COST
++
+DUPLICATED_CONTEXT_COST
++
+INTEGRATION_COST
+```
+
+Tarefas pequenas podem continuar DIRECT mesmo que Luna tecnicamente consiga executá-las.
+
+---
+
+## 6. DIFERENÇA ENTRE IMPLEMENTERS
+
+### MECHANICAL_IMPLEMENTER
+
+Preferencialmente:
+
+```text
+LUNA / HIGH
+```
+
+Somente quando:
+
+- solução está fechada;
+- invariantes estão fechados;
+- escopo é bounded;
+- ownership está claro;
+- implementação é prescrita;
+- validação objetiva existe;
+- ganho econômico é material.
+
+### IMPLEMENTER
+
+Preferencialmente:
+
+```text
+TERRA / MEDIUM
+```
+
+ou tier superior quando justificado.
+
+Utilizar quando ainda existe julgamento técnico durante a implementação.
+
+Não usar Luna Mechanical Implementer para trabalho que ainda exige interpretação material, integração complexa ou escolhas técnicas relevantes.
+
+---
+
+## 7. VALIDATOR
+
+Preferencialmente:
+
+```text
+LUNA / HIGH
+```
+
+Validator:
+
+```text
+VALIDATES
+DOES_NOT_IMPLEMENT
+```
+
+Pode executar ferramentas que gerem artefatos transitórios quando tecnicamente necessário.
+
+Isso não concede:
+
+```text
+SOURCE_WRITE_AUTHORIZATION
+```
+
+---
+
+## 8. TRIAGE
+
+Triage não é automático após falha.
+
+Antes de criá-lo, avaliar:
+
+```text
+FAILURE_IS_AMBIGUOUS?
+ROOT_CAUSE_REQUIRES_SEPARATE_DIAGNOSIS?
+TRIAGE_PRODUCES_MATERIAL_GAIN?
+```
+
+Falha pequena, localizada e autoexplicativa pode ser tratada diretamente pelo ROOT ou pelo executor apropriado.
+
+---
+
+## 9. REVIEW
+
+Separar:
+
+```text
+CAPABILITY_TO_REVIEW
+```
+
+de:
+
+```text
+INDEPENDENT_REVIEW_REQUIREMENT
+```
+
+Self-review pode ser suficiente tecnicamente.
+
+Self-review não satisfaz requisito formal de independência quando esse requisito existir.
+
+---
+
+## 10. MULTIAGENTE SEQUENCIAL
+
+Não exija paralelismo para justificar MULTIAGENT.
+
+São válidos pipelines como:
+
+```text
+ROOT
+→ IMPLEMENTER
+→ VALIDATOR
+→ ROOT
+```
+
+quando há ganho material de tiering, contexto, especialização, independência ou custo.
+
+---
+
+## 11. SKILLS / CAPABILITIES
+
+Skills devem permanecer uma dimensão separada de:
+
+- modelo;
+- esforço;
+- multiagente;
+- authority;
+- permission.
+
+Nunca invente uma skill.
+
+`NONE` continua sendo escolha válida.
+
+---
+
+## 12. BOUNDED CYCLIC EXECUTION
+
+As políticas atuais NÃO autorizam introduzir automaticamente:
+
+- Bounded Cyclic Execution;
+- Work Units;
+- cycle ledger;
+- retry cycles estruturados;
+- loops autônomos;
+- regras da v1.8 ainda não promovidas.
+
+Esses elementos permanecem fora do escopo até autorização específica.
+
+---
+
+## 13. PRECEDÊNCIA
+
+Quando aplicar estas políticas, respeite a seguinte hierarquia:
+
+```text
+1. instrução explícita atual do usuário
+2. authorities e contratos canônicos específicos do projeto
+3. restrições de segurança e operação
+4. política operacional multiagente aplicável
+5. política de geração de prompts
+6. convenções auxiliares
+```
+
+Uma política transversal nunca pode ampliar authority concedida pelo projeto ou pelo usuário.
+
+Se houver conflito normativo real:
+
+```text
+DO_NOT_GUESS
+REPORT_CONFLICT
+```
+
+---
+
+## 14. VALIDAÇÃO DE INTERNALIZAÇÃO
+
+Antes de considerar a adoção concluída, produza uma auditoria curta contendo:
+
+```text
+POLICY_ADOPTION_REPORT
+
+POLICIES_READ =
+POLICIES_UNDERSTOOD =
+
+PROMPT_POLICY_SCOPE =
+MULTIAGENT_POLICY_SCOPE =
+
+ROOT_BEFORE_SUBAGENTS = PASS | FAIL
+ECONOMIC_INTELLIGENCE_ROUTING = PASS | FAIL
+SEQUENTIAL_MULTIAGENT_UNDERSTOOD = PASS | FAIL
+REDUNDANCY_GATE_UNDERSTOOD = PASS | FAIL
+MECHANICAL_VS_TECHNICAL_IMPLEMENTER = PASS | FAIL
+VALIDATOR_BOUNDARIES = PASS | FAIL
+CONDITIONAL_TRIAGE = PASS | FAIL
+INDEPENDENT_REVIEW_SEMANTICS = PASS | FAIL
+AUTHORITY_PRESERVATION = PASS | FAIL
+BOUNDED_CYCLIC_EXECUTION_EXCLUDED = PASS | FAIL
+
+CONFLICTS_FOUND =
+AMBIGUITIES_FOUND =
+MISSING_CAPABILITIES =
+
+ADOPTION_VERDICT =
+```
+
+O veredicto só pode ser:
+
+```text
+READY_TO_APPLY
+```
+
+se todos os pontos obrigatórios estiverem compreendidos.
+
+Caso contrário:
+
+```text
+ADOPTION_BLOCKED
+```
+
+e relate exatamente o motivo.
+
+---
+
+## 15. COMPORTAMENTO FUTURO
+
+Após adoção válida, em toda nova atividade relevante:
+
+1. classifique primeiro a atividade;
+2. escolha o ROOT;
+3. identifique hotspots cognitivos;
+4. identifique trabalho mecânico;
+5. identifique validação objetiva;
+6. avalie DIRECT;
+7. avalie gates multiagente;
+8. avalie economic tiering;
+9. aplique Redundancy Gate;
+10. selecione apenas os agentes necessários;
+11. preserve authority;
+12. use contratos de delegação estreitos;
+13. valide proporcionalmente ao risco;
+14. mantenha adjudicação final no ROOT.
+
+Não mencione ou repita estas políticas em toda resposta sem necessidade.
+
+A internalização deve alterar o comportamento operacional, não gerar burocracia textual permanente.
