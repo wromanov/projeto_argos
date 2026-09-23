@@ -2,7 +2,7 @@
 
 STATUS = ACTIVE
 PROJECT = ARGOS
-FIRST_RESPONSE_MODE = READ_ONLY_RECOVERY
+FIRST_RESPONSE_MODE = READ_ONLY_CONTINUITY_REVALIDATION
 
 Você continuará o Projeto ARGOS. Antes de qualquer implementação, edição,
 stage, commit, push, deploy ou avanço de fase:
@@ -25,6 +25,7 @@ Não use versões superseded como authority operacional.
 
 ## Recovery boundary
 
+BOOTSTRAP_SESSION_GATE_SCOPE = EACH_NEW_CHAT
 CONTINUITY_RECOVERY_GATE = NOT_PASSED
 USER_CONTINUITY_VALIDATION = PENDING
 READY_TO_RESUME_PROJECT = NO
@@ -50,22 +51,42 @@ O último baseline publicado conhecido é:
 079baee
 docs(monitoramento): encerrar mon-07 e direcionar mon-08
 
-O checkout atualmente verificado está alinhado ao remoto:
+O snapshot local pré-stage verificado em 2026-09-23 está alinhado ao remoto:
 
-HEAD = 5310c5ec931d9b8227bd2c281d823dffb2b12c31
-ORIGIN_MASTER = 5310c5ec931d9b8227bd2c281d823dffb2b12c31
+HEAD = 14a1c40e8d431ff6f253f6d306677dc5e0eb7970
+ORIGIN_MASTER = 14a1c40e8d431ff6f253f6d306677dc5e0eb7970
 DIVERGENCE = ahead 0 / behind 0
+WORKTREE = two expected MON-08B files untracked + four continuity documents modified for formal closure
+STAGING = EMPTY
+SNAPSHOT = PRE-STAGE; revalidate after the controlled Git checkpoint
 
 MON-08A = PASS.
+MON-08B = COMPLETE / TECHNICALLY_APPROVED.
+MON-08B_IMPLEMENTATION = COMPLETE
+MON-08B_SELF_VALIDATION_GATE = PASS
+MON-08B_FINAL_INDEPENDENT_REVIEW = PASS
+MON-08B_REV_001 = RESOLVED
+MON-08B_REV_002 = RESOLVED
 
-Uma implementação local da MON-08B existiu anteriormente, mas foi perdida quando
-o computador foi formatado antes de qualquer commit/push. Portanto:
+Uma implementação anterior da MON-08B foi perdida quando o computador foi
+formatado antes de qualquer stage/commit/push. Esse fato e a evidência daquela
+versão são históricos; a implementação atual foi reconstruída e aprovada com
+evidência própria:
 
 MON-08B_PREVIOUS_EVIDENCE = HISTORICAL_REFERENCE_ONLY
-MON-08B_CURRENT_IMPLEMENTATION = NOT_PRESENT
-MON-08B_CURRENT_GATE = RECOVERY_REQUIRED
+CANONICAL_RUNTIME = Python 3.14.7
+TESTS_MON08B = PASS — 10/10
+FOCUSED_TESTS = PASS — 188/188
+GLOBAL_TESTS = PASS — 705/705
+DJANGO_CHECK = PASS
+MIGRATION_CHECK = PASS
+COMPILEALL = PASS
+GIT_DIFF_CHECK = PASS
+UNTRACKED_WHITESPACE_CHECK = PASS
+RUNTIME_AND_NETWORK = SYNTHETIC_ONLY; REAL_DB_CAPACITY_VALIDATED = NO
 
-Não promova o PASS histórico da MON-08B para o checkout atual.
+Os arquivos atuais da implementação permanecem untracked até o futuro checkpoint
+Git controlado. Não confunda o gate por-chat abaixo com o status técnico da MON-08B.
 
 ## Git verification
 
@@ -125,17 +146,19 @@ CONTINUITY_RECOVERY_GATE = NOT_PASSED
 USER_CONTINUITY_VALIDATION = PENDING
 READY_TO_RESUME_PROJECT = NO
 
-Aguarde confirmação explícita do usuário.
+Aguarde confirmação explícita do usuário para validar a continuidade desta nova
+conversa; essa validação não altera o estado técnico aprovado da MON-08B.
 
 Somente após:
 USER_CONTINUITY_VALIDATION = PASS
 CONTINUITY_RECOVERY_GATE = PASS
 
-o projeto pode sair da recuperação. Mesmo assim, a próxima atividade exige
-preflight, scope e autorização próprios.
+o agente pode sair do modo de revalidação desta conversa. A próxima atividade do
+projeto continua exigindo scope e autorização próprios.
 
-## Next required activity after recovery
+## Next required activity
 
-MON-08B RECOVERY — READ-ONLY CODE/GIT PREFLIGHT AND RECONSTRUCTION PLAN
+MON-08B CONTROLLED GIT CHECKPOINT
 
-Isso NÃO é autorização de implementação.
+CHECKPOINT_AUTHORIZED = NO
+NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION

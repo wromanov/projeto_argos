@@ -1,48 +1,48 @@
 # ARGOS — Project State
 
 STATUS = CURRENT_SNAPSHOT
-SNAPSHOT_DATE = 2026-09-22
+SNAPSHOT_DATE = 2026-09-23
 PROJECT = ARGOS
-STATE_SOURCE = conversation evidence + last verified local Git output
+STATE_SOURCE = verified Git state + MON-08B canonical-runtime validation + independent review
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = LAST_VERIFIED_STATE_BEFORE_CONTINUITY_RETROFIT_EDITS
+SNAPSHOT_SCOPE = PRE-STAGE STATE AFTER MON-08B FORMAL CLOSURE
 
 ## 1. Executive status
 
 CURRENT_PHASE = MON-08 — Escala e carga
-CURRENT_ACTIVITY = MON-08B RECOVERY REQUIRED
-LAST_COMPLETED_ACTIVITY = MON-08A Discovery
+CURRENT_ACTIVITY = MON-08B FORMAL STATE CLOSURE COMPLETE
+LAST_COMPLETED_ACTIVITY = MON-08B implementation, validation and independent review
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-07
 LAST_PUBLISHED_BASELINE = 079baee
 
 PROJECT_PROGRESS_LAST_VALID_PUBLISHED_ESTIMATE = 78%
 MON08_PROGRESS_LAST_VALID_PUBLISHED_ESTIMATE = 15%
+PROJECT_PROGRESS_UPDATE = DEFERRED_TO_CONTROLLED_CHECKPOINT_OR_ROADMAP
+PROGRESS_BASIS = Percentages remain the last formally published estimates; no deterministic recalculation method is established in this snapshot.
 
-HISTORICAL_PROGRESS_INVALIDATED_BY_LOST_LOCAL_IMPLEMENTATION =
-global 79% / MON-08 35% reflected a MON-08B implementation that no longer exists
-in the current checkout and therefore is not the current executable state.
-
-## 2. Git snapshot last verified
+## 2. Git snapshot — pre-stage
 
 REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
 BRANCH = master
-HEAD = 5310c5ec931d9b8227bd2c281d823dffb2b12c31
-HEAD_SHORT = 5310c5e
-ORIGIN_MASTER = 5310c5ec931d9b8227bd2c281d823dffb2b12c31
-ORIGIN_MASTER_SHORT = 5310c5e
+HEAD = 14a1c40e8d431ff6f253f6d306677dc5e0eb7970
+ORIGIN_MASTER = 14a1c40e8d431ff6f253f6d306677dc5e0eb7970
 DIVERGENCE = ahead 0 / behind 0
-WORKTREE_STATE = CLEAN
-STAGING_STATE = CLEAN
-
-LOCAL_ONLY_COMMIT = NONE AT SNAPSHOT; HEAD MATCHED ORIGIN/MASTER
-
-IMPORTANT:
-esse snapshot deve ser revalidado em qualquer retomada futura.
+WORKTREE_STATE = MODIFIED
+WORKTREE_CONTENTS = two expected untracked MON-08B files + four continuity documents updated in this activity
+STAGING_STATE = EMPTY
+SNAPSHOT_VALIDITY = PRE_STAGE
+REVALIDATE_AFTER_CONTROLLED_GIT_CHECKPOINT = REQUIRED
 
 ## 3. Completed state
 
 MON-07 = COMPLETE / PUBLISHED
 MON-08A = PASS
+MON-08B = COMPLETE / TECHNICALLY_APPROVED
+MON-08B_IMPLEMENTATION = COMPLETE
+MON-08B_SELF_VALIDATION_GATE = PASS
+MON-08B_FINAL_INDEPENDENT_REVIEW = PASS
+MON-08B_REV_001 = RESOLVED
+MON-08B_REV_002 = RESOLVED
 
 MON-07 published commits:
 - 9bc5608 feat(monitoramento): criar camada canonica de leitura
@@ -51,62 +51,82 @@ MON-07 published commits:
 
 MON-07 final global suite = 695 PASS
 
-## 4. Pending state
+MON-08B canonical runtime = Python 3.14.7
+MON-08B focused tests = 10/10 PASS
+MON-08B monitoring regression = 188/188 PASS
+MON-08B global tests = 705/705 PASS; exit code 0
+MON-08B Django check = PASS
+MON-08B migration check = PASS; no migrations generated
+MON-08B compileall = PASS
+MON-08B git diff check = PASS
+MON-08B untracked whitespace check = PASS
+MON-08B Ruff = NOT_AVAILABLE; not installed
 
-MON-08B = RECOVERY_REQUIRED
-MON-08B_CURRENT_IMPLEMENTATION = NOT_PRESENT
-MON-08B_CURRENT_GATE = RECOVERY_REQUIRED
+## 4. Current MON-08 state
+
+MON-08A = PASS
+MON-08B = COMPLETE / TECHNICALLY_APPROVED
 MON-08C = NOT_STARTED
 MON-08D = BLOCKED_BY_ENVIRONMENT_AND_SECURITY_GATES
 MON-08E = NOT_STARTED
+MON-08 = IN_PROGRESS
 
-## 5. Lost local implementation
+CONFIGURED_CONCURRENCY = 20
+OBSERVED_MAX_IN_FLIGHT = 20
+BOUNDED_CONCURRENCY = PASS
+ASSET_COUNT = 2300
+NORMAL_SCENARIO = PASS
+MASS_FAILURE_SCENARIO = PASS
+MASS_FAILURE_ROUNDS = 2
+MASS_FAILURE_TOTAL_REQUESTS = 4600
+MASS_FAILURE_TOTAL_RESULTS = 4600
+MASS_FAILURE_TOTAL_MISSING = 0
+MASS_FAILURE_TOTAL_DUPLICATES = 0
+MASS_FAILURE_ROUND_1_OFFLINE = 0
+MASS_FAILURE_ROUND_2_OFFLINE = 2300
+MASS_RECOVERY_SCENARIO = PASS
+MASS_RECOVERY_REQUESTS = 2300
+MASS_RECOVERY_RESULTS = 2300
+MASS_RECOVERY_ONLINE = 2300
 
-LOST_ARTIFACTS =
-- cameras/monitoramento/load_lab.py
-- cameras/test_monitoramento_mon08b.py
-- ARGOS_MON_08B_REPORT.txt
+REAL_NETWORK_USED = NO
+ORM_USED = NO
+REAL_DB_CAPACITY_VALIDATED = NO
+MIGRATIONS = NONE
+DEPENDENCIES = NONE
 
-LOSS_CAUSE =
-old local checkout was erased by computer formatting before MON-08B was committed/pushed
+MON08B_BLOCKER = 0
+MON08B_MAJOR = 0
+MON08B_MINOR = 0
+MON08B_HARDENING = 0
 
-RECOVERY_SOURCE =
-- current repository contracts;
-- preserved MON-08A/MON-08B requirements from conversation;
-- historical MON-08B evidence as reference only.
+## 5. Historical recovery context
 
-DO_NOT_TREAT_HISTORICAL_MON08B_PASS_AS_CURRENT = YES
+HISTORICAL_LOSS = the pre-formatting local MON-08B implementation was lost before stage/commit/push.
+HISTORICAL_LOSS_SCOPE = prior implementation and its evidence only; it does not describe the current reconstructed files.
+HISTORICAL_EVIDENCE = reference only; current PASS is based on the reconstructed implementation's validation and final independent review.
 
-## 6. Current blockers
+The current MON-08B implementation reuses the existing monitoring contracts. Its files remain untracked at this pre-stage snapshot.
 
-BLOCKERS =
-1. MON-08B implementation is absent from the current clone.
-2. The independent MON-08B review cannot run until reconstruction exists.
-3. Homologation/deployment/production security gates remain blocked.
-4. Real runtime/adapter/network execution remains unauthorized.
-5. Quantitative SLA/capacity thresholds remain a human decision.
+## 6. Current project blockers and active decisions
 
-## 7. Known divergences
+PROJECT_BLOCKERS =
+1. Homologation, deployment and production security gates remain blocked.
+2. Real runtime/adapter/network execution remains unauthorized.
+3. Real database capacity and quantitative SLA thresholds remain unvalidated / a human decision.
 
-DIVERGENCES =
-D-01:
-  historical state said MON-08B implemented/self-validated;
-  current clone does not contain that implementation.
-  Resolution: current executable state takes precedence; recovery required.
-
-No branch divergence was present at the snapshot verification point.
-
-## 8. Important active decisions
+DIVERGENCES = NONE_CURRENT
+HISTORICAL_DIVERGENCE_D-01 = the earlier recovery snapshot reflected the lost local implementation; resolved by reconstructing, validating and independently reviewing the current implementation.
 
 - DIRECT is the default; MULTIAGENT only with material demonstrable gain.
 - Prompt generation follows Card A + Card B separation.
 - Native-first for Skills/Plugins; NONE is valid.
 - Plugin actual use requires user awareness/confirmation according to active policy.
 - No automatic Git stage/commit/push.
-- No runtime real, network real, homologation, deploy or production for MON-08B recovery.
-- Reconstruction must reuse existing canonical contracts rather than create a parallel implementation.
+- No real runtime, network, homologation, deployment or production execution is authorized by MON-08B technical approval.
+- The lab reuses canonical contracts and does not alter production execution or persistence.
 
-## 9. Current gates
+## 7. Current gates
 
 CONTINUITY_PROTOCOL = ACTIVE
 CONTINUITY_ADOPTION_MODE = RETROFIT_REQUIRED
@@ -118,29 +138,25 @@ SECURITY_GATE_HOMOLOGATION = BLOCKED
 SECURITY_GATE_DEPLOYMENT = BLOCKED
 SECURITY_GATE_PRODUCTION = BLOCKED
 
-MON08B_RECOVERY_PREFLIGHT = NOT_STARTED
-MON08B_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_FILE
+MON08B_EXECUTION_SCOPE = LOCAL_SYNTHETIC_LAB_ONLY
+MON08B_REAL_RUNTIME_AUTHORIZATION = NO
 
-## 10. Next required activity
+## 8. Next required activity
 
-NEXT_REQUIRED_ACTIVITY =
-MON-08B RECOVERY — READ-ONLY CODE/GIT PREFLIGHT AND RECONSTRUCTION PLAN
+NEXT_REQUIRED_ACTIVITY = MON-08B CONTROLLED GIT CHECKPOINT
+NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION
+CHECKPOINT_AUTHORIZED = NO
 
-Expected first objective:
-- verify current repository contracts at HEAD;
-- determine smallest reconstruction delta;
-- reconcile historical requirements with current code;
-- produce a recovery plan;
-- stop before implementation for human authorization.
+After the checkpoint, revalidate and update this Git snapshot. Any next technical front is adjudicated separately.
 
-## 11. Unverified items
+## 9. Unverified items
 
 UNVERIFIED_ITEMS =
-- exact current availability of Codex model profiles/runtime;
-- any changes made after the snapshot verification point on 22/09/2026;
-- current worktree state after the uncommitted continuity retrofit edits.
+- real database capacity and production SLA thresholds;
+- current eligibility for future homologation/deployment/production security gates;
+- future Git checkpoint result and post-checkpoint repository snapshot.
 
-## 12. Deferred items
+## 10. Deferred items
 
 - CSV/PDF inventory export = DEFERRED
 - HARDENING_TRANSITION_REAL = DEFERRED / NON-BLOCKING

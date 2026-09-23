@@ -54,11 +54,12 @@ Last verified snapshot:
 
 - repository: `C:\Users\walac\desenvolvimento\projeto_argos`
 - branch: `master`
-- HEAD: `5310c5ec931d9b8227bd2c281d823dffb2b12c31`
-- origin/master: `5310c5ec931d9b8227bd2c281d823dffb2b12c31`
+- HEAD: `14a1c40e8d431ff6f253f6d306677dc5e0eb7970`
+- origin/master: `14a1c40e8d431ff6f253f6d306677dc5e0eb7970`
 - divergence: ahead 0 / behind 0
-- worktree: clean at snapshot verification point
-- staging: clean at snapshot verification point
+- worktree: two expected MON-08B files untracked; four continuity documents modified for formal closure
+- staging: empty
+- snapshot: pre-stage; revalidate after the controlled Git checkpoint
 
 A future agent must reverify these values before relying on them.
 
@@ -66,12 +67,18 @@ A future agent must reverify these values before relying on them.
 
 MON-07 = COMPLETE / PUBLISHED
 MON-08A = PASS
-MON-08B = RECOVERY_REQUIRED
+MON-08B = COMPLETE / TECHNICALLY_APPROVED
 MON-08C = NOT_STARTED
-MON-08D = BLOCKED
+MON-08D = BLOCKED_BY_ENVIRONMENT_AND_SECURITY_GATES
 MON-08E = NOT_STARTED
 
-MON-08B_CURRENT_IMPLEMENTATION = NOT_PRESENT
-MON-08B_CURRENT_GATE = RECOVERY_REQUIRED
-MON-08B previous implementation and evidence are historical only and are not a
-current source-code authority.
+MON-08B_CURRENT_IMPLEMENTATION = COMPLETE
+MON-08B_SELF_VALIDATION_GATE = PASS
+MON-08B_FINAL_INDEPENDENT_REVIEW = PASS
+MON-08B_REV_001 = RESOLVED
+MON-08B_REV_002 = RESOLVED
+MON-08B prior implementation loss and evidence are historical; current status is
+based on the reconstructed files, canonical-runtime validation and final independent review.
+MON-08 = IN_PROGRESS; MON-08B completion does not close MON-08C/MON-08D/MON-08E.
+NEXT_REQUIRED_ACTIVITY = MON-08B CONTROLLED GIT CHECKPOINT
+NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION

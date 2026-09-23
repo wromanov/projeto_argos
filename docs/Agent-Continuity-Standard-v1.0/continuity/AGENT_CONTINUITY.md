@@ -44,10 +44,10 @@ PRIMARY_REPOSITORY = https://github.com/wromanov/projeto_argos.git
 
 LAST_VERIFIED_LOCAL_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
 LAST_VERIFIED_BRANCH = master
-LAST_VERIFIED_HEAD = 5310c5ec931d9b8227bd2c281d823dffb2b12c31
-LAST_VERIFIED_ORIGIN_MASTER = 5310c5ec931d9b8227bd2c281d823dffb2b12c31
+LAST_VERIFIED_HEAD = 14a1c40e8d431ff6f253f6d306677dc5e0eb7970
+LAST_VERIFIED_ORIGIN_MASTER = 14a1c40e8d431ff6f253f6d306677dc5e0eb7970
 LAST_VERIFIED_DIVERGENCE = HEAD ahead 0 / behind 0
-LAST_VERIFIED_WORKTREE = CLEAN
+LAST_VERIFIED_WORKTREE = 2 expected MON-08B files untracked + 4 continuity documents modified by formal closure
 LAST_VERIFIED_STAGING = CLEAN
 
 Observação:
@@ -75,30 +75,30 @@ LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-07
 LAST_PUBLISHED_BASELINE = 079baee
 
 MON-08A = PASS
-MON-08B_PREVIOUS_IMPLEMENTATION = LOST_WITH_FORMATTED_LOCAL_WORKTREE
-MON-08B_REQUIREMENTS = PRESERVED
+MON-08B_PREVIOUS_IMPLEMENTATION = LOST_WITH_FORMATTED_LOCAL_WORKTREE (HISTORICAL)
+MON-08B_CURRENT_IMPLEMENTATION = COMPLETE / TECHNICALLY_APPROVED
+MON-08B_REQUIREMENTS = PRESERVED_AND_IMPLEMENTED
 MON-08B_PREVIOUS_EVIDENCE = HISTORICAL_REFERENCE_ONLY
-MON-08B_CURRENT_IMPLEMENTATION = NOT_PRESENT
-MON-08B_CURRENT_GATE = RECOVERY_REQUIRED
+MON-08B_SELF_VALIDATION_GATE = PASS
+MON-08B_FINAL_INDEPENDENT_REVIEW = PASS
+MON-08B_CURRENT_GATE = COMPLETE / TECHNICALLY_APPROVED
 
-O antigo checkout local foi perdido após formatação do computador. A implementação
-MON-08B anterior nunca havia sido staged, commitada ou enviada ao remoto. Portanto,
-a evidência antiga não pode ser promovida a PASS da implementação atual.
+O checkout local anterior foi perdido após formatação antes de stage/commit/push.
+Esse fato histórico descreve somente a implementação anterior. A implementação
+atual foi reconstruída nos dois arquivos MON-08B esperados, autovalidada no runtime
+canônico e aprovada por revisão independente. A evidência antiga não foi promovida
+como evidência da implementação atual.
 
-A implementação histórica reportava:
-- 2.300 ativos sintéticos;
-- 0 perdas;
-- 0 duplicações;
-- concorrência configurada = 20;
-- máximo observado = 20;
+Evidência atual da MON-08B:
+- 2.300 ativos sintéticos; 0 missing; 0 duplicates;
+- concorrência configurada = 20; máximo observado = 20;
 - cenário normal = 2.300 requests/results;
-- falha em massa = 4.600 requests/results e 2.300 OFFLINE;
-- recuperação = 4.600 requests/results e 2.300 ONLINE;
-- 5 testes MON-08B PASS;
-- 176 testes focados PASS;
-- 700 testes globais PASS.
-
-Esses números são REFERENCE_TARGETS_FOR_RECOVERY, não evidência atual.
+- falha em massa = duas rodadas reais, 4.600 requests/results; rodada 1 = 0 OFFLINE,
+  rodada 2 = 2.300 OFFLINE;
+- recuperação = uma rodada, 2.300 requests/results e 2.300 ONLINE;
+- 10 testes MON-08B PASS; 188 testes focados PASS; 705 testes globais PASS;
+- Django check, migration check, compileall, git diff check e whitespace check = PASS;
+- Python canônico = 3.14.7; Ruff não disponível.
 
 ## 5. Gates de segurança e operação preservados
 
@@ -127,7 +127,8 @@ LIVE / produção / homologação não são autorizados por este documento.
 
 ## 7. Primeiro comportamento em novo chat/agente
 
-FIRST_RESPONSE_MODE = READ_ONLY_RECOVERY
+FIRST_RESPONSE_MODE = READ_ONLY_CONTINUITY_REVALIDATION
+CONTINUITY_RECOVERY_GATE_SCOPE = EACH_NEW_CHAT
 CONTINUITY_RECOVERY_GATE = NOT_PASSED
 USER_CONTINUITY_VALIDATION = PENDING
 READY_TO_RESUME_PROJECT = NO
@@ -159,15 +160,10 @@ O novo agente deve:
 ## 8. Próxima atividade requerida
 
 NEXT_REQUIRED_ACTIVITY =
-MON-08B RECOVERY — READ-ONLY CODE/GIT PREFLIGHT AND RECONSTRUCTION PLAN
+MON-08B CONTROLLED GIT CHECKPOINT
 
-A atividade acima NÃO está autorizada automaticamente.
-Primeiro deve ocorrer:
-- materialização destes artifacts no repositório;
-- verificação factual;
-- fechamento do `CONTINUITY_RETROFIT_GATE`;
-- recuperação em novo chat, quando aplicável;
-- autorização própria da atividade.
+A atividade acima NÃO está autorizada automaticamente. Revalidar o snapshot Git
+após esse checkpoint antes de atualizar o estado novamente.
 
 ## 9. Retrofit gate
 
