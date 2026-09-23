@@ -51,18 +51,19 @@ O último baseline publicado conhecido é:
 079baee
 docs(monitoramento): encerrar mon-07 e direcionar mon-08
 
-O baseline local pré-checkpoint verificado em 2026-09-23 está alinhado ao remoto:
+O baseline local pré-checkpoint documental verificado em 2026-09-23 está alinhado ao remoto:
 
-CURRENT_BASELINE_BEFORE_CHECKPOINT = 40c77c4c988c960000773d3830d8e1915bbcbc59
-HEAD = 40c77c4c988c960000773d3830d8e1915bbcbc59
-ORIGIN_MASTER = 40c77c4c988c960000773d3830d8e1915bbcbc59
+CURRENT_CANONICAL_GIT_BASELINE = cdf250217a411c66d975ebd4b712d8fb028293b0
+CURRENT_BASELINE_BEFORE_CHECKPOINT = cdf250217a411c66d975ebd4b712d8fb028293b0
+HEAD = cdf250217a411c66d975ebd4b712d8fb028293b0
+ORIGIN_MASTER = cdf250217a411c66d975ebd4b712d8fb028293b0
 DIVERGENCE = ahead 0 / behind 0
-WORKTREE = one expected MON-08C harness untracked + four continuity documents modified for this checkpoint
+WORKTREE = cinco documentos autorizados modificados para o fechamento documental da MON-08
 STAGING = EMPTY
-SNAPSHOT = PRE-COMMIT; revalidate post-commit directly from Git
+SNAPSHOT = DOCUMENTARY CLOSURE PRE-STAGE; revalidate post-checkpoint directly from Git
 
 MON-08A = PASS.
-MON-08B = COMPLETE / TECHNICALLY_APPROVED (HISTORICAL).
+MON-08B = PASS / PUBLISHED.
 MON08C_DISCOVERY_PREFLIGHT = PASS.
 MON08C1_NORMAL_PERSISTENCE = PASS.
 MON08C2_MASS_FAILURE = PASS.
@@ -71,6 +72,14 @@ MON08C4_RESTART_IDEMPOTENCY = PASS.
 MON08C5_STALE_GENERATION_CAS = PASS.
 MON08C_H1_HARNESS_DISCOVERY = PASS.
 MON08C_H2_HARNESS_REFACTOR = PASS.
+MON08C6 = PASS / FINAL ADJUDICATION COMPLETE.
+MON08C_FINAL_VERDICT = PASS_WITH_FINDINGS.
+MON08C_COMPLETE = YES.
+MON08_TECHNICAL_VERDICT = PASS_WITH_FINDINGS.
+MON08_TECHNICALLY_COMPLETE = YES.
+NEXT_TECHNICAL_MON08_ACTIVITY = NONE.
+NEXT_PROJECT_ACTIVITY = MON-09 — Hardening operacional.
+NEXT_PROJECT_ACTIVITY_STATUS = NOT_STARTED.
 
 FAST_TEST_COUNT = 1; SCALE_TEST_COUNT = 4.
 FAST_DATASET_SIZE = 3; SCALE_DATASET_SIZE = 2300.
@@ -86,8 +95,10 @@ PRODUCTION_SOURCE_CHANGED = NO; CI_CHANGED = NO; SCHEMA_CHANGED = NO.
 CI_SCALE_OPT_IN = DEFERRED / NON-BLOCKING.
 BLOCKERS = 0; MAJOR = 0; MINOR = 0.
 
-O harness MON-08C está incluído neste checkpoint. Nenhum código produtivo foi
-alterado pela H2 e nenhum novo teste pesado é requerido por ritual.
+Nenhum código produtivo foi alterado nesta atividade documental. Nenhum teste
+pesado deve ser repetido como requisito de fechamento da MON-08. Não retomar
+MON-08C-6, não inventar MON-08C-7 ou MON-08D e não tratar hardenings como
+blockers.
 
 ## Git verification
 
@@ -126,18 +137,18 @@ HANDOFF_PREPARATION_GATE =
 CONTINUITY_ADOPTION_MODE =
 CONTINUITY_RETROFIT_GATE =
 CURRENT_PHASE =
-CURRENT_ACTIVITY = MON-08C-H2 — PASS
-LAST_COMPLETED_ACTIVITY = MON-08C-H2 — harness refactor and approved validation
+CURRENT_ACTIVITY = MON-08 — FORMAL DOCUMENTARY CLOSURE — PASS
+LAST_COMPLETED_ACTIVITY = MON-08 technical adjudication and formal documentary closure
 COMPLETED_STATE =
 PENDING_STATE =
 BLOCKERS =
 IMPORTANT_ACTIVE_DECISIONS =
 CURRENT_GATES =
 NEXT_REQUIRED_ACTIVITY =
-MON-08C-6 — CONSOLIDATED MEASUREMENT / FINAL ADJUDICATION
+MON-09 — Hardening operacional
 REPOSITORY_ROOT =
 CURRENT_BRANCH =
-CURRENT_HEAD = baseline pré-checkpoint 40c77c4c988c960000773d3830d8e1915bbcbc59; pós-commit consultar Git
+CURRENT_HEAD = baseline pré-checkpoint documental cdf250217a411c66d975ebd4b712d8fb028293b0; pós-checkpoint consultar Git
 UPSTREAM =
 WORKTREE_STATE =
 STAGING_STATE =
@@ -149,7 +160,8 @@ USER_CONTINUITY_VALIDATION = PENDING
 READY_TO_RESUME_PROJECT = NO
 
 Aguarde a validação do checkpoint/continuidade diretamente no Git antes de iniciar
-a MON-08C-6; essa validação não autoriza implementação da MON-08C-6.
+qualquer atividade consequencial. A próxima atividade registrada é MON-09, mas
+esta continuidade não autoriza sua implementação.
 
 Somente após:
 USER_CONTINUITY_VALIDATION = PASS
@@ -160,10 +172,10 @@ projeto continua exigindo scope e autorização próprios.
 
 ## Next required activity
 
-MON-08C-6 — CONSOLIDATED MEASUREMENT / FINAL ADJUDICATION
+MON-09 — Hardening operacional
 
-MON08C6_STATUS = NOT_STARTED
-MON08C6_IMPLEMENTATION_AUTHORIZATION = NO
-CHECKPOINT_STAGE_COMMIT_AUTHORIZED = YES
+MON08C6_STATUS = COMPLETE / FINAL ADJUDICATION COMPLETE
+MON08C6_IMPLEMENTATION_AUTHORIZATION = NOT_APPLICABLE
+CHECKPOINT_STAGE_COMMIT_AUTHORIZED = NO
 PUSH = NOT_AUTHORIZED
 NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION

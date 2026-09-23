@@ -19,7 +19,7 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 
 | Path / identity | Role | Status |
 |---|---|---|
-| `docs/projeto/ROADMAP_ARGOS_V5.md` | Project roadmap / workstream direction | PRESENT / CANONICAL; verify current content |
+| `docs/projeto/ROADMAP_ARGOS_V5.md` | Project roadmap / workstream direction | PRESENT / CANONICAL; MON-08 closed; MON-09 next |
 | `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | Monitoring architecture/behavior authority | PRESENT; verify current content |
 | `docs/projeto/ADR-020_contrato_estado_tecnico_monitoramento.md` | Monitoring state/read semantics authority | PRESENT; verify current content |
 | `docs/projeto/ADR-021_seguranca_capacidade_monitoramento.md` | Monitoring security/capability authority | PRESENT / CANONICAL; verify current content |
@@ -54,12 +54,12 @@ Last verified snapshot:
 
 - repository: `C:\Users\walac\desenvolvimento\projeto_argos`
 - branch: `master`
-- HEAD: `40c77c4c988c960000773d3830d8e1915bbcbc59` (baseline pré-checkpoint)
-- origin/master: `40c77c4c988c960000773d3830d8e1915bbcbc59`
+- HEAD: `cdf250217a411c66d975ebd4b712d8fb028293b0` (baseline pré-checkpoint documental)
+- origin/master: `cdf250217a411c66d975ebd4b712d8fb028293b0`
 - divergence: ahead 0 / behind 0
-- worktree: um harness MON-08C esperado untracked; quatro documentos de continuidade modificados neste checkpoint
+- worktree: cinco documentos autorizados modificados pelo fechamento documental da MON-08
 - staging: empty
-- snapshot: pre-commit; Git pós-commit deve ser revalidado diretamente
+- snapshot: fechamento documental pré-stage; Git pós-checkpoint deve ser revalidado diretamente
 
 A future agent must reverify these values before relying on them.
 
@@ -67,7 +67,7 @@ A future agent must reverify these values before relying on them.
 
 MON-07 = COMPLETE / PUBLISHED
 MON-08A = PASS
-MON-08B = COMPLETE / TECHNICALLY_APPROVED (HISTORICAL)
+MON-08B = PASS / PUBLISHED
 MON-08C-H1 = PASS
 MON-08C-H2 = PASS
 MON-08C-1 = PASS
@@ -75,9 +75,11 @@ MON-08C-2 = PASS
 MON-08C-3 = PASS
 MON-08C-4 = PASS
 MON-08C-5 = PASS
-MON-08C = H2 COMPLETE / TECHNICALLY APPROVED; MON-08C-6 NOT_STARTED
-MON-08D = BLOCKED_BY_ENVIRONMENT_AND_SECURITY_GATES
-MON-08E = NOT_STARTED
+MON-08C = COMPLETE / PASS_WITH_FINDINGS
+MON08C6 = PASS / FINAL ADJUDICATION COMPLETE
+MON-08 = TECHNICALLY COMPLETE / PASS_WITH_FINDINGS
+NEXT_TECHNICAL_MON08_ACTIVITY = NONE
+MON08C7 = NOT_CREATED
 
 FAST_TEST_COUNT = 1
 SCALE_TEST_COUNT = 4
@@ -90,9 +92,14 @@ CI_SCALE_OPT_IN = DEFERRED / NON-BLOCKING
 PRODUCTION_SOURCE_CHANGED = NO
 CI_CHANGED = NO
 SCHEMA_CHANGED = NO
-MON-08 = IN_PROGRESS; H2 não inicia MON-08C-6.
-NEXT_REQUIRED_ACTIVITY = MON-08C-6 — CONSOLIDATED MEASUREMENT / FINAL ADJUDICATION
+MON-08 = TECHNICALLY COMPLETE / PASS_WITH_FINDINGS; H2 e MON-08C-6 concluídas.
+NEXT_REQUIRED_ACTIVITY = MON-09 — Hardening operacional
+NEXT_PROJECT_ACTIVITY = MON-09 — Hardening operacional
+NEXT_PROJECT_ACTIVITY_STATUS = NOT_STARTED
 NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION
-MON08C6_STATUS = NOT_STARTED
-MON08C6_IMPLEMENTATION_AUTHORIZATION = NO
+MON08C6_STATUS = COMPLETE / FINAL ADJUDICATION COMPLETE
+MON08C6_IMPLEMENTATION_AUTHORIZATION = NOT_APPLICABLE
+MON08_HOMOLOGATION_AUTHORIZED = NO
+MON08_DEPLOYMENT_AUTHORIZED = NO
+MON08_PRODUCTION_AUTHORIZED = NO
 PUSH = NOT_AUTHORIZED

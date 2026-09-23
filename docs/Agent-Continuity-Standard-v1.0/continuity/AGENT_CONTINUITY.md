@@ -44,11 +44,12 @@ PRIMARY_REPOSITORY = https://github.com/wromanov/projeto_argos.git
 
 LAST_VERIFIED_LOCAL_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
 LAST_VERIFIED_BRANCH = master
-CURRENT_BASELINE_BEFORE_CHECKPOINT = 40c77c4c988c960000773d3830d8e1915bbcbc59
-LAST_VERIFIED_HEAD = 40c77c4c988c960000773d3830d8e1915bbcbc59
-LAST_VERIFIED_ORIGIN_MASTER = 40c77c4c988c960000773d3830d8e1915bbcbc59
+CURRENT_CANONICAL_GIT_BASELINE = cdf250217a411c66d975ebd4b712d8fb028293b0
+CURRENT_BASELINE_BEFORE_CHECKPOINT = cdf250217a411c66d975ebd4b712d8fb028293b0
+LAST_VERIFIED_HEAD = cdf250217a411c66d975ebd4b712d8fb028293b0
+LAST_VERIFIED_ORIGIN_MASTER = cdf250217a411c66d975ebd4b712d8fb028293b0
 LAST_VERIFIED_DIVERGENCE = HEAD ahead 0 / behind 0
-LAST_VERIFIED_WORKTREE = 1 expected MON-08C harness untracked + 4 continuity documents modified by this checkpoint
+LAST_VERIFIED_WORKTREE = cinco documentos autorizados modificados pelo fechamento documental da MON-08
 LAST_VERIFIED_STAGING = CLEAN
 
 Observação:
@@ -74,15 +75,17 @@ Regras de version hygiene:
 
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-07
 LAST_PUBLISHED_BASELINE = 079baee
-CURRENT_ACTIVITY_COMPLETED = MON-08C-H2 — PASS
-NEXT_REQUIRED_ACTIVITY = MON-08C-6 — CONSOLIDATED MEASUREMENT / FINAL ADJUDICATION
-MON08C6_STATUS = NOT_STARTED
-MON08C6_IMPLEMENTATION_AUTHORIZATION = NO
-CHECKPOINT_STAGE_COMMIT_AUTHORIZATION = YES
+CURRENT_ACTIVITY_COMPLETED = MON-08 — FORMAL DOCUMENTARY CLOSURE — PASS
+NEXT_REQUIRED_ACTIVITY = MON-09 — Hardening operacional
+NEXT_PROJECT_ACTIVITY = MON-09 — Hardening operacional
+NEXT_PROJECT_ACTIVITY_STATUS = NOT_STARTED
+MON08C6_STATUS = COMPLETE / FINAL ADJUDICATION COMPLETE
+MON08C6_IMPLEMENTATION_AUTHORIZATION = NOT_APPLICABLE
+CHECKPOINT_STAGE_COMMIT_AUTHORIZATION = NO
 PUSH = NOT_AUTHORIZED
 
 MON-08A = PASS
-MON-08B = COMPLETE / TECHNICALLY_APPROVED (HISTORICAL)
+MON-08B = PASS / PUBLISHED
 MON08C_DISCOVERY_PREFLIGHT = PASS
 MON08C1_NORMAL_PERSISTENCE = PASS
 MON08C2_MASS_FAILURE = PASS
@@ -91,6 +94,21 @@ MON08C4_RESTART_IDEMPOTENCY = PASS
 MON08C5_STALE_GENERATION_CAS = PASS
 MON08C_H1_HARNESS_DISCOVERY = PASS
 MON08C_H2_HARNESS_REFACTOR = PASS
+MON08C6 = PASS / FINAL ADJUDICATION COMPLETE
+MON08C_DISCOVERY = PASS
+MON08C1 = PASS
+MON08C2 = PASS
+MON08C3 = PASS
+MON08C4 = PASS
+MON08C5 = PASS
+MON08C_FINAL_VERDICT = PASS_WITH_FINDINGS
+MON08C_COMPLETE = YES
+MON08_TECHNICAL_VERDICT = PASS_WITH_FINDINGS
+MON08_TECHNICALLY_COMPLETE = YES
+NEXT_TECHNICAL_MON08_ACTIVITY = NONE
+MON08_BLOCKERS = NONE
+MON08_MAJOR = NONE
+MON08_MINOR = NONE
 
 Evidência factual aprovada da MON-08C-H2:
 - FAST_TEST_COUNT = 1; SCALE_TEST_COUNT = 4;
@@ -114,6 +132,23 @@ SECURITY_GATE_DEPLOYMENT = BLOCKED
 SECURITY_GATE_PRODUCTION = BLOCKED
 
 LIVE / produção / homologação não são autorizados por este documento.
+
+## 5.1 Fechamento documental da MON-08
+
+NEW_MATERIAL_VALIDATION_REQUIRED_FOR_MON08_CLOSURE = NO
+FUTURE_MATERIAL_VALIDATION_REQUIRED = YES
+FUTURE_VALIDATION_SCOPE = production capacity; PostgreSQL; multi-instance / multi-worker; real network / firewall / VLAN; real cameras / credentials; formal resource/performance budgets
+CONFIRMATION_MEMORY_STABLE_RELOAD = PROVEN
+CONFIRMATION_MEMORY_PENDING_STREAK_RESTART = NOT_VALIDATED / HARDENING CANDIDATE
+QUERY_VOLUME = PERFORMANCE_OBSERVATION / HARDENING CANDIDATE
+CI_SCALE_OPT_IN = BACKLOG / NON-BLOCKING
+
+VALIDATED_ENVELOPE = Django ORM; SQLite local; single instance; resultados de probe sintéticos/determinísticos; aproximadamente 2300 ativos; concorrência configurada e observada de 20; persistência integrada local; transições; indisponibilidades; restart/idempotência; stale generation/CAS; confirmation memory nos estados exercitados
+NOT_VALIDATED_BOUNDARIES = PostgreSQL real; multi-instance; multi-worker; distributed lease; real network; real firewall/VLAN; real cameras; real credentials; production performance; production capacity
+
+MON08_HOMOLOGATION_AUTHORIZED = NO
+MON08_DEPLOYMENT_AUTHORIZED = NO
+MON08_PRODUCTION_AUTHORIZED = NO
 
 ## 6. Decisões técnicas importantes preservadas
 
@@ -166,11 +201,13 @@ O novo agente deve:
 ## 8. Próxima atividade requerida
 
 NEXT_REQUIRED_ACTIVITY =
-MON-08C-6 — CONSOLIDATED MEASUREMENT / FINAL ADJUDICATION
+MON-09 — Hardening operacional
 
-MON-08C-6 é o próximo passo técnico e não está autorizado por este checkpoint.
-O stage/commit deste checkpoint é autorizado conforme o contrato da atividade;
-push permanece não autorizado. O Git pós-commit será a fonte factual do novo HEAD.
+MON-08 está encerrada tecnicamente com `PASS_WITH_FINDINGS`. `MON-08C-6` foi
+concluída; não reabrir MON-08, não inventar `MON-08C-7` ou `MON-08D` e não
+repetir a bateria scale como requisito de fechamento. A próxima atividade é
+`MON-09 — Hardening operacional`, ainda `NOT_STARTED` e sem autorização de
+implementação. Stage, commit e push não estão autorizados nesta atividade.
 
 ## 9. Retrofit gate
 

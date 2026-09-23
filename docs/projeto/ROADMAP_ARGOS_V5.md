@@ -625,6 +625,22 @@ WebSocket/SSE não são obrigatórios na primeira implementação.
 
 ## MON-08 — Escala e carga
 
+**Estado:** `TECHNICALLY COMPLETE / PASS_WITH_FINDINGS`.
+
+O fechamento técnico foi adjudicado com `MON08_TECHNICALLY_COMPLETE = YES` e
+`MON08C_COMPLETE = YES`. O envelope validado permanece local, sintético e
+determinístico, com Django ORM/SQLite, instância única e aproximadamente 2.300
+ativos. O fechamento não autoriza homologação, deployment ou produção.
+
+Hardenings não bloqueantes registrados: definir budgets explícitos de CPU,
+memória, conexões, latência, throughput e volume de queries antes de qualquer
+alegação de capacidade produtiva; e considerar cobertura futura para restart
+durante streak de confirmação pendente. `CI_SCALE_OPT_IN = BACKLOG / NON-BLOCKING`.
+
+Fronteiras futuras não validadas incluem PostgreSQL, multi-instância,
+multi-worker, lease distribuído, rede/firewall/VLAN reais, câmeras/credenciais
+reais e performance/capacidade de produção.
+
 Homologar com carga representativa de aproximadamente 2.300 ativos.
 
 Avaliar:
@@ -643,6 +659,8 @@ Avaliar:
 ---
 
 ## MON-09 — Hardening operacional
+
+**Estado:** `PRÓXIMA / NOT_STARTED` após o fechamento documental da MON-08.
 
 Cobrir:
 
@@ -1284,7 +1302,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
-FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-07 concluídas; próxima frente MON-08; Security Gate local RELEASED_WITH_CONTROLS; homologação, deployment e produção BLOCKED)
+FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-08 concluídas; próxima frente MON-09; Security Gate local RELEASED_WITH_CONTROLS; homologação, deployment e produção BLOCKED)
 FASE C — Captura manual e imagens              ⏳ PLANEJADA
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
@@ -1312,3 +1330,25 @@ histórico documental.
 O fechamento de MON-07 não autoriza câmeras ou credenciais reais,
 homologação, deployment, produção, multi-worker, PostgreSQL ou lease
 distribuído; esses limites continuam sujeitos a gates próprios.
+
+## Atualização vigente após o fechamento documental da MON-08
+
+MON-08 está `TECHNICALLY COMPLETE / PASS_WITH_FINDINGS`, sem blockers, major ou
+minor; os hardenings registrados são não bloqueantes. `MON08C = COMPLETE` e
+`NEXT_TECHNICAL_MON08_ACTIVITY = NONE`. Não existe `MON-08C-7`, `MON-08D` ou
+qualquer extensão artificial da MON-08.
+
+O envelope validado permanece limitado a Django ORM, SQLite local, instância
+única, probes sintéticos/determinísticos, aproximadamente 2.300 ativos,
+concorrência observada de 20, persistência local, transições,
+indisponibilidades, restart/idempotência, stale generation/CAS e Confirmation
+Memory nos estados exercitados. PostgreSQL, multi-instância, multi-worker,
+lease distribuído, rede/firewall/VLAN reais, câmeras/credenciais reais e
+performance/capacidade de produção permanecem `NOT_VALIDATED`.
+
+**Próxima atividade do projeto:** `MON-09 — Hardening operacional`.
+`NEXT_PROJECT_ACTIVITY_STATUS = NOT_STARTED`. Esta indicação não autoriza seu
+início. `SEC-GATE-01 — Reavaliação do Security Gate` permanece uma frente
+independente de segurança e governança; seus gates continuam preservados como
+`RELEASED_WITH_CONTROLS` apenas para desenvolvimento local e `BLOCKED` para
+homologação, deployment e produção.
