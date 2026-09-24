@@ -7,10 +7,11 @@ VERSION = V1
 LANGUAGE = pt-BR
 REFERENCE_DESIGN_SYSTEM = camera-inventory-design-system-v1.0.1
 REFERENCE_PACKAGE_EXTERNAL_PATH = C:\Users\walacedelgado\Downloads\camera-inventory-design-system-v1.0.1.zip
-REFERENCE_PACKAGE_REPOSITORY_PATH = NOT_FOUND_IN_CURRENT_CHECKOUT
-REFERENCE_PACKAGE_REPOSITORY_COPY = PENDING
+REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-v1.0.1.zip
+REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 REFERENCE_PACKAGE_MANIFEST_VERSION = 1.0.1
 REFERENCE_PACKAGE_STATUS = VISUAL_BASELINE_APPROVED
+REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08B06854073CE16FE028DA14
 STRATEGY = SELECTIVE VISUAL RETROFIT + SELECTIVE INTERACTION PATTERN ADOPTION
 FULL_UI_REDESIGN = NO
 FULL_DESIGN_SYSTEM_MIGRATION = NO
@@ -32,10 +33,10 @@ contratos abaixo.
 
 O `package-manifest.json` confirma a identidade `camera-inventory-design-system`
 na versão `1.0.1`, com status `VISUAL_BASELINE_APPROVED`. O título interno de
-`DESIGN_SYSTEM_SPEC.md` ainda usa `v1.0`; isso é uma inconsistência editorial do
-pacote, não uma segunda versão adotada pelo ARGOS. Para esta integração,
-`camera-inventory-design-system-v1.0.1` é a identidade canônica e qualquer
-drift de versão deve ser reportado, não reconciliado silenciosamente.
+`DESIGN_SYSTEM_SPEC.md` no ZIP recebido usava `v1.0`. Na cópia canônica
+incorporada ao repositório, o título foi alinhado para `v1.0.1`; o ZIP original
+em `Downloads` foi preservado sem alteração. A identidade adotada continua
+sendo `camera-inventory-design-system-v1.0.1`.
 
 ## 1. Finalidade, escopo e autoridade
 
@@ -1015,21 +1016,24 @@ Também são boundaries desta frente:
 
 ## 16. Package retention e futuras revisões
 
-No preflight desta atividade, o pacote foi localizado externamente, mas não foi
-encontrada cópia repositória de `camera-inventory-design-system-v1.0.1`.
+O pacote de origem foi localizado em `Downloads` e incorporado ao repositório
+como cópia de referência. O título interno `DESIGN_SYSTEM_SPEC.md` foi alinhado
+à versão confirmada pelo manifesto (`1.0.1`). A cópia externa original foi
+preservada sem alteração.
 
 ```text
 REFERENCE_PACKAGE_EXTERNAL_PATH = C:\Users\walacedelgado\Downloads\camera-inventory-design-system-v1.0.1.zip
-REFERENCE_PACKAGE_REPOSITORY_PATH = NOT_FOUND_IN_CURRENT_CHECKOUT
-REFERENCE_PACKAGE_REPOSITORY_COPY = PENDING
+REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-v1.0.1.zip
+REFERENCE_PACKAGE_REPOSITORY_COPY = YES
+REFERENCE_PACKAGE_TITLE_VERSION = v1.0.1
+REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08B06854073CE16FE028DA14
 ```
 
-Não inventar path, não copiar automaticamente para o repositório e não misturar
-`v1.0` com `v1.0.1`. O ZIP externo é a referência localizada; a cópia
-repositória permanece pendente e não é necessária para esta documentação. Se
-uma cópia for incorporada futuramente, registrar o path factual e revisar apenas
-os valores visuais ainda não fechados, mantendo as decisões de authority,
-estrutura, proveniência, painel e integração incremental deste documento.
+Para continuidade, a cópia repositória é a referência canônica. O arquivo
+externo é mantido como origem recebida. Não misturar `v1.0` com `v1.0.1` em
+revisões futuras; se o pacote mudar, registrar nova versão, path e hash factuais
+e preservar as decisões de authority, estrutura, proveniência, painel e
+integração incremental deste documento.
 
 ## 17. Document quality gate
 

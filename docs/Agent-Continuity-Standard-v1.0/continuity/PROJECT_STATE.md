@@ -52,7 +52,8 @@ UI_DS_CANONICAL_SPEC = docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.m
 UI_DS_CANONICAL_SPRINT_MAP = docs/projeto/SPRINTS_ARGOS_V5.md
 REFERENCE_DESIGN_SYSTEM = camera-inventory-design-system-v1.0.1
 REFERENCE_PACKAGE_EXTERNAL_PATH = C:\Users\walacedelgado\Downloads\camera-inventory-design-system-v1.0.1.zip
-REFERENCE_PACKAGE_REPOSITORY_COPY = PENDING
+REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-v1.0.1.zip
+REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 
 ## 3. Completed state
 

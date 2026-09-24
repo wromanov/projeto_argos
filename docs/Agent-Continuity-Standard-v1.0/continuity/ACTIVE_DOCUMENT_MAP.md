@@ -70,7 +70,8 @@ it is historical technical evidence, not the current Git HEAD.
 ```text
 REFERENCE_DESIGN_SYSTEM = camera-inventory-design-system-v1.0.1
 REFERENCE_PACKAGE_EXTERNAL_PATH = C:\Users\walacedelgado\Downloads\camera-inventory-design-system-v1.0.1.zip
-REFERENCE_PACKAGE_REPOSITORY_COPY = PENDING
+REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-v1.0.1.zip
+REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 SELECTIVE_VISUAL_RETROFIT_RECORDED = YES
 SELECTIVE_INTERACTION_ADOPTION_RECORDED = YES
 CAMERA_QUICK_DETAIL_PANEL = ADOPT

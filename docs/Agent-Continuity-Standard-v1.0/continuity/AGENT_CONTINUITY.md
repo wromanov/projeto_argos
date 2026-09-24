@@ -218,7 +218,8 @@ UI_DS_CANONICAL_SPEC = docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.m
 UI_DS_CANONICAL_SPRINT_MAP = docs/projeto/SPRINTS_ARGOS_V5.md
 REFERENCE_DESIGN_SYSTEM = camera-inventory-design-system-v1.0.1
 REFERENCE_PACKAGE_EXTERNAL_PATH = C:\Users\walacedelgado\Downloads\camera-inventory-design-system-v1.0.1.zip
-REFERENCE_PACKAGE_REPOSITORY_COPY = PENDING
+REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-v1.0.1.zip
+REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 CAMERA_QUICK_DETAIL_PANEL = ADOPT
 ARGOS_CURRENT_PAGE_COMPOSITION = PRESERVE
 LATEST_CAMERA_CAPTURE_FEEDS_PANEL = YES_WHEN_CANONICAL_CONTRACT_AVAILABLE
@@ -280,12 +281,14 @@ O mapa canônico de sprints/slices é:
 
 `docs/projeto/SPRINTS_ARGOS_V5.md`
 
-O pacote de referência foi localizado em:
+O pacote de referência recebido foi localizado em:
 
 `C:\Users\walacedelgado\Downloads\camera-inventory-design-system-v1.0.1.zip`
 
-Ele não foi copiado para o repositório; `REFERENCE_PACKAGE_REPOSITORY_COPY =
-PENDING`. A frente UI-DS registra retrofit visual seletivo, adoção seletiva de
+Sua cópia canônica está em
+`docs/projeto/camera-inventory-design-system-v1.0.1.zip`; o título interno foi
+alinhado para `v1.0.1`, e o ZIP original em Downloads foi preservado sem
+alteração. A frente UI-DS registra retrofit visual seletivo, adoção seletiva de
 interações, preservação da composição atual do ARGOS, adoção do
 `CameraQuickDetailPanel`, dependência explícita da Fase C para
 `LATEST_CAMERA_CAPTURE`, distinção de `PRIMARY_IMAGE`, preservação da
