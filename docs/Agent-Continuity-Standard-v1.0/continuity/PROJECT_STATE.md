@@ -1,43 +1,45 @@
 # ARGOS — Project State
 
 STATUS = CURRENT_SNAPSHOT
-SNAPSHOT_DATE = 2026-09-23
+SNAPSHOT_DATE = 2026-09-24
 PROJECT = ARGOS
-STATE_SOURCE = verified Git state + MON-08 approved adjudication + MON-08C validation evidence + H1/H2 harness review
+STATE_SOURCE = verified Git baseline + MON-09A...E adjudication + current roadmap
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = MON-08 DOCUMENTARY CLOSURE PRE-STAGE STATE
+SNAPSHOT_SCOPE = MON-09 technical closure; Git values below are pre-documentary-commit baseline snapshot
 
 ## 1. Executive status
 
-CURRENT_PHASE = MON-08 — Escala e carga
-CURRENT_ACTIVITY = MON-08 — FORMAL DOCUMENTARY CLOSURE — PASS
-LAST_COMPLETED_ACTIVITY = MON-08 technical adjudication and formal documentary closure
-LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-07
-LAST_PUBLISHED_BASELINE = 079baee
-CURRENT_CANONICAL_GIT_BASELINE = cdf250217a411c66d975ebd4b712d8fb028293b0
-CURRENT_BASELINE_BEFORE_CHECKPOINT = cdf250217a411c66d975ebd4b712d8fb028293b0
+CURRENT_PHASE = FASE C — Captura manual e gestão de imagens (PLANEJADA; ainda não iniciada)
+CURRENT_ACTIVITY = MON-09 — TECHNICAL CLOSURE DOCUMENTATION
+LAST_COMPLETED_ACTIVITY = MON-09A...E — technical closure at published baseline 850efd2
+LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
+LAST_PUBLISHED_BASELINE = 850efd2
+CURRENT_CANONICAL_GIT_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
+CURRENT_BASELINE_BEFORE_DOCUMENTARY_COMMIT = 850efd2381d7f5b7df27e528dc3374ea58e507b3
 
 PROJECT_PROGRESS_LAST_VALID_PUBLISHED_ESTIMATE = 78% (HISTORICAL; NOT CURRENT)
 MON08_PROGRESS_LAST_VALID_PUBLISHED_ESTIMATE = 15% (HISTORICAL; NOT CURRENT)
 PROJECT_PROGRESS_UPDATE = NOT_RECALCULATED
 PROGRESS_BASIS = Percentuais históricos preservados sem interpretação como estado atual; não há fórmula/authority suficiente para recalcular.
 
-## 2. Git snapshot — documentary closure pre-stage
+## 2. Git baseline snapshot — before MON-09 documentary commit
 
 REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
 BRANCH = master
-HEAD = cdf250217a411c66d975ebd4b712d8fb028293b0
-ORIGIN_MASTER = cdf250217a411c66d975ebd4b712d8fb028293b0
+HEAD = 850efd2381d7f5b7df27e528dc3374ea58e507b3
+ORIGIN_MASTER = 850efd2381d7f5b7df27e528dc3374ea58e507b3
 DIVERGENCE = ahead 0 / behind 0
-WORKTREE_STATE = MODIFIED
-WORKTREE_CONTENTS = cinco documentos autorizados atualizados para o fechamento documental da MON-08
+WORKTREE_STATE = CLEAN
+WORKTREE_CONTENTS = NONE
 STAGING_STATE = EMPTY
-SNAPSHOT_VALIDITY = DOCUMENTARY CLOSURE PRE-STAGE STATE
-REVALIDATE_AFTER_CONTROLLED_GIT_CHECKPOINT = REQUIRED; Git pós-checkpoint será a fonte de verdade
+SNAPSHOT_VALIDITY = TECHNICAL BASELINE BEFORE DOCUMENTARY COMMIT
+REVALIDATE_AFTER_DOCUMENTARY_COMMIT = REQUIRED; Git posterior é a fonte de verdade
 
 ## 3. Completed state
 
 MON-07 = COMPLETE / PUBLISHED
+Historical continuity snapshot after MON-08; superseded for current status by section 10 below.
+
 MON-08A = PASS
 MON-08B = PASS / PUBLISHED
 MON08C_DISCOVERY_PREFLIGHT = PASS
@@ -104,7 +106,7 @@ MON-08C diff check = PASS
 MON-08C harness whitespace check = PASS
 MON-08C Ruff = NOT_AVAILABLE; not installed
 
-## 4. Current MON-08 state
+## 4. Historical MON-08 snapshot (superseded by section 10)
 
 MON-08A = PASS
 MON-08B = PASS / PUBLISHED
@@ -226,3 +228,37 @@ UNVERIFIED_ITEMS =
 - HARDENING_TRANSITION_REAL = DEFERRED / NON-BLOCKING
 - HARDENING_SCOPE_BATCH_NPLUS1 = DEFERRED / NON-BLOCKING
 - SEC-R03 = FUTURE
+
+
+## 10. Estado vigente após baseline técnica MON-09
+
+LAST_RELEVANT_CHECKPOINT = 850efd2381d7f5b7df27e528dc3374ea58e507b3 completo (850efd2)
+TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
+MON-09A = COMPLETE / PASS
+MON-09B = COMPLETE / PASS_WITH_SCOPE_DEVIATION
+MON-09C = COMPLETE / PASS_WITH_FINDINGS
+MON-09D = COMPLETE
+MON-09E = COMPLETE / PASS
+MON09_TECHNICALLY_COMPLETE = YES
+MONITORING_TECHNICAL_FRONT_COMPLETE = YES
+NEXT_TECHNICAL_MON_ACTIVITY = NONE
+NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
+NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
+
+BASELINE_GIT_SNAPSHOT_BEFORE_DOCUMENTARY_COMMIT: branch master; HEAD = 850efd2381d7f5b7df27e528dc3374ea58e507b3; origin/master = 850efd2381d7f5b7df27e528dc3374ea58e507b3; divergence = 0/0; worktree = CLEAN; staging = EMPTY. Este é o estado factual da baseline técnica antes do novo commit documental; o commit documental posterior será informado no relatório e revalidado diretamente no Git.
+
+VALIDATED_ENVELOPE = UNKNOWN / ONLINE / OFFLINE como estados estáveis; SUSPECT efêmero; STALE como freshness; confirmation memory persistente; pending failure streak sobrevive restart; thresholds respeitados; restart sem transição/outage falsa; falha de banco não equivale a câmera offline; CANCELLED neutro; timeout/rede conforme semântica canônica; sem histórico funcional falso em falha operacional e com recovery possível; ownership por câmera, owner persistente e epoch monotônico; lease define elegibilidade operacional de takeover; epoch é fencing token; config_generation é independente; completion de owner obsoleto sem side effects de domínio; owner antigo não libera owner novo; completion válida libera ownership atomicamente; renovação de lease não implementada; MonitoringConfig integrado à configuração ARGOS, config inválida fail-fast; status, backlog/in-flight, falhas operacionais e ownership diagnosticáveis; observabilidade sem histórico funcional e logs sem secrets
+LEASE_EXPIRY_ALONE_INVALIDATES_COMPLETION = NO
+NEWER_OWNERSHIP_EPOCH_INVALIDATES_COMPLETION = YES
+ATTEMPT_MAX_DURATION_REQUIRED_FOR_CORRECTNESS = NO
+LEASE_DURATION = janela operacional configurável de takeover; não garante duração máxima do attempt
+LEASE_RENEWAL_IMPLEMENTED = NO
+
+FUTURE_VALIDATIONS = PostgreSQL real; multi-processo real em produção; rede real; câmeras reais; credenciais reais; capacidade produtiva; budgets formais de CPU, memória e conexões
+LOG_VOLUME_HARDENING_STATUS = HARDENING / NON-BLOCKING — potencial volume elevado de logs INFO por ciclo/attempt
+MON09B_C_ACCIDENTAL_SCALE_EXECUTIONS = OBSERVAÇÃO PROCESSUAL; NON-BLOCKING
+SECURITY_GATES = LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS; HOMOLOGATION = BLOCKED; DEPLOYMENT = BLOCKED; PRODUCTION = BLOCKED
+SECURITY_FINDINGS = preservar estados já documentados; não reabrir SEC-007 a SEC-010 nem mover SEC-001 a SEC-006 para MON-09
+PRODUCTION_READINESS = NOT_ESTABLISHED
+
+MON-09 está encerrada tecnicamente. Não criar/retomar atividade MON subsequente. Fase C é a próxima macrofase planejada no roadmap; qualquer implementação futura exige autorização própria.

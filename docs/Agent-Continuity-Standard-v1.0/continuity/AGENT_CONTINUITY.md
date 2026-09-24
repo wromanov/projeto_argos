@@ -44,17 +44,17 @@ PRIMARY_REPOSITORY = https://github.com/wromanov/projeto_argos.git
 
 LAST_VERIFIED_LOCAL_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
 LAST_VERIFIED_BRANCH = master
-CURRENT_CANONICAL_GIT_BASELINE = cdf250217a411c66d975ebd4b712d8fb028293b0
-CURRENT_BASELINE_BEFORE_CHECKPOINT = cdf250217a411c66d975ebd4b712d8fb028293b0
-LAST_VERIFIED_HEAD = cdf250217a411c66d975ebd4b712d8fb028293b0
-LAST_VERIFIED_ORIGIN_MASTER = cdf250217a411c66d975ebd4b712d8fb028293b0
+CURRENT_CANONICAL_GIT_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
+CURRENT_BASELINE_BEFORE_DOCUMENTARY_COMMIT = 850efd2381d7f5b7df27e528dc3374ea58e507b3
+LAST_VERIFIED_HEAD = 850efd2381d7f5b7df27e528dc3374ea58e507b3
+LAST_VERIFIED_ORIGIN_MASTER = 850efd2381d7f5b7df27e528dc3374ea58e507b3
 LAST_VERIFIED_DIVERGENCE = HEAD ahead 0 / behind 0
-LAST_VERIFIED_WORKTREE = cinco documentos autorizados modificados pelo fechamento documental da MON-08
-LAST_VERIFIED_STAGING = CLEAN
+LAST_VERIFIED_WORKTREE = CLEAN (baseline antes deste commit documental)
+LAST_VERIFIED_STAGING = EMPTY
 
 Observação:
-os facts acima são um snapshot da sessão de 22/09/2026. Um novo agente deve
-revalidá-los com Git antes de usá-los como facts atuais.
+os facts acima são o snapshot da baseline técnica imediatamente anterior ao
+commit documental; revalidar Git antes de usá-los como estado atual.
 
 ## 3. Governança transversal ativa
 
@@ -73,12 +73,15 @@ Regras de version hygiene:
 
 ## 4. Continuidade do estado técnico
 
-LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-07
-LAST_PUBLISHED_BASELINE = 079baee
-CURRENT_ACTIVITY_COMPLETED = MON-08 — FORMAL DOCUMENTARY CLOSURE — PASS
-NEXT_REQUIRED_ACTIVITY = MON-09 — Hardening operacional
-NEXT_PROJECT_ACTIVITY = MON-09 — Hardening operacional
-NEXT_PROJECT_ACTIVITY_STATUS = NOT_STARTED
+LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 — fechamento técnico publicado em 850efd2
+LAST_PUBLISHED_BASELINE = 850efd2
+CURRENT_ACTIVITY_COMPLETED = MON-09 — TECHNICAL CLOSURE
+MON09_TECHNICALLY_COMPLETE = YES
+MONITORING_TECHNICAL_FRONT_COMPLETE = YES
+NEXT_TECHNICAL_MON_ACTIVITY = NONE
+NEXT_REQUIRED_ACTIVITY = FASE C — Captura manual e gestão de imagens
+NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
+NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
 MON08C6_STATUS = COMPLETE / FINAL ADJUDICATION COMPLETE
 MON08C6_IMPLEMENTATION_AUTHORIZATION = NOT_APPLICABLE
 CHECKPOINT_STAGE_COMMIT_AUTHORIZATION = NO
@@ -133,7 +136,7 @@ SECURITY_GATE_PRODUCTION = BLOCKED
 
 LIVE / produção / homologação não são autorizados por este documento.
 
-## 5.1 Fechamento documental da MON-08
+## 5.1 Histórico: fechamento documental da MON-08 (supersedido como estado atual)
 
 NEW_MATERIAL_VALIDATION_REQUIRED_FOR_MON08_CLOSURE = NO
 FUTURE_MATERIAL_VALIDATION_REQUIRED = YES
@@ -198,16 +201,19 @@ O novo agente deve:
 7. apresentar divergências e itens UNVERIFIED;
 8. aguardar validação humana.
 
-## 8. Próxima atividade requerida
+## 8. Estado atual e próxima atividade
 
-NEXT_REQUIRED_ACTIVITY =
-MON-09 — Hardening operacional
+MON-09A = COMPLETE / PASS; MON-09B = COMPLETE / PASS_WITH_SCOPE_DEVIATION; MON-09C = COMPLETE / PASS_WITH_FINDINGS; MON-09D = COMPLETE; MON-09E = COMPLETE / PASS.
 
-MON-08 está encerrada tecnicamente com `PASS_WITH_FINDINGS`. `MON-08C-6` foi
-concluída; não reabrir MON-08, não inventar `MON-08C-7` ou `MON-08D` e não
-repetir a bateria scale como requisito de fechamento. A próxima atividade é
-`MON-09 — Hardening operacional`, ainda `NOT_STARTED` e sem autorização de
-implementação. Stage, commit e push não estão autorizados nesta atividade.
+MON09_TECHNICALLY_COMPLETE = YES
+MONITORING_TECHNICAL_FRONT_COMPLETE = YES
+NEXT_TECHNICAL_MON_ACTIVITY = NONE
+TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
+NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
+NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
+SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED; DEPLOYMENT BLOCKED; PRODUCTION BLOCKED
+
+A frente de monitoramento está encerrada tecnicamente; não retomar MON-09 nem criar outra atividade MON. Limites futuros continuam: PostgreSQL real, multi-processo de produção, rede/câmeras/credenciais reais, capacidade produtiva e budgets formais de CPU, memória e conexões. Potencial volume de logs INFO é HARDENING / NON-BLOCKING. A próxima macrofase é a Fase C planejada, conforme roadmap. Implementação futura exige autorização própria. O baseline Git acima descreve a validação imediatamente anterior a este commit documental; revalidar Git ao iniciar nova sessão.
 
 ## 9. Retrofit gate
 
@@ -228,3 +234,18 @@ NEXT_REQUIRED_ACTIVITY_RECORDED = YES
 
 Verificação factual concluída:
 CONTINUITY_RETROFIT_GATE = PASS
+
+
+### Fechamento técnico MON-09 — estado vigente
+
+LAST_RELEVANT_CHECKPOINT = 850efd2381d7f5b7df27e528dc3374ea58e507b3 (850efd2)
+MON09_TECHNICALLY_COMPLETE = YES
+MONITORING_TECHNICAL_FRONT_COMPLETE = YES
+NEXT_TECHNICAL_MON_ACTIVITY = NONE
+TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
+NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
+NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
+VALIDATED_ENVELOPE = UNKNOWN / ONLINE / OFFLINE como estados estáveis; SUSPECT efêmero; STALE como freshness; confirmation memory persistente; pending failure streak sobrevive restart; thresholds respeitados; restart sem transição/outage falsa; falha de banco não equivale a câmera offline; CANCELLED neutro; timeout/rede conforme semântica canônica; sem histórico funcional falso em falha operacional e com recovery possível; ownership por câmera, owner persistente e epoch monotônico; lease define elegibilidade operacional de takeover; epoch é fencing token; config_generation é independente; completion de owner obsoleto sem side effects de domínio; owner antigo não libera owner novo; completion válida libera ownership atomicamente; renovação de lease não implementada; MonitoringConfig integrado à configuração ARGOS, config inválida fail-fast; status, backlog/in-flight, falhas operacionais e ownership diagnosticáveis; observabilidade sem histórico funcional e logs sem secrets
+FUTURE_VALIDATIONS = PostgreSQL real; multi-processo real em produção; rede real; câmeras reais; credenciais reais; capacidade produtiva; budgets formais de CPU, memória e conexões
+SECURITY_GATES = LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS; HOMOLOGATION = BLOCKED; DEPLOYMENT = BLOCKED; PRODUCTION = BLOCKED
+IMPLEMENTATION_FUTURE = requer autorização própria

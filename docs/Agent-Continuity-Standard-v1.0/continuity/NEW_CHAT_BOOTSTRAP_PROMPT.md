@@ -2,180 +2,67 @@
 
 STATUS = ACTIVE
 PROJECT = ARGOS
+LANGUAGE = pt-BR
 FIRST_RESPONSE_MODE = READ_ONLY_CONTINUITY_REVALIDATION
 
-Você continuará o Projeto ARGOS. Antes de qualquer implementação, edição,
-stage, commit, push, deploy ou avanço de fase:
-
-1. leia `AGENTS.md`;
-2. leia `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`;
-3. leia `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`;
-4. leia `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`;
-5. resolva e leia as authorities canônicas aplicáveis no repositório;
-6. aplique as políticas transversais vigentes;
-7. valide Git diretamente.
-
-Políticas transversais ativas:
-- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.4.md`;
-- `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`;
-- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md`;
-- `docs/Agent-Continuity-Standard-v1.0/policies/Independencia-Analitica-Agente-v1.md`.
-
-Não use versões superseded como authority operacional.
+Responda sempre em português do Brasil. Em nova conversa, primeiro leia `AGENTS.md`, os quatro documentos de continuidade listados no mapa ativo, o roadmap vigente e as authorities aplicáveis; valide Git diretamente. Reconcilie os fatos atuais antes de qualquer ação. Implementação ou outra ação Git consequencial futura exige autorização própria.
 
 ## Recovery boundary
 
-BOOTSTRAP_SESSION_GATE_SCOPE = EACH_NEW_CHAT
 CONTINUITY_RECOVERY_GATE = NOT_PASSED
 USER_CONTINUITY_VALIDATION = PENDING
 READY_TO_RESUME_PROJECT = NO
-
-IMPLEMENTATION = PROHIBITED
-EDIT = PROHIBITED
-STAGE = PROHIBITED
-COMMIT = PROHIBITED
-PUSH = PROHIBITED
+IMPLEMENTATION = PROHIBITED UNTIL AUTHORIZED
+EDIT = PROHIBITED UNTIL AUTHORIZED
+STAGE = PROHIBITED UNTIL AUTHORIZED
+COMMIT = PROHIBITED UNTIL AUTHORIZED
+PUSH = PROHIBITED UNTIL AUTHORIZED
 DEPLOY = PROHIBITED
-PHASE_ADVANCEMENT = PROHIBITED
+PHASE_ADVANCEMENT = PROHIBITED UNTIL AUTHORIZED
 
-READ_FILES = YES
-READ_GIT = YES
-INSPECT_STATE = YES
-VERIFY_FACTS = YES
-COMPARE_AUTHORITIES = YES
+Leia as políticas transversais ativas indicadas em `AGENT_CONTINUITY.md`; não use versões superseded como authority.
 
-## Known continuity point
+## Estado técnico atual
 
-O último baseline publicado conhecido é:
+LAST_RELEVANT_CHECKPOINT = 850efd2381d7f5b7df27e528dc3374ea58e507b3 (850efd2)
+TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
+MON-09A = COMPLETE / PASS
+MON-09B = COMPLETE / PASS_WITH_SCOPE_DEVIATION
+MON-09C = COMPLETE / PASS_WITH_FINDINGS
+MON-09D = COMPLETE
+MON-09E = COMPLETE / PASS
+MON09_TECHNICALLY_COMPLETE = YES
+MONITORING_TECHNICAL_FRONT_COMPLETE = YES
+NEXT_TECHNICAL_MON_ACTIVITY = NONE
+DO_NOT_RESUME_OR_EXTEND_MON09 = YES
 
-079baee
-docs(monitoramento): encerrar mon-07 e direcionar mon-08
+A capacidade validada inclui estados estáveis UNKNOWN / ONLINE / OFFLINE; SUSPECT efêmero; STALE como dimensão de freshness; memória de confirmação persistente e streak pendente após restart; thresholds respeitados; restart sem transition/outage falsa; falha de banco distinta de câmera OFFLINE; CANCELLED neutro; timeouts e rede conforme semântica canônica; falhas operacionais sem histórico funcional falso e com recovery; ownership persistente por câmera, epoch monotônico, lease de takeover e fencing; config_generation independente; completion obsoleta sem side effects; observabilidade/configuração e logs sem secrets.
 
-O baseline local pré-checkpoint documental verificado em 2026-09-23 está alinhado ao remoto:
+LEASE_EXPIRY_ALONE_INVALIDATES_COMPLETION = NO
+NEWER_OWNERSHIP_EPOCH_INVALIDATES_COMPLETION = YES
+ATTEMPT_MAX_DURATION_REQUIRED_FOR_CORRECTNESS = NO
+LEASE_DURATION = janela operacional configurável de takeover
+LEASE_RENEWAL_IMPLEMENTED = NO
 
-CURRENT_CANONICAL_GIT_BASELINE = cdf250217a411c66d975ebd4b712d8fb028293b0
-CURRENT_BASELINE_BEFORE_CHECKPOINT = cdf250217a411c66d975ebd4b712d8fb028293b0
-HEAD = cdf250217a411c66d975ebd4b712d8fb028293b0
-ORIGIN_MASTER = cdf250217a411c66d975ebd4b712d8fb028293b0
-DIVERGENCE = ahead 0 / behind 0
-WORKTREE = cinco documentos autorizados modificados para o fechamento documental da MON-08
-STAGING = EMPTY
-SNAPSHOT = DOCUMENTARY CLOSURE PRE-STAGE; revalidate post-checkpoint directly from Git
+## Roadmap e limites
 
-MON-08A = PASS.
-MON-08B = PASS / PUBLISHED.
-MON08C_DISCOVERY_PREFLIGHT = PASS.
-MON08C1_NORMAL_PERSISTENCE = PASS.
-MON08C2_MASS_FAILURE = PASS.
-MON08C3_MASS_RECOVERY = PASS.
-MON08C4_RESTART_IDEMPOTENCY = PASS.
-MON08C5_STALE_GENERATION_CAS = PASS.
-MON08C_H1_HARNESS_DISCOVERY = PASS.
-MON08C_H2_HARNESS_REFACTOR = PASS.
-MON08C6 = PASS / FINAL ADJUDICATION COMPLETE.
-MON08C_FINAL_VERDICT = PASS_WITH_FINDINGS.
-MON08C_COMPLETE = YES.
-MON08_TECHNICAL_VERDICT = PASS_WITH_FINDINGS.
-MON08_TECHNICALLY_COMPLETE = YES.
-NEXT_TECHNICAL_MON08_ACTIVITY = NONE.
-NEXT_PROJECT_ACTIVITY = MON-09 — Hardening operacional.
-NEXT_PROJECT_ACTIVITY_STATUS = NOT_STARTED.
+NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
+NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
 
-FAST_TEST_COUNT = 1; SCALE_TEST_COUNT = 4.
-FAST_DATASET_SIZE = 3; SCALE_DATASET_SIZE = 2300.
-DATASET_2300_CREATION_COUNT = 6 → 4.
-COMPLETION_CALLS_APPROX = 39101 → 27607.
-STRUCTURAL_REDUCTION_APPROX = 29.4%.
-MASS_FAILURE_RECOVERY_CONSOLIDATED = YES.
-FAST_TESTS = PASS — aproximadamente 0.067 s.
-REPRESENTATIVE_SCALE_TEST = PASS — 2300 ativos — aproximadamente 270.869 s.
-FULL_MON08C_RERUN = NOT_REQUIRED.
-GLOBAL_SUITE_RUN = NO.
-PRODUCTION_SOURCE_CHANGED = NO; CI_CHANGED = NO; SCHEMA_CHANGED = NO.
-CI_SCALE_OPT_IN = DEFERRED / NON-BLOCKING.
-BLOCKERS = 0; MAJOR = 0; MINOR = 0.
+Este é o nível macro indicado pelo roadmap; não decomponha nem inicie a fase por inferência. Security gates vigentes:
 
-Nenhum código produtivo foi alterado nesta atividade documental. Nenhum teste
-pesado deve ser repetido como requisito de fechamento da MON-08. Não retomar
-MON-08C-6, não inventar MON-08C-7 ou MON-08D e não tratar hardenings como
-blockers.
+LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS
+HOMOLOGATION = BLOCKED
+DEPLOYMENT = BLOCKED
+PRODUCTION = BLOCKED
 
-## Git verification
+FUTURE_VALIDATIONS = PostgreSQL real; multi-processo real em produção; rede real; câmeras reais; credenciais reais; capacidade produtiva; budgets formais de CPU, memória e conexões. Esses limites não são falhas da MON-09 e não permitem alegar readiness produtiva. Preservar o estado factual de SEC-001...SEC-010; não reabrir SEC-007...SEC-010 nem mover SEC-001...SEC-006 para MON-09.
 
-Verifique, no mínimo:
+LOG_VOLUME_HARDENING_STATUS = HARDENING / NON-BLOCKING — potencial volume elevado de logs INFO por ciclo/attempt
+MON09B_C_ACCIDENTAL_SCALE_EXECUTIONS = observação processual, não blocker técnico
 
-- repository root;
-- current branch;
-- HEAD;
-- upstream/origin;
-- divergence;
-- worktree;
-- staging;
-- últimos commits;
-- presença/ausência dos artifacts MON-08B.
+## Git e ação
 
-Se qualquer fact divergir de `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, o Git atual prevalece para
-estado do repositório e a divergência deve ser reportada.
+O snapshot da baseline técnica anterior ao commit documental foi `HEAD = origin/master = 850efd2381d7f5b7df27e528dc3374ea58e507b3`, divergence `0/0`, worktree clean e staging empty. Esse snapshot é histórico; valide o estado atual e o commit documental mais recente diretamente no Git antes de qualquer conclusão. Não execute push sem autorização humana separada.
 
-## First response contract
-
-Explique em linguagem humana:
-- estado recuperado;
-- último ponto confiável;
-- pendências;
-- blockers;
-- divergências;
-- itens UNVERIFIED;
-- próximo passo.
-
-Depois apresente:
-
-AGENT_IDENTITY_RECOVERED =
-GOVERNANCE_RECOVERED =
-PROJECT_STATE_RECOVERED =
-HANDOFF_PREPARATION_GATE =
-CONTINUITY_ADOPTION_MODE =
-CONTINUITY_RETROFIT_GATE =
-CURRENT_PHASE =
-CURRENT_ACTIVITY = MON-08 — FORMAL DOCUMENTARY CLOSURE — PASS
-LAST_COMPLETED_ACTIVITY = MON-08 technical adjudication and formal documentary closure
-COMPLETED_STATE =
-PENDING_STATE =
-BLOCKERS =
-IMPORTANT_ACTIVE_DECISIONS =
-CURRENT_GATES =
-NEXT_REQUIRED_ACTIVITY =
-MON-09 — Hardening operacional
-REPOSITORY_ROOT =
-CURRENT_BRANCH =
-CURRENT_HEAD = baseline pré-checkpoint documental cdf250217a411c66d975ebd4b712d8fb028293b0; pós-checkpoint consultar Git
-UPSTREAM =
-WORKTREE_STATE =
-STAGING_STATE =
-UNVERIFIED_ITEMS =
-CONTRADICTIONS_FOUND =
-MISSING_CONTEXT =
-CONTINUITY_RECOVERY_GATE = NOT_PASSED
-USER_CONTINUITY_VALIDATION = PENDING
-READY_TO_RESUME_PROJECT = NO
-
-Aguarde a validação do checkpoint/continuidade diretamente no Git antes de iniciar
-qualquer atividade consequencial. A próxima atividade registrada é MON-09, mas
-esta continuidade não autoriza sua implementação.
-
-Somente após:
-USER_CONTINUITY_VALIDATION = PASS
-CONTINUITY_RECOVERY_GATE = PASS
-
-o agente pode sair do modo de revalidação desta conversa. A próxima atividade do
-projeto continua exigindo scope e autorização próprios.
-
-## Next required activity
-
-MON-09 — Hardening operacional
-
-MON08C6_STATUS = COMPLETE / FINAL ADJUDICATION COMPLETE
-MON08C6_IMPLEMENTATION_AUTHORIZATION = NOT_APPLICABLE
-CHECKPOINT_STAGE_COMMIT_AUTHORIZED = NO
-PUSH = NOT_AUTHORIZED
-NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION
+A Fase C permanece apenas planejada. Qualquer implementação futura exige escopo e autorização próprios. A conclusão MON-09 não altera gates ambientais nem declara homologation, deployment ou production ready.

@@ -19,7 +19,7 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 
 | Path / identity | Role | Status |
 |---|---|---|
-| `docs/projeto/ROADMAP_ARGOS_V5.md` | Project roadmap / workstream direction | PRESENT / CANONICAL; MON-08 closed; MON-09 next |
+| `docs/projeto/ROADMAP_ARGOS_V5.md` | Project roadmap / workstream direction | PRESENT / CANONICAL; MON-09 technically closed; Fase C next |
 | `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | Monitoring architecture/behavior authority | PRESENT; verify current content |
 | `docs/projeto/ADR-020_contrato_estado_tecnico_monitoramento.md` | Monitoring state/read semantics authority | PRESENT; verify current content |
 | `docs/projeto/ADR-021_seguranca_capacidade_monitoramento.md` | Monitoring security/capability authority | PRESENT / CANONICAL; verify current content |
@@ -50,18 +50,16 @@ Rules:
 
 Git controls factual repository state.
 
-Last verified snapshot:
+Current validated baseline snapshot (before the documentary closure commit):
 
 - repository: `C:\Users\walac\desenvolvimento\projeto_argos`
 - branch: `master`
-- HEAD: `cdf250217a411c66d975ebd4b712d8fb028293b0` (baseline pré-checkpoint documental)
-- origin/master: `cdf250217a411c66d975ebd4b712d8fb028293b0`
+- HEAD = origin/master: `850efd2381d7f5b7df27e528dc3374ea58e507b3`
 - divergence: ahead 0 / behind 0
-- worktree: cinco documentos autorizados modificados pelo fechamento documental da MON-08
+- worktree: clean
 - staging: empty
-- snapshot: fechamento documental pré-stage; Git pós-checkpoint deve ser revalidado diretamente
+- snapshot: technical baseline before this documentary commit; revalidate Git in a new session
 
-A future agent must reverify these values before relying on them.
 
 ## 5. Monitoring workstream continuity
 
@@ -93,9 +91,13 @@ PRODUCTION_SOURCE_CHANGED = NO
 CI_CHANGED = NO
 SCHEMA_CHANGED = NO
 MON-08 = TECHNICALLY COMPLETE / PASS_WITH_FINDINGS; H2 e MON-08C-6 concluídas.
-NEXT_REQUIRED_ACTIVITY = MON-09 — Hardening operacional
-NEXT_PROJECT_ACTIVITY = MON-09 — Hardening operacional
-NEXT_PROJECT_ACTIVITY_STATUS = NOT_STARTED
+MON09_TECHNICALLY_COMPLETE = YES
+MONITORING_TECHNICAL_FRONT_COMPLETE = YES
+NEXT_TECHNICAL_MON_ACTIVITY = NONE
+TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
+NEXT_REQUIRED_ACTIVITY = FASE C — Captura manual e gestão de imagens
+NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
+NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
 NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION
 MON08C6_STATUS = COMPLETE / FINAL ADJUDICATION COMPLETE
 MON08C6_IMPLEMENTATION_AUTHORIZATION = NOT_APPLICABLE
@@ -103,3 +105,24 @@ MON08_HOMOLOGATION_AUTHORIZED = NO
 MON08_DEPLOYMENT_AUTHORIZED = NO
 MON08_PRODUCTION_AUTHORIZED = NO
 PUSH = NOT_AUTHORIZED
+
+
+## 6. Current MON-09 closure and next project phase
+
+MON-09A = COMPLETE / PASS
+MON-09B = COMPLETE / PASS_WITH_SCOPE_DEVIATION
+MON-09C = COMPLETE / PASS_WITH_FINDINGS
+MON-09D = COMPLETE
+MON-09E = COMPLETE / PASS
+MON09_TECHNICALLY_COMPLETE = YES
+MONITORING_TECHNICAL_FRONT_COMPLETE = YES
+NEXT_TECHNICAL_MON_ACTIVITY = NONE
+TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
+NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
+NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
+SECURITY_GATES = LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS; HOMOLOGATION = BLOCKED; DEPLOYMENT = BLOCKED; PRODUCTION = BLOCKED
+VALIDATED_ENVELOPE = UNKNOWN / ONLINE / OFFLINE como estados estáveis; SUSPECT efêmero; STALE como freshness; confirmation memory persistente; pending failure streak sobrevive restart; thresholds respeitados; restart sem transição/outage falsa; falha de banco não equivale a câmera offline; CANCELLED neutro; timeout/rede conforme semântica canônica; sem histórico funcional falso em falha operacional e com recovery possível; ownership por câmera, owner persistente e epoch monotônico; lease define elegibilidade operacional de takeover; epoch é fencing token; config_generation é independente; completion de owner obsoleto sem side effects de domínio; owner antigo não libera owner novo; completion válida libera ownership atomicamente; renovação de lease não implementada; MonitoringConfig integrado à configuração ARGOS, config inválida fail-fast; status, backlog/in-flight, falhas operacionais e ownership diagnosticáveis; observabilidade sem histórico funcional e logs sem secrets
+FUTURE_VALIDATIONS = PostgreSQL real; multi-processo real em produção; rede real; câmeras reais; credenciais reais; capacidade produtiva; budgets formais de CPU, memória e conexões
+LOG_VOLUME_HARDENING_STATUS = HARDENING / NON-BLOCKING — potential high INFO log volume per cycle/attempt
+
+MON-08/MON-09 predecessor entries above are continuity history. Current roadmap status is Fase C planned; do not resume MON-09 or infer production readiness.

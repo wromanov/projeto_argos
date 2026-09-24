@@ -660,9 +660,15 @@ Avaliar:
 
 ## MON-09 — Hardening operacional
 
-**Estado:** `PRÓXIMA / NOT_STARTED` após o fechamento documental da MON-08.
+**Estado:** `COMPLETE / TECHNICALLY COMPLETE` na baseline publicada `850efd2`.
 
-Cobrir:
+MON-09A = COMPLETE / PASS; MON-09B = COMPLETE / PASS_WITH_SCOPE_DEVIATION; MON-09C = COMPLETE / PASS_WITH_FINDINGS; MON-09D = COMPLETE; MON-09E = COMPLETE / PASS. `MON09_TECHNICALLY_COMPLETE = YES`; `MONITORING_TECHNICAL_FRONT_COMPLETE = YES`; `NEXT_TECHNICAL_MON_ACTIVITY = NONE`.
+
+A baseline técnica publicada é `850efd2` (`850efd2381d7f5b7df27e528dc3374ea58e507b3`). A frente validou os contratos de estado estável/freshness, confirmação e restart, falhas operacionais e recovery, ownership/fencing, configuração e observabilidade no envelope local controlado. Lease expiry isolada não invalida completion; epoch de ownership mais novo invalida; duração máxima do attempt não é requisito de correção. A lease configurável é janela operacional de takeover; renovação de lease não foi implementada.
+
+Permanecem futuras e não validadas: PostgreSQL real, multi-processo de produção, rede/câmeras/credenciais reais, capacidade produtiva e budgets formais de CPU, memória e conexões. Isso não é falha da MON-09 nem readiness produtiva. Potencial volume elevado de logs INFO por ciclo/attempt permanece HARDENING / NON-BLOCKING.
+
+Escopo concluído pelas slices MON-09A...E:
 
 - reinício de worker;
 - worker duplicado;
@@ -1302,7 +1308,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
-FASE B — Monitoramento operacional             🔄 EM CURSO (MON-00 a MON-08 concluídas; próxima frente MON-09; Security Gate local RELEASED_WITH_CONTROLS; homologação, deployment e produção BLOCKED)
+FASE B — Monitoramento operacional             ✅ FRENTE TÉCNICA CONCLUÍDA (MON-00 a MON-09; validações externas futuras; gates preservados)
 FASE C — Captura manual e imagens              ⏳ PLANEJADA
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
@@ -1346,9 +1352,17 @@ Memory nos estados exercitados. PostgreSQL, multi-instância, multi-worker,
 lease distribuído, rede/firewall/VLAN reais, câmeras/credenciais reais e
 performance/capacidade de produção permanecem `NOT_VALIDATED`.
 
-**Próxima atividade do projeto:** `MON-09 — Hardening operacional`.
-`NEXT_PROJECT_ACTIVITY_STATUS = NOT_STARTED`. Esta indicação não autoriza seu
-início. `SEC-GATE-01 — Reavaliação do Security Gate` permanece uma frente
-independente de segurança e governança; seus gates continuam preservados como
-`RELEASED_WITH_CONTROLS` apenas para desenvolvimento local e `BLOCKED` para
-homologação, deployment e produção.
+**Registro histórico:** após MON-08, MON-09 era a próxima atividade. Este status foi supersedido pelo fechamento MON-09 abaixo. `SEC-GATE-01` permanece uma frente independente de segurança e governança.
+
+
+## Atualização vigente — fechamento técnico MON-09
+
+A baseline técnica publicada é `850efd2381d7f5b7df27e528dc3374ea58e507b3` (`850efd2`), com `HEAD = origin/master`, divergência `0/0` e worktree/staging limpos na validação anterior a este commit documental. MON-09A = COMPLETE / PASS; MON-09B = COMPLETE / PASS_WITH_SCOPE_DEVIATION; MON-09C = COMPLETE / PASS_WITH_FINDINGS; MON-09D = COMPLETE; MON-09E = COMPLETE / PASS. `MON09_TECHNICALLY_COMPLETE = YES`; `MONITORING_TECHNICAL_FRONT_COMPLETE = YES`; `NEXT_TECHNICAL_MON_ACTIVITY = NONE`. Não criar nem retomar atividades MON para prolongar este fechamento.
+
+Envelope validado: UNKNOWN / ONLINE / OFFLINE como estados estáveis; SUSPECT efêmero; STALE como freshness; confirmation memory persistente; pending failure streak sobrevive restart; thresholds respeitados; restart sem transição/outage falsa; falha de banco não equivale a câmera offline; CANCELLED neutro; timeout/rede conforme semântica canônica; sem histórico funcional falso em falha operacional e com recovery possível; ownership por câmera, owner persistente e epoch monotônico; lease define elegibilidade operacional de takeover; epoch é fencing token; config_generation é independente; completion de owner obsoleto sem side effects de domínio; owner antigo não libera owner novo; completion válida libera ownership atomicamente; renovação de lease não implementada; MonitoringConfig integrado à configuração ARGOS, config inválida fail-fast; status, backlog/in-flight, falhas operacionais e ownership diagnosticáveis; observabilidade sem histórico funcional e logs sem secrets.
+
+Semântica de ownership: `LEASE_EXPIRY_ALONE_INVALIDATES_COMPLETION = NO`; `NEWER_OWNERSHIP_EPOCH_INVALIDATES_COMPLETION = YES`; `ATTEMPT_MAX_DURATION_REQUIRED_FOR_CORRECTNESS = NO`; lease é janela operacional configurável para takeover. Não constitui garantia de duração máxima de attempt.
+
+Ainda não validados: PostgreSQL real; multi-processo real em produção; rede real; câmeras reais; credenciais reais; capacidade produtiva; budgets formais de CPU, memória e conexões. Esses limites são validações futuras e não falhas da MON-09 nem evidência de readiness produtiva. Hardening não bloqueante: potencial volume elevado de logs INFO por ciclo/attempt. As execuções acidentais de scale em MON-09B/C são observação processual, sem blocker técnico. Findings de segurança e gates permanecem sem reclassificação; `LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS; HOMOLOGATION = BLOCKED; DEPLOYMENT = BLOCKED; PRODUCTION = BLOCKED`.
+
+Próxima atividade definida pelo roadmap: `FASE C — Captura manual e gestão de imagens` (`NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA`). A macrofase está planejada; este registro não autoriza seu início ou implementação.
