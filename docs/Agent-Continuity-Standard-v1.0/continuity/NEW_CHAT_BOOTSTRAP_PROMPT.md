@@ -5,19 +5,28 @@ PROJECT = ARGOS
 LANGUAGE = pt-BR
 FIRST_RESPONSE_MODE = READ_ONLY_CONTINUITY_REVALIDATION
 
-Responda sempre em português do Brasil. Em nova conversa, primeiro leia
-`AGENTS.md`, os quatro documentos de continuidade listados no mapa ativo, o
-roadmap vigente, `docs/projeto/SPRINTS_ARGOS_V5.md`,
-`docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` e as authorities
-aplicáveis; valide Git diretamente. Reconcilie os fatos atuais antes de qualquer
-ação. Implementação ou outra ação Git consequencial futura exige autorização
-própria.
+Responda sempre em português do Brasil. Em nova conversa, siga esta ordem:
+
+1. valide repo root, branch, HEAD, `origin/master`, divergência, worktree e staging;
+2. leia `ACTIVE_DOCUMENT_MAP.md`;
+3. leia `PROJECT_STATE.md`;
+4. leia `AGENT_CONTINUITY.md`;
+5. leia `ROADMAP_ARGOS_V5.md` e `SPRINTS_ARGOS_V5.md` no nível necessário;
+6. leia a authority especializada da atividade atual ou planejada;
+7. compare as fontes e só então proponha ou execute ações autorizadas.
+
+Leia também `AGENTS.md`, este bootstrap e as policies transversais ativas
+indicadas no mapa. A authority específica de continuidade é
+`docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`. Git é a fonte factual
+para estado do repositório. `DO_NOT_RESUME_FROM_CHAT_MEMORY_ONLY = YES`.
 
 ## Recovery boundary
 
-CONTINUITY_RECOVERY_GATE = NOT_PASSED
-USER_CONTINUITY_VALIDATION = PENDING
-READY_TO_RESUME_PROJECT = NO
+AGENT_HANDOFF_GATE_RESULT = consult PROJECT_STATE.md; current checkpoint = PASS
+CONTINUITY_RECOVERY_GATE = REVALIDATE_GIT_AND_AUTHORITIES_EACH_NEW_CHAT
+USER_CONTINUITY_VALIDATION = NOT_REQUIRED_FOR_STATE_DISCOVERY
+READY_TO_RESUME_PROJECT = YES_AFTER_READ_ONLY_REVALIDATION
+RESUME_SCOPE = dentro das autorizações explícitas vigentes
 IMPLEMENTATION = PROHIBITED UNTIL AUTHORIZED
 EDIT = PROHIBITED UNTIL AUTHORIZED
 STAGE = PROHIBITED UNTIL AUTHORIZED
@@ -25,6 +34,9 @@ COMMIT = PROHIBITED UNTIL AUTHORIZED
 PUSH = PROHIBITED UNTIL AUTHORIZED
 DEPLOY = PROHIBITED
 PHASE_ADVANCEMENT = PROHIBITED UNTIL AUTHORIZED
+DO_NOT_ASSUME_IMPLEMENTATION_AUTHORIZATION = YES
+DO_NOT_RESUME_FROM_CHAT_MEMORY_ONLY = YES
+PUSH = NOT_AUTHORIZED
 
 Leia as políticas transversais ativas indicadas em `AGENT_CONTINUITY.md`; não use versões superseded como authority.
 
@@ -79,16 +91,19 @@ LEASE_RENEWAL_IMPLEMENTED = NO
 ## Roadmap e limites
 
 NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
-NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
 NEXT_REQUIRED_ACTIVITY = IMG-02 — Modelo, storage e proveniência (após adjudicação humana e autorização)
-NEXT_REQUIRED_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
+NEXT_REQUIRED_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
 
 UI_DS = UI-0, UI-1, UI-2, UI-3, UI-4
-UI_0 = read-only; relatório; stop após discovery
+UI_0 = COMPLETE / PASS_WITH_FINDINGS; read-only; não autoriza implementação
 UI_1 = token/component adapter foundation
 UI_2 = inventory visual retrofit
 UI_3 = CameraQuickDetailPanel integrado ao fluxo canônico
 UI_4 = QA visual/funcional/acessibilidade/interação
+ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
+AGENT_HANDOFF_GATE = ACTIVE; consultar resultado e critérios no PROJECT_STATE.md
+UI_0_FINDINGS_DETAIL = docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md; findings não bloqueantes; UI_0_FINDINGS_DISCOVERABLE = YES
 
 Este é o nível macro indicado pelo roadmap; não decomponha nem inicie a fase por inferência. Security gates vigentes:
 
@@ -105,7 +120,7 @@ MON09B_C_ACCIDENTAL_SCALE_EXECUTIONS = observação processual, não blocker té
 ## Git e ação
 
 O snapshot da baseline técnica antes desta atividade documental foi
-`HEAD = origin/master = f85dbdb3e5833b27133721926e81aa3ed2f030dd`, divergence
+`HEAD = origin/master = f4e88146c1146cdf04d657eb6e3cefa560639b61`, divergence
 `0/0`, worktree clean e staging empty. O checkpoint técnico MON-09 em
 `850efd2381d7f5b7df27e528dc3374ea58e507b3` é histórico; valide o estado atual e
 o commit documental mais recente diretamente no Git antes de qualquer
@@ -114,8 +129,8 @@ conclusão. Não execute push sem autorização humana separada.
 IMG-01 está concluída como checkpoint documental. A próxima atividade de
 projeto é IMG-02 — Modelo, storage e proveniência, após adjudicação humana e
 autorização própria; o contrato canônico enumera sete decisões abertas e
-indica quando cada uma deve ser fechada. `UI-0` continua como preparação
-read-only recomendada para UI-DS, não como substituta de IMG-02. Nenhuma dessas
+indica quando cada uma deve ser fechada. `UI-0` foi registrada como completa
+com findings, em modo read-only, e não substitui IMG-02. Nenhuma dessas
 indicações autoriza implementação automaticamente. A conclusão MON-09 não
 altera gates ambientais nem declara homologation, deployment ou production
 ready.

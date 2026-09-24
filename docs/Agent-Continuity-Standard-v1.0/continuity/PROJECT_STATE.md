@@ -5,17 +5,17 @@ SNAPSHOT_DATE = 2026-09-24
 PROJECT = ARGOS
 STATE_SOURCE = verified Git baseline + MON-09A...E adjudication + current roadmap + UI-DS authorities + IMG-01 canonical image contract
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = current IMG-01 documentary checkpoint; MON-09 technical closure remains historical technical checkpoint
+SNAPSHOT_SCOPE = current ARGOS continuity/handoff documentary checkpoint; MON-09 technical closure remains historical technical checkpoint
 
 ## 1. Executive status
 
 CURRENT_PHASE = FASE C — Captura manual e gestão de imagens (IMG-01 documental concluída; implementação não iniciada)
-CURRENT_ACTIVITY = IMG-01 — CANONICAL IMAGE CONTRACT CHECKPOINT
+CURRENT_ACTIVITY = NONE após este checkpoint documental; nenhuma atividade de implementação está em andamento
 LAST_COMPLETED_ACTIVITY = IMG-01 — CANONICAL IMAGE CONTRACT CHECKPOINT (documental)
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
 LAST_PUBLISHED_BASELINE = 850efd2
-CURRENT_CANONICAL_GIT_BASELINE = f85dbdb3e5833b27133721926e81aa3ed2f030dd
-CURRENT_BASELINE_BEFORE_DOCUMENTARY_COMMIT = f85dbdb3e5833b27133721926e81aa3ed2f030dd
+CURRENT_CANONICAL_GIT_BASELINE = f4e88146c1146cdf04d657eb6e3cefa560639b61
+CURRENT_BASELINE_BEFORE_DOCUMENTARY_COMMIT = f4e88146c1146cdf04d657eb6e3cefa560639b61
 
 PROJECT_PROGRESS_LAST_VALID_PUBLISHED_ESTIMATE = 78% (HISTORICAL; NOT CURRENT)
 MON08_PROGRESS_LAST_VALID_PUBLISHED_ESTIMATE = 15% (HISTORICAL; NOT CURRENT)
@@ -35,12 +35,12 @@ STAGING_STATE = EMPTY
 SNAPSHOT_VALIDITY = TECHNICAL BASELINE BEFORE DOCUMENTARY COMMIT
 REVALIDATE_AFTER_DOCUMENTARY_COMMIT = REQUIRED; Git posterior é a fonte de verdade
 
-## 2.1 Git baseline snapshot — before current IMG-01 documentary activity
+## 2.1 Git baseline snapshot — before current continuity/handoff documentary checkpoint
 
 REPOSITORY_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
 BRANCH = master
-HEAD = f85dbdb3e5833b27133721926e81aa3ed2f030dd
-ORIGIN_MASTER = f85dbdb3e5833b27133721926e81aa3ed2f030dd
+HEAD = f4e88146c1146cdf04d657eb6e3cefa560639b61
+ORIGIN_MASTER = f4e88146c1146cdf04d657eb6e3cefa560639b61
 DIVERGENCE = ahead 0 / behind 0
 WORKTREE_STATE = CLEAN
 WORKTREE_CONTENTS = NONE
@@ -211,7 +211,7 @@ HISTORICAL_DIVERGENCE_D-01 = the earlier recovery snapshot reflected the lost lo
 CONTINUITY_PROTOCOL = ACTIVE
 CONTINUITY_ADOPTION_MODE = RETROFIT_REQUIRED
 CONTINUITY_RETROFIT_GATE = PASS
-HANDOFF_PREPARATION_GATE = NOT_PASSED
+HANDOFF_PREPARATION_GATE = PASS
 
 SECURITY_GATE_LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS
 SECURITY_GATE_HOMOLOGATION = BLOCKED
@@ -250,7 +250,11 @@ UNVERIFIED_ITEMS =
 - SEC-R03 = FUTURE
 
 
-## 10. Estado vigente após baseline técnica MON-09
+## 10. Snapshot histórico após baseline técnica MON-09 — substituído pelos checkpoints das seções 12 e 13
+
+Os status desta seção preservam o registro histórico daquele checkpoint. Para o
+estado corrente, prevalecem o resumo executivo e os checkpoints IMG-01 e de
+continuidade nas seções 12 e 13; fatos Git atuais devem ser revalidados no Git.
 
 LAST_RELEVANT_CHECKPOINT = 850efd2381d7f5b7df27e528dc3374ea58e507b3 completo (850efd2)
 TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
@@ -299,7 +303,7 @@ INTEGRATION_GATE = REQUIRED_WHEN_APPLICABLE
 BIG_BANG_INTEGRATION = PROHIBITED
 
 UI_DS = UI-0, UI-1, UI-2, UI-3, UI-4
-UI_0 = READ_ONLY PREFLIGHT; NEXT_RECOMMENDED_ACTIVITY; NOT_IMPLEMENTATION_AUTHORIZATION
+UI_0 = COMPLETE / PASS_WITH_FINDINGS; READ_ONLY; NOT_IMPLEMENTATION_AUTHORIZATION
 UI_1 = TOKEN & COMPONENT ADAPTER FOUNDATION
 UI_2 = INVENTORY VISUAL RETROFIT
 UI_3 = INTEGRATED CAMERA QUICK DETAIL PANEL
@@ -324,9 +328,60 @@ OPEN_DECISIONS = backend de storage; MIME/tamanho/dimensões; fallback visual de
 IMG02_PREREQUISITES = ler contrato; adjudicação humana; autorização própria; decidir backend antes de migration; implementar modelo/storage/proveniência respeitando seleção latest e Integration Gate
 IMG02_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
 NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
-NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
 FASE_C_COMPLETE = NO
 
 O contrato canônico mapeia cada decisão aberta à slice que deve fechá-la. A
 próxima atividade não concede autorização de implementação. Percentual global
 do projeto permanece não recalculado.
+
+## 13. Checkpoint de continuidade e handoff ARGOS
+
+ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
+AGENT_HANDOFF_GATE = ACTIVE
+CONTINUITY_AUTHORITY = docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md
+PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+BRANCH = master
+BASELINE_BEFORE_CONTINUITY_CHECKPOINT = f4e88146c1146cdf04d657eb6e3cefa560639b61
+HEAD_AFTER_CONTINUITY_COMMIT = consultar Git; o commit documental não altera o baseline técnico de implementação
+ORIGIN_BASELINE_BEFORE_CONTINUITY_CHECKPOINT = f4e88146c1146cdf04d657eb6e3cefa560639b61
+DIVERGENCE_BEFORE_CONTINUITY_CHECKPOINT = 0/0
+CURRENT_MACROPHASE = FASE C — Captura manual e gestão de imagens
+LAST_COMPLETED_ACTIVITY = IMG-01 — Contrato funcional de imagem (COMPLETE / DOCUMENTAL / PUBLISHED)
+LAST_COMPLETED_DOCUMENTARY_GOVERNANCE_ACTIVITY = Formalização das regras de continuidade e handoff ARGOS
+CURRENT_ACTIVITY = NONE após este checkpoint documental; nenhuma atividade de implementação está em andamento
+NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
+NEXT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
+NEXT_ACTIVITY_AUTHORITY = docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+NEXT_ACTIVITY_PREREQUISITES = adjudicação humana e autorização explícita próprias; fechar backend de storage antes de migration
+IMPLEMENTATION_AUTHORIZED = NO
+LIVE_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+ENVIRONMENT_GATES = LOCAL_DEVELOPMENT: RELEASED_WITH_CONTROLS; HOMOLOGATION: BLOCKED; DEPLOYMENT: BLOCKED; PRODUCTION: BLOCKED
+UI_DS_STATUS = UI-0: COMPLETE / PASS_WITH_FINDINGS; UI-1: PENDING; UI-2: PENDING; UI-3: PENDING; UI-4: PENDING
+UI_0_FINDINGS_DETAIL = docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md; UI_0_FINDINGS_DISCOVERABLE = YES; findings não bloqueantes para UI-0
+CAMERA_QUICK_DETAIL_PANEL = ADOPT
+LATEST_CAMERA_CAPTURE = fonte canônica futura do preview; ver contrato de imagem
+BIG_BANG_INTEGRATION = PROHIBITED
+INTEGRATION_GATE = REQUIRED_WHEN_APPLICABLE
+OPEN_DECISION_COUNT = 7; nomes e fechamento em docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+BLOCKERS = IMG-02 não inicia até adjudicação humana e autorização explícita próprias
+MAJOR_FINDINGS = SEC-001...SEC-006 conforme docs/security_audit/auditoria_segurança_001.md; SEC-007...SEC-009 REMEDIATED / VERIFIED; SEC-010 MITIGATED / VERIFIED; UI-0 PASS_WITH_FINDINGS conforme docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md; potencial volume elevado de logs INFO por ciclo/attempt = HARDENING / NON-BLOCKING
+DEFERRED_ITEMS = decisões abertas de IMG-01 conforme contrato; UI-1...UI-4; validações futuras de segurança/ambiente conforme gates vigentes
+CANONICAL_AUTHORITIES = ROADMAP_ARGOS_V5.md; SPRINTS_ARGOS_V5.md; ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md; ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md; ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md; ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md; ADR-019/020/021; docs/security_audit/auditoria_segurança_001.md
+UI_0_FINDINGS_DISCOVERABLE = YES
+CURRENT_STATE_DISCOVERABLE = YES
+CURRENT_BASELINE_DISCOVERABLE = YES
+LAST_COMPLETED_ACTIVITY_DISCOVERABLE = YES
+NEXT_ACTIVITY_DISCOVERABLE = YES
+CANONICAL_AUTHORITIES_DISCOVERABLE = YES
+OPEN_DECISIONS_DISCOVERABLE = YES
+BLOCKERS_DISCOVERABLE = YES
+MAJOR_FINDINGS_DISCOVERABLE = YES
+DEFERRED_ITEMS_DISCOVERABLE = YES
+IMPLEMENTATION_AUTHORIZATION_STATE_DISCOVERABLE = YES
+SECURITY_OR_ENVIRONMENT_GATES_DISCOVERABLE = YES
+NEW_AGENT_CAN_RESUME_WITHOUT_CHAT_HISTORY = YES
+DOCUMENT_QUALITY_GATE = PASS
+DOCUMENT_RECONCILIATION_GATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PASS

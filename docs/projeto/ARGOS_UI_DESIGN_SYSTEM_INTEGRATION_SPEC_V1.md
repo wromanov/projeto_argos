@@ -775,8 +775,11 @@ com a Fase C.
 ### UI-0 — Read-only preflight
 
 ```text
+STATUS = COMPLETE / PASS_WITH_FINDINGS
 READ_ONLY = YES
 STOP_AFTER_REPORT = YES
+FINDINGS_REPORT_PATH = docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md
+FINDINGS_DETAILS_DISCOVERABLE = YES
 ```
 
 Antes de qualquer implementação visual, descobrir factualmente:
@@ -962,20 +965,20 @@ consequência automática desta frente.
 
 ## 14. Ordem futura de execução e gates
 
-A ordem documental recomendada é:
+A ordem documental recomendada, considerando os checkpoints concluídos, é:
 
-1. adjudicação humana da intenção e autorização da próxima atividade;
-2. `UI-0 — Read-only preflight`;
-3. fechamento de `IMG-01` e `IMG-02` para proveniência, modelo e consulta da
-   última captura;
-4. `UI-1 — Token & Component Adapter Foundation`;
-5. `UI-2 — Inventory Visual Retrofit`;
-6. slices da Fase C conforme dependências (`IMG-03` a `IMG-09`), integradas ao
+1. `IMG-01 — Contrato funcional` — COMPLETE / DOCUMENTAL;
+2. `UI-0 — Read-only preflight` — COMPLETE / PASS_WITH_FINDINGS;
+3. adjudicação humana e autorização específica para IMG-02;
+4. fechamento de `IMG-02` para proveniência, modelo e consulta da última captura;
+5. `UI-1 — Token & Component Adapter Foundation`;
+6. `UI-2 — Inventory Visual Retrofit`;
+7. slices da Fase C conforme dependências (`IMG-03` a `IMG-09`), integradas ao
    caminho canônico;
-7. `UI-3 — CameraQuickDetailPanel`, somente com o contrato real de resumo,
+8. `UI-3 — CameraQuickDetailPanel`, somente com o contrato real de resumo,
    status, rota e latest capture disponível quando aplicável;
-8. `UI-4 — Visual / Functional / Accessibility / Interaction QA`;
-9. checkpoint documental e técnico da slice.
+9. `UI-4 — Visual / Functional / Accessibility / Interaction QA`;
+10. checkpoint documental e técnico da slice.
 
 Esta ordem não renumera nem substitui as macrofases existentes. UI-DS é uma
 frente transversal; as dependências podem ser executadas em slices verticais,

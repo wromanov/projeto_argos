@@ -39,6 +39,14 @@ O desenvolvimento do ARGOS continua seguindo os seguintes princípios:
 9. evitar acoplamento desnecessário entre interface web e processamento operacional;
 10. tratar escala, segurança e observabilidade como requisitos arquiteturais, não como ajustes finais.
 
+11. manter o estado do projeto recuperável a partir das authorities vigentes do repositório;
+12. aplicar o `AGENT_HANDOFF_GATE` proporcionalmente aos marcos relevantes, conforme
+    [`ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`](ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md).
+
+`ARGOS_CONTINUITY_PRINCIPLE = ACTIVE` e `AGENT_HANDOFF_GATE = ACTIVE`. Este
+roadmap continua responsável por direção, macrofases e dependências; a authority
+de continuidade define a recuperação do estado e o encerramento de handoff.
+
 ---
 
 ## 3. Estado consolidado do produto
@@ -702,9 +710,10 @@ UI-4 — Visual / Functional / Accessibility / Interaction QA
 
 `CameraQuickDetailPanel` é padrão aprovado para inspeção contextual rápida; não
 substitui a página completa e deve consultar `LATEST_CAMERA_CAPTURE` pelo
-contrato canônico da Fase C quando disponível. `UI-0` é a próxima atividade
-preparatória recomendada, read-only, somente após adjudicação humana e
-autorização; não autoriza implementação visual.
+contrato canônico da Fase C quando disponível. `UI-0` está `COMPLETE /
+PASS_WITH_FINDINGS` como preflight read-only; esse status não autoriza
+implementação visual. A próxima atividade de projeto permanece IMG-02,
+condicionada à adjudicação humana e autorização própria.
 
 Aplicam-se a esta frente a `ARGOS INCREMENTAL INTEGRATION RULE` e o
 `INTEGRATION_GATE`: cada slice deve ser integrada ao fluxo canônico e validada
@@ -1342,7 +1351,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
 FASE B — Monitoramento operacional             ✅ FRENTE TÉCNICA CONCLUÍDA (MON-00 a MON-09; validações externas futuras; gates preservados)
-FASE C — Captura manual e imagens              ⏳ PLANEJADA
+FASE C — Captura manual e imagens              🟡 EM ANDAMENTO / IMG-01 DOCUMENTAL; IMG-02 PRÓXIMA
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
 FASE F — Integração técnica                    ⏳ PLANEJADA
@@ -1401,5 +1410,9 @@ Ainda não validados: PostgreSQL real; multi-processo real em produção; rede r
 Atualização documental IMG-01: contrato de domínio definido e canonicalizado em
 `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`. A próxima atividade de
 projeto é IMG-02 — Modelo, storage e proveniência
-(`NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED`). A Fase C não está
+(`NEXT_PROJECT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION`). A Fase C não está
 concluída; este checkpoint não concede autorização automática de implementação.
+
+ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
+AGENT_HANDOFF_GATE = ACTIVE
+CONTINUITY_AUTHORITY = [ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md](ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md)

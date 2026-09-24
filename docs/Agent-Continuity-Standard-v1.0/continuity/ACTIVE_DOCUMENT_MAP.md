@@ -5,36 +5,42 @@ DOCUMENT_TYPE = PROJECT_SPECIFIC_AUTHORITY_MAP
 PROJECT = ARGOS
 ACTIVE_DOCUMENT_MAP_READY = YES
 
-## 1. Project continuity authorities
+## 1. Authorities de continuidade e handoff
 
-| Path | Role | Status |
-|---|---|---|
-| `AGENTS.md` | Project entrypoint / agent authority map | PRESENT / CURRENT CHECKOUT |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Project-specific continuity instance | PRESENT / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Current operational snapshot | PRESENT / CURRENT_SNAPSHOT |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Active authority/document map | PRESENT / CURRENT |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | New-chat recovery contract | PRESENT / ACTIVE |
+| Path | Role | Authority scope | Status |
+|---|---|---|---|
+| `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
+| `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE |
 
-## 2. Known project canonical documents
+## 2. Authorities canônicas do projeto
 
-| Path / identity | Role | Status |
-|---|---|---|
-| `docs/projeto/ROADMAP_ARGOS_V5.md` | Project roadmap / workstream direction | PRESENT / CANONICAL; IMG-01 canonicalized; IMG-02 next |
-| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | UI-DS visual/interactions/Fase C/incremental integration authority | PRESENT / CANONICAL; reference `camera-inventory-design-system-v1.0.1` |
-| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Canonical image-domain authority for IMG-02...IMG-09 and image consumers | PRESENT / CANONICAL; IMG-01 complete; IMG-02 next |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Canonical sprint/slice execution map | PRESENT / CANONICAL; IMG-02 next project activity |
-| `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | Monitoring architecture/behavior authority | PRESENT; verify current content |
-| `docs/projeto/ADR-020_contrato_estado_tecnico_monitoramento.md` | Monitoring state/read semantics authority | PRESENT; verify current content |
-| `docs/projeto/ADR-021_seguranca_capacidade_monitoramento.md` | Monitoring security/capability authority | PRESENT / CANONICAL; verify current content |
+| Path | Role | Authority scope | Status |
+|---|---|---|---|
+| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; IMG-01 concluída; IMG-02 próxima |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; IMG-02 próxima atividade de projeto |
+| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; IMG-01 completa; IMG-02 próxima |
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; referência `camera-inventory-design-system-v1.0.1` |
+| `docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md` | Registro factual dos findings de UI-0 | Findings do preflight read-only, sem alterar a authority de UI-DS | PRESENT / CURRENT FINDINGS RECORD; NON-BLOCKING |
+| `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | ADR de arquitetura | Arquitetura de monitoramento e relação com gestão de imagens | PRESENT / AUTHORITY; verificar vigência no escopo aplicável |
+| `docs/projeto/ADR-020_contrato_estado_tecnico_monitoramento.md` | Contrato técnico de monitoramento | Estado e semântica de leitura técnica | PRESENT / AUTHORITY; verificar vigência no escopo aplicável |
+| `docs/projeto/ADR-021_seguranca_capacidade_monitoramento.md` | ADR de segurança | Capacidade, credenciais e limites de monitoramento/captura | PRESENT / CANONICAL no escopo de segurança |
+| `docs/security_audit/auditoria_segurança_001.md` | Estado e matriz de findings de segurança | Status SEC-001...SEC-010, gates por ambiente e sequência de governança SEC | PRESENT / CURRENT SECURITY FINDINGS AUTHORITY |
+| `docs/projeto/handoff_continuidade_projeto_argos.md` | Handoff legado / histórico | Evidência histórica; não determina estado corrente | PRESENT / HISTORICAL / SUPERSEDED FOR CURRENT STATE |
 
 ## 3. Transversal policy set
 
 CURRENT / ACTIVE:
 
-- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.4.md`
-- `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`
-- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md`
-- `docs/Agent-Continuity-Standard-v1.0/policies/Independencia-Analitica-Agente-v1.md`
+| Path | Role / authority scope | Status |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.4.md` | Prompts, roteamento cognitivo e execução | CURRENT / ACTIVE |
+| `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md` | Execução direta, delegação e papéis | CURRENT / ACTIVE |
+| `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md` | Skills/plugins e limites de capability | CURRENT / ACTIVE |
+| `docs/Agent-Continuity-Standard-v1.0/policies/Independencia-Analitica-Agente-v1.md` | Independência analítica e qualidade de decisão | CURRENT / ACTIVE |
 
 SUPERSEDED / HISTORICAL ONLY:
 
@@ -53,11 +59,11 @@ Rules:
 
 Git controls factual repository state.
 
-Current validated baseline snapshot before this IMG-01 documentary activity:
+Current validated baseline snapshot before this continuity/handoff documentary checkpoint:
 
 - repository: `C:\Users\walacedelgado\PycharmProjects\projeto_argos`
 - branch: `master`
-- HEAD = origin/master: `f85dbdb3e5833b27133721926e81aa3ed2f030dd`
+- HEAD = origin/master: `f4e88146c1146cdf04d657eb6e3cefa560639b61`
 - divergence: ahead 0 / behind 0
 - worktree: clean
 - staging: empty
@@ -81,7 +87,7 @@ LATEST_CAMERA_CAPTURE_FEEDS_PANEL = YES_WHEN_CANONICAL_CONTRACT_AVAILABLE
 FASE_C_DEPENDENCY = EXPLICIT
 BIG_BANG_INTEGRATION = PROHIBITED
 INTEGRATION_GATE = REQUIRED_WHEN_APPLICABLE
-UI_0 = READ_ONLY_PREPARATORY_NEXT_ACTIVITY
+UI_0 = COMPLETE / PASS_WITH_FINDINGS; READ_ONLY; DOES_NOT_AUTHORIZE_IMPLEMENTATION
 UI_1 = TOKEN_COMPONENT_ADAPTER_FOUNDATION
 UI_2 = INVENTORY_VISUAL_RETROFIT
 UI_3 = INTEGRATED_CAMERA_QUICK_DETAIL_PANEL
@@ -93,7 +99,10 @@ Detalhes permanecem exclusivamente em
 estão em `docs/projeto/SPRINTS_ARGOS_V5.md`.
 
 
-## 5. Monitoring workstream continuity
+## 5. Historical monitoring workstream continuity
+
+Os status técnicos desta seção registram checkpoints MON já concluídos. A
+próxima atividade de projeto e a autorização vigentes estão na seção 8.
 
 MON-07 = COMPLETE / PUBLISHED
 MON-08A = PASS
@@ -140,7 +149,11 @@ MON08_PRODUCTION_AUTHORIZED = NO
 PUSH = NOT_AUTHORIZED
 
 
-## 6. Current MON-09 closure and next project phase
+## 6. Historical MON-09 closure snapshot and then-next project phase
+
+Os status MON-09 e a situação da próxima atividade abaixo preservam aquele
+checkpoint. O estado corrente após IMG-01 e desta atividade documental está na
+seção 8; revalide Git diretamente.
 
 MON-09A = COMPLETE / PASS
 MON-09B = COMPLETE / PASS_WITH_SCOPE_DEVIATION
@@ -152,9 +165,9 @@ MONITORING_TECHNICAL_FRONT_COMPLETE = YES
 NEXT_TECHNICAL_MON_ACTIVITY = NONE
 TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
 NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
-NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
 NEXT_REQUIRED_ACTIVITY = IMG-02 — Modelo, storage e proveniência (após adjudicação humana e autorização)
-NEXT_REQUIRED_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
+NEXT_REQUIRED_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
 SECURITY_GATES = LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS; HOMOLOGATION = BLOCKED; DEPLOYMENT = BLOCKED; PRODUCTION = BLOCKED
 VALIDATED_ENVELOPE = UNKNOWN / ONLINE / OFFLINE como estados estáveis; SUSPECT efêmero; STALE como freshness; confirmation memory persistente; pending failure streak sobrevive restart; thresholds respeitados; restart sem transição/outage falsa; falha de banco não equivale a câmera offline; CANCELLED neutro; timeout/rede conforme semântica canônica; sem histórico funcional falso em falha operacional e com recovery possível; ownership por câmera, owner persistente e epoch monotônico; lease define elegibilidade operacional de takeover; epoch é fencing token; config_generation é independente; completion de owner obsoleto sem side effects de domínio; owner antigo não libera owner novo; completion válida libera ownership atomicamente; renovação de lease não implementada; MonitoringConfig integrado à configuração ARGOS, config inválida fail-fast; status, backlog/in-flight, falhas operacionais e ownership diagnosticáveis; observabilidade sem histórico funcional e logs sem secrets
 FUTURE_VALIDATIONS = PostgreSQL real; multi-processo real em produção; rede real; câmeras reais; credenciais reais; capacidade produtiva; budgets formais de CPU, memória e conexões
@@ -176,3 +189,27 @@ OPEN_DECISION_COUNT = 7; see the canonical contract for each decision and its cl
 NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
 IMG02_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT; separate human adjudication/authorization required
 FASE_C_COMPLETE = NO
+
+## 8. Continuidade e estado atual
+
+ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
+AGENT_HANDOFF_GATE = ACTIVE
+CONTINUITY_AUTHORITY = docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md
+CURRENT_GIT_BASELINE_BEFORE_THIS_DOCUMENTARY_CHECKPOINT = f4e88146c1146cdf04d657eb6e3cefa560639b61
+CURRENT_GIT_HEAD_AFTER_THIS_CHECKPOINT = consultar diretamente no Git; não embutir hash do próprio commit documental
+CURRENT_MACROPHASE = FASE C — Captura manual e gestão de imagens
+LAST_COMPLETED_ACTIVITY = IMG-01 — Contrato funcional de imagem (documental)
+NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
+NEXT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
+NEXT_ACTIVITY_AUTHORITY = docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+IMPLEMENTATION_AUTHORIZED = NO
+LIVE_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+UI_DS_STATUS = UI-0 COMPLETE / PASS_WITH_FINDINGS; UI-1...UI-4 PENDING
+UI_0_FINDINGS_DETAIL = docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md; non-blocking; UI_0_FINDINGS_DISCOVERABLE = YES
+OPEN_DECISIONS = 7; detalhes somente no contrato canônico de imagem
+SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED; DEPLOYMENT BLOCKED; PRODUCTION BLOCKED
+
+Para o estado atual e os blockers/pré-requisitos completos, use o snapshot em
+`PROJECT_STATE.md`. Este mapa identifica autoridade e escopo; não substitui os
+detalhes especializados.

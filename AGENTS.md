@@ -12,15 +12,22 @@ uma segunda política extensa.
 
 ## 2. Ordem mínima de leitura
 
-1. `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`
+Em cada retomada, seguir a sequência definida em
+`docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md`,
+começando pela validação factual do Git e depois pelo mapa, estado e continuidade.
+Ler também, antes de agir:
+
+1. `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`
 2. `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`
-3. `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`
+3. `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`
 4. `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md`
-5. `docs/Agent-Continuity-Standard-v1.0/policies/Independencia-Analitica-Agente-v1.md`
-6. `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.4.md`
-7. `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md`
-8. `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`
-9. `Documentos específicos da atividade atual.`
+5. `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`
+6. Policies transversais vigentes:
+   - `docs/Agent-Continuity-Standard-v1.0/policies/Independencia-Analitica-Agente-v1.md`
+   - `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.4.md`
+   - `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md`
+   - `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`
+7. Roadmap, sprints e authorities específicas da atividade atual.
 Se existir uma política canônica de delegação multiagente, referenciá-la pelo path exato em vez de reproduzi-la.
 
 ## 3. Autoridade
@@ -89,6 +96,11 @@ Git é a fonte de verdade para repo root, branch, `HEAD` e worktree.
 mais recente prevalece sobre memória conversacional; divergências devem ser
 
 investigadas, não reconciliadas silenciosamente.
+
+`ARGOS_CONTINUITY_PRINCIPLE = ACTIVE` e `AGENT_HANDOFF_GATE = ACTIVE`; a
+authority específica é `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`.
+Não retomar somente pela memória de chat nem presumir autorização de
+implementação a partir de roadmap, status ou prontidão técnica.
 
 ## 9. Comunicação
 

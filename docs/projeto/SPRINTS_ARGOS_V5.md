@@ -14,14 +14,20 @@ REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08
 CURRENT_PHASE = FASE C — Captura manual e gestão de imagens
 CURRENT_PHASE_STATUS = EM_ANDAMENTO / IMG-01 DOCUMENTAL CONCLUÍDA; IMPLEMENTAÇÃO NÃO INICIADA
 IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
-CURRENT_ACTIVITY = IMG-01 — CANONICAL IMAGE CONTRACT CHECKPOINT
-CURRENT_ACTIVITY_STATUS = COMPLETE / DOCUMENTAL
+CURRENT_ACTIVITY = NONE após este checkpoint documental; nenhuma atividade de implementação está em andamento
+LAST_COMPLETED_ACTIVITY = IMG-01 — CANONICAL IMAGE CONTRACT CHECKPOINT
+LAST_COMPLETED_ACTIVITY_STATUS = COMPLETE / DOCUMENTAL / PUBLISHED
 NEXT = IMG-02 — Modelo, storage e proveniência
+NEXT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
 IMG02_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
 IMG-01 = COMPLETE após o checkpoint documental; contrato canônico:
 docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
 Esta ordem registra a próxima atividade, não concede autorização de
 implementação nem encerra a Fase C.
+ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
+AGENT_HANDOFF_GATE = ACTIVE
+CONTINUITY_AUTHORITY = docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md
+UI-0 = COMPLETE / PASS_WITH_FINDINGS (read-only; não concede autorização de implementação)
 ```
 
 Este é o documento canônico de execução de slices para as atividades futuras
@@ -30,6 +36,10 @@ integração define contratos detalhados. Este documento registra somente ordem,
 marcos, dependências e gates de execução. Não duplica a specification.
 
 ## 1. Estado e precedência
+
+Este mapa registra status, ordem, dependências e gates das slices. O estado
+recuperável entre agentes e o contrato de handoff pertencem a
+`docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`.
 
 MON-09 está tecnicamente encerrada. A Fase C avançou pelo checkpoint documental
 IMG-01; sua implementação continua não iniciada e IMG-02 é a próxima atividade
@@ -89,14 +99,16 @@ substituir a página canônica completa da câmera.
 ### UI-0 — Read-only preflight
 
 ```text
-STATUS = NEXT_RECOMMENDED_PREPARATORY_ACTIVITY
+STATUS = COMPLETE / PASS_WITH_FINDINGS
 READ_ONLY = YES
 IMPLEMENTATION = NO
 STOP_AFTER_REPORT = YES
+FINDINGS_DETAIL = docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md
 ```
 
-Executar somente após adjudicação humana e autorização da atividade. Descobrir
-stack, inventário, layout, filtros, tabela, seleção, rota canônica,
+O preflight read-only está concluído. Seu escopo cobria descobrir stack,
+inventário, layout, filtros,
+tabela, seleção, rota canônica,
 identificador de câmera, fontes de imagem/status, modelos de loading/error/stale,
 tokens, componentes, iconografia, tipografia, responsividade e acessibilidade.
 
@@ -146,11 +158,11 @@ autorizada de stack.
 ```text
 IMG-01 = COMPLETE / checkpoint documental
 ↓
+UI-0 = COMPLETE / PASS_WITH_FINDINGS (read-only)
+↓
 adjudicação humana + autorização específica para IMG-02
 ↓
 IMG-02 — Modelo, storage e proveniência
-↓
-UI-0 (read-only; preparação da frente UI-DS; não bloqueia IMG-02)
 ↓
 UI-1 (adapter foundation)
 ↓

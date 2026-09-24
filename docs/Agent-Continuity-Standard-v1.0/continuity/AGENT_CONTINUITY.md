@@ -36,6 +36,10 @@ DELEGATION != AUTHORITY_TRANSFER
 NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION
 CONTINUITY_RECOVERY_GATE = PASS != IMPLEMENTATION_PREFLIGHT = PASS
 
+ARGOS_CONTINUITY_AUTHORITY = docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md
+ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
+AGENT_HANDOFF_GATE = ACTIVE
+
 ## 2. Identidade e repositório
 
 PROJECT_ID = ARGOS
@@ -44,10 +48,10 @@ PRIMARY_REPOSITORY = https://github.com/wromanov/projeto_argos.git
 
 LAST_VERIFIED_LOCAL_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
 LAST_VERIFIED_BRANCH = master
-CURRENT_CANONICAL_GIT_BASELINE = f85dbdb3e5833b27133721926e81aa3ed2f030dd
-CURRENT_BASELINE_BEFORE_DOCUMENTARY_COMMIT = f85dbdb3e5833b27133721926e81aa3ed2f030dd
-LAST_VERIFIED_HEAD = f85dbdb3e5833b27133721926e81aa3ed2f030dd
-LAST_VERIFIED_ORIGIN_MASTER = f85dbdb3e5833b27133721926e81aa3ed2f030dd
+CURRENT_CANONICAL_GIT_BASELINE = f4e88146c1146cdf04d657eb6e3cefa560639b61
+CURRENT_BASELINE_BEFORE_DOCUMENTARY_COMMIT = f4e88146c1146cdf04d657eb6e3cefa560639b61
+LAST_VERIFIED_HEAD = f4e88146c1146cdf04d657eb6e3cefa560639b61
+LAST_VERIFIED_ORIGIN_MASTER = f4e88146c1146cdf04d657eb6e3cefa560639b61
 LAST_VERIFIED_DIVERGENCE = HEAD ahead 0 / behind 0
 LAST_VERIFIED_WORKTREE = CLEAN (baseline antes deste commit documental)
 LAST_VERIFIED_STAGING = EMPTY
@@ -81,8 +85,8 @@ MONITORING_TECHNICAL_FRONT_COMPLETE = YES
 NEXT_TECHNICAL_MON_ACTIVITY = NONE
 NEXT_REQUIRED_ACTIVITY = IMG-02 — Modelo, storage e proveniência (após adjudicação humana e autorização)
 NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
-NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
-NEXT_REQUIRED_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
+NEXT_REQUIRED_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
 MON08C6_STATUS = COMPLETE / FINAL ADJUDICATION COMPLETE
 MON08C6_IMPLEMENTATION_AUTHORIZATION = NOT_APPLICABLE
 CHECKPOINT_STAGE_COMMIT_AUTHORIZATION = NO
@@ -174,9 +178,10 @@ MON08_PRODUCTION_AUTHORIZED = NO
 
 FIRST_RESPONSE_MODE = READ_ONLY_CONTINUITY_REVALIDATION
 CONTINUITY_RECOVERY_GATE_SCOPE = EACH_NEW_CHAT
-CONTINUITY_RECOVERY_GATE = NOT_PASSED
-USER_CONTINUITY_VALIDATION = PENDING
-READY_TO_RESUME_PROJECT = NO
+CONTINUITY_RECOVERY_GATE = REVALIDATE_GIT_AND_AUTHORITIES
+USER_CONTINUITY_VALIDATION = NOT_REQUIRED_FOR_STATE_DISCOVERY
+READY_TO_RESUME_PROJECT = YES_AFTER_READ_ONLY_REVALIDATION
+RESUME_SCOPE = dentro das autorizações explícitas vigentes
 
 IMPLEMENTATION = PROHIBITED
 EDIT = PROHIBITED
@@ -193,14 +198,14 @@ VERIFY_FACTS = YES
 COMPARE_AUTHORITIES = YES
 
 O novo agente deve:
-1. ler `AGENTS.md`;
-2. ler `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`;
-3. ler `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`;
-4. ler `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`;
-5. ler as policies canônicas relevantes em `docs/Agent-Continuity-Standard-v1.0/policies/`;
-6. revalidar Git;
-7. apresentar divergências e itens UNVERIFIED;
-8. aguardar validação humana.
+1. validar repo root, branch, HEAD, `origin/master`, divergência, worktree e staging;
+2. ler `ACTIVE_DOCUMENT_MAP.md`;
+3. ler `PROJECT_STATE.md`;
+4. ler `AGENT_CONTINUITY.md`;
+5. ler `NEW_CHAT_BOOTSTRAP_PROMPT.md`;
+6. ler `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`;
+7. ler roadmap, sprints, authority especializada e policies canônicas aplicáveis;
+8. apresentar divergências e itens UNVERIFIED; não iniciar implementação por inferência.
 
 ## 8. Estado atual e próxima atividade
 
@@ -211,9 +216,9 @@ MONITORING_TECHNICAL_FRONT_COMPLETE = YES
 NEXT_TECHNICAL_MON_ACTIVITY = NONE
 TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
 NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
-NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
 NEXT_REQUIRED_ACTIVITY = IMG-02 — Modelo, storage e proveniência (após adjudicação humana e autorização)
-NEXT_REQUIRED_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
+NEXT_REQUIRED_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
 UI_DS_CANONICAL_SPEC = docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md
 UI_DS_CANONICAL_SPRINT_MAP = docs/projeto/SPRINTS_ARGOS_V5.md
 REFERENCE_DESIGN_SYSTEM = camera-inventory-design-system-v1.0.1
@@ -232,8 +237,10 @@ INTEGRATION_GATE = REQUIRED_WHEN_APPLICABLE
 BIG_BANG_INTEGRATION = PROHIBITED
 UI_DS = UI-0, UI-1, UI-2, UI-3, UI-4
 SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED; DEPLOYMENT BLOCKED; PRODUCTION BLOCKED
+SECURITY_FINDINGS_AUTHORITY = docs/security_audit/auditoria_segurança_001.md; ver matriz vigente antes de reclassificar SEC-001...SEC-010
+LOG_VOLUME_HARDENING_STATUS = HARDENING / NON-BLOCKING — potential high INFO log volume per cycle/attempt
 
-A frente de monitoramento está encerrada tecnicamente; não retomar MON-09 nem criar outra atividade MON. Limites futuros continuam: PostgreSQL real, multi-processo de produção, rede/câmeras/credenciais reais, capacidade produtiva e budgets formais de CPU, memória e conexões. Potencial volume de logs INFO é HARDENING / NON-BLOCKING. A próxima macrofase é a Fase C planejada, conforme roadmap. Implementação futura exige autorização própria. O baseline Git acima descreve a validação imediatamente anterior a este commit documental; revalidar Git ao iniciar nova sessão.
+A frente de monitoramento está encerrada tecnicamente; não retomar MON-09 nem criar outra atividade MON. Limites futuros continuam: PostgreSQL real, multi-processo de produção, rede/câmeras/credenciais reais, capacidade produtiva e budgets formais de CPU, memória e conexões. Potencial volume de logs INFO é HARDENING / NON-BLOCKING. A Fase C está em andamento no checkpoint documental IMG-01; IMG-02 é a próxima atividade planejada e ainda sem autorização de implementação. O baseline Git acima descreve a validação imediatamente anterior a este commit documental; revalidar Git ao iniciar nova sessão.
 
 ## 9. Retrofit gate
 
@@ -256,7 +263,10 @@ Verificação factual concluída:
 CONTINUITY_RETROFIT_GATE = PASS
 
 
-### Fechamento técnico MON-09 — estado vigente
+### Fechamento técnico MON-09 — registro histórico do checkpoint
+
+O retrato desta seção pertence ao fechamento MON-09. O estado atual do projeto
+após IMG-01 e do handoff está registrado nas seções 8 e 11.
 
 LAST_RELEVANT_TECHNICAL_CHECKPOINT = 850efd2381d7f5b7df27e528dc3374ea58e507b3 (850efd2)
 MON09_TECHNICALLY_COMPLETE = YES
@@ -264,7 +274,7 @@ MONITORING_TECHNICAL_FRONT_COMPLETE = YES
 NEXT_TECHNICAL_MON_ACTIVITY = NONE
 TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
 NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
-NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
 VALIDATED_ENVELOPE = UNKNOWN / ONLINE / OFFLINE como estados estáveis; SUSPECT efêmero; STALE como freshness; confirmation memory persistente; pending failure streak sobrevive restart; thresholds respeitados; restart sem transição/outage falsa; falha de banco não equivale a câmera offline; CANCELLED neutro; timeout/rede conforme semântica canônica; sem histórico funcional falso em falha operacional e com recovery possível; ownership por câmera, owner persistente e epoch monotônico; lease define elegibilidade operacional de takeover; epoch é fencing token; config_generation é independente; completion de owner obsoleto sem side effects de domínio; owner antigo não libera owner novo; completion válida libera ownership atomicamente; renovação de lease não implementada; MonitoringConfig integrado à configuração ARGOS, config inválida fail-fast; status, backlog/in-flight, falhas operacionais e ownership diagnosticáveis; observabilidade sem histórico funcional e logs sem secrets
 FUTURE_VALIDATIONS = PostgreSQL real; multi-processo real em produção; rede real; câmeras reais; credenciais reais; capacidade produtiva; budgets formais de CPU, memória e conexões
 SECURITY_GATES = LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS; HOMOLOGATION = BLOCKED; DEPLOYMENT = BLOCKED; PRODUCTION = BLOCKED
@@ -308,6 +318,38 @@ abertura. Monitoramento e captura permanecem separados.
 autorização própria antes de implementação. Backend de storage, limites de
 arquivo, fallback visual de `UPLOAD_MANUAL`, retenção/expurgo, política
 temporal `STALE`, credencial/perfil para captura e semântica de
-`PRIMARY_IMAGE` permanecem sete decisões abertas; seus fechamentos estão
-mapeados no contrato canônico. `UI-0` continua como preparação read-only
-recomendada para a frente UI-DS e não autoriza implementação visual.
+`PRIMARY_IMAGE` são sete decisões abertas; o contrato canônico especifica o
+fechamento de cada uma. `UI-0`
+está registrada como `COMPLETE / PASS_WITH_FINDINGS`, read-only, sem autorizar
+implementação visual.
+
+## 11. Handoff ARGOS
+
+Authority normativa específica: `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`.
+O `PROJECT_STATE.md` é o snapshot operacional; este documento preserva somente
+os invariantes, riscos, limites, decisões abertas e referências necessários à
+retomada. O `ACTIVE_DOCUMENT_MAP.md` identifica escopo e vigência de cada
+authority, e o bootstrap define a sequência de recuperação.
+
+```text
+ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
+AGENT_HANDOFF_GATE = ACTIVE
+LAST_COMPLETED_PROJECT_ACTIVITY = IMG-01 — Contrato funcional de imagem
+NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
+NEXT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
+IMPLEMENTATION_AUTHORIZED = NO
+LIVE_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+OPEN_DECISION_COUNT = 7; consultar ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+UI_DS_STATUS = UI-0 COMPLETE / PASS_WITH_FINDINGS; UI-1...UI-4 PENDING
+UI_0_FINDINGS_DETAILS = docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md; UI_0_FINDINGS_DISCOVERABLE = YES; PASS_WITH_FINDINGS não bloqueante
+SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED; DEPLOYMENT BLOCKED; PRODUCTION BLOCKED
+BIG_BANG_INTEGRATION = PROHIBITED
+INTEGRATION_GATE = REQUIRED_WHEN_APPLICABLE
+```
+
+Os findings recuperados do UI-0 estão em
+`docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md`; o relatório preserva
+os itens sem ampliá-los e sem convertê-los em blockers. O handoff gate deste
+checkpoint passa após a reconciliação documental. Nenhuma próxima atividade ou
+prontidão técnica amplia autorização.
