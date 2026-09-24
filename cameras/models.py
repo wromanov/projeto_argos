@@ -442,6 +442,9 @@ class EstadoMonitoramento(models.Model):
     ultima_evidencia_util_em = models.DateTimeField(null=True, blank=True)
     proximo_vencimento_em = models.DateTimeField(null=True, blank=True, db_index=True)
     ultima_geracao_configuracao = models.PositiveIntegerField(default=1)
+    monitoring_owner_id = models.CharField(max_length=255, null=True, blank=True)
+    monitoring_lease_expires_at = models.DateTimeField(null=True, blank=True, db_index=True)
+    monitoring_ownership_epoch = models.PositiveBigIntegerField(default=0)
     sequencia_positiva = models.PositiveIntegerField(default=0)
     sequencia_negativa = models.PositiveIntegerField(default=0)
     confirmacao_ultima_observacao_em = models.DateTimeField(null=True, blank=True)
@@ -457,6 +460,13 @@ class EstadoMonitoramento(models.Model):
             models.CheckConstraint(
                 condition=models.Q(estado_estavel__in=["UNKNOWN", "ONLINE", "OFFLINE"]),
                 name="estado_monitoramento_estado_estavel_valid",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    models.Q(monitoring_owner_id__isnull=True, monitoring_lease_expires_at__isnull=True)
+                    | models.Q(monitoring_owner_id__isnull=False, monitoring_lease_expires_at__isnull=False)
+                ),
+                name="estado_monitoramento_lease_coherent",
             ),
         ]
 

@@ -9,6 +9,8 @@ from collections.abc import Callable, Iterable
 from datetime import datetime, timedelta, timezone as datetime_timezone
 
 from django.db import transaction
+from django.db.models import DateTimeField, ExpressionWrapper, F, Q, Value
+from django.db.models.functions import Now
 from django.utils import timezone
 
 from cameras.models import (
@@ -20,7 +22,7 @@ from cameras.models import (
 
 from .confirmation import ConfirmationMemory, ConfirmationPolicy, ProcessingDisposition, TechnicalDecision, TechnicalState
 from .contracts import ProbeResult
-from .schemas import ScheduleCandidate
+from .schemas import CompletionDisposition, OwnershipLease, ScheduleCandidate
 
 
 class DjangoMonitoringRepository:
@@ -89,6 +91,61 @@ class DjangoMonitoringRepository:
         state = EstadoMonitoramento.objects.filter(camera_id=camera_id).only("ultima_geracao_configuracao").first()
         return state.ultima_geracao_configuracao if state else 1
 
+    @staticmethod
+    def _lease_expiry(lease_seconds: int) -> ExpressionWrapper:
+        if isinstance(lease_seconds, bool) or not isinstance(lease_seconds, int) or lease_seconds <= 0:
+            raise ValueError("lease_seconds must be a positive integer")
+        return ExpressionWrapper(
+            Now() + Value(timedelta(seconds=lease_seconds)),
+            output_field=DateTimeField(),
+        )
+
+    def claim(self, camera_id: int, owner_id: str, lease_seconds: int) -> OwnershipLease | None:
+        """Adquire uma lease por câmera com epoch monotônico no tempo do banco."""
+
+        if isinstance(camera_id, bool) or not isinstance(camera_id, int) or camera_id <= 0:
+            raise ValueError("camera_id must be a positive integer")
+        if not isinstance(owner_id, str) or not owner_id.strip():
+            raise ValueError("owner_id must be a non-empty string")
+        expiry = self._lease_expiry(lease_seconds)
+        with transaction.atomic():
+            state, _ = EstadoMonitoramento.objects.get_or_create(camera_id=camera_id)
+            updated = (
+                EstadoMonitoramento.objects.filter(pk=state.pk)
+                .filter(
+                    Q(monitoring_owner_id__isnull=True, monitoring_lease_expires_at__isnull=True)
+                    | Q(monitoring_lease_expires_at__lte=Now())
+                )
+                .update(
+                    monitoring_owner_id=owner_id,
+                    monitoring_lease_expires_at=expiry,
+                    monitoring_ownership_epoch=F("monitoring_ownership_epoch") + 1,
+                )
+            )
+            if updated != 1:
+                return None
+            state.refresh_from_db(fields=["monitoring_owner_id", "monitoring_ownership_epoch"])
+            return OwnershipLease(state.monitoring_owner_id, state.monitoring_ownership_epoch)
+
+    def release(self, camera_id: int, ownership: OwnershipLease) -> bool:
+        """Libera somente a lease ainda pertencente ao caller/token informado."""
+
+        if isinstance(camera_id, bool) or not isinstance(camera_id, int) or camera_id <= 0:
+            raise ValueError("camera_id must be a positive integer")
+        if not isinstance(ownership, OwnershipLease):
+            raise TypeError("ownership must be an OwnershipLease")
+        return (
+            EstadoMonitoramento.objects.filter(
+                camera_id=camera_id,
+                monitoring_owner_id=ownership.owner_id,
+                monitoring_ownership_epoch=ownership.epoch,
+            ).update(
+                monitoring_owner_id=None,
+                monitoring_lease_expires_at=None,
+            )
+            == 1
+        )
+
     def is_eligible(self, camera_id: int) -> bool:
         camera = Camera.objects.only(
             "id", "situacao_operacional", "nome", "fabricante", "modelo", "serial", "mac", "tipo", "terminal", "pavimento", "setor", "ambiente", "ip", "mascara_subrede", "gateway", "vlan", "farm", "retencao_esperada_dias", "codec"
@@ -106,7 +163,8 @@ class DjangoMonitoringRepository:
         memory: ConfirmationMemory,
         decision: TechnicalDecision,
         next_due_at: datetime,
-    ) -> bool:
+        ownership: OwnershipLease | None = None,
+    ) -> bool | CompletionDisposition:
         """Persiste uma completion em uma transação curta e monotônica.
 
         ``False`` is returned when a newer persisted generation wins the
@@ -140,12 +198,45 @@ class DjangoMonitoringRepository:
             }
             if changed:
                 updates["estado_alterado_em"] = decision.observed_at
-            updated = EstadoMonitoramento.objects.filter(
-                pk=state.pk,
-                ultima_geracao_configuracao__lte=candidate.config_generation,
-            ).update(**updates)
+            queryset = EstadoMonitoramento.objects.filter(pk=state.pk)
+            if ownership is None:
+                queryset = queryset.filter(ultima_geracao_configuracao__lte=candidate.config_generation)
+            else:
+                if not isinstance(ownership, OwnershipLease):
+                    raise TypeError("ownership must be an OwnershipLease or None")
+                queryset = queryset.filter(
+                    monitoring_owner_id=ownership.owner_id,
+                    monitoring_ownership_epoch=ownership.epoch,
+                    monitoring_lease_expires_at__gt=Now(),
+                    ultima_geracao_configuracao=candidate.config_generation,
+                )
+                updates.update(
+                    monitoring_owner_id=None,
+                    monitoring_lease_expires_at=None,
+                )
+            updated = queryset.update(**updates)
             if updated != 1:
-                return False
+                if ownership is None:
+                    return False
+                state.refresh_from_db(
+                    fields=[
+                        "monitoring_owner_id",
+                        "monitoring_ownership_epoch",
+                        "monitoring_lease_expires_at",
+                        "ultima_geracao_configuracao",
+                    ]
+                )
+                owner_is_current = (
+                    state.monitoring_owner_id == ownership.owner_id
+                    and state.monitoring_ownership_epoch == ownership.epoch
+                    and state.monitoring_lease_expires_at is not None
+                    and state.monitoring_lease_expires_at > timezone.now()
+                )
+                return (
+                    CompletionDisposition.CONFIG_CHANGED
+                    if owner_is_current and state.ultima_geracao_configuracao != candidate.config_generation
+                    else CompletionDisposition.OWNERSHIP_LOST
+                )
             if changed:
                 if self._before_transition is not None:
                     self._before_transition()
@@ -208,7 +299,7 @@ class DjangoMonitoringRepository:
                     )
                 elif not (previous is TechnicalState.UNKNOWN and memory.state is TechnicalState.ONLINE):
                     raise ValueError("unsupported stable monitoring transition")
-        return True
+        return CompletionDisposition.ACCEPTED if ownership is not None else True
 
     def leave_scope(self, camera_id: int, occurred_at: datetime) -> None:
         """Fecha o intervalo aberto e marca retirada administrativa atomicamente."""

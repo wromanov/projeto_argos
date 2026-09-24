@@ -16,6 +16,7 @@ from .ports import (
     ConfigGenerationPort,
     DueCandidatePort,
     EligibilityPort,
+    OwnershipClaimPort,
 )
 from .schemas import (
     Attempt,
@@ -23,6 +24,7 @@ from .schemas import (
     CompletionDisposition,
     CompletionOutcome,
     MonitoringConfig,
+    OwnershipLease,
     ScheduleCandidate,
     SchedulerLifecycle,
     TickReport,
@@ -50,7 +52,9 @@ __all__ = [
     "DueCandidatePort",
     "DueScheduler",
     "EligibilityPort",
+    "OwnershipClaimPort",
     "MonitoringConfig",
+    "OwnershipLease",
     "ProcessingDisposition",
     "ProbeAdapter",
     "ProbeRequest",

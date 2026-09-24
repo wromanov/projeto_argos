@@ -6,7 +6,13 @@ from unittest.mock import patch
 from django.db import IntegrityError, connection, transaction
 from django.test import TestCase
 
-from cameras.models import Camera, EstadoMonitoramento, EventoAuditoria, TransicaoEstadoMonitoramento
+from cameras.models import (
+    Camera,
+    EstadoMonitoramento,
+    EventoAuditoria,
+    Indisponibilidade,
+    TransicaoEstadoMonitoramento,
+)
 from cameras.monitoramento.confirmation import ConfirmationPolicy, TechnicalState, reduce_confirmation
 from cameras.monitoramento.contracts import ProbeResult, ProbeResultCode
 from cameras.monitoramento.fakes import FakeClock
@@ -173,6 +179,79 @@ class MonitoringPersistenceTests(TestCase):
         self.assertEqual(state.ultima_evidencia_util_em, START)
         self.assertEqual(state.proximo_vencimento_em, first.next_due_at)
         self.assertEqual(tuple(fresh_repository.list_due(first.next_due_at, 10))[0].next_due_at, first.next_due_at)
+
+    def test_pending_failure_streak_survives_restart_and_confirms_offline_once(self):
+        camera = self.camera()
+        repository = DjangoMonitoringRepository()
+        EstadoMonitoramento.objects.create(
+            camera=camera,
+            estado_estavel=TechnicalState.ONLINE.value,
+            em_escopo=True,
+            versao_politica_confirmacao=POLICY.version,
+            ultima_geracao_configuracao=1,
+        )
+        first_failure_at = START + timedelta(seconds=1)
+        first_runtime = self.scheduler(repository, first_failure_at)
+        first_attempt = first_runtime.tick(
+            first_failure_at,
+            [self.candidate(camera, first_failure_at)],
+        ).attempts[0]
+        first_failure = first_runtime.complete(
+            first_attempt.attempt_id,
+            self.result(ProbeResultCode.TIMEOUT, first_failure_at),
+            first_failure_at,
+        )
+
+        self.assertEqual(first_failure.decision.previous_state, TechnicalState.ONLINE)
+        self.assertEqual(first_failure.decision.current_state, TechnicalState.ONLINE)
+        state = EstadoMonitoramento.objects.get(camera=camera)
+        self.assertEqual(state.estado_estavel, TechnicalState.ONLINE)
+        self.assertEqual(state.sequencia_negativa, 1)
+        self.assertEqual(state.confirmacao_ultima_observacao_em, first_failure_at)
+        self.assertEqual(state.versao_politica_confirmacao, POLICY.version)
+        self.assertEqual(state.ultima_geracao_configuracao, 1)
+        self.assertEqual(state.proximo_vencimento_em, first_failure.next_due_at)
+        self.assertNotIn("SUSPECT", EstadoMonitoramento.objects.values_list("estado_estavel", flat=True))
+        self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 0)
+        self.assertFalse(Indisponibilidade.objects.exists())
+
+        restarted_repository = DjangoMonitoringRepository()
+        restored_candidates = tuple(restarted_repository.list_due(first_failure.next_due_at, 1))
+        restored = restarted_repository.load(restored_candidates[0], POLICY)
+        self.assertEqual(restored.state, TechnicalState.ONLINE)
+        self.assertEqual(restored.negative_streak, 1)
+        self.assertEqual(restored.last_observed_at, first_failure_at)
+        self.assertEqual(restored.policy_version, POLICY.version)
+        self.assertEqual(restored_candidates[0].config_generation, 1)
+        self.assertEqual(restored_candidates[0].next_due_at, first_failure.next_due_at)
+        self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 0)
+        self.assertFalse(Indisponibilidade.objects.exists())
+
+        restarted_runtime = self.scheduler(restarted_repository, first_failure.next_due_at)
+        restarted_attempt = restarted_runtime.tick(
+            first_failure.next_due_at,
+            restored_candidates,
+        ).attempts[0]
+        second_failure = restarted_runtime.complete(
+            restarted_attempt.attempt_id,
+            self.result(ProbeResultCode.TIMEOUT, first_failure.next_due_at),
+            first_failure.next_due_at,
+        )
+
+        state.refresh_from_db()
+        self.assertEqual(second_failure.decision.current_state, TechnicalState.OFFLINE)
+        self.assertEqual(state.estado_estavel, TechnicalState.OFFLINE)
+        self.assertEqual(state.sequencia_negativa, 0)
+        self.assertEqual(state.ultima_geracao_configuracao, 1)
+        self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 1)
+        self.assertEqual(Indisponibilidade.objects.count(), 1)
+        transition = TransicaoEstadoMonitoramento.objects.get()
+        interval = Indisponibilidade.objects.get()
+        self.assertEqual(transition.estado_anterior, TechnicalState.ONLINE.value)
+        self.assertEqual(transition.estado_atual, TechnicalState.OFFLINE.value)
+        self.assertEqual(interval.open_origin, Indisponibilidade.OrigemAbertura.ONLINE_TO_OFFLINE)
+        self.assertIsNone(interval.closed_at)
+        self.assertNotIn("SUSPECT", EstadoMonitoramento.objects.values_list("estado_estavel", flat=True))
 
     def test_stale_is_derived_and_does_not_change_stable_state(self):
         camera = self.camera()

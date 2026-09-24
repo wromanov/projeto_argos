@@ -10,7 +10,7 @@ from typing import Iterable, Protocol
 
 from .confirmation import ConfirmationMemory, ConfirmationPolicy, TechnicalDecision
 from .contracts import ProbeAdapter, ProbeResult
-from .schemas import ScheduleCandidate
+from .schemas import OwnershipLease, ScheduleCandidate
 
 
 class DueCandidatePort(Protocol):
@@ -35,8 +35,19 @@ class ConfirmationStatePort(Protocol):
         memory: ConfirmationMemory,
         decision: TechnicalDecision,
         next_due_at: datetime,
+        ownership: OwnershipLease | None = None,
     ) -> bool | None:
         """Persists the completion; ``False`` means its generation is stale."""
+        ...
+
+
+class OwnershipClaimPort(Protocol):
+    """Fronteira persistente de claim/fencing, sem worker ou I/O de probe."""
+
+    def claim(self, camera_id: int, owner_id: str, lease_seconds: int) -> OwnershipLease | None:
+        ...
+
+    def release(self, camera_id: int, ownership: OwnershipLease) -> bool:
         ...
 
 
@@ -59,5 +70,6 @@ __all__ = [
     "ConfigGenerationPort",
     "DueCandidatePort",
     "EligibilityPort",
+    "OwnershipClaimPort",
     "ProbeAdapter",
 ]

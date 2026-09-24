@@ -62,6 +62,7 @@ class CompletionDisposition(StrEnum):
     DUPLICATE = "DUPLICATE"
     OLD_ATTEMPT = "OLD_ATTEMPT"
     CONFIG_CHANGED = "CONFIG_CHANGED"
+    OWNERSHIP_LOST = "OWNERSHIP_LOST"
     ELIGIBILITY_LOST = "ELIGIBILITY_LOST"
     CANCELLED = "CANCELLED"
     OPERATIONAL_FAILURE = "OPERATIONAL_FAILURE"
@@ -78,6 +79,7 @@ class MonitoringConfig:
     jitter_ratio: float = 0.10
     stale_after_seconds: int | None = None
     heartbeat_seconds: int = 30
+    ownership_lease_seconds: int | None = None
 
     def __post_init__(self) -> None:
         concurrency = _integer_in_range(self.concurrency, "concurrency", 1, 50)
@@ -89,17 +91,24 @@ class MonitoringConfig:
         if not 1 <= connect_timeout <= probe_timeout:
             raise ValueError("connect_timeout_seconds must be between 1 and probe_timeout_seconds")
         queue_bound = concurrency * 2 if self.queue_bound is None else _integer_in_range(self.queue_bound, "queue_bound", concurrency, concurrency * 10)
-        _integer_in_range(self.shutdown_timeout_seconds, "shutdown_timeout_seconds", 1, 300)
         jitter_ratio = _finite_real(self.jitter_ratio, "jitter_ratio")
         if not 0 <= jitter_ratio <= 0.20:
             raise ValueError("jitter_ratio must be between 0 and 0.20")
         stale_after = cycle_interval * 3 if self.stale_after_seconds is None else _integer_in_range(self.stale_after_seconds, "stale_after_seconds", cycle_interval, 86400)
+        shutdown_timeout = _integer_in_range(self.shutdown_timeout_seconds, "shutdown_timeout_seconds", 1, 300)
         _integer_in_range(self.heartbeat_seconds, "heartbeat_seconds", 10, 300)
+        ownership_lease = shutdown_timeout if self.ownership_lease_seconds is None else _integer_in_range(
+            self.ownership_lease_seconds,
+            "ownership_lease_seconds",
+            max(1, math.ceil(probe_timeout)),
+            300,
+        )
         object.__setattr__(self, "probe_timeout_seconds", probe_timeout)
         object.__setattr__(self, "connect_timeout_seconds", connect_timeout)
         object.__setattr__(self, "queue_bound", queue_bound)
         object.__setattr__(self, "stale_after_seconds", stale_after)
         object.__setattr__(self, "jitter_ratio", jitter_ratio)
+        object.__setattr__(self, "ownership_lease_seconds", ownership_lease)
 
 
 @dataclass(frozen=True, slots=True)
@@ -123,6 +132,20 @@ class ScheduleCandidate:
 
 
 @dataclass(frozen=True, slots=True)
+class OwnershipLease:
+    """Autoridade persistida e cercada para uma tentativa de monitoramento."""
+
+    owner_id: str
+    epoch: int
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.owner_id, str) or not self.owner_id.strip():
+            raise ValueError("owner_id must be a non-empty string")
+        if isinstance(self.epoch, bool) or not isinstance(self.epoch, int) or self.epoch <= 0:
+            raise ValueError("epoch must be a positive integer")
+
+
+@dataclass(frozen=True, slots=True)
 class Attempt:
     attempt_id: UUID
     camera_id: int
@@ -130,6 +153,7 @@ class Attempt:
     scheduled_at: datetime
     started_at: datetime | None
     state: AttemptState
+    ownership: OwnershipLease | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.attempt_id, UUID):
@@ -143,6 +167,8 @@ class Attempt:
             object.__setattr__(self, "started_at", _aware_utc(self.started_at, "started_at"))
         if not isinstance(self.state, AttemptState):
             raise TypeError("state must be an AttemptState")
+        if self.ownership is not None and not isinstance(self.ownership, OwnershipLease):
+            raise TypeError("ownership must be an OwnershipLease or None")
 
 
 @dataclass(frozen=True, slots=True)

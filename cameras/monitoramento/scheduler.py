@@ -13,13 +13,14 @@ from uuid import UUID, uuid4
 
 from .confirmation import ConfirmationPolicy, reduce_confirmation
 from .contracts import Clock, ProbeResult
-from .ports import ConfirmationStatePort
+from .ports import ConfirmationStatePort, OwnershipClaimPort
 from .schemas import (
     Attempt,
     AttemptState,
     CompletionDisposition,
     CompletionOutcome,
     MonitoringConfig,
+    OwnershipLease,
     ScheduleCandidate,
     SchedulerLifecycle,
     TickReport,
@@ -141,6 +142,8 @@ class DueScheduler:
         is_eligible: Callable[[int], bool] | None = None,
         confirmation_port: ConfirmationStatePort | None = None,
         confirmation_policy: ConfirmationPolicy | None = None,
+        ownership_port: OwnershipClaimPort | None = None,
+        service_instance_id: str | None = None,
         attempt_id_factory: Callable[[], UUID] = uuid4,
     ) -> None:
         if not isinstance(config, MonitoringConfig):
@@ -151,6 +154,19 @@ class DueScheduler:
         self._is_eligible = is_eligible or (lambda _camera_id: True)
         self._confirmation_port = confirmation_port
         self._confirmation_policy = confirmation_policy
+        if ownership_port is not None:
+            if confirmation_port is None or ownership_port is not confirmation_port:
+                raise ValueError("ownership_port must be the confirmation_port for atomic completion release")
+            if not isinstance(service_instance_id, str) or not service_instance_id.strip():
+                raise ValueError("service_instance_id is required with ownership_port")
+            if len(service_instance_id) > 218:
+                raise ValueError("service_instance_id is too long")
+            self._owner_id = f"{service_instance_id}:{uuid4()}"
+        elif service_instance_id is not None:
+            raise ValueError("service_instance_id requires ownership_port")
+        else:
+            self._owner_id = None
+        self._ownership_port = ownership_port
         self._attempt_id_factory = attempt_id_factory
         self._lifecycle = SchedulerLifecycle.STARTING
         self._queue = BoundedDueQueue(config.queue_bound)
@@ -219,7 +235,15 @@ class DueScheduler:
         return attempt
 
     def _replace_attempt(self, attempt: Attempt, *, state: AttemptState, started_at: datetime | None = None) -> Attempt:
-        updated = Attempt(attempt.attempt_id, attempt.camera_id, attempt.config_generation, attempt.scheduled_at, started_at if started_at is not None else attempt.started_at, state)
+        updated = Attempt(
+            attempt.attempt_id,
+            attempt.camera_id,
+            attempt.config_generation,
+            attempt.scheduled_at,
+            started_at if started_at is not None else attempt.started_at,
+            state,
+            attempt.ownership,
+        )
         self._attempts[attempt.attempt_id] = updated
         return updated
 
@@ -231,7 +255,32 @@ class DueScheduler:
             candidate = self._queue.pop()
             attempt_id = self._current_by_camera[candidate.camera_id]
             attempt = self._attempts[attempt_id]
-            started.append(self._replace_attempt(attempt, state=AttemptState.ACTIVE, started_at=now))
+            ownership = None
+            if self._ownership_port is not None:
+                try:
+                    ownership = self._ownership_port.claim(
+                        candidate.camera_id,
+                        self._owner_id,
+                        self._config.ownership_lease_seconds,
+                    )
+                except Exception as exc:
+                    self.report_repository_failure(type(exc).__name__)
+                    self._discard(attempt, CompletionDisposition.OPERATIONAL_FAILURE, now)
+                    break
+                if ownership is None:
+                    self._discard(attempt, CompletionDisposition.OWNERSHIP_LOST, now)
+                    continue
+            active = Attempt(
+                attempt.attempt_id,
+                attempt.camera_id,
+                attempt.config_generation,
+                attempt.scheduled_at,
+                now,
+                AttemptState.ACTIVE,
+                ownership,
+            )
+            self._attempts[attempt_id] = active
+            started.append(active)
             self._active_by_camera[candidate.camera_id] = attempt_id
         return tuple(started)
 
@@ -306,7 +355,7 @@ class DueScheduler:
             eligible = self._is_eligible(attempt.camera_id)
         except Exception as exc:
             self.report_repository_failure(type(exc).__name__)
-            return CompletionOutcome(attempt, CompletionDisposition.OPERATIONAL_FAILURE)
+            return self._discard(attempt, CompletionDisposition.OPERATIONAL_FAILURE, now)
         if current_generation != attempt.config_generation:
             return self._discard(attempt, CompletionDisposition.CONFIG_CHANGED, now)
         if not eligible:
@@ -323,12 +372,26 @@ class DueScheduler:
             try:
                 memory = self._confirmation_port.load(candidate, self._confirmation_policy)
                 memory, decision = reduce_confirmation(memory, result, self._confirmation_policy)
-                stored = self._confirmation_port.store(candidate, result, memory, decision, scheduled_next)
+                if attempt.ownership is None:
+                    stored = self._confirmation_port.store(candidate, result, memory, decision, scheduled_next)
+                else:
+                    stored = self._confirmation_port.store(
+                        candidate,
+                        result,
+                        memory,
+                        decision,
+                        scheduled_next,
+                        ownership=attempt.ownership,
+                    )
                 if stored is False:
                     return self._discard(attempt, CompletionDisposition.CONFIG_CHANGED, now)
+                if stored is CompletionDisposition.CONFIG_CHANGED:
+                    return self._discard(attempt, CompletionDisposition.CONFIG_CHANGED, now)
+                if stored is CompletionDisposition.OWNERSHIP_LOST:
+                    return self._discard(attempt, CompletionDisposition.OWNERSHIP_LOST, now)
             except Exception as exc:
                 self.report_repository_failure(type(exc).__name__)
-                return CompletionOutcome(attempt, CompletionDisposition.OPERATIONAL_FAILURE)
+                return self._discard(attempt, CompletionDisposition.OPERATIONAL_FAILURE, now)
         completed = self._replace_attempt(attempt, state=AttemptState.COMPLETED)
         self._active_by_camera.pop(attempt.camera_id, None)
         self._current_by_camera.pop(attempt.camera_id, None)
@@ -344,6 +407,7 @@ class DueScheduler:
             self._queue.discard(attempt.camera_id)
         self._active_by_camera.pop(attempt.camera_id, None)
         self._current_by_camera.pop(attempt.camera_id, None)
+        self._release_ownership(attempt)
         self._start_from_queue(now)
         self._finish_shutdown_if_due(now)
         return CompletionOutcome(cancelled, disposition)
@@ -357,8 +421,17 @@ class DueScheduler:
             self._queue.discard(attempt.camera_id)
         self._active_by_camera.pop(attempt.camera_id, None)
         self._current_by_camera.pop(attempt.camera_id, None)
+        self._release_ownership(attempt)
         self._start_from_queue(cancelled.started_at or cancelled.scheduled_at)
         return CompletionOutcome(cancelled, CompletionDisposition.CANCELLED)
+
+    def _release_ownership(self, attempt: Attempt) -> None:
+        if attempt.ownership is None or self._ownership_port is None:
+            return
+        try:
+            self._ownership_port.release(attempt.camera_id, attempt.ownership)
+        except Exception as exc:
+            self.report_repository_failure(type(exc).__name__)
 
     def request_shutdown(self, now: datetime | None = None) -> SchedulerLifecycle:
         now = _aware_utc(self._clock.now() if now is None else now, "now")
