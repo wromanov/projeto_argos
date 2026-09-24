@@ -8,6 +8,8 @@ import heapq
 import math
 from numbers import Real
 from collections import deque
+import logging
+import re
 from typing import Awaitable, Callable, Iterable, TypeVar, cast
 from uuid import UUID, uuid4
 
@@ -23,8 +25,13 @@ from .schemas import (
     OwnershipLease,
     ScheduleCandidate,
     SchedulerLifecycle,
+    SchedulerRuntimeStatus,
     TickReport,
 )
+
+
+logger = logging.getLogger(__name__)
+_SAFE_OPERATIONAL_ERROR_CODE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$")
 
 
 def _aware_utc(value: object, field_name: str) -> datetime:
@@ -178,6 +185,18 @@ class DueScheduler:
         self._schedule_epoch: dict[int, int] = {}
         self._draining_since: datetime | None = None
         self._operational_error: str | None = None
+        self._last_cycle_started_at: datetime | None = None
+        self._last_cycle_completed_at: datetime | None = None
+        self._cycles_started = 0
+        self._cycles_completed = 0
+        self._attempts_started = 0
+        self._attempts_completed = 0
+        self._attempts_cancelled = 0
+        self._operational_failures = 0
+        self._ownership_acquired = 0
+        self._ownership_denied = 0
+        self._ownership_lost = 0
+        self._stale_owner_completions_rejected = 0
 
     @property
     def lifecycle(self) -> SchedulerLifecycle:
@@ -211,9 +230,33 @@ class DueScheduler:
     def operational_error(self) -> str | None:
         return self._operational_error
 
+    @property
+    def runtime_status(self) -> SchedulerRuntimeStatus:
+        return SchedulerRuntimeStatus(
+            scheduler_state=self._lifecycle,
+            in_flight=self.active_count,
+            queued=self.queued_count,
+            configured_concurrency=self._config.concurrency,
+            queue_capacity=self._queue.capacity,
+            last_cycle_started_at=self._last_cycle_started_at,
+            last_cycle_completed_at=self._last_cycle_completed_at,
+            cycles_started=self._cycles_started,
+            cycles_completed=self._cycles_completed,
+            attempts_started=self._attempts_started,
+            attempts_completed=self._attempts_completed,
+            attempts_cancelled=self._attempts_cancelled,
+            operational_failures=self._operational_failures,
+            last_operational_error=self._operational_error,
+            ownership_acquired=self._ownership_acquired,
+            ownership_denied=self._ownership_denied,
+            ownership_lost=self._ownership_lost,
+            stale_owner_completions_rejected=self._stale_owner_completions_rejected,
+        )
+
     def start(self) -> SchedulerLifecycle:
         if self._lifecycle is SchedulerLifecycle.STARTING:
             self._lifecycle = SchedulerLifecycle.RUNNING
+            logger.info("MONITORING_SCHEDULER_STARTED concurrency=%s queue_capacity=%s", self._config.concurrency, self._queue.capacity)
         elif self._lifecycle is SchedulerLifecycle.DEGRADED:
             self._lifecycle = SchedulerLifecycle.RUNNING
             self._operational_error = None
@@ -268,6 +311,8 @@ class DueScheduler:
                     self._discard(attempt, CompletionDisposition.OPERATIONAL_FAILURE, now)
                     break
                 if ownership is None:
+                    self._ownership_denied += 1
+                    logger.info("MONITORING_OWNERSHIP_DENIED camera_id=%s", candidate.camera_id)
                     self._discard(attempt, CompletionDisposition.OWNERSHIP_LOST, now)
                     continue
             active = Attempt(
@@ -282,6 +327,11 @@ class DueScheduler:
             self._attempts[attempt_id] = active
             started.append(active)
             self._active_by_camera[candidate.camera_id] = attempt_id
+            self._attempts_started += 1
+            if ownership is not None:
+                self._ownership_acquired += 1
+                logger.info("MONITORING_OWNERSHIP_ACQUIRED camera_id=%s ownership_epoch=%s", candidate.camera_id, ownership.epoch)
+            logger.info("MONITORING_ATTEMPT_STARTED camera_id=%s", candidate.camera_id)
         return tuple(started)
 
     def admit(self, candidates: Iterable[ScheduleCandidate], now: datetime | None = None) -> TickReport:
@@ -289,15 +339,18 @@ class DueScheduler:
 
     def tick(self, now: datetime | None = None, candidates: Iterable[ScheduleCandidate] = ()) -> TickReport:
         now = _aware_utc(self._clock.now() if now is None else now, "now")
+        self._last_cycle_started_at = now
+        self._cycles_started += 1
+        logger.info("MONITORING_CYCLE_STARTED")
         if self._lifecycle is SchedulerLifecycle.STARTING:
             self.start()
         if self._lifecycle is SchedulerLifecycle.STOPPED:
-            return TickReport(now, 0, 0, 0, 0, self.queued_count, self.active_count, ())
+            return self._complete_cycle(TickReport(now, 0, 0, 0, 0, self.queued_count, self.active_count, ()))
         if self._lifecycle is SchedulerLifecycle.DRAINING:
             self._finish_shutdown_if_due(now)
-            return TickReport(now, 0, 0, 0, 0, self.queued_count, self.active_count, ())
+            return self._complete_cycle(TickReport(now, 0, 0, 0, 0, self.queued_count, self.active_count, ()))
         if self._lifecycle is SchedulerLifecycle.DEGRADED:
-            return TickReport(now, 0, 0, 0, 0, self.queued_count, self.active_count, ())
+            return self._complete_cycle(TickReport(now, 0, 0, 0, 0, self.queued_count, self.active_count, ()))
         candidate_list = tuple(candidates)
         if not all(isinstance(candidate, ScheduleCandidate) for candidate in candidate_list):
             raise TypeError("candidates must contain ScheduleCandidate values")
@@ -305,7 +358,7 @@ class DueScheduler:
             eligible = tuple(candidate for candidate in candidate_list if candidate.eligible and self._is_eligible(candidate.camera_id))
         except Exception as exc:
             self.report_repository_failure(type(exc).__name__)
-            return TickReport(now, 0, 0, 0, 0, self.queued_count, self.active_count, ())
+            return self._complete_cycle(TickReport(now, 0, 0, 0, 0, self.queued_count, self.active_count, ()))
         due = tuple(
             sorted(
                 (
@@ -330,7 +383,16 @@ class DueScheduler:
             self._queue.offer(candidate)
             admitted += 1
         started.extend(self._start_from_queue(now))
-        return TickReport(now, len(eligible), len(due), admitted, deferred, self.queued_count, self.active_count, tuple(started))
+        return self._complete_cycle(TickReport(now, len(eligible), len(due), admitted, deferred, self.queued_count, self.active_count, tuple(started)))
+
+    def _complete_cycle(self, report: TickReport) -> TickReport:
+        self._last_cycle_completed_at = report.now
+        self._cycles_completed += 1
+        logger.info(
+            "MONITORING_CYCLE_COMPLETED eligible=%s due=%s admitted=%s deferred=%s queued=%s in_flight=%s",
+            report.eligible, report.due, report.admitted, report.deferred, report.queued, report.active,
+        )
+        return report
 
     def complete(self, attempt_id: UUID, result: ProbeResult, now: datetime | None = None) -> CompletionOutcome:
         if not isinstance(attempt_id, UUID):
@@ -388,6 +450,9 @@ class DueScheduler:
                 if stored is CompletionDisposition.CONFIG_CHANGED:
                     return self._discard(attempt, CompletionDisposition.CONFIG_CHANGED, now)
                 if stored is CompletionDisposition.OWNERSHIP_LOST:
+                    self._ownership_lost += 1
+                    self._stale_owner_completions_rejected += 1
+                    logger.info("MONITORING_STALE_OWNER_COMPLETION_REJECTED camera_id=%s ownership_epoch=%s", attempt.camera_id, attempt.ownership.epoch)
                     return self._discard(attempt, CompletionDisposition.OWNERSHIP_LOST, now)
             except Exception as exc:
                 self.report_repository_failure(type(exc).__name__)
@@ -397,6 +462,8 @@ class DueScheduler:
         self._current_by_camera.pop(attempt.camera_id, None)
         self._schedule_epoch[attempt.camera_id] = epoch
         self._next_due[attempt.camera_id] = scheduled_next
+        self._attempts_completed += 1
+        logger.info("MONITORING_ATTEMPT_COMPLETED camera_id=%s disposition=%s", attempt.camera_id, CompletionDisposition.ACCEPTED)
         self._start_from_queue(now)
         self._finish_shutdown_if_due(now)
         return CompletionOutcome(completed, CompletionDisposition.ACCEPTED, scheduled_next, decision)
@@ -408,6 +475,8 @@ class DueScheduler:
         self._active_by_camera.pop(attempt.camera_id, None)
         self._current_by_camera.pop(attempt.camera_id, None)
         self._release_ownership(attempt)
+        self._attempts_cancelled += 1
+        logger.info("MONITORING_ATTEMPT_CANCELLED camera_id=%s disposition=%s", attempt.camera_id, disposition)
         self._start_from_queue(now)
         self._finish_shutdown_if_due(now)
         return CompletionOutcome(cancelled, disposition)
@@ -422,6 +491,8 @@ class DueScheduler:
         self._active_by_camera.pop(attempt.camera_id, None)
         self._current_by_camera.pop(attempt.camera_id, None)
         self._release_ownership(attempt)
+        self._attempts_cancelled += 1
+        logger.info("MONITORING_ATTEMPT_CANCELLED camera_id=%s disposition=%s", attempt.camera_id, CompletionDisposition.CANCELLED)
         self._start_from_queue(cancelled.started_at or cancelled.scheduled_at)
         return CompletionOutcome(cancelled, CompletionDisposition.CANCELLED)
 
@@ -429,7 +500,10 @@ class DueScheduler:
         if attempt.ownership is None or self._ownership_port is None:
             return
         try:
-            self._ownership_port.release(attempt.camera_id, attempt.ownership)
+            released = self._ownership_port.release(attempt.camera_id, attempt.ownership)
+            if not released:
+                self._ownership_lost += 1
+                logger.info("MONITORING_OWNERSHIP_LOST camera_id=%s ownership_epoch=%s", attempt.camera_id, attempt.ownership.epoch)
         except Exception as exc:
             self.report_repository_failure(type(exc).__name__)
 
@@ -448,19 +522,26 @@ class DueScheduler:
         if not self._active_by_camera:
             for attempt_id in self._queued_ids():
                 self.cancel(attempt_id)
-            self._lifecycle = SchedulerLifecycle.STOPPED
+            self._mark_stopped()
             return
         if self._draining_since is not None and now >= self._draining_since + timedelta(seconds=self._config.shutdown_timeout_seconds):
             for attempt_id in tuple(self._active_by_camera.values()):
                 self.cancel(attempt_id)
             for attempt_id in self._queued_ids():
                 self.cancel(attempt_id)
+            self._mark_stopped()
+
+    def _mark_stopped(self) -> None:
+        if self._lifecycle is not SchedulerLifecycle.STOPPED:
             self._lifecycle = SchedulerLifecycle.STOPPED
+            logger.info("MONITORING_SCHEDULER_STOPPED")
 
     def report_repository_failure(self, error_code: str) -> SchedulerLifecycle:
-        if not isinstance(error_code, str) or not error_code.strip():
-            raise ValueError("error_code must be non-empty")
+        if not isinstance(error_code, str) or not _SAFE_OPERATIONAL_ERROR_CODE.fullmatch(error_code):
+            raise ValueError("error_code must be a short machine-safe code")
         self._operational_error = error_code
+        self._operational_failures += 1
+        logger.warning("MONITORING_OPERATIONAL_FAILURE error_code=%s", error_code)
         if self._lifecycle not in (SchedulerLifecycle.STOPPED, SchedulerLifecycle.DRAINING):
             self._lifecycle = SchedulerLifecycle.DEGRADED
         return self._lifecycle

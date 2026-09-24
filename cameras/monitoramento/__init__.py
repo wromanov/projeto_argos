@@ -27,6 +27,7 @@ from .schemas import (
     OwnershipLease,
     ScheduleCandidate,
     SchedulerLifecycle,
+    SchedulerRuntimeStatus,
     TickReport,
 )
 from .scheduler import (
@@ -61,6 +62,7 @@ __all__ = [
     "ProbeResult",
     "ProbeResultCode",
     "SchedulerLifecycle",
+    "SchedulerRuntimeStatus",
     "TechnicalDecision",
     "TechnicalDecisionAction",
     "TechnicalDecisionReason",

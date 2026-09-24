@@ -15,7 +15,7 @@ from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
 
-from .environment import get_env_bool, get_env_list
+from .environment import get_env_bool, get_env_list, get_monitoring_config_from_environment
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -49,6 +49,11 @@ VISUAL_QA_USERNAME = os.environ.get("ARGOS_VISUAL_QA_USERNAME", "").strip()
 VISUAL_QA_PASSWORD = os.environ.get("ARGOS_VISUAL_QA_PASSWORD", "")
 
 validate_visual_qa_configuration(DEBUG, VISUAL_QA_ENABLED)
+
+
+# O scheduler recebe esta instância já resolvida e validada; ele não lê o
+# ambiente diretamente.
+MONITORING_CONFIG = get_monitoring_config_from_environment()
 
 
 # Application definition

@@ -97,10 +97,13 @@ class MonitoringConfig:
         stale_after = cycle_interval * 3 if self.stale_after_seconds is None else _integer_in_range(self.stale_after_seconds, "stale_after_seconds", cycle_interval, 86400)
         shutdown_timeout = _integer_in_range(self.shutdown_timeout_seconds, "shutdown_timeout_seconds", 1, 300)
         _integer_in_range(self.heartbeat_seconds, "heartbeat_seconds", 10, 300)
-        ownership_lease = shutdown_timeout if self.ownership_lease_seconds is None else _integer_in_range(
+        # A lease define somente a janela operacional para takeover. O epoch
+        # de ownership é o fencing token da conclusão e independe da duração
+        # da attempt ou do tempo de shutdown.
+        ownership_lease = math.ceil(probe_timeout) + 1 if self.ownership_lease_seconds is None else _integer_in_range(
             self.ownership_lease_seconds,
             "ownership_lease_seconds",
-            max(1, math.ceil(probe_timeout)),
+            1,
             300,
         )
         object.__setattr__(self, "probe_timeout_seconds", probe_timeout)
@@ -109,7 +112,6 @@ class MonitoringConfig:
         object.__setattr__(self, "stale_after_seconds", stale_after)
         object.__setattr__(self, "jitter_ratio", jitter_ratio)
         object.__setattr__(self, "ownership_lease_seconds", ownership_lease)
-
 
 @dataclass(frozen=True, slots=True)
 class ScheduleCandidate:
@@ -206,7 +208,48 @@ class TickReport:
             raise TypeError("attempts must be a tuple")
 
 
+@dataclass(frozen=True, slots=True)
+class SchedulerRuntimeStatus:
+    """Fatos em memória para diagnóstico do scheduler, sem persistência."""
+
+    scheduler_state: SchedulerLifecycle
+    in_flight: int
+    queued: int
+    configured_concurrency: int
+    queue_capacity: int
+    last_cycle_started_at: datetime | None
+    last_cycle_completed_at: datetime | None
+    cycles_started: int
+    cycles_completed: int
+    attempts_started: int
+    attempts_completed: int
+    attempts_cancelled: int
+    operational_failures: int
+    last_operational_error: str | None
+    ownership_acquired: int
+    ownership_denied: int
+    ownership_lost: int
+    stale_owner_completions_rejected: int
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.scheduler_state, SchedulerLifecycle):
+            raise TypeError("scheduler_state must be a SchedulerLifecycle")
+        for field_name in (
+            "in_flight", "queued", "configured_concurrency", "queue_capacity",
+            "cycles_started", "cycles_completed", "attempts_started", "attempts_completed",
+            "attempts_cancelled", "operational_failures", "ownership_acquired",
+            "ownership_denied", "ownership_lost", "stale_owner_completions_rejected",
+        ):
+            _non_negative_integer(getattr(self, field_name), field_name)
+        for field_name in ("last_cycle_started_at", "last_cycle_completed_at"):
+            value = getattr(self, field_name)
+            if value is not None:
+                object.__setattr__(self, field_name, _aware_utc(value, field_name))
+        if self.last_operational_error is not None and not isinstance(self.last_operational_error, str):
+            raise TypeError("last_operational_error must be a string or None")
+
+
 __all__ = [
     "Attempt", "AttemptState", "CompletionDisposition", "CompletionOutcome",
-    "MonitoringConfig", "ScheduleCandidate", "SchedulerLifecycle", "TickReport",
+    "MonitoringConfig", "ScheduleCandidate", "SchedulerLifecycle", "SchedulerRuntimeStatus", "TickReport",
 ]

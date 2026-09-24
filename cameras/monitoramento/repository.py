@@ -207,7 +207,6 @@ class DjangoMonitoringRepository:
                 queryset = queryset.filter(
                     monitoring_owner_id=ownership.owner_id,
                     monitoring_ownership_epoch=ownership.epoch,
-                    monitoring_lease_expires_at__gt=Now(),
                     ultima_geracao_configuracao=candidate.config_generation,
                 )
                 updates.update(
@@ -229,8 +228,6 @@ class DjangoMonitoringRepository:
                 owner_is_current = (
                     state.monitoring_owner_id == ownership.owner_id
                     and state.monitoring_ownership_epoch == ownership.epoch
-                    and state.monitoring_lease_expires_at is not None
-                    and state.monitoring_lease_expires_at > timezone.now()
                 )
                 return (
                     CompletionDisposition.CONFIG_CHANGED

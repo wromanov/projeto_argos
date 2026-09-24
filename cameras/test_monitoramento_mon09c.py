@@ -93,6 +93,23 @@ class MonitoringOwnershipFencingTests(TestCase):
         self.assertEqual(state.monitoring_ownership_epoch, attempt.ownership.epoch)
         self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 1)
 
+    def test_expired_lease_without_takeover_accepts_current_owner_completion(self):
+        camera = self.camera()
+        repository = DjangoMonitoringRepository()
+        scheduler = self.scheduler(repository, service="worker-a")
+        attempt = scheduler.tick(START, [self.candidate(camera)]).attempts[0]
+        self.expire(camera)
+
+        outcome = scheduler.complete(attempt.attempt_id, self.result(), START)
+
+        state = EstadoMonitoramento.objects.get(camera=camera)
+        self.assertEqual(outcome.disposition, CompletionDisposition.ACCEPTED)
+        self.assertEqual(state.estado_estavel, TechnicalState.ONLINE.value)
+        self.assertIsNone(state.monitoring_owner_id)
+        self.assertIsNone(state.monitoring_lease_expires_at)
+        self.assertEqual(state.monitoring_ownership_epoch, attempt.ownership.epoch)
+        self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 1)
+
     def test_stale_owner_completion_after_takeover_has_no_domain_side_effect(self):
         camera = self.camera()
         repository = DjangoMonitoringRepository()
@@ -110,8 +127,29 @@ class MonitoringOwnershipFencingTests(TestCase):
         self.assertIsNone(state.proximo_vencimento_em)
         self.assertEqual(state.monitoring_owner_id, owner_b.owner_id)
         self.assertEqual(state.monitoring_ownership_epoch, owner_b.epoch)
+        self.assertEqual((state.sequencia_positiva, state.sequencia_negativa), (0, 0))
         self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 0)
         self.assertEqual(Indisponibilidade.objects.count(), 0)
+
+    def test_new_owner_completion_after_takeover_is_accepted(self):
+        camera = self.camera()
+        repository = DjangoMonitoringRepository()
+        scheduler_a = self.scheduler(repository, service="worker-a")
+        attempt_a = scheduler_a.tick(START, [self.candidate(camera)]).attempts[0]
+        self.expire(camera)
+        scheduler_b = self.scheduler(repository, service="worker-b")
+        attempt_b = scheduler_b.tick(START, [self.candidate(camera)]).attempts[0]
+
+        stale = scheduler_a.complete(attempt_a.attempt_id, self.result(), START)
+        accepted = scheduler_b.complete(attempt_b.attempt_id, self.result(), START)
+
+        state = EstadoMonitoramento.objects.get(camera=camera)
+        self.assertEqual(stale.disposition, CompletionDisposition.OWNERSHIP_LOST)
+        self.assertEqual(accepted.disposition, CompletionDisposition.ACCEPTED)
+        self.assertEqual(state.estado_estavel, TechnicalState.ONLINE.value)
+        self.assertIsNone(state.monitoring_owner_id)
+        self.assertEqual(state.monitoring_ownership_epoch, attempt_b.ownership.epoch)
+        self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 1)
 
     def test_config_generation_and_fencing_must_both_be_current(self):
         camera = self.camera()
