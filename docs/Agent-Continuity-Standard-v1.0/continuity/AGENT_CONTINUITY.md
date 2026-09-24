@@ -44,10 +44,10 @@ PRIMARY_REPOSITORY = https://github.com/wromanov/projeto_argos.git
 
 LAST_VERIFIED_LOCAL_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
 LAST_VERIFIED_BRANCH = master
-CURRENT_CANONICAL_GIT_BASELINE = 202e4f353551e7ab05667d86f9216cc102f351cc
-CURRENT_BASELINE_BEFORE_DOCUMENTARY_COMMIT = 202e4f353551e7ab05667d86f9216cc102f351cc
-LAST_VERIFIED_HEAD = 202e4f353551e7ab05667d86f9216cc102f351cc
-LAST_VERIFIED_ORIGIN_MASTER = 202e4f353551e7ab05667d86f9216cc102f351cc
+CURRENT_CANONICAL_GIT_BASELINE = f85dbdb3e5833b27133721926e81aa3ed2f030dd
+CURRENT_BASELINE_BEFORE_DOCUMENTARY_COMMIT = f85dbdb3e5833b27133721926e81aa3ed2f030dd
+LAST_VERIFIED_HEAD = f85dbdb3e5833b27133721926e81aa3ed2f030dd
+LAST_VERIFIED_ORIGIN_MASTER = f85dbdb3e5833b27133721926e81aa3ed2f030dd
 LAST_VERIFIED_DIVERGENCE = HEAD ahead 0 / behind 0
 LAST_VERIFIED_WORKTREE = CLEAN (baseline antes deste commit documental)
 LAST_VERIFIED_STAGING = EMPTY
@@ -75,13 +75,13 @@ Regras de version hygiene:
 
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 — fechamento técnico publicado em 850efd2
 LAST_PUBLISHED_BASELINE = 850efd2
-CURRENT_ACTIVITY_COMPLETED = UI-DS — CANONICAL DOCUMENTATION AND CONTINUITY RECONCILIATION
+CURRENT_ACTIVITY_COMPLETED = IMG-01 — CANONICAL IMAGE CONTRACT CHECKPOINT
 MON09_TECHNICALLY_COMPLETE = YES
 MONITORING_TECHNICAL_FRONT_COMPLETE = YES
 NEXT_TECHNICAL_MON_ACTIVITY = NONE
-NEXT_REQUIRED_ACTIVITY = UI-0 — READ-ONLY PREFLIGHT (UI-DS; após adjudicação humana e autorização)
-NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
-NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
+NEXT_REQUIRED_ACTIVITY = IMG-02 — Modelo, storage e proveniência (após adjudicação humana e autorização)
+NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
+NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
 NEXT_REQUIRED_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
 MON08C6_STATUS = COMPLETE / FINAL ADJUDICATION COMPLETE
 MON08C6_IMPLEMENTATION_AUTHORIZATION = NOT_APPLICABLE
@@ -210,9 +210,9 @@ MON09_TECHNICALLY_COMPLETE = YES
 MONITORING_TECHNICAL_FRONT_COMPLETE = YES
 NEXT_TECHNICAL_MON_ACTIVITY = NONE
 TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
-NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
-NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
-NEXT_REQUIRED_ACTIVITY = UI-0 — READ-ONLY PREFLIGHT (UI-DS; após adjudicação humana e autorização)
+NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
+NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
+NEXT_REQUIRED_ACTIVITY = IMG-02 — Modelo, storage e proveniência (após adjudicação humana e autorização)
 NEXT_REQUIRED_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
 UI_DS_CANONICAL_SPEC = docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md
 UI_DS_CANONICAL_SPRINT_MAP = docs/projeto/SPRINTS_ARGOS_V5.md
@@ -258,13 +258,13 @@ CONTINUITY_RETROFIT_GATE = PASS
 
 ### Fechamento técnico MON-09 — estado vigente
 
-LAST_RELEVANT_CHECKPOINT = 850efd2381d7f5b7df27e528dc3374ea58e507b3 (850efd2)
+LAST_RELEVANT_TECHNICAL_CHECKPOINT = 850efd2381d7f5b7df27e528dc3374ea58e507b3 (850efd2)
 MON09_TECHNICALLY_COMPLETE = YES
 MONITORING_TECHNICAL_FRONT_COMPLETE = YES
 NEXT_TECHNICAL_MON_ACTIVITY = NONE
 TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
-NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
-NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
+NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
+NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
 VALIDATED_ENVELOPE = UNKNOWN / ONLINE / OFFLINE como estados estáveis; SUSPECT efêmero; STALE como freshness; confirmation memory persistente; pending failure streak sobrevive restart; thresholds respeitados; restart sem transição/outage falsa; falha de banco não equivale a câmera offline; CANCELLED neutro; timeout/rede conforme semântica canônica; sem histórico funcional falso em falha operacional e com recovery possível; ownership por câmera, owner persistente e epoch monotônico; lease define elegibilidade operacional de takeover; epoch é fencing token; config_generation é independente; completion de owner obsoleto sem side effects de domínio; owner antigo não libera owner novo; completion válida libera ownership atomicamente; renovação de lease não implementada; MonitoringConfig integrado à configuração ARGOS, config inválida fail-fast; status, backlog/in-flight, falhas operacionais e ownership diagnosticáveis; observabilidade sem histórico funcional e logs sem secrets
 FUTURE_VALIDATIONS = PostgreSQL real; multi-processo real em produção; rede real; câmeras reais; credenciais reais; capacidade produtiva; budgets formais de CPU, memória e conexões
 SECURITY_GATES = LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS; HOMOLOGATION = BLOCKED; DEPLOYMENT = BLOCKED; PRODUCTION = BLOCKED
@@ -296,6 +296,18 @@ proveniência `UPLOAD_MANUAL`, ausência de captura automática na abertura,
 proibição de integração big-bang e `INTEGRATION_GATE` obrigatório quando
 aplicável.
 
-`UI-0` é a próxima atividade preparatória recomendada: read-only, encerra com
-relatório e exige adjudicação/autorização humana antes de qualquer
-implementação visual.
+`IMG-01` está concluída como checkpoint documental; a authority canônica é
+`docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`. A seleção de
+`LATEST_CAMERA_CAPTURE_RECORD` ocorre antes da avaliação de disponibilidade ou
+integridade, portanto não há fallback silencioso para captura antiga. As
+proveniências iniciais são somente `CAPTURA_CAMERA` e `UPLOAD_MANUAL`;
+`CameraQuickDetailPanel` consome `LATEST_CAMERA_CAPTURE`, sem captura na
+abertura. Monitoramento e captura permanecem separados.
+
+`IMG-02` é a próxima atividade de projeto, mas requer adjudicação humana e
+autorização própria antes de implementação. Backend de storage, limites de
+arquivo, fallback visual de `UPLOAD_MANUAL`, retenção/expurgo, política
+temporal `STALE`, credencial/perfil para captura e semântica de
+`PRIMARY_IMAGE` permanecem sete decisões abertas; seus fechamentos estão
+mapeados no contrato canônico. `UI-0` continua como preparação read-only
+recomendada para a frente UI-DS e não autoriza implementação visual.

@@ -3,19 +3,19 @@
 STATUS = CURRENT_SNAPSHOT
 SNAPSHOT_DATE = 2026-09-24
 PROJECT = ARGOS
-STATE_SOURCE = verified Git baseline + MON-09A...E adjudication + current roadmap + UI-DS canonical documents
+STATE_SOURCE = verified Git baseline + MON-09A...E adjudication + current roadmap + UI-DS authorities + IMG-01 canonical image contract
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = current UI-DS documentary activity; MON-09 technical closure remains historical technical checkpoint
+SNAPSHOT_SCOPE = current IMG-01 documentary checkpoint; MON-09 technical closure remains historical technical checkpoint
 
 ## 1. Executive status
 
-CURRENT_PHASE = FASE C — Captura manual e gestão de imagens (PLANEJADA; ainda não iniciada)
-CURRENT_ACTIVITY = UI-DS — CANONICAL DOCUMENTATION AND CONTINUITY RECONCILIATION
-LAST_COMPLETED_ACTIVITY = MON-09A...E — technical closure at published baseline 850efd2
+CURRENT_PHASE = FASE C — Captura manual e gestão de imagens (IMG-01 documental concluída; implementação não iniciada)
+CURRENT_ACTIVITY = IMG-01 — CANONICAL IMAGE CONTRACT CHECKPOINT
+LAST_COMPLETED_ACTIVITY = IMG-01 — CANONICAL IMAGE CONTRACT CHECKPOINT (documental)
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
 LAST_PUBLISHED_BASELINE = 850efd2
-CURRENT_CANONICAL_GIT_BASELINE = 202e4f353551e7ab05667d86f9216cc102f351cc
-CURRENT_BASELINE_BEFORE_DOCUMENTARY_COMMIT = 202e4f353551e7ab05667d86f9216cc102f351cc
+CURRENT_CANONICAL_GIT_BASELINE = f85dbdb3e5833b27133721926e81aa3ed2f030dd
+CURRENT_BASELINE_BEFORE_DOCUMENTARY_COMMIT = f85dbdb3e5833b27133721926e81aa3ed2f030dd
 
 PROJECT_PROGRESS_LAST_VALID_PUBLISHED_ESTIMATE = 78% (HISTORICAL; NOT CURRENT)
 MON08_PROGRESS_LAST_VALID_PUBLISHED_ESTIMATE = 15% (HISTORICAL; NOT CURRENT)
@@ -35,12 +35,12 @@ STAGING_STATE = EMPTY
 SNAPSHOT_VALIDITY = TECHNICAL BASELINE BEFORE DOCUMENTARY COMMIT
 REVALIDATE_AFTER_DOCUMENTARY_COMMIT = REQUIRED; Git posterior é a fonte de verdade
 
-## 2.1 Git baseline snapshot — before current UI-DS documentary activity
+## 2.1 Git baseline snapshot — before current IMG-01 documentary activity
 
 REPOSITORY_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
 BRANCH = master
-HEAD = 202e4f353551e7ab05667d86f9216cc102f351cc
-ORIGIN_MASTER = 202e4f353551e7ab05667d86f9216cc102f351cc
+HEAD = f85dbdb3e5833b27133721926e81aa3ed2f030dd
+ORIGIN_MASTER = f85dbdb3e5833b27133721926e81aa3ed2f030dd
 DIVERGENCE = ahead 0 / behind 0
 WORKTREE_STATE = CLEAN
 WORKTREE_CONTENTS = NONE
@@ -262,8 +262,8 @@ MON-09E = COMPLETE / PASS
 MON09_TECHNICALLY_COMPLETE = YES
 MONITORING_TECHNICAL_FRONT_COMPLETE = YES
 NEXT_TECHNICAL_MON_ACTIVITY = NONE
-NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
-NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
+NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
+NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
 
 BASELINE_GIT_SNAPSHOT_BEFORE_DOCUMENTARY_COMMIT: branch master; HEAD = 850efd2381d7f5b7df27e528dc3374ea58e507b3; origin/master = 850efd2381d7f5b7df27e528dc3374ea58e507b3; divergence = 0/0; worktree = CLEAN; staging = EMPTY. Este é o estado factual da baseline técnica antes do novo commit documental; o commit documental posterior será informado no relatório e revalidado diretamente no Git.
 
@@ -289,7 +289,7 @@ UI_DS_STATUS = DOCUMENTED / IMPLEMENTATION_NOT_STARTED
 UI_DS_STRATEGY = SELECTIVE VISUAL RETROFIT + SELECTIVE INTERACTION PATTERN ADOPTION
 ARGOS_CURRENT_PAGE_COMPOSITION = PRESERVE
 CAMERA_QUICK_DETAIL_PANEL = ADOPT
-LATEST_CAMERA_CAPTURE_REQUIREMENT = PANEL USES CANONICAL CAPTURA_CAMERA WHEN AVAILABLE
+LATEST_CAMERA_CAPTURE_REQUIREMENT = PANEL USES CANONICAL LATEST_CAMERA_CAPTURE; NO SILENT FALLBACK
 PRIMARY_IMAGE_DISTINCTION = RECORDED
 MANUAL_UPLOAD_PROVENANCE = PRESERVED AS UPLOAD_MANUAL
 NO_AUTO_CAPTURE_ON_PANEL_OPEN = RECORDED
@@ -308,3 +308,25 @@ UI_4 = VISUAL / FUNCTIONAL / ACCESSIBILITY / INTERACTION QA
 Detalhes não são duplicados neste snapshot. A authority é
 `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`; a ordem das
 slices está em `docs/projeto/SPRINTS_ARGOS_V5.md`.
+
+## 12. Fase C — checkpoint canônico IMG-01
+
+IMG01_STATUS = COMPLETE / DOCUMENTAL
+CANONICAL_IMAGE_CONTRACT = docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+LATEST_CAMERA_CAPTURE_RECORD = selecionar CAPTURA_CAMERA corrente por captured_at DESC, recorded_at DESC, immutable_id DESC; avaliar validade/integridade/disponibilidade somente depois
+NO_SILENT_FALLBACK_TO_OLDER_CAPTURE = YES
+PROVENANCES = CAPTURA_CAMERA, UPLOAD_MANUAL
+PRIMARY_IMAGE = DEFERRED_TO_IMG07
+CAMERA_QUICK_DETAIL_PANEL = consome LATEST_CAMERA_CAPTURE; não dispara captura ao abrir; UPLOAD_MANUAL não é fallback implícito
+MONITORING_SEPARATION = CAMERA_AVAILABILITY != IMAGE_CAPTURE_SUCCESS; falha de captura não altera ONLINE/OFFLINE; processamento separado
+OPEN_DECISION_COUNT = 7
+OPEN_DECISIONS = backend de storage; MIME/tamanho/dimensões; fallback visual de UPLOAD_MANUAL; retenção/expurgo; política temporal STALE; credencial/perfil para captura; existência/semântica final de PRIMARY_IMAGE
+IMG02_PREREQUISITES = ler contrato; adjudicação humana; autorização própria; decidir backend antes de migration; implementar modelo/storage/proveniência respeitando seleção latest e Integration Gate
+IMG02_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
+NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
+NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
+FASE_C_COMPLETE = NO
+
+O contrato canônico mapeia cada decisão aberta à slice que deve fechá-la. A
+próxima atividade não concede autorização de implementação. Percentual global
+do projeto permanece não recalculado.

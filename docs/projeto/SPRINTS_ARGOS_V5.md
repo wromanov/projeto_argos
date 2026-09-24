@@ -12,8 +12,16 @@ REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-
 REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08B06854073CE16FE028DA14
 CURRENT_PHASE = FASE C — Captura manual e gestão de imagens
-CURRENT_PHASE_STATUS = PLANEJADA
+CURRENT_PHASE_STATUS = EM_ANDAMENTO / IMG-01 DOCUMENTAL CONCLUÍDA; IMPLEMENTAÇÃO NÃO INICIADA
 IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
+CURRENT_ACTIVITY = IMG-01 — CANONICAL IMAGE CONTRACT CHECKPOINT
+CURRENT_ACTIVITY_STATUS = COMPLETE / DOCUMENTAL
+NEXT = IMG-02 — Modelo, storage e proveniência
+IMG02_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
+IMG-01 = COMPLETE após o checkpoint documental; contrato canônico:
+docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
+Esta ordem registra a próxima atividade, não concede autorização de
+implementação nem encerra a Fase C.
 ```
 
 Este é o documento canônico de execução de slices para as atividades futuras
@@ -23,8 +31,9 @@ marcos, dependências e gates de execução. Não duplica a specification.
 
 ## 1. Estado e precedência
 
-MON-09 está tecnicamente encerrada. A próxima macrofase é a Fase C, ainda
-planejada. Nenhum item deste mapa autoriza implementação, avanço de fase,
+MON-09 está tecnicamente encerrada. A Fase C avançou pelo checkpoint documental
+IMG-01; sua implementação continua não iniciada e IMG-02 é a próxima atividade
+de projeto. Nenhum item deste mapa autoriza implementação, avanço de fase,
 alteração de stack ou execução em homologação/produção.
 
 Em caso de divergência:
@@ -135,11 +144,13 @@ autorizada de stack.
 ## 4. Ordem recomendada e dependências
 
 ```text
-adjudicação humana + autorização
+IMG-01 = COMPLETE / checkpoint documental
 ↓
-UI-0 (read-only, relatório)
+adjudicação humana + autorização específica para IMG-02
 ↓
-IMG-01 + IMG-02 (contrato/proveniência/modelo)
+IMG-02 — Modelo, storage e proveniência
+↓
+UI-0 (read-only; preparação da frente UI-DS; não bloqueia IMG-02)
 ↓
 UI-1 (adapter foundation)
 ↓

@@ -19,9 +19,10 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 
 | Path / identity | Role | Status |
 |---|---|---|
-| `docs/projeto/ROADMAP_ARGOS_V5.md` | Project roadmap / workstream direction | PRESENT / CANONICAL; MON-09 technically closed; Fase C next |
+| `docs/projeto/ROADMAP_ARGOS_V5.md` | Project roadmap / workstream direction | PRESENT / CANONICAL; IMG-01 canonicalized; IMG-02 next |
 | `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | UI-DS visual/interactions/Fase C/incremental integration authority | PRESENT / CANONICAL; reference `camera-inventory-design-system-v1.0.1` |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Canonical sprint/slice execution map | PRESENT / CANONICAL; UI-0 next preparatory activity |
+| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Canonical image-domain authority for IMG-02...IMG-09 and image consumers | PRESENT / CANONICAL; IMG-01 complete; IMG-02 next |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Canonical sprint/slice execution map | PRESENT / CANONICAL; IMG-02 next project activity |
 | `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | Monitoring architecture/behavior authority | PRESENT; verify current content |
 | `docs/projeto/ADR-020_contrato_estado_tecnico_monitoramento.md` | Monitoring state/read semantics authority | PRESENT; verify current content |
 | `docs/projeto/ADR-021_seguranca_capacidade_monitoramento.md` | Monitoring security/capability authority | PRESENT / CANONICAL; verify current content |
@@ -52,11 +53,11 @@ Rules:
 
 Git controls factual repository state.
 
-Current validated baseline snapshot before this UI-DS documentary activity:
+Current validated baseline snapshot before this IMG-01 documentary activity:
 
 - repository: `C:\Users\walacedelgado\PycharmProjects\projeto_argos`
 - branch: `master`
-- HEAD = origin/master: `202e4f353551e7ab05667d86f9216cc102f351cc`
+- HEAD = origin/master: `f85dbdb3e5833b27133721926e81aa3ed2f030dd`
 - divergence: ahead 0 / behind 0
 - worktree: clean
 - staging: empty
@@ -126,9 +127,9 @@ MON09_TECHNICALLY_COMPLETE = YES
 MONITORING_TECHNICAL_FRONT_COMPLETE = YES
 NEXT_TECHNICAL_MON_ACTIVITY = NONE
 TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
-NEXT_REQUIRED_ACTIVITY = UI-0 — READ-ONLY PREFLIGHT (UI-DS; após adjudicação humana e autorização)
-NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
-NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
+NEXT_REQUIRED_ACTIVITY = IMG-02 — Modelo, storage e proveniência (após adjudicação humana e autorização)
+NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
+NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
 NEXT_REQUIRED_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
 NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION
 MON08C6_STATUS = COMPLETE / FINAL ADJUDICATION COMPLETE
@@ -150,13 +151,28 @@ MON09_TECHNICALLY_COMPLETE = YES
 MONITORING_TECHNICAL_FRONT_COMPLETE = YES
 NEXT_TECHNICAL_MON_ACTIVITY = NONE
 TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
-NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
-NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
-NEXT_REQUIRED_ACTIVITY = UI-0 — READ-ONLY PREFLIGHT (UI-DS; após adjudicação humana e autorização)
+NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
+NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
+NEXT_REQUIRED_ACTIVITY = IMG-02 — Modelo, storage e proveniência (após adjudicação humana e autorização)
 NEXT_REQUIRED_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
 SECURITY_GATES = LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS; HOMOLOGATION = BLOCKED; DEPLOYMENT = BLOCKED; PRODUCTION = BLOCKED
 VALIDATED_ENVELOPE = UNKNOWN / ONLINE / OFFLINE como estados estáveis; SUSPECT efêmero; STALE como freshness; confirmation memory persistente; pending failure streak sobrevive restart; thresholds respeitados; restart sem transição/outage falsa; falha de banco não equivale a câmera offline; CANCELLED neutro; timeout/rede conforme semântica canônica; sem histórico funcional falso em falha operacional e com recovery possível; ownership por câmera, owner persistente e epoch monotônico; lease define elegibilidade operacional de takeover; epoch é fencing token; config_generation é independente; completion de owner obsoleto sem side effects de domínio; owner antigo não libera owner novo; completion válida libera ownership atomicamente; renovação de lease não implementada; MonitoringConfig integrado à configuração ARGOS, config inválida fail-fast; status, backlog/in-flight, falhas operacionais e ownership diagnosticáveis; observabilidade sem histórico funcional e logs sem secrets
 FUTURE_VALIDATIONS = PostgreSQL real; multi-processo real em produção; rede real; câmeras reais; credenciais reais; capacidade produtiva; budgets formais de CPU, memória e conexões
 LOG_VOLUME_HARDENING_STATUS = HARDENING / NON-BLOCKING — potential high INFO log volume per cycle/attempt
 
-MON-08/MON-09 predecessor entries above are continuity history. Current roadmap status is Fase C planned; do not resume MON-09 or infer production readiness.
+MON-08/MON-09 predecessor entries above are continuity history. IMG-01 is the completed documentary checkpoint; implementation in Fase C has not started. Do not resume MON-09 or infer production readiness.
+
+## 7. Image-domain continuity
+
+IMG01_STATUS = COMPLETE / DOCUMENTAL
+CANONICAL_IMAGE_CONTRACT = docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+LATEST_CAMERA_CAPTURE = select CAPTURA_CAMERA current record by captured_at DESC, recorded_at DESC, immutable_id DESC; assess availability/integrity after selection
+NO_SILENT_FALLBACK_TO_OLDER_CAPTURE = YES
+PROVENANCES = CAPTURA_CAMERA, UPLOAD_MANUAL
+PRIMARY_IMAGE = DEFERRED_TO_IMG07
+CAMERA_QUICK_DETAIL_PANEL = consumes LATEST_CAMERA_CAPTURE; no capture on open; UPLOAD_MANUAL is not an implicit fallback
+MONITORING_SEPARATION = CAMERA_AVAILABILITY != IMAGE_CAPTURE_SUCCESS; capture failures do not change ONLINE/OFFLINE
+OPEN_DECISION_COUNT = 7; see the canonical contract for each decision and its closure slice
+NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
+IMG02_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT; separate human adjudication/authorization required
+FASE_C_COMPLETE = NO

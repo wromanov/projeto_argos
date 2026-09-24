@@ -740,6 +740,11 @@ A operação será:
 
 ## IMG-01 — Contrato funcional de imagem
 
+IMG-01 = CONTRACT DEFINED / CANONICALIZED
+CANONICAL_AUTHORITY = [ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md](ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md)
+IMPLEMENTATION = NOT_STARTED
+FASE_C_COMPLETE = NO
+
 Definir:
 
 - relação imagem/câmera;
@@ -1393,4 +1398,8 @@ Semântica de ownership: `LEASE_EXPIRY_ALONE_INVALIDATES_COMPLETION = NO`; `NEWE
 
 Ainda não validados: PostgreSQL real; multi-processo real em produção; rede real; câmeras reais; credenciais reais; capacidade produtiva; budgets formais de CPU, memória e conexões. Esses limites são validações futuras e não falhas da MON-09 nem evidência de readiness produtiva. Hardening não bloqueante: potencial volume elevado de logs INFO por ciclo/attempt. As execuções acidentais de scale em MON-09B/C são observação processual, sem blocker técnico. Findings de segurança e gates permanecem sem reclassificação; `LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS; HOMOLOGATION = BLOCKED; DEPLOYMENT = BLOCKED; PRODUCTION = BLOCKED`.
 
-Próxima atividade definida pelo roadmap: `FASE C — Captura manual e gestão de imagens` (`NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA`). A macrofase está planejada; este registro não autoriza seu início ou implementação.
+Atualização documental IMG-01: contrato de domínio definido e canonicalizado em
+`docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`. A próxima atividade de
+projeto é IMG-02 — Modelo, storage e proveniência
+(`NEXT_PROJECT_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED`). A Fase C não está
+concluída; este checkpoint não concede autorização automática de implementação.
