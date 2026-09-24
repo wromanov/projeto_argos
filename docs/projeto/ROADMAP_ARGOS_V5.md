@@ -685,6 +685,34 @@ Escopo concluído pelas slices MON-09A...E:
 
 # 6. FASE C — Captura manual e gestão de imagens
 
+### UI-DS — Integração seletiva do Camera Inventory Design System v1.0.1
+
+Authority detalhada: [`ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`](ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md).
+Mapa canônico de execução: [`SPRINTS_ARGOS_V5.md`](SPRINTS_ARGOS_V5.md).
+
+Frente transversal, sem renumerar as macrofases existentes:
+
+```text
+UI-0 — Read-only preflight
+UI-1 — Token & Component Adapter Foundation
+UI-2 — Inventory Visual Retrofit
+UI-3 — CameraQuickDetailPanel
+UI-4 — Visual / Functional / Accessibility / Interaction QA
+```
+
+`CameraQuickDetailPanel` é padrão aprovado para inspeção contextual rápida; não
+substitui a página completa e deve consultar `LATEST_CAMERA_CAPTURE` pelo
+contrato canônico da Fase C quando disponível. `UI-0` é a próxima atividade
+preparatória recomendada, read-only, somente após adjudicação humana e
+autorização; não autoriza implementação visual.
+
+Aplicam-se a esta frente a `ARGOS INCREMENTAL INTEGRATION RULE` e o
+`INTEGRATION_GATE`: cada slice deve ser integrada ao fluxo canônico e validada
+antes de ser fechada. `BIG_BANG_INTEGRATION_AT_END = PROHIBITED` e
+`INTEGRATION_SPRINT_AS_ROUTINE_CLEANUP = ANTI_PATTERN`. A dependência com a
+Fase C exige que IMG-01/IMG-02 fechem proveniência/modelo e que IMG-04/IMG-06
+forneçam captura sob demanda/histórico conforme necessário ao painel.
+
 ## Objetivo
 
 Permitir que o operador obtenha ou associe uma imagem a uma câmera somente quando necessário.

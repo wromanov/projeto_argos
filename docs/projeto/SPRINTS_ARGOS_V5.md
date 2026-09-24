@@ -1,0 +1,236 @@
+# ARGOS — Plano Canônico de Sprints e Execução v5
+
+```text
+STATUS = CANONICAL
+DOCUMENT_TYPE = PROJECT_SPRINT_EXECUTION_MAP
+LANGUAGE = pt-BR
+ROADMAP_AUTHORITY = docs/projeto/ROADMAP_ARGOS_V5.md
+UI_DS_DETAIL_AUTHORITY = docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md
+REFERENCE_DESIGN_SYSTEM = camera-inventory-design-system-v1.0.1
+REFERENCE_PACKAGE_EXTERNAL_PATH = C:\Users\walacedelgado\Downloads\camera-inventory-design-system-v1.0.1.zip
+REFERENCE_PACKAGE_REPOSITORY_COPY = PENDING
+CURRENT_PHASE = FASE C — Captura manual e gestão de imagens
+CURRENT_PHASE_STATUS = PLANEJADA
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
+```
+
+Este é o documento canônico de execução de slices para as atividades futuras
+registradas abaixo. O roadmap define direção e macrofases; a especificação de
+integração define contratos detalhados. Este documento registra somente ordem,
+marcos, dependências e gates de execução. Não duplica a specification.
+
+## 1. Estado e precedência
+
+MON-09 está tecnicamente encerrada. A próxima macrofase é a Fase C, ainda
+planejada. Nenhum item deste mapa autoriza implementação, avanço de fase,
+alteração de stack ou execução em homologação/produção.
+
+Em caso de divergência:
+
+1. instrução explícita do usuário;
+2. contracts e authorities específicos do ARGOS;
+3. `ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` para UI-DS;
+4. este mapa para ordem e marcos;
+5. `ROADMAP_ARGOS_V5.md` para direção de macrofase.
+
+Conflitos devem ser identificados, classificados, reportados e propostos; nunca
+resolvidos silenciosamente.
+
+## 2. Fase C — Captura manual e gestão de imagens
+
+Slices vigentes:
+
+```text
+IMG-01 — Contrato funcional
+IMG-02 — Modelo, storage e proveniência
+IMG-03 — Upload manual
+IMG-04 — Captura sob demanda
+IMG-05 — Processamento independente
+IMG-06 — Histórico visual
+IMG-07 — Imagem principal
+IMG-08 — Segurança e auditoria
+IMG-09 — Hardening
+```
+
+A Fase C deve fechar o contrato de `CAPTURA_CAMERA` versus `UPLOAD_MANUAL`,
+armazenamento, referência, disponibilidade, histórico e estados de erro. O
+`CameraQuickDetailPanel` depende de uma consulta canônica de
+`LATEST_CAMERA_CAPTURE`; não deve criar uma fonte paralela.
+
+## 3. UI-DS — frente transversal
+
+```text
+UI-DS = Integração seletiva do Camera Inventory Design System v1.0.1
+```
+
+Estratégia:
+
+```text
+SELECTIVE VISUAL RETROFIT
++ SELECTIVE INTERACTION PATTERN ADOPTION
+```
+
+`ARGOS CURRENT PAGE COMPOSITION = PRESERVE` e
+`DO_NOT_MIGRATE_FRAMEWORKS = YES`. O padrão aprovado
+`CameraQuickDetailPanel` adota o papel de inspeção contextual rápida, sem
+substituir a página canônica completa da câmera.
+
+### UI-0 — Read-only preflight
+
+```text
+STATUS = NEXT_RECOMMENDED_PREPARATORY_ACTIVITY
+READ_ONLY = YES
+IMPLEMENTATION = NO
+STOP_AFTER_REPORT = YES
+```
+
+Executar somente após adjudicação humana e autorização da atividade. Descobrir
+stack, inventário, layout, filtros, tabela, seleção, rota canônica,
+identificador de câmera, fontes de imagem/status, modelos de loading/error/stale,
+tokens, componentes, iconografia, tipografia, responsividade e acessibilidade.
+
+Entregar `PRESERVE`, `ADAPT`, `ADOPT`, `DO_NOT_ADOPT`, `TOKEN_MAPPING`,
+`COMPONENT_MAPPING`, `CAMERA_QUICK_DETAIL_PANEL_MAPPING`, `RISKS` e
+`PILOT_SCOPE`. UI-0 não altera código, CSS ou dependências.
+
+### UI-1 — Token & Component Adapter Foundation
+
+Introduzir a camada reversível de adapter entre tokens do Design System, tokens
+do ARGOS e componentes existentes. Não redesenhar páginas nem substituir
+composição. Deve preceder o retrofit visual.
+
+### UI-2 — Inventory Visual Retrofit
+
+Aplicar o piloto no inventário, preservando layout, filtros, busca, sorting,
+paginação, query string, seleção e comportamento. Escopo visual: background,
+cards, table surfaces, borders, status, buttons, inputs, focus e selection.
+
+### UI-3 — CameraQuickDetailPanel
+
+Integrar o painel ao inventário real, com seleção real, identificador canônico,
+resumo canônico, status canônico, contrato de latest camera capture quando
+disponível e rota canônica de detalhes completos.
+
+```text
+INTEGRATION_GATE = REQUIRED
+DRAWER_OPEN_ALONE = NOT_SUFFICIENT
+```
+
+UI-3 depende de `IMG-01` e `IMG-02` para a semântica e o modelo da imagem, e de
+`IMG-04`/`IMG-06` quando a captura real e o histórico forem necessários ao
+consumidor. `IMG-03` deve continuar separada por proveniência. `IMG-05`,
+`IMG-08` e `IMG-09` fornecem limites de processamento, segurança, auditoria,
+concorrência, stale e erro.
+
+### UI-4 — Visual / Functional / Accessibility / Interaction QA
+
+Executar depois da integração de UI-3 e dos contratos da Fase C aplicáveis.
+Validar visual, funcional, acessibilidade e interação, preservando baseline
+before/after, composição, arquitetura da informação, semântica de status,
+viabilidade do painel, ausência de regressão e ausência de mudança não
+autorizada de stack.
+
+## 4. Ordem recomendada e dependências
+
+```text
+adjudicação humana + autorização
+↓
+UI-0 (read-only, relatório)
+↓
+IMG-01 + IMG-02 (contrato/proveniência/modelo)
+↓
+UI-1 (adapter foundation)
+↓
+UI-2 (inventory retrofit)
+↓
+IMG-03...IMG-09 em vertical slices integradas
+↓
+UI-3 (painel no fluxo real)
+↓
+UI-4 (QA integrado)
+↓
+checkpoint e fechamento da slice
+```
+
+A ordem pode ser refinada por decisão humana quando uma dependência factual
+exigir outra sequência, mas não pode transformar integração final em cleanup
+rotineiro.
+
+## 5. Gates transversais
+
+### ARGOS Incremental Integration Rule
+
+```text
+IMPLEMENT
+↓
+INTEGRATE INTO CANONICAL FLOW
+↓
+VALIDATE INTEGRATED
+↓
+CLOSE SLICE
+```
+
+```text
+BIG_BANG_INTEGRATION_AT_END = PROHIBITED
+INTEGRATION_SPRINT_AS_ROUTINE_CLEANUP = ANTI_PATTERN
+```
+
+Nenhuma capability produtiva é `DONE` enquanto estiver isolada. Se uma grande
+sprint de integração for necessária ao final de uma fase, as slices anteriores
+devem ser reavaliadas como fechadas incorretamente.
+
+### Integration Gate
+
+Aplicar conforme a natureza da slice:
+
+```text
+INTEGRATION_GATE = PASS
+FEATURE_REACHABLE_FROM_REAL_ENTRYPOINT = YES
+FEATURE_USES_CANONICAL_DOMAIN_PATH = YES
+FEATURE_PERSISTS_THROUGH_CANONICAL_PATH = YES_WHEN_APPLICABLE
+FEATURE_VISIBLE_TO_REAL_CONSUMER = YES
+FEATURE_PERMISSION_PATH_INTEGRATED = YES_WHEN_APPLICABLE
+FEATURE_AUDIT_PATH_INTEGRATED = YES_WHEN_APPLICABLE
+NO_ORPHAN_IMPLEMENTATION = YES
+NO_FUTURE_BIG_BANG_INTEGRATION_REQUIRED = YES
+```
+
+Não aplicar mecanicamente persistência/auditoria a uma slice visual que não os
+possua, mas sempre exigir o caminho real de consumo quando houver consumidor
+produtivo.
+
+### Vertical slice
+
+```text
+MIGRATION / IMPLEMENTATION UNIT = VERTICAL SLICE
+```
+
+Tokens, componentes e painéis não devem ser implementados em trilhas isoladas
+para integração posterior. Cada slice deve alcançar o entrypoint, o domínio,
+o storage e a UI reais que lhe correspondem, além da validação e do checkpoint.
+
+## 6. Não escopo deste mapa
+
+- não autoriza UI, CSS ou código de aplicação;
+- não autoriza instalação de dependências;
+- não autoriza mudança de framework;
+- não autoriza captura automática ao abrir o painel;
+- não autoriza segunda página de detalhes;
+- não autoriza duplicação de domain logic;
+- não autoriza commit, push, deploy, LIVE ou homologação;
+- não autoriza tratar upload manual como captura de câmera;
+- não autoriza big-bang integration.
+
+## 7. Authority detalhada
+
+Para qualquer decisão material da UI-DS, consultar:
+
+`docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`
+
+Para direção da macrofase e status global, consultar:
+
+`docs/projeto/ROADMAP_ARGOS_V5.md`
+
+Para continuidade entre chats, consultar os quatro documentos em
+`docs/Agent-Continuity-Standard-v1.0/continuity/` listados no
+`ACTIVE_DOCUMENT_MAP.md`.

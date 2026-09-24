@@ -20,6 +20,8 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 | Path / identity | Role | Status |
 |---|---|---|
 | `docs/projeto/ROADMAP_ARGOS_V5.md` | Project roadmap / workstream direction | PRESENT / CANONICAL; MON-09 technically closed; Fase C next |
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | UI-DS visual/interactions/Fase C/incremental integration authority | PRESENT / CANONICAL; reference `camera-inventory-design-system-v1.0.1` |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Canonical sprint/slice execution map | PRESENT / CANONICAL; UI-0 next preparatory activity |
 | `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | Monitoring architecture/behavior authority | PRESENT; verify current content |
 | `docs/projeto/ADR-020_contrato_estado_tecnico_monitoramento.md` | Monitoring state/read semantics authority | PRESENT; verify current content |
 | `docs/projeto/ADR-021_seguranca_capacidade_monitoramento.md` | Monitoring security/capability authority | PRESENT / CANONICAL; verify current content |
@@ -50,15 +52,43 @@ Rules:
 
 Git controls factual repository state.
 
-Current validated baseline snapshot (before the documentary closure commit):
+Current validated baseline snapshot before this UI-DS documentary activity:
 
-- repository: `C:\Users\walac\desenvolvimento\projeto_argos`
+- repository: `C:\Users\walacedelgado\PycharmProjects\projeto_argos`
 - branch: `master`
-- HEAD = origin/master: `850efd2381d7f5b7df27e528dc3374ea58e507b3`
+- HEAD = origin/master: `202e4f353551e7ab05667d86f9216cc102f351cc`
 - divergence: ahead 0 / behind 0
 - worktree: clean
 - staging: empty
-- snapshot: technical baseline before this documentary commit; revalidate Git in a new session
+- snapshot: baseline before this documentary activity; revalidate Git after its documentary commit and in a new session
+
+The technical MON-09 checkpoint remains `850efd2381d7f5b7df27e528dc3374ea58e507b3`;
+it is historical technical evidence, not the current Git HEAD.
+
+## 4.1 UI-DS continuity
+
+```text
+REFERENCE_DESIGN_SYSTEM = camera-inventory-design-system-v1.0.1
+REFERENCE_PACKAGE_EXTERNAL_PATH = C:\Users\walacedelgado\Downloads\camera-inventory-design-system-v1.0.1.zip
+REFERENCE_PACKAGE_REPOSITORY_COPY = PENDING
+SELECTIVE_VISUAL_RETROFIT_RECORDED = YES
+SELECTIVE_INTERACTION_ADOPTION_RECORDED = YES
+CAMERA_QUICK_DETAIL_PANEL = ADOPT
+ARGOS_CURRENT_PAGE_COMPOSITION = PRESERVE
+LATEST_CAMERA_CAPTURE_FEEDS_PANEL = YES_WHEN_CANONICAL_CONTRACT_AVAILABLE
+FASE_C_DEPENDENCY = EXPLICIT
+BIG_BANG_INTEGRATION = PROHIBITED
+INTEGRATION_GATE = REQUIRED_WHEN_APPLICABLE
+UI_0 = READ_ONLY_PREPARATORY_NEXT_ACTIVITY
+UI_1 = TOKEN_COMPONENT_ADAPTER_FOUNDATION
+UI_2 = INVENTORY_VISUAL_RETROFIT
+UI_3 = INTEGRATED_CAMERA_QUICK_DETAIL_PANEL
+UI_4 = INTEGRATED_VISUAL_FUNCTIONAL_ACCESSIBILITY_INTERACTION_QA
+```
+
+Detalhes permanecem exclusivamente em
+`docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`; ordem e marcos
+estão em `docs/projeto/SPRINTS_ARGOS_V5.md`.
 
 
 ## 5. Monitoring workstream continuity
@@ -95,9 +125,10 @@ MON09_TECHNICALLY_COMPLETE = YES
 MONITORING_TECHNICAL_FRONT_COMPLETE = YES
 NEXT_TECHNICAL_MON_ACTIVITY = NONE
 TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
-NEXT_REQUIRED_ACTIVITY = FASE C — Captura manual e gestão de imagens
+NEXT_REQUIRED_ACTIVITY = UI-0 — READ-ONLY PREFLIGHT (UI-DS; após adjudicação humana e autorização)
 NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
 NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
+NEXT_REQUIRED_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
 NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION
 MON08C6_STATUS = COMPLETE / FINAL ADJUDICATION COMPLETE
 MON08C6_IMPLEMENTATION_AUTHORIZATION = NOT_APPLICABLE
@@ -120,6 +151,8 @@ NEXT_TECHNICAL_MON_ACTIVITY = NONE
 TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
 NEXT_PROJECT_ACTIVITY = FASE C — Captura manual e gestão de imagens
 NEXT_PROJECT_ACTIVITY_STATUS = PLANEJADA
+NEXT_REQUIRED_ACTIVITY = UI-0 — READ-ONLY PREFLIGHT (UI-DS; após adjudicação humana e autorização)
+NEXT_REQUIRED_ACTIVITY_STATUS = RECOMMENDED_NOT_AUTHORIZED
 SECURITY_GATES = LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS; HOMOLOGATION = BLOCKED; DEPLOYMENT = BLOCKED; PRODUCTION = BLOCKED
 VALIDATED_ENVELOPE = UNKNOWN / ONLINE / OFFLINE como estados estáveis; SUSPECT efêmero; STALE como freshness; confirmation memory persistente; pending failure streak sobrevive restart; thresholds respeitados; restart sem transição/outage falsa; falha de banco não equivale a câmera offline; CANCELLED neutro; timeout/rede conforme semântica canônica; sem histórico funcional falso em falha operacional e com recovery possível; ownership por câmera, owner persistente e epoch monotônico; lease define elegibilidade operacional de takeover; epoch é fencing token; config_generation é independente; completion de owner obsoleto sem side effects de domínio; owner antigo não libera owner novo; completion válida libera ownership atomicamente; renovação de lease não implementada; MonitoringConfig integrado à configuração ARGOS, config inválida fail-fast; status, backlog/in-flight, falhas operacionais e ownership diagnosticáveis; observabilidade sem histórico funcional e logs sem secrets
 FUTURE_VALIDATIONS = PostgreSQL real; multi-processo real em produção; rede real; câmeras reais; credenciais reais; capacidade produtiva; budgets formais de CPU, memória e conexões
