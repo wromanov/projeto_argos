@@ -2697,3 +2697,189 @@
     }
 
 }
+
+/* UI-2 — Inventory visual retrofit */
+.inventory-filters-card {
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.inventory-filters-card__header {
+    margin-bottom: var(--space-4);
+}
+
+.inventory-filter-form .form-label {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    line-height: var(--line-height-tight);
+}
+
+.inventory-filters-card + .active-filters {
+    margin-block: 0 var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.inventory-panel {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.camera-table.data-table th {
+    color: var(--color-text-primary);
+    background: var(--color-surface-muted);
+    font-size: var(--font-size-xs);
+}
+
+.camera-table.data-table tbody tr {
+    transition: background-color var(--argos-transition);
+}
+
+.camera-table.data-table tbody tr:hover {
+    background: var(--color-secondary);
+}
+
+.camera-table.data-table tbody tr:focus-within {
+    background: var(--color-accent);
+    outline: 2px solid var(--color-focus);
+    outline-offset: -2px;
+}
+
+.camera-table__cell--status .badge {
+    max-width: 100%;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.25;
+}
+
+.camera-identity {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.camera-thumbnail {
+    display: grid;
+    flex: 0 0 3.75rem;
+    place-items: center;
+    width: 3.75rem;
+    height: 2.625rem;
+    overflow: hidden;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-muted);
+    color: var(--color-text-secondary);
+}
+
+.camera-thumbnail svg {
+    width: 1.375rem;
+    height: 1.375rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+}
+
+.camera-thumbnail__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.camera-identity__text {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.camera-thumbnail[data-thumbnail-state="UNAVAILABLE"],
+.camera-thumbnail[data-thumbnail-state="ERROR"] {
+    position: relative;
+}
+
+.camera-thumbnail[data-thumbnail-state="UNAVAILABLE"] {
+    border-style: dashed;
+    background: var(--color-warning-surface);
+    color: var(--color-warning);
+}
+
+.camera-thumbnail[data-thumbnail-state="UNAVAILABLE"]::after,
+.camera-thumbnail[data-thumbnail-state="ERROR"]::after {
+    position: absolute;
+    right: .125rem;
+    bottom: -.125rem;
+    padding-inline: .125rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-elevated);
+    font-size: .625rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.camera-thumbnail[data-thumbnail-state="UNAVAILABLE"]::after {
+    content: "?";
+}
+
+.camera-thumbnail[data-thumbnail-state="ERROR"] {
+    border-style: solid;
+    background: var(--color-danger-surface);
+    color: var(--color-danger);
+}
+
+.camera-thumbnail[data-thumbnail-state="ERROR"]::after {
+    content: "!";
+}
+
+@media (min-width: 75.001rem) and (max-width: 84rem) {
+    .camera-table.data-table {
+        min-width: 60rem;
+    }
+
+    .camera-table__col--camera {
+        width: 21.5%;
+    }
+
+    .camera-table__col--location {
+        width: 11.25%;
+    }
+
+    .camera-table__col--network {
+        width: 10.2%;
+    }
+
+    .camera-table__col--equipment {
+        width: 14.5%;
+    }
+
+    .camera-table__col--governance {
+        width: 11rem;
+        min-width: 11rem;
+    }
+}
+
+@media (min-width: 144rem) {
+    .inventory-filter-form {
+        grid-template-columns: repeat(11, minmax(0, 1fr));
+    }
+
+    .inventory-filter-form .form-field--search {
+        grid-column: span 2;
+    }
+
+    .inventory-filter-actions {
+        grid-column: span 1;
+    }
+}
+
+@media (max-width: 44rem) {
+    .inventory-filters-card {
+        padding: var(--space-4);
+    }
+}
