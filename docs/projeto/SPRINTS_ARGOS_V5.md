@@ -12,12 +12,12 @@ REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-
 REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08B06854073CE16FE028DA14
 CURRENT_PHASE = FASE C — Captura manual e gestão de imagens
-CURRENT_PHASE_STATUS = EM_ANDAMENTO / IMG-02 COMPLETE / INTEGRATED; UI-1 COMPLETE / INTEGRATED
+CURRENT_PHASE_STATUS = EM_ANDAMENTO / IMG-02, IMG-03, UI-1 e UI-2 COMPLETE / INTEGRATED
 IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
-CURRENT_ACTIVITY = nenhum trabalho de implementação autorizado por este mapa
-LAST_COMPLETED_ACTIVITY = IMG-02 + UI-1 — checkpoint de integração paralela
+CURRENT_ACTIVITY = reconciliação documental pós-integração IMG-03 + UI-2 concluída; sem implementação ativa autorizada
+LAST_COMPLETED_ACTIVITY = IMG-03 + UI-2 — checkpoint de integração
 LAST_COMPLETED_ACTIVITY_STATUS = COMPLETE / INTEGRATED
-NEXT_CANDIDATES = IMG-03 — Upload manual; UI-2 — Inventory Visual Retrofit
+NEXT_CANDIDATES = SECURE_IMAGE_PREVIEW_DELIVERY
 NEXT_CANDIDATES_STATUS = NOT_AUTHORIZED
 IMG02_IMPLEMENTATION_AUTHORIZATION = GRANTED_BY_EXPLICIT_USER_INSTRUCTION_FOR_THIS_SLICE_ONLY
 IMG-01 = COMPLETE após o checkpoint documental; contrato canônico:
@@ -30,10 +30,10 @@ CONTINUITY_AUTHORITY = docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md
 UI-0 = COMPLETE / PASS_WITH_FINDINGS (read-only; não concede autorização de implementação)
 IMG-02 = COMPLETE / INTEGRATED; COMMIT = ceda8f6
 UI-1 = COMPLETE / INTEGRATED; COMMIT = c5928e8
-LATEST_INTEGRATION_COMMIT = d5f1f54
+LATEST_INTEGRATION_COMMIT = c79fa06
 INTEGRATION_GATE = PASS
-IMG-03 = NEXT_CANDIDATE / NOT_AUTHORIZED
-UI-2 = NEXT_CANDIDATE / NOT_AUTHORIZED
+IMG-03 = COMPLETE / INTEGRATED; COMMIT = f6e08b6; INTEGRATION_COMMIT = 0708797
+UI-2 = COMPLETE / INTEGRATED; COMMIT = b57f959; INTEGRATION_COMMIT = c79fa06
 ```
 
 Este é o documento canônico de execução de slices para as atividades futuras
@@ -47,11 +47,11 @@ Este mapa registra status, ordem, dependências e gates das slices. O estado
 recuperável entre agentes e o contrato de handoff pertencem a
 `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`.
 
-MON-09 está tecnicamente encerrada. IMG-02 e UI-1 estão COMPLETE / INTEGRATED,
-com INTEGRATION_GATE = PASS. IMG-03 e UI-2 são candidatas futuras e permanecem
-NOT_AUTHORIZED. Este mapa registra status e sequência; não concede autorização
-para avançar uma dessas slices, mudar de fase ou executar em
-homologação/produção.
+MON-09 está tecnicamente encerrada. IMG-02, UI-1, IMG-03 e UI-2 estão COMPLETE
+/ INTEGRATED; o gate mais recente passou em `c79fa06`. A próxima candidata
+registrada é `SECURE_IMAGE_PREVIEW_DELIVERY`, ainda NOT_AUTHORIZED. Este mapa
+registra status e sequência; não concede autorização para implementar a
+candidata, avançar slices, mudar de fase ou executar em homologação/produção.
 
 Em caso de divergência:
 
@@ -172,9 +172,12 @@ IMG-01 = COMPLETE / checkpoint documental
 UI-0 = COMPLETE / PASS_WITH_FINDINGS (read-only)
 IMG-02 = COMPLETE / INTEGRATED (ceda8f6)
 UI-1 = COMPLETE / INTEGRATED (c5928e8)
-INTEGRATION_GATE = PASS (d5f1f54)
+IMG-03 = COMPLETE / INTEGRATED (f6e08b6; integration 0708797)
+UI-2 = COMPLETE / INTEGRATED (b57f959; integration c79fa06)
+INTEGRATION_GATE = PASS (c79fa06)
 ↓
-CANDIDATAS: IMG-03 e UI-2 = NOT_AUTHORIZED
+SECURE_IMAGE_PREVIEW_DELIVERY = NEXT_CANDIDATE / NOT_AUTHORIZED
+IMG-04 e UI-3 = NOT_AUTHORIZED
 ↓
 demais slices seguem as dependências canônicas e exigem autorização própria
 ```
@@ -263,7 +266,7 @@ Para continuidade entre chats, consultar os quatro documentos em
 `ACTIVE_DOCUMENT_MAP.md`.
 
 
-## 10. Checkpoint de integração IMG-02 + UI-1
+## 10. Registro histórico — checkpoint de integração IMG-02 + UI-1
 
 IMG-02 = COMPLETE / INTEGRATED
 UI-1 = COMPLETE / INTEGRATED
@@ -272,6 +275,38 @@ UI-1_COMMIT = c5928e8
 LATEST_INTEGRATION_COMMIT = d5f1f54
 INTEGRATION_GATE = PASS
 INTEGRATION_VALIDATION = manage.py check PASS; cameras.test_imagens_read_service 13/13 PASS
-IMG-03 = NEXT_CANDIDATE / NOT_AUTHORIZED
-UI-2 = NEXT_CANDIDATE / NOT_AUTHORIZED
 OPEN_DECISIONS = consultar docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+
+## 11. Checkpoint vigente — integração IMG-03 + UI-2 (2026-09-25)
+
+IMG-03 = COMPLETE / INTEGRATED
+IMG-03_COMMIT = f6e08b6
+IMG-03_INTEGRATION_COMMIT = 0708797
+UI-2 = COMPLETE / INTEGRATED
+UI-2_COMMIT = b57f959
+UI-2_INTEGRATION_COMMIT = c79fa06
+INTEGRATION_GATE = PASS
+INTEGRATION_VALIDATION = manage.py check PASS; makemigrations --check --dry-run PASS (No changes detected); cameras.test_imagens_read_service + cameras.test_imagens_upload = 20/20 PASS
+PILLOW = dependência técnica de upload; versão 12.3.0 disponível no venv integrado
+MERGE_CONFLICTS_IMG03 = NONE
+MERGE_CONFLICTS_UI2 = NONE
+
+INVENTORY_CAMERA_THUMBNAIL = APPROVED
+INVENTORY_THUMBNAIL_SOURCE = LATEST_CAMERA_CAPTURE
+INVENTORY_THUMBNAIL_VISUAL_FOUNDATION = COMPLETE
+INVENTORY_THUMBNAIL_REAL_DATA_WIRING = DEFERRED
+BLOCKING_DEPENDENCY = SECURE_IMAGE_PREVIEW_DELIVERY
+INVENTORY_THUMBNAIL_STATUS = foundation visual com placeholder neutro; sem dados reais e sem completude funcional
+
+SECURE_IMAGE_PREVIEW_DELIVERY = REQUIRED / NOT_YET_AUTHORIZED
+SECURE_IMAGE_PREVIEW_DELIVERY_STATUS = NEXT_CANDIDATE / NOT_AUTHORIZED
+SECURE_IMAGE_PREVIEW_DELIVERY_CONSUMERS = Inventory thumbnail; CameraQuickDetailPanel
+DELIVERY_ARCHITECTURE = ONE SECURE DELIVERY CONTRACT → MULTIPLE AUTHORIZED CONSUMERS
+IMG-04 = NOT_AUTHORIZED
+UI-3 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+
+O detalhe técnico e as demais decisões deferred ficam no `PROJECT_STATE.md` e
+no `AGENT_CONTINUITY.md`; contracts de domínio e UI permanecem nas authorities
+especializadas. A ordenação de candidatas neste mapa é planejamento e não
+concede autorização. Não houve reexecução de testes nesta reconciliação.

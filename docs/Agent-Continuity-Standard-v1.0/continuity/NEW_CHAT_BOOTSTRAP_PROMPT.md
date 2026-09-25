@@ -40,7 +40,7 @@ PUSH = NOT_AUTHORIZED
 
 Leia as políticas transversais ativas indicadas em `AGENT_CONTINUITY.md`; não use versões superseded como authority.
 
-## Estado técnico atual
+## Estado técnico histórico — referência anterior a IMG-02 + UI-1
 
 LAST_RELEVANT_CHECKPOINT = 850efd2381d7f5b7df27e528dc3374ea58e507b3 (850efd2)
 TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
@@ -133,7 +133,7 @@ MON-09 não altera gates ambientais nem declara homologation, deployment ou
 production ready.
 
 
-## Checkpoint vigente — integração IMG-02 + UI-1 (2026-09-25)
+## Checkpoint histórico — integração IMG-02 + UI-1 (2026-09-25)
 
 Para detalhes do contrato funcional e das decisões deferred, consulte
 docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md. Este checkpoint registra status,
@@ -161,3 +161,54 @@ ACTIVITY_COMPLETION_PERCENT = 100%
 PROJECT_STATE_UPDATE = PASS
 DOCUMENT_RECONCILIATION_GATE = PASS
 AGENT_HANDOFF_GATE_RESULT = PASS
+
+## Checkpoint vigente — integração IMG-03 + UI-2 (2026-09-25)
+
+Leia o checkpoint mais recente em `PROJECT_STATE.md` e `AGENT_CONTINUITY.md`
+antes de qualquer ação. Ele supersede os status de IMG-03/UI-2 deste bootstrap
+que estejam marcados como históricos.
+
+IMG-03 = COMPLETE / INTEGRATED; COMMIT = f6e08b6; INTEGRATION_COMMIT = 0708797
+UI-2 = COMPLETE / INTEGRATED; COMMIT = b57f959; INTEGRATION_COMMIT = c79fa06
+INTEGRATION_GATE = PASS
+INTEGRATION_VALIDATION = manage.py check PASS; makemigrations --check --dry-run PASS; cameras.test_imagens_read_service + cameras.test_imagens_upload = 20/20 PASS
+PILLOW = dependência técnica de upload; versão 12.3.0 disponível no venv integrado
+
+INVENTORY_CAMERA_THUMBNAIL = APPROVED; SOURCE = LATEST_CAMERA_CAPTURE
+INVENTORY_THUMBNAIL_VISUAL_FOUNDATION = COMPLETE
+INVENTORY_THUMBNAIL_REAL_DATA_WIRING = DEFERRED
+THUMBNAIL_CURRENT_STATE = somente placeholder neutro; não há thumbnail real nem completude funcional
+NO_MANUAL_UPLOAD_FALLBACK = YES
+NO_PRIMARY_IMAGE_FALLBACK = YES
+NO_SILENT_OLDER_CAPTURE_FALLBACK = YES
+
+SECURE_IMAGE_PREVIEW_DELIVERY = REQUIRED / NOT_YET_AUTHORIZED
+SECURE_IMAGE_PREVIEW_DELIVERY_STATUS = NEXT_CANDIDATE / NOT_AUTHORIZED
+SECURE_IMAGE_PREVIEW_DELIVERY_CONSUMERS = Inventory thumbnail; CameraQuickDetailPanel
+DELIVERY_ARCHITECTURE = ONE SECURE DELIVERY CONTRACT → MULTIPLE AUTHORIZED CONSUMERS
+IMG-04 = NOT_AUTHORIZED
+UI-3 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+
+STORAGE_BACKEND_DEFINITIVE = DEFERRED
+IMAGE_FORMAT_POLICY_DEFINITIVE = DEFERRED
+UPLOAD_SIZE_LIMIT_POLICY_DEFINITIVE = DEFERRED
+IMAGE_DIMENSION_LIMIT_POLICY_DEFINITIVE = DEFERRED
+UPLOAD_REJECTION_AUDIT_HARDENING = DEFERRED
+FINAL_IMAGE_PERMISSION_MATRIX = DEFERRED / FUTURE HARDENING
+DETAILS = docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md and docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+
+GIT_BASELINE = master; HEAD c79fa06775ccb707b6753f2a8ed0e988e8a9c86d; origin/master 547678de9c70ee9eda2fc30599417d217c878006; ahead 4 / behind 0 at activity start
+GIT_WORKTREE_AFTER_DOCUMENTARY_RECONCILIATION = seis documentos permitidos modificados e unstaged; staging vazio
+IMPLEMENTATION_AUTHORIZED = NO
+LIVE_AUTHORIZED = NO
+COMMIT_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED; DEPLOYMENT BLOCKED; PRODUCTION BLOCKED
+PROJECT_STATE_UPDATE = PASS
+DOCUMENT_RECONCILIATION_GATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PASS
+
+Nesta reconciliação, os gates foram aceitos como evidência fornecida e não
+reexecutados. Valide Git diretamente ao iniciar nova sessão; esta atividade
+documental não autoriza implementação, staging, commit ou push.

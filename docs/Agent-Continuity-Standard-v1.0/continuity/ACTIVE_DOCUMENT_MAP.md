@@ -11,17 +11,17 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; updated 2026-09-25 after IMG-02 + UI-1 integration |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; updated 2026-09-25 after IMG-03 + UI-2 integration |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; latest checkpoint IMG-03 + UI-2 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest checkpoint IMG-03 + UI-2 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; latest checkpoint IMG-03 + UI-2 |
 
 ## 2. Authorities canônicas do projeto
 
 | Path | Role | Authority scope | Status |
 |---|---|---|---|
-| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; IMG-02 + UI-1 integrated checkpoint; IMG-03 and UI-2 not authorized |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; IMG-02 + UI-1 integrated; IMG-03 and UI-2 remain not authorized |
+| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; IMG-03 + UI-2 integrated checkpoint |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; IMG-03 + UI-2 integrated; next candidate not authorized |
 | `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; image-domain contract and deferred production backend decision |
 | `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; decisão funcional do painel aprovada pelo usuário na seção 7.3 |
 | `docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md` | Registro factual dos findings de UI-0 | Findings do preflight read-only, sem alterar a authority de UI-DS | PRESENT / CURRENT FINDINGS RECORD; NON-BLOCKING |
@@ -59,15 +59,16 @@ Rules:
 
 Git controls factual repository state.
 
-Current validated baseline snapshot before this continuity/handoff documentary checkpoint:
+Baseline factual validada no início da reconciliação documental IMG-03 + UI-2:
 
-- repository: `C:\Users\walacedelgado\PycharmProjects\projeto_argos`
+- repository: `C:\Users\walac\desenvolvimento\projeto_argos`
 - branch: `master`
-- HEAD = origin/master: `f4e88146c1146cdf04d657eb6e3cefa560639b61`
-- divergence: ahead 0 / behind 0
-- worktree: clean
+- HEAD: `c79fa06775ccb707b6753f2a8ed0e988e8a9c86d`
+- origin/master: `547678de9c70ee9eda2fc30599417d217c878006`
+- divergence: ahead 4 / behind 0
+- worktree antes da reconciliação: clean
 - staging: empty
-- snapshot: baseline before this documentary activity; revalidate Git after its documentary commit and in a new session
+- validação: 2026-09-25; Git permanece a fonte factual e deve ser revalidado em nova sessão
 
 The technical MON-09 checkpoint remains `850efd2381d7f5b7df27e528dc3374ea58e507b3`;
 it is historical technical evidence, not the current Git HEAD.
@@ -89,8 +90,8 @@ BIG_BANG_INTEGRATION = PROHIBITED
 INTEGRATION_GATE = REQUIRED_WHEN_APPLICABLE
 UI_0 = COMPLETE / PASS_WITH_FINDINGS; READ_ONLY; DOES_NOT_AUTHORIZE_IMPLEMENTATION
 UI_1 = COMPLETE / INTEGRATED; COMMIT = c5928e8
-UI_2 = NEXT_CANDIDATE / NOT_AUTHORIZED
-UI_3 = INTEGRATED_CAMERA_QUICK_DETAIL_PANEL
+UI_2 = COMPLETE / INTEGRATED; COMMIT = b57f959; INTEGRATION_COMMIT = c79fa06
+UI_3 = PENDING / NOT_AUTHORIZED; CameraQuickDetailPanel integration
 UI_4 = INTEGRATED_VISUAL_FUNCTIONAL_ACCESSIBILITY_INTERACTION_QA
 ```
 
@@ -173,7 +174,10 @@ VALIDATED_ENVELOPE = UNKNOWN / ONLINE / OFFLINE como estados estáveis; SUSPECT 
 FUTURE_VALIDATIONS = PostgreSQL real; multi-processo real em produção; rede real; câmeras reais; credenciais reais; capacidade produtiva; budgets formais de CPU, memória e conexões
 LOG_VOLUME_HARDENING_STATUS = HARDENING / NON-BLOCKING — potential high INFO log volume per cycle/attempt
 
-MON-08/MON-09 predecessor entries above are continuity history. IMG-01 is the completed documentary checkpoint; implementation in Fase C has not started. Do not resume MON-09 or infer production readiness.
+MON-08/MON-09 predecessor entries above are continuity history. IMG-01 is the
+completed documentary checkpoint; IMG-02, IMG-03, UI-1 and UI-2 are now
+integrated. Fase C is not complete. Do not resume MON-09 or infer production
+readiness.
 
 ## 7. Image-domain continuity
 
@@ -189,7 +193,8 @@ OPEN_DECISION_COUNT = 7; see the canonical contract for each decision and its cl
 IMG02_STATUS = COMPLETE / INTEGRATED
 IMG02_IMPLEMENTATION_AUTHORIZATION = prior authorization for this slice consumed
 PRODUCTION_STORAGE_BACKEND = DEFERRED; contract persistent storage and configurable abstraction recorded in canonical image contract
-NEXT_CANDIDATES = IMG-03, UI-2; both NOT_AUTHORIZED
+IMG03_STATUS = COMPLETE / INTEGRATED; COMMIT = f6e08b6; INTEGRATION_COMMIT = 0708797
+NEXT_CANDIDATE = SECURE_IMAGE_PREVIEW_DELIVERY / NOT_AUTHORIZED
 FASE_C_COMPLETE = NO
 
 ## 8. Continuidade e estado atual
@@ -198,19 +203,20 @@ ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
 AGENT_HANDOFF_GATE = ACTIVE
 CONTINUITY_AUTHORITY = docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md
 CURRENT_MACROPHASE = FASE C — Captura manual e gestão de imagens
-CURRENT_GIT_BASELINE = master; HEAD d5f1f54bea518496d7e8c8b64487cfea459372f6; origin/master 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
-DIVERGENCE = ahead 3 / behind 0
-CURRENT_WORKTREE = documentação deste checkpoint modificada e unstaged; staging vazio
-LAST_COMPLETED_ACTIVITY = IMG-02 + UI-1 — COMPLETE / INTEGRATED
-NEXT_CANDIDATES = IMG-03; UI-2
-NEXT_CANDIDATES_STATUS = NOT_AUTHORIZED
+CURRENT_GIT_BASELINE = master; HEAD c79fa06775ccb707b6753f2a8ed0e988e8a9c86d; origin/master 547678de9c70ee9eda2fc30599417d217c878006
+DIVERGENCE = ahead 4 / behind 0
+CURRENT_WORKTREE = seis documentos desta reconciliação modificados e unstaged; staging vazio
+LAST_COMPLETED_ACTIVITY = IMG-03 + UI-2 — COMPLETE / INTEGRATED
+NEXT_CANDIDATE = SECURE_IMAGE_PREVIEW_DELIVERY
+NEXT_CANDIDATE_STATUS = NOT_AUTHORIZED
 IMPLEMENTATION_AUTHORIZED = NO
 LIVE_AUTHORIZED = NO
 COMMIT_AUTHORIZED = NO
 PUSH_AUTHORIZED = NO
-UI_DS_STATUS = UI-1 COMPLETE / INTEGRATED; UI-2 NOT_AUTHORIZED
+UI_DS_STATUS = UI-1 and UI-2 COMPLETE / INTEGRATED; UI-3 NOT_AUTHORIZED
 IMG02_STATUS = COMPLETE / INTEGRATED
-LATEST_INTEGRATION_COMMIT = d5f1f54
+IMG03_STATUS = COMPLETE / INTEGRATED
+LATEST_INTEGRATION_COMMIT = c79fa06
 OPEN_DECISIONS = 7; detalhes somente no contrato canônico de imagem
 SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED; DEPLOYMENT BLOCKED; PRODUCTION BLOCKED
 
@@ -218,14 +224,39 @@ Para o status, os commits e os critérios de handoff, consulte
 PROJECT_STATE.md e AGENT_CONTINUITY.md. Este mapa identifica authorities e
 escopo; não duplica os detalhes especializados.
 
-## 9. Checkpoint vigente — IMG-02 + UI-1
+## 9. Checkpoint histórico — IMG-02 + UI-1
 
 IMG-02 = COMPLETE / INTEGRATED; commit ceda8f6
 UI-1 = COMPLETE / INTEGRATED; commit c5928e8
 LATEST_INTEGRATION_COMMIT = d5f1f54
 INTEGRATION_GATE = PASS
 IMG-03 = NEXT_CANDIDATE / NOT_AUTHORIZED
-UI-2 = NEXT_CANDIDATE / NOT_AUTHORIZED
+UI-2 = NEXT_CANDIDATE / NOT_AUTHORIZED at that checkpoint
 CANONICAL_IMAGE_AUTHORITY = docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
 CANONICAL_UI_AUTHORITY = docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md
 SPRINT_ORDER_AUTHORITY = docs/projeto/SPRINTS_ARGOS_V5.md
+
+## 10. Checkpoint vigente — IMG-03 + UI-2 (2026-09-25)
+
+IMG-03 = COMPLETE / INTEGRATED; COMMIT = f6e08b6; INTEGRATION_COMMIT = 0708797
+UI-2 = COMPLETE / INTEGRATED; COMMIT = b57f959; INTEGRATION_COMMIT = c79fa06
+INTEGRATION_GATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PASS
+CANONICAL_IMAGE_AUTHORITY = docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+CANONICAL_UI_AUTHORITY = docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md
+SPRINT_ORDER_AUTHORITY = docs/projeto/SPRINTS_ARGOS_V5.md
+
+INVENTORY_CAMERA_THUMBNAIL = APPROVED; SOURCE = LATEST_CAMERA_CAPTURE
+INVENTORY_THUMBNAIL_VISUAL_FOUNDATION = COMPLETE
+INVENTORY_THUMBNAIL_REAL_DATA_WIRING = DEFERRED
+SECURE_IMAGE_PREVIEW_DELIVERY = REQUIRED / NOT_YET_AUTHORIZED
+SECURE_IMAGE_PREVIEW_DELIVERY_STATUS = NEXT_CANDIDATE / NOT_AUTHORIZED
+IMG-04 = NOT_AUTHORIZED
+UI-3 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+
+Consulte `PROJECT_STATE.md` para evidências de integração, limites de
+thumbnail, decisões deferred, permissões e estado Git pós-edição. A imagem e a
+UI continuam subordinadas às authorities especializadas. A reconciliação
+documental não altera security gates nem autoriza implementação, commit ou
+push.
