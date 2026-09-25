@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_not_required, permission_requir
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponse, QueryDict
+from django.http import HttpResponse, JsonResponse, QueryDict
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.dateparse import parse_date
@@ -22,6 +22,7 @@ from .monitoramento.read_service import MonitoringReadService
 from .imagens.upload_service import aceitar_upload_manual
 from .imagens.read_service import CameraImageReadService
 from .imagens.preview_service import CameraImagePreviewService, PreviewState, CONTENT_TYPE, VARIANTS
+from .quick_detail import camera_quick_detail
 from .validadores import normalizar_texto_cadastral
 
 ORDENACOES_PERMITIDAS = {"nome", "-nome", "status", "-status", "ip", "-ip", "atualizado_em", "-atualizado_em"}
@@ -409,6 +410,29 @@ def detalhe_camera(request, pk):
     if request.user.has_perm("cameras.consultar_substituicoescamera"):
         contexto["substituicoes"] = SubstituicaoCamera.objects.filter(Q(camera_anterior=camera) | Q(camera_substituta=camera)).select_related("camera_anterior", "camera_substituta")[:10]
     return render(request, "cameras/detalhe.html", contexto)
+
+
+@login_not_required
+def quick_detail_camera(request, pk):
+    """Metadados privados e limitados; bytes da imagem seguem rota própria."""
+    if not request.user.is_authenticated:
+        response = JsonResponse({"state": "UNAUTHENTICATED"}, status=401)
+    elif not request.user.has_perm("cameras.view_camera"):
+        response = JsonResponse({"state": "FORBIDDEN"}, status=403)
+    elif request.method != "GET":
+        response = JsonResponse({"state": "METHOD_NOT_ALLOWED"}, status=405)
+    elif request.GET:
+        response = JsonResponse({"state": "INVALID_REQUEST"}, status=400)
+    else:
+        try:
+            payload = camera_quick_detail(pk)
+        except Camera.DoesNotExist:
+            response = JsonResponse({"state": "NOT_FOUND"}, status=404)
+        else:
+            response = JsonResponse(payload)
+    response["Cache-Control"] = "no-store"
+    response["X-Content-Type-Options"] = "nosniff"
+    return response
 
 
 @login_not_required
