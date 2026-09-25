@@ -155,6 +155,9 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+# Storage local privado para desenvolvimento; STORAGES pode ser substituído por ambiente.
+MEDIA_ROOT = BASE_DIR / "private_media"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
