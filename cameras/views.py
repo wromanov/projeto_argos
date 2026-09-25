@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
+from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import QueryDict
@@ -18,6 +19,7 @@ from .governanca import (
 )
 from .models import AtividadeCamera, Camera, EventoAuditoria, SubstituicaoCamera
 from .monitoramento.read_service import MonitoringReadService
+from .imagens.upload_service import aceitar_upload_manual
 from .validadores import normalizar_texto_cadastral
 
 ORDENACOES_PERMITIDAS = {"nome", "-nome", "status", "-status", "ip", "-ip", "atualizado_em", "-atualizado_em"}
@@ -402,6 +404,21 @@ def detalhe_camera(request, pk):
     if request.user.has_perm("cameras.consultar_substituicoescamera"):
         contexto["substituicoes"] = SubstituicaoCamera.objects.filter(Q(camera_anterior=camera) | Q(camera_substituta=camera)).select_related("camera_anterior", "camera_substituta")[:10]
     return render(request, "cameras/detalhe.html", contexto)
+
+
+@permission_required("cameras.view_camera", raise_exception=True)
+@permission_required("cameras.add_cameraimagerecord", raise_exception=True)
+def upload_imagem_camera(request, pk):
+    camera = get_object_or_404(Camera, pk=pk)
+    if request.method == "POST":
+        try:
+            aceitar_upload_manual(camera=camera, usuario=request.user,
+                                  arquivo=request.FILES.get("imagem"), request=request)
+        except ValidationError as exc:
+            messages.error(request, " ".join(exc.messages))
+        else:
+            messages.success(request, "Imagem enviada e registrada como upload manual.")
+    return redirect("cameras:detalhe", pk=camera.pk)
 
 
 @permission_required("cameras.view_camera", raise_exception=True)

@@ -126,6 +126,18 @@
 </section>
 
 <div class="detail-layout">
+{% if perms.cameras.add_cameraimagerecord %}
+<section class="inventory-panel detail-card detail-card--full">
+  <div class="inventory-panel__header"><h2>Enviar imagem manualmente</h2></div>
+  <p>A imagem será registrada como upload manual, sem data de captura da câmera.</p>
+  <form action="{% url 'cameras:upload_imagem' camera.pk %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="imagem-camera">Imagem</label>
+    <input id="imagem-camera" name="imagem" type="file" accept="image/jpeg,image/png,image/webp" required>
+    <button class="button button--primary" type="submit">Enviar imagem</button>
+  </form>
+</section>
+{% endif %}
 <section class="inventory-panel detail-card detail-card--identity"><div class="inventory-panel__header"><h2>Identificação</h2></div><dl class="detail-grid"><dt>Patrimônio</dt><dd class="technical-value{% if not camera.patrimonio %} detail-value--empty{% endif %}">{{ camera.patrimonio|default:"—" }}</dd><dt>Nome</dt><dd class="detail-value--strong">{{ camera.nome }}</dd><dt>Fabricante</dt><dd class="detail-value--strong">{{ camera.fabricante }}</dd><dt>Modelo</dt><dd class="detail-value--strong">{{ camera.modelo }}</dd><dt>Serial</dt><dd class="technical-value{% if not camera.serial %} detail-value--empty{% endif %}">{{ camera.serial|default:"—" }}</dd><dt>MAC</dt><dd class="technical-value{% if not camera.mac %} detail-value--empty{% endif %}">{{ camera.mac|default:"—" }}</dd><dt>Tipo</dt><dd class="detail-value--strong{% if not camera.tipo %} detail-value--empty{% endif %}">{{ camera.get_tipo_display|default:"—" }}</dd></dl></section>
 <section class="inventory-panel detail-card detail-card--location"><div class="inventory-panel__header"><h2>Localização</h2></div><dl class="detail-grid"><dt>Terminal</dt><dd {% if not camera.terminal %}class="detail-value--empty"{% endif %}>{{ camera.terminal|default:"—" }}</dd><dt>Pavimento</dt><dd {% if not camera.pavimento %}class="detail-value--empty"{% endif %}>{{ camera.pavimento|default:"—" }}</dd><dt>Setor</dt><dd {% if not camera.setor %}class="detail-value--empty"{% endif %}>{{ camera.setor|default:"—" }}</dd><dt>Ambiente</dt><dd {% if not camera.ambiente %}class="detail-value--empty"{% endif %}>{{ camera.ambiente|default:"—" }}</dd><dt>Descrição detalhada</dt><dd {% if not camera.descricao_detalhada %}class="detail-value--empty"{% endif %}>{{ camera.descricao_detalhada|default:"—" }}</dd><dt>Ponto de referência</dt><dd {% if not camera.ponto_referencia %}class="detail-value--empty"{% endif %}>{{ camera.ponto_referencia|default:"—" }}</dd></dl></section>
 <section class="inventory-panel detail-card detail-card--network"><div class="inventory-panel__header"><h2>Rede</h2></div><dl class="detail-grid"><dt>IP</dt><dd class="technical-value{% if not camera.ip %} detail-value--empty{% endif %}">{{ camera.ip|default:"—" }}</dd><dt>Máscara</dt><dd class="technical-value{% if not camera.mascara_subrede %} detail-value--empty{% endif %}">{{ camera.mascara_subrede|default:"—" }}</dd><dt>Gateway</dt><dd class="technical-value{% if not camera.gateway %} detail-value--empty{% endif %}">{{ camera.gateway|default:"—" }}</dd><dt>VLAN</dt><dd class="technical-value{% if not camera.vlan %} detail-value--empty{% endif %}">{{ camera.vlan|default:"—" }}</dd></dl></section>
