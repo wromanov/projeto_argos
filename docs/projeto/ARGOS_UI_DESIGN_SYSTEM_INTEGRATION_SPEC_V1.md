@@ -389,10 +389,13 @@ conflito deve ser reportado antes da implementação.
 SOURCE_PATTERN = CameraDetailSheet
 ARGOS_PATTERN = CameraQuickDetailPanel
 DECISION = ADOPT
+USER_APPROVAL = EXPLICIT / APPROVED
 ROLE = Quick contextual inspection
 REPLACES_FULL_DETAILS = NO
 CAN_NAVIGATE_TO_FULL_DETAILS = YES
 PRESERVES_INVENTORY_CONTEXT = YES
+VMS_BLOCK = DO_NOT_ADOPT
+VMS_REPLACEMENT = LOCATION
 ```
 
 O `CameraQuickDetailPanel` é uma inspeção contextual rápida aberta a partir do
@@ -401,8 +404,10 @@ canônica e não pode se tornar uma mini página completa.
 
 O pacote confirma `CameraDetailSheet` como `Quick inspection surface` que agrupa
 identidade, status, rede, VMS e localização e aponta para a página roteada de
-edição/detalhes profundos. No ARGOS, esse padrão é traduzido para
-`CameraQuickDetailPanel`; `CameraDetailSheet` não deve ser tratado como uma
+edição/detalhes profundos. Esses elementos descrevem o padrão de referência,
+não o conteúdo automaticamente adotado pelo ARGOS. Para o painel ARGOS, a
+decisão explícita abaixo prevalece: VMS não é adotado e sua área funcional é
+substituída por Localização. `CameraDetailSheet` não deve ser tratado como uma
 segunda feature ou como uma nova rota.
 
 ### 7.1 Fluxo canônico
@@ -447,40 +452,64 @@ Se o estado estiver representado em URL/query string, ele deve ser preservado.
 O painel deve ser uma superfície contextual sobre a listagem, e não um
 redirecionamento que reconstrói o inventário.
 
-### 7.3 Conteúdo mínimo futuro
+### 7.3 Conteúdo funcional aprovado pelo usuário
 
-#### HEADER
+```text
+CAMERA_QUICK_DETAIL_PANEL = APPROVED
+HEADER = "Detalhes da câmera" + ação de fechar
+PREVIEW = LATEST_CAMERA_CAPTURE
+OPEN_PANEL = MUST_NOT_TRIGGER_NEW_CAPTURE
+IDENTITY = nome/identificação + código + status técnico + breadcrumb de localização resumida
+GENERAL_INFORMATION = fabricante + modelo + IP + tipo
+LOCATION = terminal + pavimento + setor + ambiente + ponto de referência
+MONITORING = estado técnico + última evidência útil + atualização/freshness
+PRIMARY_ACTION = "Abrir detalhes completos" → rota canônica existente
+VMS_BLOCK = DO_NOT_ADOPT
+VMS_REPLACEMENT = LOCALIZAÇÃO
+LATEST_CAMERA_CAPTURE != PRIMARY_IMAGE
+LATEST_CAMERA_CAPTURE != UPLOAD_MANUAL
+OPEN_PANEL != CAPTURE_NEW_IMAGE
+QUICK_DETAIL_PANEL != FULL_DETAIL_PAGE
+```
 
-- identificação/nome;
-- status;
-- controle de fechar.
+Referência funcional aprovada (estrutura; valores abaixo são ilustrativos):
 
-#### CAMERA PREVIEW
+```text
+┌──────────────────────────────────────┐
+│ Detalhes da câmera                X  │
+├──────────────────────────────────────┤
+│       ÚLTIMA CAPTURA REGISTRADA      │
+├──────────────────────────────────────┤
+│ Entrada Principal        [● Online]  │
+│ CAM-001                              │
+│ Terminal 1 > Térreo > Portaria       │
+├──────────────────────────────────────┤
+│ INFORMAÇÕES GERAIS                   │
+│ Fabricante / Modelo / IP / Tipo      │
+├──────────────────────────────────────┤
+│ LOCALIZAÇÃO                          │
+│ Terminal / Pavimento / Setor /       │
+│ Ambiente / Ponto de referência       │
+├──────────────────────────────────────┤
+│ MONITORAMENTO                        │
+│ Estado / Última evidência /          │
+│ Atualização                          │
+├──────────────────────────────────────┤
+│ [ Abrir detalhes completos ]         │
+└──────────────────────────────────────┘
+```
 
-- imagem da câmera conforme o contrato de imagem da seção 8.
-
-#### PRIMARY INFORMATION
-
-- identificação;
-- fabricante/modelo;
-- localização;
-- IP.
-
-#### OPERATIONAL INFORMATION
-
-- status técnico;
-- conectividade;
-- última comunicação/última atualização, quando disponível;
-- VMS, quando aplicável;
-- demais dados essenciais que estejam factual e semanticamente disponíveis.
-
-#### SECONDARY METADATA
-
-- somente o necessário para inspeção rápida.
+Esta decisão do usuário é a autoridade funcional do painel e não deve ser
+reinterpretada por agentes futuros. O padrão visual genérico pode mencionar
+VMS, mas essa referência não autoriza VMS no ARGOS; no painel, VMS é
+explicitamente excluído e Localização ocupa essa área funcional. O painel é
+uma inspeção contextual rápida e não substitui nem replica a página completa.
+Detalhes de imagem, proveniência e consulta permanecem na seção 8 e no contrato
+canônico de imagem.
 
 #### PRIMARY ACTION
 
-- `Ver detalhes`.
+- `Abrir detalhes completos`, reutilizando a rota canônica existente.
 
 O painel deve mostrar resumo operacional útil, sem repetir integralmente a
 página completa nem criar ações administrativas por consequência automática da

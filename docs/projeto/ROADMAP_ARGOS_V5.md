@@ -708,9 +708,12 @@ UI-3 — CameraQuickDetailPanel
 UI-4 — Visual / Functional / Accessibility / Interaction QA
 ```
 
-`CameraQuickDetailPanel` é padrão aprovado para inspeção contextual rápida; não
-substitui a página completa e deve consultar `LATEST_CAMERA_CAPTURE` pelo
-contrato canônico da Fase C quando disponível. `UI-0` está `COMPLETE /
+`CameraQuickDetailPanel` é padrão funcional explicitamente aprovado pelo
+usuário para inspeção contextual rápida; não substitui a página completa e
+deve consultar `LATEST_CAMERA_CAPTURE` pelo contrato canônico da Fase C quando
+disponível. VMS não é adotado; Localização é a seção aprovada. O detalhamento
+funcional e a estrutura de referência estão somente em
+`ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`. `UI-0` está `COMPLETE /
 PASS_WITH_FINDINGS` como preflight read-only; esse status não autoriza
 implementação visual. A próxima atividade de projeto permanece IMG-02,
 condicionada à adjudicação humana e autorização própria.

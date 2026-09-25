@@ -94,7 +94,10 @@ SELECTIVE VISUAL RETROFIT
 `ARGOS CURRENT PAGE COMPOSITION = PRESERVE` e
 `DO_NOT_MIGRATE_FRAMEWORKS = YES`. O padrão aprovado
 `CameraQuickDetailPanel` adota o papel de inspeção contextual rápida, sem
-substituir a página canônica completa da câmera.
+substituir a página canônica completa da câmera. Seu conteúdo funcional foi
+explicitamente aprovado pelo usuário e está registrado em
+`docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`; VMS não é adotado
+e Localização ocupa esse lugar. Não duplicar a especificação aqui.
 
 ### UI-0 — Read-only preflight
 
@@ -130,9 +133,11 @@ cards, table surfaces, borders, status, buttons, inputs, focus e selection.
 
 ### UI-3 — CameraQuickDetailPanel
 
-Integrar o painel ao inventário real, com seleção real, identificador canônico,
-resumo canônico, status canônico, contrato de latest camera capture quando
-disponível e rota canônica de detalhes completos.
+Integrar ao inventário real o painel funcional aprovado na authority UI-DS,
+com seleção real, identificador canônico, resumo e status canônicos,
+`LATEST_CAMERA_CAPTURE` conforme disponibilidade contratual, localização e
+rota canônica de detalhes completos. VMS permanece `DO_NOT_ADOPT`. UI-3 segue
+pendente e não está autorizada por este registro documental.
 
 ```text
 INTEGRATION_GATE = REQUIRED

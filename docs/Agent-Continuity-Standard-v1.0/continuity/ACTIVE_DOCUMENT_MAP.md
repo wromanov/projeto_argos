@@ -23,7 +23,7 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 | `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; IMG-01 concluída; IMG-02 próxima |
 | `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; IMG-02 próxima atividade de projeto |
 | `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; IMG-01 completa; IMG-02 próxima |
-| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; referência `camera-inventory-design-system-v1.0.1` |
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; decisão funcional do painel aprovada pelo usuário na seção 7.3 |
 | `docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md` | Registro factual dos findings de UI-0 | Findings do preflight read-only, sem alterar a authority de UI-DS | PRESENT / CURRENT FINDINGS RECORD; NON-BLOCKING |
 | `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | ADR de arquitetura | Arquitetura de monitoramento e relação com gestão de imagens | PRESENT / AUTHORITY; verificar vigência no escopo aplicável |
 | `docs/projeto/ADR-020_contrato_estado_tecnico_monitoramento.md` | Contrato técnico de monitoramento | Estado e semântica de leitura técnica | PRESENT / AUTHORITY; verificar vigência no escopo aplicável |
@@ -81,7 +81,7 @@ REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-
 REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 SELECTIVE_VISUAL_RETROFIT_RECORDED = YES
 SELECTIVE_INTERACTION_ADOPTION_RECORDED = YES
-CAMERA_QUICK_DETAIL_PANEL = ADOPT
+CAMERA_QUICK_DETAIL_PANEL = USER_APPROVED / canonical details in docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md section 7.3
 ARGOS_CURRENT_PAGE_COMPOSITION = PRESERVE
 LATEST_CAMERA_CAPTURE_FEEDS_PANEL = YES_WHEN_CANONICAL_CONTRACT_AVAILABLE
 FASE_C_DEPENDENCY = EXPLICIT
@@ -183,7 +183,7 @@ LATEST_CAMERA_CAPTURE = select CAPTURA_CAMERA current record by captured_at DESC
 NO_SILENT_FALLBACK_TO_OLDER_CAPTURE = YES
 PROVENANCES = CAPTURA_CAMERA, UPLOAD_MANUAL
 PRIMARY_IMAGE = DEFERRED_TO_IMG07
-CAMERA_QUICK_DETAIL_PANEL = consumes LATEST_CAMERA_CAPTURE; no capture on open; UPLOAD_MANUAL is not an implicit fallback
+CAMERA_QUICK_DETAIL_PANEL = user-approved functional content in canonical UI spec; consumes LATEST_CAMERA_CAPTURE; no capture on open; UPLOAD_MANUAL is not an implicit fallback; VMS excluded in favor of location
 MONITORING_SEPARATION = CAMERA_AVAILABILITY != IMAGE_CAPTURE_SUCCESS; capture failures do not change ONLINE/OFFLINE
 OPEN_DECISION_COUNT = 7; see the canonical contract for each decision and its closure slice
 NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
