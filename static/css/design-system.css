@@ -1,39 +1,85 @@
-/* Tokens */
-/* Tokens oficiais globais. Aliases históricos permanecem em CSS de contexto. */
+/* Adapter: Camera Inventory v1.0.1 semantics -> ARGOS tokens -> existing components. */
 :root {
-    --color-primary-950: #10243e;
-    --color-primary-900: #173251;
-    --color-primary-700: #255d8f;
-    --color-accent-600: #2f80ed;
-    --color-accent-100: #dbeafe;
-    --color-brand: #185a85;
-    --color-brand-dark: #124766;
-    --color-brand-light: #e5f0f8;
-    --color-background: #f3f6fa;
-    --color-surface: #ffffff;
-    --color-surface-secondary: #f7f9fc;
-    --color-table-header: #f7f9fc;
-    --color-text: #172534;
-    --color-text-secondary: #5e6d7a;
-    --color-text-muted: #6c7b88;
-    --color-text-light: #ffffff;
-    --color-border: #d7e0e8;
-    --color-focus: #2f80ed;
-    --color-success: #13735b;
-    --color-success-surface: #e8f6f0;
-    --color-success-border: #9bd5c2;
-    --color-info: #1b6394;
-    --color-info-surface: #e8f3fa;
-    --color-info-border: #a8cde4;
-    --color-warning: #8a5a00;
-    --color-warning-surface: #fff6dd;
-    --color-warning-border: #e8c56d;
-    --color-danger: #ad3429;
-    --color-danger-surface: #fff0ee;
-    --color-danger-border: #efafa8;
-    --color-neutral: #53626e;
-    --color-neutral-surface: #f1f4f6;
-    --color-neutral-border: #cbd3d9;
+    /* Semantic palette confirmed in ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md. */
+    --color-canvas: #f4f7fa;
+    --color-text-primary: #172b3a;
+    --color-surface: #fafcfe;
+    --color-surface-elevated: #ffffff;
+    --color-surface-muted: #eaf0f4;
+    --color-primary: #2563a6;
+    --color-primary-hover: #1d4f86;
+    --color-primary-foreground: #ffffff;
+    --color-secondary: #e8f2fa;
+    --color-secondary-foreground: #1d4f86;
+    --color-accent: #dff3f2;
+    --color-accent-foreground: #0f6f71;
+    --color-text-secondary: #607485;
+    --color-border: #d8e2ea;
+    --color-input: var(--color-border);
+    --color-border-strong: color-mix(in srgb, var(--color-border) 55%, var(--color-text-primary));
+    --color-focus: var(--color-primary);
+
+    /* Domain-specific visual tokens keep camera states distinct from UI feedback. */
+    --status-online: #16a36a;
+    --status-online-bg: #ddf5ea;
+    --status-offline: #d64545;
+    --status-offline-bg: #fce3e3;
+    --status-warning: #e59b22;
+    --status-warning-bg: #fff1d6;
+    --status-disabled: #81909c;
+    --status-disabled-bg: #e8edf0;
+    --status-info: #3b82c4;
+    --status-info-bg: #e3f0fa;
+    --status-unknown: var(--color-text-secondary);
+    --status-unknown-bg: var(--color-surface-muted);
+    --status-production: var(--color-accent-foreground);
+    --status-production-bg: var(--color-accent);
+    --status-stock: var(--color-secondary-foreground);
+    --status-stock-bg: var(--color-secondary);
+    --status-complete-bg: var(--status-online-bg);
+    --status-incomplete-bg: var(--status-warning-bg);
+
+    /* Darker text adapters preserve the reference palette and meet label contrast. */
+    --status-online-text: color-mix(in srgb, var(--status-online) 50%, var(--color-text-primary));
+    --status-offline-text: color-mix(in srgb, var(--status-offline) 50%, var(--color-text-primary));
+    --status-warning-text: color-mix(in srgb, var(--status-warning) 40%, var(--color-text-primary));
+    --status-disabled-text: color-mix(in srgb, var(--status-disabled) 30%, var(--color-text-primary));
+    --status-info-text: color-mix(in srgb, var(--status-info) 60%, var(--color-text-primary));
+    --status-unknown-text: color-mix(in srgb, var(--status-unknown) 50%, var(--color-text-primary));
+    --status-production-text: color-mix(in srgb, var(--status-production) 60%, var(--color-text-primary));
+    --status-complete: var(--status-online-text);
+    --status-incomplete: var(--status-warning-text);
+
+    /* Compatibility aliases for existing ARGOS templates and stylesheets. */
+    --color-primary-950: var(--color-sidebar);
+    --color-primary-900: var(--color-primary-hover);
+    --color-primary-700: var(--color-primary);
+    --color-accent-600: var(--color-primary);
+    --color-accent-100: var(--color-secondary);
+    --color-brand: var(--color-primary);
+    --color-brand-dark: var(--color-primary-hover);
+    --color-brand-light: var(--color-secondary);
+    --color-background: var(--color-canvas);
+    --color-surface-secondary: var(--color-secondary);
+    --color-table-header: var(--color-surface-muted);
+    --color-text: var(--color-text-primary);
+    --color-text-muted: var(--color-text-secondary);
+    --color-text-light: var(--color-primary-foreground);
+    --color-success: var(--status-online-text);
+    --color-success-surface: var(--status-online-bg);
+    --color-success-border: color-mix(in srgb, var(--status-online) 45%, var(--status-online-bg));
+    --color-info: var(--status-info-text);
+    --color-info-surface: var(--status-info-bg);
+    --color-info-border: color-mix(in srgb, var(--status-info) 45%, var(--status-info-bg));
+    --color-warning: var(--status-warning-text);
+    --color-warning-surface: var(--status-warning-bg);
+    --color-warning-border: color-mix(in srgb, var(--status-warning) 45%, var(--status-warning-bg));
+    --color-danger: var(--status-offline-text);
+    --color-danger-surface: var(--status-offline-bg);
+    --color-danger-border: color-mix(in srgb, var(--status-offline) 45%, var(--status-offline-bg));
+    --color-neutral: var(--status-disabled-text);
+    --color-neutral-surface: var(--status-disabled-bg);
+    --color-neutral-border: color-mix(in srgb, var(--status-disabled) 45%, var(--status-disabled-bg));
     --space-1: .25rem;
     --space-2: .5rem;
     --space-3: .75rem;
@@ -43,54 +89,77 @@
     --space-8: 2rem;
     --space-10: 2.5rem;
     --space-12: 3rem;
-    --font-family-base: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-family-base: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --font-family-monospace: ui-monospace, SFMono-Regular, Consolas, monospace;
     --font-size-xs: .75rem;
     --font-size-sm: .875rem;
-    --font-size-base: 1rem;
-    --font-size-lg: 1.125rem;
-    --font-size-xl: 1.5rem;
+    --font-size-base: .875rem;
+    --font-size-body: .875rem;
+    --font-size-caption: .75rem;
+    --font-size-lg: 1rem;
+    --font-size-xl: 1.25rem;
     --font-size-2xl: 2rem;
+    --font-size-page-title: clamp(1.75rem, 2.2vw, 2rem);
+    --font-size-section-title: 1.25rem;
+    --font-size-metric: clamp(1.75rem, 2vw, 2rem);
     --line-height-tight: 1.2;
     --line-height-base: 1.5;
     --line-height-relaxed: 1.7;
     --border-width: 1px;
     --radius-sm: .375rem;
-    --radius-md: .625rem;
-    --radius-lg: .875rem;
-    --shadow-sm: 0 1px 2px rgba(16, 24, 40, .04);
-    --shadow-md: 0 8px 24px rgba(16, 24, 40, .07);
-    --argos-sidebar-bg: #0b1f33;
-    --argos-sidebar-surface: #132b43;
-    --argos-sidebar-text: #e8f0f7;
-    --argos-sidebar-muted: #9fb2c4;
-    --argos-topbar-bg: var(--color-surface);
-    --argos-app-bg: var(--color-background);
+    --radius-md: .5rem;
+    --radius-lg: .625rem;
+    --radius-xl: .75rem;
+    --radius-pill: 999px;
+    --radius-control: var(--radius-md);
+    --shadow-sm: 0 1px 2px rgba(18, 48, 71, .04);
+    --shadow-md: 0 4px 14px rgba(18, 48, 71, .08);
+    --shadow-lg: 0 8px 30px rgba(18, 48, 71, .12);
+
+    /* Sidebar values are separate from page canvas and operational statuses. */
+    --color-sidebar: #123047;
+    --color-sidebar-foreground: #eaf3f8;
+    --color-sidebar-muted: #afc3d1;
+    --color-sidebar-hover: #1a405b;
+    --color-sidebar-active: var(--color-primary);
+    --color-sidebar-border: #27485f;
+    --argos-sidebar-bg: var(--color-sidebar);
+    --argos-sidebar-surface: var(--color-sidebar-hover);
+    --argos-sidebar-text: var(--color-sidebar-foreground);
+    --argos-sidebar-muted: var(--color-sidebar-muted);
+    --argos-topbar-bg: var(--color-surface-elevated);
+    --argos-app-bg: var(--color-canvas);
     --argos-surface: var(--color-surface);
-    --argos-surface-subtle: var(--color-surface-secondary);
+    --argos-surface-subtle: var(--color-surface-muted);
     --argos-border: var(--color-border);
     --argos-sidebar-width: 15.5rem;
-    --argos-topbar-height: 3.5rem;
-    --argos-shell-max-width: 106rem;
+    --argos-topbar-height: 3.75rem;
+    --argos-content-max-width: 144rem;
+    --argos-reading-max-width: 48rem;
+    --argos-shell-max-width: var(--argos-content-max-width);
     --argos-shell-gutter: clamp(1rem, 2.4vw, 2.5rem);
     --argos-shell-space-block: clamp(1.5rem, 3vw, 2.5rem);
-    --argos-elevated-surface: var(--color-surface);
-    --argos-shadow-menu: 0 18px 45px rgb(16 36 62 / 20%);
+    --argos-elevated-surface: var(--color-surface-elevated);
+    --argos-shadow-menu: var(--shadow-lg);
     --argos-z-header: 100;
     --argos-z-menu: 200;
     --argos-transition: 150ms ease;
     --argos-header-surface: var(--argos-sidebar-bg);
     --argos-header-text: var(--argos-sidebar-text);
     --argos-header-text-muted: var(--argos-sidebar-muted);
-    --argos-header-border: rgb(255 255 255 / 10%);
-    --argos-nav-hover: rgb(255 255 255 / 9%);
+    --argos-header-border: var(--color-sidebar-border);
+    --argos-nav-hover: var(--color-sidebar-hover);
     --argos-nav-active: var(--argos-sidebar-surface);
-    --argos-nav-active-border: var(--color-accent-600);
+    --argos-nav-active-border: var(--color-sidebar-active);
     --argos-header-height: var(--argos-topbar-height);
     --argos-nav-min-height: 2.75rem;
-    --content-max-width: var(--argos-shell-max-width);
-    --reading-max-width: 48rem;
-    --control-min-height: 2.75rem;
+    --content-max-width: var(--argos-content-max-width);
+    --reading-max-width: var(--argos-reading-max-width);
+    --control-height-compact: 2.25rem;
+    --control-height-default: 2.75rem;
+    --control-height-touch: 2.75rem;
+    --control-min-height: var(--control-height-default);
+    --table-row-min-height: 3.25rem;
     --header-height: var(--argos-header-height);
     --z-header: var(--argos-z-header);
     --z-menu: var(--argos-z-menu);
@@ -106,6 +175,7 @@
 
 body {
     font-family: var(--font-family-base);
+    font-size: var(--font-size-body);
     color: var(--color-text);
     background: var(--color-background);
     line-height: var(--line-height-base);
@@ -223,7 +293,7 @@ body {
 .page-heading__title {
     margin: 0;
     color: var(--color-text);
-    font-size: clamp(1.75rem, 4vw, 2.375rem);
+    font-size: var(--font-size-page-title);
     font-weight: 750;
     line-height: 1.15;
     letter-spacing: -.03em;
@@ -236,7 +306,7 @@ body {
 .section-heading__title, .filter-panel__title {
     margin: 0;
     color: var(--color-text);
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-section-title);
     font-weight: 700;
     line-height: var(--line-height-tight);
 }
@@ -249,7 +319,7 @@ body {
     min-height: var(--control-min-height);
     padding: var(--space-2) var(--space-4);
     border: var(--border-width) solid transparent;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-control);
     font: inherit;
     font-weight: 700;
     line-height: var(--line-height-tight);
@@ -273,43 +343,49 @@ body {
 }
 
 .button--primary {
-    color: #fff;
-    background: var(--color-brand);
-    border-color: var(--color-brand);
+    color: var(--color-primary-foreground);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.button--primary:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+    filter: none;
 }
 
 .button--secondary {
-    color: var(--color-text);
-    background: var(--color-surface);
-    border-color: var(--color-border);
+    color: var(--color-secondary-foreground);
+    background: var(--color-secondary);
+    border-color: var(--color-secondary);
 }
 
 .button--success {
-    color: #fff;
+    color: var(--color-primary-foreground);
     background: var(--color-success);
     border-color: var(--color-success);
 }
 
 .button--warning {
-    color: #422b00;
-    background: #f7cf6b;
-    border-color: #d4a52f;
+    color: var(--color-text-primary);
+    background: var(--color-warning-surface);
+    border-color: var(--color-warning-border);
 }
 
 .button--danger {
-    color: #fff;
+    color: var(--color-primary-foreground);
     background: var(--color-danger);
     border-color: var(--color-danger);
 }
 
 .button--ghost {
-    color: var(--color-brand-dark);
+    color: var(--color-primary-hover);
     background: transparent;
     border-color: transparent;
 }
 
 .button--small {
-    min-height: 2rem;
+    min-height: var(--control-height-compact);
     padding: var(--space-1) var(--space-3);
     font-size: var(--font-size-sm);
 }
@@ -324,7 +400,7 @@ body {
 .card, .metric-card, .module-card, .info-card {
     background: var(--color-surface);
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
 }
 
@@ -347,7 +423,7 @@ body {
 }
 
 .module-card:hover {
-    border-color: var(--color-info-border);
+    border-color: var(--color-border-strong);
     box-shadow: var(--shadow-md);
 }
 
@@ -361,35 +437,70 @@ body {
     gap: var(--space-1);
     padding: .2rem var(--space-2);
     border: var(--border-width) solid currentColor;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     font-size: var(--font-size-xs);
     font-weight: 700;
     line-height: var(--line-height-tight);
 }
 
-.badge--producao, .badge--online, .badge--completo, .badge--success {
-    color: var(--color-success);
-    background: var(--color-success-surface);
+.badge--producao {
+    color: var(--status-production-text);
+    background: var(--status-production-bg);
+    border-color: var(--status-production);
 }
 
-.badge--estoque, .badge--info {
-    color: var(--color-info);
-    background: var(--color-info-surface);
+.badge--estoque {
+    color: var(--status-stock);
+    background: var(--status-stock-bg);
+    border-color: var(--status-stock);
 }
 
-.badge--desativada, .badge--nao-verificada, .badge--neutral, .badge--sistema {
+.badge--desativada {
     color: var(--color-neutral);
     background: var(--color-neutral-surface);
+    border-color: var(--status-disabled);
 }
 
-.badge--offline, .badge--danger {
+.badge--online {
+    color: var(--status-online-text);
+    background: var(--status-online-bg);
+    border-color: var(--status-online);
+}
+
+.badge--offline {
+    color: var(--status-offline-text);
+    background: var(--status-offline-bg);
+    border-color: var(--status-offline);
+}
+
+.badge--unknown, .badge--nao-verificada, .badge--neutral, .badge--sistema, .badge--out_of_scope {
+    color: var(--status-unknown-text);
+    background: var(--status-unknown-bg);
+    border-color: var(--status-unknown);
+}
+
+.badge--completo, .badge--success {
+    color: var(--status-complete);
+    background: var(--status-complete-bg);
+    border-color: var(--status-online);
+}
+
+.badge--info {
+    color: var(--status-info-text);
+    background: var(--status-info-bg);
+    border-color: var(--status-info);
+}
+
+.badge--danger {
     color: var(--color-danger);
     background: var(--color-danger-surface);
+    border-color: var(--status-offline);
 }
 
 .badge--incompleto, .badge--warning {
-    color: var(--color-warning);
-    background: var(--color-warning-surface);
+    color: var(--status-incomplete);
+    background: var(--status-incomplete-bg);
+    border-color: var(--status-warning);
 }
 
 .messages {
@@ -465,7 +576,7 @@ body {
     padding: var(--space-6);
     background: var(--color-surface);
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
 }
 
 .form-section legend {
@@ -511,40 +622,44 @@ body {
     font-weight: 700;
 }
 
-.field :is(input, select, textarea) {
+:is(.field, .form-field) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), select, textarea) {
     width: 100%;
     min-width: 0;
     min-height: var(--control-min-height);
     padding: var(--space-2) var(--space-3);
     color: var(--color-text);
     background: var(--color-surface);
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-sm);
+    border: var(--border-width) solid var(--color-input);
+    border-radius: var(--radius-control);
     font: inherit;
 }
 
-.field textarea {
+:is(.field, .form-field) textarea {
     min-height: 6rem;
     resize: vertical;
 }
 
-.field :is(input, select, textarea):focus-visible {
+.field :is(input, select, textarea):focus-visible,
+.form-field :is(input, select, textarea):focus-visible {
     border-color: var(--color-focus);
 }
 
 .field :is(input, select, textarea)[aria-invalid="true"],
+.form-field :is(input, select, textarea)[aria-invalid="true"],
 .field--invalid :is(input, select, textarea) {
     border-color: var(--color-danger-border);
     background-color: var(--color-danger-surface);
 }
 
-.field :is(input, select, textarea)[aria-invalid="true"]:focus-visible,
+:is(.field, .form-field) :is(input, select, textarea)[aria-invalid="true"]:focus-visible,
 .field--invalid :is(input, select, textarea):focus-visible {
     border-color: var(--color-danger);
 }
 
 .field :is(input, select, textarea):disabled,
-.field :is(input, select, textarea)[disabled] {
+.field :is(input, select, textarea)[disabled],
+.form-field :is(input, select, textarea):disabled,
+.form-field :is(input, select, textarea)[disabled] {
     color: var(--color-text-muted);
     background: var(--color-surface-secondary);
     cursor: not-allowed;
@@ -657,7 +772,7 @@ body {
     padding: var(--space-4);
     background: var(--color-surface);
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
 }
 
@@ -685,19 +800,20 @@ body {
 .filter-panel select {
     width: 100%;
     min-width: 0;
-    min-height: 2.5rem;
+    min-height: var(--control-height-default);
     padding: var(--space-2) var(--space-3);
     color: var(--color-text);
     background: var(--color-surface);
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-sm);
+    border: var(--border-width) solid var(--color-input);
+    border-radius: var(--radius-control);
     font: inherit;
 }
 
-.filter-panel input:focus,
-.filter-panel select:focus {
+.filter-panel input:focus-visible,
+.filter-panel select:focus-visible {
     border-color: var(--color-focus);
-    outline: 3px solid color-mix(in srgb, var(--color-focus) 20%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-focus) 28%, transparent);
+    outline-offset: 2px;
 }
 
 .filter-panel__actions {
@@ -710,7 +826,7 @@ body {
 }
 
 .filter-panel__actions .button {
-    min-height: 2.5rem;
+    min-height: var(--control-height-default);
     white-space: nowrap;
 }
 
@@ -725,7 +841,8 @@ body {
 }
 
 .data-table th, .data-table td {
-    padding: var(--space-3) var(--space-4);
+    padding: var(--space-4);
+    line-height: var(--line-height-base);
     text-align: left;
     border-bottom: var(--border-width) solid var(--color-border);
 }
@@ -733,7 +850,7 @@ body {
 .data-table th {
     color: var(--color-text-secondary);
     background: var(--color-surface-secondary);
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-caption);
     text-transform: uppercase;
     letter-spacing: .04em;
 }
@@ -752,6 +869,18 @@ body {
     padding: var(--space-8);
     color: var(--color-text-muted);
     text-align: center;
+}
+
+.data-table:not(.camera-table) tr {
+    height: var(--table-row-min-height);
+}
+
+.data-table caption {
+    caption-side: top;
+    padding: var(--space-3) var(--space-4);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-caption);
+    text-align: left;
 }
 
 /* Paginação, vazio e breadcrumbs */
@@ -777,21 +906,21 @@ body {
     align-items: center;
     justify-content: center;
     min-width: 2.5rem;
-    min-height: 2.5rem;
+    min-height: var(--control-height-compact);
     padding: var(--space-2) var(--space-3);
     border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-control);
 }
 
 .pagination__link {
-    color: var(--color-brand-dark);
+    color: var(--color-primary-hover);
     background: var(--color-surface);
 }
 
 .pagination__current {
-    color: #fff;
-    background: var(--color-brand);
-    border-color: var(--color-brand);
+    color: var(--color-primary-foreground);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
 }
 
 .pagination__disabled {
@@ -811,7 +940,7 @@ body {
     padding: var(--space-10) var(--space-6);
     text-align: center;
     border: var(--border-width) dashed var(--color-border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
 }
 
 .empty-state__icon {
@@ -829,6 +958,22 @@ body {
     max-width: var(--reading-max-width);
     margin: 0;
     color: var(--color-text-secondary);
+}
+
+@media (max-width: 44rem) {
+    .button--small,
+    .pagination__link,
+    .pagination__current,
+    .pagination__disabled,
+    .active-filter-chip {
+        min-height: var(--control-height-touch);
+    }
+
+    .pagination__link,
+    .pagination__current,
+    .pagination__disabled {
+        min-width: var(--control-height-touch);
+    }
 }
 
 /* Responsividade e movimento reduzido */

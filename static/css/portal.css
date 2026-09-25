@@ -319,7 +319,7 @@
     align-self: center;
     justify-self: start;
     color: var(--dashboard-accent);
-    font-size: clamp(2rem, 2.8vw, 2.4rem);
+    font-size: var(--font-size-metric);
     text-align: left;
 }
 
