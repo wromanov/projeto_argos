@@ -277,10 +277,14 @@ Qualquer backend escolhido deve satisfazer:
 - permitir lifecycle, auditoria e retenção sem apagar silenciosamente a
   proveniência e autoria.
 
-O contrato não decide armazenamento local, filesystem, objeto remoto, banco,
+O contrato não escolhe armazenamento local, filesystem, objeto remoto ou banco,
 produto/provedor, layout de chaves, replicação, backup ou política de
-recuperação. Backend de storage é OPEN_DECISION a ser fechado em IMG-02 antes
-da migration correspondente.
+recuperação. IMG-02 deve estabelecer, antes da migration, um contrato
+persistente de storage e uma abstração configurável para referência opaca e
+acesso autorizado. A escolha do backend definitivo de produção permanece
+OPEN_DECISION e não é pré-requisito para a migration. As decisões de backend
+definitivo, replicação, backup e recuperação ficam diferidas para a arquitetura
+de storage/produção.
 
 ## 13. VALIDATION_REQUIREMENTS
 
@@ -434,7 +438,7 @@ indicadas:
 
 | # | Pendência | Fechamento esperado |
 |---:|---|---|
-| 1 | Backend concreto de storage, referência, recuperação e backup | IMG-02, antes de migration/integração de storage |
+| 1 | Backend definitivo de produção, provedor e estratégia operacional | DEFERRED; decidir na arquitetura posterior de storage/produção. IMG-02 estabelece contrato persistente e abstração configurável antes da migration. |
 | 2 | MIME permitido e limites de bytes/dimensões | IMG-03/IMG-08, antes de aceitar arquivos reais |
 | 3 | Uso visual de UPLOAD_MANUAL quando não houver captura | adjudicação do consumidor/UI-3; continua proibido como fallback implícito |
 | 4 | Retenção, lifecycle e expurgo de registros/bytes | IMG-06/IMG-08/IMG-09, antes de operação destrutiva |
@@ -448,15 +452,17 @@ escolhe o conteúdo dessas decisões.
 
 ## 22. IMG02_PREREQUISITES
 
-IMG-02 — Modelo, storage e proveniência é a próxima atividade de projeto.
-Antes da implementação, o agente futuro deve:
+Esta seção estabelece os pré-requisitos técnicos de implementação da slice
+IMG-02. O status corrente e a ordem das atividades pertencem ao roadmap,
+sprint map e documentos de continuidade. Antes da implementação, o agente deve:
 
 1. ler este contrato, roadmap, sprint map, ADR-019, ADR-021 e authorities
    vigentes; revalidar Git e escopo;
 2. obter adjudicação humana e autorização explícita para a implementação de
-   IMG-02. Este checkpoint documental não autoriza implementação;
-3. fechar a decisão de backend de storage e referência privada, além de
-   requisitos de backup/recuperação aplicáveis, antes da migration;
+   IMG-02. Este contrato não concede autorização;
+3. estabelecer contrato persistente de storage, referência privada e abstração
+   configurável antes da migration. A escolha do backend definitivo de produção
+   permanece deferred e não é pré-requisito para a migration;
 4. traduzir CameraImageRecord para modelo persistente sem alterar as
    proveniências, autoria, timestamps, lifecycle e estados deste contrato;
 5. assegurar associação a uma câmera, identidade imutável, recorded_at
@@ -473,18 +479,15 @@ Antes da implementação, o agente futuro deve:
    preservar a regra de vertical slice e relatar decisões ainda abertas sem
    resolvê-las por suposição.
 
-IMG02_READY_FOR_IMPLEMENTATION = YES, após adjudicação humana e autorização.
 IMG02_IMPLEMENTATION_AUTHORIZATION_FROM_THIS_DOCUMENT = NO.
-
-O futuro agente consegue iniciar discovery e formular a implementação sem
-histórico de chat; não pode substituir as adjudicações pendentes nem presumir
-permissão de implementação.
+CURRENT_ACTIVITY_STATUS_AUTHORITY = roadmap, sprint map e documentos de continuidade.
 
 ## 23. Critério de leitura autônoma
 
-CAN_A_NEW_AGENT_IMPLEMENT_IMG02_WITHOUT_CHAT_HISTORY = YES, quanto a entender
+CAN_A_NEW_AGENT_FIND_IMG02_CONTRACT_WITHOUT_CHAT_HISTORY = YES, quanto a
 entidade, proveniência, latest capture, ausência de fallback, timestamps,
 autoria, storage, validação, segurança, auditoria, separação do monitoramento,
-leituras, performance, integração, decisões abertas e pré-requisitos. A
-implementação continua condicionada à adjudicação das decisões aplicáveis e à
-autorização humana própria.
+leituras, performance, integração, decisões abertas e pré-requisitos.
+Este contrato não declara o status corrente nem a ordem do trabalho. Consulte o
+roadmap, sprint map e documentos de continuidade; este documento não concede
+autorização de implementação.

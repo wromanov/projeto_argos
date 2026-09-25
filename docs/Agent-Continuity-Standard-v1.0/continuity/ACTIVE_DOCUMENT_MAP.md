@@ -11,7 +11,7 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; updated 2026-09-25 after IMG-02 + UI-1 integration |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE |
@@ -20,9 +20,9 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 
 | Path | Role | Authority scope | Status |
 |---|---|---|---|
-| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; IMG-01 concluída; checkpoint técnico IMG-02 em adjudicação |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; IMG-02 implementada tecnicamente; IMG-03 próxima após adjudicação e autorização |
-| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; IMG-01 completa; IMG-02 implementation contract |
+| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; IMG-02 + UI-1 integrated checkpoint; IMG-03 and UI-2 not authorized |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; IMG-02 + UI-1 integrated; IMG-03 and UI-2 remain not authorized |
+| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; image-domain contract and deferred production backend decision |
 | `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; decisão funcional do painel aprovada pelo usuário na seção 7.3 |
 | `docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md` | Registro factual dos findings de UI-0 | Findings do preflight read-only, sem alterar a authority de UI-DS | PRESENT / CURRENT FINDINGS RECORD; NON-BLOCKING |
 | `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | ADR de arquitetura | Arquitetura de monitoramento e relação com gestão de imagens | PRESENT / AUTHORITY; verificar vigência no escopo aplicável |
@@ -88,8 +88,8 @@ FASE_C_DEPENDENCY = EXPLICIT
 BIG_BANG_INTEGRATION = PROHIBITED
 INTEGRATION_GATE = REQUIRED_WHEN_APPLICABLE
 UI_0 = COMPLETE / PASS_WITH_FINDINGS; READ_ONLY; DOES_NOT_AUTHORIZE_IMPLEMENTATION
-UI_1 = TOKEN_COMPONENT_ADAPTER_FOUNDATION
-UI_2 = INVENTORY_VISUAL_RETROFIT
+UI_1 = COMPLETE / INTEGRATED; COMMIT = c5928e8
+UI_2 = NEXT_CANDIDATE / NOT_AUTHORIZED
 UI_3 = INTEGRATED_CAMERA_QUICK_DETAIL_PANEL
 UI_4 = INTEGRATED_VISUAL_FUNCTIONAL_ACCESSIBILITY_INTERACTION_QA
 ```
@@ -186,8 +186,10 @@ PRIMARY_IMAGE = DEFERRED_TO_IMG07
 CAMERA_QUICK_DETAIL_PANEL = user-approved functional content in canonical UI spec; consumes LATEST_CAMERA_CAPTURE; no capture on open; UPLOAD_MANUAL is not an implicit fallback; VMS excluded in favor of location
 MONITORING_SEPARATION = CAMERA_AVAILABILITY != IMAGE_CAPTURE_SUCCESS; capture failures do not change ONLINE/OFFLINE
 OPEN_DECISION_COUNT = 7; see the canonical contract for each decision and its closure slice
-NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
-IMG02_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT; separate human adjudication/authorization required
+IMG02_STATUS = COMPLETE / INTEGRATED
+IMG02_IMPLEMENTATION_AUTHORIZATION = prior authorization for this slice consumed
+PRODUCTION_STORAGE_BACKEND = DEFERRED; contract persistent storage and configurable abstraction recorded in canonical image contract
+NEXT_CANDIDATES = IMG-03, UI-2; both NOT_AUTHORIZED
 FASE_C_COMPLETE = NO
 
 ## 8. Continuidade e estado atual
@@ -195,37 +197,35 @@ FASE_C_COMPLETE = NO
 ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
 AGENT_HANDOFF_GATE = ACTIVE
 CONTINUITY_AUTHORITY = docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md
-CURRENT_GIT_BASELINE_BEFORE_THIS_DOCUMENTARY_CHECKPOINT = f4e88146c1146cdf04d657eb6e3cefa560639b61
-CURRENT_GIT_HEAD_AFTER_THIS_CHECKPOINT = consultar diretamente no Git; não embutir hash do próprio commit documental
 CURRENT_MACROPHASE = FASE C — Captura manual e gestão de imagens
-LAST_COMPLETED_ACTIVITY = IMG-01 — Contrato funcional de imagem (documental)
-NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
-NEXT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
-NEXT_ACTIVITY_AUTHORITY = docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+CURRENT_GIT_BASELINE = master; HEAD d5f1f54bea518496d7e8c8b64487cfea459372f6; origin/master 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
+DIVERGENCE = ahead 3 / behind 0
+CURRENT_WORKTREE = documentação deste checkpoint modificada e unstaged; staging vazio
+LAST_COMPLETED_ACTIVITY = IMG-02 + UI-1 — COMPLETE / INTEGRATED
+NEXT_CANDIDATES = IMG-03; UI-2
+NEXT_CANDIDATES_STATUS = NOT_AUTHORIZED
 IMPLEMENTATION_AUTHORIZED = NO
 LIVE_AUTHORIZED = NO
+COMMIT_AUTHORIZED = NO
 PUSH_AUTHORIZED = NO
-UI_DS_STATUS = UI-0 COMPLETE / PASS_WITH_FINDINGS; UI-1...UI-4 PENDING
-UI_0_FINDINGS_DETAIL = docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md; non-blocking; UI_0_FINDINGS_DISCOVERABLE = YES
+UI_DS_STATUS = UI-1 COMPLETE / INTEGRATED; UI-2 NOT_AUTHORIZED
+IMG02_STATUS = COMPLETE / INTEGRATED
+LATEST_INTEGRATION_COMMIT = d5f1f54
 OPEN_DECISIONS = 7; detalhes somente no contrato canônico de imagem
 SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED; DEPLOYMENT BLOCKED; PRODUCTION BLOCKED
 
-Para o estado atual e os blockers/pré-requisitos completos, use o snapshot em
-`PROJECT_STATE.md`. Este mapa identifica autoridade e escopo; não substitui os
-detalhes especializados.
+Para o status, os commits e os critérios de handoff, consulte
+PROJECT_STATE.md e AGENT_CONTINUITY.md. Este mapa identifica authorities e
+escopo; não duplica os detalhes especializados.
 
+## 9. Checkpoint vigente — IMG-02 + UI-1
 
-## 5. Checkpoint local IMG-02
-
-Baseline revalidada no ROOT
-C:\Users\walac\desenvolvimento\projeto_argos: master,
-HEAD = origin/master = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb,
-divergence 0/0 antes das alterações. O worktree contém alterações IMG-02
-unstaged e staging vazio. Para o estado, os arquivos e os blockers atuais,
-consulte PROJECT_STATE.md seções 12–14.
-
-IMG02_STATUS = IMPLEMENTED / FOCUSED_VALIDATION_PASS / AWAITING_HUMAN_ADJUDICATION
-IMG02_ACTIVITY_CLOSED = NO
-NEXT_PROJECT_ACTIVITY = IMG-03 — Upload manual, após adjudicação IMG-02
-IMG03_STATUS = NOT_AUTHORIZED
+IMG-02 = COMPLETE / INTEGRATED; commit ceda8f6
+UI-1 = COMPLETE / INTEGRATED; commit c5928e8
+LATEST_INTEGRATION_COMMIT = d5f1f54
+INTEGRATION_GATE = PASS
+IMG-03 = NEXT_CANDIDATE / NOT_AUTHORIZED
+UI-2 = NEXT_CANDIDATE / NOT_AUTHORIZED
 CANONICAL_IMAGE_AUTHORITY = docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+CANONICAL_UI_AUTHORITY = docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md
+SPRINT_ORDER_AUTHORITY = docs/projeto/SPRINTS_ARGOS_V5.md

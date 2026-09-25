@@ -91,15 +91,14 @@ LEASE_RENEWAL_IMPLEMENTED = NO
 
 ## Roadmap e limites
 
-NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
-NEXT_PROJECT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
-NEXT_REQUIRED_ACTIVITY = IMG-02 — Modelo, storage e proveniência (após adjudicação humana e autorização)
-NEXT_REQUIRED_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
+NEXT_ACTIVITY_CANDIDATES = IMG-03 — Upload manual; UI-2 — Inventory Visual Retrofit
+NEXT_ACTIVITY_STATUS = NOT_AUTHORIZED; não iniciar por inferência
+NEXT_REQUIRED_ACTIVITY_AUTHORIZED = NONE
 
 UI_DS = UI-0, UI-1, UI-2, UI-3, UI-4
 UI_0 = COMPLETE / PASS_WITH_FINDINGS; read-only; não autoriza implementação
-UI_1 = token/component adapter foundation
-UI_2 = inventory visual retrofit
+UI_1 = COMPLETE / INTEGRATED; commit c5928e8
+UI_2 = NEXT_CANDIDATE / NOT_AUTHORIZED
 UI_3 = CameraQuickDetailPanel integrado ao fluxo canônico
 UI_4 = QA visual/funcional/acessibilidade/interação
 ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
@@ -120,40 +119,45 @@ MON09B_C_ACCIDENTAL_SCALE_EXECUTIONS = observação processual, não blocker té
 
 ## Git e ação
 
-O snapshot da baseline técnica antes desta atividade documental foi
+O snapshot histórico da baseline técnica antes da atividade documental anterior foi
 `HEAD = origin/master = f4e88146c1146cdf04d657eb6e3cefa560639b61`, divergence
 `0/0`, worktree clean e staging empty. O checkpoint técnico MON-09 em
 `850efd2381d7f5b7df27e528dc3374ea58e507b3` é histórico; valide o estado atual e
 o commit documental mais recente diretamente no Git antes de qualquer
 conclusão. Não execute push sem autorização humana separada.
 
-IMG-01 está concluída como checkpoint documental. A próxima atividade de
-projeto é IMG-02 — Modelo, storage e proveniência, após adjudicação humana e
-autorização própria; o contrato canônico enumera sete decisões abertas e
-indica quando cada uma deve ser fechada. `UI-0` foi registrada como completa
-com findings, em modo read-only, e não substitui IMG-02. Nenhuma dessas
-indicações autoriza implementação automaticamente. A conclusão MON-09 não
-altera gates ambientais nem declara homologation, deployment ou production
-ready.
+Esse bloco registra o contexto pré-integração e é supersedido pelo checkpoint
+vigente abaixo. IMG-01 permanece concluída como checkpoint documental; o contrato
+canônico mantém sete decisões abertas e suas slices de fechamento. A conclusão
+MON-09 não altera gates ambientais nem declara homologation, deployment ou
+production ready.
 
 
-## Checkpoint corrente após IMG-02 — 2026-09-24
+## Checkpoint vigente — integração IMG-02 + UI-1 (2026-09-25)
 
-Para o estado efetivo, consulte as seções 12–14 de
-docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md. Esse checkpoint
-supersede as referências históricas abaixo que descrevem IMG-02 como próxima,
-não autorizada ou não iniciada.
+Para detalhes do contrato funcional e das decisões deferred, consulte
+docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md. Este checkpoint registra status,
+commits, gates e autorização; não duplica os detalhes técnicos.
 
-IMG02_TECHNICAL_STATUS = IMPLEMENTED / FOCUSED_VALIDATION_PASS / AWAITING_HUMAN_ADJUDICATION
-IMG02_ACTIVITY_CLOSED = NO
-IMG02_IMPLEMENTATION_AUTHORIZATION = explícita do usuário para esta slice somente; consumida
-IMG02_MODEL = cameras.models.CameraImageRecord
-IMG02_MIGRATION = cameras/migrations/0013_cameraimagerecord.py; depende de cameras.0012_monitoring_ownership_lease
-IMG02_CANONICAL_READ_SERVICE = cameras/imagens/read_service.py:CameraImageReadService
-IMG02_TESTS = cameras/test_imagens_read_service.py; 13 testes focados pass
-NEXT_PROJECT_ACTIVITY = IMG-03 — Upload manual, condicionado à adjudicação IMG-02
-IMG03_STATUS = NOT_AUTHORIZED
-DEFERRED_DECISIONS = backend definitivo; limites MIME/tamanho/dimensões; fallback visual de UPLOAD_MANUAL; retenção/purge; stale policy; credenciais/perfil de captura; PRIMARY_IMAGE
-GIT_BASELINE = master; HEAD = origin/master = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
-GIT_WORKTREE = alterações locais unstaged; staging vazio
+IMG-02 = COMPLETE / INTEGRATED
+IMG-02_COMMIT = ceda8f6
+UI-1 = COMPLETE / INTEGRATED
+UI-1_COMMIT = c5928e8
+LATEST_INTEGRATION_COMMIT = d5f1f54
+INTEGRATION_GATE = PASS
+INTEGRATION_VALIDATION = manage.py check PASS; cameras.test_imagens_read_service 13/13 PASS
+IMG-03 = NEXT_CANDIDATE / NOT_AUTHORIZED
+UI-2 = NEXT_CANDIDATE / NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+PRODUCTION_STORAGE_BACKEND = DEFERRED; IMG-02 exige contrato persistente de storage e abstração configurável antes da migration
+GIT_BASELINE = master; HEAD d5f1f54bea518496d7e8c8b64487cfea459372f6; origin/master 05b710a57137f9d0cdefd256c037e4d86fe0e3bb; ahead 3 / behind 0
+GIT_WORKTREE = documentação deste checkpoint modificada e unstaged; staging vazio
+IMPLEMENTATION_AUTHORIZED = nenhuma autorização atual; a autorização de IMG-02 foi consumida
+LIVE_AUTHORIZED = NO
+COMMIT_AUTHORIZED = NO
 PUSH_AUTHORIZED = NO
+SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED; DEPLOYMENT BLOCKED; PRODUCTION BLOCKED
+ACTIVITY_COMPLETION_PERCENT = 100%
+PROJECT_STATE_UPDATE = PASS
+DOCUMENT_RECONCILIATION_GATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PASS

@@ -715,8 +715,11 @@ disponível. VMS não é adotado; Localização é a seção aprovada. O detalha
 funcional e a estrutura de referência estão somente em
 `ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`. `UI-0` está `COMPLETE /
 PASS_WITH_FINDINGS` como preflight read-only; esse status não autoriza
-implementação visual. A próxima atividade de projeto permanece IMG-02,
-condicionada à adjudicação humana e autorização própria.
+implementação visual. IMG-02 e UI-1 estão COMPLETE / INTEGRATED no checkpoint d5f1f54, com commits
+ceda8f6 e c5928e8 e INTEGRATION_GATE = PASS. IMG-03 e UI-2 são candidatas
+futuras e permanecem NOT_AUTHORIZED. Status corrente e autorização detalhada
+são mantidos nos documentos de continuidade; o contrato de imagem permanece a
+authority dos requisitos técnicos e decisões deferred.
 
 Aplicam-se a esta frente a `ARGOS INCREMENTAL INTEGRATION RULE` e o
 `INTEGRATION_GATE`: cada slice deve ser integrada ao fluxo canônico e validada
@@ -1354,7 +1357,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
 FASE B — Monitoramento operacional             ✅ FRENTE TÉCNICA CONCLUÍDA (MON-00 a MON-09; validações externas futuras; gates preservados)
-FASE C — Captura manual e imagens              🟡 EM ANDAMENTO / IMG-01 DOCUMENTAL; IMG-02 IMPLEMENTADA TECNICAMENTE, AGUARDANDO ADJUDICAÇÃO
+FASE C — Captura manual e imagens              🟡 EM ANDAMENTO / IMG-02 COMPLETE / INTEGRATED; UI-1 COMPLETE / INTEGRATED; IMG-03 e UI-2 NOT_AUTHORIZED
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
 FASE F — Integração técnica                    ⏳ PLANEJADA
@@ -1421,11 +1424,24 @@ AGENT_HANDOFF_GATE = ACTIVE
 CONTINUITY_AUTHORITY = [ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md](ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md)
 
 
-### Atualização factual IMG-02 — checkpoint técnico (2026-09-24)
+### Registro histórico — checkpoint técnico IMG-02 (2026-09-24)
 
-IMG-02 tem modelo, migration e serviço canônico de leitura implementados e
-validados em banco de teste descartável. A slice aguarda adjudicação humana e
-não está encerrada definitivamente. A Fase C continua em andamento; IMG-03 é a
-próxima atividade tecnicamente sustentada, com autorização própria ainda
-necessária. O contrato canônico conserva as sete decisões abertas e seus
-momentos de fechamento.
+Este checkpoint registrava a implementação de IMG-02 aguardando adjudicação.
+Seu status foi supersedido pela atualização vigente abaixo.
+
+## Atualização vigente — integração IMG-02 + UI-1 (2026-09-25)
+
+IMG-02 = COMPLETE / INTEGRATED
+UI-1 = COMPLETE / INTEGRATED
+IMG-02_COMMIT = ceda8f6
+UI-1_COMMIT = c5928e8
+LATEST_INTEGRATION_COMMIT = d5f1f54
+INTEGRATION_GATE = PASS
+INTEGRATION_VALIDATION = manage.py check PASS; cameras.test_imagens_read_service 13/13 PASS
+IMG-03 = NEXT_CANDIDATE / NOT_AUTHORIZED
+UI-2 = NEXT_CANDIDATE / NOT_AUTHORIZED
+FASE_C_COMPLETE = NO
+
+A autoridade de imagem contém o contrato persistente de storage, a abstração
+configurável e as decisões deferred. Este roadmap registra somente status,
+sequência e dependências; a continuidade aponta os commits e o baseline Git.
