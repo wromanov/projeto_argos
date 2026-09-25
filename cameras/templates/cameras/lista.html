@@ -73,7 +73,20 @@
         {% for row in camera_rows %}{% with camera=row.camera %}
         <tr class="camera-row--{{ camera.situacao_operacional|lower }}">
           <td class="camera-table__cell camera-table__cell--status" data-label="Monitoramento">{% include "cameras/partials/_monitoring_badge.html" with monitoring=row.monitoring %}</td>
-          <td class="camera-table__cell camera-table__cell--camera" data-label="Câmera"><a class="camera-name-link" href="{% url 'cameras:detalhe' camera.pk %}">{{ camera.nome }}</a><small>Patrimônio: <span class="technical-value">{{ camera.patrimonio|default:"—" }}</span></small></td>
+          <td class="camera-table__cell camera-table__cell--camera" data-label="Câmera">
+            <div class="camera-identity">
+              <span class="camera-thumbnail" data-thumbnail-state="PLACEHOLDER" role="img" aria-label="Prévia de captura indisponível">
+                <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                  <path d="M4 7.5h3l1.4-2h7.2l1.4 2h3a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 18V9A1.5 1.5 0 0 1 4 7.5Z" />
+                  <circle cx="12" cy="13" r="3.25" />
+                </svg>
+              </span>
+              <div class="camera-identity__text">
+                <a class="camera-name-link" href="{% url 'cameras:detalhe' camera.pk %}">{{ camera.nome }}</a>
+                <small>Patrimônio: <span class="technical-value">{{ camera.patrimonio|default:"—" }}</span></small>
+              </div>
+            </div>
+          </td>
           <td class="camera-table__cell camera-table__cell--location" data-label="Localização"><span class="camera-location">{{ camera.terminal|default:"—" }}</span>{% if camera.ambiente %}<small>{{ camera.ambiente }}</small>{% endif %}</td>
           <td class="camera-table__cell camera-table__cell--network" data-label="Rede"><span class="technical-value inventory-cell__primary">{{ camera.ip|default:"—" }}</span><small>VLAN: <span class="technical-value">{{ camera.vlan|default:"—" }}</span></small></td>
           <td class="camera-table__cell camera-table__cell--equipment" data-label="Equipamento"><span class="inventory-cell__primary">{% if camera.fabricante %}{{ camera.fabricante }}{% endif %}{% if camera.fabricante and camera.modelo %}<span aria-hidden="true"> · </span>{% endif %}{% if camera.modelo %}{{ camera.modelo }}{% endif %}{% if not camera.fabricante and not camera.modelo %}—{% endif %}</span><small>Tipo: {{ camera.get_tipo_display|default:"—" }}</small></td>
