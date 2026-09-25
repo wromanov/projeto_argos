@@ -12,13 +12,13 @@ REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-
 REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08B06854073CE16FE028DA14
 CURRENT_PHASE = FASE C — Captura manual e gestão de imagens
-CURRENT_PHASE_STATUS = EM_ANDAMENTO / IMG-02, IMG-03, UI-1 e UI-2 COMPLETE / INTEGRATED
+CURRENT_PHASE_STATUS = EM_ANDAMENTO / IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 COMPLETE / INTEGRATED
 IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
-CURRENT_ACTIVITY = reconciliação documental pós-integração IMG-03 + UI-2 concluída; sem implementação ativa autorizada
-LAST_COMPLETED_ACTIVITY = IMG-03 + UI-2 — checkpoint de integração
+CURRENT_ACTIVITY = reconciliação documental pós-integração SECURE_IMAGE_PREVIEW_DELIVERY concluída; sem implementação ativa autorizada
+LAST_COMPLETED_ACTIVITY = SECURE_IMAGE_PREVIEW_DELIVERY — checkpoint de integração
 LAST_COMPLETED_ACTIVITY_STATUS = COMPLETE / INTEGRATED
-NEXT_CANDIDATES = SECURE_IMAGE_PREVIEW_DELIVERY
-NEXT_CANDIDATES_STATUS = NOT_AUTHORIZED
+NEXT_CANDIDATES = UI-3; IMG-04
+NEXT_CANDIDATES_STATUS = UI-3 NEXT_CANDIDATE / NOT_AUTHORIZED; IMG-04 NOT_AUTHORIZED
 IMG02_IMPLEMENTATION_AUTHORIZATION = GRANTED_BY_EXPLICIT_USER_INSTRUCTION_FOR_THIS_SLICE_ONLY
 IMG-01 = COMPLETE após o checkpoint documental; contrato canônico:
 docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
@@ -47,11 +47,12 @@ Este mapa registra status, ordem, dependências e gates das slices. O estado
 recuperável entre agentes e o contrato de handoff pertencem a
 `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`.
 
-MON-09 está tecnicamente encerrada. IMG-02, UI-1, IMG-03 e UI-2 estão COMPLETE
-/ INTEGRATED; o gate mais recente passou em `c79fa06`. A próxima candidata
-registrada é `SECURE_IMAGE_PREVIEW_DELIVERY`, ainda NOT_AUTHORIZED. Este mapa
-registra status e sequência; não concede autorização para implementar a
-candidata, avançar slices, mudar de fase ou executar em homologação/produção.
+MON-09 está tecnicamente encerrada. IMG-02, UI-1, IMG-03, UI-2 e
+SECURE_IMAGE_PREVIEW_DELIVERY estão COMPLETE / INTEGRATED; o gate mais
+recente passou em 7ca5f7c. A próxima candidata é UI-3, ainda
+NOT_AUTHORIZED; IMG-04 também permanece NOT_AUTHORIZED. Este mapa registra
+status e sequência; não concede autorização para implementar candidatas,
+avançar slices, mudar de fase ou executar em homologação/produção.
 
 Em caso de divergência:
 
@@ -143,8 +144,10 @@ cards, table surfaces, borders, status, buttons, inputs, focus e selection.
 Integrar ao inventário real o painel funcional aprovado na authority UI-DS,
 com seleção real, identificador canônico, resumo e status canônicos,
 `LATEST_CAMERA_CAPTURE` conforme disponibilidade contratual, localização e
-rota canônica de detalhes completos. VMS permanece `DO_NOT_ADOPT`. UI-3 segue
-pendente e não está autorizada por este registro documental.
+rota canônica de detalhes completos. VMS permanece `DO_NOT_ADOPT`. UI-3 segue pendente e não está autorizada por este registro documental. Ao
+ser autorizada, deve reutilizar a entrega segura existente na variante
+PANEL; não criar um backend paralelo de imagens. O layout aprovado
+permanece na authority UI-DS, seção 7.3.
 
 ```text
 INTEGRATION_GATE = REQUIRED
@@ -174,10 +177,12 @@ IMG-02 = COMPLETE / INTEGRATED (ceda8f6)
 UI-1 = COMPLETE / INTEGRATED (c5928e8)
 IMG-03 = COMPLETE / INTEGRATED (f6e08b6; integration 0708797)
 UI-2 = COMPLETE / INTEGRATED (b57f959; integration c79fa06)
-INTEGRATION_GATE = PASS (c79fa06)
+INTEGRATION_GATE = PASS (7ca5f7c)
+SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED (e3f2d40; 7ca5f7c)
+INVENTORY_THUMBNAIL_REAL_DATA_WIRING = COMPLETE
 ↓
-SECURE_IMAGE_PREVIEW_DELIVERY = NEXT_CANDIDATE / NOT_AUTHORIZED
-IMG-04 e UI-3 = NOT_AUTHORIZED
+UI-3 = NEXT_CANDIDATE / NOT_AUTHORIZED
+IMG-04 = NOT_AUTHORIZED
 ↓
 demais slices seguem as dependências canônicas e exigem autorização própria
 ```
@@ -277,7 +282,7 @@ INTEGRATION_GATE = PASS
 INTEGRATION_VALIDATION = manage.py check PASS; cameras.test_imagens_read_service 13/13 PASS
 OPEN_DECISIONS = consultar docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
 
-## 11. Checkpoint vigente — integração IMG-03 + UI-2 (2026-09-25)
+## 11. Registro histórico — integração IMG-03 + UI-2 (2026-09-25)
 
 IMG-03 = COMPLETE / INTEGRATED
 IMG-03_COMMIT = f6e08b6
@@ -310,3 +315,28 @@ O detalhe técnico e as demais decisões deferred ficam no `PROJECT_STATE.md` e
 no `AGENT_CONTINUITY.md`; contracts de domínio e UI permanecem nas authorities
 especializadas. A ordenação de candidatas neste mapa é planejamento e não
 concede autorização. Não houve reexecução de testes nesta reconciliação.
+
+## 12. Checkpoint vigente — Secure Image Preview Delivery (2026-09-25)
+
+```text
+SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED
+TECHNICAL_COMMIT = e3f2d40
+INTEGRATION_COMMIT = 7ca5f7c
+INTEGRATION_GATE = PASS
+INTEGRATION_VALIDATION = manage.py check PASS; makemigrations --check --dry-run PASS / no changes; cameras.test_imagens_read_service + cameras.test_imagens_upload + cameras.test_imagens_preview = 28/28 PASS
+MERGE_CONFLICTS = NONE
+INVENTORY_CAMERA_THUMBNAIL = APPROVED; SOURCE = LATEST_CAMERA_CAPTURE
+INVENTORY_THUMBNAIL_VISUAL_FOUNDATION = COMPLETE
+INVENTORY_THUMBNAIL_REAL_DATA_WIRING = COMPLETE
+PREVIEW_VARIANTS = THUMB; PANEL; dimensões na authority de imagens, seção 24
+UI-3 = NEXT_CANDIDATE / NOT_AUTHORIZED
+IMG-04 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+```
+
+A variante PANEL existente atende à continuidade prevista para a UI-3; o
+layout aprovado está em ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md,
+seção 7.3. Consulte PROJECT_STATE.md para fatos de segurança e decisões
+deferred, e ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md para o contrato técnico
+detalhado. A evidência de integração foi fornecida e não foi reexecutada nesta
+reconciliação documental.

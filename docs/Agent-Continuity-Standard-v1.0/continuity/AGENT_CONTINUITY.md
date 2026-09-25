@@ -215,10 +215,10 @@ MON09_TECHNICALLY_COMPLETE = YES
 MONITORING_TECHNICAL_FRONT_COMPLETE = YES
 NEXT_TECHNICAL_MON_ACTIVITY = NONE
 TECHNICAL_BASELINE = 850efd2381d7f5b7df27e528dc3374ea58e507b3
-NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
-NEXT_PROJECT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
-NEXT_REQUIRED_ACTIVITY = IMG-02 — Modelo, storage e proveniência (após adjudicação humana e autorização)
-NEXT_REQUIRED_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
+NEXT_PROJECT_ACTIVITY = UI-3 — CameraQuickDetailPanel
+NEXT_PROJECT_ACTIVITY_STATUS = NEXT_CANDIDATE / NOT_AUTHORIZED
+NEXT_REQUIRED_ACTIVITY = UI-3 — CameraQuickDetailPanel (sujeita a autorização explícita)
+NEXT_REQUIRED_ACTIVITY_STATUS = NEXT_CANDIDATE / NOT_AUTHORIZED
 UI_DS_CANONICAL_SPEC = docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md
 UI_DS_CANONICAL_SPRINT_MAP = docs/projeto/SPRINTS_ARGOS_V5.md
 REFERENCE_DESIGN_SYSTEM = camera-inventory-design-system-v1.0.1
@@ -228,7 +228,7 @@ REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 CAMERA_QUICK_DETAIL_PANEL = USER_APPROVED / details in docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md section 7.3
 CAMERA_QUICK_DETAIL_PANEL_VMS = DO_NOT_ADOPT; VMS_REPLACEMENT = LOCATION
 ARGOS_CURRENT_PAGE_COMPOSITION = PRESERVE
-LATEST_CAMERA_CAPTURE_FEEDS_PANEL = YES_WHEN_CANONICAL_CONTRACT_AVAILABLE
+LATEST_CAMERA_CAPTURE_FEEDS_PANEL = SECURE PREVIEW AVAILABLE; UI-3 MUST REUSE PANEL VARIANT
 PRIMARY_IMAGE_DISTINCTION = RECORDED
 MANUAL_UPLOAD_PROVENANCE = PRESERVED
 NO_AUTO_CAPTURE_ON_PANEL_OPEN = RECORDED
@@ -241,7 +241,7 @@ SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED;
 SECURITY_FINDINGS_AUTHORITY = docs/security_audit/auditoria_segurança_001.md; ver matriz vigente antes de reclassificar SEC-001...SEC-010
 LOG_VOLUME_HARDENING_STATUS = HARDENING / NON-BLOCKING — potential high INFO log volume per cycle/attempt
 
-A frente de monitoramento está encerrada tecnicamente; não retomar MON-09 nem criar outra atividade MON. Limites futuros continuam: PostgreSQL real, multi-processo de produção, rede/câmeras/credenciais reais, capacidade produtiva e budgets formais de CPU, memória e conexões. Potencial volume de logs INFO é HARDENING / NON-BLOCKING. A Fase C está em andamento no checkpoint documental IMG-01; IMG-02 é a próxima atividade planejada e ainda sem autorização de implementação. O baseline Git acima descreve a validação imediatamente anterior a este commit documental; revalidar Git ao iniciar nova sessão.
+A frente de monitoramento está encerrada tecnicamente; não retomar MON-09 nem criar outra atividade MON. A Fase C segue em andamento: IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 estão integradas. UI-3 é a próxima candidata e permanece não autorizada; IMG-04 também não está autorizada. O estado Git atual e os fatos de entrega/decisões deferred estão no checkpoint vigente ao final deste documento e em PROJECT_STATE.md. Revalidar Git ao iniciar nova sessão.
 
 ## 9. Retrofit gate
 
@@ -389,7 +389,7 @@ PROJECT_STATE_UPDATE = PASS
 DOCUMENT_RECONCILIATION_GATE = PASS
 AGENT_HANDOFF_GATE_RESULT = PASS
 
-## 13. Checkpoint vigente — integração IMG-03 + UI-2 (2026-09-25)
+## 13. Registro histórico — integração IMG-03 + UI-2 (2026-09-25)
 
 Este checkpoint supersede o estado anterior IMG-02 + UI-1. O snapshot Git
 completo, evidências dos gates, defaults locais e lista de decisões deferred
@@ -443,3 +443,27 @@ PROJECT_STATE_UPDATE = PASS
 DOCUMENT_RECONCILIATION_GATE = PASS
 AGENT_HANDOFF_GATE_RESULT = PASS
 NEW_AGENT_CAN_RESUME_WITHOUT_CHAT_HISTORY = YES
+
+## 14. Checkpoint vigente — Secure Image Preview Delivery (2026-09-25)
+
+```text
+SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED
+TECHNICAL_COMMIT = e3f2d40
+INTEGRATION_COMMIT = 7ca5f7c
+INTEGRATION_GATE = PASS
+INVENTORY_THUMBNAIL_REAL_DATA_WIRING = COMPLETE
+PREVIEW_VARIANTS = THUMB; PANEL; dimensões na authority de imagens, seção 24
+UI-3 = NEXT_CANDIDATE / NOT_AUTHORIZED
+IMG-04 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+IMPLEMENTATION_AUTHORIZED = NO
+COMMIT_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+```
+
+Para o snapshot Git, evidências dos gates, fatos de segurança da entrega,
+decisões deferred e status final desta reconciliação, consulte
+PROJECT_STATE.md. Para contrato técnico de preview, consulte
+ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md. UI-3 deve reutilizar a variante PANEL
+existente; o layout aprovado do painel continua em
+ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md, seção 7.3.

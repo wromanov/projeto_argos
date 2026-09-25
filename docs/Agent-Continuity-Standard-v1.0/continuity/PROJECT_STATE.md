@@ -3,19 +3,19 @@
 STATUS = CURRENT_SNAPSHOT
 SNAPSHOT_DATE = 2026-09-25
 PROJECT = ARGOS
-STATE_SOURCE = verified Git baseline + IMG-03/UI-2 integration commits + supplied integration validation evidence + canonical project authorities
+STATE_SOURCE = verified Git baseline + Secure Image Preview Delivery integration commit + supplied integration validation evidence + canonical project authorities
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = current documentary checkpoint after integrated IMG-03 and UI-2; earlier checkpoints remain historical
+SNAPSHOT_SCOPE = current documentary checkpoint after integrated Secure Image Preview Delivery; earlier checkpoints remain historical
 
 ## 1. Executive status
 
-CURRENT_PHASE = FASE C — Captura manual e gestão de imagens (IMG-02, IMG-03, UI-1 e UI-2 COMPLETE / INTEGRATED)
-CURRENT_ACTIVITY = reconciliação documental pós-integração IMG-03 + UI-2 concluída; sem implementação ativa autorizada
-LAST_COMPLETED_ACTIVITY = IMG-03 + UI-2 — COMPLETE / INTEGRATED (c79fa06)
+CURRENT_PHASE = FASE C — Captura manual e gestão de imagens (IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 COMPLETE / INTEGRATED)
+CURRENT_ACTIVITY = reconciliação documental pós-integração SECURE_IMAGE_PREVIEW_DELIVERY concluída; sem implementação ativa autorizada
+LAST_COMPLETED_ACTIVITY = SECURE_IMAGE_PREVIEW_DELIVERY — COMPLETE / INTEGRATED (7ca5f7c)
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
 LAST_PUBLISHED_BASELINE = 850efd2
-CURRENT_CANONICAL_GIT_BASELINE = HEAD c79fa06775ccb707b6753f2a8ed0e988e8a9c86d; origin/master 547678de9c70ee9eda2fc30599417d217c878006; ahead 4 / behind 0
-NEXT_PROJECT_ACTIVITY = SECURE_IMAGE_PREVIEW_DELIVERY / NEXT_CANDIDATE / NOT_AUTHORIZED
+CURRENT_CANONICAL_GIT_BASELINE = HEAD 7ca5f7c9c7dda8d66754406be4d351071612aa92; origin/master c32ccc2836313fcb58a31f096f71aa9502cbc7f9; ahead 2 / behind 0
+NEXT_PROJECT_ACTIVITY = UI-3 / NEXT_CANDIDATE / NOT_AUTHORIZED
 NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 CURRENT_BASELINE_BEFORE_IMG02 = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
 
@@ -366,7 +366,7 @@ PROJECT_STATE_UPDATE = PASS
 DOCUMENT_RECONCILIATION_GATE = PASS
 AGENT_HANDOFF_GATE_RESULT = PASS
 
-## 15. Checkpoint vigente — integração IMG-03 + UI-2 (2026-09-25)
+## 15. Checkpoint histórico — integração IMG-03 + UI-2 (2026-09-25)
 
 Este checkpoint supersede os resumos anteriores que apontam IMG-03 ou UI-2
 como candidatas ainda não integradas. Git foi validado no início desta
@@ -463,3 +463,70 @@ DEFERRED_ITEMS_DISCOVERABLE = YES
 IMPLEMENTATION_AUTHORIZATION_STATE_DISCOVERABLE = YES
 SECURITY_OR_ENVIRONMENT_GATES_DISCOVERABLE = YES
 NEW_AGENT_CAN_RESUME_WITHOUT_CHAT_HISTORY = YES
+
+## 16. Checkpoint vigente — Secure Image Preview Delivery (2026-09-25)
+
+Este snapshot reconcilia o estado integrado em 7ca5f7c. O gate técnico
+abaixo foi fornecido como evidência validada da integração e não foi
+reexecutado nesta atividade documental.
+
+```text
+BASELINE_VALIDATED = YES
+PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+BRANCH = master
+HEAD = 7ca5f7c9c7dda8d66754406be4d351071612aa92
+ORIGIN_MASTER = c32ccc2836313fcb58a31f096f71aa9502cbc7f9
+DIVERGENCE = ahead 2 / behind 0
+BASELINE_WORKTREE = CLEAN
+BASELINE_STAGING = EMPTY
+CURRENT_WORKTREE = seis documentos compartilhados permitidos, modificados e unstaged
+CURRENT_STAGING = EMPTY
+SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED
+TECHNICAL_COMMIT = e3f2d40
+INTEGRATION_COMMIT = 7ca5f7c
+INTEGRATION_GATE = PASS
+MERGE_CONFLICTS = NONE
+INTEGRATION_VALIDATION = manage.py check PASS; makemigrations --check --dry-run PASS / no changes; cameras.test_imagens_read_service + cameras.test_imagens_upload + cameras.test_imagens_preview = 28/28 PASS
+VALIDATION_EVIDENCE = fornecida para esta reconciliação; gates não reexecutados
+INVENTORY_CAMERA_THUMBNAIL = APPROVED
+INVENTORY_THUMBNAIL_SOURCE = LATEST_CAMERA_CAPTURE
+INVENTORY_THUMBNAIL_VISUAL_FOUNDATION = COMPLETE
+INVENTORY_THUMBNAIL_REAL_DATA_WIRING = COMPLETE
+PREVIEW_VARIANTS = THUMB; PANEL; dimensões e contrato técnico em ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md, seção 24
+PREVIEW_DELIVERY_AUTHENTICATION_AUTHORIZATION = REQUIRED; permission atual = cameras.view_camera
+STORAGE_KEY_OR_PATH_EXPOSED_TO_CLIENT = NO
+PRIVATE_MEDIA_MADE_PUBLIC = NO
+LATEST_PREVIEW_PROVENANCE = CAPTURA_CAMERA only
+FALLBACK_TO_UPLOAD_MANUAL_PRIMARY_IMAGE_OR_OLDER_CAPTURE = NO
+CAPTURE_SIDE_EFFECT = NONE
+INVENTORY_HTML_READS_IMAGE_BYTES_OR_STORAGE = NO
+INVENTORY_PREVIEW_FETCH = browser lazy request
+CACHE_CONTROL = no-store
+CAMERA_QUICK_DETAIL_PANEL = USER_APPROVED; UI-3 deve reutilizar a entrega segura existente com PANEL; layout aprovado e detalhes em ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md, seção 7.3
+UI-3 = NEXT_CANDIDATE / NOT_AUTHORIZED
+IMG-04 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+IMPLEMENTATION_AUTHORIZED = NO
+ON_DEMAND_PREVIEW_COST_LOAD_BENCHMARK = DEFERRED / NOT BENCHMARKED
+PERSISTENT_DERIVED_PREVIEW_CACHE_OR_CDN = NOT IMPLEMENTED / DEFERRED
+FINAL_IMAGE_PERMISSION_MATRIX = DEFERRED
+DEFINITIVE_STORAGE_BACKEND = DEFERRED
+DEFINITIVE_MIME_SIZE_DIMENSION_POLICY = DEFERRED
+UPLOAD_REJECTION_AUDIT_HARDENING = DEFERRED / future hardening IMG-08
+DETAIL_ONCE_REFERENCE_MANY = YES; detalhes técnicos HTTP e limites operacionais ficam na authority de imagens
+DEFERRED_ITEMS = custo on-demand não benchmarked; cache persistente/CDN; matriz final de permissões; backend definitivo; políticas definitivas de MIME/tamanho/dimensões; hardening de auditoria de rejeições de upload
+BLOCKERS = NONE
+RECOMMENDATION = PASS_WITH_FINDINGS
+SECURITY_GATES = LOCAL_DEVELOPMENT: RELEASED_WITH_CONTROLS; HOMOLOGATION: BLOCKED; DEPLOYMENT: BLOCKED; PRODUCTION: BLOCKED
+DOCUMENTARY_RECONCILIATION_AUTHORIZED = YES
+LIVE_AUTHORIZED = NO
+COMMIT_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+ACTIVITY_COMPLETION_PERCENT = 100%
+COMPLETION_BASIS = baseline validado; seis documentos reconciliados; git diff --check PASS; alterações unstaged prontas para adjudicação; sem commit, push ou publicação
+GIT_DIFF_CHECK = PASS
+PROJECT_STATE_UPDATE = PASS
+DOCUMENT_RECONCILIATION_GATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PASS
+CONTINUITY_DISCOVERABILITY = YES; status, commits, fatos de segurança, decisões deferred, authorities e autorização recuperáveis sem histórico de chat
+```

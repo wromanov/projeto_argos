@@ -162,7 +162,7 @@ PROJECT_STATE_UPDATE = PASS
 DOCUMENT_RECONCILIATION_GATE = PASS
 AGENT_HANDOFF_GATE_RESULT = PASS
 
-## Checkpoint vigente — integração IMG-03 + UI-2 (2026-09-25)
+## Checkpoint histórico — integração IMG-03 + UI-2 (2026-09-25)
 
 Leia o checkpoint mais recente em `PROJECT_STATE.md` e `AGENT_CONTINUITY.md`
 antes de qualquer ação. Ele supersede os status de IMG-03/UI-2 deste bootstrap
@@ -212,3 +212,37 @@ AGENT_HANDOFF_GATE_RESULT = PASS
 Nesta reconciliação, os gates foram aceitos como evidência fornecida e não
 reexecutados. Valide Git diretamente ao iniciar nova sessão; esta atividade
 documental não autoriza implementação, staging, commit ou push.
+
+## Checkpoint vigente — Secure Image Preview Delivery (2026-09-25)
+
+Leia o checkpoint vigente completo em PROJECT_STATE.md; ele registra fatos
+de segurança, decisões deferred, baseline Git e evidências. Os detalhes
+técnicos HTTP permanecem em ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
+
+SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED
+TECHNICAL_COMMIT = e3f2d40
+INTEGRATION_COMMIT = 7ca5f7c
+INTEGRATION_GATE = PASS
+INVENTORY_CAMERA_THUMBNAIL = APPROVED; SOURCE = LATEST_CAMERA_CAPTURE
+INVENTORY_THUMBNAIL_VISUAL_FOUNDATION = COMPLETE
+INVENTORY_THUMBNAIL_REAL_DATA_WIRING = COMPLETE
+PREVIEW_VARIANTS = THUMB; PANEL; dimensões na authority de imagens, seção 24
+UI-3 = NEXT_CANDIDATE / NOT_AUTHORIZED
+IMG-04 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+
+A futura UI-3 deve reutilizar a entrega segura existente na variante PANEL.
+Preserve o layout aprovado do CameraQuickDetailPanel na especificação UI-DS,
+seção 7.3. Não iniciar UI-3 nem IMG-04 por inferência.
+
+ON_DEMAND_PREVIEW_COST_LOAD_BENCHMARK = DEFERRED / NOT BENCHMARKED
+PERSISTENT_DERIVED_PREVIEW_CACHE_OR_CDN = NOT IMPLEMENTED / DEFERRED
+FINAL_IMAGE_PERMISSION_MATRIX = DEFERRED
+DEFINITIVE_STORAGE_BACKEND = DEFERRED
+DEFINITIVE_MIME_SIZE_DIMENSION_POLICY = DEFERRED
+UPLOAD_REJECTION_AUDIT_HARDENING = DEFERRED
+IMPLEMENTATION_AUTHORIZED = NO
+COMMIT_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+ACTIVITY_COMPLETION_PERCENT = 100%
+COMPLETION_BASIS = baseline validado; seis documentos reconciliados; git diff --check PASS; alterações unstaged prontas para adjudicação; sem commit, push ou publicação

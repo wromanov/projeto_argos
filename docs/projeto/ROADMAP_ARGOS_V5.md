@@ -1358,7 +1358,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
 FASE B — Monitoramento operacional             ✅ FRENTE TÉCNICA CONCLUÍDA (MON-00 a MON-09; validações externas futuras; gates preservados)
-FASE C — Captura manual e imagens              🟡 EM ANDAMENTO / IMG-02, IMG-03, UI-1 e UI-2 COMPLETE / INTEGRATED
+FASE C — Captura manual e imagens              🟡 EM ANDAMENTO / IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 COMPLETE / INTEGRATED
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
 FASE F — Integração técnica                    ⏳ PLANEJADA
@@ -1447,7 +1447,7 @@ A autoridade de imagem contém o contrato persistente de storage, a abstração
 configurável e as decisões deferred. Este roadmap registra somente status,
 sequência e dependências; a continuidade aponta os commits e o baseline Git.
 
-## Atualização vigente — integração IMG-03 + UI-2 (2026-09-25)
+## Registro histórico — integração IMG-03 + UI-2 (2026-09-25)
 
 IMG-03 = COMPLETE / INTEGRATED
 IMG-03_COMMIT = f6e08b6
@@ -1464,3 +1464,27 @@ futura sem autorização. Nenhuma atividade nova foi autorizada por este
 checkpoint documental. Estados, evidências de validação, decisões deferred e
 as regras contra fallback estão nos documentos de continuidade; os detalhes
 de domínio/UI permanecem nas authorities especializadas.
+
+## Atualização vigente — Secure Image Preview Delivery (2026-09-25)
+
+```text
+SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED
+TECHNICAL_COMMIT = e3f2d40
+INTEGRATION_COMMIT = 7ca5f7c
+INTEGRATION_GATE = PASS
+INVENTORY_CAMERA_THUMBNAIL = APPROVED; SOURCE = LATEST_CAMERA_CAPTURE
+INVENTORY_THUMBNAIL_VISUAL_FOUNDATION = COMPLETE
+INVENTORY_THUMBNAIL_REAL_DATA_WIRING = COMPLETE
+UI-3 = NEXT_CANDIDATE / NOT_AUTHORIZED
+IMG-04 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+FASE_C_COMPLETE = NO
+```
+
+O inventário usa a variante THUMB. A futura UI-3 deve reutilizar a entrega
+segura existente com a variante PANEL, sem criar outro backend de imagens.
+Dimensões e contrato técnico ficam em ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md,
+seção 24. O layout aprovado do CameraQuickDetailPanel permanece na authority
+UI-DS, seção 7.3. Evidências, fatos de segurança e decisões deferred estão em
+PROJECT_STATE.md e na authority de imagens; este roadmap registra somente
+status, sequência e dependências.
