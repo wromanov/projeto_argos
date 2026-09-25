@@ -1105,6 +1105,64 @@
     }
 }
 
+.camera-row--selected,
+.camera-table.data-table tbody .camera-row--selected:hover {
+    background: var(--color-accent);
+    box-shadow: inset 3px 0 var(--color-brand);
+}
+
+.camera-table [data-quick-detail-row] { cursor: pointer; }
+.camera-table [data-quick-detail-row] a,
+.camera-table [data-quick-detail-row] button { cursor: pointer; }
+.camera-table .table-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.camera-quick-detail {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: min(34rem, 100vw);
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-left: var(--border-width) solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-md);
+}
+.camera-quick-detail::backdrop { background: rgba(15, 23, 42, .45); }
+.camera-quick-detail__header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border-bottom: var(--border-width) solid var(--color-border);
+    background: var(--color-surface);
+}
+.camera-quick-detail__header h2 { margin: 0; font-size: var(--font-size-lg); }
+.camera-quick-detail__navigation { display: flex; justify-content: space-between; gap: var(--space-2); padding: var(--space-3) var(--space-4); border-bottom: var(--border-width) solid var(--color-border); }
+.camera-quick-detail__close { min-width: 2.75rem; min-height: 2.75rem; border: 0; border-radius: var(--radius-control); background: var(--color-surface-muted); color: var(--color-text-primary); font: inherit; font-size: 1.5rem; cursor: pointer; }
+.camera-quick-detail__close:focus-visible { outline: 2px solid var(--color-focus); }
+.camera-quick-detail__body { padding: 0 var(--space-4) var(--space-5); }
+.camera-quick-detail__body section { padding: var(--space-4) 0; border-bottom: var(--border-width) solid var(--color-border); }
+.camera-quick-detail__body h3 { margin: 0 0 var(--space-3); font-size: var(--font-size-body); }
+.camera-quick-detail__body dl { display: grid; grid-template-columns: minmax(7rem, 40%) minmax(0, 1fr); gap: var(--space-2); margin: 0; }
+.camera-quick-detail__body dt { color: var(--color-text-secondary); }
+.camera-quick-detail__body dd { margin: 0; overflow-wrap: anywhere; }
+.camera-quick-detail__preview { min-height: 12rem; text-align: center; background: var(--color-surface-muted); }
+.camera-quick-detail__preview img { display: block; width: 100%; max-height: 21rem; object-fit: contain; }
+.camera-quick-detail__preview img[hidden] { display: none; }
+.camera-quick-detail__identity { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
+.camera-quick-detail__identity p { margin: var(--space-1) 0; color: var(--color-text-secondary); overflow-wrap: anywhere; }
+.camera-quick-detail__action { width: 100%; margin-top: var(--space-4); }
+.camera-quick-detail__message { padding: var(--space-5) 0; }
+@media (max-width: 44rem) { .camera-quick-detail { width: 100vw; } }
+
 /* Etapa 3A — listagem do inventário */
 .inventory-page-header {
     margin-bottom: var(--space-6);

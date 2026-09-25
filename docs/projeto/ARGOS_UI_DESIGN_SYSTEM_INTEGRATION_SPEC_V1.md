@@ -385,6 +385,29 @@ conflito deve ser reportado antes da implementação.
 
 ## 7. CameraQuickDetailPanel — decisão de produto
 
+### Implementação UI-3 em worktree isolado (aguardando adjudicação)
+
+O Inventário oferece botão de inspeção rápida por linha e clique na área não
+interativa da linha. Um `<dialog>` modal nativo abre pela direita, bloqueia o
+fundo, mantém o foco no painel e restaura o foco ao acionador ao fechar. Escape,
+botão de fechar e navegação entre câmeras da página são suportados. A seleção
+visual usa faixa lateral além de cor. O contexto de filtros, paginação e scroll
+permanece na mesma página.
+
+`GET /cameras/<pk>/quick-detail/` fornece JSON privado com identidade,
+localização, projeção de `MonitoringReadService`, estado de
+`LATEST_CAMERA_CAPTURE`, URL `PANEL` quando aplicável e link para a página
+canônica. A leitura testa existência pela abstração de storage, sem abrir bytes;
+falhas são projetadas como `UNAVAILABLE`. A rota de preview revalida os bytes.
+Exige `cameras.view_camera`, retorna 401/403/404 para autenticação,
+permissão e câmera ausente, e usa `Cache-Control: no-store`. A consulta de
+imagem usa metadados e existência; bytes são requisitados separadamente pela rota
+privada de preview. O cliente cancela requests anteriores e confere identidade
+antes de renderizar uma resposta. Não há captura ou alteração de monitoramento.
+
+Este registro descreve implementação técnica no worktree UI-3; não declara
+commit, integração, publicação ou fechamento formal.
+
 ```text
 SOURCE_PATTERN = CameraDetailSheet
 ARGOS_PATTERN = CameraQuickDetailPanel
