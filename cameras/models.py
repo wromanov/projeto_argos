@@ -1,7 +1,10 @@
+from uuid import uuid4
+
 from django.conf import settings
 from django.utils import timezone
+from django.utils.text import get_valid_filename
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 from django.db.models import F, Q
 from django.db.models.functions import Lower
@@ -617,3 +620,226 @@ class Indisponibilidade(models.Model):
                 name="indisp_one_open_camera",
             ),
         ]
+
+
+
+def validar_referencia_objeto_storage(value):
+    """Rejeita URLs e caminhos absolutos; a chave não é uma autorização de acesso."""
+    partes = value.split("/")
+    if (
+        not value
+        or value != value.strip()
+        or "://" in value
+        or value.startswith(("/", "\\"))
+        or "\\" in value
+        or any(parte in {".", ".."} for parte in partes)
+    ):
+        raise ValidationError("Informe uma referência opaca e relativa ao storage.")
+
+
+def sanitizar_nome_original(value):
+    """Mantém apenas o nome-base para exibição/auditoria, nunca caminhos do cliente."""
+    candidato = str(value or "").replace("\\", "/").split("/")[-1]
+    candidato = "".join(char for char in candidato if ord(char) >= 32 and ord(char) != 127)
+    if not candidato:
+        return ""
+    return get_valid_filename(candidato)[:255]
+
+
+class CameraImageRecordQuerySet(models.QuerySet):
+    def delete(self):
+        raise ValidationError("Registros de imagem são históricos; use a retirada lógica.")
+
+
+class CameraImageRecord(models.Model):
+    class Provenance(models.TextChoices):
+        CAPTURA_CAMERA = "CAPTURA_CAMERA", "Captura da câmera"
+        UPLOAD_MANUAL = "UPLOAD_MANUAL", "Upload manual"
+
+    class IntegrityStatus(models.TextChoices):
+        VALID = "VALID", "Íntegro"
+        INVALID = "INVALID", "Inválido ou corrompido"
+
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    camera = models.ForeignKey(
+        Camera,
+        on_delete=models.PROTECT,
+        related_name="image_records",
+        db_index=False,
+        verbose_name="Câmera",
+    )
+    provenance = models.CharField(max_length=20, choices=Provenance.choices)
+    captured_at = models.DateTimeField(null=True, blank=True, verbose_name="Capturada em")
+    recorded_at = models.DateTimeField(default=timezone.now, editable=False, verbose_name="Registrada em")
+    storage_key = models.CharField(
+        max_length=512,
+        validators=[validar_referencia_objeto_storage],
+        verbose_name="Referência opaca no storage",
+    )
+    content_type = models.CharField(
+        max_length=127,
+        validators=[RegexValidator(r"\Aimage/[A-Za-z0-9][A-Za-z0-9.+-]*\Z", "Informe um content type de imagem registrado.")],
+        verbose_name="Content type validado",
+    )
+    size_bytes = models.PositiveBigIntegerField(null=True, blank=True, verbose_name="Tamanho em bytes")
+    width = models.PositiveIntegerField(null=True, blank=True, verbose_name="Largura em pixels")
+    height = models.PositiveIntegerField(null=True, blank=True, verbose_name="Altura em pixels")
+    sha256 = models.CharField(
+        max_length=64,
+        validators=[RegexValidator(r"\A[a-f0-9]{64}\Z", "Informe o SHA-256 hexadecimal calculado pelo servidor.")],
+        verbose_name="SHA-256",
+    )
+    integrity_status = models.CharField(
+        max_length=10,
+        choices=IntegrityStatus.choices,
+        default=IntegrityStatus.VALID,
+        verbose_name="Integridade",
+    )
+    original_filename = models.CharField(max_length=255, blank=True, default="", verbose_name="Nome original sanitizado")
+    uploaded_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="camera_image_records_uploaded",
+        verbose_name="Enviado por",
+    )
+    captured_by_system = models.CharField(max_length=255, blank=True, default="", verbose_name="Sistema executor da captura")
+    recorded_by_system = models.CharField(max_length=255, blank=True, default="", verbose_name="Sistema registrador")
+    withdrawn_at = models.DateTimeField(null=True, blank=True, verbose_name="Retirada em")
+    withdrawn_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="camera_image_records_withdrawn",
+        verbose_name="Retirada por",
+    )
+    withdrawal_reason = models.CharField(max_length=500, blank=True, default="", verbose_name="Motivo da retirada")
+
+    objects = CameraImageRecordQuerySet.as_manager()
+
+    class Meta:
+        verbose_name = "Registro de imagem da câmera"
+        verbose_name_plural = "Registros de imagem da câmera"
+        constraints = [
+            models.CheckConstraint(
+                condition=Q(provenance__in=["CAPTURA_CAMERA", "UPLOAD_MANUAL"]),
+                name="camimg_provenance_valid",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    Q(provenance="CAPTURA_CAMERA", captured_at__isnull=False)
+                    | Q(provenance="UPLOAD_MANUAL", captured_at__isnull=True)
+                ),
+                name="camimg_capture_time_semantics",
+            ),
+            models.CheckConstraint(
+                condition=Q(integrity_status__in=["VALID", "INVALID"]),
+                name="camimg_integrity_valid",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    Q(withdrawn_at__isnull=True, withdrawal_reason="")
+                    | Q(withdrawn_at__isnull=False, withdrawal_reason__gt="")
+                ),
+                name="camimg_withdrawal_auditable",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    Q(width__isnull=True, height__isnull=True)
+                    | Q(width__gt=0, height__gt=0)
+                ),
+                name="camimg_dimensions_coherent",
+            ),
+            models.CheckConstraint(
+                condition=~Q(storage_key="") & ~Q(sha256=""),
+                name="camimg_object_facts_present",
+            ),
+        ]
+        indexes = [
+            models.Index(
+                fields=["camera", "provenance", "withdrawn_at", "-captured_at", "-recorded_at", "-id"],
+                name="camimg_latest_current_idx",
+            ),
+        ]
+
+    _IMMUTABLE_FACT_FIELDS = (
+        "camera_id",
+        "provenance",
+        "captured_at",
+        "recorded_at",
+        "storage_key",
+        "content_type",
+        "size_bytes",
+        "width",
+        "height",
+        "sha256",
+        "original_filename",
+        "uploaded_by_id",
+        "captured_by_system",
+        "recorded_by_system",
+    )
+
+    def clean(self):
+        super().clean()
+        errors = {}
+        if self.provenance == self.Provenance.CAPTURA_CAMERA:
+            if self.captured_at is None:
+                errors["captured_at"] = "Capturas da câmera exigem o instante observado pelo fluxo autorizado."
+            elif timezone.is_naive(self.captured_at):
+                errors["captured_at"] = "captured_at deve ser timezone-aware."
+        elif self.provenance == self.Provenance.UPLOAD_MANUAL and self.captured_at is not None:
+            errors["captured_at"] = "Upload manual não recebe captured_at presumido."
+        if self.recorded_at is not None and timezone.is_naive(self.recorded_at):
+            errors["recorded_at"] = "recorded_at deve ser timezone-aware."
+        if self.withdrawn_at is not None:
+            if timezone.is_naive(self.withdrawn_at):
+                errors["withdrawn_at"] = "withdrawn_at deve ser timezone-aware."
+            if not self.withdrawal_reason.strip():
+                errors["withdrawal_reason"] = "A retirada lógica exige um motivo auditável."
+        elif self.withdrawal_reason:
+            errors["withdrawal_reason"] = "O motivo só pode ser informado junto à retirada lógica."
+        if errors:
+            raise ValidationError(errors)
+
+    def save(self, *args, **kwargs):
+        self.original_filename = sanitizar_nome_original(self.original_filename)
+        if not self._state.adding:
+            previous = type(self).objects.filter(pk=self.pk).values(
+                *self._IMMUTABLE_FACT_FIELDS, "integrity_status", "withdrawn_at", "withdrawn_by_id", "withdrawal_reason"
+            ).first()
+            if previous is None:
+                raise ValidationError("A identidade de um registro de imagem não pode ser substituída.")
+            changed = [
+                field for field in self._IMMUTABLE_FACT_FIELDS
+                if previous[field] != getattr(self, field)
+            ]
+            if changed:
+                raise ValidationError("Os fatos históricos do registro de imagem são imutáveis.")
+            if previous["integrity_status"] == self.IntegrityStatus.INVALID and self.integrity_status != self.IntegrityStatus.INVALID:
+                raise ValidationError("A integridade inválida não pode ser revertida no mesmo registro.")
+            lifecycle_before = (
+                previous["withdrawn_at"], previous["withdrawn_by_id"], previous["withdrawal_reason"]
+            )
+            lifecycle_after = (self.withdrawn_at, self.withdrawn_by_id, self.withdrawal_reason)
+            if previous["withdrawn_at"] is not None and lifecycle_before != lifecycle_after:
+                raise ValidationError("A retirada lógica é histórica e não pode ser alterada ou revertida.")
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    def withdraw(self, *, reason, by=None, at=None):
+        if self._state.adding:
+            raise ValidationError("Salve o registro antes de retirá-lo logicamente.")
+        if self.withdrawn_at is not None:
+            raise ValidationError("O registro já foi retirado logicamente.")
+        self.withdrawn_at = at or timezone.now()
+        self.withdrawn_by = by
+        self.withdrawal_reason = str(reason or "").strip()
+        self.save(update_fields=["withdrawn_at", "withdrawn_by", "withdrawal_reason"])
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError("Registros de imagem são históricos; use a retirada lógica.")
+
+    def __str__(self):
+        return f"{self.provenance} · {self.camera_id} · {self.pk}"

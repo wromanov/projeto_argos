@@ -3,23 +3,23 @@
 STATUS = CURRENT_SNAPSHOT
 SNAPSHOT_DATE = 2026-09-24
 PROJECT = ARGOS
-STATE_SOURCE = verified Git baseline + MON-09A...E adjudication + current roadmap + UI-DS authorities + IMG-01 canonical image contract
+STATE_SOURCE = verified Git baseline + MON-09 adjudication + roadmap/UI-DS authorities + IMG-01 contract + IMG-02 technical validation
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = current ARGOS continuity/handoff documentary checkpoint; MON-09 technical closure remains historical technical checkpoint
+SNAPSHOT_SCOPE = current local IMG-02 implementation checkpoint; MON-09 and IMG-01 remain historical completed checkpoints
 
 ## 1. Executive status
 
-CURRENT_PHASE = FASE C — Captura manual e gestão de imagens (IMG-01 documental concluída; implementação não iniciada)
-CURRENT_ACTIVITY = NONE após este checkpoint documental; nenhuma atividade de implementação está em andamento
+CURRENT_PHASE = FASE C — Captura manual e gestão de imagens (IMG-01 documental; IMG-02 implementação técnica aguardando adjudicação)
+CURRENT_ACTIVITY = IMG-02 — Modelo, storage e proveniência; pacote técnico validado e aguardando adjudicação humana
 LAST_COMPLETED_ACTIVITY = IMG-01 — CANONICAL IMAGE CONTRACT CHECKPOINT (documental)
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
 LAST_PUBLISHED_BASELINE = 850efd2
-CURRENT_CANONICAL_GIT_BASELINE = f4e88146c1146cdf04d657eb6e3cefa560639b61
-CURRENT_BASELINE_BEFORE_DOCUMENTARY_COMMIT = f4e88146c1146cdf04d657eb6e3cefa560639b61
+CURRENT_CANONICAL_GIT_BASELINE = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
+CURRENT_BASELINE_BEFORE_IMG02 = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
 
 PROJECT_PROGRESS_LAST_VALID_PUBLISHED_ESTIMATE = 78% (HISTORICAL; NOT CURRENT)
 MON08_PROGRESS_LAST_VALID_PUBLISHED_ESTIMATE = 15% (HISTORICAL; NOT CURRENT)
-PROJECT_PROGRESS_UPDATE = NOT_RECALCULATED
+PROJECT_PROGRESS_UPDATE = NOT_RECALCULATED; percentual global continua sem fórmula aprovada
 PROGRESS_BASIS = Percentuais históricos preservados sem interpretação como estado atual; não há fórmula/authority suficiente para recalcular.
 
 ## 2. Git baseline snapshot — before MON-09 documentary commit
@@ -315,76 +315,67 @@ Detalhes não são duplicados neste snapshot. A authority é
 `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`; a ordem das
 slices está em `docs/projeto/SPRINTS_ARGOS_V5.md`.
 
-## 12. Fase C — checkpoint canônico IMG-01
+## 12. Fase C — estado IMG-02 atual
 
 IMG01_STATUS = COMPLETE / DOCUMENTAL
+IMG02_TECHNICAL_STATUS = IMPLEMENTED / FOCUSED_VALIDATION_PASS / AWAITING_HUMAN_ADJUDICATION
+IMG02_IMPLEMENTATION_AUTHORIZATION = GRANTED_BY_EXPLICIT_USER_INSTRUCTION_FOR_THIS_SLICE_ONLY
+IMG02_AUTHORIZATION_SOURCE = user request for IMG-02, activity IMG-02, 2026-09-24
+IMG02_ACTIVITY_CLOSED = NO; final adjudication belongs to the user/adjudicator
 CANONICAL_IMAGE_CONTRACT = docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
-LATEST_CAMERA_CAPTURE_RECORD = selecionar CAPTURA_CAMERA corrente por captured_at DESC, recorded_at DESC, immutable_id DESC; avaliar validade/integridade/disponibilidade somente depois
+LATEST_CAMERA_CAPTURE = CAPTURA_CAMERA corrente, withdrawn_at IS NULL, captured_at DESC, recorded_at DESC, immutable_id DESC; assess integrity and storage only after selection
 NO_SILENT_FALLBACK_TO_OLDER_CAPTURE = YES
+LATEST_CAMERA_CAPTURE_STATES = NO_CAPTURE_AVAILABLE, AVAILABLE, UNAVAILABLE, ERROR
 PROVENANCES = CAPTURA_CAMERA, UPLOAD_MANUAL
+CAPTURED_AT = required/timezone-aware for CAPTURA_CAMERA; null for UPLOAD_MANUAL
+RECORDED_AT = ARGOS timezone-aware default; distinct from captured_at
 PRIMARY_IMAGE = DEFERRED_TO_IMG07
-CAMERA_QUICK_DETAIL_PANEL = consome LATEST_CAMERA_CAPTURE; não dispara captura ao abrir; UPLOAD_MANUAL não é fallback implícito
-MONITORING_SEPARATION = CAMERA_AVAILABILITY != IMAGE_CAPTURE_SUCCESS; falha de captura não altera ONLINE/OFFLINE; processamento separado
-OPEN_DECISION_COUNT = 7
-OPEN_DECISIONS = backend de storage; MIME/tamanho/dimensões; fallback visual de UPLOAD_MANUAL; retenção/expurgo; política temporal STALE; credencial/perfil para captura; existência/semântica final de PRIMARY_IMAGE
-IMG02_PREREQUISITES = ler contrato; adjudicação humana; autorização própria; decidir backend antes de migration; implementar modelo/storage/proveniência respeitando seleção latest e Integration Gate
-IMG02_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
-NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
-NEXT_PROJECT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
+MONITORING_SEPARATION = CAMERA_AVAILABILITY != IMAGE_CAPTURE_SUCCESS; read path has no monitoring side effects
+AUTHORSHIP_DECISION = uploaded_by, captured_by_system, recorded_by_system represented; requested_by belongs to future capture request/attempt/result (IMG-04); fields needed by flows remain unpopulated until those flows exist
+STORAGE_CONTRACT = opaque storage_key + Django default_storage.exists check; no URL or bytes in metadata; current local FileSystemStorage behavior is a reversible development detail, not product/backend selection
+AVAILABILITY_CONTRACT = evaluated from storage after record selection; storage exceptions map to UNAVAILABLE without fallback or write side effect
+WITHDRAWAL_CONTRACT = withdrawn_at/by/reason audit fields; record/delete path protected; current selection excludes withdrawn records
+OPEN_DECISION_COUNT = 7; details remain only in ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+OPEN_DECISIONS = definitive storage backend; MIME/size/dimension limits; manual-upload visual fallback; retention/purge; image stale policy; capture credentials/profile; PRIMARY_IMAGE semantics
+
+## 13. IMG-02 implementation evidence and next activity
+
+IMG02_MODEL = cameras.models.CameraImageRecord
+IMG02_MIGRATION = cameras/migrations/0013_cameraimagerecord.py; dependency cameras.0012_monitoring_ownership_lease
+IMG02_CANONICAL_READ_SERVICE = cameras/imagens/read_service.py:CameraImageReadService
+IMG02_FOCUSED_TESTS = cameras/test_imagens_read_service.py; 13 tests passed
+IMG02_VALIDATION = manage.py check PASS; makemigrations --check PASS; focused tests PASS; test runner applied migrations through 0013 to in-memory SQLite
+IMG02_BATCH_READ = one ORM window query for requested cameras; storage existence checked only for each selected current record
+IMG02_INTEGRATION_EVIDENCE = service uses the persisted cameras model and canonical storage interface; focused tests exercise the same service against Django's disposable database; UI-3 panel remains out of scope
+NEXT_PROJECT_ACTIVITY = IMG-03 — Upload manual, after IMG-02 human adjudication
+NEXT_PROJECT_ACTIVITY_STATUS = NOT_AUTHORIZED
+IMG03_STATUS = NOT_AUTHORIZED
 FASE_C_COMPLETE = NO
 
-O contrato canônico mapeia cada decisão aberta à slice que deve fechá-la. A
-próxima atividade não concede autorização de implementação. Percentual global
-do projeto permanece não recalculado.
-
-## 13. Checkpoint de continuidade e handoff ARGOS
+## 14. Estado Git, handoff e autorização
 
 ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
 AGENT_HANDOFF_GATE = ACTIVE
 CONTINUITY_AUTHORITY = docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md
-PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
 BRANCH = master
-BASELINE_BEFORE_CONTINUITY_CHECKPOINT = f4e88146c1146cdf04d657eb6e3cefa560639b61
-HEAD_AFTER_CONTINUITY_COMMIT = consultar Git; o commit documental não altera o baseline técnico de implementação
-ORIGIN_BASELINE_BEFORE_CONTINUITY_CHECKPOINT = f4e88146c1146cdf04d657eb6e3cefa560639b61
-DIVERGENCE_BEFORE_CONTINUITY_CHECKPOINT = 0/0
-CURRENT_MACROPHASE = FASE C — Captura manual e gestão de imagens
-LAST_COMPLETED_ACTIVITY = IMG-01 — Contrato funcional de imagem (COMPLETE / DOCUMENTAL / PUBLISHED)
-LAST_COMPLETED_DOCUMENTARY_GOVERNANCE_ACTIVITY = Formalização das regras de continuidade e handoff ARGOS
-CURRENT_ACTIVITY = NONE após este checkpoint documental; nenhuma atividade de implementação está em andamento
-NEXT_PROJECT_ACTIVITY = IMG-02 — Modelo, storage e proveniência
-NEXT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
-NEXT_ACTIVITY_AUTHORITY = docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
-NEXT_ACTIVITY_PREREQUISITES = adjudicação humana e autorização explícita próprias; fechar backend de storage antes de migration
-IMPLEMENTATION_AUTHORIZED = NO
+HEAD = origin/master = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb (baseline antes do trabalho IMG-02)
+DIVERGENCE_AT_BASELINE = 0/0
+WORKTREE = alterações locais unstaged; staging vazio
+CURRENT_ACTIVITY = IMG-02 technical package awaiting final human adjudication
+ACTIVITY_COMPLETION_PERCENT = 100% do pacote técnico e validação obrigatória; atividade não fechada sem adjudicação
+IMPLEMENTATION_AUTHORIZED = IMG-02 somente, autorização já consumida
 LIVE_AUTHORIZED = NO
 PUSH_AUTHORIZED = NO
-ENVIRONMENT_GATES = LOCAL_DEVELOPMENT: RELEASED_WITH_CONTROLS; HOMOLOGATION: BLOCKED; DEPLOYMENT: BLOCKED; PRODUCTION: BLOCKED
-UI_DS_STATUS = UI-0: COMPLETE / PASS_WITH_FINDINGS; UI-1: PENDING; UI-2: PENDING; UI-3: PENDING; UI-4: PENDING
-UI_0_FINDINGS_DETAIL = docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md; UI_0_FINDINGS_DISCOVERABLE = YES; findings não bloqueantes para UI-0
-CAMERA_QUICK_DETAIL_PANEL = USER_APPROVED
-LATEST_CAMERA_CAPTURE = fonte canônica futura do preview; ver contrato de imagem
-BIG_BANG_INTEGRATION = PROHIBITED
-INTEGRATION_GATE = REQUIRED_WHEN_APPLICABLE
-OPEN_DECISION_COUNT = 7; nomes e fechamento em docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
-BLOCKERS = IMG-02 não inicia até adjudicação humana e autorização explícita próprias
-MAJOR_FINDINGS = SEC-001...SEC-006 conforme docs/security_audit/auditoria_segurança_001.md; SEC-007...SEC-009 REMEDIATED / VERIFIED; SEC-010 MITIGATED / VERIFIED; UI-0 PASS_WITH_FINDINGS conforme docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md; potencial volume elevado de logs INFO por ciclo/attempt = HARDENING / NON-BLOCKING
-DEFERRED_ITEMS = decisões abertas de IMG-01 conforme contrato; UI-1...UI-4; validações futuras de segurança/ambiente conforme gates vigentes
-CANONICAL_AUTHORITIES = ROADMAP_ARGOS_V5.md; SPRINTS_ARGOS_V5.md; ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md; ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md; ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md; ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md; ADR-019/020/021; docs/security_audit/auditoria_segurança_001.md
-UI_0_FINDINGS_DISCOVERABLE = YES
+SECURITY_GATES = LOCAL_DEVELOPMENT: RELEASED_WITH_CONTROLS; HOMOLOGATION: BLOCKED; DEPLOYMENT: BLOCKED; PRODUCTION: BLOCKED
+BLOCKERS = adjudicação humana final de IMG-02; sem bloqueio técnico identificado
+DEFERRED_ITEMS = sete decisões abertas do contrato de imagem; UI-1...UI-4; validações futuras de ambiente/segurança
 CURRENT_STATE_DISCOVERABLE = YES
 CURRENT_BASELINE_DISCOVERABLE = YES
-LAST_COMPLETED_ACTIVITY_DISCOVERABLE = YES
+IMPLEMENTATION_FILES_DISCOVERABLE = YES
 NEXT_ACTIVITY_DISCOVERABLE = YES
-CANONICAL_AUTHORITIES_DISCOVERABLE = YES
 OPEN_DECISIONS_DISCOVERABLE = YES
-BLOCKERS_DISCOVERABLE = YES
-MAJOR_FINDINGS_DISCOVERABLE = YES
-DEFERRED_ITEMS_DISCOVERABLE = YES
 IMPLEMENTATION_AUTHORIZATION_STATE_DISCOVERABLE = YES
-SECURITY_OR_ENVIRONMENT_GATES_DISCOVERABLE = YES
-NEW_AGENT_CAN_RESUME_WITHOUT_CHAT_HISTORY = YES
-DOCUMENT_QUALITY_GATE = PASS
+PROJECT_STATE_UPDATE = PASS
 DOCUMENT_RECONCILIATION_GATE = PASS
-CAMERA_QUICK_DETAIL_PANEL_APPROVAL_RECOVERABLE_WITHOUT_CHAT_HISTORY = YES
 AGENT_HANDOFF_GATE_RESULT = PASS

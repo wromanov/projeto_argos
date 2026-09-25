@@ -12,14 +12,14 @@ REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-
 REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08B06854073CE16FE028DA14
 CURRENT_PHASE = FASE C — Captura manual e gestão de imagens
-CURRENT_PHASE_STATUS = EM_ANDAMENTO / IMG-01 DOCUMENTAL CONCLUÍDA; IMPLEMENTAÇÃO NÃO INICIADA
+CURRENT_PHASE_STATUS = EM_ANDAMENTO / IMG-01 DOCUMENTAL; IMG-02 IMPLEMENTADA TECNICAMENTE, AGUARDANDO ADJUDICAÇÃO
 IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
-CURRENT_ACTIVITY = NONE após este checkpoint documental; nenhuma atividade de implementação está em andamento
+CURRENT_ACTIVITY = IMG-02 — pacote técnico validado; aguardando adjudicação humana
 LAST_COMPLETED_ACTIVITY = IMG-01 — CANONICAL IMAGE CONTRACT CHECKPOINT
 LAST_COMPLETED_ACTIVITY_STATUS = COMPLETE / DOCUMENTAL / PUBLISHED
-NEXT = IMG-02 — Modelo, storage e proveniência
-NEXT_ACTIVITY_STATUS = PLANNED / NOT_YET_AUTHORIZED_FOR_IMPLEMENTATION
-IMG02_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
+NEXT = IMG-03 — Upload manual, após adjudicação IMG-02 e autorização própria
+NEXT_ACTIVITY_STATUS = NOT_AUTHORIZED
+IMG02_IMPLEMENTATION_AUTHORIZATION = GRANTED_BY_EXPLICIT_USER_INSTRUCTION_FOR_THIS_SLICE_ONLY
 IMG-01 = COMPLETE após o checkpoint documental; contrato canônico:
 docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
 Esta ordem registra a próxima atividade, não concede autorização de
@@ -41,10 +41,11 @@ Este mapa registra status, ordem, dependências e gates das slices. O estado
 recuperável entre agentes e o contrato de handoff pertencem a
 `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`.
 
-MON-09 está tecnicamente encerrada. A Fase C avançou pelo checkpoint documental
-IMG-01; sua implementação continua não iniciada e IMG-02 é a próxima atividade
-de projeto. Nenhum item deste mapa autoriza implementação, avanço de fase,
-alteração de stack ou execução em homologação/produção.
+MON-09 está tecnicamente encerrada. IMG-01 permanece o checkpoint documental
+concluído. IMG-02 tem implementação técnica e testes focados validados, mas
+aguarda adjudicação humana final. IMG-03 é a próxima atividade tecnicamente
+sustentada e continua sem autorização própria. Nenhum item deste mapa autoriza
+avanço de fase ou execução em homologação/produção.
 
 Em caso de divergência:
 
@@ -165,9 +166,11 @@ IMG-01 = COMPLETE / checkpoint documental
 ↓
 UI-0 = COMPLETE / PASS_WITH_FINDINGS (read-only)
 ↓
-adjudicação humana + autorização específica para IMG-02
+IMG-02 — implementação técnica validada; adjudicação humana pendente
 ↓
-IMG-02 — Modelo, storage e proveniência
+adjudicação de IMG-02 + autorização independente para IMG-03
+↓
+IMG-03 — Upload manual
 ↓
 UI-1 (adapter foundation)
 ↓
@@ -264,3 +267,20 @@ Para direção da macrofase e status global, consultar:
 Para continuidade entre chats, consultar os quatro documentos em
 `docs/Agent-Continuity-Standard-v1.0/continuity/` listados no
 `ACTIVE_DOCUMENT_MAP.md`.
+
+
+## 10. Checkpoint técnico IMG-02
+
+IMG-02 está tecnicamente implementada e validada, aguardando adjudicação humana;
+não está encerrada definitivamente. A implementação canônica é
+cameras.models.CameraImageRecord e cameras.imagens.read_service.CameraImageReadService,
+com migration cameras/migrations/0013_cameraimagerecord.py dependente de
+cameras.0012_monitoring_ownership_lease. Os 13 testes focados executam o
+serviço real sobre o modelo persistido e validam a migration no banco SQLite
+em memória do runner Django.
+
+IMG02_IMPLEMENTATION_AUTHORIZATION = concedida pela instrução explícita do usuário para esta slice somente
+IMG03_STATUS = NOT_AUTHORIZED
+NEXT = IMG-03 — Upload manual, após adjudicação IMG-02 e autorização própria
+OPEN_DECISIONS = as sete decisões seguem no contrato ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+INTEGRATION_GATE = serviço e persistência IMG-02 exercitados juntos; integração do painel UI-3 continua pendente

@@ -1354,7 +1354,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
 FASE B — Monitoramento operacional             ✅ FRENTE TÉCNICA CONCLUÍDA (MON-00 a MON-09; validações externas futuras; gates preservados)
-FASE C — Captura manual e imagens              🟡 EM ANDAMENTO / IMG-01 DOCUMENTAL; IMG-02 PRÓXIMA
+FASE C — Captura manual e imagens              🟡 EM ANDAMENTO / IMG-01 DOCUMENTAL; IMG-02 IMPLEMENTADA TECNICAMENTE, AGUARDANDO ADJUDICAÇÃO
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
 FASE F — Integração técnica                    ⏳ PLANEJADA
@@ -1419,3 +1419,13 @@ concluída; este checkpoint não concede autorização automática de implementa
 ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
 AGENT_HANDOFF_GATE = ACTIVE
 CONTINUITY_AUTHORITY = [ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md](ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md)
+
+
+### Atualização factual IMG-02 — checkpoint técnico (2026-09-24)
+
+IMG-02 tem modelo, migration e serviço canônico de leitura implementados e
+validados em banco de teste descartável. A slice aguarda adjudicação humana e
+não está encerrada definitivamente. A Fase C continua em andamento; IMG-03 é a
+próxima atividade tecnicamente sustentada, com autorização própria ainda
+necessária. O contrato canônico conserva as sete decisões abertas e seus
+momentos de fechamento.

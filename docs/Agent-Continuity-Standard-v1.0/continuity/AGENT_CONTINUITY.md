@@ -354,3 +354,29 @@ Os findings recuperados do UI-0 estão em
 os itens sem ampliá-los e sem convertê-los em blockers. O handoff gate deste
 checkpoint passa após a reconciliação documental. Nenhuma próxima atividade ou
 prontidão técnica amplia autorização.
+
+
+## 12. Checkpoint corrente — IMG-02 (2026-09-24)
+
+Este checkpoint supersede os snapshots anteriores que apontam IMG-02 como
+ainda não iniciada ou sem autorização. A instrução explícita do usuário
+autorizou somente esta slice; não autoriza IMG-03.
+
+IMG02_TECHNICAL_STATUS = IMPLEMENTED / FOCUSED_VALIDATION_PASS / AWAITING_HUMAN_ADJUDICATION
+IMG02_ACTIVITY_CLOSED = NO
+IMG02_MODEL = cameras.models.CameraImageRecord
+IMG02_MIGRATION = cameras/migrations/0013_cameraimagerecord.py; depende de cameras.0012_monitoring_ownership_lease
+IMG02_CANONICAL_READ_SERVICE = cameras/imagens/read_service.py:CameraImageReadService
+IMG02_TESTS = cameras/test_imagens_read_service.py; 13 focused tests passed on disposable in-memory SQLite
+IMG02_VALIDATIONS = manage.py check PASS; makemigrations --check PASS; migration 0013 applied by test runner
+IMG02_AUTHORIZATION = explícita do usuário para IMG-02 somente; consumida nesta slice
+IMG03_STATUS = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY = IMG-03 — Upload manual, após adjudicação IMG-02 e autorização independente
+INTEGRATION = serviço lê CameraImageRecord pelo caminho ORM canônico; serviço e persistência exercitados no banco de teste; UI-3 permanece fora do escopo
+STORAGE = storage_key opaca; default_storage.exists sem transferência de bytes; FileSystemStorage local é detalhe reversível
+AUTHORSHIP = uploaded_by, captured_by_system e recorded_by_system existem; requested_by fica no futuro request/attempt/result IMG-04
+DEFERRED_DECISIONS = backend definitivo; MIME/tamanho/dimensões; fallback visual UPLOAD_MANUAL; retenção/purge; stale policy; credenciais/perfil de captura; PRIMARY_IMAGE
+GIT = master; baseline HEAD = origin/master = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb; alterações IMG-02 locais e unstaged; staging vazio
+LIVE_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+PROJECT_STATE = docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md section 12–14

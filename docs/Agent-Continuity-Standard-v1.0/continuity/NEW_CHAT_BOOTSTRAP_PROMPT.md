@@ -135,3 +135,25 @@ com findings, em modo read-only, e não substitui IMG-02. Nenhuma dessas
 indicações autoriza implementação automaticamente. A conclusão MON-09 não
 altera gates ambientais nem declara homologation, deployment ou production
 ready.
+
+
+## Checkpoint corrente após IMG-02 — 2026-09-24
+
+Para o estado efetivo, consulte as seções 12–14 de
+docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md. Esse checkpoint
+supersede as referências históricas abaixo que descrevem IMG-02 como próxima,
+não autorizada ou não iniciada.
+
+IMG02_TECHNICAL_STATUS = IMPLEMENTED / FOCUSED_VALIDATION_PASS / AWAITING_HUMAN_ADJUDICATION
+IMG02_ACTIVITY_CLOSED = NO
+IMG02_IMPLEMENTATION_AUTHORIZATION = explícita do usuário para esta slice somente; consumida
+IMG02_MODEL = cameras.models.CameraImageRecord
+IMG02_MIGRATION = cameras/migrations/0013_cameraimagerecord.py; depende de cameras.0012_monitoring_ownership_lease
+IMG02_CANONICAL_READ_SERVICE = cameras/imagens/read_service.py:CameraImageReadService
+IMG02_TESTS = cameras/test_imagens_read_service.py; 13 testes focados pass
+NEXT_PROJECT_ACTIVITY = IMG-03 — Upload manual, condicionado à adjudicação IMG-02
+IMG03_STATUS = NOT_AUTHORIZED
+DEFERRED_DECISIONS = backend definitivo; limites MIME/tamanho/dimensões; fallback visual de UPLOAD_MANUAL; retenção/purge; stale policy; credenciais/perfil de captura; PRIMARY_IMAGE
+GIT_BASELINE = master; HEAD = origin/master = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
+GIT_WORKTREE = alterações locais unstaged; staging vazio
+PUSH_AUTHORIZED = NO

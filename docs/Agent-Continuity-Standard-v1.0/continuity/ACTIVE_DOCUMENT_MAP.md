@@ -20,9 +20,9 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 
 | Path | Role | Authority scope | Status |
 |---|---|---|---|
-| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; IMG-01 concluída; IMG-02 próxima |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; IMG-02 próxima atividade de projeto |
-| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; IMG-01 completa; IMG-02 próxima |
+| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; IMG-01 concluída; checkpoint técnico IMG-02 em adjudicação |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; IMG-02 implementada tecnicamente; IMG-03 próxima após adjudicação e autorização |
+| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; IMG-01 completa; IMG-02 implementation contract |
 | `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; decisão funcional do painel aprovada pelo usuário na seção 7.3 |
 | `docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md` | Registro factual dos findings de UI-0 | Findings do preflight read-only, sem alterar a authority de UI-DS | PRESENT / CURRENT FINDINGS RECORD; NON-BLOCKING |
 | `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | ADR de arquitetura | Arquitetura de monitoramento e relação com gestão de imagens | PRESENT / AUTHORITY; verificar vigência no escopo aplicável |
@@ -213,3 +213,19 @@ SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED;
 Para o estado atual e os blockers/pré-requisitos completos, use o snapshot em
 `PROJECT_STATE.md`. Este mapa identifica autoridade e escopo; não substitui os
 detalhes especializados.
+
+
+## 5. Checkpoint local IMG-02
+
+Baseline revalidada no ROOT
+C:\Users\walac\desenvolvimento\projeto_argos: master,
+HEAD = origin/master = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb,
+divergence 0/0 antes das alterações. O worktree contém alterações IMG-02
+unstaged e staging vazio. Para o estado, os arquivos e os blockers atuais,
+consulte PROJECT_STATE.md seções 12–14.
+
+IMG02_STATUS = IMPLEMENTED / FOCUSED_VALIDATION_PASS / AWAITING_HUMAN_ADJUDICATION
+IMG02_ACTIVITY_CLOSED = NO
+NEXT_PROJECT_ACTIVITY = IMG-03 — Upload manual, após adjudicação IMG-02
+IMG03_STATUS = NOT_AUTHORIZED
+CANONICAL_IMAGE_AUTHORITY = docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
