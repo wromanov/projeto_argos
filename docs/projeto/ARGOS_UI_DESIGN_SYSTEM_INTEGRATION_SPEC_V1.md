@@ -385,7 +385,7 @@ conflito deve ser reportado antes da implementação.
 
 ## 7. CameraQuickDetailPanel — decisão de produto
 
-### Implementação UI-3 em worktree isolado (aguardando adjudicação)
+### Registro histórico — implementação UI-3 no worktree pré-integração
 
 O Inventário oferece botão de inspeção rápida por linha e clique na área não
 interativa da linha. Um `<dialog>` modal nativo abre pela direita, bloqueia o
@@ -405,8 +405,9 @@ imagem usa metadados e existência; bytes são requisitados separadamente pela r
 privada de preview. O cliente cancela requests anteriores e confere identidade
 antes de renderizar uma resposta. Não há captura ou alteração de monitoramento.
 
-Este registro descreve implementação técnica no worktree UI-3; não declara
-commit, integração, publicação ou fechamento formal.
+Este registro descreve a implementação técnica observada no worktree antes do
+merge. É histórico e não representa o status atual. O checkpoint vigente e os
+commits de UI-3 estão na seção 12.
 
 ```text
 SOURCE_PATTERN = CameraDetailSheet
@@ -824,6 +825,31 @@ UI-DS = Integração seletiva do Camera Inventory Design System v1.0.1
 Esta frente atravessa a evolução do produto e possui dependências explícitas
 com a Fase C.
 
+### Gate obrigatório de aceitação visual
+
+```text
+UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
+UI_VISUAL_ACCEPTANCE_REQUIRED_FOR_UI_COMPLETE = YES
+EXPLICIT_USER_APPROVAL_REQUIRED = YES
+TECHNICAL_IMPLEMENTATION_OR_FUNCTIONAL_VALIDATION_ALONE = INSUFFICIENT_FOR_VISUAL_OR_PRODUCT_ACCEPTANCE
+```
+
+Para toda atividade de UI, implementação técnica, integração, validação
+funcional ou QA visual executado pelo agente não substitui a aprovação visual
+explícita do usuário. Uma UI só pode avançar para `COMPLETE` após essa
+aprovação. Até lá, registrar separadamente:
+
+```text
+UI_TECHNICAL_IMPLEMENTATION = COMPLETE
+UI_FUNCTIONAL_VALIDATION = PASS
+UI_VISUAL_ACCEPTANCE = PENDING
+UI_PRODUCT_ACCEPTANCE = PENDING
+```
+
+Evidência de QA visual pode ser registrada como `PASS` sem converter
+`UI_VISUAL_ACCEPTANCE` ou `UI_PRODUCT_ACCEPTANCE` em aprovação. Este gate se
+aplica imediatamente à UI-3.
+
 ### UI-0 — Read-only preflight
 
 ```text
@@ -914,12 +940,32 @@ real inventory selection
 canônicos, preservar contexto, proteger races e navegar para a rota completa
 existente, sem duplicar a página de detalhes.
 
+```text
+UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE
+UI-3_INTEGRATION = COMPLETE
+UI-3_TECHNICAL_COMMIT = bcc7e7d
+UI-3_INTEGRATION_COMMIT = 1015a8f
+INTEGRATION_GATE = PASS
+UI-3_FUNCTIONAL_VALIDATION = PASS
+UI-3_VISUAL_ACCEPTANCE = PENDING
+UI-3_PRODUCT_ACCEPTANCE = PENDING
+UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+```
+
+O status de integração não declara conclusão visual/produto. Os detalhes de
+implementação e evidências desta slice permanecem neste contrato e no snapshot
+vigente de continuidade.
+
 Se o contrato de `LATEST_CAMERA_CAPTURE` ainda não estiver fechado pela Fase C,
 UI-3 pode documentar a dependência e integrar a fronteira canônica disponível,
 mas não pode declarar o requisito de imagem concluído por simulação, upload
 ambíguo ou mecanismo paralelo.
 
 ### UI-4 — Visual / Functional / Accessibility / Interaction QA
+
+```text
+UI-4 = NOT_AUTHORIZED
+```
 
 Executar, quando a implementação tiver autorização própria:
 

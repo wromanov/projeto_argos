@@ -11,19 +11,19 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; updated 2026-09-25 after IMG-03 + UI-2 integration |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; latest checkpoint IMG-03 + UI-2 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest checkpoint IMG-03 + UI-2 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; latest checkpoint IMG-03 + UI-2 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; UI-3 integrated, visual acceptance pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; latest checkpoint UI-3 post-integration |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest checkpoint UI-3 post-integration |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; latest checkpoint UI-3 post-integration |
 
 ## 2. Authorities canônicas do projeto
 
 | Path | Role | Authority scope | Status |
 |---|---|---|---|
-| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; IMG-03 + UI-2 integrated checkpoint |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; IMG-03 + UI-2 integrated; next candidate not authorized |
+| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; UI-3 integrated, visual acceptance pending |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; UI-3 integrated, IMG-04 next candidate not authorized |
 | `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; image-domain contract and deferred production backend decision |
-| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; decisão funcional do painel aprovada pelo usuário na seção 7.3 |
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; UI-3 status and mandatory visual-acceptance gate in section 12 |
 | `docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md` | Registro factual dos findings de UI-0 | Findings do preflight read-only, sem alterar a authority de UI-DS | PRESENT / CURRENT FINDINGS RECORD; NON-BLOCKING |
 | `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | ADR de arquitetura | Arquitetura de monitoramento e relação com gestão de imagens | PRESENT / AUTHORITY; verificar vigência no escopo aplicável |
 | `docs/projeto/ADR-020_contrato_estado_tecnico_monitoramento.md` | Contrato técnico de monitoramento | Estado e semântica de leitura técnica | PRESENT / AUTHORITY; verificar vigência no escopo aplicável |
@@ -59,14 +59,14 @@ Rules:
 
 Git controls factual repository state.
 
-Baseline factual validada no início da reconciliação documental IMG-03 + UI-2:
+Baseline factual validada no início da reconciliação documental UI-3:
 
 - repository: `C:\Users\walac\desenvolvimento\projeto_argos`
 - branch: `master`
-- HEAD: `c79fa06775ccb707b6753f2a8ed0e988e8a9c86d`
-- origin/master: `547678de9c70ee9eda2fc30599417d217c878006`
-- divergence: ahead 4 / behind 0
-- worktree antes da reconciliação: clean
+- HEAD: `1015a8f0d7b6165ab057d81afb22007c3ae5e91b`
+- origin/master: `20be98d48ccfc19d458e393189168d9ecc93f309`
+- divergence: ahead 2 / behind 0
+- worktree antes da reconciliação: clean; após reconciliação: sete documentos autorizados modificados e unstaged
 - staging: empty
 - validação: 2026-09-25; Git permanece a fonte factual e deve ser revalidado em nova sessão
 
@@ -84,15 +84,20 @@ SELECTIVE_VISUAL_RETROFIT_RECORDED = YES
 SELECTIVE_INTERACTION_ADOPTION_RECORDED = YES
 CAMERA_QUICK_DETAIL_PANEL = USER_APPROVED / canonical details in docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md section 7.3
 ARGOS_CURRENT_PAGE_COMPOSITION = PRESERVE
-LATEST_CAMERA_CAPTURE_FEEDS_PANEL = YES_WHEN_CANONICAL_CONTRACT_AVAILABLE
+LATEST_CAMERA_CAPTURE_FEEDS_PANEL = SECURE PREVIEW AVAILABLE; UI-3 uses PANEL variant
 FASE_C_DEPENDENCY = EXPLICIT
 BIG_BANG_INTEGRATION = PROHIBITED
 INTEGRATION_GATE = REQUIRED_WHEN_APPLICABLE
 UI_0 = COMPLETE / PASS_WITH_FINDINGS; READ_ONLY; DOES_NOT_AUTHORIZE_IMPLEMENTATION
 UI_1 = COMPLETE / INTEGRATED; COMMIT = c5928e8
 UI_2 = COMPLETE / INTEGRATED; COMMIT = b57f959; INTEGRATION_COMMIT = c79fa06
-UI_3 = PENDING / NOT_AUTHORIZED; CameraQuickDetailPanel integration
-UI_4 = INTEGRATED_VISUAL_FUNCTIONAL_ACCESSIBILITY_INTERACTION_QA
+UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
+UI_3_TECHNICAL_IMPLEMENTATION = COMPLETE; TECHNICAL_COMMIT = bcc7e7d
+UI_3_INTEGRATION = COMPLETE; INTEGRATION_COMMIT = 1015a8f; INTEGRATION_GATE = PASS
+UI_3_FUNCTIONAL_VALIDATION = PASS
+UI_3_VISUAL_ACCEPTANCE = PENDING; UI_3_PRODUCT_ACCEPTANCE = PENDING
+UI_3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+UI_4 = NOT_AUTHORIZED
 ```
 
 Detalhes permanecem exclusivamente em
@@ -197,9 +202,13 @@ IMG03_STATUS = COMPLETE / INTEGRATED; COMMIT = f6e08b6; INTEGRATION_COMMIT = 070
 SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED; TECHNICAL_COMMIT = e3f2d40; INTEGRATION_COMMIT = 7ca5f7c
 INVENTORY_THUMBNAIL_REAL_DATA_WIRING = COMPLETE
 PREVIEW_VARIANTS = THUMB; PANEL; dimensões na authority de imagens, seção 24
-UI-3 = NEXT_CANDIDATE / NOT_AUTHORIZED
-IMG-04 = NOT_AUTHORIZED
-NEXT_CANDIDATE = UI-3 / NOT_AUTHORIZED
+UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE; UI-3_INTEGRATION = COMPLETE
+UI-3_FUNCTIONAL_VALIDATION = PASS; UI-3_VISUAL_ACCEPTANCE = PENDING; UI-3_PRODUCT_ACCEPTANCE = PENDING
+UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
+IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED
+UI-4 = NOT_AUTHORIZED
+NEXT_CANDIDATE = IMG-04 / NOT_AUTHORIZED
 FASE_C_COMPLETE = NO
 
 ## 8. Continuidade e estado atual
@@ -208,23 +217,26 @@ ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
 AGENT_HANDOFF_GATE = ACTIVE
 CONTINUITY_AUTHORITY = docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md
 CURRENT_MACROPHASE = FASE C — Captura manual e gestão de imagens
-CURRENT_GIT_BASELINE = master; HEAD 7ca5f7c9c7dda8d66754406be4d351071612aa92; origin/master c32ccc2836313fcb58a31f096f71aa9502cbc7f9
+CURRENT_GIT_BASELINE = master; HEAD 1015a8f0d7b6165ab057d81afb22007c3ae5e91b; origin/master 20be98d48ccfc19d458e393189168d9ecc93f309
 DIVERGENCE = ahead 2 / behind 0
-CURRENT_WORKTREE = seis documentos desta reconciliação modificados e unstaged; staging vazio
+CURRENT_WORKTREE = sete documentos autorizados desta reconciliação modificados e unstaged; staging vazio
 LAST_COMPLETED_ACTIVITY = SECURE_IMAGE_PREVIEW_DELIVERY — COMPLETE / INTEGRATED
-NEXT_CANDIDATE = UI-3
-NEXT_CANDIDATE_STATUS = NOT_AUTHORIZED
+LATEST_TECHNICAL_UI_ACTIVITY = UI-3 / INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+NEXT_CANDIDATE = IMG-04
+NEXT_CANDIDATE_STATUS = IMG-04 NOT_AUTHORIZED; UI-3 visual/product acceptance pending; UI-4 NOT_AUTHORIZED
 IMPLEMENTATION_AUTHORIZED = NO
 LIVE_AUTHORIZED = NO
 COMMIT_AUTHORIZED = NO
 PUSH_AUTHORIZED = NO
-UI_DS_STATUS = UI-1 and UI-2 COMPLETE / INTEGRATED; UI-3 NOT_AUTHORIZED
+UI_DS_STATUS = UI-1 and UI-2 COMPLETE / INTEGRATED; UI-3 integrated / visual acceptance pending
 IMG02_STATUS = COMPLETE / INTEGRATED
 IMG03_STATUS = COMPLETE / INTEGRATED
-LATEST_INTEGRATION_COMMIT = 7ca5f7c
+LATEST_INTEGRATION_COMMIT = 1015a8f
 SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED
 INVENTORY_THUMBNAIL_REAL_DATA_WIRING = COMPLETE
-UI-3 = NEXT_CANDIDATE / NOT_AUTHORIZED; IMG-04 = NOT_AUTHORIZED
+UI-3_TECHNICAL_COMMIT = bcc7e7d; UI-3_INTEGRATION_COMMIT = 1015a8f
+UI-3_FUNCTIONAL_VALIDATION = PASS; UI-3_VISUAL_ACCEPTANCE = PENDING; UI-3_PRODUCT_ACCEPTANCE = PENDING
+IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED; UI-4 = NOT_AUTHORIZED
 OPEN_DECISIONS = 7; detalhes somente no contrato canônico de imagem
 SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED; DEPLOYMENT BLOCKED; PRODUCTION BLOCKED
 
@@ -269,7 +281,7 @@ UI continuam subordinadas às authorities especializadas. A reconciliação
 documental não altera security gates nem autoriza implementação, commit ou
 push.
 
-## 11. Checkpoint vigente — Secure Image Preview Delivery (2026-09-25)
+## 11. Checkpoint histórico — Secure Image Preview Delivery (2026-09-25)
 
 SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED
 TECHNICAL_COMMIT = e3f2d40
@@ -281,7 +293,33 @@ UI-3 = NEXT_CANDIDATE / NOT_AUTHORIZED
 IMG-04 = NOT_AUTHORIZED
 NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 
-Consulte PROJECT_STATE.md para baseline, fatos de segurança, decisões
-deferred e autorização; a authority de imagens concentra os detalhes técnicos.
-A especificação UI-DS, seção 7.3, preserva o layout aprovado do painel. A UI-3
-deve reutilizar a entrega segura existente na variante PANEL.
+No checkpoint, UI-3 era candidata e deveria reutilizar a variante PANEL. Esse
+status foi supersedido pelo checkpoint pós-integração abaixo.
+
+## 12. Checkpoint vigente — UI-3 e aceitação visual (2026-09-25)
+
+```text
+UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
+UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE
+UI-3_TECHNICAL_COMMIT = bcc7e7d
+UI-3_INTEGRATION = COMPLETE
+UI-3_INTEGRATION_COMMIT = 1015a8f
+INTEGRATION_GATE = PASS
+UI-3_FUNCTIONAL_VALIDATION = PASS
+UI-3_VISUAL_ACCEPTANCE = PENDING
+UI-3_PRODUCT_ACCEPTANCE = PENDING
+UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED
+UI-4 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+IMPLEMENTATION_AUTHORIZED = NO for further UI-3/IMG-04/UI-4 work
+LIVE_AUTHORIZED = NO
+COMMIT_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+```
+
+Para baseline, evidências de validação, invariantes, decisões deferred e gates
+de segurança, consulte `PROJECT_STATE.md`. A UI-DS authority concentra o
+contrato e o gate visual; a authority de imagens concentra detalhes de preview
+e decisões do domínio. Esta seção identifica status e autoridade sem duplicar
+as especificações.

@@ -1358,7 +1358,7 @@ O objetivo final do ARGOS v5 é evoluir o sistema atual de inventário e governa
 ```text
 FASE A — Consolidação do produto existente     🔄 EM CURSO
 FASE B — Monitoramento operacional             ✅ FRENTE TÉCNICA CONCLUÍDA (MON-00 a MON-09; validações externas futuras; gates preservados)
-FASE C — Captura manual e imagens              🟡 EM ANDAMENTO / IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 COMPLETE / INTEGRATED
+FASE C — Captura manual e imagens              🟡 EM ANDAMENTO / IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 integradas; UI-3 integrada com aceitação visual/produto pendente
 FASE D — Importação em escala                  ⏳ PLANEJADA
 FASE E — Segurança avançada                    ⏳ PLANEJADA
 FASE F — Integração técnica                    ⏳ PLANEJADA
@@ -1465,7 +1465,7 @@ checkpoint documental. Estados, evidências de validação, decisões deferred e
 as regras contra fallback estão nos documentos de continuidade; os detalhes
 de domínio/UI permanecem nas authorities especializadas.
 
-## Atualização vigente — Secure Image Preview Delivery (2026-09-25)
+## Registro histórico — Secure Image Preview Delivery (2026-09-25)
 
 ```text
 SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED
@@ -1481,10 +1481,33 @@ NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 FASE_C_COMPLETE = NO
 ```
 
-O inventário usa a variante THUMB. A futura UI-3 deve reutilizar a entrega
-segura existente com a variante PANEL, sem criar outro backend de imagens.
-Dimensões e contrato técnico ficam em ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md,
-seção 24. O layout aprovado do CameraQuickDetailPanel permanece na authority
-UI-DS, seção 7.3. Evidências, fatos de segurança e decisões deferred estão em
-PROJECT_STATE.md e na authority de imagens; este roadmap registra somente
-status, sequência e dependências.
+No checkpoint, o inventário usava THUMB e a UI-3 ainda era candidata. Esse
+estado foi supersedido pelo checkpoint pós-integração abaixo.
+
+## Atualização vigente — UI-3 pós-integração (2026-09-25)
+
+```text
+UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE
+UI-3_TECHNICAL_COMMIT = bcc7e7d
+UI-3_INTEGRATION = COMPLETE
+UI-3_INTEGRATION_COMMIT = 1015a8f
+INTEGRATION_GATE = PASS
+UI-3_FUNCTIONAL_VALIDATION = PASS
+UI-3_VISUAL_ACCEPTANCE = PENDING
+UI-3_PRODUCT_ACCEPTANCE = PENDING
+UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
+IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED
+UI-4 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+FASE_C_COMPLETE = NO
+```
+
+O painel consome a entrega segura existente na variante `PANEL` e
+`LATEST_CAMERA_CAPTURE`; abrir o painel não captura imagem nem altera
+monitoramento. Não há fallback para upload manual, imagem principal ou captura
+anterior. A aprovação visual/produto continua pendente até aprovação explícita
+do usuário. Detalhes e evidências ficam na authority UI-DS, seção 12, e no
+snapshot `PROJECT_STATE.md`; decisões adiadas e contrato técnico de preview
+ficam na authority de imagens, seção 24. Nenhuma implementação adicional foi
+autorizada por esta reconciliação.

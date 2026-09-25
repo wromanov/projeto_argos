@@ -3,19 +3,20 @@
 STATUS = CURRENT_SNAPSHOT
 SNAPSHOT_DATE = 2026-09-25
 PROJECT = ARGOS
-STATE_SOURCE = verified Git baseline + Secure Image Preview Delivery integration commit + supplied integration validation evidence + canonical project authorities
+STATE_SOURCE = verified Git baseline + UI-3 integration merge + supplied integration validation evidence + canonical project authorities
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = current documentary checkpoint after integrated Secure Image Preview Delivery; earlier checkpoints remain historical
+SNAPSHOT_SCOPE = current documentary checkpoint after UI-3 integration; visual and product acceptance remain pending; earlier checkpoints remain historical
 
 ## 1. Executive status
 
-CURRENT_PHASE = FASE C — Captura manual e gestão de imagens (IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 COMPLETE / INTEGRATED)
-CURRENT_ACTIVITY = reconciliação documental pós-integração SECURE_IMAGE_PREVIEW_DELIVERY concluída; sem implementação ativa autorizada
+CURRENT_PHASE = FASE C — Captura manual e gestão de imagens (IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 integradas; UI-3 integrada com aceitação visual/produto pendente)
+CURRENT_ACTIVITY = reconciliação documental pós-integração UI-3 concluída; sem reparo visual ou implementação ativa autorizada
 LAST_COMPLETED_ACTIVITY = SECURE_IMAGE_PREVIEW_DELIVERY — COMPLETE / INTEGRATED (7ca5f7c)
+LATEST_TECHNICAL_UI_ACTIVITY = UI-3 / INTEGRATED / VISUAL_ACCEPTANCE_PENDING
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
 LAST_PUBLISHED_BASELINE = 850efd2
-CURRENT_CANONICAL_GIT_BASELINE = HEAD 7ca5f7c9c7dda8d66754406be4d351071612aa92; origin/master c32ccc2836313fcb58a31f096f71aa9502cbc7f9; ahead 2 / behind 0
-NEXT_PROJECT_ACTIVITY = UI-3 / NEXT_CANDIDATE / NOT_AUTHORIZED
+CURRENT_CANONICAL_GIT_BASELINE = HEAD 1015a8f0d7b6165ab057d81afb22007c3ae5e91b; origin/master 20be98d48ccfc19d458e393189168d9ecc93f309; ahead 2 / behind 0
+NEXT_PROJECT_ACTIVITY = IMG-04 / NEXT_CANDIDATE / NOT_AUTHORIZED; UI-3 visual/product acceptance remains pending; UI-4 NOT_AUTHORIZED
 NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 CURRENT_BASELINE_BEFORE_IMG02 = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
 
@@ -464,7 +465,7 @@ IMPLEMENTATION_AUTHORIZATION_STATE_DISCOVERABLE = YES
 SECURITY_OR_ENVIRONMENT_GATES_DISCOVERABLE = YES
 NEW_AGENT_CAN_RESUME_WITHOUT_CHAT_HISTORY = YES
 
-## 16. Checkpoint vigente — Secure Image Preview Delivery (2026-09-25)
+## 16. Checkpoint histórico — Secure Image Preview Delivery (2026-09-25)
 
 Este snapshot reconcilia o estado integrado em 7ca5f7c. O gate técnico
 abaixo foi fornecido como evidência validada da integração e não foi
@@ -529,4 +530,73 @@ PROJECT_STATE_UPDATE = PASS
 DOCUMENT_RECONCILIATION_GATE = PASS
 AGENT_HANDOFF_GATE_RESULT = PASS
 CONTINUITY_DISCOVERABILITY = YES; status, commits, fatos de segurança, decisões deferred, authorities e autorização recuperáveis sem histórico de chat
+```
+
+## 17. Checkpoint vigente — UI-3 pós-integração e aceitação visual pendente (2026-09-25)
+
+Este snapshot registra a integração técnica da UI-3 e distingue validação
+funcional de aceitação visual/produto. A evidência de integração abaixo foi
+fornecida para esta reconciliação documental; os testes não foram reexecutados.
+
+```text
+BASELINE_VALIDATED = YES
+PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+BRANCH = master
+HEAD = 1015a8f0d7b6165ab057d81afb22007c3ae5e91b
+ORIGIN_MASTER = 20be98d48ccfc19d458e393189168d9ecc93f309
+DIVERGENCE = ahead 2 / behind 0
+BASELINE_WORKTREE = CLEAN
+BASELINE_STAGING = EMPTY
+CURRENT_WORKTREE = sete documentos autorizados modificados e unstaged
+CURRENT_STAGING = EMPTY
+FILES_CHANGED = ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md; ROADMAP_ARGOS_V5.md; SPRINTS_ARGOS_V5.md; PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md; NEW_CHAT_BOOTSTRAP_PROMPT.md
+CODE_OR_RUNTIME_CHANGED = NO
+UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE
+UI-3_TECHNICAL_COMMIT = bcc7e7d03b14d233499e1d5fcb97a8e6a9e2a8ea
+UI-3_INTEGRATION = COMPLETE
+UI-3_INTEGRATION_COMMIT = 1015a8f0d7b6165ab057d81afb22007c3ae5e91b
+INTEGRATION_GATE = PASS
+MERGE_CONFLICTS = NONE (evidence supplied)
+INTEGRATION_VALIDATION = manage.py check PASS; makemigrations --check --dry-run PASS / no changes; 32/32 tests PASS across cameras.test_quick_detail, cameras.test_imagens_read_service, cameras.test_imagens_upload, cameras.test_imagens_preview; evidence supplied, not re-executed
+UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
+UI-3_FUNCTIONAL_VALIDATION = PASS
+UI-3_VISUAL_QA_EVIDENCE = 390, 1293, 1920, 2560 px; no horizontal overflow; no relevant JavaScript console errors (evidence supplied)
+UI-3_VISUAL_ACCEPTANCE = PENDING / explicit user approval not recorded
+UI-3_PRODUCT_ACCEPTANCE = PENDING
+UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+CAMERA_QUICK_DETAIL_PANEL = operational; canonical details in ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md
+PANEL_PREVIEW = Secure Image Preview Delivery / PANEL 640x448 / LATEST_CAMERA_CAPTURE
+LATEST_CAMERA_CAPTURE = no fallback to UPLOAD_MANUAL, PRIMARY_IMAGE or older capture
+PANEL_OPEN_SIDE_EFFECTS = no new capture; no monitoring mutation
+MONITORING_INTEGRATION = MonitoringReadService reused; camera availability remains separate from image capture success
+ACCESSIBILITY_INTERACTION = accessible row control; native dialog focus containment; initial focus managed; Escape closes; focus restored to trigger; formal UI-4 QA not authorized
+ASYNC_RACE_PROTECTION = AbortController + request identity fencing
+PERFORMANCE_FINDING = 6 queries in measured case; test limit 7; on-demand load benchmark deferred
+IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED
+UI-4 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+ON_DEMAND_PREVIEW_COST_LOAD_BENCHMARK = DEFERRED / NOT BENCHMARKED
+PERSISTENT_DERIVED_PREVIEW_CACHE_OR_CDN = DEFERRED
+FINAL_IMAGE_PERMISSION_MATRIX = DEFERRED
+DEFINITIVE_STORAGE_BACKEND = DEFERRED
+DEFINITIVE_MIME_SIZE_DIMENSION_POLICY = DEFERRED
+UPLOAD_REJECTION_AUDIT_HARDENING = DEFERRED / future hardening IMG-08
+OPEN_IMAGE_DECISIONS = 7; details in ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+DETAIL_ONCE_REFERENCE_MANY = YES; implementation/UI details in UI-DS authority; preview details and image decisions in image contract
+VISUAL_REPAIR_STARTED = NO
+DOCUMENTARY_RECONCILIATION_AUTHORIZED = YES
+IMPLEMENTATION_AUTHORIZED = NO for further UI-3/IMG-04/UI-4 work
+LIVE_AUTHORIZED = NO
+COMMIT_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+BLOCKERS = UI-3 visual/product acceptance pending; no blocker to this documentary reconciliation
+RECOMMENDATION = PASS_WITH_FINDINGS
+SECURITY_GATES = LOCAL_DEVELOPMENT: RELEASED_WITH_CONTROLS; HOMOLOGATION: BLOCKED; DEPLOYMENT: BLOCKED; PRODUCTION: BLOCKED
+ACTIVITY_COMPLETION_PERCENT = 100%
+COMPLETION_BASIS = seven authorized documents reconciled; git diff --check PASS; changes unstaged; no code/runtime changes, tests re-executed, visual repair, commit, push or publication
+GIT_DIFF_CHECK = PASS
+PROJECT_STATE_UPDATE = PASS
+DOCUMENT_RECONCILIATION_GATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PASS
+CONTINUITY_DISCOVERABILITY = YES; baseline, statuses, commits, acceptance gate, deferred decisions, next candidate, authorities and authorization recoverable without chat history
 ```

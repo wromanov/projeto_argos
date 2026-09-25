@@ -12,13 +12,13 @@ REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-
 REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08B06854073CE16FE028DA14
 CURRENT_PHASE = FASE C — Captura manual e gestão de imagens
-CURRENT_PHASE_STATUS = EM_ANDAMENTO / IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 COMPLETE / INTEGRATED
+CURRENT_PHASE_STATUS = EM_ANDAMENTO / IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 integradas; UI-3 integrada com aceitação visual/produto pendente
 IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
-CURRENT_ACTIVITY = reconciliação documental pós-integração SECURE_IMAGE_PREVIEW_DELIVERY concluída; sem implementação ativa autorizada
+CURRENT_ACTIVITY = reconciliação documental pós-integração UI-3 concluída; sem implementação visual ativa autorizada
 LAST_COMPLETED_ACTIVITY = SECURE_IMAGE_PREVIEW_DELIVERY — checkpoint de integração
 LAST_COMPLETED_ACTIVITY_STATUS = COMPLETE / INTEGRATED
-NEXT_CANDIDATES = UI-3; IMG-04
-NEXT_CANDIDATES_STATUS = UI-3 NEXT_CANDIDATE / NOT_AUTHORIZED; IMG-04 NOT_AUTHORIZED
+NEXT_CANDIDATES = IMG-04
+NEXT_CANDIDATES_STATUS = IMG-04 NEXT_CANDIDATE / NOT_AUTHORIZED; UI-3 VISUAL_ACCEPTANCE_PENDING; UI-4 NOT_AUTHORIZED
 IMG02_IMPLEMENTATION_AUTHORIZATION = GRANTED_BY_EXPLICIT_USER_INSTRUCTION_FOR_THIS_SLICE_ONLY
 IMG-01 = COMPLETE após o checkpoint documental; contrato canônico:
 docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
@@ -30,10 +30,16 @@ CONTINUITY_AUTHORITY = docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md
 UI-0 = COMPLETE / PASS_WITH_FINDINGS (read-only; não concede autorização de implementação)
 IMG-02 = COMPLETE / INTEGRATED; COMMIT = ceda8f6
 UI-1 = COMPLETE / INTEGRATED; COMMIT = c5928e8
-LATEST_INTEGRATION_COMMIT = c79fa06
+LATEST_INTEGRATION_COMMIT = 1015a8f
 INTEGRATION_GATE = PASS
 IMG-03 = COMPLETE / INTEGRATED; COMMIT = f6e08b6; INTEGRATION_COMMIT = 0708797
 UI-2 = COMPLETE / INTEGRATED; COMMIT = b57f959; INTEGRATION_COMMIT = c79fa06
+UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE; TECHNICAL_COMMIT = bcc7e7d
+UI-3_INTEGRATION = COMPLETE; INTEGRATION_COMMIT = 1015a8f
+UI-3_FUNCTIONAL_VALIDATION = PASS
+UI-3_VISUAL_ACCEPTANCE = PENDING; UI-3_PRODUCT_ACCEPTANCE = PENDING
+UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
 ```
 
 Este é o documento canônico de execução de slices para as atividades futuras
@@ -48,11 +54,12 @@ recuperável entre agentes e o contrato de handoff pertencem a
 `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`.
 
 MON-09 está tecnicamente encerrada. IMG-02, UI-1, IMG-03, UI-2 e
-SECURE_IMAGE_PREVIEW_DELIVERY estão COMPLETE / INTEGRATED; o gate mais
-recente passou em 7ca5f7c. A próxima candidata é UI-3, ainda
-NOT_AUTHORIZED; IMG-04 também permanece NOT_AUTHORIZED. Este mapa registra
-status e sequência; não concede autorização para implementar candidatas,
-avançar slices, mudar de fase ou executar em homologação/produção.
+SECURE_IMAGE_PREVIEW_DELIVERY estão integradas. UI-3 também está tecnicamente
+implementada e integrada, com validação funcional `PASS`; sua aceitação visual e
+de produto está pendente de aprovação explícita do usuário. `IMG-04` é a próxima
+candidata e permanece não autorizada; `UI-4` também não está autorizada. Este
+mapa registra status e sequência; não concede autorização para implementar
+candidatas, avançar slices, mudar de fase ou executar em homologação/produção.
 
 Em caso de divergência:
 
@@ -141,17 +148,21 @@ cards, table surfaces, borders, status, buttons, inputs, focus e selection.
 
 ### UI-3 — CameraQuickDetailPanel
 
-Integrar ao inventário real o painel funcional aprovado na authority UI-DS,
-com seleção real, identificador canônico, resumo e status canônicos,
-`LATEST_CAMERA_CAPTURE` conforme disponibilidade contratual, localização e
-rota canônica de detalhes completos. VMS permanece `DO_NOT_ADOPT`. UI-3 segue pendente e não está autorizada por este registro documental. Ao
-ser autorizada, deve reutilizar a entrega segura existente na variante
-PANEL; não criar um backend paralelo de imagens. O layout aprovado
-permanece na authority UI-DS, seção 7.3.
+UI-3 está tecnicamente implementada e integrada ao inventário real, com seleção,
+identificador, resumo/status canônicos, `LATEST_CAMERA_CAPTURE`, localização e
+rota canônica de detalhes completos. VMS permanece `DO_NOT_ADOPT`. A validação
+funcional está `PASS`, mas a aceitação visual e de produto permanece pendente
+até aprovação explícita do usuário. Reutiliza a entrega segura existente na
+variante `PANEL`; não cria backend paralelo de imagens. Os detalhes permanecem
+na authority UI-DS, seção 12.
 
 ```text
 INTEGRATION_GATE = REQUIRED
 DRAWER_OPEN_ALONE = NOT_SUFFICIENT
+UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
+UI-3_TECHNICAL_COMMIT = bcc7e7d
+UI-3_INTEGRATION_COMMIT = 1015a8f
+UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
 ```
 
 UI-3 depende de `IMG-01` e `IMG-02` para a semântica e o modelo da imagem, e de
@@ -181,8 +192,9 @@ INTEGRATION_GATE = PASS (7ca5f7c)
 SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED (e3f2d40; 7ca5f7c)
 INVENTORY_THUMBNAIL_REAL_DATA_WIRING = COMPLETE
 ↓
-UI-3 = NEXT_CANDIDATE / NOT_AUTHORIZED
-IMG-04 = NOT_AUTHORIZED
+UI-3 = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED
+UI-4 = NOT_AUTHORIZED
 ↓
 demais slices seguem as dependências canônicas e exigem autorização própria
 ```
@@ -316,7 +328,7 @@ no `AGENT_CONTINUITY.md`; contracts de domínio e UI permanecem nas authorities
 especializadas. A ordenação de candidatas neste mapa é planejamento e não
 concede autorização. Não houve reexecução de testes nesta reconciliação.
 
-## 12. Checkpoint vigente — Secure Image Preview Delivery (2026-09-25)
+## 12. Registro histórico — Secure Image Preview Delivery (2026-09-25)
 
 ```text
 SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED
@@ -334,9 +346,32 @@ IMG-04 = NOT_AUTHORIZED
 NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 ```
 
-A variante PANEL existente atende à continuidade prevista para a UI-3; o
-layout aprovado está em ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md,
-seção 7.3. Consulte PROJECT_STATE.md para fatos de segurança e decisões
-deferred, e ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md para o contrato técnico
-detalhado. A evidência de integração foi fornecida e não foi reexecutada nesta
-reconciliação documental.
+A variante PANEL existente atende à UI-3. Este checkpoint foi supersedido pela
+integração da UI-3 abaixo.
+
+## 13. Checkpoint vigente — UI-3 pós-integração (2026-09-25)
+
+```text
+UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE
+UI-3_TECHNICAL_COMMIT = bcc7e7d
+UI-3_INTEGRATION = COMPLETE
+UI-3_INTEGRATION_COMMIT = 1015a8f
+INTEGRATION_GATE = PASS
+INTEGRATION_VALIDATION = manage.py check PASS; makemigrations --check --dry-run PASS; 32/32 tests PASS (cameras.test_quick_detail, cameras.test_imagens_read_service, cameras.test_imagens_upload, cameras.test_imagens_preview); evidência fornecida, não reexecutada
+GIT_DIFF_CHECK = PASS (evidência fornecida antes desta reconciliação; reconfirmar após as alterações documentais)
+UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
+UI-3_FUNCTIONAL_VALIDATION = PASS
+UI-3_VISUAL_ACCEPTANCE = PENDING
+UI-3_PRODUCT_ACCEPTANCE = PENDING
+UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED
+UI-4 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+```
+
+O painel usa `Secure Image Preview Delivery` na variante `PANEL`, baseada em
+`LATEST_CAMERA_CAPTURE`, sem fallback para `UPLOAD_MANUAL`, `PRIMARY_IMAGE` ou
+captura anterior. Abrir o painel não captura imagem nem altera monitoramento.
+A authority UI-DS concentra o contrato e a nova regra de aceitação visual; a
+authority de imagens concentra o contrato do preview e as decisões deferred.
+O gate de integração passou. Nenhuma rodada de reparo visual foi iniciada.

@@ -75,7 +75,7 @@ Regras de version hygiene:
 - Skills/Plugins v1.1 substitui v1.0;
 - versões superseded não são authorities ativas.
 
-## 4. Continuidade do estado técnico
+## 4. Contexto histórico do estado técnico (status atual na seção 15)
 
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 — fechamento técnico publicado em 850efd2
 LAST_PUBLISHED_BASELINE = 850efd2
@@ -207,7 +207,7 @@ O novo agente deve:
 7. ler roadmap, sprints, authority especializada e policies canônicas aplicáveis;
 8. apresentar divergências e itens UNVERIFIED; não iniciar implementação por inferência.
 
-## 8. Estado atual e próxima atividade
+## 8. Estado e próxima atividade no checkpoint anterior à integração UI-3 (histórico)
 
 MON-09A = COMPLETE / PASS; MON-09B = COMPLETE / PASS_WITH_SCOPE_DEVIATION; MON-09C = COMPLETE / PASS_WITH_FINDINGS; MON-09D = COMPLETE; MON-09E = COMPLETE / PASS.
 
@@ -241,7 +241,7 @@ SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED;
 SECURITY_FINDINGS_AUTHORITY = docs/security_audit/auditoria_segurança_001.md; ver matriz vigente antes de reclassificar SEC-001...SEC-010
 LOG_VOLUME_HARDENING_STATUS = HARDENING / NON-BLOCKING — potential high INFO log volume per cycle/attempt
 
-A frente de monitoramento está encerrada tecnicamente; não retomar MON-09 nem criar outra atividade MON. A Fase C segue em andamento: IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 estão integradas. UI-3 é a próxima candidata e permanece não autorizada; IMG-04 também não está autorizada. O estado Git atual e os fatos de entrega/decisões deferred estão no checkpoint vigente ao final deste documento e em PROJECT_STATE.md. Revalidar Git ao iniciar nova sessão.
+No checkpoint desta seção, UI-3 era a próxima candidata e ainda não estava autorizada. Esse estado foi supersedido pela integração UI-3 e pelo checkpoint vigente da seção 15. A frente de monitoramento continua encerrada tecnicamente; não retomar MON-09 nem criar outra atividade MON. Revalidar Git ao iniciar nova sessão.
 
 ## 9. Retrofit gate
 
@@ -281,7 +281,7 @@ FUTURE_VALIDATIONS = PostgreSQL real; multi-processo real em produção; rede re
 SECURITY_GATES = LOCAL_DEVELOPMENT = RELEASED_WITH_CONTROLS; HOMOLOGATION = BLOCKED; DEPLOYMENT = BLOCKED; PRODUCTION = BLOCKED
 IMPLEMENTATION_FUTURE = requer autorização própria
 
-## 10. UI-DS e continuidade de produto
+## 10. UI-DS e continuidade de produto — contexto histórico (status atual na seção 15)
 
 Existe uma specification canônica para a integração seletiva do
 `camera-inventory-design-system-v1.0.1`:
@@ -324,7 +324,7 @@ fechamento de cada uma. `UI-0`
 está registrada como `COMPLETE / PASS_WITH_FINDINGS`, read-only, sem autorizar
 implementação visual.
 
-## 11. Handoff ARGOS
+## 11. Handoff ARGOS — checkpoint histórico (supersedido pela seção 15)
 
 Authority normativa específica: `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`.
 O `PROJECT_STATE.md` é o snapshot operacional; este documento preserva somente
@@ -444,7 +444,7 @@ DOCUMENT_RECONCILIATION_GATE = PASS
 AGENT_HANDOFF_GATE_RESULT = PASS
 NEW_AGENT_CAN_RESUME_WITHOUT_CHAT_HISTORY = YES
 
-## 14. Checkpoint vigente — Secure Image Preview Delivery (2026-09-25)
+## 14. Checkpoint histórico — Secure Image Preview Delivery (2026-09-25)
 
 ```text
 SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED
@@ -461,9 +461,46 @@ COMMIT_AUTHORIZED = NO
 PUSH_AUTHORIZED = NO
 ```
 
-Para o snapshot Git, evidências dos gates, fatos de segurança da entrega,
-decisões deferred e status final desta reconciliação, consulte
-PROJECT_STATE.md. Para contrato técnico de preview, consulte
-ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md. UI-3 deve reutilizar a variante PANEL
-existente; o layout aprovado do painel continua em
-ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md, seção 7.3.
+No checkpoint, UI-3 era a próxima candidata e deveria reutilizar a variante
+PANEL existente. Esse estado foi supersedido pela integração da UI-3 registrada
+na seção 15. Os detalhes do contrato de preview continuam em
+ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
+
+## 15. Checkpoint vigente — UI-3 integrada, aceitação visual pendente (2026-09-25)
+
+```text
+UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE
+UI-3_TECHNICAL_COMMIT = bcc7e7d
+UI-3_INTEGRATION = COMPLETE
+UI-3_INTEGRATION_COMMIT = 1015a8f
+INTEGRATION_GATE = PASS
+UI-3_FUNCTIONAL_VALIDATION = PASS
+UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
+UI-3_VISUAL_ACCEPTANCE = PENDING
+UI-3_PRODUCT_ACCEPTANCE = PENDING
+UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED
+UI-4 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+IMPLEMENTATION_AUTHORIZED = NO for further UI-3/IMG-04/UI-4 work
+LIVE_AUTHORIZED = NO
+COMMIT_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED; DEPLOYMENT BLOCKED; PRODUCTION BLOCKED
+OPEN_IMAGE_DECISIONS = 7; details in ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md
+ON_DEMAND_PREVIEW_COST_LOAD_BENCHMARK = DEFERRED / NOT BENCHMARKED
+PERSISTENT_DERIVED_PREVIEW_CACHE_OR_CDN = DEFERRED
+FINAL_IMAGE_PERMISSION_MATRIX = DEFERRED
+DEFINITIVE_STORAGE_BACKEND = DEFERRED
+DEFINITIVE_MIME_SIZE_DIMENSION_POLICY = DEFERRED
+UPLOAD_REJECTION_AUDIT_HARDENING = DEFERRED / future hardening IMG-08
+```
+
+UI-3 usa a variante `PANEL` da entrega segura para `LATEST_CAMERA_CAPTURE`, sem
+fallback para upload manual, imagem principal ou captura anterior; abrir o
+painel não captura imagem nem altera monitoramento. Os detalhes funcionais e
+técnicos, o registro de evidências e a regra de aceitação visual ficam na
+authority UI-DS e em `PROJECT_STATE.md`; o contrato do preview e as decisões de
+imagem ficam em `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`. Evidência funcional e QA
+visual foram fornecidas para esta reconciliação; os testes não foram
+reexecutados. Nenhuma rodada de reparo visual foi iniciada.

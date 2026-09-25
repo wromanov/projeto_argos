@@ -89,7 +89,7 @@ ATTEMPT_MAX_DURATION_REQUIRED_FOR_CORRECTNESS = NO
 LEASE_DURATION = janela operacional configurável de takeover
 LEASE_RENEWAL_IMPLEMENTED = NO
 
-## Roadmap e limites
+## Contexto histórico de roadmap e limites (status atual no checkpoint vigente)
 
 NEXT_ACTIVITY_CANDIDATES = IMG-03 — Upload manual; UI-2 — Inventory Visual Retrofit
 NEXT_ACTIVITY_STATUS = NOT_AUTHORIZED; não iniciar por inferência
@@ -213,7 +213,7 @@ Nesta reconciliação, os gates foram aceitos como evidência fornecida e não
 reexecutados. Valide Git diretamente ao iniciar nova sessão; esta atividade
 documental não autoriza implementação, staging, commit ou push.
 
-## Checkpoint vigente — Secure Image Preview Delivery (2026-09-25)
+## Checkpoint histórico — Secure Image Preview Delivery (2026-09-25)
 
 Leia o checkpoint vigente completo em PROJECT_STATE.md; ele registra fatos
 de segurança, decisões deferred, baseline Git e evidências. Os detalhes
@@ -231,9 +231,9 @@ UI-3 = NEXT_CANDIDATE / NOT_AUTHORIZED
 IMG-04 = NOT_AUTHORIZED
 NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 
-A futura UI-3 deve reutilizar a entrega segura existente na variante PANEL.
-Preserve o layout aprovado do CameraQuickDetailPanel na especificação UI-DS,
-seção 7.3. Não iniciar UI-3 nem IMG-04 por inferência.
+Naquele checkpoint, UI-3 ainda era candidata e deveria reutilizar a entrega
+segura na variante PANEL. Esse estado foi supersedido pelo checkpoint vigente
+abaixo.
 
 ON_DEMAND_PREVIEW_COST_LOAD_BENCHMARK = DEFERRED / NOT BENCHMARKED
 PERSISTENT_DERIVED_PREVIEW_CACHE_OR_CDN = NOT IMPLEMENTED / DEFERRED
@@ -246,3 +246,36 @@ COMMIT_AUTHORIZED = NO
 PUSH_AUTHORIZED = NO
 ACTIVITY_COMPLETION_PERCENT = 100%
 COMPLETION_BASIS = baseline validado; seis documentos reconciliados; git diff --check PASS; alterações unstaged prontas para adjudicação; sem commit, push ou publicação
+
+## Checkpoint vigente — UI-3 pós-integração e aceitação visual pendente (2026-09-25)
+
+Consulte `PROJECT_STATE.md` para baseline Git, evidências, invariantes, decisões
+deferred, gates de segurança e estado completo do handoff. A authority UI-DS
+define o gate obrigatório de aceitação visual; a authority de imagens preserva
+o contrato técnico de preview e as decisões do domínio.
+
+```text
+BASELINE = master; HEAD 1015a8f0d7b6165ab057d81afb22007c3ae5e91b; origin/master 20be98d48ccfc19d458e393189168d9ecc93f309; ahead 2 / behind 0
+UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
+UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE; TECHNICAL_COMMIT = bcc7e7d
+UI-3_INTEGRATION = COMPLETE; INTEGRATION_COMMIT = 1015a8f; INTEGRATION_GATE = PASS
+UI-3_FUNCTIONAL_VALIDATION = PASS
+UI-3_VISUAL_ACCEPTANCE = PENDING
+UI-3_PRODUCT_ACCEPTANCE = PENDING
+UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED
+UI-4 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+ON_DEMAND_PREVIEW_COST_LOAD_BENCHMARK = DEFERRED / NOT BENCHMARKED
+PERSISTENT_DERIVED_PREVIEW_CACHE_OR_CDN = DEFERRED
+FINAL_IMAGE_PERMISSION_MATRIX = DEFERRED
+DEFINITIVE_STORAGE_BACKEND = DEFERRED
+DEFINITIVE_MIME_SIZE_DIMENSION_POLICY = DEFERRED
+UPLOAD_REJECTION_AUDIT_HARDENING = DEFERRED / future hardening IMG-08
+IMPLEMENTATION_AUTHORIZED = NO for further UI-3/IMG-04/UI-4 work
+VISUAL_REPAIR_STARTED = NO
+COMMIT_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+ACTIVITY_COMPLETION_PERCENT = 100%
+COMPLETION_BASIS = sete documentos reconciliados; validação documental PASS; sem alteração de código/runtime, reexecução de testes, reparo visual, commit, push ou publicação
+```
