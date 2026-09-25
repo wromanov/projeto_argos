@@ -1,34 +1,40 @@
 .governance-badge, .completeness {
     display: inline-flex;
     padding: 5px 9px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 700
+    border: var(--border-width) solid currentColor;
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    line-height: var(--line-height-tight)
 }
 
 .governance-badge--producao {
-    background: #dcfae6;
-    color: #067647
+    background: var(--status-production-bg);
+    color: var(--status-production-text);
+    border-color: var(--status-production)
 }
 
 .governance-badge--estoque {
-    background: #dbeafe;
-    color: #1d4ed8
+    background: var(--status-stock-bg);
+    color: var(--status-stock)
 }
 
 .governance-badge--desativada {
-    background: #f2f4f7;
-    color: #475467
+    background: var(--status-disabled-bg);
+    color: var(--status-disabled-text);
+    border-color: var(--status-disabled)
 }
 
 .completeness--ok {
-    background: #ecfdf3;
-    color: #067647
+    background: var(--status-complete-bg);
+    color: var(--status-complete);
+    border-color: var(--status-online)
 }
 
 .completeness--warning {
-    background: #fffaeb;
-    color: #b54708
+    background: var(--status-incomplete-bg);
+    color: var(--status-incomplete);
+    border-color: var(--status-warning)
 }
 
 .governance-page {
