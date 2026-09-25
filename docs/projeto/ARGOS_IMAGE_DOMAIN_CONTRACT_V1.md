@@ -491,3 +491,39 @@ leituras, performance, integração, decisões abertas e pré-requisitos.
 Este contrato não declara o status corrente nem a ordem do trabalho. Consulte o
 roadmap, sprint map e documentos de continuidade; este documento não concede
 autorização de implementação.
+
+## 24. Contrato técnico de entrega privada de preview (slice autorizada em 2026-09-25)
+
+`CameraImagePreviewService` entrega somente `LATEST_CAMERA_CAPTURE`, reutilizando
+a seleção de `CameraImageReadService.latest_records`. O cliente fornece apenas
+`Camera.pk` e uma variante fechada na rota
+`GET /cameras/<pk>/imagens/ultima-captura/<variant>/` (`THUMB` ou `PANEL`).
+`THUMB` gera JPEG 60×42; `PANEL` gera JPEG 640×448. O crop central via
+`ImageOps.fit` preserva a proporção. O serviço lê pela abstração configurada
+`default_storage`, verifica SHA-256 e decodifica JPEG/PNG/WebP estático antes de
+regravar pixels em JPEG sem metadados. O objeto original e o registro não são
+alterados; não há preview derivado persistido.
+
+`cameras.view_camera` é a permissão Django reutilizada para os dois consumidores.
+O usuário anônimo recebe 401, o sem permissão 403, câmera inexistente 404 e
+variante inválida ou query string inesperada 400. A seleção sem captura retorna
+404 (`NO_CAPTURE_AVAILABLE`); latest indisponível retorna 503 (`UNAVAILABLE`);
+latest inválida, corrompida ou com hash divergente retorna 422 (`ERROR`). A
+resposta válida é 200 `image/jpeg`, `Content-Disposition: inline`,
+`X-Content-Type-Options: nosniff` e `Cache-Control: no-store`. Falhas não
+incluem bytes, chave ou caminho de storage. Nenhum estado promove captura
+anterior, upload manual ou imagem principal.
+
+O Inventário consulta metadados da página em um único batch ORM, sem consultar
+ou abrir storage no render HTML. Uma captura com metadados íntegros é apenas
+candidata à URL; o request lazy revalida storage e bytes. Se o objeto mudar
+entre HTML e request, o navegador oculta a imagem falha e mantém o placeholder.
+`alt=""` e wrapper `aria-hidden="true"` evitam repetir o nome da câmera, que
+permanece no link adjacente. A fonte de imagem não altera monitoramento.
+
+Limites operacionais reversíveis do preview: 20 MiB e 20 milhões de pixels
+para o objeto de origem; não definem política definitiva de upload/captura.
+Geração permanece on-demand e sem cache público ou persistente. Cache de
+derivados, thumbnails persistentes e CDN exigem métricas e decisão futura.
+Backend definitivo, matriz final de permissões de imagem e políticas finais de
+MIME, bytes e dimensões permanecem deferred. UI-3 e IMG-04 seguem sem autorização.

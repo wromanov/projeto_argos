@@ -47,7 +47,8 @@ class CameraImageReadService:
     """Consulta metadados em lote e só verifica storage após selecionar o latest.
 
     storage_exists usa Storage.exists (sem abrir bytes). O storage configurado
-    é detalhe local/reversível; esta API não retorna URL nem chave.
+    é detalhe local/reversível; check_storage=False projeta somente metadados
+    para o HTML. Esta API não retorna URL nem chave.
     """
 
     def __init__(self, *, storage_exists: Callable[[str], bool] | None = None) -> None:
@@ -62,7 +63,7 @@ class CameraImageReadService:
         return self.latest_camera_captures((camera_id,))[camera_id]
 
     def latest_camera_captures(
-        self, cameras: Iterable[Camera | int]
+        self, cameras: Iterable[Camera | int], *, check_storage: bool = True
     ) -> dict[int, LatestCameraCaptureResult]:
         """Retorna latest de várias câmeras usando uma consulta ORM de janela."""
         camera_ids = tuple(dict.fromkeys(self._camera_id(camera) for camera in cameras))
@@ -77,7 +78,16 @@ class CameraImageReadService:
         if not camera_ids:
             return results
 
-        latest_records = (
+        latest_records = self.latest_records(camera_ids)
+
+        for record in latest_records:
+            results[record.camera_id] = self._project(record, check_storage=check_storage)
+        return results
+
+    @staticmethod
+    def latest_records(camera_ids: Iterable[int]):
+        """Seleciona os registros canônicos, sem avaliar validade ou storage."""
+        return (
             CameraImageRecord.objects.filter(
                 camera_id__in=camera_ids,
                 provenance=CameraImageRecord.Provenance.CAPTURA_CAMERA,
@@ -112,11 +122,7 @@ class CameraImageReadService:
             .filter(_latest_rank=1)
         )
 
-        for record in latest_records:
-            results[record.camera_id] = self._project(record)
-        return results
-
-    def _project(self, record: CameraImageRecord) -> LatestCameraCaptureResult:
+    def _project(self, record: CameraImageRecord, *, check_storage: bool = True) -> LatestCameraCaptureResult:
         metadata = CameraImageMetadata(
             immutable_id=record.pk,
             camera_id=record.camera_id,
@@ -137,6 +143,9 @@ class CameraImageReadService:
             or any(char not in "0123456789abcdef" for char in record.sha256)
         ):
             status = LatestCameraCaptureStatus.ERROR
+        elif not check_storage:
+            # Projeção para HTML: candidato válido por metadados; bytes só no request da preview.
+            status = LatestCameraCaptureStatus.AVAILABLE
         else:
             try:
                 available = self._storage_exists(record.storage_key)
