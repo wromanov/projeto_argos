@@ -2765,6 +2765,7 @@
 }
 
 .camera-thumbnail {
+    position: relative;
     display: grid;
     flex: 0 0 3.75rem;
     place-items: center;
@@ -2789,9 +2790,15 @@
 
 .camera-thumbnail__image {
     display: block;
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.camera-thumbnail__image[hidden] {
+    display: none;
 }
 
 .camera-identity__text {

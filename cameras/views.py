@@ -1,9 +1,9 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import login_not_required, permission_required
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import QueryDict
+from django.http import HttpResponse, QueryDict
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.dateparse import parse_date
@@ -20,6 +20,8 @@ from .governanca import (
 from .models import AtividadeCamera, Camera, EventoAuditoria, SubstituicaoCamera
 from .monitoramento.read_service import MonitoringReadService
 from .imagens.upload_service import aceitar_upload_manual
+from .imagens.read_service import CameraImageReadService
+from .imagens.preview_service import CameraImagePreviewService, PreviewState, CONTENT_TYPE, VARIANTS
 from .validadores import normalizar_texto_cadastral
 
 ORDENACOES_PERMITIDAS = {"nome", "-nome", "status", "-status", "ip", "-ip", "atualizado_em", "-atualizado_em"}
@@ -204,9 +206,12 @@ def lista_cameras(request):
     paginator = Paginator(queryset, 20)
     page_obj = paginator.get_page(request.GET.get("page"))
     monitoring_service = MonitoringReadService()
+    page_cameras = tuple(monitoring_service.camera_queryset(page_obj.object_list))
+    captures = CameraImageReadService().latest_camera_captures(page_cameras, check_storage=False)
     camera_rows = tuple(
-        {"camera": camera, "monitoring": _monitoramento_ui(monitoring_service.project(camera))}
-        for camera in monitoring_service.camera_queryset(page_obj.object_list)
+        {"camera": camera, "monitoring": _monitoramento_ui(monitoring_service.project(camera)),
+         "capture": captures[camera.pk]}
+        for camera in page_cameras
     )
     query_params = _query_params(q=q, status=status_selecionados,
         situacao_operacional=situacoes_selecionadas, completude=completudes_selecionadas,
@@ -404,6 +409,37 @@ def detalhe_camera(request, pk):
     if request.user.has_perm("cameras.consultar_substituicoescamera"):
         contexto["substituicoes"] = SubstituicaoCamera.objects.filter(Q(camera_anterior=camera) | Q(camera_substituta=camera)).select_related("camera_anterior", "camera_substituta")[:10]
     return render(request, "cameras/detalhe.html", contexto)
+
+
+@login_not_required
+def preview_ultima_captura(request, pk, variant):
+    """Rota fina: somente Camera.pk e variante; autorização antes da busca."""
+    def empty(status, state):
+        response = HttpResponse(status=status)
+        response["X-Preview-State"] = state
+        response["Cache-Control"] = "no-store"
+        return response
+
+    if not request.user.is_authenticated:
+        return empty(401, "UNAUTHENTICATED")
+    if not request.user.has_perm("cameras.view_camera"):
+        return empty(403, "FORBIDDEN")
+    if variant not in VARIANTS or request.GET:
+        return empty(400, "INVALID_VARIANT")
+    if not Camera.objects.filter(pk=pk).exists():
+        return empty(404, "CAMERA_NOT_FOUND")
+
+    result = CameraImagePreviewService().deliver(pk, variant)
+    if result.state != PreviewState.AVAILABLE:
+        status = {PreviewState.NO_CAPTURE_AVAILABLE: 404,
+                  PreviewState.UNAVAILABLE: 503, PreviewState.ERROR: 422}[result.state]
+        return empty(status, result.state.value)
+    response = HttpResponse(result.content, content_type=CONTENT_TYPE)
+    response["Content-Disposition"] = 'inline; filename="preview.jpg"'
+    response["Cache-Control"] = "no-store"
+    response["X-Content-Type-Options"] = "nosniff"
+    response["X-Preview-State"] = "AVAILABLE"
+    return response
 
 
 @permission_required("cameras.view_camera", raise_exception=True)
