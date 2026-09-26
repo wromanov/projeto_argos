@@ -8,6 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const content = dialog.querySelector("[data-quick-detail-content]");
   const image = dialog.querySelector("[data-quick-detail-image]");
   const imageState = dialog.querySelector("[data-quick-detail-image-state]");
+  const imageFrame = dialog.querySelector("[data-quick-detail-image-frame]");
+  const imagePlaceholder = dialog.querySelector("[data-quick-detail-image-placeholder]");
+  const footer = dialog.querySelector("[data-quick-detail-footer]");
+  const editLink = dialog.querySelector("[data-quick-detail-edit-link]");
+  const headerSubtitle = dialog.querySelector("[data-quick-detail-header-subtitle]");
   const rows = Array.from(document.querySelectorAll("[data-quick-detail-row]"));
   const previousButton = dialog.querySelector("[data-quick-detail-previous]");
   const nextButton = dialog.querySelector("[data-quick-detail-next]");
@@ -52,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
       node.textContent = value(data[group]?.[field]);
     });
     const state = data.monitoring.state;
+    headerSubtitle.textContent = [value(data.camera.patrimonio), value(data.camera.nome)].filter((part) => part !== "—").join(" · ") || "Inventário de câmeras";
     const badge = dialog.querySelector("[data-quick-detail-status]");
     badge.textContent = statusLabels[state] || "Desconhecido";
     badge.className = `badge badge--${["ONLINE", "OFFLINE", "UNKNOWN", "OUT_OF_SCOPE"].includes(state) ? state.toLowerCase() : "unknown"}`;
@@ -59,12 +65,17 @@ document.addEventListener("DOMContentLoaded", () => {
     dialog.querySelector('[data-quick-detail-monitoring="evidence"]').textContent = date(data.monitoring.evidence_at);
     dialog.querySelector('[data-quick-detail-monitoring="freshness"]').textContent = data.monitoring.freshness === "stale" ? "Dados desatualizados" : `Evidência: ${date(data.monitoring.evidence_at)}`;
     dialog.querySelector("[data-quick-detail-full-link]").href = data.links.full_detail_url;
+    if (editLink) editLink.href = selectedRow.dataset.quickDetailEditUrl;
     content.hidden = false;
+    footer.hidden = false;
     message.hidden = true;
     image.hidden = true;
+    imagePlaceholder.hidden = false;
+    imageFrame.dataset.imageState = data.image.state.toLowerCase();
     image.removeAttribute("src");
     if (data.image.state === "AVAILABLE" && data.image.preview_url) {
       imageState.textContent = "Carregando imagem…";
+      imageFrame.dataset.imageState = "loading";
       image.src = data.image.preview_url;
     } else {
       imageState.textContent = imageLabels[data.image.state] || "Imagem indisponível";
@@ -87,6 +98,8 @@ document.addEventListener("DOMContentLoaded", () => {
     previousButton.disabled = rowIndex <= 0;
     nextButton.disabled = rowIndex >= rows.length - 1;
     content.hidden = true;
+    footer.hidden = true;
+    headerSubtitle.textContent = "Inventário de câmeras";
     message.hidden = false;
     message.textContent = "Carregando detalhes…";
     image.hidden = true;
@@ -125,6 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
   dialog.addEventListener("cancel", (event) => { event.preventDefault(); close(); });
   dialog.addEventListener("close", () => { if (opener) close(); });
   dialog.addEventListener("click", (event) => { if (event.target === dialog) close(); });
-  image.addEventListener("load", () => { if (dialog.open && !content.hidden) { image.hidden = false; imageState.textContent = ""; } });
-  image.addEventListener("error", () => { image.hidden = true; imageState.textContent = "Última captura indisponível"; });
+  image.addEventListener("load", () => { if (dialog.open && !content.hidden) { image.hidden = false; imagePlaceholder.hidden = true; imageFrame.dataset.imageState = "available"; imageState.textContent = ""; } });
+  image.addEventListener("error", () => { image.hidden = true; imagePlaceholder.hidden = false; imageFrame.dataset.imageState = "unavailable"; imageState.textContent = "Última captura indisponível"; });
 });
