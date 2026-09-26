@@ -1,12 +1,12 @@
-# Política de Geração de Prompts Multiagente — v1.7-R2.4
+# Política de Geração de Prompts Multiagente — v1.7-R2.6 — CANONICAL / ACTIVE
 
 ```text
 STATUS = CANONICAL
 LIFECYCLE = ACTIVE
-PREVIOUS_BASE = Politica-Prompts-Agente-v1.7-R2.3.md
-CONSOLIDATES = Politica-Prompts-Agente-v1.7-R2.3.md
-REVISION_FOCUS = COGNITIVE_DEMAND_CLASSIFICATION + COGNITIVE_MECHANICAL_SPLIT
-MULTIAGENT_ALIGNMENT = AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico
+PREVIOUS_BASE = Politica-Prompts-Agente-v1.7-R2.5.md
+CONSOLIDATES = Politica-Prompts-Agente-v1.7-R2.5.md
+REVISION_FOCUS = GPT6_MODEL_ROUTING + CURRENT_AGENT_RUNTIME_SEMANTICS + ROLE_MODEL_TOOL_SEPARATION + CONTEXT_DIET
+MULTIAGENT_ALIGNMENT = AGENTS-Multiagente-Generico-v1.7-R2.3-Roteamento-Economico.md
 SCOPE = TRANSVERSAL
 DOMAIN_SPECIFIC_CONTENT = PROHIBITED
 BOUNDED_CYCLIC_EXECUTION_INCLUDED = NO
@@ -124,9 +124,17 @@ CLOSED_DECISION_MATERIALIZATION
 ROOT_MUST_READ_SOURCE_TO_MAKE_DECISION
 ROOT_MUST_REVIEW_FINAL_DELTA
 
+INITIAL_ROUTING_SELECTION
+CURRENT_ROOT_SUFFICIENCY
+MID_TASK_ROUTING_RECLASSIFICATION
+ROOT_RECLASSIFICATION_REQUIRED
+MULTIAGENT_RECLASSIFICATION_REQUIRED
+SAFE_RESUME_POINT
+USER_RECONFIGURATION_REQUIRED
+
 ROUTINE_EXECUTION_GATE
-SOL_GATE
 ASTRA_SELECTION_GATE
+ARCHITECTURE_ESCALATION_PROTOCOL
 
 PARALLEL_INDEPENDENT_FRONTS
 DISTINCT_SPECIALIZATION_REQUIRED
@@ -319,7 +327,7 @@ MANY_FILES != STRONGER_MODEL_REQUIRED
 LONG_CONTEXT != STRONGER_MODEL_REQUIRED
 HIGH_RISK != STRONGER_MODEL_REQUIRED
 SCIENTIFIC_TASK != SOL_REQUIRED
-ARCHITECTURAL_TASK != SOL_REQUIRED
+ARCHITECTURE_RELATED_TASK != MATERIAL_ARCHITECTURAL_DECISION
 ```
 
 ### 5.1 Três eixos independentes
@@ -431,33 +439,42 @@ A classificação é um instrumento de roteamento, não um score científico exa
 
 ### 5.3 Baseline de família por Capability Demand
 
+A família deve ser escolhida pela capacidade necessária, sem transformar o mapping em
+uma escada rígida de efforts.
+
 ```text
 C0
 → LUNA
 
 C1
-→ LUNA | TERRA conforme julgamento remanescente
+→ LUNA
 
 C2
-→ TERRA
+→ LUNA por padrão
+→ SOL quando julgamento técnico material exceder a faixa segura de Luna
 
 C3
-→ TERRA por padrão
-→ SOL somente se houver CAPABILITY_GAP material
+→ SOL por padrão
 
 C4
 → SOL por padrão
-→ ASTRA somente se ASTRA_SELECTION_GATE = PASS
+→ ASTRA somente quando ASTRA_SELECTION_GATE = PASS
 ```
 
 Importante:
 
 ```text
-C3 != SOL_REQUIRED
+LUNA_XHIGH_ROOT = ALLOWED
+LUNA_XHIGH_DOES_NOT_IMPLY_SOL_REQUIRED = YES
 ```
 
-Um problema difícil ainda pode estar dentro da capacidade de Terra, especialmente
-quando a dificuldade é de deliberação sustentada e não de capacidade.
+Um problema pode exigir deliberação muito alta e ainda permanecer dentro da capacidade
+de Luna. Nesse caso, `Luna / XHigh` é ROOT válido. Inversamente, um problema pode exigir
+mais capacidade com deliberação moderada e selecionar `Sol / Medium`.
+
+```text
+DELIBERATION_GAP != CAPABILITY_GAP
+```
 
 ### 5.4 Deliberation Demand — D0 a D4
 
@@ -500,93 +517,84 @@ Não usar esforço extremo para compensar incapacidade real do modelo.
 
 ### 5.5 Effort mapping por família
 
+O effort é escolhido **depois** da família e mede deliberação, não prestígio.
+
 #### Luna
 
 ```text
-D0-D2
+D0
+→ LUNA / LOW
+
+D1
+→ LUNA / MEDIUM
+
+D2-D3
 → LUNA / HIGH
 
-D3-D4 analytical work
-→ LUNA / XHIGH WHEN SUPPORTED
-```
-
-Luna Low/Medium não voltam a ser defaults.
-
-#### Terra
-
-```text
-D1-D2
-→ TERRA / MEDIUM
-
-D3
-→ TERRA / HIGH
-
 D4
-→ TERRA / XHIGH WHEN SUPPORTED
+→ LUNA / XHIGH
+   somente se Luna continuar capability-sufficient
 ```
 
 Aplicar:
 
 ```text
-TERRA_XHIGH
-SHOULD_BE_CONSIDERED
-BEFORE_SOL
-WHEN_THE_GAP_IS_DELIBERATION
+LUNA_XHIGH_ROOT = ALLOWED
+LUNA_XHIGH_SUBAGENT = ALLOWED
+LUNA_XHIGH_MUST_NOT_COMPENSATE_FOR_CAPABILITY_GAP = YES
 ```
 
-Mas:
-
-```text
-DO_NOT_USE_TERRA_XHIGH
-TO_COMPENSATE_FOR_A_TRUE_CAPABILITY_GAP
-```
+`Luna / XHigh` é indicado para investigação/reconciliação longa, priorização e solução
+de problemas com restrições claras quando a demanda principal é deliberação sustentada.
 
 #### Sol
 
-Depois de `SOL_GATE = PASS`, dimensionar o esforço em vez de usar `HIGH`
-automaticamente:
-
 ```text
-D1
-→ SOL / LOW
+D0-D1
+→ SOL / LOW OR MEDIUM conforme runtime/benefício
 
 D2
 → SOL / MEDIUM
 
-D3-D4
+D3
+→ SOL / HIGH
+
+D4
+→ SOL / XHIGH when materially justified
+```
+
+Para **decisão arquitetural material**, aplicar override operacional:
+
+```text
+MATERIAL_ARCHITECTURAL_DECISION
 → SOL / HIGH
 ```
 
-Logo:
+Se `Sol / High` declarar insuficiência para essa decisão, não exigir `Sol / XHigh` como
+degrau intermediário obrigatório:
 
 ```text
-SOL_REQUIRED
-!=
-SOL_HIGH_REQUIRED
+SOL_HIGH_ARCHITECTURE_INSUFFICIENT
+→ ROOT_RECLASSIFICATION_REPORT
+→ STOP
+→ USER_RECONFIGURES
+→ ASTRA / MEDIUM
 ```
 
-Um problema pequeno e bem delimitado pode exigir capacidade Sol sem exigir
-deliberação High.
+`Sol / XHigh` permanece válido para revisão, auditoria, debug ou análise muito profunda
+quando o problema continua dentro da capacidade de Sol e o gap é de deliberação.
 
-Se o runtime expuser apenas um perfil Sol com esforço fixo, essa restrição deve
-ser declarada como limitação operacional:
+#### Astra
 
 ```text
-DESIRED_SOL_EFFORT = <LOW | MEDIUM | HIGH>
-RUNTIME_PROFILE_EFFORT = <actual>
-EFFORT_OVERRIDE_AVAILABLE = YES | NO
+ASTRA_ENTRY = MEDIUM
+ASTRA_HIGH = ONLY_IF_MEDIUM_INSUFFICIENT
+ASTRA_XHIGH = ONLY_IF_HIGH_INSUFFICIENT
+ASTRA_MAX = ONLY_IF_XHIGH_INSUFFICIENT
+MAX_EFFORT_DEFAULT = PROHIBITED
 ```
 
-Não inventar um perfil inexistente apenas para satisfazer o mapping.
-
-Combinações incoerentes devem ser reavaliadas. Exemplo:
-
-```text
-C4 + D0
-```
-
-normalmente indica classificação incorreta, pois capability excepcional sem
-qualquer decisão remanescente tende a significar que o hotspot já foi fechado.
+Astra continua excepcional e sujeito ao `ASTRA_SELECTION_GATE`.
 
 ### 5.6 Execution Risk — R0 a R4
 
@@ -639,39 +647,65 @@ MUST_BE_QUANTIFIED
 BEFORE_MODEL_ESCALATION
 ```
 
+Ciência continua seguindo classificação normal:
+
+```text
+SCIENCE
+→ CLASSIFY C + D + R
+```
+
+Arquitetura exige distinguir tarefa relacionada a arquitetura de decisão arquitetural
+material:
+
+```text
+ARCHITECTURE_RELATED_TASK
+!=
+MATERIAL_ARCHITECTURAL_DECISION
+```
+
+Leitura de ADR, documentação, materialização de decisão fechada ou alteração mecânica
+não seleciona Sol/High por rótulo.
+
+Quando existe **decisão arquitetural material**:
+
+```text
+MATERIAL_ARCHITECTURAL_DECISION = YES
+→ ROOT = SOL / HIGH
+```
+
+Se `Sol / High` não atingir confiança/capacidade suficiente:
+
+```text
+SOL_HIGH_CONFIDENCE = INSUFFICIENT
+→ ROOT_RECLASSIFICATION_REQUIRED = YES
+→ RECOMMENDED_ROOT = ASTRA / MEDIUM
+→ STOP_AT_SAFE_BOUNDARY
+→ WAIT_FOR_USER_ROOT_RECONFIGURATION
+```
+
 Portanto:
 
 ```text
-ARCHITECTURE
-→ CLASSIFY C + D + R
+ARCHITECTURE_RELATED_TASK
+!= AUTOMATIC_SOL_HIGH
 
-SCIENCE
-→ CLASSIFY C + D + R
+MATERIAL_ARCHITECTURAL_DECISION
+= SOL_HIGH_DEFAULT
 ```
-
-e nunca:
-
-```text
-ARCHITECTURE
-→ AUTOMATIC SOL/HIGH
-
-SCIENCE
-→ AUTOMATIC SOL/HIGH
-```
-
----
 
 ## 6. Taxonomia operacional de modelos
 
 ```text
 NORMAL_OPERATING_RANGE =
-LUNA | TERRA
-
-SOL =
-ESCALATION_MODEL
+LUNA | SOL
 
 ASTRA =
-EXCEPTIONAL_CAPABILITY_MODEL
+EXCEPTIONAL_ESCALATION_MODEL
+
+LEGACY_TERRA =
+COMPATIBILITY_ONLY_WHEN_RUNTIME_OR_EXISTING_PROFILE_REQUIRES
+
+TERRA = OUTSIDE_CURRENT_GPT6_ROUTING_BASELINE
 ```
 
 ### 6.1 Luna
@@ -681,45 +715,47 @@ Preferido para:
 - trabalho focado;
 - repetitivo;
 - mecânico;
-- baixo em ambiguidade;
+- baixo ou moderado em ambiguidade;
 - volumoso e sensível a custo;
-- execução derivada de decisão já tomada.
-
-Para subagentes:
+- execução derivada de decisão já tomada;
+- análise longa com restrições claras quando Luna permanece capability-sufficient.
 
 ```text
-LUNA_DEFAULT = HIGH
-LUNA_ANALYTICAL = XHIGH_WHEN_SUPPORTED
+LUNA_ROOT = ALLOWED
+LUNA_EFFORT = BY_DELIBERATION
+LUNA_XHIGH_ROOT = ALLOWED
 ```
 
-A política de subagentes não deve voltar a usar Luna Low/Medium como default.
+`Luna / XHigh` é uma configuração de ROOT válida quando a família Luna continua
+suficiente e a tarefa precisa de deliberação profunda/sustentada. Não é um substituto
+para Sol quando existe capability gap.
 
-### 6.2 Terra
+### 6.2 Sol
 
-Default para:
+Sol é a família técnica normal quando existe julgamento material que excede a faixa
+segura de Luna.
 
-- trabalho técnico cotidiano;
-- julgamento moderado;
-- integração conhecida;
-- implementação não puramente mecânica.
+Preferido para:
+
+- coding cotidiano com julgamento técnico;
+- integração conhecida mas não trivial;
+- implementação com escolhas locais materiais;
+- debug difícil;
+- revisão profunda;
+- auditoria técnica;
+- decisão arquitetural material.
 
 ```text
-TERRA_TECHNICAL_ROOT_BASELINE = MEDIUM
+SOL_TECHNICAL_ROOT_BASELINE = MEDIUM
+SOL_HIGH_JUDGMENT_BASELINE = HIGH
 ROOT_BASELINE != ROOT_FLOOR
 ```
 
-`Terra / Medium` é o baseline para atividades em que ainda existe julgamento
-técnico real. Não é o menor ROOT permitido.
-
-Terra/High é usado quando existe julgamento técnico elevado.
-
-`Terra / XHigh`, quando suportado, é preferido para `D4` quando o problema continua dentro da capacidade esperada de Terra e o gap é de deliberação, não de capacidade.
-
 ### 6.2.1 Seleção do ROOT pela demanda cognitiva remanescente
 
-O ROOT deve ser escolhido pela **demanda cognitiva ainda existente na atividade
-atual**, não pela importância do projeto, pela categoria documental ou pelo fato
-de a ação ser consequencial.
+O ROOT deve ser escolhido pela **demanda cognitiva ainda existente na atividade atual**,
+não pela importância do projeto, pela categoria documental ou pelo fato de a ação ser
+consequencial.
 
 ```text
 SELECT_ROOT_BY_REMAINING_COGNITIVE_DEMAND = YES
@@ -728,20 +764,21 @@ SELECT_ROOT_BY_REMAINING_COGNITIVE_DEMAND = YES
 Princípios:
 
 ```text
-TASK_IS_GOVERNANCE != TERRA_REQUIRED
+TASK_IS_GOVERNANCE != SOL_REQUIRED
 CONSEQUENTIAL_GIT_ACTION != STRONGER_MODEL_REQUIRED
 HIGH_CONSEQUENCE != HIGH_COGNITIVE_COMPLEXITY
 PERMISSION_REQUIREMENT != MODEL_REQUIREMENT
 ```
 
-Uma atividade completamente fechada, mecânica e objetivamente verificável pode
-usar Luna/High como ROOT.
+Uma atividade completamente fechada, mecânica e objetivamente verificável pode usar
+Luna como ROOT no effort compatível.
 
 ```text
 LUNA_ROOT_ELIGIBLE_FOR_CLOSED_MECHANICAL_TASKS = YES
+LUNA_XHIGH_ROOT_ELIGIBLE_FOR_DEEP_BOUNDED_REASONING = YES
 ```
 
-Gate:
+Gate mecânico:
 
 ```text
 IF
@@ -754,34 +791,24 @@ AND OPERATION_SEQUENCE_IS_PRESCRIBED = YES
 AND CONSEQUENTIAL_ACTIONS_EXPLICITLY_AUTHORIZED = YES
 
 THEN
-ROOT = LUNA / HIGH
+ROOT = LUNA / LOW | MEDIUM | HIGH BY DELIBERATION
 ```
 
-Exemplos compatíveis:
-
-- stage de paths exatos já aprovados;
-- `git diff --cached --check`;
-- commit com mensagem já definida;
-- push já autorizado;
-- verificação objetiva de `HEAD`, `origin`, divergence e worktree;
-- publicação mecânica de artefato cuja identidade e escopo já foram adjudicados.
-
-Por outro lado:
+Se houver investigação longa/reconciliação extensa, mas Luna continuar capability-sufficient:
 
 ```text
-IF
-FILES_MUST_BE_CLASSIFIED = YES
-OR SCOPE_RECONCILIATION_REQUIRED = YES
-OR POLICY_IDENTITY_REQUIRES_JUDGMENT = YES
-OR AUTHORITY_INTERPRETATION_REQUIRED = YES
-OR DIFF_CONTAINS_UNRESOLVED_SEMANTICS = YES
-OR MATERIAL_DECISION_REMAINS_OPEN = YES
-
-THEN
-ROOT = TERRA / MEDIUM
+DELIBERATION_DEMAND = D4
+AND CAPABILITY_GAP = NO
+→ ROOT = LUNA / XHIGH
 ```
 
-Escalar acima disso somente quando a carga cognitiva real justificar.
+Se ainda houver reconciliação técnica material, integração, interpretação complexa de
+authority ou decisão semântica que exceda Luna:
+
+```text
+CAPABILITY_GAP_FROM_LUNA = YES
+→ ROOT = SOL / MEDIUM OR HIGH BY DELIBERATION
+```
 
 ### 6.2.2 Consequência, autorização e inteligência são eixos distintos
 
@@ -798,55 +825,37 @@ STRONGER_MODEL_BY_DEFAULT
 ```
 
 O modelo responde à dificuldade de raciocínio.
-
 A permission responde à authority concedida.
-
 A validação responde à necessidade de evidência.
 
-Esses eixos não devem ser confundidos.
+### 6.3 Protocolo arquitetural Sol → Astra
 
-### 6.3 Sol
-
-Sol é elegível apenas quando:
+Uma decisão arquitetural material começa em:
 
 ```text
-SOL_GATE = PASS
+ROOT = SOL / HIGH
 ```
 
-Triggers materiais incluem:
+Sol/High deve tentar resolver integralmente o hotspot. Se atingir confiança suficiente,
+encerra sem Astra.
+
+Se concluir que sua capacidade/confiança é insuficiente:
 
 ```text
-DIFFICULT_MULTI_COMPONENT_INTEGRATION
-HARD_BUT_BOUNDED_DEBUGGING
-MATERIAL_CONTRACT_OR_INVARIANT_REASONING
-DEEP_CROSS_DOCUMENT_SYNTHESIS
-NONTRIVIAL_ARCHITECTURAL_DECISION
-MULTIPLE_INTERDEPENDENT_TECHNICAL_CONSTRAINTS
-TERRA_EXPECTED_TO_REQUIRE_MATERIAL_REWORK
+ROOT_RECLASSIFICATION_REQUIRED = YES
+CURRENT_ROOT = SOL / HIGH
+RECOMMENDED_ROOT = ASTRA / MEDIUM
+STOP_AT_SAFE_BOUNDARY = YES
 ```
 
-Também:
+O `ROOT_RECLASSIFICATION_REPORT` deve incluir, quando aplicável:
 
 ```text
-EXPECTED_SOL_GAIN = MATERIAL
-TERRA_EXPECTED_SUFFICIENCY = NO | MATERIALLY_INFERIOR
+ALTERNATIVES_CONSIDERED =
+DECISION_IMPACT =
 ```
 
-Depois que `SOL_GATE = PASS`, selecionar esforço separadamente:
-
-```text
-SOL / LOW
-→ capability gap real + deliberação curta
-
-SOL / MEDIUM
-→ capability gap real + deliberação moderada
-
-SOL / HIGH
-→ capability gap real + deliberação profunda/sustentada
-```
-
-Não usar `SOL / HIGH` como configuração automática apenas porque Sol foi
-selecionado.
+Nenhum spawn de Astra pode contornar a regra de mudança de ROOT controlada pelo usuário.
 
 ### 6.4 Astra
 
@@ -858,14 +867,8 @@ Somente elegível quando:
 ASTRA_SELECTION_GATE = PASS
 ```
 
-Exige cumulativamente:
-
-```text
-ASTRA_HARD_TRIGGER = PRESENT
-EXPECTED_ASTRA_GAIN = MATERIAL
-WHY_SOL_IS_NOT_PREFERRED = CONCRETE
-ASTRA_USAGE_COST_ACCEPTABLE = YES
-```
+Exige justificativa concreta de por que Sol não é suficiente ou é materialmente inferior
+para o hotspot restante.
 
 Hard triggers podem incluir:
 
@@ -880,7 +883,29 @@ HIGH_COMPLEXITY_COMPUTER_OR_TOOL_ORCHESTRATION
 SOL_CAPABILITY_ALREADY_OBSERVED_AS_INSUFFICIENT
 ```
 
-### 6.5 Modelo e esforço são independentes
+Para arquitetura:
+
+```text
+ASTRA_ENTRY = MEDIUM
+ASTRA_HIGH = ONLY_IF_MEDIUM_INSUFFICIENT
+ASTRA_XHIGH = ONLY_IF_HIGH_INSUFFICIENT
+ASTRA_MAX = ONLY_IF_XHIGH_INSUFFICIENT
+```
+
+### 6.5 Compatibilidade legada Terra
+
+Terra está fora do baseline atual de roteamento GPT-6. Perfis ou runtimes GPT-5.6
+Terra podem permanecer temporariamente disponíveis para compatibilidade ou histórico,
+mas novos prompts e novas decisões de roteamento desta revisão devem preferir a
+hierarquia GPT-6 `Luna → Sol → Astra`.
+
+```text
+LEGACY_TERRA_PROFILE_AVAILABLE
+!=
+LEGACY_TERRA_PROFILE_PREFERRED
+```
+
+### 6.6 Modelo e esforço são independentes
 
 ```text
 MODEL != REASONING_EFFORT
@@ -895,18 +920,8 @@ MISSING_INFORMATION_OR_ACCESS
 → ACQUIRE_INFORMATION_OR_STOP
 ```
 
-Nunca usar modelo ou esforço para compensar:
-
-- arquivo ausente;
-- contexto ausente;
-- requisito ausente;
-- permission ausente;
-- tool/plugin ausente;
-- authority ausente.
-
----
-
-# PARTE III — ROTEAMENTO MULTIAGENTE
+Nunca usar modelo ou esforço para compensar arquivo, contexto, requisito, permission,
+tool/plugin ou authority ausente.
 
 ## 7. ROOT antes dos subagentes
 
@@ -1114,20 +1129,20 @@ ROUTINE_GOVERNANCE_CHECKPOINT
 → ROOT_SELECTED_BY_REMAINING_COGNITIVE_DEMAND
 ```
 
-Não hard-code `Terra / Medium` apenas porque o checkpoint é de governança.
+Não hard-code `Sol / Medium` apenas porque o checkpoint é de governança.
 
 Se ainda houver reconciliação, classificação, interpretação de authority ou
 julgamento semântico:
 
 ```text
-ROOT = TERRA / MEDIUM
+ROOT = SOL / MEDIUM
 ```
 
 Se todas as decisões estiverem fechadas e restar apenas execução prescrita,
 bounded e objetivamente verificável:
 
 ```text
-ROOT = LUNA / HIGH
+ROOT = LUNA / LOW | MEDIUM | HIGH BY DELIBERATION
 ```
 
 Não criar Validator apenas para deslocar checks pequenos de Git, TOML, filenames,
@@ -1143,7 +1158,7 @@ MULTIAGENT só se torna elegível quando houver ganho material adicional, por ex
 - revisão independente obrigatória;
 - especialização distinta material.
 
-### 8.6 Nova atividade fechada vs de-escalation no meio da atividade
+### 8.6 Nova atividade fechada vs reclassificação no meio da atividade
 
 Distinguir:
 
@@ -1154,7 +1169,7 @@ NEW_TASK_WITH_ALL_DECISIONS_ALREADY_CLOSED
 de:
 
 ```text
-MID_TASK_DEESCALATION
+MID_TASK_ROUTING_RECLASSIFICATION
 ```
 
 Uma nova atividade cujo contrato já nasce fechado pode começar diretamente no
@@ -1164,32 +1179,53 @@ menor ROOT suficiente:
 NEW_TASK_WITH_ALL_DECISIONS_ALREADY_CLOSED
 + MECHANICAL
 + OBJECTIVELY_VERIFIABLE
-→ LUNA / HIGH ROOT IS ELIGIBLE
+→ LUNA ROOT IS ELIGIBLE
+→ SIZE EFFORT BY DELIBERATION
 ```
 
-Por outro lado, se Terra já está executando uma atividade e faltam apenas poucos
-comandos mecânicos, trocar de ROOT pode custar mais do que continuar diretamente.
+A seleção inicial de ROOT ocorre antes da execução e não constitui mudança de runtime:
 
 ```text
-MID_TASK_DEESCALATION
-REQUIRES_MATERIAL_NET_GAIN = YES
+INITIAL_ROUTING_SELECTION
+!=
+MID_TASK_ROUTING_RECLASSIFICATION
 ```
 
-Portanto:
+Se a atividade já está em execução, mudar modelo ou effort do ROOT é uma ação da
+superfície/runtime controlada pelo usuário.
+
+```text
+MODEL_CHANGE = USER_CONTROLLED
+EFFORT_CHANGE = USER_CONTROLLED
+IN_EXECUTION_ROOT_AUTO_ESCALATION = PROHIBITED
+```
+
+Se o ROOT atual continua suficiente e resta pouco trabalho:
+
+```text
+CURRENT_ROOT_IS_STILL_SUFFICIENT = YES
+REMAINING_WORK = SMALL
+→ CURRENT_ROOT_CONTINUES_DIRECTLY
+```
+
+Não interromper a atividade apenas para economizar poucas operações.
+
+Se uma mudança real de ROOT para tier/effort inferior produzir economia material:
+
+```text
+MID_TASK_ROOT_DEESCALATION_GAIN = MATERIAL
+→ ROOT_DEESCALATION_RECOMMENDATION = ALLOWED
+→ USER_DECISION_REQUIRED
+```
+
+Delegar trabalho mecânico a tier inferior sem mudar o ROOT continua sendo
+`COGNITIVE_MECHANICAL_SPLIT`, não `ROOT_DEESCALATION`.
 
 ```text
 LOWER_TIER_IS_SUFFICIENT
 !=
-MID_TASK_HANDOFF_IS_ECONOMICALLY_JUSTIFIED
+MID_TASK_ROOT_CHANGE_IS_ECONOMICALLY_JUSTIFIED
 ```
-
-Quando o trabalho remanescente for pequeno:
-
-```text
-CURRENT_ROOT_CONTINUES_DIRECTLY
-```
-
-é preferível a criar um novo handoff apenas para economizar algumas operações.
 
 ### 8.7 Cognitive–Mechanical Split Gate
 
@@ -1426,35 +1462,38 @@ DO_NOT_DUPLICATE_EXPENSIVE_INTELLIGENCE_WITHOUT_DISTINCT_VALUE
 
 ---
 
-## 11. Papéis preferenciais
+## 11. Papéis funcionais e seleção de runtime
+
+Os identificadores abaixo representam responsabilidades funcionais. A família de modelo, reasoning effort e tool surface são campos independentes e refletem a seleção real do runtime apenas quando essa superfície os expõe ou os configura.
 
 ```text
-SCOUT                  = LUNA / HIGH / READ_ONLY
-RESEARCHER             = LUNA / XHIGH / READ_ONLY
-VALIDATOR              = LUNA / HIGH / VALIDATION
-TRIAGE_ANALYST         = LUNA / XHIGH / READ_ONLY
-MECHANICAL_IMPLEMENTER = LUNA / HIGH / WORKSPACE_WRITE_BOUNDED
-SCRIBE                 = LUNA / HIGH / DOCUMENTATION_BOUNDED
-IMPLEMENTER            = TERRA / MEDIUM_OR_HIGH / WORKSPACE_WRITE
-REVIEWER               = TERRA / HIGH / READ_ONLY
-SECURITY_REVIEWER      = TERRA / HIGH / READ_ONLY
-ARCHITECTURE_REASONING = MODEL_BY_CAPABILITY_CLASS / EFFORT_BY_DELIBERATION_CLASS
+Campos de roteamento separados:
+AGENT_ROLE = responsabilidade funcional
+MODEL_TARGET = família de modelo recomendada pela demanda de capacidade
+RUNTIME_MODEL = modelo efetivamente resolvido, se reportado; senão INHERITED ou UNKNOWN
+REASONING_EFFORT = valor recomendado separadamente pela demanda de deliberação
+TOOL_SURFACE = ferramentas/capabilities efetivamente disponíveis
+
+AGENT_ROLE != MODEL_TARGET
+MODEL_TARGET != RUNTIME_MODEL
+MODEL_TARGET != REASONING_EFFORT
+REASONING_EFFORT != TOOL_SURFACE
 ```
 
-Arquitetura não seleciona `Sol / High` automaticamente.
+| Papel funcional | Heurística de rota (quando material; não vinculada ao papel) | Superfície a confirmar |
+|---|---|---|
+| SCOUT | selecionados conforme demanda | leitura do escopo |
+| RESEARCHER | selecionados conforme demanda | pesquisa externa disponível |
+| VALIDATOR | selecionados conforme demanda | comandos/checks necessários |
+| TRIAGE_ANALYST | selecionados conforme demanda | logs/evidências necessários |
+| MECHANICAL_IMPLEMENTER | selecionados conforme demanda | escrita bounded no ownership |
+| SCRIBE | selecionados conforme demanda | escrita documental bounded |
+| IMPLEMENTER | selecionados conforme demanda | ferramentas e escrita do escopo |
+| REVIEWER | selecionados conforme demanda | leitura do delta/authorities |
+| SECURITY_REVIEWER | selecionados conforme demanda | ferramentas de análise requeridas |
+| ARCHITECTURE_REASONING | MODEL_TARGET Sol com effort High é heurística de governança | authorities e artefatos relevantes |
 
-Quando o `SOL_GATE` passar e o ambiente utilizar um perfil registrado fixo como
-`sol_architect`, respeitar a configuração efetivamente disponível desse perfil.
-Se o ambiente permitir selecionar esforço de Sol para o ROOT ou para um perfil
-compatível, aplicar `D1 → Low`, `D2 → Medium`, `D3-D4 → High`.
-
-```text
-ARCHITECTURAL_ROLE
-!=
-AUTOMATIC_SOL_HIGH
-```
-
-Disponibilidade real deve ser confirmada no ambiente.
+O modelo/effort recomendado é decisão de roteamento, não uma propriedade do papel. Se o runtime não confirmar o target solicitado, usar RUNTIME_SELECTED, INHERITED ou UNKNOWN e não declarar tier saving.
 
 ### 11.1 Mechanical Implementer
 
@@ -1471,7 +1510,7 @@ MATERIAL_NET_GAIN = YES
 
 ### 11.2 Implementer
 
-Use Terra quando ainda houver:
+Use Sol quando ainda houver:
 
 - julgamento técnico;
 - integração;
@@ -1486,7 +1525,7 @@ SCRIBE_RECORDS_DECISIONS
 SCRIBE_DOES_NOT_CREATE_DECISIONS
 ```
 
-`luna_scribe / High` é preferido para materialização documental bounded quando
+`scribe / High` é preferido para materialização documental bounded quando
 o conteúdo já foi decidido por um ROOT suficiente.
 
 Pode executar:
@@ -1544,7 +1583,7 @@ SOURCE_WRITE_AUTHORIZATION = NO
 
 #### 11.3.1 Validation Offload Gate
 
-Antes de criar `luna_validator`, exigir:
+Antes de criar `validator`, exigir:
 
 ```text
 VALIDATION_OFFLOAD_GATE = PASS
@@ -1696,6 +1735,35 @@ PLUGIN = NONE
 
 ---
 
+### 13.1 Semântica de runtime multiagente
+
+```text
+ORCHESTRATION_RUNTIME = NATIVE | EXTERNAL | MANUAL
+MODEL_TOPOLOGY = HOMOGENEOUS | HETEROGENEOUS
+
+NATIVE_MULTIAGENT = shorthand for ORCHESTRATION_RUNTIME = NATIVE
+HETEROGENEOUS_MULTIAGENT = shorthand for MODEL_TOPOLOGY = HETEROGENEOUS
+NATIVE_MULTIAGENT AND HETEROGENEOUS_MULTIAGENT = COMPATIBLE_AXES
+
+RESPONSES_MULTIAGENT = NATIVE + HOMOGENEOUS
+  when the request model is shared by root and subagents
+CODEX_CUSTOM_SUBAGENT_MODELS = NATIVE + HETEROGENEOUS
+  when per-worker models are explicitly configured and runtime-confirmed
+
+TIER_SAVING_CLAIM = REQUIRES_ACTUAL_RUNTIME_MODEL_EVIDENCE
+ROLE != MODEL != EFFORT != TOOL_SURFACE
+```
+
+`NATIVE_MULTIAGENT` e `HETEROGENEOUS_MULTIAGENT` não são categorias mutuamente
+exclusivas: a primeira descreve quem orquestra e a segunda descreve a topologia de
+modelos. `EXTERNAL` descreve um loop de orquestração fora do harness nativo e `MANUAL`
+descreve handoff controlado por usuário/operador. Uma superfície nativa pode
+compartilhar modelo e ferramentas entre agentes ou aplicar outra herança. Não
+generalizar comportamento entre Agents API, Responses Multi-agent, Codex e Work.
+Papel funcional não prova capability; verificar a tool surface necessária antes de
+delegar. Defaults de concorrência permanecem runtime-discovered/configurable.
+Neste documento, NATIVE_EXECUTION na seção 13 significa preferência por ferramentas/plataformas integradas quando suficientes; não identifica a modalidade de delegação multiagente.
+
 ## 14. Skills
 
 Classificar apenas com evidência da superfície/runtime/documentação/catálogo
@@ -1743,31 +1811,23 @@ Não inserir no payload do executor instruções sobre Plugins que não serão u
 
 ## 16. CARD A — EXECUTION DECISION CARD
 
-Este card é para o usuário.
+Este card é para o usuário. Deve aparecer no início da resposta e permanecer curto.
 
-Deve aparecer no início da resposta do agente que está gerando a atividade.
-
-Deve ser curto.
-
-Formato:
-
-```text
-┌─────────────────────────────────────────────────────────────┐
-│ EXECUTION CARD — NÃO COPIAR PARA O CODEX/WORK              │
-├─────────────────────────────────────────────────────────────┤
-│ AMBIENTE            = CODEX | WORK                          │
-│ ORCHESTRATOR        = <MODEL> / <EFFORT>                    │
-│ EXECUTION_MODE      = DIRECT | MULTIAGENT                   │
-│ SUBAGENTS           = <NONE | perfis efetivamente usados>   │
-│ FLOW                = <opcional; ex. ROOT → SCRIBE → ROOT>  │
-│ SKILL               = <NONE | nome + uso>                   │
-│ PLUGIN              = <NONE | nome + uso>                   │
-│ NATIVE_EXECUTION    = YES | PARTIAL | NO                    │
-│ ESCALATION          = <regra curta>                         │
-├─────────────────────────────────────────────────────────────┤
-│ COPY_TO_EXECUTOR    = CARD B ONLY                           │
-└─────────────────────────────────────────────────────────────┘
-```
+AMBIENTE = CODEX | WORK
+ROOT_ROLE = ROOT_ORCHESTRATOR
+MODEL_TARGET = <modelo sugerido pela governança>
+RUNTIME_MODEL = <runtime reportado | inherited | unknown>
+REASONING_EFFORT = <target e runtime resolvido separados>
+TOOL_SURFACE = <superfície/ferramentas efetivamente disponíveis ou unknown>
+EXECUTION_MODE = DIRECT | MULTIAGENT
+ORCHESTRATION_RUNTIME = NATIVE | EXTERNAL | MANUAL | UNKNOWN
+MODEL_TOPOLOGY = HOMOGENEOUS | HETEROGENEOUS | UNKNOWN
+SUBAGENTS = <papéis funcionais usados ou NONE>
+FLOW = <opcional>
+SKILL = <NONE | nome + uso>
+PLUGIN = <NONE | nome + uso>
+ESCALATION = <regra curta>
+COPY_TO_EXECUTOR = CARD B ONLY
 
 ### 16.1 Rationale no Card A
 
@@ -1777,7 +1837,7 @@ Exemplo:
 
 ```text
 RATIONALE =
-Terra/High fecha o hotspot; Luna/High executa validação objetiva.
+Sol/High fecha o hotspot; Luna/Medium ou High executa validação objetiva.
 ```
 
 Não despejar no card:
@@ -1804,18 +1864,15 @@ A análise completa do gate permanece interna.
 
 ## 17. CARD B — EXECUTOR PAYLOAD
 
-Este é o único bloco que deve ser enviado ao Codex/Work.
-
-Formato base:
-
-```text
-┌─────────────────────────────────────────────────────────────┐
-│ EXECUTOR PAYLOAD — COPIAR ESTE BLOCO PARA CODEX/WORK       │
-└─────────────────────────────────────────────────────────────┘
+O Card B é o contrato de execução enviado ao Codex/Work. Incluir somente os campos aplicáveis:
 
 AMBIENTE = CODEX | WORK
 IDIOMA = pt-BR
-ROLE = ROOT_ORCHESTRATOR
+ROLE = <responsabilidade funcional do root>
+MODEL_TARGET = <somente quando a política indicar um target>
+RUNTIME_MODEL = <reportado | herdado | desconhecido>
+REASONING_EFFORT = <target e valor resolvido separados quando observáveis>
+TOOL_SURFACE = <ferramentas efetivamente disponíveis, se material>
 
 OBJETIVO
 <resultado concreto>
@@ -1824,7 +1881,7 @@ AUTHORITIES
 <somente authorities que o executor precisa consultar>
 
 ESCOPO AUTORIZADO
-<ações/arquivos/superfícies permitidos>
+<ações, arquivos ou superfícies permitidos>
 
 NÃO ESCOPO
 <somente proibições materialmente plausíveis>
@@ -1836,7 +1893,7 @@ ATIVIDADE
 <passos executáveis>
 
 DELEGAÇÃO
-<somente se MULTIAGENT>
+<somente se MULTIAGENT; campos funcionais e runtime conforme a seção 20>
 
 VALIDAÇÃO
 <comandos e critérios realmente necessários>
@@ -1848,20 +1905,9 @@ STOP CONDITIONS
 <condições reais de parada>
 
 RETORNO
-<formato mínimo incluindo:
-ACTIVITY_COMPLETION_PERCENT = <0-100>%
-COMPLETION_BASIS = <quando aplicável>
-```
+<incluindo ACTIVITY_COMPLETION_PERCENT para a atividade do prompt e COMPLETION_BASIS quando aplicável>
 
-Se uma seção não for relevante:
-
-```text
-OMIT_SECTION
-```
-
-Não preencher com `NONE` apenas para manter template.
-
----
+Se uma seção não for relevante, omitir. Não preencher com NONE só para manter o template.
 
 ## 18. Minimal Payload Rule
 
@@ -1904,6 +1950,18 @@ todas representam a mesma fronteira e nenhuma exige tratamento individual.
 
 ---
 
+
+## 18.1 GPT-6 Context Diet
+
+Aplicar carregamento seletivo para reduzir contexto irrelevante e evitar instruções redundantes ou conflitantes.
+
+GPT6_CONTEXT_DIET = REQUIRED
+LOAD_ONLY_MATERIAL_AUTHORITIES
+REFERENCE_BEFORE_REPRODUCE
+DO_NOT_INJECT_FULL_POLICY_STACK_BY_DEFAULT
+DO_NOT_RELOAD_ALREADY_VALID_CONTEXT
+
+Carregar policy, AGENTS.md, skill ou histórico quando forem materiais para a tarefa; preferir referência por caminho e disclosure progressiva. Não transformar esta regra em obrigação de ler o repositório inteiro ou todas as policies em cada atividade.
 ## 19. Proibições do Card B
 
 Não inserir automaticamente:
@@ -1917,8 +1975,8 @@ VERIFIABILITY
 REVERSIBILITY
 
 ROUTINE_EXECUTION_GATE
-SOL_GATE
 ASTRA_SELECTION_GATE
+ARCHITECTURE_ESCALATION_PROTOCOL
 
 PARALLEL_INDEPENDENT_FRONTS
 DISTINCT_SPECIALIZATION_REQUIRED
@@ -1933,8 +1991,8 @@ ROOT_CAPABILITY_REDUNDANCY_CHECK
 REDUNDANCY_GATE_ANALYSIS
 
 MODEL_SELECTION_REASON
-WHY_TERRA_IS_NOT_PREFERRED
-WHY_SOL_IS_NOT_PREFERRED
+WHY_LUNA_IS_NOT_SUFFICIENT
+WHY_SOL_IS_NOT_SUFFICIENT
 
 WHY_ROOT_SHOULD_NOT_DO_THIS_WORK
 EXPECTED_ECONOMIC_GAIN
@@ -1949,32 +2007,72 @@ decisão que o executor terá de tomar durante a atividade.
 
 ## 20. Delegação compacta no Card B
 
-Se MULTIAGENT, não repetir um enorme bloco por agente.
-
-Definir primeiro boundaries compartilhados:
+Quando MULTIAGENT já estiver autorizado para o escopo, o root pode criar subagentes
+bounded que passem o gate sem pedir aprovação por spawn individual. Uma mudança de
+DIRECT para MULTIAGENT durante a execução continua a exigir parada segura e
+autorização do usuário conforme 28.4.
 
 ```text
-SHARED_DELEGATION_BOUNDARIES
-- não ampliar escopo;
-- não transferir authority;
-- não executar Git consequencial sem autorização;
-- não delegar recursivamente, salvo regra explícita.
+RUNTIME_CAN_AUTODELEGATE
+!=
+GOVERNANCE_AUTHORIZATION_TO_AUTODELEGATE
+
+IF EXECUTION_MODE = DIRECT
+→ DO_NOT_DELEGATE_ONLY_BECAUSE_RUNTIME_CAN_AUTODELEGATE = YES
+
+DIRECT_TO_MULTIAGENT = USER_CONTROLLED
+
+IF EXECUTION_MODE = MULTIAGENT
+AND USER_AUTHORIZATION_ALREADY_EXISTS = YES
+AND DELEGATION_SCOPE_IS_BOUNDED = YES
+AND DELEGATION_GATE = PASS
+→ PER_SUBAGENT_USER_APPROVAL = NOT_REQUIRED_BY_DEFAULT
 ```
 
-Depois cada agente recebe apenas:
+Para cada subagente, manter somente o contrato necessário à tarefa:
 
-```text
-SUBAGENT = <profile>
+ROLE = <responsabilidade funcional>
 OBJECTIVE = <objetivo estreito>
-OWNERSHIP = <arquivos/superfície>
-WRITE_MODE = <modo>
+OWNERSHIP = <recurso/escopo>
+MODEL_TARGET = <opcional; apenas se configurável>
+RUNTIME_MODEL = <confirmed | inherited | unknown>
+REASONING_EFFORT = <target e resolvido separados quando observáveis>
+REQUIRED_TOOL_SURFACE = <capacidade necessária>
+TOOL_SURFACE_VERIFIED = YES | NO | UNKNOWN
+WRITE_MODE = <somente quando houver escrita>
 RETURN = <evidência mínima>
+STOP_OR_ESCALATE = <somente se material>
+
+`MODEL_TOPOLOGY = HETEROGENEOUS` requer configuração explícita por worker confirmada
+pelo runtime. Em delegação nativa que herda o modelo da requisição, registrar
+`MODEL_TOPOLOGY = HOMOGENEOUS` quando isso estiver confirmado; não alegar economia
+de tier sem `ACTUAL_RUNTIME_MODEL_EVIDENCE`.
+
+RECURSIVE_DELEGATION = DISABLED_BY_DEFAULT
+Permitir somente com ganho material de paralelismo, tarefa bounded, ownership claro, orçamento dentro do limite runtime e suporte recursivo verificado. Não usar limites globais fixos: descobrir a concorrência efetiva da superfície e configurá-la para esta atividade.
+
+Antes da delegação, verificar a tool surface requerida pelo papel. A resolução de
+capability deve preferencialmente ocorrer na resolução de sessão, configuração ou
+papel e pode ser reutilizada enquanto runtime e configuração permanecerem estáveis.
+Isso não elimina a verificação da tool surface exigida antes de delegar.
+
+```text
+REGISTERED_ROLE != GUARANTEED_RUNTIME_CAPABILITY
+BEFORE_DELEGATION = VERIFY_REQUIRED_TOOL_SURFACE
+RUNTIME_CAPABILITY_RESOLUTION = SESSION_CONFIG_ROLE_RESOLUTION_PREFERRED
+CAPABILITY_RESOLUTION_REUSE = ALLOWED_WHILE_RUNTIME_AND_CONFIGURATION_STABLE
+RUNTIME_CAPABILITY_RESOLUTION != PER_SPAWN_HUMAN_GATE
 ```
 
-Adicionar `MUST_NOT` individual apenas se existir proibição específica daquele
-papel que não esteja coberta pelos boundaries compartilhados.
+Se a capability ou a tool surface necessária permanecer desconhecida, não assumir que
+está disponível: adaptar a tarefa ou mantê-la no root.
 
----
+```text
+PROVIDER_DOCUMENTATION_DIVERGENCE
+→ VERIFY_RUNTIME_AND_MODEL_CAPABILITY
+UNKNOWN_CAPABILITY
+→ DO_NOT_ASSUME
+```
 
 ## 21. Authorities compactas
 
@@ -2060,28 +2158,21 @@ que não deve acontecer.
 
 ## 24. Validation filter
 
-Enviar somente validações necessárias ao executor.
+Enviar validações necessárias e proporcionais ao escopo, materialidade, risco e falha plausível. Mudanças pequenas, reversíveis e de baixo risco não exigem testes ou verificações redundantes; usar checks objetivos focais quando necessários e já disponíveis. Expandir a validação quando a mudança alterar comportamento, contrato, segurança, dados, tiver impacto material de falha ou quando a authority da tarefa exigir.
 
-Não explicar no Card B por que cada validação foi escolhida.
+Não criar uma validação delegada se o handoff e a reconciliação custarem mais que o ganho. Não tratar falha de um teste como necessidade automática de Triage; encaminhar a falha ao root e separar triagem somente se houver ambiguidade e ganho material.
 
-Formato preferido:
+Formato quando houver validação:
 
-```text
 VALIDATION
-1. <comando>
+1. <comando ou verificação>
    EXPECTED = <critério>
-2. <comando>
+2. <comando ou verificação>
    EXPECTED = <critério>
-```
 
 Se o ROOT deve interpretar uma divergência:
 
-```text
-ON_MISMATCH =
-REPORT_AND_ADJUDICATE
-```
-
----
+ON_MISMATCH = REPORT_AND_ADJUDICATE
 
 ## 24.1 Activity Completion Reporting
 
@@ -2338,6 +2429,18 @@ Adicionar outros campos apenas quando materialmente necessários.
 27. executar uma `PROMPT_COMPRESSION_PASS`;
 28. entregar.
 
+Esse fluxo seleciona o roteamento **antes** da execução.
+
+```text
+INITIAL_ROUTING_SELECTION
+!=
+MID_TASK_ROUTING_RECLASSIFICATION
+```
+
+Se o executor descobrir insuficiência do ROOT ou necessidade real de mudança do
+modo de execução depois do início, aplicar a Seção 28 em vez de reconfigurar
+silenciosamente.
+
 ---
 
 ## 27. Prompt Compression Pass
@@ -2390,24 +2493,286 @@ MUST_HAVE_EXECUTION_VALUE
 
 ---
 
-## 28. Escalonamento durante execução
+## 28. Reclassificação de roteamento durante execução
 
-Escalar modelo apenas por:
-
-```text
-CAPABILITY_GAP
-```
-
-Escalar effort apenas por:
+A seleção inicial e a reconfiguração durante execução são eventos diferentes.
 
 ```text
-DELIBERATION_GAP
+INITIAL_MODEL_SELECTION = POLICY_DECISION_BEFORE_EXECUTION
+INITIAL_EFFORT_SELECTION = POLICY_DECISION_BEFORE_EXECUTION
+INITIAL_EXECUTION_MODE_SELECTION = POLICY_DECISION_BEFORE_EXECUTION
+
+MID_TASK_MODEL_CHANGE = USER_CONTROLLED_RUNTIME_ACTION
+MID_TASK_EFFORT_CHANGE = USER_CONTROLLED_RUNTIME_ACTION
+MID_TASK_EXECUTION_MODE_CHANGE = USER_CONTROLLED_RUNTIME_ACTION
 ```
 
-Falha causada por input, permission, arquivo, tool ou authority ausente não é
-capability gap.
+```text
+ROUTING_RECOMMENDATION
+!=
+RUNTIME_RECONFIGURATION
+```
 
-Quando o hotspot termina, considerar de-escalonamento.
+O executor pode detectar que o roteamento atual deixou de ser suficiente, mas não
+pode alegar que mudou autonomamente seu próprio modelo, effort ou modo de execução.
+
+```text
+IN_EXECUTION_ROOT_AUTO_ESCALATION = PROHIBITED
+MID_TASK_AUTO_MULTIAGENT_SWITCH = PROHIBITED
+MODEL_CHANGE = USER_CONTROLLED
+EFFORT_CHANGE = USER_CONTROLLED
+EXECUTION_MODE_CHANGE = USER_CONTROLLED
+```
+
+Falha causada por input, permission, arquivo, tool, plugin, capability externa ou
+authority ausente não constitui automaticamente capability gap.
+
+### 28.1 Root Reclassification Gate
+
+Quando a responsabilidade continua única, avaliar:
+
+```text
+CURRENT_ROOT_SUFFICIENCY = PASS | FAIL
+```
+
+Se:
+
+```text
+CURRENT_ROOT_SUFFICIENCY = FAIL
+AND SEPARATE_RESPONSIBILITY_REQUIRED = NO
+AND MULTIAGENT_MATERIAL_GAIN = NO
+```
+
+então:
+
+```text
+ROOT_RECLASSIFICATION_REQUIRED = YES
+STOP_AT_SAFE_BOUNDARY = YES
+EXECUTION_STATE = WAITING_FOR_USER_ROOT_RECONFIGURATION
+```
+
+Escolha da recomendação:
+
+```text
+DELIBERATION_GAP = YES
+CAPABILITY_GAP = NO
+→ RECOMMEND_HIGHER_EFFORT_WITHIN_SUFFICIENT_MODEL_FAMILY
+
+CAPABILITY_GAP = YES
+→ RECOMMEND_STRONGER_MODEL_FAMILY
+→ THEN_SIZE_EFFORT_BY_DELIBERATION_DEMAND
+```
+
+Nunca usar effort extremo para mascarar capability gap.
+
+```text
+ROOT_CAPABILITY_GAP
+!=
+MULTIAGENT_TRIGGER
+```
+
+É proibido criar um subagente mais forte apenas para contornar a insuficiência do
+ROOT quando a responsabilidade material continua pertencendo ao próprio ROOT.
+
+```text
+DO_NOT_COMPENSATE_FOR_INSUFFICIENT_ROOT
+BY_SPAWNING_STRONGER_SUBAGENT
+WHEN_RESPONSIBILITY_REMAINS_WITH_ROOT
+```
+
+### 28.2 Root Reclassification Report
+
+Antes de parar, emitir:
+
+```text
+ROOT_RECLASSIFICATION_REPORT
+
+ROOT_RECLASSIFICATION_REQUIRED = YES
+CURRENT_ROOT = <model / effort atual>
+RECOMMENDED_ROOT = <model / effort recomendado>
+TRIGGER = <evidência concreta>
+CAPABILITY_CLASS_CURRENT = <C0-C4 quando aplicável>
+DELIBERATION_CLASS_CURRENT = <D0-D4 quando aplicável>
+WHY_CURRENT_ROOT_IS_INSUFFICIENT = <justificativa objetiva>
+WHY_HIGHER_EFFORT_IS_OR_IS_NOT_SUFFICIENT = <deliberation gap vs capability gap>
+WHY_THIS_IS_NOT_MULTIAGENT = <responsabilidade única / ausência de material gain>
+DECISION_PENDING = <decisão que não deve ser tomada no ROOT atual>
+WORK_ALREADY_COMPLETED = <estado factual preservado>
+REMAINING_WORK = <trabalho pendente>
+SAFE_RESUME_POINT = <ponto preciso de retomada>
+USER_ACTION_REQUIRED = Alterar manualmente modelo/esforço do ROOT e confirmar a continuação.
+EXECUTION_STATE = WAITING_FOR_USER_ROOT_RECONFIGURATION
+```
+
+Depois:
+
+```text
+STOP
+WAIT_FOR_USER_CONFIRMATION
+```
+
+Enquanto aguarda:
+
+```text
+MUST_NOT_TAKE_PENDING_DECISION = YES
+MUST_NOT_CONTINUE_COGNITIVE_HOTSPOT = YES
+MUST_NOT_CLAIM_MODEL_CHANGED = YES
+MUST_NOT_SPAWN_AROUND_ROOT_INSUFFICIENCY = YES
+```
+
+### 28.3 Retomada após mudança do usuário
+
+Após o usuário confirmar a mudança:
+
+```text
+USER_ROOT_RECONFIGURATION_CONFIRMED = YES
+```
+
+Se a superfície expuser factual e confiavelmente o ROOT atual:
+
+```text
+VERIFY_CURRENT_MODEL_AND_EFFORT = YES
+```
+
+Se não expuser:
+
+```text
+ROOT_PROFILE_STATE = USER_CONFIRMED_RUNTIME_UNVERIFIED
+```
+
+Não alegar verificação inexistente.
+
+Retomar:
+
+```text
+RESUME_FROM = SAFE_RESUME_POINT
+```
+
+Não repetir preflight, leitura ou validação já válida apenas por causa da troca de
+perfil, salvo se:
+
+```text
+EVIDENCE_BECAME_STALE = YES
+OR CONTEXT_REQUIRED_FOR_SAFE_RESUME = MISSING
+OR AUTHORITY_CHANGED = YES
+```
+
+### 28.4 Multiagent Reclassification Gate
+
+Uma atividade iniciada `DIRECT` pode revelar nova responsabilidade separável. Isso
+não autoriza switch automático.
+
+```text
+NEW_SEPARABLE_RESPONSIBILITY = PRESENT
+AT_LEAST_ONE_G1_G6_GATE = PASS
+OFFLOAD_MATERIALITY_GATE = PASS
+SCOPE_PARTITION_IS_CLEAR = YES
+EXPECTED_NET_GAIN = MATERIAL
+```
+
+Somente então:
+
+```text
+MULTIAGENT_RECLASSIFICATION_REQUIRED = YES
+MID_TASK_AUTO_MULTIAGENT_SWITCH = PROHIBITED
+STOP_AT_SAFE_BOUNDARY = YES
+EXECUTION_STATE = WAITING_FOR_USER_MULTIAGENT_AUTHORIZATION
+```
+
+Emitir:
+
+```text
+MULTIAGENT_RECLASSIFICATION_REPORT
+CURRENT_EXECUTION_MODE = DIRECT
+TRIGGER = <novo fato observado>
+WHY_DIRECT_ROUTE_IS_NO_LONGER_PREFERRED = <justificativa>
+MATERIAL_GAIN = <ganho concreto>
+PROPOSED_FLOW = <ROOT → ROLE → ROOT etc.>
+PROPOSED_RESPONSIBILITIES = <ownership e responsabilidades>
+G1 =
+G2 =
+G3 =
+G4 =
+G5 =
+G6 =
+OFFLOAD_MATERIALITY_GATE = PASS
+AUTHORITY_BOUNDARIES = <limites>
+USER_ACTION_REQUIRED = Autorizar/reclassificar manualmente a atividade para MULTIAGENT.
+EXECUTION_STATE = WAITING_FOR_USER_MULTIAGENT_AUTHORIZATION
+```
+
+Depois:
+
+```text
+STOP
+WAIT_FOR_USER_CONFIRMATION
+```
+
+Somente após confirmação:
+
+```text
+USER_MULTIAGENT_RECLASSIFICATION_CONFIRMED = YES
+→ RESUME_FROM_SAFE_RESUME_POINT
+```
+
+### 28.4.1 Spawn dentro de MULTIAGENT já autorizado
+
+Depois que MULTIAGENT e o escopo da atividade estiverem autorizados e os gates de benefício, ownership e capability passarem, o root pode abrir subagentes bounded sem autorização humana individual por spawn.
+
+PER_SUBAGENT_USER_APPROVAL = NOT_REQUIRED_WHEN_MODE_AUTHORIZED_SCOPE_BOUNDED_AND_GATE_PASS
+SCOPE_EXPANSION_OR_DIRECT_TO_MULTIAGENT_SWITCH = USER_AUTHORIZATION_REQUIRED
+
+RECURSIVE_DELEGATION = DISABLED_BY_DEFAULT. Permitir somente com ganho material de paralelismo, tarefa bounded, ownership claro, orçamento efetivo de concorrência e suporte runtime confirmado. Essa exceção não exige aprovação por spawn se permanecer dentro do modo e escopo autorizados.
+### 28.5 Mechanical Scale Is Not Cognitive Complexity
+
+Não recomendar ROOT escalation nem MULTIAGENT apenas por:
+
+```text
+MANY_FILES
+LARGE_CODE_VOLUME
+LONG_ACTIVITY
+MANY_TESTS
+MECHANICAL_IMPLEMENTATION
+LARGE_DOCUMENTATION_DELTA
+COMMON_TEST_FAILURE
+ROUTINE_API_WIRING
+READ_MODEL_CREATION
+REPETITIVE_WORK
+LARGE_BUT_OBJECTIVELY_VERIFIABLE_WORK
+```
+
+```text
+MECHANICAL_SCALE
+!=
+COGNITIVE_COMPLEXITY
+```
+
+Grande volume operacional com baixa demanda cognitiva pode justificar offload
+econômico somente se os gates aplicáveis passarem; não justifica modelo mais forte
+por si só.
+
+### 28.6 De-escalation durante execução
+
+Quando o hotspot termina e o ROOT atual continua suficiente:
+
+```text
+CURRENT_ROOT_IS_STILL_SUFFICIENT = YES
+```
+
+Se o trabalho remanescente for pequeno:
+
+```text
+CONTINUE_CURRENT_ROOT = YES
+```
+
+Se uma mudança manual de ROOT reduzir materialmente custo/contexto sem aumentar risco:
+
+```text
+ROOT_DEESCALATION_RECOMMENDED = YES
+USER_ACTION_REQUIRED = MANUAL_ROOT_RECONFIGURATION
+```
+
+De-escalation econômica não deve criar interrupção ritual.
 
 ---
 
@@ -2462,29 +2827,27 @@ Incluir no Card B apenas os boundaries pertinentes à atividade.
 
 ## 32. Exemplo — DIRECT
 
-```text
-┌─────────────────────────────────────────────────────────────┐
-│ EXECUTION CARD — NÃO COPIAR PARA O CODEX/WORK              │
-├─────────────────────────────────────────────────────────────┤
-│ AMBIENTE         = CODEX                                    │
-│ ORCHESTRATOR     = TERRA / MEDIUM                           │
-│ EXECUTION_MODE   = DIRECT                                   │
-│ SUBAGENTS        = NONE                                     │
-│ SKILL            = NONE                                     │
-│ PLUGIN           = NONE                                     │
-│ NATIVE_EXECUTION = YES                                      │
-│ ESCALATION       = somente capability gap material          │
-├─────────────────────────────────────────────────────────────┤
-│ COPY_TO_EXECUTOR = CARD B ONLY                              │
-└─────────────────────────────────────────────────────────────┘
+EXECUTION CARD
+AMBIENTE = CODEX
+ROOT_ROLE = ROOT_ORCHESTRATOR
+MODEL_TARGET = SOL
+RUNTIME_MODEL = <confirmar na superfície; senão UNKNOWN>
+REASONING_EFFORT = MEDIUM target; runtime value somente se reportado
+TOOL_SURFACE = ferramentas de leitura/escrita requeridas pelo escopo
+EXECUTION_MODE = DIRECT
+ORCHESTRATION_RUNTIME = N/A
+MODEL_TOPOLOGY = N/A
+SUBAGENTS = NONE
 
-┌─────────────────────────────────────────────────────────────┐
-│ EXECUTOR PAYLOAD — COPIAR ESTE BLOCO PARA CODEX/WORK       │
-└─────────────────────────────────────────────────────────────┘
+EXECUTOR PAYLOAD
 
 AMBIENTE = CODEX
 IDIOMA = pt-BR
 ROLE = ROOT_ORCHESTRATOR
+MODEL_TARGET = SOL
+RUNTIME_MODEL = <reportado | inherited | unknown>
+REASONING_EFFORT = MEDIUM target; runtime value somente se reportado
+TOOL_SURFACE = verificar somente se o escopo exigir capability adicional
 
 OBJETIVO
 Corrigir o mapeamento localizado já especificado.
@@ -2494,46 +2857,40 @@ ESCOPO AUTORIZADO
 - ajustar o teste correspondente se necessário.
 
 VALIDAÇÃO
-- executar teste focal;
-- executar check estático padrão se aplicável.
+Executar teste focal quando necessário; ampliar somente se a mudança, o risco, uma falha plausível ou a authority justificarem.
 
 GIT / AÇÕES EXTERNAS
-- commit/push não autorizados.
+Commit/push não autorizados.
 
 RETORNO
-- arquivos alterados;
-- validações;
-- resultado final.
-```
-
----
+Arquivos alterados, validações e resultado final.
 
 ## 33. Exemplo — MULTIAGENT econômico
 
-```text
-┌─────────────────────────────────────────────────────────────┐
-│ EXECUTION CARD — NÃO COPIAR PARA O CODEX/WORK              │
-├─────────────────────────────────────────────────────────────┤
-│ AMBIENTE         = CODEX                                    │
-│ ORCHESTRATOR     = TERRA / HIGH                             │
-│ EXECUTION_MODE   = MULTIAGENT                               │
-│ SUBAGENTS        = luna_worker, luna_validator              │
-│ SKILL            = NONE                                     │
-│ PLUGIN           = NONE                                     │
-│ NATIVE_EXECUTION = YES                                      │
-│ ESCALATION       = somente ambiguidade/capability gap       │
-├─────────────────────────────────────────────────────────────┤
-│ COPY_TO_EXECUTOR = CARD B ONLY                              │
-└─────────────────────────────────────────────────────────────┘
+Este exemplo só representa economia de tier quando a superfície confirmar configuração explícita de modelo por worker. Sem essa evidência, usar NATIVE_MULTIAGENT, registrar modelo herdado/desconhecido e não declarar economia de tier.
 
-┌─────────────────────────────────────────────────────────────┐
-│ EXECUTOR PAYLOAD — COPIAR ESTE BLOCO PARA CODEX/WORK       │
-└─────────────────────────────────────────────────────────────┘
+EXECUTION CARD
+AMBIENTE = CODEX
+ROOT_ROLE = ROOT_ORCHESTRATOR
+MODEL_TARGET = SOL
+RUNTIME_MODEL = reportado pela superfície
+REASONING_EFFORT = HIGH target; valor runtime separado
+EXECUTION_MODE = MULTIAGENT
+ORCHESTRATION_RUNTIME = NATIVE
+MODEL_TOPOLOGY = HETEROGENEOUS (per-worker config confirmada)
+SUBAGENTS = MECHANICAL_IMPLEMENTER, VALIDATOR
+PER_SUBAGENT_USER_APPROVAL = NOT_REQUIRED_WHEN_MODE_AUTHORIZED_SCOPE_BOUNDED_AND_GATE_PASS
+
+EXECUTOR PAYLOAD
 
 AMBIENTE = CODEX
 IDIOMA = pt-BR
 ROLE = ROOT_ORCHESTRATOR
+MODEL_TARGET = SOL
+RUNTIME_MODEL = reportado pela superfície
+REASONING_EFFORT = HIGH target; valor runtime separado
 EXECUTION_MODE = MULTIAGENT
+MULTIAGENT_MODE_AND_SCOPE = USER_AUTHORIZED
 
 OBJETIVO
 Corrigir o cálculo conforme o contrato congelado.
@@ -2542,45 +2899,42 @@ ROOT RESPONSIBILITIES
 - fechar a decisão técnica;
 - definir invariantes;
 - congelar o contrato bounded;
-- revisar diff/evidências;
+- revisar diff e evidências;
 - adjudicar resultado final.
 
 SHARED_DELEGATION_BOUNDARIES
 - não ampliar escopo;
 - não alterar contrato;
 - não executar commit/push;
-- não delegar recursivamente.
+- não delegar recursivamente sem satisfazer a exceção bounded desta policy.
 
-SUBAGENT = luna_worker
-OBJECTIVE = aplicar somente o patch prescrito e testes definidos pelo ROOT.
-OWNERSHIP = arquivos explicitamente atribuídos pelo ROOT.
-WRITE_MODE = bounded source/test write.
-RETURN = diff summary + arquivos alterados.
+SUBAGENT
+ROLE = MECHANICAL_IMPLEMENTER
+MODEL_TARGET = LUNA
+RUNTIME_MODEL = explicitamente configurado e confirmado pelo runtime
+REASONING_EFFORT = HIGH target; valor runtime separado
+REQUIRED_TOOL_SURFACE = escrita nos arquivos do ownership e execução dos checks autorizados
+OWNERSHIP = arquivos explicitamente atribuídos pelo ROOT
+RETURN = diff summary e arquivos alterados
 
-SUBAGENT = luna_validator
-OBJECTIVE = executar validações objetivas e retornar evidências.
-OWNERSHIP = validation only.
-WRITE_MODE = transient artifacts only; source write prohibited.
-RETURN = resultados exatos + blockers.
+SUBAGENT
+ROLE = VALIDATOR
+MODEL_TARGET = LUNA
+RUNTIME_MODEL = explicitamente configurado e confirmado pelo runtime
+REASONING_EFFORT = MEDIUM target; valor runtime separado
+REQUIRED_TOOL_SURFACE = execução das validações e leitura de evidências
+OWNERSHIP = validation only
+WRITE_MODE = artefatos transitórios; source write prohibited
+RETURN = resultados exatos e blockers
 
 VALIDAÇÃO
-- testes focais;
-- suíte aplicável;
-- análise estática;
-- diff check.
+Executar os checks focais. Ampliar apenas quando a mudança, risco, falha plausível ou authority justificarem.
 
 ON_VALIDATION_FAILURE
-- reportar ao ROOT;
-- não criar Triage automaticamente.
+Reportar ao ROOT; não criar Triage automaticamente.
 
 RETORNO
-- diff final;
-- resultados das validações;
-- blockers;
-- veredicto do ROOT.
-```
-
----
+Diff final, resultados de validação, blockers e veredicto do ROOT.
 
 ## 33.1 Exemplo — checkpoint mecânico fechado
 
@@ -2599,22 +2953,26 @@ COMMIT_PUSH_AUTHORIZED = YES
 o roteamento esperado é:
 
 ```text
-ORCHESTRATOR = LUNA / HIGH
+MODEL_TARGET = LUNA
+REASONING_EFFORT = HIGH
 EXECUTION_MODE = DIRECT
 SUBAGENTS = NONE
 ```
 
 O fato de existir `commit` e `push` aumenta a importância dos boundaries de
-permission e pós-validação, mas não cria por si só demanda cognitiva para Terra.
+permission e pós-validação, mas não cria por si só demanda cognitiva para Sol.
 
 Se, na mesma atividade, ainda for necessário classificar arquivos, adjudicar diff,
 resolver identidade de policy ou interpretar authority:
 
 ```text
-ORCHESTRATOR = TERRA / MEDIUM
+MODEL_TARGET = SOL
+REASONING_EFFORT = MEDIUM
 ```
 
 ## 33.2 Testes de regressão — Cognitive–Mechanical Split
+
+Os modelos e efforts indicados nos cenários abaixo são targets da política. Registrar o modelo/effort realmente resolvido em campos separados sempre que o runtime os expuser; nunca inferi-los pelo papel funcional.
 
 ### Teste A — Authority complexa + reconciliação documental material
 
@@ -2628,9 +2986,9 @@ DOCUMENTATION_DELTA = MATERIAL
 Esperado:
 
 ```text
-TERRA / HIGH or XHIGH ROOT
+SOL / HIGH ROOT
 → closes Authority / decisions / invariants
-→ LUNA / HIGH SCRIBE materializes Authority/docs
+→ LUNA / MEDIUM SCRIBE materializes Authority/docs
 → ROOT reviews and adjudicates
 ```
 
@@ -2687,7 +3045,7 @@ Esperado:
 
 ```text
 DO_NOT_USE_LUNA_WORKER_FOR_DECISION
-→ ROOT or TERRA_IMPLEMENTER
+→ ROOT or SOL_IMPLEMENTER
 ```
 
 ### Teste E — Luna encontra ambiguidade
@@ -2707,6 +3065,86 @@ STOP_AFFECTED_SCOPE
 → LOWER_TIER_CONTINUES_ONLY_WITH_CLOSED_CONTRACT
 ```
 
+## 33.3 Testes de regressão — Mid-Task Routing Reclassification
+
+### Teste F — Luna/High precisa apenas de mais deliberação
+
+```text
+CURRENT_ROOT = LUNA / HIGH
+DELIBERATION_GAP = YES
+CAPABILITY_GAP = NO
+SEPARATE_RESPONSIBILITY_REQUIRED = NO
+
+→ RECOMMENDED_ROOT = LUNA / XHIGH
+→ ROOT_RECLASSIFICATION_REQUIRED = YES
+→ STOP
+→ WAIT_FOR_USER_ROOT_RECONFIGURATION
+```
+
+Esse teste torna explícito que `Luna/XHigh` pode ser ROOT.
+
+### Teste G — capability gap real de Luna com responsabilidade única
+
+```text
+CURRENT_ROOT = LUNA / XHIGH
+CAPABILITY_GAP = YES
+SEPARATE_RESPONSIBILITY_REQUIRED = NO
+
+→ RECOMMEND_STRONGER_MODEL_FAMILY = SOL
+→ SIZE_SOL_EFFORT_BY_DELIBERATION
+→ STOP
+→ USER_CHANGES_ROOT
+→ USER_CONFIRMS
+→ RESUME_FROM_SAFE_RESUME_POINT
+```
+
+### Teste G2 — decisão arquitetural material excede Sol/High
+
+```text
+CURRENT_ROOT = SOL / HIGH
+MATERIAL_ARCHITECTURAL_DECISION = YES
+SOL_HIGH_CONFIDENCE = INSUFFICIENT
+
+→ RECOMMENDED_ROOT = ASTRA / MEDIUM
+→ ROOT_RECLASSIFICATION_REQUIRED = YES
+→ STOP_AT_SAFE_BOUNDARY
+→ WAIT_FOR_USER_ROOT_RECONFIGURATION
+```
+
+### Teste H — nova responsabilidade separável durante DIRECT
+
+```text
+CURRENT_EXECUTION_MODE = DIRECT
+NEW_SEPARABLE_RESPONSIBILITY = PRESENT
+AT_LEAST_ONE_G1_G6_GATE = PASS
+OFFLOAD_MATERIALITY_GATE = PASS
+EXPECTED_NET_GAIN = MATERIAL
+
+→ MULTIAGENT_RECLASSIFICATION_REQUIRED = YES
+→ STOP
+→ WAIT_FOR_USER_MULTIAGENT_AUTHORIZATION
+```
+
+### Teste I — muito volume mecânico, sem dificuldade cognitiva adicional
+
+```text
+MANY_FILES = YES
+MECHANICAL_IMPLEMENTATION = YES
+CAPABILITY_GAP = NO
+
+→ ROOT_ESCALATION = NO
+```
+
+### Teste J — hotspot terminou e restam poucos comandos
+
+```text
+CURRENT_ROOT_IS_STILL_SUFFICIENT = YES
+REMAINING_WORK = SMALL
+
+→ CONTINUE_CURRENT_ROOT = YES
+→ NO_RITUAL_DEESCALATION_STOP
+```
+
 ---
 
 # PARTE VIII — PRINCÍPIOS FINAIS
@@ -2718,7 +3156,7 @@ STOP_AFFECTED_SCOPE
 3. O usuário copia somente Card B.
 4. Escolha ROOT antes de subagentes.
 5. Modelo, effort, multiagente, Skill e Plugin são decisões independentes.
-6. Luna/Terra são a faixa normal; Sol/Astra exigem gates materiais.
+6. Luna/Sol são a faixa normal; Astra exige escalonamento material.
 7. `ROOT_CAN_EXECUTE != ROOT_SHOULD_EXECUTE`.
 8. Multiagente não exige paralelismo.
 9. G6 permite tiering econômico sequencial.
@@ -2746,10 +3184,10 @@ STOP_AFFECTED_SCOPE
 31. Boundaries semanticamente equivalentes devem ser compactadas quando isso não alterar comportamento.
 32. `ROOT_BASELINE != ROOT_FLOOR`.
 33. Selecionar ROOT pela demanda cognitiva remanescente.
-34. `TASK_IS_GOVERNANCE != TERRA_REQUIRED`.
+34. `TASK_IS_GOVERNANCE != SOL_REQUIRED`.
 35. `CONSEQUENTIAL_GIT_ACTION != STRONGER_MODEL_REQUIRED`.
 36. Luna/High pode ser ROOT de atividade fechada, mecânica e objetivamente verificável.
-37. Terra/Medium permanece baseline quando ainda existe julgamento técnico ou normativo real.
+37. Sol/Medium é baseline técnico quando existe julgamento material que excede a faixa segura de Luna.
 38. Mid-task de-escalation só ocorre quando o ganho líquido do handoff for material.
 39. `ACTIVITY_COMPLETION_PERCENT` mede somente a atividade específica do prompt.
 40. `ACTIVITY_COMPLETION_PERCENT != SUCCESS_PERCENT`.
@@ -2762,11 +3200,11 @@ STOP_AFFECTED_SCOPE
 47. `MODEL_FAMILY` é selecionada por `CAPABILITY_DEMAND`.
 48. `REASONING_EFFORT` é selecionado por `DELIBERATION_DEMAND`.
 49. Authority/validation/review são dimensionados por `EXECUTION_RISK`.
-50. Arquitetura e ciência não implicam Sol automaticamente.
-51. Dificuldade arquitetural/científica deve ser quantificada antes de escalonamento.
-52. Terra/XHigh deve ser considerado antes de Sol quando o gap for de deliberação.
-53. Terra/XHigh não deve compensar capability gap real.
-54. Sol selecionado não implica Sol/High; effort de Sol é dimensionado separadamente.
+50. Tarefa relacionada a arquitetura não implica Sol/High; decisão arquitetural material implica Sol/High.
+51. Ciência e demais domínios continuam sendo classificados por capability/deliberation/risk.
+52. Luna/XHigh pode ser ROOT quando Luna continua capability-sufficient e o gap é de deliberação.
+53. Luna/XHigh não deve compensar capability gap real.
+54. Sol selecionado normalmente tem effort dimensionado separadamente; decisão arquitetural material usa Sol/High por regra específica.
 55. `HIGH_TIER_REASONING != HIGH_TIER_MATERIALIZATION`.
 56. `DECISION_OWNER != PHYSICAL_WRITER`.
 57. `ROOT_FINAL_REVIEW != ROOT_MUST_AUTHOR_THE_DELTA`.
@@ -2777,16 +3215,35 @@ STOP_AFFECTED_SCOPE
 62. Delegar materialização não significa de-escalonar o ROOT.
 63. Cognitive–Mechanical Split continua sujeito a `OFFLOAD_MATERIALITY_GATE`.
 64. Se o ganho de Sol/Astra for incerto, usar o menor modelo suficiente.
+65. `INITIAL_ROUTING_SELECTION != MID_TASK_ROUTING_RECLASSIFICATION`.
+66. `ROUTING_RECOMMENDATION != RUNTIME_RECONFIGURATION`.
+67. `IN_EXECUTION_ROOT_AUTO_ESCALATION = PROHIBITED`.
+68. `MID_TASK_AUTO_MULTIAGENT_SWITCH = PROHIBITED`.
+69. Mudanças mid-task de modelo, effort e execution mode são controladas pelo usuário.
+70. `ROOT_CAPABILITY_GAP != MULTIAGENT_TRIGGER`.
+71. ROOT insuficiente com responsabilidade única exige recomendação, STOP e confirmação do usuário.
+72. Mudança DIRECT → MULTIAGENT durante execução exige gates, material gain, STOP e autorização do usuário.
+73. Subagente mais forte não pode contornar insuficiência do ROOT quando a responsabilidade permanece única.
+74. `MECHANICAL_SCALE != COGNITIVE_COMPLEXITY`.
+75. Após reconfiguração, verificar modelo/effort apenas quando a superfície expuser essa evidência; caso contrário registrar `USER_CONFIRMED_RUNTIME_UNVERIFIED`.
+76. Retomar de `SAFE_RESUME_POINT` sem repetir evidência ainda válida.
+77. De-escalation econômica não deve interromper atividade pequena quando o ROOT atual continua suficiente.
+78. `LUNA_XHIGH_ROOT = ALLOWED` quando Luna continua capability-sufficient.
+79. `MATERIAL_ARCHITECTURAL_DECISION = SOL / HIGH`.
+80. Se Sol/High for insuficiente em decisão arquitetural material, recomendar `Astra/Medium` via `ROOT_RECLASSIFICATION_REPORT`.
+81. Astra High/XHigh/Max somente após insuficiência demonstrada do nível anterior.
+82. `MAX_EFFORT_DEFAULT = PROHIBITED`.
+83. Preço por token da API não deve ser convertido em multiplicador fixo de franquia Codex/Work.
 
 ---
 
 ## 35. Estado desta revisão
 
 ```text
-VERSION = v1.7-R2.4
+VERSION = v1.7-R2.6
 STATUS = CANONICAL
-PREVIOUS_VERSION = v1.7-R2.3
-REVISION_TYPE = COGNITIVE_DEMAND_CLASSIFICATION + COGNITIVE_MECHANICAL_SPLIT
+PREVIOUS_VERSION = v1.7-R2.5
+REVISION_TYPE = GPT6_MODEL_ROUTING + AGENT_RUNTIME_ALIGNMENT + ROLE_MODEL_EFFORT_TOOL_SEPARATION + CONTEXT_DIET
 
 CONSOLIDATES_ECONOMIC_MULTIAGENT_ROUTING = YES
 CONSOLIDATES_SOL_ASTRA_MODEL_GATES = YES
@@ -2802,7 +3259,7 @@ ROUTINE_GOVERNANCE_CHECKPOINT = DIRECT_BY_DEFAULT
 ROOT_BASELINE_IS_NOT_ROOT_FLOOR = YES
 SELECT_ROOT_BY_REMAINING_COGNITIVE_DEMAND = REQUIRED
 LUNA_HIGH_ROOT_FOR_CLOSED_MECHANICAL_TASKS = ALLOWED
-TERRA_MEDIUM_FOR_UNRESOLVED_JUDGMENT = DEFAULT
+SOL_MEDIUM_FOR_MATERIAL_TECHNICAL_JUDGMENT = DEFAULT
 CONSEQUENTIAL_GIT_DOES_NOT_FORCE_STRONGER_MODEL = YES
 MID_TASK_DEESCALATION_REQUIRES_MATERIAL_NET_GAIN = YES
 
@@ -2821,8 +3278,11 @@ PEAK_DIFFICULTY_AND_HIGH_DIMENSION_COUNT = REQUIRED
 MODEL_FAMILY_SELECTED_BY_CAPABILITY = YES
 REASONING_EFFORT_SELECTED_BY_DELIBERATION = YES
 VALIDATION_AUTHORITY_SELECTED_BY_RISK = YES
-TERRA_XHIGH_BEFORE_SOL_FOR_DELIBERATION_GAP = YES
-SOL_EFFORT_SIZED_AFTER_SOL_GATE = YES
+LUNA_XHIGH_ROOT_FOR_DELIBERATION_GAP_WHEN_CAPABILITY_SUFFICIENT = YES
+SOL_EFFORT_SELECTED_BY_DELIBERATION = YES
+MATERIAL_ARCHITECTURAL_DECISION_SOL_HIGH = YES
+SOL_HIGH_TO_ASTRA_MEDIUM_ARCHITECTURE_ESCALATION = YES
+MAX_EFFORT_DEFAULT_PROHIBITED = YES
 
 COGNITIVE_MECHANICAL_SPLIT_GATE = REQUIRED_WHEN_APPLICABLE
 HIGH_TIER_REASONING_IMPLIES_HIGH_TIER_MATERIALIZATION = NO
@@ -2830,6 +3290,20 @@ SCRIBE_CLOSED_AUTHORITY_MATERIALIZATION = ALLOWED
 LOWER_TIER_UNPRESCRIBED_CHOICE = RETURN_TO_ROOT
 FINAL_ROOT_REVIEW_IS_FULL_CONTEXT_DUPLICATION = NO
 DELEGATING_MATERIALIZATION_IS_ROOT_DEESCALATION = NO
+
+INITIAL_ROUTING_SELECTION_DIFFERS_FROM_MID_TASK_RECLASSIFICATION = YES
+IN_EXECUTION_ROOT_AUTO_ESCALATION = PROHIBITED
+MID_TASK_AUTO_MULTIAGENT_SWITCH = PROHIBITED
+MODEL_CHANGE = USER_CONTROLLED
+EFFORT_CHANGE = USER_CONTROLLED
+EXECUTION_MODE_CHANGE = USER_CONTROLLED
+ROOT_CAPABILITY_GAP_IS_NOT_MULTIAGENT_TRIGGER = YES
+ROOT_RECLASSIFICATION_REQUIRES_SAFE_STOP = YES
+ROOT_RECLASSIFICATION_REQUIRES_USER_CONFIRMATION = YES
+MULTIAGENT_RECLASSIFICATION_REQUIRES_USER_CONFIRMATION = YES
+SAFE_RESUME_POINT = REQUIRED_FOR_RECLASSIFICATION
+RUNTIME_VERIFICATION_MUST_NOT_BE_INVENTED = YES
+MECHANICAL_SCALE_IS_NOT_COGNITIVE_COMPLEXITY = YES
 
 DUAL_AUDIENCE_OUTPUT = YES
 EXECUTION_DECISION_CARD = REQUIRED
@@ -2843,8 +3317,27 @@ INTERNAL_ROUTING_WORKSHEET_EXPOSED_TO_EXECUTOR = NO
 
 BOUNDED_CYCLIC_EXECUTION = EXCLUDED
 
-READY_FOR_USER_REVIEW = NO
-CANONICAL_PROMOTION = PASS
+AGENT_RUNTIME_RECONCILIATION = COMPLETE
+DIRECT_EXECUTION = DEFAULT
+PER_SUBAGENT_USER_APPROVAL = NOT_REQUIRED_WHEN_MODE_AUTHORIZED_SCOPE_BOUNDED_AND_GATE_PASS
+RECURSIVE_DELEGATION = DISABLED_BY_DEFAULT; BOUNDED_EXCEPTION_ONLY
+RUNTIME_CONCURRENCY_LIMIT = DISCOVERED_PER_SURFACE
+PROVIDER_DEFAULTS_HARD_CODED = NO
+GPT6_CONTEXT_DIET = REQUIRED
+AGENT_ROLE_MODEL_EFFORT_TOOL_SURFACE_SEPARATION = REQUIRED
+ORCHESTRATION_RUNTIME != MODEL_TOPOLOGY = YES
+NATIVE_MULTIAGENT AND HETEROGENEOUS_MULTIAGENT = COMPATIBLE_AXES
+TIER_SAVING_CLAIM = REQUIRES_ACTUAL_RUNTIME_MODEL_EVIDENCE
+RUNTIME_CAPABILITY_RESOLUTION != PER_SPAWN_HUMAN_GATE
+READY_FOR_USER_REVIEW = COMPLETED
+CANONICAL_PROMOTION = EXECUTED
 ```
+
+
+
+
+
+
+
 
 

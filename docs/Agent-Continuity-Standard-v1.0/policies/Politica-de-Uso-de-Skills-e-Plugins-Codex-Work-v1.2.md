@@ -1,11 +1,11 @@
 # Política de Uso de Skills e Plugins OpenAI — Codex + Work
-## Versão 1.1 — CANONICAL
+## Versão 1.2 — CANONICAL / ACTIVE
 
 ```text
 STATUS = CANONICAL
 LIFECYCLE = ACTIVE
-BASELINE = Politica-de-Uso-de-Skills-Codex-Work-v1.0.md
-BASELINE_ROLE = HISTORICAL_NON_AUTHORITATIVE
+BASELINE = Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md
+BASELINE_ROLE = SUPERSEDED_HISTORICAL_PREDECESSOR
 SCOPE = TRANSVERSAL
 DOMAIN_SPECIFIC_CONTENT = PROHIBITED
 SKILLS_SOURCE_POLICY = OPENAI_FIRST_PARTY_ONLY
@@ -17,6 +17,13 @@ CANONICALIZATION = YES
 PROMOTION = YES
 PROJECT_PROPAGATION = NO
 USER_REVIEW_REQUIRED = NO
+VERSION = 1.2
+PREVIOUS_VERSION = 1.1
+NORMATIVE_OWNER = PM-04
+REVIEW_SCOPE = CROSS_POLICY_REFERENCE_ALIGNMENT_ONLY
+CHANGE_TYPE = CROSS_POLICY_ALIGNMENT_ONLY
+SUPERSEDES = 1.1
+SUPERSESSION_STATUS = EXECUTED
 ```
 
 ---
@@ -894,9 +901,9 @@ O snapshot não substitui consulta ao Plugin Management.
 
 # 20. Alinhamento com a Política de Geração de Prompts
 
-A `Politica-Prompts-Agente-v1.7-R2.4.md` é a authority vigente para geração de prompts multiagente.
+A `Politica-Prompts-Agente-v1.7-R2.6.md` é a authority vigente para geração de prompts multiagente.
 
-Esta v1.1 consolida um refinamento de ordem e semântica:
+Esta versão v1.2 preserva o refinamento de ordem e semântica:
 
 ```text
 MODELO + ESFORÇO + SKILL + PLUGIN
@@ -904,12 +911,13 @@ MODELO + ESFORÇO + SKILL + PLUGIN
 
 devem aparecer juntos no cabeçalho do prompt.
 
-A política foi sincronizada com a authority canônica de geração de prompts para eliminar divergência estrutural entre documentos.
+A PM-04 v1.2 alinha suas referências operacionais à PM-02 R2.6. A versão v1.1 foi supersedida e permanece apenas como registro histórico.
 
 ```text
 PROMPT_POLICY_SYNC_REQUIRED = NO
-PROMPT_POLICY_CURRENT_AUTHORITY = Politica-Prompts-Agente-v1.7-R2.4.md
+PROMPT_POLICY_CURRENT_AUTHORITY = Politica-Prompts-Agente-v1.7-R2.6.md
 SYNC_ACTION_AUTHORIZED = YES
+CANONICAL_REFERENCE_ALIGNMENT = COMPLETE
 SILENT_CROSS_POLICY_DRIFT = PROHIBITED
 ```
 
@@ -988,9 +996,9 @@ Esta revisão foi construída a partir de:
 
 ---
 
-**Versão:** 1.1  
+**Versão:** 1.2  
 **Status:** CANONICAL / ACTIVE  
-**Baseline preservada:** v1.0  
+**Baseline preservada:** v1.1  
 **Canonicalização:** EXECUTADA  
-**Revisão do usuário:** concluída por direção explícita do usuário.
+**Revisão do usuário:** concluída por autorização explícita registrada em GOV-01D.
 

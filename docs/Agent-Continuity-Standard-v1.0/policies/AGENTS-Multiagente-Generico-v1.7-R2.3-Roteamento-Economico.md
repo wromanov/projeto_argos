@@ -1,25 +1,28 @@
-# Política transversal de execução direta, delegação multiagente e roteamento econômico de inteligência — v1.7-R2.1
+# Política transversal de execução direta, delegação multiagente e roteamento econômico de inteligência — v1.7-R2.3 — CANONICAL / ACTIVE
 
 ## 0. Status e finalidade
 
 ```text
+VERSION = v1.7-R2.3
 STATUS = CANONICAL
 LIFECYCLE = ACTIVE
-PREVIOUS_BASELINE = v1.7-R2
-PREVIOUS_BASELINE_ROLE = HISTORICAL_NON_AUTHORITATIVE
+PREVIOUS_BASELINE = v1.7-R2.2
+PREVIOUS_BASELINE_ROLE = CURRENT_CANONICAL_UNTIL_PROMOTION
+REVISION_FOCUS = GPT6_MODEL_ROUTING + CURRENT_AGENT_RUNTIME_SEMANTICS + ROLE_MODEL_TOOL_SEPARATION + LUNA_XHIGH_ROOT_ELIGIBILITY
+PROMPT_POLICY_ALIGNMENT = Politica-Prompts-Agente-v1.7-R2.6.md
 CANONICALIZATION = YES
 PROMOTION = YES
 USER_REVIEW_REQUIRED = NO
-TRANSITION_SCOPE = AGENT ARCHITECTURE, ECONOMICAL INTELLIGENCE ROUTING AND REGISTERED ROLES ONLY
+TRANSITION_SCOPE = AGENT ARCHITECTURE, ECONOMICAL INTELLIGENCE ROUTING, RUNTIME CAPABILITIES AND FUNCTIONAL ROLES
 
 SCOPE = ANY GOVERNED PROJECT / AGENT
 DIRECT_EXECUTION = DEFAULT
 MULTIAGENT_EXECUTION = EXCEPTION
-OPTIONAL_SUBAGENT = PROHIBITED
+OPTIONAL_SUBAGENT = CONDITIONAL_WITHIN_AUTHORIZED_MULTIAGENT_SCOPE
 AUTO_ESCALATION = NO
-REGISTERED_PROFILE_REQUIRED = YES
-UNPROFILED_SUBAGENT = PROHIBITED
-PROFILE_AVAILABLE != PROFILE_NECESSARY
+ROLE_CATALOG_IS_FUNCTIONAL_GUIDANCE = YES
+RUNTIME_PROFILE_REQUIRED = NO
+ROLE_AVAILABLE != ROLE_NECESSARY
 USER_FINAL_AUTHORITY = YES
 ```
 
@@ -28,17 +31,20 @@ Esta política define **quando executar diretamente e quando delegar a subagente
 O objetivo continua sendo obter a melhor relação entre qualidade, robustez, tempo,
 consumo de contexto/tokens e custo de coordenação.
 
-Esta revisão `v1.7-R2.1` é uma **consolidação incremental** sobre a `v1.7-R2`. Ela **não altera o modelo operacional
-central da v1.7**, nem introduz a metodologia de execução cíclica bounded nesta
-etapa. O foco desta revisão é apenas:
+Esta revisão `v1.7-R2.3` é uma **candidata incremental** sobre a `v1.7-R2.2`.
+Ela preserva o modelo operacional central da família v1.7 e não introduz metodologia
+de execução cíclica bounded.
 
-- refinar a **arquitetura de agentes**;
-- atualizar o **catálogo normativo de papéis**;
-- melhorar o **roteamento entre agentes**;
-- ajustar o **posicionamento de modelos e esforço**;
-- reduzir ambiguidade sobre **quem faz o quê**.
-- consolidar **limiares econômicos entre tiers adjacentes**;
-- registrar **cenários de conformidade de roteamento** validados sem transformar exemplos em receitas fixas.
+O foco desta revisão é:
+
+- readequar o roteamento para a família GPT-6 `Luna → Sol → Astra`;
+- preservar DIRECT-first, gates multiagente, authority e controle do usuário;
+- tornar `Luna / XHigh` explicitamente elegível como ROOT quando Luna continua capability-sufficient;
+- posicionar `Sol / Medium` como baseline técnico normal quando existe julgamento material;
+- posicionar `Sol / High` como baseline de alto julgamento e decisão arquitetural material;
+- definir `Sol / High → declaração de insuficiência → Astra / Medium` para escalonamento arquitetural;
+- manter Terra fora do baseline atual de roteamento GPT-6, preservando-a somente para compatibilidade/histórico quando necessário;
+- preservar `STOP / WAIT / USER RECONFIGURES / RESUME` para qualquer mudança mid-task de modelo/effort.
 
 O modo multiagente **continua não sendo padrão, ritual, sinal de qualidade nem
 consequência automática da complexidade da tarefa**. Ele só deve ser usado quando
@@ -113,9 +119,15 @@ e explicitamente autorizada.
 DIRECT_EXECUTION = DEFAULT
 MULTIAGENT_EXECUTION = EXCEPTION
 
-OPTIONAL_SUBAGENT = PROHIBITED
-AUTO_SPAWN = NO
+OPTIONAL_SUBAGENT = CONDITIONAL_WITHIN_AUTHORIZED_MULTIAGENT_SCOPE
+AUTO_SPAWN = ALLOWED_AFTER_MULTIAGENT_AUTHORIZATION_AND_DELEGATION_GATE
 AUTO_ESCALATION = NO
+
+IN_EXECUTION_ROOT_AUTO_ESCALATION = PROHIBITED
+MID_TASK_AUTO_MULTIAGENT_SWITCH = PROHIBITED
+MODEL_CHANGE = USER_CONTROLLED
+EFFORT_CHANGE = USER_CONTROLLED
+EXECUTION_MODE_CHANGE = USER_CONTROLLED
 
 COMPLEX_TASK != MULTIAGENT_REQUIRED
 LARGE_TASK != MULTIAGENT_REQUIRED
@@ -285,9 +297,10 @@ EXPECTED_TIER_SAVING_EXCEEDS_HANDOFF_COST = YES
 
 Exemplos típicos:
 
-- root Terra/High fecha a decisão matemática e Luna/High aplica patch mecânico;
-- root Terra/High define invariantes e Luna/High executa validações;
-- root Terra/Medium coordena e Luna/High faz exploração factual extensa;
+- root Sol/High fecha a decisão matemática e Luna/High aplica patch mecânico;
+- root Sol/High define invariantes e Luna/Medium ou High executa validações;
+- root Luna/XHigh coordena investigação longa quando Luna continua capability-sufficient;
+- root Sol/Medium coordena quando existe julgamento técnico material;
 - root resolve um ponto difícil e de-escalona a execução operacional.
 
 Este gate **não exige paralelismo**.
@@ -393,7 +406,7 @@ DO_NOT_SPAWN
 Um subagente não deve duplicar uma capacidade já presente no root sem valor
 adicional identificável.
 
-### 5.3 Escolher entre escalonar o root e criar subagente
+### 5.3 Escolher entre reclassificar o ROOT e criar subagente
 
 Antes de criar um agente mais inteligente, distinguir:
 
@@ -405,20 +418,51 @@ vs
 NEED_INDEPENDENCE
 ```
 
-Aplicar:
+Na seleção inicial, antes da atividade começar:
 
 ```text
 IF NEED_MORE_INTELLIGENCE
 AND NEED_SEPARATE_RESPONSIBILITY = NO
 AND NEED_INDEPENDENCE = NO
-→ ESCALATE_ROOT_TEMPORARILY
-
-IF NEED_SEPARATE_RESPONSIBILITY = YES
-→ DELEGATE_TO_SMALLEST_SUFFICIENT_ROLE
-
-IF NEED_INDEPENDENCE = YES
-→ USE_INDEPENDENT_AGENT
+→ SELECT_STRONGER_INITIAL_ROOT
 ```
+
+Durante a execução:
+
+```text
+IF NEED_MORE_INTELLIGENCE
+AND NEED_SEPARATE_RESPONSIBILITY = NO
+AND NEED_INDEPENDENCE = NO
+→ ROOT_RECLASSIFICATION_REQUIRED
+→ STOP_AT_SAFE_BOUNDARY
+→ REQUEST_USER_ROOT_RECONFIGURATION
+→ WAIT_FOR_USER_CONFIRMATION
+```
+
+Quando existe responsabilidade separada:
+
+```text
+IF NEED_SEPARATE_RESPONSIBILITY = YES
+→ APPLY_MULTIAGENT_GATES
+→ APPLY_OFFLOAD_MATERIALITY_GATE
+→ DELEGATE_ONLY_IF_MATERIAL_NET_GAIN
+```
+
+Quando existe requisito de independência:
+
+```text
+IF NEED_INDEPENDENCE = YES
+→ USE_INDEPENDENT_AGENT_WHEN_AUTHORIZED
+```
+
+```text
+ROOT_CAPABILITY_GAP
+!=
+MULTIAGENT_TRIGGER
+```
+
+Não criar subagente mais forte apenas para contornar um ROOT insuficiente se a
+responsabilidade material continua única.
 
 ---
 
@@ -529,6 +573,22 @@ ROLE
 AUTHORITY
 ```
 
+Orquestração e topologia de modelos são eixos independentes:
+
+```text
+ORCHESTRATION_RUNTIME = NATIVE | EXTERNAL | MANUAL
+MODEL_TOPOLOGY = HOMOGENEOUS | HETEROGENEOUS
+
+ROLE != MODEL != EFFORT != TOOL_SURFACE
+```
+
+`NATIVE_MULTIAGENT` descreve `ORCHESTRATION_RUNTIME = NATIVE`; `HETEROGENEOUS_MULTIAGENT`
+descreve `MODEL_TOPOLOGY = HETEROGENEOUS`. Portanto, não são categorias mutuamente
+exclusivas. Responses Multi-agent pode ser `NATIVE + HOMOGENEOUS` quando compartilha o
+modelo da request; Codex com custom subagent models pode ser `NATIVE + HETEROGENEOUS`
+quando os modelos por worker estão explicitamente configurados e confirmados pelo
+runtime.
+
 Aplicar:
 
 ```text
@@ -574,71 +634,123 @@ O root **não precisa executar pessoalmente** todo trabalho que seja capaz de fa
 
 ## 7.2. Baseline do orquestrador
 
-No ambiente atual do Codex:
+No ambiente GPT-6, não existe um único ROOT universal. O baseline deve seguir a demanda
+cognitiva remanescente e separar capability de deliberation.
 
 ```text
-DEFAULT_ORCHESTRATOR_MODEL = GPT-5.6-TERRA
-DEFAULT_ORCHESTRATOR_EFFORT = MEDIUM
+SIMPLE_ORCHESTRATION
+→ LUNA / MEDIUM
+
+BOUNDED_REASONING_ROOT
+→ LUNA / HIGH
+
+DEEP_BUT_CLEARLY_BOUNDED_ROOT
+→ LUNA / XHIGH
+
+NORMAL_TECHNICAL_ROOT
+→ SOL / MEDIUM
+
+HIGH_JUDGMENT_ROOT
+→ SOL / HIGH
 ```
 
-Esse é um baseline, não um teto.
+Esses valores são baselines operacionais, não pisos nem tetos.
 
-Usar `Terra / High` como root quando a atividade exigir julgamento sustentado de
-maior complexidade, por exemplo matemática sensível, integração difícil, forte
-ambiguidade ou decisão de alto impacto que ainda não justifique Sol.
+A seleção deve seguir a policy de prompts vigente:
 
 ```text
-TERRA_MEDIUM = NORMAL_ROOT_BASELINE
-TERRA_HIGH = HIGH_JUDGMENT_ROOT
-SOL_HIGH = TEMPORARY_ARCHITECTURAL_SPECIALIST_BY_DEFAULT
+MODEL_FAMILY
+← CAPABILITY_DEMAND
+
+REASONING_EFFORT
+← DELIBERATION_DEMAND
 ```
 
-Preserve o princípio, não o nome literal do modelo:
-
-> O orquestrador deve ser o menor modelo que coordene e adjudique a atividade com
-> confiabilidade suficiente.
-
-## 7.3. Piso operacional dos agentes Luna
+Consequentemente:
 
 ```text
-LUNA_LOW = DO_NOT_USE_BY_DEFAULT
-LUNA_MEDIUM = DO_NOT_USE_BY_DEFAULT
-LUNA_DEFAULT = HIGH
-LUNA_ANALYTICAL = XHIGH_WHEN_SUPPORTED
+LUNA_XHIGH_ROOT = ALLOWED
+LUNA_XHIGH_ROOT_REQUIRES_LUNA_CAPABILITY_SUFFICIENT = YES
+LUNA_XHIGH_MUST_NOT_MASK_CAPABILITY_GAP = YES
+
+SOL_MEDIUM = NORMAL_TECHNICAL_BASELINE
+SOL_HIGH = HIGH_JUDGMENT_BASELINE
+ASTRA = EXCEPTIONAL_ESCALATION_MODEL
 ```
 
-`Luna / High` é o tier econômico padrão para trabalho delimitado. `Luna / XHigh`
-fica reservado para investigação/triage realmente analítico.
+> O orquestrador deve ser o menor modelo/effort que coordene, adjudique e conclua a
+> atividade com confiabilidade suficiente. ROOT é papel de responsabilidade; não é
+> sinônimo de modelo forte.
+
+## 7.3. Faixa operacional dos agentes Luna
+
+GPT-6 Luna pode atuar tanto como ROOT quanto como subagente. O effort é escolhido pela
+demanda de deliberação, não por um piso artificial de High.
+
+```text
+LUNA_LOW = SIMPLE_MECHANICAL_OR_FACTUAL
+LUNA_MEDIUM = NORMAL_BOUNDED_ORCHESTRATION_OR_EXECUTION
+LUNA_HIGH = SUBSTANTIAL_BOUNDED_REASONING
+LUNA_XHIGH = DEEP_OR_LONG_DELIBERATION_WHILE_LUNA_CAPABILITY_REMAINS_SUFFICIENT
+```
+
+Aplicar:
+
+```text
+LUNA_XHIGH_ROOT = VALID
+LUNA_XHIGH_SUBAGENT = VALID
+LUNA_XHIGH_MUST_NOT_BE_USED_TO_COMPENSATE_FOR_CAPABILITY_GAP = YES
+```
+
+`Luna / XHigh` é especialmente elegível quando a tarefa exige investigação longa,
+reconciliação extensa ou raciocínio sustentado, mas continua bem delimitada, com
+restrições claras e sem capability gap material.
 
 ## 7.4. Posicionamento dos tiers
 
 ```text
-ROOT NORMAL ORCHESTRATION
-→ TERRA / MEDIUM
+SIMPLE ORCHESTRATION / FACTUAL EXECUTION
+→ LUNA / MEDIUM
 
-ROOT HIGH-JUDGMENT ORCHESTRATION
-→ TERRA / HIGH
+BOUNDED IMPLEMENTATION OR VALIDATION
+→ LUNA / MEDIUM OR HIGH BY DELIBERATION
 
-FACTUAL EXPLORATION
-→ LUNA / HIGH
+DEEP BOUNDED ANALYSIS WITH CLEAR CONSTRAINTS
+→ LUNA / XHIGH WHEN LUNA CAPABILITY REMAINS SUFFICIENT
 
-EXTERNAL RESEARCH / ANALYTICAL TRIAGE
-→ LUNA / XHIGH WHEN SUPPORTED
+NORMAL IMPLEMENTATION REQUIRING TECHNICAL JUDGMENT
+→ SOL / MEDIUM
 
-MECHANICAL BOUNDED IMPLEMENTATION
-→ LUNA / HIGH
-
-NORMAL IMPLEMENTATION REQUIRING JUDGMENT
-→ TERRA / MEDIUM
-
-COMPLEX IMPLEMENTATION
-→ TERRA / HIGH
-
-INDEPENDENT TECHNICAL REVIEW
-→ TERRA / HIGH
-
-ARCHITECTURE / HARD ROOT CAUSE / HARD REVIEW
+COMPLEX IMPLEMENTATION / HARD DEBUG / DEEP REVIEW
 → SOL / HIGH
+
+VERY DEEP SOL-LEVEL REVIEW OR AUDIT
+→ SOL / XHIGH WHEN MATERIALLY JUSTIFIED
+
+MATERIAL ARCHITECTURAL DECISION
+→ SOL / HIGH
+
+SOL/HIGH INSUFFICIENT FOR MATERIAL ARCHITECTURAL DECISION
+→ ROOT_RECLASSIFICATION_REPORT
+→ STOP_AT_SAFE_BOUNDARY
+→ USER RECONFIGURES ROOT
+→ ASTRA / MEDIUM
+```
+
+Astra é escalonamento excepcional. Para arquitetura, o caminho normativo é
+`Sol/High → Astra/Medium` quando Sol/High declarar insuficiência objetiva.
+
+```text
+ASTRA_HIGH
+→ only if ASTRA_MEDIUM is insufficient
+
+ASTRA_XHIGH
+→ only if ASTRA_HIGH is insufficient
+
+ASTRA_MAX
+→ only if ASTRA_XHIGH is insufficient
+
+MAX_EFFORT_DEFAULT = PROHIBITED
 ```
 
 ## 7.5. Fatores de roteamento
@@ -690,49 +802,141 @@ DO_NOT_DUPLICATE_EXPENSIVE_INTELLIGENCE_WITHOUT_DISTINCT_VALUE = YES
 Exemplo normalmente inadequado:
 
 ```text
-TERRA/HIGH ROOT
-+ TERRA/HIGH IMPLEMENTER
-+ TERRA/HIGH REVIEWER
+SOL/HIGH ROOT
++ SOL/HIGH IMPLEMENTER
++ SOL/HIGH REVIEWER
 ```
 
 sobre o mesmo contexto e sem independência exigida.
 
-Antes de spawn de `terra_reviewer` ou outro tier caro, verificar se o root já cobre
+Antes de spawn de `reviewer` ou outro tier caro, verificar se o root já cobre
 a necessidade.
 
-## 7.8. Escalonamento e de-escalation
+## 7.8. Escalonamento, reclassificação e de-escalation
 
-Escalar exige razão observável:
+Distinguir:
 
 ```text
-VALID_ESCALATION_REASONS =
-AMBIGUITY |
-HIGH_COGNITIVE_COMPLEXITY |
-HIGH_IMPACT |
-FAILED_LOWER_TIER |
-LOW_CONFIDENCE |
-CONFLICTING_EVIDENCE |
-ARCHITECTURAL_DECISION |
-SECURITY_CRITICALITY |
-NO_MEANINGFUL_PROGRESS
+INITIAL_ROUTING_SELECTION
+!=
+MID_TASK_ROUTING_RECLASSIFICATION
+```
+
+A policy pode recomendar um ROOT mais forte. Isso não significa que o executor
+possa reconfigurar autonomamente seu próprio runtime.
+
+```text
+ROUTING_RECOMMENDATION
+!=
+RUNTIME_RECONFIGURATION
+
+IN_EXECUTION_ROOT_AUTO_ESCALATION = PROHIBITED
+MODEL_CHANGE = USER_CONTROLLED
+EFFORT_CHANGE = USER_CONTROLLED
+EXECUTION_MODE_CHANGE = USER_CONTROLLED
+```
+
+### 7.8.1 Detecção de insuficiência do ROOT
+
+```text
+DELIBERATION_GAP
+→ RECOMMEND_HIGHER_EFFORT_WITHIN_SUFFICIENT_MODEL_FAMILY
+
+CAPABILITY_GAP
+→ RECOMMEND_STRONGER_MODEL
+```
+
+Para decisão arquitetural material:
+
+```text
+CURRENT_ROOT = SOL / HIGH
+AND SOL_HIGH_CONFIDENCE = INSUFFICIENT
+→ RECOMMEND ASTRA / MEDIUM
+→ ROOT_RECLASSIFICATION_REQUIRED = YES
+```
+
+O `ROOT_RECLASSIFICATION_REPORT` deve registrar, quando aplicável:
+
+```text
+ALTERNATIVES_CONSIDERED =
+DECISION_IMPACT =
+```
+
+Não inserir `Sol / XHigh` como degrau obrigatório entre `Sol / High` e
+`Astra / Medium` para arquitetura. `Sol / XHigh` continua elegível em revisão,
+auditoria ou análise longa quando não há capability gap.
+
+Não usar como justificativa isolada:
+
+```text
+HIGH_IMPACT
+MANY_FILES
+LARGE_CODE_VOLUME
+LONG_ACTIVITY
+MANY_TESTS
+MECHANICAL_IMPLEMENTATION
+LARGE_DOCUMENTATION_DELTA
+COMMON_TEST_FAILURE
+ROUTINE_API_WIRING
+READ_MODEL_CREATION
+REPETITIVE_WORK
 ```
 
 ```text
-UNGROUNDED_ESCALATION = PROHIBITED
+MECHANICAL_SCALE
+!=
+COGNITIVE_COMPLEXITY
 ```
+
+Se o ROOT atual for insuficiente e a responsabilidade continuar única:
+
+```text
+ROOT_RECLASSIFICATION_REQUIRED = YES
+STOP_AT_SAFE_BOUNDARY = YES
+EXECUTION_STATE = WAITING_FOR_USER_ROOT_RECONFIGURATION
+```
+
+O agente deve emitir `ROOT_RECLASSIFICATION_REPORT`, solicitar mudança manual do
+modelo/effort e aguardar confirmação.
+
+Enquanto aguarda, não pode:
+
+- decidir o hotspot pendente;
+- alegar mudança de modelo/effort;
+- criar subagente forte para contornar o ROOT insuficiente;
+- converter DIRECT em MULTIAGENT silenciosamente.
+
+### 7.8.2 Retomada
+
+Depois da confirmação do usuário:
+
+```text
+IF RUNTIME_EXPOSES_CURRENT_ROOT = YES
+→ VERIFY_MODEL_AND_EFFORT
+
+ELSE
+→ ROOT_PROFILE_STATE = USER_CONFIRMED_RUNTIME_UNVERIFIED
+```
+
+Retomar do `SAFE_RESUME_POINT`.
+
+Não repetir trabalho já válido sem evidência de staleness.
+
+### 7.8.3 De-escalation
 
 Depois que o ponto difícil for resolvido:
 
+- o ROOT pode permanecer no perfil atual se o trabalho remanescente for pequeno;
+- delegação de materialização barata pode ocorrer sem mudar o ROOT, se economicamente justificada;
+- mudança manual para ROOT mais barato só deve ser recomendada quando a economia líquida for material.
+
 ```text
-DEESCALATE_WHEN_HIGHER_TIER_NO_LONGER_NEEDED = YES
+CURRENT_ROOT_IS_STILL_SUFFICIENT = YES
+AND REMAINING_WORK = SMALL
+→ CONTINUE_CURRENT_ROOT
 ```
 
-De-escalation pode significar:
-
-- root continua forte, mas delega trabalho barato;
-- root volta a esforço menor quando a superfície permitir;
-- especialista caro devolve decisão e sai do fluxo;
-- validação e execução mecânica retornam a Luna.
+Não criar interrupção ritual de de-escalation.
 
 ## 7.9. Pipeline sequencial multiagente
 
@@ -755,13 +959,14 @@ Esse fluxo é válido quando o ganho econômico supera handoff e integração.
 
 ## 8. Registro operacional de subagentes e catálogo normativo de papéis
 
-Perfis concretos são capacidades registradas, não participantes obrigatórios.
+O catálogo nomeia responsabilidades funcionais. Configurações de perfil do runtime podem implementar esses papéis, mas não são obrigatórias nem provam quais capacidades estão disponíveis.
 
 ```text
-REGISTERED_PROFILE_REQUIRED = YES
-UNPROFILED_SUBAGENT = PROHIBITED
+ROLE_CATALOG_IS_FUNCTIONAL_GUIDANCE = YES
+RUNTIME_PROFILE_REQUIRED = NO
 ROLE_EXISTS != ROLE_MUST_BE_USED
-PROFILE_AVAILABLE != PROFILE_NECESSARY
+ROLE_AVAILABLE != ROLE_NECESSARY
+RUNTIME_PROFILE != GUARANTEED_TOOL_OR_MODEL_CAPABILITY
 PROFILE_RELEVANT != MULTIAGENT_JUSTIFIED
 ```
 
@@ -771,9 +976,9 @@ PROFILE_RELEVANT != MULTIAGENT_JUSTIFIED
 
 ```text
 ROLE = SCOUT
-DEFAULT_MODEL = LUNA
-DEFAULT_EFFORT = HIGH
-DEFAULT_SANDBOX = READ_ONLY
+MODEL_BINDING = RUNTIME_SELECTED_OR_INHERITED
+EFFORT_BINDING = RUNTIME_SELECTED_OR_INHERITED
+DESIRED_SANDBOX = READ_ONLY
 ```
 
 Exploração factual: arquivos, símbolos, fluxos, dependências, configuração,
@@ -783,9 +988,9 @@ contratos e divergências. Não escreve nem decide arquitetura.
 
 ```text
 ROLE = RESEARCHER
-DEFAULT_MODEL = LUNA
-DEFAULT_EFFORT = XHIGH_WHEN_SUPPORTED
-DEFAULT_SANDBOX = READ_ONLY
+MODEL_BINDING = RUNTIME_SELECTED_OR_INHERITED
+EFFORT_BINDING = RUNTIME_SELECTED_OR_INHERITED
+DESIRED_SANDBOX = READ_ONLY
 ```
 
 Documentação oficial, APIs, versões, compatibilidade, breaking changes e pesquisa
@@ -795,9 +1000,9 @@ externa autorizada. Não implementa.
 
 ```text
 ROLE = VALIDATOR
-DEFAULT_MODEL = LUNA
-DEFAULT_EFFORT = HIGH
-DEFAULT_SANDBOX = WORKSPACE_WRITE_WHEN_REQUIRED_FOR_VALIDATION
+MODEL_BINDING = RUNTIME_SELECTED_OR_INHERITED
+EFFORT_BINDING = RUNTIME_SELECTED_OR_INHERITED
+DESIRED_SANDBOX = WORKSPACE_WRITE_WHEN_REQUIRED_FOR_VALIDATION
 SOURCE_WRITE_AUTHORIZATION = NO
 ```
 
@@ -827,9 +1032,9 @@ Falha deve retornar ao root ou a Triage; Validator não corrige automaticamente.
 
 ```text
 ROLE = TRIAGE_ANALYST
-DEFAULT_MODEL = LUNA
-DEFAULT_EFFORT = XHIGH_WHEN_SUPPORTED
-DEFAULT_SANDBOX = READ_ONLY
+MODEL_BINDING = RUNTIME_SELECTED_OR_INHERITED
+EFFORT_BINDING = RUNTIME_SELECTED_OR_INHERITED
+DESIRED_SANDBOX = READ_ONLY
 ```
 
 Interpreta failure signatures, formula hipótese de root cause, estima escopo e
@@ -838,11 +1043,11 @@ recomenda próxima ação. Não implementa.
 ### MECHANICAL_IMPLEMENTER
 
 ```text
-PROFILE = luna_worker
+ROLE_ID = mechanical_implementer
 ROLE = MECHANICAL_IMPLEMENTER
-DEFAULT_MODEL = LUNA
-DEFAULT_EFFORT = HIGH
-DEFAULT_SANDBOX = WORKSPACE_WRITE
+MODEL_BINDING = RUNTIME_SELECTED_OR_INHERITED
+EFFORT_BINDING = RUNTIME_SELECTED_OR_INHERITED
+DESIRED_SANDBOX = WORKSPACE_WRITE
 ```
 
 Usar quando:
@@ -883,11 +1088,11 @@ RETURN_TO_ROOT
 ### IMPLEMENTER
 
 ```text
-PROFILE = terra_implementer
+ROLE_ID = implementer
 ROLE = IMPLEMENTER
-DEFAULT_MODEL = TERRA
-DEFAULT_EFFORT = MEDIUM
-DEFAULT_SANDBOX = WORKSPACE_WRITE
+MODEL_BINDING = RUNTIME_SELECTED_OR_INHERITED
+EFFORT_BINDING = RUNTIME_SELECTED_OR_INHERITED
+DESIRED_SANDBOX = WORKSPACE_WRITE
 ```
 
 Usar quando a implementação está delimitada, mas ainda exige julgamento técnico
@@ -896,7 +1101,7 @@ material, decisões locais não triviais ou integração que excede trabalho mec
 Quando a implementação for cognitivamente complexa:
 
 ```text
-IMPLEMENTER_EFFORT = HIGH
+EFFORT_BINDING = RUNTIME_SELECTED_OR_INHERITED
 ```
 
 sem ampliar authority.
@@ -904,10 +1109,11 @@ sem ampliar authority.
 ### REVIEWER
 
 ```text
+ROLE_ID = reviewer
 ROLE = REVIEWER
-DEFAULT_MODEL = TERRA
-DEFAULT_EFFORT = HIGH
-DEFAULT_SANDBOX = READ_ONLY
+MODEL_BINDING = RUNTIME_SELECTED_OR_INHERITED
+EFFORT_BINDING = RUNTIME_SELECTED_OR_INHERITED
+DESIRED_SANDBOX = READ_ONLY
 ```
 
 Reviewer existe para **independência** ou **ganho material de revisão**.
@@ -929,13 +1135,17 @@ REVIEW = ROOT_SELF_REVIEW
 REVIEWER_SUBAGENT = NO
 ```
 
+`Sol / XHigh` pode ser selecionado para review/auditoria excepcionalmente profundos
+quando a demanda for de deliberação e o ganho for material.
+
 ### SECURITY_REVIEWER
 
 ```text
+ROLE_ID = security_reviewer
 ROLE = SECURITY_REVIEWER
-DEFAULT_MODEL = TERRA
-DEFAULT_EFFORT = HIGH
-DEFAULT_SANDBOX = READ_ONLY
+MODEL_BINDING = RUNTIME_SELECTED_OR_INHERITED
+EFFORT_BINDING = RUNTIME_SELECTED_OR_INHERITED
+DESIRED_SANDBOX = READ_ONLY
 ```
 
 Usar somente quando houver superfície material de segurança.
@@ -943,22 +1153,30 @@ Usar somente quando houver superfície material de segurança.
 ### ARCHITECT
 
 ```text
+ROLE_ID = architect
 ROLE = ARCHITECT
-DEFAULT_MODEL = SOL
-DEFAULT_EFFORT = HIGH
-DEFAULT_SANDBOX = READ_ONLY
+MODEL_BINDING = RUNTIME_SELECTED_OR_INHERITED
+EFFORT_BINDING = RUNTIME_SELECTED_OR_INHERITED
+DESIRED_SANDBOX = READ_ONLY
 ARCHITECT != PERSISTENT_ORCHESTRATOR
+MATERIAL_ARCHITECTURAL_DECISION_DEFAULT = SOL_HIGH
+ASTRA_ESCALATION = EXPLICIT_ONLY
 ```
 
-Especialista temporário para arquitetura, alto blast radius, múltiplas soluções
-defensáveis, hard root-cause e hard review.
+`architect` é o perfil técnico normal para **decisão arquitetural material**.
+O simples fato de uma tarefa tocar documentação, artefatos ou conceitos de arquitetura
+não seleciona automaticamente o perfil: deve existir decisão arquitetural material.
+
+Se `Sol / High` concluir que sua confiança/capacidade é insuficiente para uma decisão
+segura, deve emitir `ROOT_RECLASSIFICATION_REPORT`, parar em boundary seguro e
+recomendar `Astra / Medium`. Astra não é spawn silencioso nem bypass do ROOT.
 
 ### SCRIBE
 
 ```text
 ROLE = SCRIBE
-DEFAULT_MODEL = LUNA
-DEFAULT_EFFORT = HIGH
+MODEL_BINDING = RUNTIME_SELECTED_OR_INHERITED
+EFFORT_BINDING = RUNTIME_SELECTED_OR_INHERITED
 DEFAULT_WRITE_SCOPE = DOCUMENTATION_ONLY
 ```
 
@@ -969,37 +1187,36 @@ SCRIBE_RECORDS_REALITY
 
 Registra apenas fatos/evidências/decisões estabelecidas.
 
-## 8.2. Mapeamento operacional recomendado
+## 8.2. Catálogo funcional e vínculos de runtime
 
-| Perfil | Papel | Modelo/esforço | Sandbox | Uso |
-|---|---|---|---|---|
-| `luna_scout` | `SCOUT` | Luna / High | read-only | exploração factual |
-| `luna_researcher` | `RESEARCHER` | Luna / XHigh quando suportado | read-only | pesquisa externa |
-| `luna_validator` | `VALIDATOR` | Luna / High | workspace-write contratualmente validation-only | testes/checks |
-| `luna_triage` | `TRIAGE_ANALYST` | Luna / XHigh quando suportado | read-only | diagnóstico inicial |
-| `luna_worker` | `MECHANICAL_IMPLEMENTER` | Luna / High | workspace-write | patch bounded e mecânico |
-| `luna_scribe` | `SCRIBE` | Luna / High | workspace-write limitado a docs | documentação factual |
-| `terra_implementer` | `IMPLEMENTER` | Terra / Medium | workspace-write | implementação com julgamento |
-| `terra_reviewer` | `REVIEWER` | Terra / High | read-only | review independente/material |
-| `terra_security` | `SECURITY_REVIEWER` | Terra / High | read-only | segurança material |
-| `sol_architect` | `ARCHITECT` | Sol / High | read-only | arquitetura/hard review |
+O papel descreve responsabilidade. Modelo, effort e ferramentas são resolvidos separadamente pelo runtime ou explicitamente configurados quando a superfície permite.
+
+| Papel | Responsabilidade | Superfície necessária a verificar |
+|---|---|---|
+| SCOUT | exploração factual | leitura dos caminhos e arquivos pertinentes |
+| RESEARCHER | pesquisa externa | web e documentação oficial disponível |
+| VALIDATOR | verificações objetivas | comandos e ferramentas necessários aos checks |
+| TRIAGE_ANALYST | diagnóstico de falha | logs e evidências relevantes, normalmente leitura |
+| MECHANICAL_IMPLEMENTER | patch fechado e bounded | escrita apenas no ownership autorizado |
+| IMPLEMENTER | implementação com julgamento local | ferramentas e escrita necessárias ao escopo |
+| REVIEWER | revisão independente/material | acesso de leitura ao delta e às authorities |
+| SECURITY_REVIEWER | análise de segurança material | ferramentas de leitura/análise requeridas |
+| ARCHITECT | consulta arquitetural material | acesso às authorities e artefatos relevantes |
+| SCRIBE | registro de fatos/decisões fechadas | escrita documental limitada ao ownership |
+
+AGENT_ROLE != RUNTIME_SELECTED_MODEL
+AGENT_ROLE != REASONING_EFFORT
+AGENT_ROLE != TOOL_SURFACE
+
+Rotas como ROOT Sol/High com MECHANICAL_IMPLEMENTER alvo Luna/High ou VALIDATOR alvo Luna/Medium são alvos de roteamento econômico, não garantias do runtime. Só classificar um fluxo como heterogêneo ou atribuir economia de tier quando modelo e effort por agente estiverem explicitamente configurados e confirmados pela superfície.
+
+Papel disponível não obriga spawn. Um papel que não esteja pré-cadastrado na configuração do runtime pode ser solicitado como instrução funcional quando a superfície aceitar agentes com prompt livre, desde que a capacidade e as ferramentas necessárias sejam verificadas.
 
 ## 8.3. Compatibilidade
 
-Perfis de compatibilidade:
+Aliases legados são identificadores de configuração, não evidência do modelo que o runtime executou. Quando ainda existirem configurações antigas, interpretar legacy_scout_alias, legacy_validator_or_triage_alias, legacy_implementer_alias, legacy_reviewer_alias e legacy_security_alias pela responsabilidade funcional configurada. Novos prompts usam os papéis funcionais da seção 8.2.
 
-```text
-luna_explorer
-→ DEPRECATED_COMPATIBILITY_PROFILE
-→ preferir luna_scout
-
-luna_test_analyst
-→ DEPRECATED_COMPATIBILITY_PROFILE
-→ preferir luna_validator ou luna_triage
-```
-
-`luna_worker` deixa de ser deprecated nesta revisão e passa a papel ativo de
-`MECHANICAL_IMPLEMENTER`.
+Não inferir modelo nem effort pelo nome histórico do perfil.
 
 ## 8.4. Gate de seleção do papel
 
@@ -1031,85 +1248,80 @@ MATERIAL_ARCHITECTURAL_CONSULTATION → ARCHITECT
 FACTUAL_DOCUMENTATION_UPDATE → SCRIBE
 ```
 
-## 8.5. Concorrência
+## 8.5. Concorrência e recursão
+
+RUNTIME_CONCURRENCY_LIMIT = DISCOVERED_PER_SURFACE
+TASK_CONCURRENCY_BUDGET = BOUNDED_TO_MATERIAL_WORK
+CONCURRENT_WRITE_OVERLAP = PROHIBITED
+PER_RESOURCE_WRITERS = GOVERNED_BY_NON_OVERLAPPING_OWNERSHIP
+RECURSIVE_DELEGATION = DISABLED_BY_DEFAULT
+
+Não codificar um número global de subagentes: limites e defaults variam por superfície, produto e configuração. Descobrir o limite efetivo no runtime e manter o orçamento da atividade dentro dele. Separar ownership por recurso e evitar writers simultâneos no mesmo estado mutável.
+
+Delegação recursiva pode ser habilitada quando houver ganho material de paralelismo, a tarefa descendente for bounded, o ownership estiver claro, houver orçamento de concorrência efetivo e o runtime confirmar suporte à recursão. Essa permissão não expande o escopo autorizado nem exige aprovação humana por spawn isolado.
+
+## 8.6. Superfícies de delegação
+
+NATIVE_MULTIAGENT = ORCHESTRATION_RUNTIME = NATIVE
+
+HETEROGENEOUS_MULTIAGENT = MODEL_TOPOLOGY = HETEROGENEOUS
+NATIVE_MULTIAGENT AND HETEROGENEOUS_MULTIAGENT = COMPATIBLE_AXES
+
+EXTERNAL = loop de orquestração fora do harness nativo
+MANUAL = handoff controlado por usuário/operador
+
+NATIVE_MULTIAGENT não implica seleção heterogênea, menor tier, economia ou permissões específicas. Os nomes dos papéis não são prova de modelo nem de ferramentas disponíveis.
+
+TIER_SAVING_CLAIM = REQUIRES_ACTUAL_RUNTIME_MODEL_EVIDENCE
+REGISTERED_ROLE != GUARANTEED_RUNTIME_CAPABILITY
+BEFORE_DELEGATION = VERIFY_REQUIRED_TOOL_SURFACE
+
+Se o runtime não expuser uma ferramenta necessária, dividir ou ajustar a tarefa para a superfície disponível, ou executá-la diretamente. Não delegar com base em capability presumida do papel.
+Capability resolution deve preferencialmente acontecer em session/config/role resolution
+e pode ser reutilizada enquanto runtime e configuração permanecerem estáveis.
 
 ```text
-MAX_CONCURRENT_SUBAGENTS = 2
-MAX_CONCURRENT_WRITERS = 1
-MINIMUM_NECESSARY_SUBAGENTS = PREFERRED
+RUNTIME_CAPABILITY_RESOLUTION = SESSION_CONFIG_ROLE_RESOLUTION_PREFERRED
+CAPABILITY_RESOLUTION_REUSE = ALLOWED_WHILE_RUNTIME_AND_CONFIGURATION_STABLE
+RUNTIME_CAPABILITY_RESOLUTION != PER_SPAWN_HUMAN_GATE
+UNKNOWN_CAPABILITY → DO_NOT_ASSUME
+PROVIDER_DOCUMENTATION_DIVERGENCE → VERIFY_RUNTIME_AND_MODEL_CAPABILITY
 ```
 
-Multiagente sequencial pode usar mais de um papel ao longo da atividade sem que
-eles estejam simultaneamente ativos.
+## 9. Contrato proporcional de delegação
 
----
+Cada delegação recebe contrato curto o bastante para execução e adjudicação seguras. Incluir objetivo, limite/ownership, authority relevante, ação permitida, retorno esperado e condição de parada que mudem o comportamento. Acrescentar modelo, effort ou tool surface apenas quando a superfície os expuser ou quando forem explicitamente configurados.
 
-## 9. Contrato mínimo de delegação
-
-Todo subagente deve receber contrato explícito e task-bounded.
-
-No mínimo:
-
-```text
-TASK_ID
 ROLE
-
-DELEGATED_OBJECTIVE
-SCOPE_IN
-SCOPE_OUT
-INPUTS
-
-ROOT_MODEL
-ROOT_EFFORT
-WHY_NOT_ROOT
-WHY_THIS_ROLE
-WHY_THIS_TIER
-EXPECTED_GAIN
-
-DECISIONS_ALREADY_CLOSED
-INVARIANTS_TO_PRESERVE
-
+OBJECTIVE
+SCOPE_AND_OWNERSHIP
+RELEVANT_AUTHORITIES
 ALLOWED_ACTIONS
-PROHIBITED_ACTIONS
+EXPECTED_RETURN
+STOP_OR_ESCALATE_WHEN
+RUNTIME_MODEL / EFFORT / TOOL_SURFACE = VERIFIED | INHERITED | UNKNOWN
 
-READ_WRITE_MODE
-SOURCE_WRITE_AUTHORIZATION
-OWNERSHIP
+O detalhe do contrato cresce com a materialidade e o risco da tarefa; estes campos não são uma lista ritual obrigatória quando irrelevantes. Manter limites de authority, Git e escrita consistentes com a tarefa. Validator não recebe autorização para alterar source por ter capacidade de escrita transitória.
 
-EXPECTED_OUTPUT
-REQUIRED_EVIDENCE
-VALIDATION_EXPECTED
+RUNTIME_CAN_AUTODELEGATE
+!=
+GOVERNANCE_AUTHORIZATION_TO_AUTODELEGATE
 
-DONE_CRITERIA
-STOP_CONDITIONS
-ESCALATE_WHEN
-AUTHORITY_LIMITS
-DEPENDENCIES
-```
+IF EXECUTION_MODE = DIRECT
+→ DO_NOT_DELEGATE_ONLY_BECAUSE_RUNTIME_CAN_AUTODELEGATE = YES
 
-Para `MECHANICAL_IMPLEMENTER`, o contrato deve fechar explicitamente a solução e
-identificar o que **não** pode ser reinterpretado.
+DIRECT_TO_MULTIAGENT = USER_CONTROLLED
 
-Para `VALIDATOR`, `SOURCE_WRITE_AUTHORIZATION = NO` mesmo quando a sandbox precise
-de `workspace-write` para artefatos transitórios.
+IF EXECUTION_MODE = MULTIAGENT
+AND USER_AUTHORIZATION_ALREADY_EXISTS = YES
+AND DELEGATION_SCOPE_IS_BOUNDED = YES
+AND DELEGATION_GATE = PASS
+→ PER_SUBAGENT_USER_APPROVAL = NOT_REQUIRED_BY_DEFAULT
 
-O contrato deve impedir:
+Somente o modo MULTIAGENT e o escopo já autorizados habilitam essa regra; capability
+de autodelegação sozinha não altera `DIRECT`.
 
-- expansão de escopo;
-- alteração arquitetural não autorizada;
-- decisão reservada ao root/usuário;
-- Git consequencial não autorizado;
-- escrita fora do ownership;
-- delegação recursiva;
-- relaxamento de testes para obter PASS;
-- conclusão sem evidência suficiente;
-- repetição desnecessária do raciocínio já fechado pelo root.
-
-```text
-SUBAGENT_AUTO_DELEGATION = PROHIBITED
-```
-
----
+O contrato não transfere authority, não permite expansão de escopo e não exige que o subagente refaça raciocínio ou contexto já válido do root.
 
 ## 10. Responsabilidade do agente principal
 
@@ -1163,7 +1375,7 @@ Preferir quando:
 - implementação e raciocínio são fortemente acoplados;
 - o custo de handoff supera economia de tier.
 
-### 11.2 `luna_worker` / Mechanical Implementer
+### 11.2 `mechanical_implementer` / Mechanical Implementer
 
 Preferir quando:
 
@@ -1177,7 +1389,7 @@ EXPECTED_COST_SAVING = MATERIAL
 
 Não é necessário haver paralelismo.
 
-### 11.3 `terra_implementer`
+### 11.3 `implementer`
 
 Preferir quando o writer precisa tomar decisões técnicas locais relevantes,
 interpretar trade-offs, integrar componentes ou lidar com ambiguidade residual.
@@ -1185,7 +1397,7 @@ interpretar trade-offs, integrar componentes ou lidar com ambiguidade residual.
 ### 11.4 Regra econômica
 
 ```text
-DO_NOT_USE_TERRA_FOR_MECHANICAL_WRITING
+DO_NOT_USE_SOL_FOR_MECHANICAL_WRITING
 WHEN_LUNA_CAN_EXECUTE_SAFELY_AND_VERIFY_OBJECTIVELY
 ```
 
@@ -1199,8 +1411,8 @@ A capacidade de um tier inferior não basta para justificar handoff.
 Exemplo especialmente relevante:
 
 ```text
-ROOT = TERRA / HIGH
-CANDIDATE_IMPLEMENTER = TERRA / MEDIUM
+ROOT = SOL / HIGH
+CANDIDATE_IMPLEMENTER = SOL / MEDIUM
 ```
 
 Delegar só é preferível quando:
@@ -1223,40 +1435,20 @@ ADJACENT_TIER_CAPABILITY != ADJACENT_TIER_DELEGATION_REQUIRED
 HIGH_ROOT_TO_MEDIUM_IMPLEMENTER_REQUIRES_MATERIAL_NET_GAIN = YES
 ```
 
-A mesma lógica vale para `Terra/Medium → Luna/High`: patch mecânico minúsculo pode
+A mesma lógica vale para `Sol/Medium → Luna/High`: patch mecânico minúsculo pode
 continuar direto quando o handoff custar mais que a economia de execução.
 
 ---
 
 ## 12. Política de paralelismo
 
-Paralelismo exige independência real.
+Paralelize somente frentes independentes quando o ganho material cobrir coordenação, contexto duplicado e integração. Não paralelize etapas dependentes, alterações sobre o mesmo estado mutável ou leituras repetidas do mesmo contexto sem valor independente. Defina ownership por recurso antes de escrita concorrente.
 
-Não paralelize:
-
-- tarefas sequenciais;
-- alterações nos mesmos arquivos;
-- componentes fortemente acoplados;
-- migrations e consumidores que dependam da mesma transição não estabilizada;
-- investigações que exigem o mesmo contexto extenso;
-- reviewers que apenas repetirão a mesma leitura sem independência necessária.
-
-Quando houver paralelismo, estabeleça ownership explícito.
-
-```text
 CONCURRENT_WRITE_OVERLAP = PROHIBITED
-```
+RUNTIME_CONCURRENCY_LIMIT = DISCOVERED_PER_SURFACE
+TASK_CONCURRENCY_BUDGET = CONFIGURABLE_WITHIN_RUNTIME_LIMIT
 
-O número máximo de subagentes simultâneos, quando configurado pela plataforma,
-é **limite**, não objetivo.
-
-```text
-MAX_SUBAGENTS != TARGET_SUBAGENTS
-MINIMUM_NECESSARY_SUBAGENTS = PREFERRED
-MAX_CONCURRENT_WRITERS = 1
-```
-
----
+Os limites publicados por uma superfície são fatos de runtime sujeitos a mudança, não constantes desta política. O root ajusta ou serializa o plano conforme o limite efetivo e o escopo já autorizado.
 
 ## 13. Economia de contexto
 
@@ -1327,7 +1519,7 @@ Self-review não é revisão independente.
 
 ### 15.2 Reviewer não deve duplicar o root
 
-Antes de criar `terra_reviewer`:
+Antes de criar `reviewer`:
 
 ```text
 ROOT_REVIEW_CAPABILITY_SUFFICIENT = YES | NO
@@ -1353,10 +1545,10 @@ REVIEW = ROOT_SELF_REVIEW
 Exemplo típico:
 
 ```text
-ROOT = TERRA / HIGH
-REVIEW_REQUIREMENT <= TERRA / HIGH
+ROOT = SOL / HIGH
+REVIEW_REQUIREMENT <= SOL / HIGH
 INDEPENDENCE_REQUIRED = NO
-→ DO_NOT_SPAWN_TERRA_HIGH_REVIEWER
+→ DO_NOT_SPAWN_SOL_HIGH_REVIEWER
 ```
 
 ### 15.3 Quando a revisão exigir inteligência maior, mas não independência
@@ -1403,7 +1595,7 @@ FIX
 
 Revisão de segurança é ortogonal à revisão técnica geral.
 
-Use `terra_security` somente quando existir superfície
+Use `security_reviewer` somente quando existir superfície
 material, como:
 
 - autenticação/autorização;
@@ -1525,7 +1717,7 @@ Quando source/doc write estiver autorizado:
 
 ```text
 OWNERSHIP_REQUIRED = YES
-MAX_CONCURRENT_WRITERS = 1
+PER_RESOURCE_WRITERS = GOVERNED_BY_NON_OVERLAPPING_OWNERSHIP
 CONCURRENT_WRITE_OVERLAP = PROHIBITED
 ```
 
@@ -1573,31 +1765,31 @@ impacto ou preservar segurança.
 
 ## 22. Fluxo operacional recomendado
 
-```text
-1. CLASSIFY_TASK
-2. LOAD_APPLICABLE_AUTHORITIES
-3. CHOOSE_ROOT_MODEL_AND_EFFORT
-4. IDENTIFY_COGNITIVE_HOTSPOTS
-5. PARTITION_HIGH_JUDGMENT_VS_BOUNDED_WORK
-6. EVALUATE_MULTIAGENT_GATES G1..G6
-7. ESTIMATE_NET_MULTIAGENT_GAIN
-8. IF GAIN UNCLEAR -> DIRECT
-9. IF MULTIAGENT -> RUN ROOT_CAPABILITY_REDUNDANCY_CHECK
-10. CHOOSE ESCALATE_ROOT vs DELEGATE_ROLE vs INDEPENDENT_REVIEW
-11. DEFINE MINIMUM NECESSARY SUBAGENTS
-12. DEFINE NON-OVERLAPPING CONTRACTS
-13. EXECUTE HIGH-JUDGMENT WORK AT REQUIRED TIER
-14. DELEGATE MECHANICAL/FACTUAL/VALIDATION WORK TO LOWER TIER WHEN SAFE
-15. VALIDATE
-16. TRIAGE ONLY ON FAILURE OR AMBIGUOUS RESULT
-17. ROOT SELF-REVIEW BY DEFAULT
-18. INDEPENDENT REVIEW ONLY IF REQUIRED OR MATERIALLY VALUABLE
-19. RECONCILE RESULTS
-20. DE-ESCALATE EXPENSIVE INTELLIGENCE WHEN POSSIBLE
-21. FINALIZE ONLY WHEN STATE IS STABLE
-```
+### 22.1 Seleção inicial
 
----
+1. identificar authorities materiais;
+2. escolher o menor modelo e effort suficiente conforme PM-02;
+3. manter DIRECT como padrão;
+4. escolher MULTIAGENT somente após ganho líquido material e escopo claro;
+5. verificar antes do spawn a superfície de ferramentas exigida pela tarefa;
+6. definir ownership sem sobreposição de escrita;
+7. limitar a delegação à autorização existente;
+8. reconciliar os retornos e manter responsabilidade final no root.
+
+A seleção do modo é uma decisão do usuário ou do contrato da atividade. Depois que MULTIAGENT e o escopo já estiverem autorizados e o gate passar, o root pode criar subagentes bounded sem pedir aprovação individual por spawn.
+
+### 22.2 Reclassificação durante execução
+
+Se a atividade começou em DIRECT e surgir uma responsabilidade separável que torne MULTIAGENT materialmente superior:
+
+APPLY G1..G6 AND OFFLOAD_MATERIALITY_GATE
+→ REPORT PROPOSED SCOPE / OWNERSHIP / NET GAIN
+→ STOP AT SAFE BOUNDARY
+→ WAIT FOR USER AUTHORIZATION TO CHANGE DIRECT TO MULTIAGENT
+
+Sem essa autorização, continuar diretamente se seguro ou aguardar. Não trocar o modo silenciosamente. Mudança de modelo/effort do root também segue a fronteira de reconfiguração definida em PM-02.
+
+Se a autorização MULTIAGENT já cobre a nova frente e o escopo não muda, esse procedimento de reclassificação não se aplica; seguir o gate normal de delegação.
 
 ## 23. Decision matrix
 
@@ -1606,16 +1798,17 @@ impacto ou preservar segurança.
 | Tarefa pequena/local | `DIRECT` |
 | Tarefa longa, porém cognitivamente monolítica | `DIRECT`, aumentar root se necessário |
 | Root forte + muito trabalho mecânico verificável | `MULTIAGENT` sequencial por ganho econômico |
-| Terra/High fecha solução; patch é prescritivo | `luna_worker` / Mechanical Implementer |
-| Testes, lint, collect-only, build, diff checks | `luna_validator` |
-| Falha de validação ambígua exige diagnóstico separado | `luna_triage` quando houver ganho material |
+| Sol/High fecha solução; patch é prescritivo | `mechanical_implementer` / Mechanical Implementer |
+| Testes, lint, collect-only, build, diff checks | `validator` quando offload for material |
+| Falha de validação ambígua exige diagnóstico separado | `triage_analyst` quando houver ganho material |
 | Falha localizada e praticamente autoexplicativa | root corrige diretamente se handoff não pagar |
-| Implementação exige julgamento técnico | `terra_implementer` se o handoff trouxer ganho líquido; caso contrário root implementa |
-| Root Terra/High já cobre review e independência não é exigida | self-review do root; sem `terra_reviewer` |
-| Governance exige review independente | `terra_reviewer` |
-| Apenas mais inteligência é necessária | escalar root antes de criar papel redundante |
-| Segurança material | `terra_security` quando separação agrega valor |
-| Arquitetura / hard root cause | `sol_architect` temporário |
+| Implementação exige julgamento técnico | `implementer` se o handoff trouxer ganho líquido; caso contrário root implementa |
+| Root Sol/High já cobre review e independência não é exigida | self-review do root; sem `reviewer` |
+| Governance exige review independente | `reviewer` |
+| Apenas mais deliberação é necessária e Luna continua suficiente | aumentar effort de Luna, inclusive `Luna/XHigh` quando apropriado |
+| Capability gap real | reclassificar ROOT para Sol antes de criar papel redundante |
+| Segurança material | `security_reviewer` quando separação agrega valor |
+| Decisão arquitetural material | `Sol/High`; se insuficiente, STOP + `ROOT_RECLASSIFICATION_REPORT` + recomendar `Astra/Medium` |
 | Duas frentes read-only independentes | `MULTIAGENT`, mínimo necessário |
 | Benefício de delegação incerto | `DIRECT` |
 | Todos releriam o mesmo contexto extenso | `DIRECT` |
@@ -1625,39 +1818,34 @@ impacto ou preservar segurança.
 
 ## 24. Anti-patterns proibidos
 
-```text
 SPAWN_SUBAGENT_BECAUSE_TASK_IS_COMPLEX = PROHIBITED
-SPAWN_SUBAGENT_BECAUSE_PROFILE_EXISTS = PROHIBITED
+SPAWN_SUBAGENT_BECAUSE_ROLE_EXISTS = PROHIBITED
 SPAWN_MULTIPLE_AGENTS_FOR_SAME_ANALYSIS = PROHIBITED
+DELEGATE_WITHOUT_MATERIAL_NET_GAIN = PROHIBITED
+RELY_ON_UNVERIFIED_RUNTIME_PROFILE_CAPABILITY = PROHIBITED
+CLAIM_TIER_SAVING_WITHOUT_RUNTIME_EVIDENCE = PROHIBITED
+INFER_MODEL_OR_TOOL_ACCESS_FROM_ROLE_NAME = PROHIBITED
 
 ROOT_CAN_DO_IT_THEREFORE_ROOT_MUST_DO_ALL = PROHIBITED
-IGNORE_ECONOMIC_TIERING_GAIN = PROHIBITED
-KEEP_EXPENSIVE_ROOT_DOING_MECHANICAL_WORK_BY_DEFAULT = PROHIBITED
-
-SPAWN_REVIEWER_BECAUSE_CODE_WAS_WRITTEN = PROHIBITED
-SPAWN_TERRA_HIGH_REVIEWER_WHEN_TERRA_HIGH_ROOT_ALREADY_COVERS_REVIEW_AND_NO_INDEPENDENCE = PROHIBITED
+IGNORE_ECONOMIC_GAIN_WHEN_MATERIAL = PROHIBITED
 DUPLICATE_EXPENSIVE_INTELLIGENCE_WITHOUT_DISTINCT_VALUE = PROHIBITED
-DELEGATE_TO_ADJACENT_TIER_WITHOUT_MATERIAL_NET_GAIN = PROHIBITED
-SPAWN_TRIAGE_BECAUSE_ANY_TEST_FAILED = PROHIBITED
+SPAWN_REVIEWER_OR_TRIAGE_AS_RITUAL = PROHIBITED
+VALIDATOR_AUTO_FIXES_WITHOUT_AUTHORIZED_ROUTE = PROHIBITED
 
-USE_TERRA_IMPLEMENTER_FOR_PURELY_MECHANICAL_PATCH_BY_DEFAULT = PROHIBITED
-USE_LUNA_WORKER_FOR_UNCLOSED_OR_AMBIGUOUS_DESIGN = PROHIBITED
-VALIDATOR_AUTO_FIXES_WITHOUT_ROUTE = PROHIBITED
-SCRIBE_INVENTS_PASS = PROHIBITED
-
-AUTO_ESCALATE_TO_ARCHITECT = PROHIBITED
-USE_SOL_AS_PERSISTENT_ORCHESTRATOR_BY_DEFAULT = PROHIBITED
-USE_LUNA_LOW_OR_MEDIUM_BY_DEFAULT = PROHIBITED
+IN_EXECUTION_ROOT_AUTO_ESCALATION = PROHIBITED
+MID_TASK_AUTO_MULTIAGENT_SWITCH = PROHIBITED
+SPAWN_STRONGER_AGENT_TO_BYPASS_ROOT_RECLASSIFICATION = PROHIBITED
+USE_MECHANICAL_SCALE_AS_COGNITIVE_ESCALATION_REASON = PROHIBITED
+USE_ASTRA_AS_PERSISTENT_ORCHESTRATOR_BY_DEFAULT = PROHIBITED
+OVERPROVISION_EFFORT_WITHOUT_DELIBERATION_NEED = PROHIBITED
 
 USE_SUBAGENT_AS_AUTHORITY = PROHIBITED
-OPTIONAL_SUBAGENT = PROHIBITED
+EXPAND_AUTHORIZED_SCOPE_THROUGH_DELEGATION = PROHIBITED
 CONCURRENT_WRITE_OVERLAP = PROHIBITED
 MULTIAGENT_AS_STATUS_SYMBOL = PROHIBITED
-USE_UNREGISTERED_SUBAGENT_PROFILE = PROHIBITED
-SUBAGENT_RECURSIVE_DELEGATION = PROHIBITED
-```
+UNBOUNDED_RECURSIVE_DELEGATION = PROHIBITED
 
----
+Depois que o modo MULTIAGENT e seu escopo estiverem autorizados, o root pode criar subagentes bounded que passem o delegation gate sem confirmação humana por spawn individual. A transição de DIRECT para MULTIAGENT durante a execução permanece sob controle do usuário.
 
 ## 25. Cenários de conformidade de roteamento
 
@@ -1682,34 +1870,33 @@ Características:
 Rota de referência validada:
 
 ```text
-ROOT = TERRA / MEDIUM
+ROOT = LUNA / MEDIUM
 MATERIAL_INTELLIGENCE_ROUTING_GAIN = NO
 EXECUTION_MODE = DIRECT
 SUBAGENTS_PLANNED = 0
 ```
 
-Razão: Luna seria capaz de escrever/testar, mas o volume não amortiza contrato,
-handoff, releitura e reconciliação.
+Razão: Luna é suficiente e o volume não amortiza contrato, handoff e reconciliação.
 
 ### Cenário B — hotspot cognitivo + escrita mecânica + validação extensa
 
 Características:
 
 - decisão matemática/financeira sensível;
-- solução pode ser fechada pelo root;
-- patch posterior é prescritivo em vários arquivos;
+- solução fechada por root técnico;
+- patch posterior prescritivo em vários arquivos;
 - validação objetiva e volumosa.
 
 Rota de referência validada:
 
 ```text
-TERRA/HIGH ROOT
+SOL/HIGH ROOT
 → LUNA/HIGH MECHANICAL_IMPLEMENTER
-→ LUNA/HIGH VALIDATOR
-→ TERRA/HIGH ROOT SELF_REVIEW + FINAL ADJUDICATION
+→ LUNA/MEDIUM OR HIGH VALIDATOR
+→ SOL/HIGH ROOT SELF_REVIEW + FINAL ADJUDICATION
 ```
 
-Não usar `terra_reviewer` sem independência; Triage somente em falha ambígua real.
+Não usar `reviewer` sem independência; Triage somente em falha ambígua real.
 
 ### Cenário C — implementação bounded, mas com julgamento técnico local
 
@@ -1723,15 +1910,15 @@ Características:
 Rota de referência validada:
 
 ```text
-TERRA/HIGH ROOT
-→ TERRA/MEDIUM IMPLEMENTER
-→ LUNA/HIGH VALIDATOR
-→ TERRA/HIGH ROOT SELF_REVIEW
+SOL/HIGH ROOT
+→ SOL/MEDIUM IMPLEMENTER
+→ LUNA/MEDIUM OR HIGH VALIDATOR
+→ SOL/HIGH ROOT SELF_REVIEW
 ```
 
 Essa rota só é preferível quando a economia de tier supera duplicated context,
-handoff e integração. Em patch menor, `TERRA/HIGH ROOT → DIRECT IMPLEMENTATION`
-pode ser a rota economicamente correta.
+handoff e integração. Em patch menor, `SOL/HIGH ROOT → DIRECT IMPLEMENTATION` pode
+ser a rota economicamente correta.
 
 ### Cenário D — revisão independente obrigatória
 
@@ -1745,13 +1932,12 @@ Características:
 Rota de referência validada:
 
 ```text
-TERRA/HIGH ROOT
-→ TERRA/HIGH INDEPENDENT REVIEWER
-→ TERRA/HIGH ROOT FINAL ADJUDICATION
+SOL/HIGH ROOT
+→ SOL/HIGH INDEPENDENT REVIEWER
+→ SOL/HIGH ROOT FINAL ADJUDICATION
 ```
 
-Aqui a duplicação de tier caro é justificada por `INDEPENDENCE_VALUE`, não por
-incapacidade do root.
+A duplicação de tier é justificada por `INDEPENDENCE_VALUE`, não por incapacidade do root.
 
 ### Cenário E — falha de validação localizada e autoexplicativa
 
@@ -1765,7 +1951,7 @@ Características:
 Rota de referência validada:
 
 ```text
-ROOT = TERRA / MEDIUM
+ROOT = LUNA / HIGH OR SOL / MEDIUM BY CAPABILITY
 EXECUTION_MODE = DIRECT
 TRIAGE = NO
 NEW_HANDOFF_TO_MECHANICAL_IMPLEMENTER = NO
@@ -1775,28 +1961,51 @@ ROOT → REPAIR → FOCUSED_VALIDATION → SELF_REVIEW
 Se a inspeção contradisser a hipótese evidente ou surgir falha nova/ambígua, o
 roteamento deve ser reavaliado; `TEST_FAIL != TRIAGE_REQUIRED`.
 
-### 25.1 Resultado da validação inicial da política
+### Cenário F — longa investigação bounded com alta deliberação
 
-A bateria inicial A–E produziu:
+Características:
+
+- restrições e authority claras;
+- contexto extenso;
+- muitas evidências para reconciliar;
+- nenhuma decisão arquitetural material;
+- Luna continua capability-sufficient.
+
+Rota de referência:
 
 ```text
-ROUTING_CONFORMANCE_TESTS = 5/5 PASS
-DIRECT_SELECTION = PASS
-MULTIAGENT_SELECTION = PASS
-ECONOMIC_TIERING = PASS
-COGNITIVE_HOTSPOT_ROUTING = PASS
-MECHANICAL_IMPLEMENTATION_ROUTING = PASS
-COMPLEX_IMPLEMENTATION_ROUTING = PASS
-OBJECTIVE_VALIDATION_ROUTING = PASS
-ROOT_REDUNDANCY_CONTROL = PASS
-INDEPENDENT_REVIEW_SEMANTICS = PASS
-CONDITIONAL_TRIAGE = PASS
-AUTHORITY_PRESERVATION = PASS
-INITIAL_ROUTING_VALIDATION = STRONG_PASS
+ROOT = LUNA / XHIGH
+EXECUTION_MODE = DIRECT
 ```
 
-Esse resultado valida inicialmente a lógica de roteamento; não transforma a política
-em universalmente provada nem elimina necessidade de calibração por telemetria real.
+`Luna/XHigh` é preferível a subir de família quando o gap é de deliberação, não de capability.
+
+### Cenário G — decisão arquitetural material excede Sol/High
+
+```text
+ROOT = SOL / HIGH
+SOL_HIGH_CONFIDENCE = INSUFFICIENT
+→ ROOT_RECLASSIFICATION_REPORT
+→ STOP_AT_SAFE_BOUNDARY
+→ USER RECONFIGURES ROOT
+→ ASTRA / MEDIUM
+```
+
+Astra High/XHigh/Max somente após insuficiência demonstrada do nível anterior.
+
+### 25.1 Estado de validação desta candidata
+
+Os cenários A–G foram reescritos para refletir o novo roteamento GPT-6 e foram promovidos
+com esta authority; a bateria formal de conformidade não foi executada nesta atividade.
+
+```text
+ROUTING_CONFORMANCE_TESTS = NOT_RUN_AS_FORMAL_BATTERY
+CANONICAL_VALIDATION = POST_PROMOTION_STATIC_PASS
+PREVIOUS_R2_2_VALIDATION_RESULTS = HISTORICAL_ONLY
+```
+
+O agente de governança deve decidir se executa novamente a bateria de conformidade antes
+de canonizar a revisão.
 
 ---
 
@@ -1826,16 +2035,65 @@ uma decisão ruim.
 
 ## 27. Regra de reavaliação durante a execução
 
-Uma tarefa iniciada `DIRECT` pode revelar posteriormente:
+Uma atividade pode revelar posteriormente dois tipos diferentes de mudança.
+
+### 27.1 ROOT atual deixou de ser suficiente
+
+Se a responsabilidade continua única:
+
+```text
+MORE_INTELLIGENCE
+WITHOUT SEPARATE RESPONSIBILITY
+=
+ROOT_RECLASSIFICATION_RECOMMENDATION
+```
+
+Aplicar:
+
+```text
+ROOT_RECLASSIFICATION_REQUIRED = YES
+STOP_AT_SAFE_BOUNDARY = YES
+REQUEST_USER_ROOT_RECONFIGURATION = YES
+WAIT_FOR_USER_CONFIRMATION = YES
+```
+
+O relatório deve conter:
+
+```text
+CURRENT_ROOT
+RECOMMENDED_ROOT
+TRIGGER
+WHY_CURRENT_ROOT_IS_INSUFFICIENT
+WHY_HIGHER_EFFORT_IS_OR_IS_NOT_SUFFICIENT
+WHY_THIS_IS_NOT_MULTIAGENT
+DECISION_PENDING
+WORK_ALREADY_COMPLETED
+REMAINING_WORK
+SAFE_RESUME_POINT
+USER_ACTION_REQUIRED
+EXECUTION_STATE
+```
+
+Não usar subagente como substituto clandestino de mudança do ROOT.
+
+### 27.2 Surgiu responsabilidade separável
+
+Uma tarefa iniciada `DIRECT` pode revelar:
 
 - frente independente;
-- necessidade de especialização;
-- volume mecânico significativo;
-- hotspot cognitivo seguido de trabalho barato;
-- falha que justifica Triage;
-- requisito novo de independência.
+- necessidade de especialização distinta;
+- volume mecânico material separável;
+- requisito novo de independência;
+- outro trigger G1–G6 material.
 
-Isso não autoriza spawn especulativo. Registrar:
+```text
+SEPARATE_RESPONSIBILITIES
+WITH MATERIAL NET GAIN
+=
+MULTIAGENT_RECLASSIFICATION_RECOMMENDATION
+```
+
+Registrar:
 
 ```text
 NEW_MULTIAGENT_TRIGGER =
@@ -1846,9 +2104,25 @@ ROOT_CURRENT_EFFORT =
 WHY_NOT_ROOT =
 SELECTED_ROLE =
 SELECTED_TIER =
+G1 =
+G2 =
+G3 =
+G4 =
+G5 =
+G6 =
+OFFLOAD_MATERIALITY_GATE =
 ```
 
-Também reavaliar no sentido oposto:
+Se os gates passarem:
+
+```text
+MULTIAGENT_RECLASSIFICATION_REQUIRED = YES
+MID_TASK_AUTO_MULTIAGENT_SWITCH = PROHIBITED
+STOP_AT_SAFE_BOUNDARY = YES
+WAIT_FOR_USER_MULTIAGENT_AUTHORIZATION = YES
+```
+
+### 27.3 Perda de justificativa multiagente
 
 ```text
 MULTIAGENT_JUSTIFICATION_LOST
@@ -1856,7 +2130,17 @@ MULTIAGENT_JUSTIFICATION_LOST
 → CONSOLIDATE_TO_DIRECT_WHEN_SAFE
 ```
 
-Se um ponto difícil foi resolvido, de-escalation deve ser considerada imediatamente.
+Isso não autoriza mudança silenciosa de perfil do ROOT.
+
+### 27.4 De-escalation econômica
+
+```text
+CURRENT_ROOT_IS_STILL_SUFFICIENT = YES
+AND REMAINING_WORK = SMALL
+→ CONTINUE_CURRENT_ROOT
+```
+
+Só recomendar mudança manual de ROOT se a economia líquida for material.
 
 ---
 
@@ -1877,12 +2161,15 @@ Se um ponto difícil foi resolvido, de-escalation deve ser considerada imediatam
 12. O sandbox é compatível?
 13. Há overlap de escrita ou contexto?
 14. O retorno pode ser reconciliado objetivamente?
-15. Um root escalation simples seria melhor que outro agente?
-16. Estamos duplicando inteligência cara sem valor distinto?
-17. Existe mais de uma rota tecnicamente válida?
-18. Entre as rotas válidas, qual minimiza EXPECTED_COST_PER_SUCCESSFUL_TASK?
-19. Delegação para tier adjacente ainda compensa após duplicated context e integração?
-20. Uma failure é realmente ambígua o suficiente para justificar Triage?
+15. O problema exige mais inteligência ou responsabilidade separada?
+16. Se exige mais inteligência apenas, isso requer `ROOT_RECLASSIFICATION` em vez de subagente?
+17. Estamos duplicando inteligência cara sem valor distinto?
+18. Existe mais de uma rota tecnicamente válida?
+19. Entre as rotas válidas, qual minimiza EXPECTED_COST_PER_SUCCESSFUL_TASK?
+20. Delegação para tier adjacente ainda compensa após duplicated context e integração?
+21. Uma failure é realmente ambígua o suficiente para justificar Triage?
+22. A mudança proposta é inicial ou mid-task?
+23. Se mid-task, existe confirmação explícita do usuário para mudar execution mode?
 ```
 
 Se não houver ganho claro:
@@ -1894,147 +2181,85 @@ SUBAGENTS_ALLOWED = NO
 
 ---
 
-## 28.1 Registro operacional atual
+## 28.1 Registro operacional proposto
 
-Após materialização desta revisão, o registro operacional esperado é:
+FUNCTIONAL_ROLES = SCOUT | RESEARCHER | VALIDATOR | TRIAGE_ANALYST | MECHANICAL_IMPLEMENTER | IMPLEMENTER | REVIEWER | SECURITY_REVIEWER | ARCHITECT | SCRIBE
+ROLE_CATALOG = GUIDANCE; DOES_NOT_GUARANTEE_RUNTIME_CAPABILITY
+RUNTIME_MODEL_AND_EFFORT = EXPLICITLY_CONFIGURED_OR_INHERITED
+RUNTIME_TOOL_SURFACE = VERIFY_BEFORE_DELEGATION
+ORCHESTRATION_RUNTIME = NATIVE | EXTERNAL | MANUAL | UNKNOWN
+MODEL_TOPOLOGY = HOMOGENEOUS | HETEROGENEOUS | UNKNOWN
+PER_SUBAGENT_USER_APPROVAL = NOT_REQUIRED_WHEN_MODE_AUTHORIZED_SCOPE_BOUNDED_AND_GATE_PASS
+RECURSIVE_DELEGATION = DISABLED_BY_DEFAULT; CONDITIONAL_BOUNDED_ALLOWANCE
+RUNTIME_CONCURRENCY_LIMIT = DISCOVERED_PER_SURFACE
+TERRA = OUTSIDE_CURRENT_GPT6_ROUTING_BASELINE; COMPATIBILITY_OR_HISTORY_ONLY
 
-```text
-ACTIVE_PROFILES =
-luna_scout |
-luna_researcher |
-luna_validator |
-luna_triage |
-luna_worker |
-luna_scribe |
-terra_implementer |
-terra_reviewer |
-terra_security |
-sol_architect
-
-DEPRECATED_COMPATIBILITY_PROFILES =
-luna_explorer |
-luna_test_analyst
-
-UNPROFILED_SUBAGENT = PROHIBITED
-MAX_CONCURRENT_SUBAGENTS = 2
-MAX_CONCURRENT_WRITERS = 1
-DEFAULT_SUBAGENT_MODEL = CONFIGURATION_FALLBACK_ONLY
-```
-
-O root continua sendo escolhido na interface/superfície do Codex; a política recomenda
-o tier conforme a atividade e não o fixa no TOML global.
-
----
+Sol/Medium, Sol/High, Luna/XHigh e Sol/High → Astra/Medium são heurísticas de roteamento desta governança. Não são defaults impostos pela OpenAI. A superfície pode não permitir a escolha pretendida; nesse caso, não alegar que ela ocorreu.
 
 ## 28.2. Changelog resumido desta revisão
 
-Mudanças da `v1.7-R2.1` sobre `v1.7-R2`:
+Mudanças propostas sobre a v1.7-R2.2:
 
-- consolida cinco cenários A–E de conformidade com resultado inicial `5/5 PASS`;
-- reconhece explicitamente que podem existir múltiplas rotas tecnicamente válidas;
-- define seleção entre rotas por `EXPECTED_COST_PER_SUCCESSFUL_TASK`, confiabilidade, authority e eficiência de contexto;
-- reforça que delegação para tier adjacente exige ganho líquido material após handoff, duplicated context e integração;
-- proíbe spawn de Triage como reação ritual a qualquer falha de teste;
-- explicita que failure localizada e autoexplicativa pode permanecer em reparo direto pelo root;
-- preserva integralmente a separação desta revisão em relação a Bounded Cyclic Execution.
-
-Base consolidada herdada da `v1.7-R2` sobre `v1.7-R1`:
-
-- `direct-first` deixa de ser interpretado como “root capaz executa tudo”;
-- adiciona `MATERIAL_INTELLIGENCE_ROUTING_GAIN` como gate G6;
-- reconhece pipeline multiagente sequencial, não apenas paralelismo;
-- exige escolher inteligência do root antes dos subagentes;
-- adiciona gate de redundância da capacidade do root;
-- diferencia `NEED_MORE_INTELLIGENCE`, `NEED_SEPARATE_RESPONSIBILITY` e
-  `NEED_INDEPENDENCE`;
-- introduz conceito explícito de hotspot cognitivo;
-- `luna_worker` volta a ser perfil ativo como `MECHANICAL_IMPLEMENTER`;
-- `terra_implementer` fica para implementação que exige julgamento material;
-- Validator pode ter write capability técnica para artefatos de validação, sem
-  source write authorization;
-- reviewer deixa de ser apropriado quando apenas duplica root já suficiente;
-- `Terra/High root + Terra/High reviewer` sem independência/valor distinto passa a
-  anti-pattern;
-- mantém máximo de dois subagentes concorrentes e um writer;
-- mantém Bounded Cyclic Execution, Work Units e retry framework fora do escopo.
-
----
+- mantém o rebaseline Luna → Sol → Astra e a rota Luna/XHigh como ROOT quando Luna é suficiente;
+- classifica os baselines Sol/Medium, Sol/High e a recomendação Sol/High → Astra/Medium como heurísticas desta governança;
+- separa papel funcional, modelo resolvido, effort e superfície de ferramentas;
+- separa `ORCHESTRATION_RUNTIME` de `MODEL_TOPOLOGY`, permitindo `NATIVE + HOMOGENEOUS` e `NATIVE + HETEROGENEOUS`;
+- remove nomes de papel que implicavam modelo;
+- permite spawn bounded sem confirmação individual quando o modo e o escopo MULTIAGENT já foram autorizados;
+- mantém mudança de DIRECT para MULTIAGENT durante execução sob autorização do usuário;
+- desabilita recursão por padrão e permite exceção com ganho material, tarefa bounded, ownership claro, orçamento de concorrência e suporte runtime confirmado;
+- verifica tool surface real antes da delegação e permite reutilizar capability resolution estável;
+- remove limites globais fixos de concorrência;
+- mantém DIRECT-first, ganho material, authority, ownership e responsabilidade final do root;
+- preserva Bounded Cyclic Execution fora do escopo.
 
 ## 29. Resumo normativo
 
-```text
 DIRECT_EXECUTION = DEFAULT
-MULTIAGENT_EXECUTION = EXCEPTION
-MULTIAGENT != PARALLELISM_ONLY
-SEQUENTIAL_MULTIAGENT_PIPELINE = ALLOWED
+MULTIAGENT_EXECUTION = EXCEPTION_WITH_MATERIAL_NET_GAIN
+MODEL_FAMILY_SELECTED_BY_CAPABILITY = YES
+REASONING_EFFORT_SELECTED_BY_DELIBERATION = YES
+EXECUTION_RISK_CONTROLS_AUTHORITY_VALIDATION_AND_REVIEW = YES
 
-ECONOMICAL_INTELLIGENCE_ROUTING = REQUIRED
-EXPECTED_COST_PER_SUCCESSFUL_TASK = OPTIMIZATION_TARGET
-MULTIPLE_VALID_ROUTINGS_MAY_EXIST = YES
-ROUTE_SELECTION_REQUIRES_MATERIAL_NET_GAIN = YES
-ADJACENT_TIER_DELEGATION_REQUIRES_MATERIAL_NET_GAIN = YES
-TEST_FAIL != TRIAGE_REQUIRED
+AGENT_ROLE != RUNTIME_SELECTED_MODEL
+AGENT_ROLE != REASONING_EFFORT
+AGENT_ROLE != TOOL_SURFACE
+REGISTERED_ROLE != GUARANTEED_RUNTIME_CAPABILITY
+BEFORE_DELEGATION = VERIFY_REQUIRED_TOOL_SURFACE
 
-EXPENSIVE_INTELLIGENCE = COGNITIVE_HOTSPOTS_ONLY
-BOUNDED_VERIFIABLE_EXECUTION = LOWEST_SUFFICIENT_TIER
+ORCHESTRATION_RUNTIME = NATIVE | EXTERNAL | MANUAL
+MODEL_TOPOLOGY = HOMOGENEOUS | HETEROGENEOUS
+NATIVE_MULTIAGENT = ORCHESTRATION_RUNTIME = NATIVE
+HETEROGENEOUS_MULTIAGENT = MODEL_TOPOLOGY = HETEROGENEOUS
+NATIVE_MULTIAGENT AND HETEROGENEOUS_MULTIAGENT = COMPATIBLE_AXES
+TIER_SAVING_CLAIM = REQUIRES_ACTUAL_RUNTIME_MODEL_EVIDENCE
+RUNTIME_CAPABILITY_RESOLUTION != PER_SPAWN_HUMAN_GATE
 
-VALID_MULTIAGENT_TRIGGERS =
-PARALLEL_INDEPENDENT_FRONTS |
-DISTINCT_SPECIALIZATION_REQUIRED |
-MATERIAL_DECOMPOSITION_GAIN |
-IDENTIFIED_CONFLICT_REQUIRES_ADJUDICATION |
-GOVERNANCE_REQUIRES_INDEPENDENT_REVIEW |
-MATERIAL_INTELLIGENCE_ROUTING_GAIN
+LUNA_XHIGH_ROOT = ALLOWED_WHEN_LUNA_CAPABILITY_IS_SUFFICIENT
+NORMAL_TECHNICAL_ROOT = SOL_MEDIUM (GOVERNANCE_HEURISTIC)
+HIGH_JUDGMENT_ROOT = SOL_HIGH (GOVERNANCE_HEURISTIC)
+MATERIAL_ARCHITECTURAL_DECISION = SOL_HIGH (GOVERNANCE_HEURISTIC)
+SOL_HIGH_TO_ASTRA_MEDIUM = ESCALATION_HEURISTIC_NOT_PROVIDER_RULE
 
-IF_BENEFIT_IS_UNCLEAR = DIRECT
+DIRECT_TO_MULTIAGENT_DURING_EXECUTION = USER_AUTHORIZATION_REQUIRED
+RUNTIME_CAN_AUTODELEGATE != GOVERNANCE_AUTHORIZATION_TO_AUTODELEGATE
+PER_SUBAGENT_USER_APPROVAL = NOT_REQUIRED_BY_DEFAULT_WHEN_MODE_AUTHORIZED_SCOPE_BOUNDED_AND_GATE_PASS
+RECURSIVE_DELEGATION = DISABLED_BY_DEFAULT; ALLOW_ONLY_WITH_MATERIAL_GAIN_BOUNDED_TASK_CLEAR_OWNERSHIP_BUDGET_AND_RUNTIME_SUPPORT
+RUNTIME_CONCURRENCY_LIMIT = DISCOVERED_PER_SURFACE
+CONCURRENT_WRITE_OVERLAP = PROHIBITED
 
-ROOT_INTELLIGENCE_IS_PART_OF_ROUTING_DECISION = YES
-ROOT_CAPABILITY_REDUNDANCY_CHECK = REQUIRED
-DO_NOT_DUPLICATE_EXPENSIVE_INTELLIGENCE_WITHOUT_DISTINCT_VALUE = YES
-
-NORMAL_ROOT = TERRA / MEDIUM
-HIGH_JUDGMENT_ROOT = TERRA / HIGH
-
-LUNA_DEFAULT = HIGH
-LUNA_ANALYTICAL = XHIGH_WHEN_SUPPORTED
-
-MECHANICAL_IMPLEMENTATION = LUNA / HIGH
-NORMAL_IMPLEMENTATION_WITH_JUDGMENT = TERRA / MEDIUM
-COMPLEX_IMPLEMENTATION = TERRA / HIGH
-
-REVIEW = ROOT_SELF_REVIEW_BY_DEFAULT_WHEN_SUFFICIENT
-INDEPENDENT_REVIEW = ONLY_WHEN_REQUIRED_OR_MATERIALLY_JUSTIFIED
-
-ARCHITECTURE_OR_HARD_REVIEW = SOL / HIGH TEMPORARY SPECIALIST
-
-MAX_CONCURRENT_SUBAGENTS = 2
-MAX_CONCURRENT_WRITERS = 1
-
-MODEL_ESCALATION != AUTHORITY_ESCALATION
+IN_EXECUTION_ROOT_AUTO_ESCALATION = PROHIBITED
+MODEL_CHANGE_AND_EFFORT_CHANGE = USER_CONTROLLED_RUNTIME_RECONFIGURATION
 DELEGATION != AUTHORITY_TRANSFER
-WRITE_CAPABILITY != WRITE_AUTHORIZATION
 CAPABILITY != PERMISSION
-
 CYCLIC_EXECUTION_METHODOLOGY = OUT_OF_SCOPE_FOR_NOW
 USER_FINAL_AUTHORITY = YES
-```
-
----
+TERRA = OUTSIDE_CURRENT_GPT6_ROUTING_BASELINE; COMPATIBILITY_OR_HISTORY_ONLY
 
 ## 30. Encerramento
 
-O objetivo não é minimizar agentes a qualquer custo, nem maximizar delegação.
+O objetivo é minimizar o custo esperado por tarefa concluída corretamente, mantendo qualidade, segurança, autoridade e previsibilidade. DIRECT é o modo padrão; MULTIAGENT exige ganho material e autorização para o modo e escopo da atividade. Depois dessa autorização, o root pode criar subagentes bounded que passem o gate sem aprovação humana por spawn individual.
 
-O objetivo é minimizar **custo esperado por tarefa concluída corretamente**, mantendo
-qualidade, segurança, governança e previsibilidade.
+O root mantém a responsabilidade de reconciliar evidências e emitir o resultado. Use inteligência forte onde julgamento forte muda materialmente a probabilidade de sucesso. Feche decisões antes de delegar execução mecânica. Quando o root em execução deixar de ser suficiente, recomende reclassificação, pare em boundary seguro e aguarde reconfiguração do usuário. Não reconfigure silenciosamente o runtime.
 
-Princípio final:
 
-> **Use inteligência forte onde o julgamento forte muda materialmente a probabilidade
-> de sucesso. Feche decisões e invariantes no tier adequado. Entre rotas tecnicamente
-> válidas, prefira a que reduz o custo esperado da tarefa correta sem sacrificar
-> confiabilidade ou authority. Delegue execução mecânica, factual e objetivamente
-> verificável ao menor tier suficiente. Não crie
-> reviewer para duplicar um root já capaz quando independência não é necessária.
-> Multiagente deve economizar ou reduzir risco de forma demonstrável; caso contrário,
-> execute diretamente.**

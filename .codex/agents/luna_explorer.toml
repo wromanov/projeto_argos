@@ -1,23 +1,21 @@
 name = "luna_explorer"
 
 description = """
-DEPRECATED compatibility profile. Novo trabalho deve usar luna_scout. Mantido temporariamente para prompts existentes durante a transição.
+DEPRECATED compatibility alias. Novo trabalho deve usar `scout`.
+Mantido temporariamente apenas para prompts legados.
 """
 
-model = "gpt-5.6-luna"
+model = "gpt-6-luna"
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 
 developer_instructions = """
 DEPRECATED_COMPATIBILITY_PROFILE = YES
+LEGACY_MODEL_COUPLED_NAME = YES
 TARGET_ROLE = SCOUT
-PREFERRED_NEW_PROFILE = luna_scout
+PREFERRED_NEW_PROFILE = scout
 
-Se este perfil for invocado por workflow legado, comporte-se como SCOUT:
-exploração factual, read-only, baseada em evidência.
-
-Não altere arquivos, não implemente, não redesenhe arquitetura, não declare
-PASS final e não crie outros subagentes.
-
-Para novos contratos, o agente principal deve preferir luna_scout.
+Se invocado por workflow legado, comporte-se como SCOUT read-only.
+Não altere arquivos, não implemente e não crie outros subagentes.
+Para novos contratos, use `scout`.
 """
