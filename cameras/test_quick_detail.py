@@ -51,37 +51,40 @@ class QuickDetailTests(TestCase):
         self.assertEqual(data["monitoring"]["state"], "OUT_OF_SCOPE")
         self.assertEqual(data["monitoring"]["state"], str(MonitoringReadService().current(self.camera.pk).effective_state))
         self.assertEqual(EstadoMonitoramento.objects.count(), before_monitoring)
-        self.assertEqual(data["image"], {"state": "NO_CAPTURE_AVAILABLE", "preview_url": None})
+        self.assertEqual(data["image"], {"state": "NO_IMAGE_AVAILABLE", "source": "NONE",
+                                         "capture_state": "NO_CAPTURE_AVAILABLE", "preview_url": None})
         self.assertEqual(data["links"]["full_detail_url"], reverse("cameras:detalhe", args=[self.camera.pk]))
         self.assertNotIn("storage_key", response.content.decode())
         self.assertEqual(response["Cache-Control"], "no-store")
 
-    def test_latest_capture_only_and_semantic_states(self):
+    def test_display_image_semantic_states(self):
         self.allow_view()
         now = timezone.now()
         CameraImageRecord.objects.create(
             camera=self.camera, provenance="UPLOAD_MANUAL", storage_key="private/manual.png",
             content_type="image/png", sha256="a" * 64, integrity_status="VALID",
         )
-        self.assertEqual(self.client.get(self.url).json()["image"]["state"], "NO_CAPTURE_AVAILABLE")
+        image = self.client.get(self.url).json()["image"]
+        self.assertEqual((image["state"], image["source"]), ("UNAVAILABLE", "UPLOAD_MANUAL"))
         older = CameraImageRecord.objects.create(
             camera=self.camera, provenance="CAPTURA_CAMERA", captured_at=now - timedelta(days=1),
             storage_key="private/older.png", content_type="image/png", sha256="a" * 64,
             integrity_status="VALID",
         )
         image = self.client.get(self.url).json()["image"]
-        self.assertEqual(image, {"state": "UNAVAILABLE", "preview_url": None})
+        self.assertEqual((image["state"], image["source"]), ("UNAVAILABLE", "CAPTURA_CAMERA"))
         with patch("cameras.imagens.read_service.default_storage.exists", return_value=True):
             image = self.client.get(self.url).json()["image"]
         self.assertEqual(image["state"], "AVAILABLE")
-        self.assertEqual(image["preview_url"], reverse("cameras:preview_ultima_captura", args=[self.camera.pk, "PANEL"]))
+        self.assertEqual(image["preview_url"], reverse("cameras:preview_exibicao", args=[self.camera.pk, "PANEL"]))
         latest = CameraImageRecord.objects.create(
             camera=self.camera, provenance="CAPTURA_CAMERA", captured_at=now,
             storage_key="private/latest.png", content_type="image/png", sha256="a" * 64,
             integrity_status="INVALID",
         )
         image = self.client.get(self.url).json()["image"]
-        self.assertEqual(image, {"state": "ERROR", "preview_url": None})
+        self.assertEqual((image["state"], image["source"], image["preview_url"]),
+                         ("ERROR", "CAPTURA_CAMERA", None))
         self.assertNotIn("private/", str(image))
         self.assertIsNotNone(older.pk)
         self.assertIsNotNone(latest.pk)

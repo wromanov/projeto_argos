@@ -2,7 +2,7 @@
 
 from django.urls import reverse
 
-from .imagens.read_service import CameraImageReadService, LatestCameraCaptureStatus
+from .imagens.display_service import DisplayImageReadService, DisplayImageState
 from .models import Camera
 from .monitoramento.read_service import MonitoringReadService
 
@@ -11,7 +11,7 @@ def camera_quick_detail(camera_id):
     monitoring_service = MonitoringReadService()
     camera = monitoring_service.camera_queryset(Camera.objects.filter(pk=camera_id)).get()
     monitoring = monitoring_service.project(camera)
-    capture = CameraImageReadService().latest_camera_captures((camera.pk,), check_storage=True)[camera.pk]
+    display = DisplayImageReadService().display_image(camera.pk)
     location = {field: getattr(camera, field) or None for field in (
         "terminal", "pavimento", "setor", "ambiente", "ponto_referencia"
     )}
@@ -29,8 +29,9 @@ def camera_quick_detail(camera_id):
                        "evidence_at": monitoring.evidence_at.isoformat() if monitoring.evidence_at else None,
                        "state_since": monitoring.state_since.isoformat() if monitoring.state_since else None,
                        "scope_reason": str(monitoring.scope_reason) if monitoring.scope_reason else None},
-        "image": {"state": str(capture.status),
-                  "preview_url": reverse("cameras:preview_ultima_captura", args=[camera.pk, "PANEL"])
-                  if capture.status == LatestCameraCaptureStatus.AVAILABLE else None},
+        "image": {"state": str(display.state), "source": str(display.source),
+                  "capture_state": str(display.capture_state),
+                  "preview_url": reverse("cameras:preview_exibicao", args=[camera.pk, "PANEL"])
+                  if display.state == DisplayImageState.AVAILABLE else None},
         "links": {"full_detail_url": reverse("cameras:detalhe", args=[camera.pk])},
     }

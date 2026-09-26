@@ -130,10 +130,10 @@ class PreviewDeliveryTests(TestCase):
              CaptureQueriesContext(connection) as queries:
             response = self.client.get(reverse("cameras:lista"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.url)
+        self.assertContains(response, reverse("cameras:preview_exibicao", args=[self.camera.pk, "THUMB"]))
         self.assertContains(response, "Ver detalhes")
         image_queries = [query for query in queries if "cameras_cameraimagerecord" in query["sql"].lower()]
-        self.assertEqual(len(image_queries), 1)
+        self.assertEqual(len(image_queries), 2)  # capture batch + missing-camera manual batch
         self.assertEqual(self.client.get(reverse("cameras:lista"), {"q": "Sem captura"}).status_code, 200)
         self.assertEqual(self.client.get(reverse("cameras:lista"), {"page": "2"}).status_code, 200)
 

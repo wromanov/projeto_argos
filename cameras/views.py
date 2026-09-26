@@ -20,8 +20,8 @@ from .governanca import (
 from .models import AtividadeCamera, Camera, EventoAuditoria, SubstituicaoCamera
 from .monitoramento.read_service import MonitoringReadService
 from .imagens.upload_service import aceitar_upload_manual
-from .imagens.read_service import CameraImageReadService
-from .imagens.preview_service import CameraImagePreviewService, PreviewState, CONTENT_TYPE, VARIANTS
+from .imagens.display_service import DisplayImageReadService
+from .imagens.preview_service import CameraImagePreviewService, DisplayImagePreviewService, PreviewState, CONTENT_TYPE, VARIANTS
 from .quick_detail import camera_quick_detail
 from .validadores import normalizar_texto_cadastral
 
@@ -208,10 +208,10 @@ def lista_cameras(request):
     page_obj = paginator.get_page(request.GET.get("page"))
     monitoring_service = MonitoringReadService()
     page_cameras = tuple(monitoring_service.camera_queryset(page_obj.object_list))
-    captures = CameraImageReadService().latest_camera_captures(page_cameras, check_storage=False)
+    displays = DisplayImageReadService().display_images(page_cameras, check_storage=False)
     camera_rows = tuple(
         {"camera": camera, "monitoring": _monitoramento_ui(monitoring_service.project(camera)),
-         "capture": captures[camera.pk]}
+         "display": displays[camera.pk]}
         for camera in page_cameras
     )
     query_params = _query_params(q=q, status=status_selecionados,
@@ -438,10 +438,16 @@ def quick_detail_camera(request, pk):
 @login_not_required
 def preview_ultima_captura(request, pk, variant):
     """Rota fina: somente Camera.pk e variante; autorização antes da busca."""
+    return _preview_response(request, pk, variant, CameraImagePreviewService)
+
+
+def _preview_response(request, pk, variant, service_class):
+    """Boundary HTTP comum; a seleção é responsabilidade do serviço recebido."""
     def empty(status, state):
         response = HttpResponse(status=status)
         response["X-Preview-State"] = state
         response["Cache-Control"] = "no-store"
+        response["X-Content-Type-Options"] = "nosniff"
         return response
 
     if not request.user.is_authenticated:
@@ -453,7 +459,7 @@ def preview_ultima_captura(request, pk, variant):
     if not Camera.objects.filter(pk=pk).exists():
         return empty(404, "CAMERA_NOT_FOUND")
 
-    result = CameraImagePreviewService().deliver(pk, variant)
+    result = service_class().deliver(pk, variant)
     if result.state != PreviewState.AVAILABLE:
         status = {PreviewState.NO_CAPTURE_AVAILABLE: 404,
                   PreviewState.UNAVAILABLE: 503, PreviewState.ERROR: 422}[result.state]
@@ -464,6 +470,12 @@ def preview_ultima_captura(request, pk, variant):
     response["X-Content-Type-Options"] = "nosniff"
     response["X-Preview-State"] = "AVAILABLE"
     return response
+
+
+@login_not_required
+def preview_exibicao(request, pk, variant):
+    """Entrega a seleção atual de DISPLAY_IMAGE com os mesmos limites HTTP."""
+    return _preview_response(request, pk, variant, DisplayImagePreviewService)
 
 
 @permission_required("cameras.view_camera", raise_exception=True)

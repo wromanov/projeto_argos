@@ -10,6 +10,8 @@ from django.core.files.storage import default_storage
 from PIL import Image, ImageOps, UnidentifiedImageError
 
 from cameras.imagens.read_service import CameraImageReadService, LatestCameraCaptureStatus
+from cameras.imagens.display_service import DisplayImageReadService, DisplayImageState
+from cameras.models import CameraImageRecord
 
 
 class PreviewState(StrEnum):
@@ -47,6 +49,10 @@ class CameraImagePreviewService:
         if projected.status != LatestCameraCaptureStatus.AVAILABLE:
             return PreviewResult(PreviewState(projected.status.value))
 
+        return self._deliver_record(record, variant)
+
+    def _deliver_record(self, record: CameraImageRecord, variant: str) -> PreviewResult:
+
         max_bytes = getattr(settings, "ARGOS_PREVIEW_MAX_SOURCE_BYTES", 20 * 1024 * 1024)
         max_pixels = getattr(settings, "ARGOS_PREVIEW_MAX_SOURCE_PIXELS", 20_000_000)
         if record.size_bytes is not None and record.size_bytes > max_bytes:
@@ -80,3 +86,18 @@ class CameraImagePreviewService:
                 return PreviewResult(PreviewState.AVAILABLE, output.getvalue())
         except (OSError, ValueError, SyntaxError, UnidentifiedImageError, Image.DecompressionBombError):
             return PreviewResult(PreviewState.ERROR)
+
+
+class DisplayImagePreviewService(CameraImagePreviewService):
+    """Reavalia a seleção no request; nunca confia na projeção do HTML."""
+
+    def deliver(self, camera_id: int, variant: str) -> PreviewResult:
+        if variant not in VARIANTS:
+            raise ValueError("Variante inválida")
+        display = DisplayImageReadService(storage_exists=self.storage.exists).display_image(camera_id)
+        if display.state == DisplayImageState.NO_IMAGE_AVAILABLE:
+            return PreviewResult(PreviewState.NO_CAPTURE_AVAILABLE)
+        if display.state != DisplayImageState.AVAILABLE:
+            return PreviewResult(PreviewState(display.state.value))
+        record = CameraImageRecord.objects.get(pk=display.immutable_id)
+        return self._deliver_record(record, variant)
