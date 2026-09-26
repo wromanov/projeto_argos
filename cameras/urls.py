@@ -19,6 +19,7 @@ urlpatterns = [
     path("<int:pk>/monitoramento/historico/", views.historico_monitoramento, name="historico_monitoramento"),
     path("<int:pk>/imagens/upload/", views.upload_imagem_camera, name="upload_imagem"),
     path("<int:pk>/imagens/ultima-captura/<str:variant>/", views.preview_ultima_captura, name="preview_ultima_captura"),
+    path("<int:pk>/imagens/exibicao/<str:variant>/", views.preview_exibicao, name="preview_exibicao"),
     path("<int:pk>/quick-detail/", views.quick_detail_camera, name="quick_detail"),
     path("atividades/<int:pk>/editar/", views.editar_atividade_camera, name="editar_atividade"),
     path("<int:camera_pk>/atividades/nova/", views.criar_atividade_camera, name="criar_atividade"),

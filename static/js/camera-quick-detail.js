@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageState = dialog.querySelector("[data-quick-detail-image-state]");
   const imageFrame = dialog.querySelector("[data-quick-detail-image-frame]");
   const imagePlaceholder = dialog.querySelector("[data-quick-detail-image-placeholder]");
+  const imageTitle = dialog.querySelector("[data-quick-detail-image-title]");
   const footer = dialog.querySelector("[data-quick-detail-footer]");
   const editLink = dialog.querySelector("[data-quick-detail-edit-link]");
   const headerSubtitle = dialog.querySelector("[data-quick-detail-header-subtitle]");
@@ -29,9 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   const statusLabels = { ONLINE: "Online", OFFLINE: "Offline", UNKNOWN: "Desconhecido", OUT_OF_SCOPE: "Não monitorada" };
   const imageLabels = {
-    NO_CAPTURE_AVAILABLE: "Nenhuma captura disponível",
-    UNAVAILABLE: "Última captura indisponível",
-    ERROR: "Erro na última captura registrada"
+    NO_IMAGE_AVAILABLE: "Nenhuma imagem disponível",
+    UNAVAILABLE: "Imagem indisponível",
+    ERROR: "Erro na imagem registrada"
   };
 
   function clearSelection() {
@@ -72,6 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
     image.hidden = true;
     imagePlaceholder.hidden = false;
     imageFrame.dataset.imageState = data.image.state.toLowerCase();
+    const sourceLabel = data.image.source === "CAPTURA_CAMERA" ? "Última captura registrada" :
+      data.image.source === "UPLOAD_MANUAL" ? "Imagem enviada manualmente" : "Nenhuma imagem disponível";
+    imageTitle.textContent = sourceLabel;
+    image.alt = sourceLabel === "Nenhuma imagem disponível" ? "" : `${sourceLabel} da câmera`;
     image.removeAttribute("src");
     if (data.image.state === "AVAILABLE" && data.image.preview_url) {
       imageState.textContent = "Carregando imagem…";
@@ -139,5 +144,5 @@ document.addEventListener("DOMContentLoaded", () => {
   dialog.addEventListener("close", () => { if (opener) close(); });
   dialog.addEventListener("click", (event) => { if (event.target === dialog) close(); });
   image.addEventListener("load", () => { if (dialog.open && !content.hidden) { image.hidden = false; imagePlaceholder.hidden = true; imageFrame.dataset.imageState = "available"; imageState.textContent = ""; } });
-  image.addEventListener("error", () => { image.hidden = true; imagePlaceholder.hidden = false; imageFrame.dataset.imageState = "unavailable"; imageState.textContent = "Última captura indisponível"; });
+  image.addEventListener("error", () => { image.hidden = true; imagePlaceholder.hidden = false; imageFrame.dataset.imageState = "unavailable"; imageState.textContent = "Imagem indisponível"; });
 });
