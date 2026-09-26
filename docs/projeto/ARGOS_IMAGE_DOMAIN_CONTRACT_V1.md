@@ -20,7 +20,7 @@ RELATED_SECURITY_AUTHORITY = docs/projeto/ADR-021_seguranca_capacidade_monitoram
 ## 1. Finalidade, autoridade e limites
 
 Este documento transforma IMG-01 em contrato de domínio para IMG-02 a IMG-09 e
-para consumidores de imagem, em especial CameraQuickDetailPanel. Define os
+para consumidores de imagem, em especial Inventário e CameraQuickDetailPanel. Define os
 significados, invariantes, consultas, estados observáveis e requisitos que as
 slices de implementação devem preservar. Em conflito sobre o domínio de
 imagens, esta é a authority canônica; ADR-019 continua governando a separação
@@ -205,8 +205,9 @@ PRIMARY_IMAGE != LATEST_CAMERA_CAPTURE.
 PRIMARY_IMAGE é uma decisão de produto independente; sua existência, semântica,
 seleção e lifecycle estão DEFERRED_TO_IMG07. Este contrato não cria atributo,
 relação, flag, campo, API ou regra de implementação para PRIMARY_IMAGE.
-CameraQuickDetailPanel usa LATEST_CAMERA_CAPTURE e não usa PRIMARY_IMAGE como
-substituto.
+CameraQuickDetailPanel preserva LATEST_CAMERA_CAPTURE como leitura canônica e
+consome DISPLAY_IMAGE para apresentação, conforme a seção 25. Não usa
+PRIMARY_IMAGE como substituto.
 
 ## 9. IMAGE_HISTORY_CONTRACT
 
@@ -256,10 +257,11 @@ UPLOAD_MANUAL. Não recebe captured_at de câmera nem pode ser apresentado como
 captura de equipamento.
 
 MIME permitido, limites de bytes/dimensões, política para imagens animadas,
-re-encoding, metadados retidos e eventual fallback visual do upload permanecem
-OPEN_DECISIONS. Se uma experiência futura optar por mostrar uma imagem manual
-em contexto que espera captura, essa escolha deve ser explicitamente
-adjudicada, rotulada UPLOAD_MANUAL e nunca funcionar como fallback implícito.
+re-encoding e metadados retidos permanecem OPEN_DECISIONS. O uso de
+UPLOAD_MANUAL como fallback exclusivamente de apresentação, quando não existe
+captura corrente, está adjudicado pela política DISPLAY_IMAGE da seção 25.
+O upload mantém sua proveniência e nunca passa a ser captura ou evidência de
+monitoramento.
 
 ## 12. STORAGE_REQUIREMENTS
 
@@ -370,6 +372,9 @@ credenciais de monitoramento para captura.
    parte de resposta autorizada, nunca acesso público por URL/caminho.
 4. CAPTURE_REQUEST(request_id, principal), se implementado, expõe resultado
    operacional sanitizado do pedido e não equivale à leitura da imagem.
+5. DISPLAY_IMAGE(camera, principal) projeta a imagem de apresentação pela
+   seleção da seção 25, preservando o resultado de LATEST_CAMERA_CAPTURE e a
+   proveniência do registro escolhido.
 
 Leituras usam o caminho canônico do domínio e o mesmo modelo/histórico para UI
 e superfícies futuras. Nenhum consumidor cria tabela, consulta ou regra paralela
@@ -377,16 +382,23 @@ exclusiva para imagem.
 
 ## 18. QUICK_DETAIL_PANEL_CONSUMER_CONTRACT
 
-CameraQuickDetailPanel consome LATEST_CAMERA_CAPTURE da câmera selecionada.
-Não consome LATEST_IMAGE_OF_ANY_ORIGIN e não usa PRIMARY_IMAGE como substituto.
-Não inicia captura, probe, chamada VMS, acesso direto à câmera nem polling
-pesado ao abrir ou trocar de câmera. UPLOAD_MANUAL não é fallback implícito.
+CameraQuickDetailPanel consome DISPLAY_IMAGE da câmera selecionada segundo
+a política única da seção 25 e mantém visível o estado de
+LATEST_CAMERA_CAPTURE. Não consome LATEST_IMAGE_OF_ANY_ORIGIN e não usa
+PRIMARY_IMAGE como substituto. Não inicia captura, probe, chamada VMS, acesso
+direto à câmera nem polling pesado ao abrir ou trocar de câmera.
 
-O painel respeita autorização e mostra proveniência, timestamp, estado de
-disponibilidade/erro e preview validado quando houver. NO_CAPTURE_AVAILABLE,
-UNAVAILABLE e ERROR são estados distintos; captura anterior pode aparecer
-somente em histórico claramente identificado, nunca como captura corrente.
-O painel não contorna validação, storage, permissão ou auditoria.
+O painel respeita autorização e mostra proveniência, timestamp pertinente,
+estado de disponibilidade/erro e preview validado quando houver. Para
+CAPTURA_CAMERA, usa rótulo equivalente a "Última captura registrada"; para
+UPLOAD_MANUAL, "Imagem enviada manualmente"; para NONE, "Nenhuma imagem
+disponível". UPLOAD_MANUAL usa recorded_at, sem captured_at presumido.
+NO_CAPTURE_AVAILABLE, UNAVAILABLE e ERROR da captura continuam distinguíveis;
+UNAVAILABLE ou ERROR não podem ser mascarados por upload manual. Upload manual
+corrente indisponível ou inválido não pode ser mascarado por outro mais antigo.
+Captura anterior pode aparecer somente em histórico claramente identificado,
+nunca como captura corrente. O painel não contorna validação, storage,
+permissão ou auditoria.
 
 ## 19. PERFORMANCE_CONSTRAINTS
 
@@ -404,6 +416,12 @@ O painel não contorna validação, storage, permissão ou auditoria.
   subsistema de imagens não degradam o monitoramento nem a renderização inicial.
 - Seleção/troca de câmera deve associar a resposta à câmera solicitada para
   impedir conteúdo de uma câmera aparecer em outra.
+- No Inventário, selecionar DISPLAY_IMAGE em lote, sem N+1: resolver capturas
+  da página em lote, identificar apenas câmeras com NO_CAPTURE_AVAILABLE,
+  resolver seus uploads manuais correntes em lote e produzir resultado por item.
+- Índice novo para DISPLAY_IMAGE não é requisito desta atividade.
+  INDEX_MIGRATION = MEASURE_BEFORE_DECIDING; migration posterior depende de
+  evidência de performance.
 
 ## 20. INTEGRATION_CONSTRAINTS
 
@@ -430,9 +448,9 @@ UI-3 consome os mesmos caminhos canônicos, quando chegar sua integração.
 
 ## 21. OPEN_DECISIONS
 
-OPEN_DECISION_COUNT = 7
+OPEN_DECISION_COUNT = 6
 
-As sete questões abaixo são pendências conceituais não bloqueantes para
+As seis questões abaixo são pendências conceituais não bloqueantes para
 canonicalizar IMG-01. Permanecem sem decisão implícita e fecham nas slices
 indicadas:
 
@@ -440,15 +458,15 @@ indicadas:
 |---:|---|---|
 | 1 | Backend definitivo de produção, provedor e estratégia operacional | DEFERRED; decidir na arquitetura posterior de storage/produção. IMG-02 estabelece contrato persistente e abstração configurável antes da migration. |
 | 2 | MIME permitido e limites de bytes/dimensões | IMG-03/IMG-08, antes de aceitar arquivos reais |
-| 3 | Uso visual de UPLOAD_MANUAL quando não houver captura | adjudicação do consumidor/UI-3; continua proibido como fallback implícito |
-| 4 | Retenção, lifecycle e expurgo de registros/bytes | IMG-06/IMG-08/IMG-09, antes de operação destrutiva |
-| 5 | Limiar temporal e semântica de STALE/indisponibilidade do objeto | IMG-02/IMG-06/IMG-09 antes de expor freshness como estado de domínio |
-| 6 | Credencial/perfil e privilégio autorizados para captura | IMG-04/IMG-08, antes de conexão a câmera real |
-| 7 | Existência e semântica final de PRIMARY_IMAGE | IMG-07 |
+| 3 | Retenção, lifecycle e expurgo de registros/bytes | IMG-06/IMG-08/IMG-09, antes de operação destrutiva |
+| 4 | Limiar temporal e semântica de STALE/indisponibilidade do objeto | IMG-02/IMG-06/IMG-09 antes de expor freshness como estado de domínio |
+| 5 | Credencial/perfil e privilégio autorizados para captura | IMG-04/IMG-08, antes de conexão a câmera real |
+| 6 | Existência e semântica final de PRIMARY_IMAGE | IMG-07 |
 
-As sete linhas são sete decisões, porque PRIMARY_IMAGE é questão conceitual
-independente; não se reduz a uma das outras seis. A contagem não altera nem
-escolhe o conteúdo dessas decisões.
+O uso visual de UPLOAD_MANUAL sem captura foi adjudicado pela política
+DISPLAY_IMAGE da seção 25 e deixou de ser OPEN_DECISION. PRIMARY_IMAGE
+permanece questão independente e diferida para IMG-07. A contagem não altera
+nem escolhe o conteúdo das seis decisões remanescentes.
 
 ## 22. IMG02_PREREQUISITES
 
@@ -485,7 +503,7 @@ CURRENT_ACTIVITY_STATUS_AUTHORITY = roadmap, sprint map e documentos de continui
 ## 23. Critério de leitura autônoma
 
 CAN_A_NEW_AGENT_FIND_IMG02_CONTRACT_WITHOUT_CHAT_HISTORY = YES, quanto a
-entidade, proveniência, latest capture, ausência de fallback, timestamps,
+entidade, proveniência, latest capture sem fallback histórico, DISPLAY_IMAGE, timestamps,
 autoria, storage, validação, segurança, auditoria, separação do monitoramento,
 leituras, performance, integração, decisões abertas e pré-requisitos.
 Este contrato não declara o status corrente nem a ordem do trabalho. Consulte o
@@ -527,3 +545,86 @@ Geração permanece on-demand e sem cache público ou persistente. Cache de
 derivados, thumbnails persistentes e CDN exigem métricas e decisão futura.
 Backend definitivo, matriz final de permissões de imagem e políticas finais de
 MIME, bytes e dimensões permanecem deferred. UI-3 e IMG-04 seguem sem autorização.
+
+## 25. DISPLAY_IMAGE_CONTRACT — projeção de apresentação
+
+DISPLAY_IMAGE_POLICY = OPTION_B (decisão de produto aprovada).
+
+DISPLAY_IMAGE é a projeção autorizada para exibir uma imagem da câmera no
+Inventário e no CameraQuickDetailPanel. Não é um registro, uma nova proveniência
+ou mutação de CameraImageRecord. DISPLAY_IMAGE != LATEST_CAMERA_CAPTURE;
+DISPLAY_IMAGE != PRIMARY_IMAGE; DISPLAY_IMAGE != MONITORING_EVIDENCE. A seleção
+de LATEST_CAMERA_CAPTURE da seção 7, inclusive seu estado e a proibição de
+promover captura antiga, permanece integralmente preservada. PRIMARY_IMAGE
+continua reservado a IMG-07. UPLOAD_MANUAL continua sem captured_at e não
+produz evidência nem altera o monitoramento.
+
+### 25.1 Seleção e estados
+
+Para uma câmera autorizada, a projeção obtém primeiro o resultado canônico de
+LATEST_CAMERA_CAPTURE. Somente NO_CAPTURE_AVAILABLE permite selecionar upload
+manual. Nesse caso, considera apenas registros UPLOAD_MANUAL da câmera que
+participam do estado corrente (não retirados logicamente), ordenados por
+recorded_at DESC, immutable_id DESC; immutable_id corresponde ao id estável e
+total do registro. Seleciona o primeiro antes de avaliar integridade ou
+disponibilidade. Não filtra por AVAILABLE e não procura upload mais antigo se
+o selecionado estiver UNAVAILABLE ou ERROR. OLDER_MANUAL_FALLBACK = NO.
+
+| CAPTURE_STATE | Upload manual corrente | SOURCE | STATE | Motivo do fallback |
+|---|---|---|---|---|
+| AVAILABLE | não consultado | CAPTURA_CAMERA | AVAILABLE | vedado: captura disponível |
+| UNAVAILABLE | não consultado | CAPTURA_CAMERA | UNAVAILABLE | vedado: captura corrente indisponível |
+| ERROR | não consultado | CAPTURA_CAMERA | ERROR | vedado: captura corrente inválida |
+| NO_CAPTURE_AVAILABLE | nenhum | NONE | NO_IMAGE_AVAILABLE | permitido, mas sem upload corrente |
+| NO_CAPTURE_AVAILABLE | AVAILABLE | UPLOAD_MANUAL | AVAILABLE | permitido: ausência de captura |
+| NO_CAPTURE_AVAILABLE | UNAVAILABLE | UPLOAD_MANUAL | UNAVAILABLE | permitido: upload corrente indisponível; sem busca anterior |
+| NO_CAPTURE_AVAILABLE | ERROR | UPLOAD_MANUAL | ERROR | permitido: upload corrente inválido; sem busca anterior |
+
+DisplayImageResult é o nome conceitual da leitura. Deve distinguir
+SOURCE = CAPTURA_CAMERA | UPLOAD_MANUAL | NONE; STATE = AVAILABLE |
+NO_IMAGE_AVAILABLE | UNAVAILABLE | ERROR; CAPTURE_STATE = AVAILABLE |
+NO_CAPTURE_AVAILABLE | UNAVAILABLE | ERROR; e um motivo explícito da permissão
+ou vedação do fallback manual. Preserva identidade e proveniência do registro
+selecionado quando houver um. Falhas de autorização, permissão ou consulta não
+são convertidas em NO_IMAGE_AVAILABLE; seguem erros sanitizados do contrato de
+leitura e entrega segura.
+
+### 25.2 Consumidores e apresentação
+
+INVENTORY_THUMBNAIL e CAMERA_QUICK_DETAIL_PANEL consomem a mesma política e o
+mesmo resultado, sem regras próprias de fallback. O Inventário pode usar
+thumbnail compacta sem novo badge em cada item, mas origem e estados permanecem
+disponíveis semanticamente para acessibilidade e integração futura; um upload
+nunca é anunciado como captura. O painel usa os rótulos da seção 18 e não
+esconde captura UNAVAILABLE/ERROR com upload, nem upload corrente
+UNAVAILABLE/ERROR com upload anterior. Nos estados sem bytes apresentáveis,
+mostra placeholder/estado apropriado sem mudar SOURCE ou CAPTURE_STATE.
+
+### 25.3 Entrega privada e isolamento da rota de captura
+
+`GET /cameras/<pk>/imagens/ultima-captura/<variant>/` e o
+`CameraImagePreviewService` descritos na seção 24 continuam significando
+exclusivamente LATEST_CAMERA_CAPTURE. Seus status e a vedação de upload manual
+nessa rota permanecem válidos. A futura entrega de DISPLAY_IMAGE deve ter
+superfície distinta, conceitualmente
+`GET /cameras/<pk>/imagens/exibicao/<variant>/`, sem ampliar silenciosamente a
+rota de última captura. A rota de exibição ainda não está implementada.
+
+A nova superfície deve reutilizar o pipeline seguro existente: autenticação,
+permissão `cameras.view_camera`, storage privado, variantes fechadas, validação
+de hash/integridade, decode e re-encoding antes de servir os bytes, resposta
+`nosniff` e `no-store`, sem expor path ou storage key. Seleção e entrega não
+iniciam captura, probe, VMS ou qualquer side effect de monitoramento. Estados de
+falha da projeção são explícitos e sanitizados; detalhes HTTP da nova rota
+pertencem à futura implementação, sem alterar a semântica da rota de captura.
+
+### 25.4 Consulta em lote e limite desta decisão
+
+Para a página do Inventário, a futura leitura resolve capturas em lote,
+identifica somente câmeras com NO_CAPTURE_AVAILABLE, resolve em lote o upload
+manual corrente dessas câmeras e produz um DisplayImageResult por item. Não
+introduz N+1 nem abre bytes de storage no render HTML. Índice ou migration
+adicional para esta projeção não é exigido: INDEX_MIGRATION =
+MEASURE_BEFORE_DECIDING. Proposta posterior depende de medição que demonstre
+necessidade; esta decisão documental não implementa serviço, rota, schema,
+migration ou UI.
