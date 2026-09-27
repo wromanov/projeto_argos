@@ -2972,16 +2972,6 @@
     .camera-quick-detail__body .camera-quick-detail__card dd { font-size: 13px; line-height: 1.2; }
     .camera-quick-detail__footer { padding-block: var(--space-1); }
 
-    .app-layout:has(.camera-quick-detail[open]) {
-        height: 100dvh;
-        min-height: 0;
-    }
-    .app-layout:has(.camera-quick-detail[open]) .app-workspace { min-height: 0; }
-    .app-layout:has(.camera-quick-detail[open]) .page-container.app-shell__main {
-        min-height: 0;
-        flex: 1 1 0%;
-        overflow-y: auto;
-    }
 }
 @media (prefers-reduced-motion: reduce) {
     .camera-quick-detail__close, .camera-quick-detail__action { transition: none; }
