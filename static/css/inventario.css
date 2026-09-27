@@ -121,7 +121,6 @@
 }
 
 .inventory-panel {
-    overflow: hidden;
     border: 1px solid var(--inv-border);
     border-radius: var(--inv-radius);
     background: var(--inv-surface);
@@ -669,50 +668,8 @@
     }
 }
 
-.inventory-filter-form {
-    display: grid;
-    grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
-    align-items: end;
-}
-
 .inventory-filter-form .field {
     min-width: 0;
-}
-
-.inventory-filter-form .field--search {
-    grid-column: span 2;
-}
-
-.filter-actions {
-    display: flex;
-    align-items: end;
-    gap: 8px;
-    min-height: 42px;
-}
-
-.filter-actions .button {
-    flex: 1;
-}
-
-@media (max-width: 760px) {
-    .inventory-filter-form .field--search {
-        grid-column: auto;
-    }
-
-    .filter-actions {
-        grid-column: 1 / -1;
-    }
-
-}
-
-@media (max-width: 480px) {
-    .inventory-filter-form {
-        grid-template-columns:1fr;
-    }
-
-    .filter-actions {
-        grid-column: auto;
-    }
 }
 
 .activity-section {
@@ -1121,6 +1078,15 @@
 
 .inventory-filter-form {
     grid-template-columns: repeat(6, minmax(0, 1fr));
+    column-gap: var(--space-3);
+    row-gap: var(--space-3);
+    align-items: end;
+}
+
+.inventory-filter-form > .form-field,
+.inventory-filter-form > .filter-multiselect,
+.inventory-filter-form > .filter-panel__actions {
+    min-width: 0;
 }
 
 .inventory-filter-form .form-field--search {
@@ -1243,9 +1209,9 @@
     white-space: nowrap;
 }
 
-@media (max-width: 75rem) {
+@container inventory-filters (max-width: 72rem) {
     .inventory-filter-form {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     .inventory-filter-form .form-field--search {
@@ -1253,25 +1219,32 @@
     }
 
     .inventory-filter-actions {
-        grid-column: 1 / -1;
+        grid-column: span 2;
     }
 
-    .inventory-query-summary {
-        align-items: flex-start;
+}
+
+@container inventory-filters (max-width: 46rem) {
+    .inventory-filter-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .inventory-filter-form .form-field--search,
+    .inventory-filter-actions {
+        grid-column: span 2;
     }
 }
 
-@media (max-width: 44rem) {
+@container inventory-filters (max-width: 30rem) {
     .inventory-filter-form {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
-    .inventory-filter-form .form-field--search, .inventory-filter-actions {
+    .inventory-filter-form .form-field--search,
+    .inventory-filter-actions {
         grid-column: auto;
     }
-}
 
-@media (max-width: 30rem) {
     .inventory-result-count {
         width: 100%;
     }
@@ -1293,7 +1266,8 @@
 }
 
 .camera-table.data-table {
-    min-width: 64rem;
+    width: 100%;
+    min-width: 0;
     table-layout: fixed;
 }
 
@@ -1318,6 +1292,8 @@
 .camera-table.data-table th {
     font-size: .6875rem;
     line-height: var(--line-height-tight);
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .camera-table.data-table td {
@@ -1326,32 +1302,31 @@
 }
 
 .camera-table__col--status {
-    width: 7.5rem;
-}
-
-.camera-table__col--camera {
-    width: 18%;
-}
-
-.camera-table__col--location {
-    width: 14%;
-}
-
-.camera-table__col--network {
     width: 13%;
 }
 
+.camera-table__col--camera {
+    width: 16%;
+}
+
+.camera-table__col--location {
+    width: 12%;
+}
+
+.camera-table__col--network {
+    width: 11%;
+}
+
 .camera-table__col--equipment {
-    width: 18%;
+    width: 16%;
 }
 
 .camera-table__col--governance {
-    width: 12.5rem;
-    min-width: 12.5rem;
+    width: 16%;
 }
 
 .camera-table__col--actions {
-    width: 7.5rem;
+    width: 16%;
 }
 
 .camera-table .camera-name-link,
@@ -1380,19 +1355,33 @@
 .inventory-governance .badge {
     padding: .15rem .4rem;
     font-size: .6875rem;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .camera-table .table-actions {
-    justify-content: flex-end;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
 }
 
 .camera-table .table-actions .button {
-    width: auto;
-    min-width: 6.75rem;
+    width: 100%;
+    min-width: 0;
+    padding-inline: var(--space-1);
+    white-space: normal;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.camera-table.data-table td {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 /* Notebook and tablet */
-@media (max-width: 75rem) {
+@container inventory-results (max-width: 56rem) {
     .table-region {
         overflow-x: visible;
         border-top: 0;
@@ -1428,7 +1417,6 @@
             "camera camera status"
             "location network equipment"
             "governance governance actions";
-        overflow: hidden;
         background: var(--color-surface);
         border: var(--border-width) solid var(--color-border);
         border-radius: var(--radius-md);
@@ -1513,8 +1501,8 @@
     }
 }
 
-/* Small tablet */
-@media (max-width: 44rem) {
+/* Compact inventory panel */
+@container inventory-results (max-width: 44rem) {
     .camera-table.data-table tbody {
         padding: var(--space-2);
     }
@@ -2637,6 +2625,7 @@
 
 /* UI-2 — Inventory visual retrofit */
 .inventory-filters-card {
+    container: inventory-filters / inline-size;
     padding: var(--space-5);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
@@ -2663,6 +2652,7 @@
 }
 
 .inventory-panel {
+    container: inventory-results / inline-size;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
 }
@@ -2779,47 +2769,6 @@
 
 .camera-thumbnail[data-thumbnail-state="ERROR"]::after {
     content: "!";
-}
-
-@media (min-width: 75.001rem) and (max-width: 84rem) {
-    .camera-table.data-table {
-        min-width: 60rem;
-    }
-
-    .camera-table__col--camera {
-        width: 21.5%;
-    }
-
-    .camera-table__col--location {
-        width: 11.25%;
-    }
-
-    .camera-table__col--network {
-        width: 10.2%;
-    }
-
-    .camera-table__col--equipment {
-        width: 14.5%;
-    }
-
-    .camera-table__col--governance {
-        width: 11rem;
-        min-width: 11rem;
-    }
-}
-
-@media (min-width: 144rem) {
-    .inventory-filter-form {
-        grid-template-columns: repeat(11, minmax(0, 1fr));
-    }
-
-    .inventory-filter-form .form-field--search {
-        grid-column: span 2;
-    }
-
-    .inventory-filter-actions {
-        grid-column: span 1;
-    }
 }
 
 @media (max-width: 44rem) {
