@@ -14,11 +14,11 @@ REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08
 CURRENT_PHASE = FASE C — Captura manual e gestão de imagens
 CURRENT_PHASE_STATUS = FASE C EM_ANDAMENTO; UI V2 DOCUMENTED as a parallel track; Phase 0 and Batch A closed; pending visual scopes flow through approved prototypes
 IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
-CURRENT_ACTIVITY = UI-V2-P0 — SCREEN CENSUS / PLANNED / NOT_STARTED
-LAST_COMPLETED_ACTIVITY = ARGOS UI REMEDIATION — FAST TRACK BATCH A / CLOSED / CANONICAL INTEGRATION AND USER VISUAL ACCEPTANCE PASS
-LAST_COMPLETED_ACTIVITY_STATUS = CLOSED / INTEGRATED / VISUAL_ACCEPTANCE_PASS
-NEXT_CANDIDATES = UI-V2-P0 — SCREEN CENSUS; IMG-04; MON-AVAIL-02 (recommendation)
-NEXT_CANDIDATES_STATUS = UI-V2-P0 PLANNED / NOT_STARTED; IMG-04 NOT_AUTHORIZED; MON-AVAIL-02 RECOMMENDED / NOT_AUTHORIZED; Quick Detail visual baseline approved
+CURRENT_ACTIVITY = UI-V2-P1 — VISUAL STYLE LAB / NOT_STARTED / NOT_AUTHORIZED
+LAST_COMPLETED_ACTIVITY = UI-V2-P0 — SCREEN CENSUS / CLOSED_PASS
+LAST_COMPLETED_ACTIVITY_STATUS = CLOSED / DOCUMENTARY / PROJECT_STATE_UPDATE PASS
+NEXT_CANDIDATES = UI-V2-P1 — VISUAL STYLE LAB; IMG-04; MON-AVAIL-02 (recommendation)
+NEXT_CANDIDATES_STATUS = UI-V2-P1 NOT_STARTED / NOT_AUTHORIZED; IMG-04 NOT_AUTHORIZED; MON-AVAIL-02 RECOMMENDED / NOT_AUTHORIZED; Quick Detail visual baseline approved
 IMG02_IMPLEMENTATION_AUTHORIZATION = GRANTED_BY_EXPLICIT_USER_INSTRUCTION_FOR_THIS_SLICE_ONLY
 IMG-01 = COMPLETE após o checkpoint documental; contrato canônico:
 docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
@@ -59,10 +59,12 @@ SECURE_IMAGE_PREVIEW_DELIVERY estão integradas. UI-3 está tecnicamente
 implementada e integrada, com validação funcional `PASS`; a baseline visual
 atual do Quick Detail foi aprovada explicitamente pelo usuário nesta
 reconciliação, enquanto a aceitação de produto da UI-3 permanece pendente.
-`UI-V2-P0 — SCREEN CENSUS` é a próxima atividade UI. `IMG-04` permanece como
-candidata de backend/imagens não autorizada; `MON-AVAIL-02` é recomendação
-registrada sem autorização ou sequência definida. Este mapa registra status e
-sequência; não concede autorização para implementar candidatas, avançar slices,
+UI-V2-P0 — SCREEN CENSUS está fechado como CLOSED_PASS; sua authority factual
+está em docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md. UI-V2-P1 — VISUAL STYLE LAB
+é a próxima atividade UI, ainda não iniciada nem autorizada por este mapa.
+IMG-04 permanece como candidata de backend/imagens não autorizada;
+MON-AVAIL-02 é recomendação registrada sem autorização ou sequência definida. Este mapa registra status e sequência; não concede autorização para implementar candidatas,
+avançar slices,
 mudar de fase ou executar em homologação/produção.
 
 Em caso de divergência:
@@ -199,7 +201,7 @@ INVENTORY_THUMBNAIL_REAL_DATA_WIRING = COMPLETE
 UI-3 = INTEGRATED / VISUAL_ACCEPTANCE_PASS / PRODUCT_ACCEPTANCE_PENDING
 IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED
 UI-4 = NOT_AUTHORIZED
-UI-V2 = DOCUMENTED / NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
+UI-V2 = DOCUMENTED / P0 CLOSED_PASS / NEXT_UI_ACTIVITY = UI-V2-P1 — VISUAL STYLE LAB / NOT_STARTED / NOT_AUTHORIZED
 ↓
 demais slices seguem as dependências canônicas e exigem autorização própria
 ```
@@ -433,33 +435,40 @@ este registro.
 
 ## 16. Reconciliação vigente — ARGOS UI V2 prototype-driven (2026-09-27)
 
-A autoridade operacional da nova trilha é
-`docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md`. UI V2 é transversal e paralela ao
+A autoridade operacional da trilha é
+docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md; o census factual concluído está em
+docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md. UI V2 é transversal e paralela ao
 backend. O roadmap mantém A2 — Visual 5, A3 — Visual 6 e A4 — Visual 7; suas
 entregas visuais passam pelo fluxo P0–P7 sem invalidar seus objetivos funcionais.
 
-```text
-UI_V2_TRACK_STATUS = DOCUMENTED
-NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
-P0_STATUS = PLANNED / NOT_STARTED / NOT_AUTHORIZED_BY_THIS_DOCUMENT
+```
+UI_V2_TRACK_STATUS = DOCUMENTED / PARALLEL_TO_BACKEND
+P0_STATUS = CLOSED_PASS / ACTIVITY_COMPLETE = YES
+SCREEN_CENSUS_AUTHORITY = docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md
+NEXT_UI_ACTIVITY = UI-V2-P1 — VISUAL STYLE LAB
+P1_STATUS = NOT_STARTED / NOT_AUTHORIZED
+ADMIN_UI_V2_SCOPE = TRACKED_AS_INHERITED / NO_CUSTOM_REDESIGN_BY_DEFAULT
+PROTOTYPE_STACK_COMPATIBILITY = REQUIRED_GATE
 IMPLEMENTATION_BEFORE_APPROVED_PROTOTYPE = PROHIBITED
 PROTOTYPE_VISUAL_ACCEPTANCE_GATE = REQUIRED
 POST_IMPLEMENTATION_VISUAL_ACCEPTANCE_GATE = REQUIRED
 QUICK_DETAIL_VISUAL_BASELINE = APPROVED / PROTECTED
+BATCH_B_POST_INTEGRATION_VISUAL_GATE = PENDING_USER_REVIEW
 UI-3_VISUAL_ACCEPTANCE = PASS / current Quick Detail baseline approved by user
 UI-3_PRODUCT_ACCEPTANCE = PENDING
 ```
 
-Phase 0 e Fast Track Batch A continuam fechados. Os escopos pendentes do Batch
-B permanecem no snapshot de continuidade; qualquer alteração visual de
-Inventário, Dashboard ou Quick Detail deverá seguir o protótipo aprovado da
-família correspondente. Os achados e guardrails técnicos da auditoria e diretriz
-CSS continuam válidos; a reconciliação não reabre fases concluídas nem inicia
-trabalho de UI.
+Phase 0 e Fast Track Batch A continuam fechados. O census mantém os escopos
+pendentes do Batch B como contexto; qualquer alteração visual de Inventário,
+Dashboard ou Quick Detail deverá seguir o protótipo aprovado da família
+correspondente. O gate visual pós-integração do Batch B continua pendente de
+revisão humana. Os achados e guardrails técnicos da auditoria e diretriz CSS
+continuam válidos; esta reconciliação documental não inicia P1 nem implementação.
 
-`IMG-04` permanece como candidata de backend/imagens registrada anteriormente e
-não autorizada. `MON-AVAIL-01 = BLOCKED_HISTORICAL_COVERAGE_GAP` e a recomendação
-`MON-AVAIL-02` foram fornecidas na instrução atual do usuário; não foram
-encontradas referências locais a esses identificadores no checkout. A sequência
-entre `IMG-04` e `MON-AVAIL-02` permanece em aberto, sem fabricação de métricas
-de availability ou coverage.
+O Admin fica rastreado no census como herdado, sem redesenho customizado por
+padrão. IMG-04 permanece como candidata de backend/imagens registrada
+anteriormente e não autorizada. MON-AVAIL-01 = BLOCKED_HISTORICAL_COVERAGE_GAP
+e a recomendação MON-AVAIL-02 foram fornecidas na instrução atual do usuário;
+não foram encontradas referências locais a esses identificadores no checkout.
+A sequência entre IMG-04 e MON-AVAIL-02 permanece em aberto, sem fabricação
+de métricas de availability ou coverage.

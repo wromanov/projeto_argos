@@ -599,31 +599,40 @@ Phase 1 não foi iniciada nem autorizada por este registro.
 
 ## 19. UI V2 — continuidade vigente (2026-09-27)
 
-O checkpoint atual e os fatos Git validados estão na seção 28 de
-`PROJECT_STATE.md`. A authority operacional da nova trilha é
-`docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md`; a direção macro e a ordem executiva
-estão, respectivamente, em `docs/projeto/ROADMAP_ARGOS_V5.md` e
-`docs/projeto/SPRINTS_ARGOS_V5.md`.
+O checkpoint atual e os fatos Git validados estão na seção 29 de
+PROJECT_STATE.md. A authority operacional da trilha é
+docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md; o inventário factual e a authority do
+census estão em docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md; a direção macro e a
+ordem executiva estão, respectivamente, em docs/projeto/ROADMAP_ARGOS_V5.md e
+docs/projeto/SPRINTS_ARGOS_V5.md.
 
-```text
-UI_V2_TRACK_STATUS = DOCUMENTED / PARALLEL_TO_BACKEND
-NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
-NEXT_UI_ACTIVITY_STATUS = PLANNED / NOT_STARTED / NOT_AUTHORIZED_BY_THIS_DOCUMENT
+```
+UI_V2_TRACK_STATUS = DOCUMENTED / P0_CLOSED_PASS / PARALLEL_TO_BACKEND
+UI-V2-P0 = CLOSED_PASS / ACTIVITY_COMPLETE = YES
+SCREEN_CENSUS_AUTHORITY = docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md
+SCREEN_CENSUS = 35_SURFACES / 15_FAMILIES / 24_YES / 11_INHERITED / 0_NO
+NEXT_UI_ACTIVITY = UI-V2-P1 — VISUAL STYLE LAB
+NEXT_UI_ACTIVITY_STATUS = NOT_STARTED / NOT_AUTHORIZED
+ADMIN_UI_V2_SCOPE = TRACKED_AS_INHERITED / NO_CUSTOM_REDESIGN_BY_DEFAULT
+PROTOTYPE_STACK_COMPATIBILITY = REQUIRED_GATE
+CANONICAL_STACK = Django SSR + Django Templates + semantic HTML + custom CSS + Vanilla JS + progressive enhancement
 PROTOTYPE_VISUAL_ACCEPTANCE_GATE = REQUIRED
 POST_IMPLEMENTATION_VISUAL_ACCEPTANCE_GATE = REQUIRED
 QUICK_DETAIL_VISUAL_BASELINE = APPROVED / PROTECTED
 QUICK_DETAIL_REDRAW_WITHOUT_NEW_EXPLICIT_AUTHORIZATION = PROHIBITED
+BATCH_B_POST_INTEGRATION_VISUAL_GATE = PENDING_USER_REVIEW
 PHASE0_AND_BATCH_A = CLOSED / PRESERVED
 BATCH_B_STATUS = TECHNICALLY_INTEGRATED_ON_MASTER / SOURCE_VISUAL_ACCEPTANCE_PASS / INTEGRATED_VISUAL_REVIEW_PENDING
 ```
+UI-3_VISUAL_ACCEPTANCE = PASS para a baseline atual do Quick Detail,
+aprovada explicitamente pelo usuário; UI-3_PRODUCT_ACCEPTANCE segue PENDING. O
+Admin permanece contado no census como superfícies herdadas; a decisão padrão
+de planejamento não inclui redesenho customizado, salvo autorização explícita
+posterior. A recomendação backend MON-AVAIL-02 e o bloqueio informado para
+MON-AVAIL-01 foram fornecidos na instrução atual, mas não foram encontrados
+como registros locais; IMG-04 permanece candidata não autorizada no mapa de
+sprints. O sequenciamento backend entre essas frentes continua aberto, sem
+métricas fabricadas.
 
-`UI-3_VISUAL_ACCEPTANCE = PASS` para a baseline atual do Quick Detail, aprovada
-explicitamente pelo usuário nesta reconciliação; `UI-3_PRODUCT_ACCEPTANCE` segue
-`PENDING`. A recomendação backend `MON-AVAIL-02` e o bloqueio informado para
-`MON-AVAIL-01` foram fornecidos na instrução atual, mas não foram encontrados
-como registros locais; `IMG-04` permanece candidata não autorizada no mapa de
-sprints. O sequenciamento backend entre essas frentes está registrado como
-aberto, sem métricas fabricadas.
-
-Esta reconciliação é documental. Não executar P0, criar protótipos ou iniciar
-implementação sem instrução/autorização própria.
+P0 é documentalmente encerrado. Não iniciar P1, protótipos ou implementação sem
+autorização explícita própria.

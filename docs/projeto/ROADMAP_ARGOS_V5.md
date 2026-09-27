@@ -1524,8 +1524,8 @@ checkpoint `768844d` preserva alterações anteriores sem declarar aceitação.
 
 ## Atualização vigente — ARGOS UI V2 prototype-driven (2026-09-27)
 
-A nova frente transversal `ARGOS UI V2 — PROTOTYPE-DRIVEN VISUAL MODERNIZATION`
-está formalizada em `ARGOS_UI_V2_MASTER_PLAN.md`. Ela moderniza visualmente as
+A nova frente transversal ARGOS UI V2 — PROTOTYPE-DRIVEN VISUAL MODERNIZATION
+está formalizada em ARGOS_UI_V2_MASTER_PLAN.md. Ela moderniza visualmente as
 telas reais por protótipos com aprovação explícita antes da implementação,
 preservando a estrutura, os fluxos, as rotas, os nomes, os dados, as regras e a
 arquitetura de informação do ARGOS.
@@ -1538,26 +1538,40 @@ Progressive Enhancement permanece factual. As fases A2 — Visual 5, A3 — Visu
 a ser planejadas e aceitas pelo fluxo P0–P7 da UI V2. Nenhum marco é invalidado
 ou renumerado.
 
-O fechamento da Phase 0 e do Fast Track Batch A permanece válido. Os escopos
-pendentes do Batch B permanecem registrados; alterações visuais correspondentes
-devem passar pelo census e pelo gate de protótipo aprovado. Isso não reabre as
-fases já concluídas. O Quick Detail atual é uma baseline visual aprovada e
-protegida contra redesign sem nova autorização explícita.
+O fechamento da Phase 0 e do Fast Track Batch A permanece válido. O UI-V2-P0
+está fechado como CLOSED_PASS; o authority factual é
+docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md. UI-V2-P1 — VISUAL STYLE LAB é a
+próxima atividade, ainda não iniciada nem autorizada por este checkpoint. Os
+escopos pendentes do Batch B permanecem registrados; alterações visuais
+correspondentes devem passar pelo census e pelo gate de protótipo aprovado. O
+Quick Detail atual continua uma baseline visual aprovada e protegida contra
+redesign sem nova autorização explícita. O gate visual pós-integração do Batch B
+permanece pendente de revisão humana.
 
-```text
-UI_V2_TRACK_STATUS = DOCUMENTED / PARALLEL_TO_BACKEND
-NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
-NEXT_UI_ACTIVITY_STATUS = PLANNED / NOT_STARTED / NOT_AUTHORIZED_BY_THIS_DOCUMENT
+A stack canônica é Django SSR, Django Templates, HTML semântico, CSS customizado,
+Vanilla JS e progressive enhancement. PROTOTYPE_STACK_COMPATIBILITY =
+REQUIRED_GATE. O Admin permanece rastreado no census como herdado, sem
+redesenho customizado por padrão.
+
+```
+UI_V2_TRACK_STATUS = DOCUMENTED / P0_CLOSED_PASS / PARALLEL_TO_BACKEND
+P0_STATUS = CLOSED_PASS / ACTIVITY_COMPLETE = YES
+SCREEN_CENSUS_AUTHORITY = docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md
+NEXT_UI_ACTIVITY = UI-V2-P1 — VISUAL STYLE LAB
+NEXT_UI_ACTIVITY_STATUS = NOT_STARTED / NOT_AUTHORIZED
+ADMIN_UI_V2_SCOPE = TRACKED_AS_INHERITED / NO_CUSTOM_REDESIGN_BY_DEFAULT
+PROTOTYPE_STACK_COMPATIBILITY = REQUIRED_GATE
 PROTOTYPE_VISUAL_ACCEPTANCE_GATE = REQUIRED
 POST_IMPLEMENTATION_VISUAL_ACCEPTANCE_GATE = REQUIRED
 QUICK_DETAIL_VISUAL_BASELINE = APPROVED / PROTECTED
+BATCH_B_POST_INTEGRATION_VISUAL_GATE = PENDING_USER_REVIEW
 UI-3_VISUAL_ACCEPTANCE = PASS / current Quick Detail baseline approved by user
 UI-3_PRODUCT_ACCEPTANCE = PENDING
 ```
 
-O mapa de sprints vigente identifica `IMG-04` como candidata de backend/imagens
-sem autorização. A recomendação recebida nesta atividade para `MON-AVAIL-02`
+O mapa de sprints vigente identifica IMG-04 como candidata de backend/imagens
+sem autorização. A recomendação recebida nesta atividade para MON-AVAIL-02
 permanece separada; a sequência entre as duas candidatas não está definida. O
-registro de `MON-AVAIL-01` como bloqueado por lacuna histórica foi fornecido na
+registro de MON-AVAIL-01 como bloqueado por lacuna histórica foi fornecido na
 instrução do usuário e não foi localizado em documentos do checkout durante
 esta reconciliação; nenhum dado de availability ou coverage foi inferido.

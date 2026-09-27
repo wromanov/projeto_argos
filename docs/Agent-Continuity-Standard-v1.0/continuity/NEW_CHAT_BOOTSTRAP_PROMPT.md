@@ -280,7 +280,7 @@ ACTIVITY_COMPLETION_PERCENT = 100%
 COMPLETION_BASIS = sete documentos reconciliados; validação documental PASS; sem alteração de código/runtime, reexecução de testes, reparo visual, commit, push ou publicação
 ```
 
-## Checkpoint atual — ARGOS UI V2 (2026-09-27)
+## Checkpoint histórico — ARGOS UI V2 antes do fechamento do P0 (2026-09-27)
 
 Antes de qualquer ação, revalidar Git e ler `PROJECT_STATE.md`, seção 28;
 `AGENT_CONTINUITY.md`, seção 19; e `ACTIVE_DOCUMENT_MAP.md`, seção 14. A nova
@@ -321,3 +321,33 @@ fabricadas.
 
 A reconciliação é documental. Não iniciar P0, protótipos ou implementação sem
 instrução e autorização próprias.
+
+## Checkpoint vigente — fechamento do UI-V2-P0 (2026-09-27)
+
+Antes de qualquer ação, revalidar o estado Git e ler PROJECT_STATE.md, seção
+29; AGENT_CONTINUITY.md, seção 19; e ACTIVE_DOCUMENT_MAP.md, seção 14. O
+census factual é docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md; a authority
+operacional segue em docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md.
+
+```
+UI_V2_TRACK_STATUS = DOCUMENTED / P0_CLOSED_PASS / PARALLEL_TO_BACKEND
+UI-V2-P0 = CLOSED_PASS / ACTIVITY_COMPLETE = YES
+SCREEN_CENSUS_AUTHORITY = docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md
+NEXT_UI_ACTIVITY = UI-V2-P1 — VISUAL STYLE LAB
+NEXT_UI_ACTIVITY_STATUS = NOT_STARTED / NOT_AUTHORIZED
+ADMIN_UI_V2_SCOPE = TRACKED_AS_INHERITED / NO_CUSTOM_REDESIGN_BY_DEFAULT
+QUICK_DETAIL_VISUAL_BASELINE = APPROVED / PROTECTED
+BATCH_B_POST_INTEGRATION_VISUAL_GATE = PENDING_USER_REVIEW
+PROTOTYPE_STACK_COMPATIBILITY = REQUIRED_GATE
+CANONICAL_STACK = Django SSR + Django Templates + semantic HTML + custom CSS + Vanilla JS + progressive enhancement
+P1_STARTED = NO
+IMPLEMENTATION_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+```
+
+O censo registra 35 superfícies, 15 famílias, 30 declarações de rota, 29
+handlers da aplicação, 40 templates HTML, 8 folhas CSS e 4 scripts JS. P1 não
+foi iniciado; não criar protótipos nem implementar sem autorização explícita.
+A decisão padrão de escopo Admin e os gates de Batch B/Quick Detail devem ser
+preservados conforme as authorities atuais. O checkpoint documental local está
+na master; valide HEAD, upstream, divergência e worktree diretamente no Git.

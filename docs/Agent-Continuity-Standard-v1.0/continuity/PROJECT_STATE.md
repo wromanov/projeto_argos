@@ -3,23 +3,23 @@
 STATUS = CURRENT_SNAPSHOT
 SNAPSHOT_DATE = 2026-09-27
 PROJECT = ARGOS
-STATE_SOURCE = Git verified at Batch B canonical integration + Batch B source validation records + ARGOS UI V2 master plan and continuity authorities
+STATE_SOURCE = Git verified at UI-V2-P0 closure preflight + census and continuity authorities
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = Batch B technically integrated on master; source visual acceptance PASS; integrated visual gate pending; UI V2 remains parallel and UI-V2-P0 is next
+SNAPSHOT_SCOPE = Batch B technically integrated; source visual acceptance PASS; post-integration visual gate pending; UI-V2-P0 closed PASS; UI-V2-P1 next and not started
 
 ## 1. Executive status
 
-CURRENT_PHASE = FASE C — imagens e UI; ARGOS UI V2 = trilha paralela documental
-CURRENT_ACTIVITY = CONTROLLED INTEGRATION OF APPROVED BATCH B / TECHNICAL PASS / POST-INTEGRATION VISUAL REVIEW PENDING
-LAST_COMPLETED_ACTIVITY = ARGOS UI REMEDIATION — FAST TRACK BATCH B / technically integrated locally; source visual acceptance PASS
+CURRENT_PHASE = FASE C — imagens e UI; ARGOS UI V2 = trilha paralela
+CURRENT_ACTIVITY = UI-V2-P0 CLOSURE CHECKPOINT / CLOSED_PASS
+LAST_COMPLETED_ACTIVITY = UI-V2-P0 — SCREEN CENSUS / CLOSED_PASS
 LATEST_TECHNICAL_UI_ACTIVITY = Batch B Quick Detail baseline approved and integrated; post-integration visual review pending
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
 LAST_PUBLISHED_BASELINE = 850efd2
-CURRENT_CANONICAL_GIT_BASELINE = master @ c7dce09819a1b3c838640cdcec73d70d1b36dd71; origin/master 47c6965f3a60c0026117584dae21ca8a280986a5; ahead 29 / behind 0 at local integration
-NEXT_PROJECT_ACTIVITY = UI-V2-P0 — SCREEN CENSUS / PLANNED / NOT_STARTED / not authorized by this integration
+CURRENT_CANONICAL_GIT_BASELINE = master; this local P0 closure checkpoint; revalidate HEAD and divergence directly from Git
+NEXT_PROJECT_ACTIVITY = UI-V2-P1 — VISUAL STYLE LAB / NOT_STARTED / NOT_AUTHORIZED
 NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 NEXT_BACKEND_ACTIVITY = IMG-04 candidate remains repository-recorded and not authorized; MON-AVAIL-02 recommended, sequencing unresolved
-UI_V2_TRACK_STATUS = DOCUMENTED / PARALLEL_TO_BACKEND
+UI_V2_TRACK_STATUS = DOCUMENTED / P0_CLOSED_PASS / PARALLEL_TO_BACKEND
 CURRENT_BASELINE_BEFORE_IMG02 = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
 
 PROJECT_PROGRESS_LAST_VALID_PUBLISHED_ESTIMATE = 78% (HISTORICAL; NOT CURRENT)
@@ -1532,3 +1532,48 @@ ACTIVITY_COMPLETION_PERCENT = 100%
 ACTIVITY_COMPLETE = YES — technical integration complete; visual gate remains pending
 FINAL_VERDICT = PASS; POST_INTEGRATION_VISUAL_GATE pending user review
 ```
+
+## 29. UI-V2-P0 — fechamento do Screen Census (2026-09-27)
+
+```
+ACTIVITY = UI-V2-P0 CLOSURE CHECKPOINT
+ACTIVITY_STATUS = CLOSED_PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+COMPLETION_BASIS = censo revisado; estado, continuidade e authorities de UI V2 reconciliados; validação documental e escopo staged PASS; commit documental local concluído; sem push e sem início de P1
+REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+BRANCH = master
+BASELINE_HEAD = b35b766076ac62955be6bf52cdb4c5fdd5098780
+UPSTREAM = origin/master @ 47c6965f3a60c0026117584dae21ca8a280986a5
+DIVERGENCE_BEFORE = 30 ahead / 0 behind
+PRE_EXISTING_WORKTREE_CHANGE = docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md (untracked); no other pre-existing changes
+SCREEN_CENSUS_AUTHORITY = docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md
+SCREEN_CENSUS_STATUS = PASS_WITH_FINDINGS / factual census complete
+SCREEN_CENSUS_TOTALS = 35 surfaces; 15 families; 30 route declarations; 29 application handlers; 40 HTML templates; 8 CSS files; 4 JS files
+PROTOTYPE_MATRIX = 24 YES; 11 INHERITED; 0 NO; 12 HIGH complexity; 20 HIGH responsive relevance
+PROJECT_STATE_UPDATE = PASS
+CONTINUITY_RECONCILIATION = PASS
+ADMIN_UI_V2_SCOPE = TRACKED_AS_INHERITED / NO_CUSTOM_REDESIGN_BY_DEFAULT
+QUICK_DETAIL_BASELINE_STATUS = APPROVED / PROTECTED; REDESIGN_AUTHORIZED = NO
+BATCH_B_POST_INTEGRATION_VISUAL_GATE = PENDING_USER_REVIEW
+PROTOTYPE_STACK_COMPATIBILITY = REQUIRED_GATE
+CANONICAL_STACK = Django SSR + Django Templates + semantic HTML + custom CSS + Vanilla JS + progressive enhancement
+NEXT_UI_ACTIVITY = UI-V2-P1 — VISUAL STYLE LAB
+P1_STATUS = NOT_STARTED / NOT_AUTHORIZED
+P1_STARTED = NO
+DIFF_CHECK = PASS
+STAGED_SCOPE_VALIDATION = PASS — only census and authorized continuity/planning documents
+COMMIT = LOCAL / docs(ui): close UI V2 screen census
+WORKTREE_FINAL = CLEAN after local commit
+PUSH_AUTHORIZED = NO
+PUSH_PERFORMED = NO
+SOURCE_CODE_OR_RUNTIME_CHANGED = NO
+FILES_CHANGED = Screen Census; PROJECT_STATE; AGENT_CONTINUITY; ACTIVE_DOCUMENT_MAP; NEW_CHAT_BOOTSTRAP_PROMPT; ARGOS_UI_V2_MASTER_PLAN; SPRINTS_ARGOS_V5; ROADMAP_ARGOS_V5
+FINDINGS = source-branch visual acceptance of Quick Detail remains approved; Batch B post-integration visual review remains pending; backend sequencing remains open as previously recorded
+BLOCKERS = NONE for documentary P0 closure
+FINAL_VERDICT = PASS
+```
+
+Este checkpoint supersede o status prévio de P0 ainda planejado na seção 23 e
+nos registros de continuidade anteriores. A baseline factual do census
+permanece em ARGOS_UI_V2_SCREEN_CENSUS.md; este snapshot não declara aprovação
+visual integrada do Batch B.

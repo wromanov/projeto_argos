@@ -6,8 +6,10 @@ DOCUMENT_TYPE = PROJECT_UI_V2_OPERATIONAL_AUTHORITY
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 TRACK = ARGOS UI V2 — PROTOTYPE-DRIVEN VISUAL MODERNIZATION
-NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
-NEXT_UI_ACTIVITY_STATUS = PLANNED / NOT_STARTED / NOT_AUTHORIZED_BY_THIS_DOCUMENT
+NEXT_UI_ACTIVITY = UI-V2-P1 — VISUAL STYLE LAB
+NEXT_UI_ACTIVITY_STATUS = NOT_STARTED / NOT_AUTHORIZED
+P0_STATUS = CLOSED_PASS / ACTIVITY_COMPLETE = YES
+SCREEN_CENSUS_AUTHORITY = docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md
 IMPLEMENTATION_AUTHORIZED = NO
 ```
 
@@ -67,6 +69,15 @@ Não introduzir como solução estrutural React, Vue, Angular, Svelte, Tailwind,
 Bootstrap, shadcn/ui obrigatório, SPA ou bundler obrigatório. Referências podem
 ser estudadas sem instalar suas stacks.
 
+```
+PROTOTYPE_STACK_COMPATIBILITY = REQUIRED_GATE
+ADMIN_UI_V2_SCOPE = TRACKED_AS_INHERITED / NO_CUSTOM_REDESIGN_BY_DEFAULT
+```
+
+O Admin continua rastreado no Screen Census como superfícies herdadas. Por
+padrão, não recebe redesenho visual customizado na UI V2; qualquer mudança desse
+escopo depende de autorização explícita do usuário.
+
 Podem mudar, após protótipo aprovado, tokens e apresentação de superfícies,
 camadas, cards, bordas, tipografia, hierarquia, espaçamento, densidade,
 controles, tabelas, filtros, paginação, estados, iconografia compatível e
@@ -101,14 +112,19 @@ PAGE_FAMILY; FUNCTIONAL_PURPOSE; CURRENT_VISUAL_STATE; RESPONSIVE_RELEVANCE;
 PROTOTYPE_REQUIRED; DEPENDENCIES; NOTES
 ```
 
-P0 é a próxima atividade UI e ainda não foi executada neste checkpoint.
+P0 foi concluído como atividade documental. O Screen Census factual está em
+docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md e passa a ser a authority do
+inventário das superfícies, famílias, rotas, templates, estados e matrizes.
+UI-V2-P0 = CLOSED_PASS / ACTIVITY_COMPLETE = YES.
 
 ### P1 — Visual Style Lab
 
 Pesquisar e reconciliar referências. Produzir direções visuais comparáveis para
 paleta, surfaces, layers, cards, controles, tabelas, filtros, badges, tipografia,
 espaçamento, densidade e estados. Registrar a escolha do usuário; não declarar
-um sistema final antes dessa decisão.
+um sistema final antes dessa decisão. P1 é a próxima atividade, permanece não
+iniciada e depende de autorização explícita própria. O Admin segue
+TRACKED_AS_INHERITED / NO_CUSTOM_REDESIGN_BY_DEFAULT.
 
 ### P2 — Visual Foundation Prototype
 
@@ -245,19 +261,24 @@ estado atual deve ser lido em `PROJECT_STATE.md` e `SPRINTS_ARGOS_V5.md`.
 ## 10. Estado atual e próxima atividade
 
 ```text
-UI_V2_TRACK_STATUS = DOCUMENTED
-NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
-P0_STATUS = PLANNED / NOT_STARTED / NOT_AUTHORIZED_BY_THIS_DOCUMENT
-P0_EXECUTED_IN_THIS_ACTIVITY = NO
+UI_V2_TRACK_STATUS = DOCUMENTED / PARALLEL_TO_BACKEND
+P0_STATUS = CLOSED_PASS / ACTIVITY_COMPLETE = YES
+SCREEN_CENSUS_AUTHORITY = docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md
+NEXT_UI_ACTIVITY = UI-V2-P1 — VISUAL STYLE LAB
+P1_STATUS = NOT_STARTED / NOT_AUTHORIZED
+P1_STARTED = NO
+ADMIN_UI_V2_SCOPE = TRACKED_AS_INHERITED / NO_CUSTOM_REDESIGN_BY_DEFAULT
+PROTOTYPE_STACK_COMPATIBILITY = REQUIRED_GATE
+QUICK_DETAIL_VISUAL_BASELINE = APPROVED / PROTECTED
+BATCH_B_POST_INTEGRATION_VISUAL_GATE = PENDING_USER_REVIEW
 IMPLEMENTATION_AUTHORIZED = NO
-STAGE_AUTHORIZED = NO
-COMMIT_AUTHORIZED = NO
 PUSH_AUTHORIZED = NO
 ```
 
-Esta autoridade registra processo e sequência. A próxima atividade deverá
-executar apenas o census autorizado por instrução própria. Após concluir a
-reconciliação documental, parar; não iniciar P0, protótipos ou implementação.
+Esta autoridade registra processo e sequência. O census factual está concluído
+e permanece como authority. A próxima atividade é P1, mas está não iniciada e
+não autorizada por este checkpoint. Parar após a reconciliação documental; não
+iniciar P1, protótipos ou implementação sem autorização explícita própria.
 
 ## 11. Authorities relacionadas
 

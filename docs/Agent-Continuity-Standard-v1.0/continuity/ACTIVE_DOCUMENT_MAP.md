@@ -11,18 +11,19 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; UI V2 documented, P0 next / not started |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; UI-V2-P0 CLOSED_PASS, P1 next / not started |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; UI V2 continuity in section 19 |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; UI V2 authority mapped |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; UI-V2-P0 next, read PROJECT_STATE first |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; P0 closed, P1 next, read PROJECT_STATE first |
 
 ## 2. Authorities canônicas do projeto
 
 | Path | Role | Authority scope | Status |
 |---|---|---|---|
 | `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; UI V2 is parallel and prototype-driven |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; UI-V2-P0 next; IMG-04 not authorized |
-| `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md` | Authority operacional da UI V2 | Escopo, princípios, fluxo P0–P7, gates e próxima atividade visual | PRESENT / CANONICAL / ACTIVE |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; P0 closed, P1 next / not authorized; IMG-04 not authorized |
+| `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md` | Authority operacional da UI V2 | Escopo, princípios, fluxo P0–P7, gates e próxima atividade visual | PRESENT / CANONICAL / ACTIVE; P0 closed, P1 next / not started |
+| `docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md` | Censo factual de superfícies e matrizes UI-V2-P0 | PRESENT / CANONICAL; P0 CLOSED_PASS |
 | `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; DISPLAY_IMAGE integrated, deferred production backend decision |
 | `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; Quick Detail baseline approved; UI-3 product acceptance pending, section 18 |
 | `docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md` | Registro factual dos findings de UI-0 | Findings do preflight read-only, sem alterar a authority de UI-DS | PRESENT / CURRENT FINDINGS RECORD; NON-BLOCKING |
@@ -214,7 +215,8 @@ UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
 IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED
 UI-4 = NOT_AUTHORIZED
 NEXT_CANDIDATE = IMG-04 / NOT_AUTHORIZED
-NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
+UI_V2_P0_STATUS = CLOSED_PASS / ACTIVITY_COMPLETE = YES
+NEXT_UI_ACTIVITY = UI-V2-P1 — VISUAL STYLE LAB
 FASE_C_COMPLETE = NO
 
 ## 8. Continuidade no checkpoint UI-3 (histórico)
@@ -339,24 +341,32 @@ as especificações.
 | `docs/projeto/SPRINTS_ARGOS_V5.md` | Sequência executiva e gates da nova frente | CANONICAL / Phase 0 and Batch A closed; future visual changes gated by UI V2 prototypes |
 | `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`, seção 25 | Contrato de DISPLAY_IMAGE e status de IMG-DISPLAY-01 | CANONICAL / implementation integrated |
 
-O estado corrente da integração Batch B está na seção 28 de `PROJECT_STATE.md`; o handoff
-operacional vigente está na seção 19 de `AGENT_CONTINUITY.md`. Phase 0, Batch A e Batch B
+O estado corrente da integração Batch B está na seção 28 de PROJECT_STATE.md; o handoff
+operacional vigente está na seção 19 de AGENT_CONTINUITY.md. Phase 0, Batch A e Batch B
 estão integrados localmente; a aceitação visual da origem do Batch B passou, e a revisão
-visual pós-integração em master permanece pendente. A próxima atividade UI continua sendo
-UI-V2-P0 — SCREEN CENSUS, sem autorização por este checkpoint.
+visual pós-integração em master permanece pendente. Este registro de contexto técnico é
+anterior ao fechamento do P0; consulte a seção 14 para a próxima atividade UI vigente.
 
 ## 14. Authority vigente — ARGOS UI V2
 
 | Path | Papel | Vigência |
 |---|---|---|
-| `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md` | Authority operacional da trilha prototype-driven; define P0–P7, gates e próxima atividade | CANONICAL / ACTIVE; P0 planned, not started |
-| `docs/projeto/ROADMAP_ARGOS_V5.md` | Direção macro; mantém A2/A3/A4 e registra UI V2 paralela ao backend | CANONICAL / UPDATED |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Ordem de execução; registra UI-V2-P0 e candidatas backend sem autorização | CANONICAL / UPDATED |
-| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Contratos UI-DS e Quick Detail; seção 18 registra a baseline visual protegida | CANONICAL / ACTIVE |
-| `docs/frontend/ARGOS_FRONTEND_AUDIT_REPORT.md` | Evidência da auditoria UI-AUD-01 | AUDIT EVIDENCE; não normativa |
-| `docs/frontend/ARGOS_DIRETRIZ_REMEDIACAO_FRONTEND_UI_UX_V1.md` | Guardrails e ownership CSS para implementação | TECHNICAL GUIDANCE; subordinada às authorities de produto e ao gate UI V2 |
+| docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md | Authority operacional da trilha prototype-driven; define P0–P7, gates e próxima atividade | CANONICAL / ACTIVE; P0 CLOSED_PASS, P1 next / not started |
+| docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md | Authority factual do inventário de 35 superfícies e das matrizes do UI-V2-P0 | CANONICAL / SCREEN CENSUS CLOSED_PASS |
+| docs/projeto/ROADMAP_ARGOS_V5.md | Direção macro; mantém A2/A3/A4 e registra UI V2 paralela ao backend | CANONICAL / UPDATED; P1 next |
+| docs/projeto/SPRINTS_ARGOS_V5.md | Ordem de execução; registra P0 fechado, P1 próximo e candidatas backend sem autorização | CANONICAL / UPDATED |
+| docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md | Contratos UI-DS e Quick Detail; seção 18 registra a baseline visual protegida | CANONICAL / ACTIVE |
+| docs/frontend/ARGOS_FRONTEND_AUDIT_REPORT.md | Evidência da auditoria UI-AUD-01 | AUDIT EVIDENCE; não normativa |
+| docs/frontend/ARGOS_DIRETRIZ_REMEDIACAO_FRONTEND_UI_UX_V1.md | Guardrails e ownership CSS para implementação | TECHNICAL GUIDANCE; subordinada às authorities de produto e ao gate UI V2 |
 
-`MON-AVAIL-01` e `MON-AVAIL-02` foram citados na instrução atual do usuário e
+O checkpoint de fechamento e o estado Git da atividade estão em
+PROJECT_STATE.md, seção 29. UI-V2-P1 é a próxima atividade, mas não foi
+iniciada nem autorizada por este checkpoint. O Admin permanece rastreado como
+herdado e sem redesenho customizado por padrão. O gate visual pós-integração do
+Batch B permanece PENDING_USER_REVIEW; isso não altera a baseline aprovada e
+protegida do Quick Detail.
+
+MON-AVAIL-01 e MON-AVAIL-02 foram citados na instrução atual do usuário e
 não foram localizados em documentos do checkout nesta reconciliação. O mapa de
-sprints mantém `IMG-04` como candidata backend/imagens não autorizada; a ordem
+sprints mantém IMG-04 como candidata backend/imagens não autorizada; a ordem
 entre as candidatas continua sem adjudicação.
