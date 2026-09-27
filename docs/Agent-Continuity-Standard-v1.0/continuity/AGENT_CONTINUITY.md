@@ -505,7 +505,7 @@ imagem ficam em `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`. Evidência funcional e QA
 visual foram fornecidas para esta reconciliação; os testes não foram
 reexecutados. Nenhuma rodada de reparo visual foi iniciada.
 
-## 16. Checkpoint vigente — UI-4A Desktop Shell Density Foundation (2026-09-26)
+## 16. Checkpoint histórico — UI-4A Desktop Shell Density Foundation (2026-09-26)
 
 ```text
 UI-4A_USER_AUTHORIZED = YES
@@ -549,3 +549,28 @@ o max-width em 4px não removeu a diferença e foi revertida. Não foram alterad
 a tabela, os filtros, os cards do Dashboard, os controles ou o Quick Detail.
 A aceitação final da aparência pertence ao usuário; as fatias seguintes de
 UI-4 continuam sem autorização.
+
+## 17. Handoff — frente de remediação de UI (2026-09-27)
+
+O usuário continuará a melhoria de UI/UX e front-end do ARGOS com este agente.
+Ler `docs/frontend/ARGOS_FRONTEND_AUDIT_REPORT.md` como evidência de UI-AUD-01
+e `docs/frontend/ARGOS_DIRETRIZ_REMEDIACAO_FRONTEND_UI_UX_V1.md` como diretriz
+técnica. A auditoria recomenda refatoração estrutural do CSS existente; não
+propõe migração de stack. Novos patches visuais estão congelados até as fases
+de remediação. O detalhamento Phase 0..6 fica na diretriz e a ordem executiva
+em `docs/projeto/SPRINTS_ARGOS_V5.md`.
+
+O checkpoint local `768844d` preservou os cinco arquivos previamente sujos
+do `master`. O delta recente do Quick Detail em `inventario.css` é trabalho
+preservado, não aceito visualmente. UI-3/Quick Detail segue integrada com
+aceitação visual/produto pendente; três cards full width empilhados, quatro
+campos por card e Ambiente preservado. O ajuste para 2048×741 sem scroll
+interno permanece não comprovado. A Phase 6 tratará o drawer após as fases
+anteriores; Phase 0 ainda não começou.
+
+IMG-DISPLAY-01 está integrado pelo merge `cad0760`, usando a política
+DISPLAY_IMAGE do contrato de imagem, seção 25. A imagem exibida no Inventário
+e no Quick Detail pode usar upload manual somente em
+`NO_CAPTURE_AVAILABLE`; não muda a semântica de LATEST_CAMERA_CAPTURE. Revalidar Git,
+runtime e aceitação antes de declarar gates de implementação. Nenhum push foi
+autorizado por esta frente documental.

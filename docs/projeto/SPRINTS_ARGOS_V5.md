@@ -12,13 +12,13 @@ REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-
 REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08B06854073CE16FE028DA14
 CURRENT_PHASE = FASE C — Captura manual e gestão de imagens
-CURRENT_PHASE_STATUS = EM_ANDAMENTO / IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 integradas; UI-3 integrada com aceitação visual/produto pendente
+CURRENT_PHASE_STATUS = EM_ANDAMENTO / IMG-DISPLAY-01 integrado; UI-3 integrada com aceitação visual/produto pendente; UI-4A implementada com aceitação visual pendente; Phase 0 planejada
 IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
-CURRENT_ACTIVITY = reconciliação documental pós-integração UI-3 concluída; sem implementação visual ativa autorizada
-LAST_COMPLETED_ACTIVITY = SECURE_IMAGE_PREVIEW_DELIVERY — checkpoint de integração
+CURRENT_ACTIVITY = documentação de UI-AUD-01 e diretriz de remediação; Phase 0 não iniciada
+LAST_COMPLETED_ACTIVITY = IMG-DISPLAY-01 — integrado pelo merge cad0760
 LAST_COMPLETED_ACTIVITY_STATUS = COMPLETE / INTEGRATED
-NEXT_CANDIDATES = IMG-04
-NEXT_CANDIDATES_STATUS = IMG-04 NEXT_CANDIDATE / NOT_AUTHORIZED; UI-3 VISUAL_ACCEPTANCE_PENDING; UI-4 NOT_AUTHORIZED
+NEXT_CANDIDATES = ARGOS UI REMEDIATION — PHASE 0; IMG-04
+NEXT_CANDIDATES_STATUS = Phase 0 PLANNED / NOT_STARTED; IMG-04 NOT_AUTHORIZED; UI-3 and UI-4A acceptance pending
 IMG02_IMPLEMENTATION_AUTHORIZATION = GRANTED_BY_EXPLICIT_USER_INSTRUCTION_FOR_THIS_SLICE_ONLY
 IMG-01 = COMPLETE após o checkpoint documental; contrato canônico:
 docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
@@ -349,7 +349,7 @@ NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 A variante PANEL existente atende à UI-3. Este checkpoint foi supersedido pela
 integração da UI-3 abaixo.
 
-## 13. Checkpoint vigente — UI-3 pós-integração (2026-09-25)
+## 13. Checkpoint histórico — UI-3 pós-integração (2026-09-25)
 
 ```text
 UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE
@@ -375,3 +375,26 @@ captura anterior. Abrir o painel não captura imagem nem altera monitoramento.
 A authority UI-DS concentra o contrato e a nova regra de aceitação visual; a
 authority de imagens concentra o contrato do preview e as decisões deferred.
 O gate de integração passou. Nenhuma rodada de reparo visual foi iniciada.
+
+## 14. Frente planejada — ARGOS UI Remediation (2026-09-27)
+
+UI-AUD-01 foi concluída; relatório em `docs/frontend/ARGOS_FRONTEND_AUDIT_REPORT.md`.
+A diretriz técnica completa está em
+`docs/frontend/ARGOS_DIRETRIZ_REMEDIACAO_FRONTEND_UI_UX_V1.md`.
+
+| Ordem | Slice | Gate essencial |
+|---|---|---|
+| Phase 0 | Dead CSS / Defeated Rules Cleanup | Nenhum delta de computed style, visual ou funcional; complexidade reduzida |
+| Phase 1 | CSS Ownership Consolidation | Owners de componentes compartilhados documentados; sem regressão visual |
+| Phase 2 | Shell Stabilization | Sidebar, topbar e main estáveis; sem clipping/overflow |
+| Phase 3 | Shared Component Density | Controles alinhados, toque e foco preservados |
+| Phase 4 | Inventory Responsive Repair | Filtros e tabela sem clipping; dados longos e mobile validados |
+| Phase 5 | Dashboard Refinement | Grids e hierarquia estáveis em viewports alvo |
+| Phase 6 | Quick Detail Cleanup | Scroll previsível, footer visível, foco e acessibilidade preservados |
+
+Após Phase 6: regressão entre viewports e canonicalização do baseline do
+Design System. `Phase 0 = PLANNED / NOT_STARTED`; este registro não autoriza
+implementação. Patches visuais novos ficam congelados até as fases. UI-3
+aguarda aceitação visual/produto e UI-4A aguarda aceitação visual; o checkpoint
+`768844d` apenas
+preserva o trabalho anterior. IMG-DISPLAY-01 já foi integrado em `cad0760`.

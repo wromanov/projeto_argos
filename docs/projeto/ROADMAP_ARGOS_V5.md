@@ -1484,7 +1484,7 @@ FASE_C_COMPLETE = NO
 No checkpoint, o inventário usava THUMB e a UI-3 ainda era candidata. Esse
 estado foi supersedido pelo checkpoint pós-integração abaixo.
 
-## Atualização vigente — UI-3 pós-integração (2026-09-25)
+## Atualização histórica — UI-3 pós-integração (2026-09-25)
 
 ```text
 UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE
@@ -1511,3 +1511,13 @@ do usuário. Detalhes e evidências ficam na authority UI-DS, seção 12, e no
 snapshot `PROJECT_STATE.md`; decisões adiadas e contrato técnico de preview
 ficam na authority de imagens, seção 24. Nenhuma implementação adicional foi
 autorizada por esta reconciliação.
+
+## Atualização — remediação estrutural front-end (2026-09-27)
+
+UI-AUD-01 concluiu que o CSS requer refatoração estrutural. A stack Django SSR,
+Templates, HTML semântico, CSS customizado e JavaScript Vanilla permanece. A
+frente Phase 0..6 está planejada antes de novos ajustes visuais; sequência e
+gates em `SPRINTS_ARGOS_V5.md`, evidência e diretriz em `docs/frontend/`.
+Phase 0 ainda não começou. Quick Detail continua integrado com aceitação
+visual/produto pendente; IMG-DISPLAY-01 foi integrado em `cad0760`. O
+checkpoint `768844d` preserva alterações anteriores sem declarar aceitação.

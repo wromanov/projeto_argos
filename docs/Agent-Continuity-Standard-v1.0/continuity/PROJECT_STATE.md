@@ -1,22 +1,22 @@
 # ARGOS — Project State
 
 STATUS = CURRENT_SNAPSHOT
-SNAPSHOT_DATE = 2026-09-26
+SNAPSHOT_DATE = 2026-09-27
 PROJECT = ARGOS
-STATE_SOURCE = verified Git baseline + UI-3 integration merge + UI-4A shell implementation + responsive browser validation + Django system check
+STATE_SOURCE = verified Git checkpoint + UI-AUD-01 report + frontend remediation directive v1 + IMG-DISPLAY-01 integration
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = current checkpoint after UI-4A shell implementation; UI-4A visual acceptance and UI-3 product acceptance remain pending; earlier checkpoints remain historical
+SNAPSHOT_SCOPE = documentary opening of frontend remediation after preserving prior UI work; visual/product acceptance remains pending; earlier checkpoints remain historical
 
 ## 1. Executive status
 
-CURRENT_PHASE = FASE C — Captura manual e gestão de imagens (IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 integradas; UI-3 integrada e UI-4A implementada, ambas com aceitação pendente)
-CURRENT_ACTIVITY = UI-4A Shell Density Foundation implementada tecnicamente; aceitação visual do usuário pendente
-LAST_COMPLETED_ACTIVITY = SECURE_IMAGE_PREVIEW_DELIVERY — COMPLETE / INTEGRATED (7ca5f7c)
+CURRENT_PHASE = FASE C — imagens e UI; IMG-DISPLAY-01 integrado, UI-3 integrada e UI-4A implementada com aceitação visual/produto pendente; remediação estrutural de UI planejada
+CURRENT_ACTIVITY = frente documental UI-AUD-01 / diretriz de remediação; Phase 0 ainda não iniciada
+LAST_COMPLETED_ACTIVITY = IMG-DISPLAY-01 — COMPLETE / INTEGRATED (4bcd81d; merge cad0760)
 LATEST_TECHNICAL_UI_ACTIVITY = UI-4A / TECHNICAL_IMPLEMENTATION_COMPLETE / VISUAL_ACCEPTANCE_PENDING
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
 LAST_PUBLISHED_BASELINE = 850efd2
-CURRENT_CANONICAL_GIT_BASELINE = HEAD cad076099258e96b13f9e5ef11b301fc68891c4d; origin/master 47c6965f3a60c0026117584dae21ca8a280986a5; ahead 3 / behind 0
-NEXT_PROJECT_ACTIVITY = UI-4A visual acceptance pending; remaining UI-4 slices and IMG-04 remain NOT_AUTHORIZED; UI-3 visual/product acceptance remains pending
+CURRENT_CANONICAL_GIT_BASELINE = checkpoint pré-remediação 768844d71891c8ac6762eaa0d9450d9cc73fcab3; origin/master 47c6965f3a60c0026117584dae21ca8a280986a5; ahead 4 / behind 0 before this documentary commit; revalidate Git on resume
+NEXT_PROJECT_ACTIVITY = ARGOS UI REMEDIATION — PHASE 0 / PLANNED / NOT_STARTED; UI-3 and UI-4A acceptance pending; IMG-04 remains NOT_AUTHORIZED
 NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 CURRENT_BASELINE_BEFORE_IMG02 = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
 
@@ -532,7 +532,7 @@ AGENT_HANDOFF_GATE_RESULT = PASS
 CONTINUITY_DISCOVERABILITY = YES; status, commits, fatos de segurança, decisões deferred, authorities e autorização recuperáveis sem histórico de chat
 ```
 
-## 17. Checkpoint vigente — UI-3 pós-integração e aceitação visual pendente (2026-09-25)
+## 17. Checkpoint histórico — UI-3 pós-integração e aceitação visual pendente (2026-09-25)
 
 Este snapshot registra a integração técnica da UI-3 e distingue validação
 funcional de aceitação visual/produto. A evidência de integração abaixo foi
@@ -601,7 +601,7 @@ AGENT_HANDOFF_GATE_RESULT = PASS
 CONTINUITY_DISCOVERABILITY = YES; baseline, statuses, commits, acceptance gate, deferred decisions, next candidate, authorities and authorization recoverable without chat history
 ```
 
-## 18. Checkpoint vigente — UI-4A Desktop Shell Density Foundation (2026-09-26)
+## 18. Checkpoint histórico — UI-4A Desktop Shell Density Foundation (2026-09-26)
 
 Este checkpoint autoriza e registra somente a base geométrica global do shell.
 A aceitação visual do usuário continua pendente; a seção 17 permanece como
@@ -665,3 +665,55 @@ exigiria alterar a tabela ou um override específico, ambos fora deste slice.
 A barra local permanece registrada para UI-4D; não há overflow horizontal no
 root da página. Nenhum filtro, tabela, card, controle, tipografia, spacing
 primitivo ou Quick Detail foi editado nesta atividade.
+
+## 19. Frente documental UI-AUD-01 e remediação estrutural (2026-09-27)
+
+O relatório `docs/frontend/ARGOS_FRONTEND_AUDIT_REPORT.md` concluiu
+`STRUCTURAL_REFACTOR_RECOMMENDED`, sem implementação pela auditoria. A diretriz
+`docs/frontend/ARGOS_DIRETRIZ_REMEDIACAO_FRONTEND_UI_UX_V1.md` foi recebida como
+orientação técnica da frente de UI, subordinada às authorities do projeto e às
+decisões do usuário. Preservar Django SSR, Templates, HTML semântico, CSS
+customizado, JavaScript Vanilla, progressive enhancement, `<dialog>` nativo e o
+Design System próprio. `NEW_VISUAL_PATCHES = FROZEN UNTIL REMEDIATION PHASES`.
+
+O checkout principal `master` tinha exatamente cinco arquivos modificados e
+nada staged/untracked antes do checkpoint: `AGENT_CONTINUITY.md`,
+`PROJECT_STATE.md`, `argos.css`, `design-system.css`, `inventario.css`. O delta
+incluía UI-4A no shell, densidade de controles e a compactação recente do
+Quick Detail em `@media(max-height:800px)`, com `:has()` afetando o shell. Os
+cinco arquivos foram preservados sem descarte no commit local `768844d`; esse
+commit é checkpoint, não aceitação visual. Nenhum push foi feito.
+
+```text
+UI-AUD-01 = COMPLETE / STRUCTURAL_REFACTOR_RECOMMENDED
+FRONTEND_REMEDIATION_DIRECTIVE_V1 = RECEIVED / TECHNICAL_GUIDANCE
+STRUCTURAL_FRONTEND_REMEDIATION = NOT_STARTED
+SEQUENCE = Phase 0 dead/defeated CSS; Phase 1 ownership; Phase 2 shell;
+           Phase 3 shared density; Phase 4 inventory; Phase 5 dashboard;
+           Phase 6 Quick Detail; final cross-viewport regression
+NEXT_ACTIVITY = Phase 0 / PLANNED / NOT_STARTED
+PHASE_0_GATE = COMPUTED_STYLE_DELTA NONE; VISUAL_DELTA NONE;
+               FUNCTIONAL_DELTA NONE; CSS_COMPLEXITY_REDUCED YES
+QUICK_DETAIL = UI-3 INTEGRATED / VISUAL_AND_PRODUCT_ACCEPTANCE_PENDING
+QUICK_DETAIL_COMPACT_HEIGHT_CSS = CHECKPOINTED / NOT_VISUALLY_ACCEPTED
+IMG-DISPLAY-01 = INTEGRATED / merge cad0760; fallback contract in
+                 docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md section 25
+UI_UX_FRONTEND_CONTINUITY = USER_WILL_CONTINUE_WITH_THIS_AGENT
+IMPLEMENTATION_AUTHORIZED_FOR_PHASE_0 = NO; documentary opening only
+PUSH_AUTHORIZED = NO
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PASS
+```
+
+No Quick Detail, o usuário preserva três cards full width em coluna, quatro
+informações em cada card, inclusive Ambiente, sem remover conteúdo. O alvo de
+2048×741 sem scroll interno continua requisito de avaliação, não aceite
+comprovado. A auditoria atribuiu o scroll a fatores locais e compartilhados,
+predominantemente locais. A limpeza do drawer pertence à Phase 6. O
+IMG-DISPLAY-01 já está integrado no código; este registro não equivale a nova
+validação funcional ou visual nesta frente. Antes da Phase 0, estabelecer
+baseline no mesmo checkout e medir computed styles, overflow e screenshots.
+
+Correção factual ao checkpoint histórico UI-4A: ele cita sidebar de 164 px;
+o token CSS no checkout e a medição da UI-AUD-01 apontam 192 px. Para a
+remediação, usar 192 px como baseline atual e medir novamente no runtime.

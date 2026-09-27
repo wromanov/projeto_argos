@@ -605,26 +605,36 @@ mostra placeholder/estado apropriado sem mudar SOURCE ou CAPTURE_STATE.
 `GET /cameras/<pk>/imagens/ultima-captura/<variant>/` e o
 `CameraImagePreviewService` descritos na seção 24 continuam significando
 exclusivamente LATEST_CAMERA_CAPTURE. Seus status e a vedação de upload manual
-nessa rota permanecem válidos. A futura entrega de DISPLAY_IMAGE deve ter
-superfície distinta, conceitualmente
-`GET /cameras/<pk>/imagens/exibicao/<variant>/`, sem ampliar silenciosamente a
-rota de última captura. A rota de exibição ainda não está implementada.
+nessa rota permanecem válidos. A entrega de DISPLAY_IMAGE usa superfície
+distinta, `GET /cameras/<pk>/imagens/exibicao/<variant>/`, sem ampliar
+silenciosamente a rota de última captura. A rota de exibição foi implementada
+em IMG-DISPLAY-01.
 
 A nova superfície deve reutilizar o pipeline seguro existente: autenticação,
 permissão `cameras.view_camera`, storage privado, variantes fechadas, validação
 de hash/integridade, decode e re-encoding antes de servir os bytes, resposta
 `nosniff` e `no-store`, sem expor path ou storage key. Seleção e entrega não
 iniciam captura, probe, VMS ou qualquer side effect de monitoramento. Estados de
-falha da projeção são explícitos e sanitizados; detalhes HTTP da nova rota
-pertencem à futura implementação, sem alterar a semântica da rota de captura.
+falha da projeção são explícitos e sanitizados. A rota de exibição preserva
+a semântica da rota de última captura.
 
 ### 25.4 Consulta em lote e limite desta decisão
 
-Para a página do Inventário, a futura leitura resolve capturas em lote,
+Para a página do Inventário, a leitura resolve capturas em lote,
 identifica somente câmeras com NO_CAPTURE_AVAILABLE, resolve em lote o upload
 manual corrente dessas câmeras e produz um DisplayImageResult por item. Não
 introduz N+1 nem abre bytes de storage no render HTML. Índice ou migration
 adicional para esta projeção não é exigido: INDEX_MIGRATION =
 MEASURE_BEFORE_DECIDING. Proposta posterior depende de medição que demonstre
-necessidade; esta decisão documental não implementa serviço, rota, schema,
-migration ou UI.
+necessidade. A decisão documental original não implementou serviço, rota,
+schema, migration ou UI; a implementação posterior é IMG-DISPLAY-01.
+
+### 25.5 Estado de implementação — IMG-DISPLAY-01 (2026-09-26)
+
+O contrato da seção 25 foi implementado no commit `4bcd81d` e integrado ao
+`master` pelo merge `cad0760`. `DisplayImageReadService` resolve a projeção;
+Inventário e CameraQuickDetailPanel consomem DISPLAY_IMAGE e a rota separada
+`GET /cameras/<pk>/imagens/exibicao/<variant>/` foi adicionada. Esta
+subseção registra o estado atual sem mudar a semântica normativa de
+LATEST_CAMERA_CAPTURE, PRIMARY_IMAGE, provenance ou monitoramento. Esta
+atualização documental não reexecutou a validação de IMG-DISPLAY-01.
