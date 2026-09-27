@@ -3,21 +3,23 @@
 STATUS = CURRENT_SNAPSHOT
 SNAPSHOT_DATE = 2026-09-27
 PROJECT = ARGOS
-STATE_SOURCE = verified Git checkpoint + UI-AUD-01 report + frontend remediation directive v1 + Phase 0 canonical closure + Batch A technical validation
+STATE_SOURCE = Git verified before documentary activity + ARGOS UI V2 master plan + current continuity and roadmap reconciliation
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = ARGOS UI REMEDIATION Batch A Phases 1–3 technically complete and visually accepted on a dedicated worktree; earlier checkpoints remain historical
+SNAPSHOT_SCOPE = UI V2 formally documented as a parallel track; UI-V2-P0 is next; P0 and implementation not started
 
 ## 1. Executive status
 
-CURRENT_PHASE = FASE C — imagens e UI; ARGOS UI REMEDIATION Batch A = PASS / CANONICAL_INTEGRATION_PENDING
-CURRENT_ACTIVITY = ARGOS UI REMEDIATION — FAST TRACK BATCH A / USER VISUAL ACCEPTANCE / PASS
-LAST_COMPLETED_ACTIVITY = ARGOS UI REMEDIATION — PHASE 0 / CLOSED / canonical merge 9bdea6a; post-integration user visual acceptance PASS
-LATEST_TECHNICAL_UI_ACTIVITY = UI-4A / TECHNICAL_IMPLEMENTATION_COMPLETE / VISUAL_ACCEPTANCE_PENDING
+CURRENT_PHASE = FASE C — imagens e UI; ARGOS UI V2 = trilha paralela documental
+CURRENT_ACTIVITY = ARGOS UI V2 — CONTINUITY AND ROADMAP RECONCILIATION / PASS_WITH_FINDINGS
+LAST_COMPLETED_ACTIVITY = ARGOS UI REMEDIATION — FAST TRACK BATCH A / CLOSED / canonical integration and user visual acceptance PASS
+LATEST_TECHNICAL_UI_ACTIVITY = UI-3 integrated; Quick Detail visual baseline approved; UI-3 product acceptance pending
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
 LAST_PUBLISHED_BASELINE = 850efd2
-CURRENT_CANONICAL_GIT_BASELINE = master @ be1adfb523c958d754e97f2dbf002aac65700b13; origin/master 47c6965f3a60c0026117584dae21ca8a280986a5; ahead 9 / behind 0 at Batch A start; canonical master unchanged by Batch A; revalidate Git on resume
-NEXT_PROJECT_ACTIVITY = ARGOS UI REMEDIATION — FAST TRACK BATCH A / CANONICAL INTEGRATION; UI-3/UI-4A acceptance and IMG-04 authorization retain their separately recorded status
+CURRENT_CANONICAL_GIT_BASELINE = master @ 323bfb0856a0bedc2b1b17cb07cb60dbcdd7c816; origin/master 47c6965f3a60c0026117584dae21ca8a280986a5; ahead 16 / behind 0; verified before this documentary activity
+NEXT_PROJECT_ACTIVITY = UI-V2-P0 — SCREEN CENSUS / PLANNED / NOT_STARTED / not authorized by this documentary update
 NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+NEXT_BACKEND_ACTIVITY = IMG-04 candidate remains repository-recorded and not authorized; MON-AVAIL-02 recommended, sequencing unresolved
+UI_V2_TRACK_STATUS = DOCUMENTED / PARALLEL_TO_BACKEND
 CURRENT_BASELINE_BEFORE_IMG02 = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
 
 PROJECT_PROGRESS_LAST_VALID_PUBLISHED_ESTIMATE = 78% (HISTORICAL; NOT CURRENT)
@@ -1033,3 +1035,87 @@ A próxima atividade está autorizada pelo pedido atual e cobre exclusivamente
 o fechamento documental acima e as Phases 4, 5 e 6 do Batch B, com commits
 locais separados por fase e documentação final. Push, merge em `master`,
 rebase, tags e limpeza de worktrees permanecem não autorizados.
+
+## 23. ARGOS UI V2 — reconciliação documental e continuidade (2026-09-27)
+
+Este checkpoint registra a formalização da trilha visual prototype-driven e
+supersede somente a sequência de UI futura dos checkpoints anteriores. Não
+altera código nem retoma a remediação concluída.
+
+```text
+ACTIVITY = ARGOS UI V2 — CONTINUITY AND ROADMAP RECONCILIATION
+ACTIVITY_STATUS = PASS_WITH_FINDINGS
+ACTIVITY_COMPLETION_PERCENT = 100%
+COMPLETION_BASIS = plano UI V2 criado; state, continuity, map, bootstrap, roadmap, sprint map e UI authority reconciliados; finding de fonte/sequenciamento backend preservado; P0 não executado
+REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+BRANCH = master
+BASELINE_HEAD = 323bfb0856a0bedc2b1b17cb07cb60dbcdd7c816
+UPSTREAM = origin/master @ 47c6965f3a60c0026117584dae21ca8a280986a5
+DIVERGENCE = ahead 16 / behind 0
+WORKTREE_AT_PREFLIGHT = CLEAN
+STAGING_AT_PREFLIGHT = EMPTY
+WORKTREE_AFTER_DOCUMENTARY_ACTIVITY = 7 tracked documents modified and unstaged; ARGOS_UI_V2_MASTER_PLAN.md new and untracked
+STAGING_AFTER_DOCUMENTARY_ACTIVITY = EMPTY
+
+UI_V2_TRACK_STATUS = DOCUMENTED / PARALLEL_TO_BACKEND
+UI_V2_AUTHORITY = docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md
+NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
+NEXT_UI_ACTIVITY_STATUS = PLANNED / NOT_STARTED / NOT_AUTHORIZED_BY_THIS_DOCUMENT
+P0_EXECUTED = NO
+PROTOTYPE_VISUAL_ACCEPTANCE_GATE = DOCUMENTED / EXPLICIT_USER_APPROVAL_REQUIRED
+POST_IMPLEMENTATION_VISUAL_ACCEPTANCE_GATE = DOCUMENTED / EXPLICIT_USER_APPROVAL_REQUIRED
+IMPLEMENTATION_AUTHORIZED = NO
+LIVE_AUTHORIZED = NO
+SECURITY_GATES = LOCAL_DEVELOPMENT RELEASED_WITH_CONTROLS; HOMOLOGATION BLOCKED; DEPLOYMENT BLOCKED; PRODUCTION BLOCKED
+
+PHASE0_STATUS = CLOSED / PRESERVED
+BATCH_A_STATUS = CLOSED / CANONICALLY_INTEGRATED / USER_VISUAL_ACCEPTANCE_PASS
+BATCH_B_SCOPES = RETAINED; visual changes sequenced after applicable approved prototypes
+A2_VISUAL_5 = PRESERVED / visual delivery through UI V2
+A3_VISUAL_6 = PRESERVED / visual delivery through UI V2
+A4_VISUAL_7 = PRESERVED / visual delivery through UI V2
+QUICK_DETAIL_VISUAL_BASELINE = APPROVED / PROTECTED
+QUICK_DETAIL_REDRAW_WITHOUT_NEW_EXPLICIT_AUTHORIZATION = PROHIBITED
+UI-3_VISUAL_ACCEPTANCE = PASS / current baseline approved by explicit user instruction
+UI-3_PRODUCT_ACCEPTANCE = PENDING
+UI-4A_VISUAL_ACCEPTANCE = PENDING
+IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED
+OPEN_IMAGE_DECISIONS = 6; authority = docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md, section 21
+
+BACKEND_AND_UI_V2_PARALLELISM = DOCUMENTED
+MON-AVAIL-01 = BLOCKED_HISTORICAL_COVERAGE_GAP / supplied in current user instruction
+MON-AVAIL-01_REPOSITORY_SOURCE = NOT_FOUND during scoped repository search; no coverage or availability metric inferred
+BACKEND_BLOCKER = MON-AVAIL-01 historical coverage gap / evidence provenance noted above
+MON-AVAIL-02 = RECOMMENDED / NOT_AUTHORIZED
+REPOSITORY_RECORDED_BACKEND_CANDIDATE = IMG-04 / NOT_AUTHORIZED (SPRINTS_ARGOS_V5.md)
+NEXT_BACKEND_ACTIVITY = IMG-04 remains repository-recorded candidate; MON-AVAIL-02 remains a separate recommendation; sequencing unresolved
+
+DOCUMENTS_UPDATED = docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md; docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md; docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md;
+  docs/projeto/ROADMAP_ARGOS_V5.md; docs/projeto/SPRINTS_ARGOS_V5.md; docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md
+DOCUMENTS_CREATED = docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md
+SOURCE_CODE_CHANGED = NO
+CSS_CHANGED = NO
+TEMPLATES_CHANGED = NO
+JAVASCRIPT_CHANGED = NO
+MIGRATION_CREATED = NO
+DEPENDENCY_ADDED = NO
+STAGE_PERFORMED = NO
+COMMIT_PERFORMED = NO
+PUSH_PERFORMED = NO
+
+FINDING = MON-AVAIL-01 and its evidence were not located in the repository; the user-provided status is recorded with provenance, and the next backend ordering versus IMG-04 remains unresolved.
+BLOCKERS = NONE for this documentary activity
+PROJECT_STATE_UPDATE = PASS
+ROADMAP_UPDATE = PASS
+CONTINUITY_RECONCILIATION = PASS
+GIT_DIFF_CHECK = PASS
+DOCUMENT_DIFF_REVIEW = PASS
+AGENT_HANDOFF_GATE_RESULT = PASS
+ACTIVITY_COMPLETE = YES
+```
+
+A autorização anterior registrada para Batch B não é usada por este checkpoint
+para iniciar implementação. Seus escopos permanecem preservados e passam a
+seguir a ordem de protótipo e aceitação visual estabelecida pela UI V2. O
+próximo agente deve ler o master plan, validar Git diretamente e aguardar
+instrução própria antes de iniciar P0.

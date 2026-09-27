@@ -12,13 +12,13 @@ REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-
 REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08B06854073CE16FE028DA14
 CURRENT_PHASE = FASE C — Captura manual e gestão de imagens
-CURRENT_PHASE_STATUS = EM_ANDAMENTO / Phase 0 CLOSED após integração canônica e aceitação visual pós-integração; Phase 1 READY_NOT_STARTED; UI-3/UI-4A acceptance pending
+CURRENT_PHASE_STATUS = FASE C EM_ANDAMENTO; UI V2 DOCUMENTED as a parallel track; Phase 0 and Batch A closed; pending visual scopes flow through approved prototypes
 IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
-CURRENT_ACTIVITY = ARGOS UI REMEDIATION — PHASE 1 / CSS OWNERSHIP CONSOLIDATION / READY_NOT_STARTED
-LAST_COMPLETED_ACTIVITY = ARGOS UI REMEDIATION — PHASE 0 / canonical merge 9bdea6a; post-integration visual acceptance PASS
+CURRENT_ACTIVITY = UI-V2-P0 — SCREEN CENSUS / PLANNED / NOT_STARTED
+LAST_COMPLETED_ACTIVITY = ARGOS UI REMEDIATION — FAST TRACK BATCH A / CLOSED / CANONICAL INTEGRATION AND USER VISUAL ACCEPTANCE PASS
 LAST_COMPLETED_ACTIVITY_STATUS = CLOSED / INTEGRATED / VISUAL_ACCEPTANCE_PASS
-NEXT_CANDIDATES = ARGOS UI REMEDIATION — PHASE 1 / CSS OWNERSHIP CONSOLIDATION; IMG-04
-NEXT_CANDIDATES_STATUS = Phase 1 READY_NOT_STARTED; IMG-04 NOT_AUTHORIZED; UI-3 and UI-4A acceptance pending
+NEXT_CANDIDATES = UI-V2-P0 — SCREEN CENSUS; IMG-04; MON-AVAIL-02 (recommendation)
+NEXT_CANDIDATES_STATUS = UI-V2-P0 PLANNED / NOT_STARTED; IMG-04 NOT_AUTHORIZED; MON-AVAIL-02 RECOMMENDED / NOT_AUTHORIZED; Quick Detail visual baseline approved
 IMG02_IMPLEMENTATION_AUTHORIZATION = GRANTED_BY_EXPLICIT_USER_INSTRUCTION_FOR_THIS_SLICE_ONLY
 IMG-01 = COMPLETE após o checkpoint documental; contrato canônico:
 docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
@@ -37,8 +37,9 @@ UI-2 = COMPLETE / INTEGRATED; COMMIT = b57f959; INTEGRATION_COMMIT = c79fa06
 UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE; TECHNICAL_COMMIT = bcc7e7d
 UI-3_INTEGRATION = COMPLETE; INTEGRATION_COMMIT = 1015a8f
 UI-3_FUNCTIONAL_VALIDATION = PASS
-UI-3_VISUAL_ACCEPTANCE = PENDING; UI-3_PRODUCT_ACCEPTANCE = PENDING
-UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+UI-3_VISUAL_ACCEPTANCE = PASS / current Quick Detail visual baseline explicitly approved by user
+UI-3_PRODUCT_ACCEPTANCE = PENDING
+UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PASS / PRODUCT_ACCEPTANCE_PENDING
 UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
 ```
 
@@ -54,12 +55,15 @@ recuperável entre agentes e o contrato de handoff pertencem a
 `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`.
 
 MON-09 está tecnicamente encerrada. IMG-02, UI-1, IMG-03, UI-2 e
-SECURE_IMAGE_PREVIEW_DELIVERY estão integradas. UI-3 também está tecnicamente
-implementada e integrada, com validação funcional `PASS`; sua aceitação visual e
-de produto está pendente de aprovação explícita do usuário. `IMG-04` é a próxima
-candidata e permanece não autorizada; `UI-4` também não está autorizada. Este
-mapa registra status e sequência; não concede autorização para implementar
-candidatas, avançar slices, mudar de fase ou executar em homologação/produção.
+SECURE_IMAGE_PREVIEW_DELIVERY estão integradas. UI-3 está tecnicamente
+implementada e integrada, com validação funcional `PASS`; a baseline visual
+atual do Quick Detail foi aprovada explicitamente pelo usuário nesta
+reconciliação, enquanto a aceitação de produto da UI-3 permanece pendente.
+`UI-V2-P0 — SCREEN CENSUS` é a próxima atividade UI. `IMG-04` permanece como
+candidata de backend/imagens não autorizada; `MON-AVAIL-02` é recomendação
+registrada sem autorização ou sequência definida. Este mapa registra status e
+sequência; não concede autorização para implementar candidatas, avançar slices,
+mudar de fase ou executar em homologação/produção.
 
 Em caso de divergência:
 
@@ -192,9 +196,10 @@ INTEGRATION_GATE = PASS (7ca5f7c)
 SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED (e3f2d40; 7ca5f7c)
 INVENTORY_THUMBNAIL_REAL_DATA_WIRING = COMPLETE
 ↓
-UI-3 = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+UI-3 = INTEGRATED / VISUAL_ACCEPTANCE_PASS / PRODUCT_ACCEPTANCE_PENDING
 IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED
 UI-4 = NOT_AUTHORIZED
+UI-V2 = DOCUMENTED / NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
 ↓
 demais slices seguem as dependências canônicas e exigem autorização própria
 ```
@@ -395,10 +400,12 @@ A diretriz técnica completa está em
 Após Phase 6: regressão entre viewports e canonicalização do baseline do
 Design System. `Phase 0 = PLANNED / NOT_STARTED` era o status na abertura desta
 frente; seu fechamento atual está registrado na seção 15. Este mapa não autoriza
-implementação. Patches visuais novos ficam congelados até as fases. UI-3
-aguarda aceitação visual/produto e UI-4A aguarda aceitação visual; o checkpoint
-`768844d` apenas
-preserva o trabalho anterior. IMG-DISPLAY-01 já foi integrado em `cad0760`.
+implementação. Patches visuais novos ficam sujeitos às fases de remediação e,
+para mudanças de apresentação, ao gate prototype-driven da UI V2. A baseline
+visual atual do Quick Detail foi aprovada pelo usuário; a aceitação de produto
+da UI-3 permanece pendente e UI-4A aguarda aceitação visual. O checkpoint
+`768844d` apenas preserva o trabalho anterior. IMG-DISPLAY-01 já foi integrado
+em `cad0760`.
 
 ## 15. Fechamento — ARGOS UI Remediation Phase 0 (2026-09-27)
 
@@ -423,3 +430,36 @@ As métricas e os resultados detalhados da Phase 0 permanecem em
 `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 20.
 Phase 1 está pronta para planejamento, mas não foi iniciada nem autorizada por
 este registro.
+
+## 16. Reconciliação vigente — ARGOS UI V2 prototype-driven (2026-09-27)
+
+A autoridade operacional da nova trilha é
+`docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md`. UI V2 é transversal e paralela ao
+backend. O roadmap mantém A2 — Visual 5, A3 — Visual 6 e A4 — Visual 7; suas
+entregas visuais passam pelo fluxo P0–P7 sem invalidar seus objetivos funcionais.
+
+```text
+UI_V2_TRACK_STATUS = DOCUMENTED
+NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
+P0_STATUS = PLANNED / NOT_STARTED / NOT_AUTHORIZED_BY_THIS_DOCUMENT
+IMPLEMENTATION_BEFORE_APPROVED_PROTOTYPE = PROHIBITED
+PROTOTYPE_VISUAL_ACCEPTANCE_GATE = REQUIRED
+POST_IMPLEMENTATION_VISUAL_ACCEPTANCE_GATE = REQUIRED
+QUICK_DETAIL_VISUAL_BASELINE = APPROVED / PROTECTED
+UI-3_VISUAL_ACCEPTANCE = PASS / current Quick Detail baseline approved by user
+UI-3_PRODUCT_ACCEPTANCE = PENDING
+```
+
+Phase 0 e Fast Track Batch A continuam fechados. Os escopos pendentes do Batch
+B permanecem no snapshot de continuidade; qualquer alteração visual de
+Inventário, Dashboard ou Quick Detail deverá seguir o protótipo aprovado da
+família correspondente. Os achados e guardrails técnicos da auditoria e diretriz
+CSS continuam válidos; a reconciliação não reabre fases concluídas nem inicia
+trabalho de UI.
+
+`IMG-04` permanece como candidata de backend/imagens registrada anteriormente e
+não autorizada. `MON-AVAIL-01 = BLOCKED_HISTORICAL_COVERAGE_GAP` e a recomendação
+`MON-AVAIL-02` foram fornecidas na instrução atual do usuário; não foram
+encontradas referências locais a esses identificadores no checkout. A sequência
+entre `IMG-04` e `MON-AVAIL-02` permanece em aberto, sem fabricação de métricas
+de availability ou coverage.

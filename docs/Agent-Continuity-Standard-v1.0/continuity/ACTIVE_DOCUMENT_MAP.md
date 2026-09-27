@@ -11,19 +11,20 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; UI-AUD-01 documented, Phase 0 planned |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; frontend remediation handoff |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; frontend audit and directive mapped |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read current state from PROJECT_STATE |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; UI V2 documented, P0 next / not started |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; UI V2 continuity in section 19 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; UI V2 authority mapped |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; UI-V2-P0 next, read PROJECT_STATE first |
 
 ## 2. Authorities canônicas do projeto
 
 | Path | Role | Authority scope | Status |
 |---|---|---|---|
-| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; frontend remediation planned |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; Phase 0 planned, IMG-04 not authorized |
+| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; UI V2 is parallel and prototype-driven |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; UI-V2-P0 next; IMG-04 not authorized |
+| `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md` | Authority operacional da UI V2 | Escopo, princípios, fluxo P0–P7, gates e próxima atividade visual | PRESENT / CANONICAL / ACTIVE |
 | `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; DISPLAY_IMAGE integrated, deferred production backend decision |
-| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; UI-3 status and mandatory visual-acceptance gate in section 12 |
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; Quick Detail baseline approved; UI-3 product acceptance pending, section 18 |
 | `docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md` | Registro factual dos findings de UI-0 | Findings do preflight read-only, sem alterar a authority de UI-DS | PRESENT / CURRENT FINDINGS RECORD; NON-BLOCKING |
 | `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | ADR de arquitetura | Arquitetura de monitoramento e relação com gestão de imagens | PRESENT / AUTHORITY; verificar vigência no escopo aplicável |
 | `docs/projeto/ADR-020_contrato_estado_tecnico_monitoramento.md` | Contrato técnico de monitoramento | Estado e semântica de leitura técnica | PRESENT / AUTHORITY; verificar vigência no escopo aplicável |
@@ -37,9 +38,9 @@ CURRENT / ACTIVE:
 
 | Path | Role / authority scope | Status |
 |---|---|---|
-| `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.4.md` | Prompts, roteamento cognitivo e execução | CURRENT / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md` | Execução direta, delegação e papéis | CURRENT / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md` | Skills/plugins e limites de capability | CURRENT / ACTIVE |
+| `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.6.md` | Prompts, roteamento cognitivo e execução | CURRENT / ACTIVE |
+| `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.3-Roteamento-Economico.md` | Execução direta, delegação e papéis | CURRENT / ACTIVE |
+| `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.2.md` | Skills/plugins e limites de capability | CURRENT / ACTIVE |
 | `docs/Agent-Continuity-Standard-v1.0/policies/Independencia-Analitica-Agente-v1.md` | Independência analítica e qualidade de decisão | CURRENT / ACTIVE |
 
 SUPERSEDED / HISTORICAL ONLY:
@@ -59,16 +60,16 @@ Rules:
 
 Git controls factual repository state.
 
-Baseline factual validada no início da reconciliação documental UI-3:
+Baseline factual validada antes da reconciliação documental UI V2 em 2026-09-27:
 
 - repository: `C:\Users\walac\desenvolvimento\projeto_argos`
 - branch: `master`
-- HEAD: `1015a8f0d7b6165ab057d81afb22007c3ae5e91b`
-- origin/master: `20be98d48ccfc19d458e393189168d9ecc93f309`
-- divergence: ahead 2 / behind 0
-- worktree antes da reconciliação: clean; após reconciliação: sete documentos autorizados modificados e unstaged
-- staging: empty
-- validação: 2026-09-25; Git permanece a fonte factual e deve ser revalidado em nova sessão
+- HEAD: `323bfb0856a0bedc2b1b17cb07cb60dbcdd7c816`
+- origin/master: `47c6965f3a60c0026117584dae21ca8a280986a5`
+- divergence: ahead 16 / behind 0
+- worktree no preflight: clean; após a reconciliação: sete documentos modificados/unstaged e um plano UI V2 novo/untracked
+- staging no preflight e após a reconciliação: empty
+- validar Git diretamente em nova sessão; estes valores registram o baseline anterior às alterações documentais desta atividade
 
 The technical MON-09 checkpoint remains `850efd2381d7f5b7df27e528dc3374ea58e507b3`;
 it is historical technical evidence, not the current Git HEAD.
@@ -95,8 +96,10 @@ UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
 UI_3_TECHNICAL_IMPLEMENTATION = COMPLETE; TECHNICAL_COMMIT = bcc7e7d
 UI_3_INTEGRATION = COMPLETE; INTEGRATION_COMMIT = 1015a8f; INTEGRATION_GATE = PASS
 UI_3_FUNCTIONAL_VALIDATION = PASS
-UI_3_VISUAL_ACCEPTANCE = PENDING; UI_3_PRODUCT_ACCEPTANCE = PENDING
-UI_3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+QUICK_DETAIL_VISUAL_BASELINE = APPROVED / PROTECTED
+UI_3_VISUAL_ACCEPTANCE = PASS / current Quick Detail baseline explicitly approved by user
+UI_3_PRODUCT_ACCEPTANCE = PENDING
+UI_3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PASS / PRODUCT_ACCEPTANCE_PENDING
 UI_4 = NOT_AUTHORIZED
 ```
 
@@ -108,7 +111,8 @@ estão em `docs/projeto/SPRINTS_ARGOS_V5.md`.
 ## 5. Historical monitoring workstream continuity
 
 Os status técnicos desta seção registram checkpoints MON já concluídos. A
-próxima atividade de projeto e a autorização vigentes estão na seção 8.
+próxima atividade e autorização vigentes estão na seção 14 e em
+`PROJECT_STATE.md`.
 
 MON-07 = COMPLETE / PUBLISHED
 MON-08A = PASS
@@ -194,7 +198,7 @@ PROVENANCES = CAPTURA_CAMERA, UPLOAD_MANUAL
 PRIMARY_IMAGE = DEFERRED_TO_IMG07
 CAMERA_QUICK_DETAIL_PANEL = user-approved functional content in canonical UI spec; consumes LATEST_CAMERA_CAPTURE; no capture on open; UPLOAD_MANUAL is not an implicit fallback; VMS excluded in favor of location
 MONITORING_SEPARATION = CAMERA_AVAILABILITY != IMAGE_CAPTURE_SUCCESS; capture failures do not change ONLINE/OFFLINE
-OPEN_DECISION_COUNT = 7; see the canonical contract for each decision and its closure slice
+OPEN_DECISION_COUNT = 6; see the canonical contract section 21 for each decision and its closure slice
 IMG02_STATUS = COMPLETE / INTEGRATED
 IMG02_IMPLEMENTATION_AUTHORIZATION = prior authorization for this slice consumed
 PRODUCTION_STORAGE_BACKEND = DEFERRED; contract persistent storage and configurable abstraction recorded in canonical image contract
@@ -203,12 +207,14 @@ SECURE_IMAGE_PREVIEW_DELIVERY = COMPLETE / INTEGRATED; TECHNICAL_COMMIT = e3f2d4
 INVENTORY_THUMBNAIL_REAL_DATA_WIRING = COMPLETE
 PREVIEW_VARIANTS = THUMB; PANEL; dimensões na authority de imagens, seção 24
 UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE; UI-3_INTEGRATION = COMPLETE
-UI-3_FUNCTIONAL_VALIDATION = PASS; UI-3_VISUAL_ACCEPTANCE = PENDING; UI-3_PRODUCT_ACCEPTANCE = PENDING
-UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+QUICK_DETAIL_VISUAL_BASELINE = APPROVED / PROTECTED
+UI-3_FUNCTIONAL_VALIDATION = PASS; UI-3_VISUAL_ACCEPTANCE = PASS; UI-3_PRODUCT_ACCEPTANCE = PENDING
+UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PASS / PRODUCT_ACCEPTANCE_PENDING
 UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
 IMG-04 = NEXT_CANDIDATE / NOT_AUTHORIZED
 UI-4 = NOT_AUTHORIZED
 NEXT_CANDIDATE = IMG-04 / NOT_AUTHORIZED
+NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
 FASE_C_COMPLETE = NO
 
 ## 8. Continuidade no checkpoint UI-3 (histórico)
@@ -330,8 +336,26 @@ as especificações.
 |---|---|---|
 | `docs/frontend/ARGOS_FRONTEND_AUDIT_REPORT.md` | Evidência e conclusão de UI-AUD-01; não é authority normativa | RECEIVED / AUDIT COMPLETE |
 | `docs/frontend/ARGOS_DIRETRIZ_REMEDIACAO_FRONTEND_UI_UX_V1.md` | Diretriz técnica operacional Phase 0..6; subordinada às authorities do projeto e às decisões do usuário | RECEIVED / GUIDANCE ACTIVE |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Sequência executiva e gates da nova frente | CANONICAL / Phase 0 planned |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Sequência executiva e gates da nova frente | CANONICAL / Phase 0 and Batch A closed; future visual changes gated by UI V2 prototypes |
 | `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`, seção 25 | Contrato de DISPLAY_IMAGE e status de IMG-DISPLAY-01 | CANONICAL / implementation integrated |
 
-O estado corrente está em `PROJECT_STATE.md`; o handoff operacional, em
-`AGENT_CONTINUITY.md`. Checkpoint local anterior à frente: `768844d`.
+O estado corrente está na seção 23 de `PROJECT_STATE.md`; o handoff operacional
+está na seção 19 de `AGENT_CONTINUITY.md`. A Phase 0 e o Batch A estão fechados;
+os achados do Batch B permanecem registrados, com mudanças visuais sequenciadas
+após os protótipos aprovados.
+
+## 14. Authority vigente — ARGOS UI V2
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md` | Authority operacional da trilha prototype-driven; define P0–P7, gates e próxima atividade | CANONICAL / ACTIVE; P0 planned, not started |
+| `docs/projeto/ROADMAP_ARGOS_V5.md` | Direção macro; mantém A2/A3/A4 e registra UI V2 paralela ao backend | CANONICAL / UPDATED |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Ordem de execução; registra UI-V2-P0 e candidatas backend sem autorização | CANONICAL / UPDATED |
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Contratos UI-DS e Quick Detail; seção 18 registra a baseline visual protegida | CANONICAL / ACTIVE |
+| `docs/frontend/ARGOS_FRONTEND_AUDIT_REPORT.md` | Evidência da auditoria UI-AUD-01 | AUDIT EVIDENCE; não normativa |
+| `docs/frontend/ARGOS_DIRETRIZ_REMEDIACAO_FRONTEND_UI_UX_V1.md` | Guardrails e ownership CSS para implementação | TECHNICAL GUIDANCE; subordinada às authorities de produto e ao gate UI V2 |
+
+`MON-AVAIL-01` e `MON-AVAIL-02` foram citados na instrução atual do usuário e
+não foram localizados em documentos do checkout nesta reconciliação. O mapa de
+sprints mantém `IMG-04` como candidata backend/imagens não autorizada; a ordem
+entre as candidatas continua sem adjudicação.

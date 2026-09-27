@@ -1160,7 +1160,29 @@ DOCUMENT_QUALITY_GATE = PASS
 CAN_NEW_AGENT_EXECUTE_WITHOUT_CHAT_HISTORY = YES
 ```
 
-## 18. Referências de continuidade
+## 18. Reconciliação vigente — UI V2 e baseline visual do Quick Detail (2026-09-27)
+
+A instrução explícita do usuário nesta reconciliação aprova a aparência atual do
+Quick Detail como baseline visual protegido. Este registro atualiza somente a
+aceitação visual dessa baseline; não autoriza redesign nem encerra a aceitação
+de produto da UI-3.
+
+```text
+QUICK_DETAIL_VISUAL_BASELINE = APPROVED
+QUICK_DETAIL_REDRAW_WITHOUT_NEW_EXPLICIT_AUTHORIZATION = PROHIBITED
+UI-3_VISUAL_ACCEPTANCE = PASS / explicit user approval of current visual baseline
+UI-3_PRODUCT_ACCEPTANCE = PENDING
+UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PASS / PRODUCT_ACCEPTANCE_PENDING
+```
+
+A baseline visual aprovada deve ser preservada pela trilha UI V2. Qualquer
+proposta de alteração visual do Quick Detail requer nova autorização explícita
+antes de prototipação de redesign; conteúdo funcional e dependências continuam
+sob esta specification e o contrato canônico de imagem. Nenhum teste, validação
+de runtime ou alteração de implementação foi executado por esta atualização
+documental.
+
+## 19. Referências de continuidade
 
 As referências operacionais de continuidade devem apontar para este documento,
 sem duplicar seu conteúdo integral:
@@ -1169,6 +1191,7 @@ sem duplicar seu conteúdo integral:
 - `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`;
 - `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`;
 - `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md`;
+- `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md` para o processo prototype-driven;
 - `docs/projeto/ROADMAP_ARGOS_V5.md`;
 - `docs/projeto/SPRINTS_ARGOS_V5.md`.
 

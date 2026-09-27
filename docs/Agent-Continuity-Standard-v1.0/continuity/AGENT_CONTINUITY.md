@@ -64,18 +64,18 @@ commit documental; revalidar Git antes de usá-los como estado atual.
 
 As políticas operacionais atuais são:
 
-- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.4.md`
-- `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.1-Roteamento-Economico.md`
-- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.1.md`
+- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-Prompts-Agente-v1.7-R2.6.md`
+- `docs/Agent-Continuity-Standard-v1.0/policies/AGENTS-Multiagente-Generico-v1.7-R2.3-Roteamento-Economico.md`
+- `docs/Agent-Continuity-Standard-v1.0/policies/Politica-de-Uso-de-Skills-e-Plugins-Codex-Work-v1.2.md`
 - `docs/Agent-Continuity-Standard-v1.0/policies/Independencia-Analitica-Agente-v1.md`
 
 Regras de version hygiene:
-- R2.4 substitui operacionalmente R2.3;
-- AGENTS R2.1 usa a baseline anterior somente como histórico;
-- Skills/Plugins v1.1 substitui v1.0;
+- Prompt R2.6 substitui operacionalmente R2.5;
+- AGENTS R2.3 substitui operacionalmente R2.2;
+- Skills/Plugins v1.2 substitui v1.1;
 - versões superseded não são authorities ativas.
 
-## 4. Contexto histórico do estado técnico (status atual na seção 15)
+## 4. Contexto histórico do estado técnico (status vigente na seção 19 e em PROJECT_STATE.md)
 
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 — fechamento técnico publicado em 850efd2
 LAST_PUBLISHED_BASELINE = 850efd2
@@ -466,7 +466,7 @@ PANEL existente. Esse estado foi supersedido pela integração da UI-3 registrad
 na seção 15. Os detalhes do contrato de preview continuam em
 ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
 
-## 15. Checkpoint vigente — UI-3 integrada, aceitação visual pendente (2026-09-25)
+## 15. Checkpoint histórico — UI-3 integrada, aceitação visual pendente (2026-09-25)
 
 ```text
 UI-3_TECHNICAL_IMPLEMENTATION = COMPLETE
@@ -550,7 +550,7 @@ a tabela, os filtros, os cards do Dashboard, os controles ou o Quick Detail.
 A aceitação final da aparência pertence ao usuário; as fatias seguintes de
 UI-4 continuam sem autorização.
 
-## 17. Handoff — frente de remediação de UI (2026-09-27)
+## 17. Handoff histórico — frente de remediação de UI (2026-09-27)
 
 O usuário continuará a melhoria de UI/UX e front-end do ARGOS com este agente.
 Ler `docs/frontend/ARGOS_FRONTEND_AUDIT_REPORT.md` como evidência de UI-AUD-01
@@ -596,3 +596,34 @@ PUSH_AUTHORIZED = NO
 ```
 
 Phase 1 não foi iniciada nem autorizada por este registro.
+
+## 19. UI V2 — continuidade vigente (2026-09-27)
+
+O checkpoint atual e os fatos Git validados estão na seção 23 de
+`PROJECT_STATE.md`. A authority operacional da nova trilha é
+`docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md`; a direção macro e a ordem executiva
+estão, respectivamente, em `docs/projeto/ROADMAP_ARGOS_V5.md` e
+`docs/projeto/SPRINTS_ARGOS_V5.md`.
+
+```text
+UI_V2_TRACK_STATUS = DOCUMENTED / PARALLEL_TO_BACKEND
+NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
+NEXT_UI_ACTIVITY_STATUS = PLANNED / NOT_STARTED / NOT_AUTHORIZED_BY_THIS_DOCUMENT
+PROTOTYPE_VISUAL_ACCEPTANCE_GATE = REQUIRED
+POST_IMPLEMENTATION_VISUAL_ACCEPTANCE_GATE = REQUIRED
+QUICK_DETAIL_VISUAL_BASELINE = APPROVED / PROTECTED
+QUICK_DETAIL_REDRAW_WITHOUT_NEW_EXPLICIT_AUTHORIZATION = PROHIBITED
+PHASE0_AND_BATCH_A = CLOSED / PRESERVED
+BATCH_B_VISUAL_SCOPES = RETAINED / SEQUENCED_AFTER_APPROVED_PROTOTYPES
+```
+
+`UI-3_VISUAL_ACCEPTANCE = PASS` para a baseline atual do Quick Detail, aprovada
+explicitamente pelo usuário nesta reconciliação; `UI-3_PRODUCT_ACCEPTANCE` segue
+`PENDING`. A recomendação backend `MON-AVAIL-02` e o bloqueio informado para
+`MON-AVAIL-01` foram fornecidos na instrução atual, mas não foram encontrados
+como registros locais; `IMG-04` permanece candidata não autorizada no mapa de
+sprints. O sequenciamento backend entre essas frentes está registrado como
+aberto, sem métricas fabricadas.
+
+Esta reconciliação é documental. Não executar P0, criar protótipos ou iniciar
+implementação sem instrução/autorização própria.

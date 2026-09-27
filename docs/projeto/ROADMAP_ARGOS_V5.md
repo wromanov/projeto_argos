@@ -1512,7 +1512,7 @@ snapshot `PROJECT_STATE.md`; decisões adiadas e contrato técnico de preview
 ficam na authority de imagens, seção 24. Nenhuma implementação adicional foi
 autorizada por esta reconciliação.
 
-## Atualização — remediação estrutural front-end (2026-09-27)
+## Atualização histórica — remediação estrutural front-end pré-Phase 0 (2026-09-27)
 
 UI-AUD-01 concluiu que o CSS requer refatoração estrutural. A stack Django SSR,
 Templates, HTML semântico, CSS customizado e JavaScript Vanilla permanece. A
@@ -1521,3 +1521,43 @@ gates em `SPRINTS_ARGOS_V5.md`, evidência e diretriz em `docs/frontend/`.
 Phase 0 ainda não começou. Quick Detail continua integrado com aceitação
 visual/produto pendente; IMG-DISPLAY-01 foi integrado em `cad0760`. O
 checkpoint `768844d` preserva alterações anteriores sem declarar aceitação.
+
+## Atualização vigente — ARGOS UI V2 prototype-driven (2026-09-27)
+
+A nova frente transversal `ARGOS UI V2 — PROTOTYPE-DRIVEN VISUAL MODERNIZATION`
+está formalizada em `ARGOS_UI_V2_MASTER_PLAN.md`. Ela moderniza visualmente as
+telas reais por protótipos com aprovação explícita antes da implementação,
+preservando a estrutura, os fluxos, as rotas, os nomes, os dados, as regras e a
+arquitetura de informação do ARGOS.
+
+UI V2 pode avançar em paralelo à trilha backend; dependências são criadas
+somente quando uma tela precisar de capability ainda inexistente. A stack
+Django SSR, Templates, HTML semântico, CSS customizado, JavaScript Vanilla e
+Progressive Enhancement permanece factual. As fases A2 — Visual 5, A3 — Visual
+6 e A4 — Visual 7 mantêm seus objetivos funcionais; suas entregas visuais passam
+a ser planejadas e aceitas pelo fluxo P0–P7 da UI V2. Nenhum marco é invalidado
+ou renumerado.
+
+O fechamento da Phase 0 e do Fast Track Batch A permanece válido. Os escopos
+pendentes do Batch B permanecem registrados; alterações visuais correspondentes
+devem passar pelo census e pelo gate de protótipo aprovado. Isso não reabre as
+fases já concluídas. O Quick Detail atual é uma baseline visual aprovada e
+protegida contra redesign sem nova autorização explícita.
+
+```text
+UI_V2_TRACK_STATUS = DOCUMENTED / PARALLEL_TO_BACKEND
+NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
+NEXT_UI_ACTIVITY_STATUS = PLANNED / NOT_STARTED / NOT_AUTHORIZED_BY_THIS_DOCUMENT
+PROTOTYPE_VISUAL_ACCEPTANCE_GATE = REQUIRED
+POST_IMPLEMENTATION_VISUAL_ACCEPTANCE_GATE = REQUIRED
+QUICK_DETAIL_VISUAL_BASELINE = APPROVED / PROTECTED
+UI-3_VISUAL_ACCEPTANCE = PASS / current Quick Detail baseline approved by user
+UI-3_PRODUCT_ACCEPTANCE = PENDING
+```
+
+O mapa de sprints vigente identifica `IMG-04` como candidata de backend/imagens
+sem autorização. A recomendação recebida nesta atividade para `MON-AVAIL-02`
+permanece separada; a sequência entre as duas candidatas não está definida. O
+registro de `MON-AVAIL-01` como bloqueado por lacuna histórica foi fornecido na
+instrução do usuário e não foi localizado em documentos do checkout durante
+esta reconciliação; nenhum dado de availability ou coverage foi inferido.

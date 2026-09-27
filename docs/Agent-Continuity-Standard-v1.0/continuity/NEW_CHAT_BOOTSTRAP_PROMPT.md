@@ -89,7 +89,7 @@ ATTEMPT_MAX_DURATION_REQUIRED_FOR_CORRECTNESS = NO
 LEASE_DURATION = janela operacional configurável de takeover
 LEASE_RENEWAL_IMPLEMENTED = NO
 
-## Contexto histórico de roadmap e limites (status atual no checkpoint vigente)
+## Contexto histórico de roadmap e limites — checkpoint pré-UI-3
 
 NEXT_ACTIVITY_CANDIDATES = IMG-03 — Upload manual; UI-2 — Inventory Visual Retrofit
 NEXT_ACTIVITY_STATUS = NOT_AUTHORIZED; não iniciar por inferência
@@ -279,3 +279,45 @@ PUSH_AUTHORIZED = NO
 ACTIVITY_COMPLETION_PERCENT = 100%
 COMPLETION_BASIS = sete documentos reconciliados; validação documental PASS; sem alteração de código/runtime, reexecução de testes, reparo visual, commit, push ou publicação
 ```
+
+## Checkpoint atual — ARGOS UI V2 (2026-09-27)
+
+Antes de qualquer ação, revalidar Git e ler `PROJECT_STATE.md`, seção 23;
+`AGENT_CONTINUITY.md`, seção 19; e `ACTIVE_DOCUMENT_MAP.md`, seção 14. A nova
+authority operacional é `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md`.
+
+```text
+UI_V2_TRACK_STATUS = DOCUMENTED / PARALLEL_TO_BACKEND
+NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
+NEXT_UI_ACTIVITY_STATUS = PLANNED / NOT_STARTED / NOT_AUTHORIZED_BY_THIS_DOCUMENT
+IMPLEMENTATION_AUTHORIZED = NO
+P0_EXECUTED_IN_PREVIOUS_ACTIVITY = NO
+PHASE0_AND_BATCH_A = CLOSED / PRESERVED
+BATCH_B_VISUAL_SCOPES = RETAINED / FLOW_THROUGH_APPROVED_PROTOTYPES
+QUICK_DETAIL_VISUAL_BASELINE = APPROVED / PROTECTED
+QUICK_DETAIL_REDRAW_WITHOUT_NEW_EXPLICIT_AUTHORIZATION = PROHIBITED
+UI-3_PRODUCT_ACCEPTANCE = PENDING
+```
+
+Use `docs/projeto/ROADMAP_ARGOS_V5.md` para direção macro e
+`docs/projeto/SPRINTS_ARGOS_V5.md` para a ordem. A auditoria e a diretriz CSS
+continuam como evidência/guardrails, subordinadas ao master plan para o processo
+de aprovação visual. As fases A2/A3/A4 permanecem; os resultados visuais seguem
+P0–P7.
+
+Git factual foi verificado antes da atividade documental: repository
+`C:\Users\walac\desenvolvimento\projeto_argos`, branch `master`, baseline HEAD
+`323bfb0856a0bedc2b1b17cb07cb60dbcdd7c816`, upstream
+`origin/master` em `47c6965f3a60c0026117584dae21ca8a280986a5`, divergence `16/0`,
+worktree limpo e staging vazio no preflight. A atividade deixou alterações
+somente nos documentos identificados em `PROJECT_STATE.md`; staging permanece
+vazio. Revalidar Git antes de qualquer operação consequencial.
+
+`IMG-04` segue como candidata backend/imagens não autorizada registrada no mapa
+de sprints. `MON-AVAIL-01` bloqueada por lacuna histórica e `MON-AVAIL-02`
+recomendada foram informadas na instrução atual, não localizadas nos documentos
+do checkout; a sequência backend permanece aberta e métricas não foram
+fabricadas.
+
+A reconciliação é documental. Não iniciar P0, protótipos ou implementação sem
+instrução e autorização próprias.
