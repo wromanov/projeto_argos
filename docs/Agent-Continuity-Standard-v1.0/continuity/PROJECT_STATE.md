@@ -1138,3 +1138,125 @@ visível; medições feitas antes do carregamento foram descartadas.
 O gate `BATCH_B_USER_VISUAL_ACCEPTANCE` permanece `PENDING`, por isso a
 atividade permanece em 95% e o fechamento final aguarda a revisão visual do
 usuário.
+
+## 24. Passada corretiva de altura do Quick Detail — Batch B (2026-09-27)
+
+Este é o estado canônico após o pedido corretivo. Ele preserva os resultados
+aprovados das Fases 4 e 5 e supersede o status anterior da Fase 6 no §23: a
+auditoria corretiva confirmou que os 790px de conteúdo excediam os 570px
+disponíveis em 2048×741 e os 743px disponíveis em 2048×914. A Phase 6 só passa
+agora, após nova medição do layout ao vivo.
+
+```text
+PRE_CORRECTION_HEAD = 055625fadcf2222381265402786364a8e27b430c
+CORRECTION_COMMIT = 23d83ffa17766916ffa0e1ce52b258b261383320
+PREVIEW_REFINEMENT_COMMIT = 7d38d0b6b43b1434e815f8fe8eb242753d5a502a
+CORRECTION_BRANCH = codex/ui-remediation-batch-b
+PHASE4_STATUS = PRESERVED_PASS
+PHASE5_STATUS = PRESERVED_PASS
+PHASE6_STATUS = PASS
+BATCH_B_TECHNICAL_IMPLEMENTATION = COMPLETE
+BATCH_B_USER_VISUAL_ACCEPTANCE = PENDING
+ACTIVITY_COMPLETION_PERCENT = 95%
+ACTIVITY_COMPLETE = NO
+PROJECT_STATE_UPDATE = PASS
+READY_FOR_USER_REVIEW = YES
+PUSH_EXECUTED = NO
+MERGE_EXECUTED = NO
+```
+
+### Estratégia consolidada
+
+A largura útil do drawer passou a 608–704px em viewports desktop. Um único
+modo de densidade é ativado por altura (`max-height: 48rem`), sem depender da
+largura para compactar. Nele, o frame do preview mede 92px e a seção 129px.
+O conteúdo dos três cartões continua em largura total e empilhado, com quatro
+pares por cartão, apresentados em quatro linhas; nenhum valor foi removido.
+Espaçamentos e tipografia usam
+tokens do Design System. O corpo continua com rolagem vertical disponível como
+fallback móvel, mas não rolou nos viewports desktop validados.
+
+A moldura da imagem aceita tamanhos limitados, e `object-fit: contain` mantém a
+proporção. A câmera da fixture local estava sem imagem; uma imagem sintética
+inline de 640×120 injetada apenas no DOM confirmou frame 663×92 e elemento
+661×90, sem crop e sem scroll em 2048×741. Isso não altera arquivos ou dados do
+produto. Não foram usados `overflow: hidden`, `clip`, escala ou posicionamento
+absoluto para fazer o conteúdo caber.
+
+### Height budget após a correção
+
+Medidas em pixels do runtime ativo, com os dados da câmera da fixture local:
+
+| Região | 2048×741 | 2048×914 |
+| --- | ---: | ---: |
+| Header | 53 | 61 |
+| Navegação | 45 | 49 |
+| Preview | 129 | 101 |
+| Identidade | 74,4 | 88,6 |
+| Informações gerais | 112,8 | 167,6 |
+| Localização | 98,4 | 142,8 |
+| Monitoramento | 98,4 | 109,2 |
+| Gaps entre seções | 16 | 32 |
+| Padding vertical do body | 16 | 24 |
+| Conteúdo vertical requerido pelo body | 545 | 665 |
+| Body disponível | 590 | 743 |
+| Footer | 53 | 61 |
+| Altura total do drawer requerida | 696 | 836 |
+| Altura do viewport | 741 | 914 |
+| Scroll interno requerido | NO | NO |
+
+Em 2048×741, o body requer 545px (529px de seções e 16px de padding) para
+590px disponíveis; o drawer requer 696px de 741px. A câmera estava sem imagem,
+e a prova de imagem sintética manteve o mesmo orçamento de altura. Em
+2048×914, o body requer 665px (641px de seções e 24px de padding) para 743px
+disponíveis; o drawer requer 836px de 914px. A checagem em 1920×1080 também
+mediu 665px requeridos para 909px disponíveis, sem scroll interno.
+
+### Gates e proveniência
+
+```text
+RUNTIME_SOURCE = C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-b\projeto_argos
+RUNTIME_BRANCH = codex/ui-remediation-batch-b
+RUNTIME_HEAD = 7d38d0b6b43b1434e815f8fe8eb242753d5a502a
+RUNTIME = Django server live from this worktree; authenticated requests and asynchronous Quick Detail JSON
+QUICK_DETAIL_HTTP = 200 for all six viewport runs
+VIEWPORTS = 2048x741; 2048x914; 1920x1080; 1366x768; 900x768; 390x844
+TOTAL_CONTENT_HEIGHT_2048x741 = 545px body requirement
+AVAILABLE_HEIGHT_2048x741 = 590px body
+SCROLL_REQUIRED_2048x741 = NO
+TOTAL_CONTENT_HEIGHT_2048x914 = 665px body requirement
+AVAILABLE_HEIGHT_2048x914 = 743px body
+SCROLL_REQUIRED_2048x914 = NO
+SCROLL_REQUIRED_1920x1080 = NO
+SCROLL_REQUIRED_1366x768 = NO
+SCROLL_REQUIRED_900x768 = NO
+SCROLL_REQUIRED_390x844 = YES; 980px required / 621px available; body scrollTop 359px; last card visible and footer visible
+CONTENT_CLIPPED = NO
+HORIZONTAL_OVERFLOW = NO in document or drawer body at all six viewports
+CARDS_STACKED = YES; all cards full width
+ALL_INFORMATION_PRESERVED = YES; 4 populated groups in each of 3 cards
+PREVIEW_IMAGE_FIT = PASS; synthetic landscape rendered with object-fit: contain
+FOOTER_VISIBLE = YES; 44px action targets
+ESCAPE = PASS at all six viewports
+FOCUS_RESTORE = PASS at all six viewports
+KEYBOARD_NAVIGATION = PASS; initial focus on close, Tab reaches enabled Próxima and then Abrir detalhes completos
+DJANGO_CHECK = PASS
+TARGETED_TESTS = cameras.test_quick_detail — 4/4 PASS
+GIT_DIFF_CHECK = PASS
+SCREENSHOTS = six live-runtime Quick Detail viewport captures
+SYNTHETIC_IMAGE_SCREENSHOT = corrective-synthetic-image-2048x741.png; image injected in browser DOM only
+MOBILE_END_STATE_SCREENSHOT = corrective-final-quick-detail-390x844-viewport.png
+SCREENSHOT_DIRECTORY = C:\Users\walac\AppData\Local\Temp\argos-batch-b-visual
+```
+
+O teste móvel rolou o corpo até o fim e confirmou o último cartão visível e
+o rodapé visível. Em desktop, a comparação entre `scrollHeight` e
+`clientHeight` confirmou a ausência de scroll. O runtime foi reiniciado já no
+commit de refinamento corretivo para repetir o gate; as oito respostas
+observadas do endpoint de detalhes foram 200. As capturas finais estão em
+`corrective-final-quick-detail-<largura>x<altura>.png` no diretório registrado.
+
+`BATCH_B_TECHNICAL_IMPLEMENTATION = COMPLETE` agora reflete o gate técnico
+corrigido. `BATCH_B_USER_VISUAL_ACCEPTANCE` permanece `PENDING`; portanto o
+progresso máximo continua em 95% e a atividade aguarda a revisão visual do
+usuário.
