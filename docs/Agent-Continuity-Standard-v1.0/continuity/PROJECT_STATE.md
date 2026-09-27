@@ -1353,3 +1353,53 @@ de produção foi acessado. O resultado está pronto para revisão visual, com a
 limitação de crop do derivado claramente registrada. Uma prova ponta a ponta
 sem crop requer mudança no pipeline/backend de imagem e, portanto, nova
 autorização de escopo antes dessa implementação.
+
+## 26. Alinhamento dos cards e balanço da prévia — Batch B Phase 6 (2026-09-27)
+
+Após a revisão visual do usuário, esta passada corrigiu o alinhamento dos campos
+de Localização e Monitoramento no modo compacto e aumentou somente a altura da
+prévia. O espaço que permanece após Monitoramento foi preservado para uma
+possível seção futura. A largura, altura e espaçamento dos três cards foram
+mantidos; o card Informações gerais também mantém os quatro valores na mesma
+coluna. O modo compacto agora restaura explicitamente a mesma grade de 25% para
+os campos que recebem uma grade especial no modo amplo.
+
+A altura da imagem usa `dvh` e `clamp` no mesmo conjunto de variáveis já usado
+pela interface. `object-fit: contain` permanece ativo. O teste mostrou que a
+renderização do navegador não adiciona corte nem distorção; permanece válida a
+limitação registrada na seção 25 de que o derivado PANEL já chega pré-cortado
+do backend.
+
+| Viewport | Frame da imagem | Alturas Informações gerais / Localização / Monitoramento | Espaço após Monitoramento | Rolagem interna |
+| --- | ---: | ---: | ---: | --- |
+| 2048×741 | 92px | 87 / 87 / 102px | 98px | Não |
+| 2048×914 | 194px | 106 / 106 / 121px | 73px | Não |
+| 1920×1080 | 237px | 115 / 143 / 140px | 100px | Não |
+| 1366×768 | 108px | 90 / 90 / 105px | 94px | Não |
+| 900×768 | 108px | 90 / 90 / 105px | 94px | Não |
+| 390×844 | 153px | 99 / 113 / 113px | conteúdo alcança a área do rodapé | Sim; rodapé visível |
+
+Nos viewports 2048×914 e 1920×1080, o espaço após Monitoramento caiu de cerca
+de 151px para 73px e de 200px para 100px, respectivamente, uma redução próxima
+de 50%. Em 2048×741, a prévia permaneceu compacta e todas as seções continuam
+visíveis sem rolagem interna. A revisão visual do usuário aprovou o resultado e
+autorizou encerrar esta atividade.
+
+```text
+CURRENT_UI_ACTIVITY = QUICK_DETAIL_VERTICAL_RHYTHM_AND_FIELD_ALIGNMENT
+CURRENT_UI_ACTIVITY_TECHNICAL_STATUS = PASS
+CURRENT_UI_ACTIVITY_USER_VISUAL_ACCEPTANCE = PASS
+CURRENT_UI_ACTIVITY_COMPLETION_PERCENT = 100%
+CURRENT_UI_ACTIVITY_COMPLETE = YES
+BATCH_B_END_TO_END_CROP_NO = NOT_MET; existing PANEL rendition is pre-cropped by backend
+CSS_COMMIT = 3db3e85a6675ab747d8e24d633e7428339bbba4a
+DJANGO_CHECK = PASS
+TARGETED_TESTS = cameras.test_quick_detail + cameras.test_display_image — 10/10 PASS
+GIT_DIFF_CHECK = PASS
+VIEWPORTS = 2048x741; 2048x914; 1920x1080; 1366x768; 900x768; 390x844
+SERVER_STOPPED = YES
+VIEWPORT_OVERRIDE_RESET = YES
+PROJECT_STATE_UPDATE = PASS after this documentation commit
+PUSH_EXECUTED = NO
+MERGE_EXECUTED = NO
+```
