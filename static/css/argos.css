@@ -242,17 +242,3 @@ a { color: inherit; text-decoration: none; }
     .app-sidebar .argos-brand__subtitle, .portal-user__name { display: none; }
     .user-menu__panel { width: min(18rem, calc(100vw - (2 * var(--space-4)))); }
 }
-
-/* The shell owns its viewport fit while the Quick Detail dialog is open. */
-@media (max-height: 800px) {
-    .app-layout:has(.camera-quick-detail[open]) {
-        height: 100dvh;
-        min-height: 0;
-    }
-    .app-layout:has(.camera-quick-detail[open]) .app-workspace { min-height: 0; }
-    .app-layout:has(.camera-quick-detail[open]) .page-container.app-shell__main {
-        min-height: 0;
-        flex: 1 1 0%;
-        overflow-y: auto;
-    }
-}
