@@ -1119,3 +1119,415 @@ para iniciar implementação. Seus escopos permanecem preservados e passam a
 seguir a ordem de protótipo e aceitação visual estabelecida pela UI V2. O
 próximo agente deve ler o master plan, validar Git diretamente e aguardar
 instrução própria antes de iniciar P0.
+
+## 24. Implementação técnica do Batch B — Fases 4–6 (2026-09-27)
+
+As três fases foram implementadas em commits locais separados no worktree
+`C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-b\projeto_argos`,
+branch `codex/ui-remediation-batch-b`, iniciado no checkpoint documental
+`323bfb0856a0bedc2b1b17cb07cb60dbcdd7c816`. A branch canônica `master` não
+recebeu mudanças de implementação. O trabalho não foi enviado nem integrado.
+
+```text
+BATCH_B_PHASE4 = PASS; COMMIT = fd8a8989096548ddf220bd01815ed2d8e2be26d2
+BATCH_B_PHASE5 = PASS; COMMIT = 5548b6bbefc94cc00d9a9c3b8c8338eeb11072fe
+BATCH_B_PHASE6 = PASS; COMMIT = 660904937c94fa2af5fbefa023f87340bfb03c88
+BATCH_B_TECHNICAL_IMPLEMENTATION = PASS
+BATCH_B_USER_VISUAL_ACCEPTANCE = PENDING
+ACTIVITY_COMPLETION_PERCENT = 95%
+ACTIVITY_COMPLETE = NO
+PROJECT_STATE_UPDATE = PASS
+READY_FOR_USER_REVIEW = YES
+FINAL_VERDICT = BATCH B TECHNICAL PASS; USER VISUAL ACCEPTANCE PENDING; NO PUSH OR MERGE
+PUSH_EXECUTED = NO
+MERGE_EXECUTED = NO
+NEXT_ACTIVITY = USER VISUAL REVIEW OF BATCH B
+```
+
+### Resultado por fase
+
+- **Fase 4 — Inventário:** os filtros passaram a reorganizar-se em colunas por
+  largura do painel; os controles permanecem alinhados; a tabela e suas ações
+  envolvem texto longo sem ampliar a página. No viewport de 900px, os
+  resultados usam cartões; em 390px, os filtros formam uma coluna e os
+  resultados permanecem em cartões.
+- **Fase 5 — Dashboard:** os quatro indicadores de Monitoramento ocupam quatro
+  colunas em larguras maiores, duas colunas no viewport de 900px e uma no de
+  390px. O quarto indicador conserva a mesma hierarquia e altura dos outros.
+- **Fase 6 — Quick Detail:** os três cartões continuam empilhados e em largura
+  total, com quatro pares de rótulo/valor cada. Os pares da lista foram
+  agrupados semanticamente para reduzir a densidade; todos os valores e títulos
+  originais foram mantidos. O diálogo usa uma única área de conteúdo rolável,
+  mantém as ações fixas, navegação e ações com alvo de 44px, e mantém o foco
+  acessível: abrir foca Fechar; Escape fecha e devolve o foco ao acionador.
+
+### Classificação dos estilos do Quick Detail
+
+- `REQUIRED`: posicionamento do diálogo modal; fluxo flexível; `min-height: 0`
+  no corpo; rolagem vertical local; texto longo com quebra; cartões em coluna;
+  área de enquadramento da imagem; navegação e ações com alvo mínimo de 44px.
+- `COMPENSATORY_REMOVED`: bloco condicionado a `max-height: 800px`, ajustes de
+  identidade com `!important`, tipografia compactada e espaçamentos reduzidos
+  somente para esse breakpoint.
+- `REDUNDANT_REMOVED`: regras finais duplicadas que dependiam do breakpoint de
+  altura removido.
+- `SHELL_COUPLING_REMOVED`: regras em `argos.css` que alteravam altura e
+  rolagem do shell por `.app-layout:has(.camera-quick-detail[open])`.
+- `SCOPED_OVERFLOW_RETAINED`: o enquadramento da imagem recorta apenas a imagem;
+  o subtítulo duplicado da câmera pode exibir reticências, enquanto o nome
+  completo permanece no bloco de identidade. Nenhuma dessas regras mascara a
+  altura ou a largura do conteúdo do drawer.
+
+O corpo do drawer permanece rolável quando os dados longos excedem o espaço
+disponível. No fixture mais extenso, `scrollHeight/clientHeight` do corpo foi
+790/570 em 2048×741, 790/743 em 2048×914, 790/695 em 2552×866, 909/909 em
+1920×1080, 790/597 em 1366×768, 857/597 em 900×768 e 1037/621 em 390×844.
+Os cartões não encolhem nem desaparecem para forçar ajuste: em todos esses
+casos o conteúdo completo continua acessível pela rolagem local. Não foi feita
+uma afirmação de ausência de scroll vertical dentro do drawer em todos os
+viewports.
+
+### Validação e proveniência do navegador
+
+```text
+RUNTIME_WORKTREE = C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-b\projeto_argos
+RUNTIME_BRANCH = codex/ui-remediation-batch-b
+RUNTIME_HEAD_AT_FINAL_TECHNICAL_VALIDATION = 660904937c94fa2af5fbefa023f87340bfb03c88
+RUNTIME_SERVER = Django runserver on 127.0.0.1:8012 from Batch B worktree
+RUNTIME_DATA = ignored local SQLite database with synthetic VisualQA user and camera rows
+RUNTIME_PRODUCTION_DATA = NOT USED
+DJANGO_CHECK = PASS
+TARGETED_TESTS = cameras.test_frontend; core.test_frontend; cameras.test_quick_detail — 47/47 PASS
+GIT_DIFF_CHECK = PASS after each phase
+BROWSER = headless Chrome 153.0.8010.53 at 100% zoom
+VIEWPORTS = 2552x866; 2048x741; 2048x914; 1920x1080; 1366x768; 900x768; 390x844
+ROUTES = Inventory, Dashboard, Governance substitution list, Quick Detail
+HTTP_RESPONSES = 200 for captured page routes
+NO_DOCUMENT_HORIZONTAL_OVERFLOW = YES across all four routes and seven viewports
+QUICK_DETAIL_BODY_HORIZONTAL_OVERFLOW = NO across all seven viewports
+QUICK_DETAIL_CARD_WIDTH = all three cards remained full-width at each viewport
+QUICK_DETAIL_FIELD_GROUPS = 4 in each of the three cards
+QUICK_DETAIL_KEYBOARD_CLOSE_AND_FOCUS_RETURN = PASS at all seven viewports
+QUICK_DETAIL_ACTION_TARGETS = 44px after asynchronous detail content is visible
+SCREENSHOTS = 28 after-state viewport captures; before-state inventory/dashboard captures and a before-state drawer measurement also saved locally
+SCREENSHOT_DIRECTORY = C:\Users\walac\AppData\Local\Temp\argos-batch-b-visual
+```
+
+As capturas foram feitas com o servidor Django e banco SQLite ignorado do
+próprio worktree Batch B. A identidade QA e os registros da câmera são
+sintéticos; nenhuma instância nem dado de produção foi acessado. A checagem
+visual/regressiva cobre os quatro caminhos registrados acima, mas não equivale
+à aceitação visual do usuário. O Quick Detail foi medido com conteúdo assíncrono
+visível; medições feitas antes do carregamento foram descartadas.
+
+`PROJECT_STATE_UPDATE = PASS` registra a implementação e a validação técnica.
+O gate `BATCH_B_USER_VISUAL_ACCEPTANCE` permanece `PENDING`, por isso a
+atividade permanece em 95% e o fechamento final aguarda a revisão visual do
+usuário.
+
+## 25. Passada corretiva de altura do Quick Detail — Batch B (2026-09-27)
+
+Este é o estado canônico após o pedido corretivo. Ele preserva os resultados
+aprovados das Fases 4 e 5 e supersede o status anterior da Fase 6 no §23: a
+auditoria corretiva confirmou que os 790px de conteúdo excediam os 570px
+disponíveis em 2048×741 e os 743px disponíveis em 2048×914. A Phase 6 só passa
+agora, após nova medição do layout ao vivo.
+
+```text
+PRE_CORRECTION_HEAD = 055625fadcf2222381265402786364a8e27b430c
+CORRECTION_COMMIT = 23d83ffa17766916ffa0e1ce52b258b261383320
+PREVIEW_REFINEMENT_COMMIT = 7d38d0b6b43b1434e815f8fe8eb242753d5a502a
+CORRECTION_BRANCH = codex/ui-remediation-batch-b
+PHASE4_STATUS = PRESERVED_PASS
+PHASE5_STATUS = PRESERVED_PASS
+PHASE6_STATUS = PASS
+BATCH_B_TECHNICAL_IMPLEMENTATION = COMPLETE
+BATCH_B_USER_VISUAL_ACCEPTANCE = PENDING
+ACTIVITY_COMPLETION_PERCENT = 95%
+ACTIVITY_COMPLETE = NO
+PROJECT_STATE_UPDATE = PASS
+READY_FOR_USER_REVIEW = YES
+PUSH_EXECUTED = NO
+MERGE_EXECUTED = NO
+```
+
+### Estratégia consolidada
+
+A largura útil do drawer passou a 608–704px em viewports desktop. Um único
+modo de densidade é ativado por altura (`max-height: 48rem`), sem depender da
+largura para compactar. Nele, o frame do preview mede 92px e a seção 129px.
+O conteúdo dos três cartões continua em largura total e empilhado, com quatro
+pares por cartão, apresentados em quatro linhas; nenhum valor foi removido.
+Espaçamentos e tipografia usam
+tokens do Design System. O corpo continua com rolagem vertical disponível como
+fallback móvel, mas não rolou nos viewports desktop validados.
+
+A moldura da imagem aceita tamanhos limitados, e `object-fit: contain` mantém a
+proporção. A câmera da fixture local estava sem imagem; uma imagem sintética
+inline de 640×120 injetada apenas no DOM confirmou frame 663×92 e elemento
+661×90, sem crop e sem scroll em 2048×741. Isso não altera arquivos ou dados do
+produto. Não foram usados `overflow: hidden`, `clip`, escala ou posicionamento
+absoluto para fazer o conteúdo caber.
+
+### Height budget após a correção
+
+Medidas em pixels do runtime ativo, com os dados da câmera da fixture local:
+
+| Região | 2048×741 | 2048×914 |
+| --- | ---: | ---: |
+| Header | 53 | 61 |
+| Navegação | 45 | 49 |
+| Preview | 129 | 101 |
+| Identidade | 74,4 | 88,6 |
+| Informações gerais | 112,8 | 167,6 |
+| Localização | 98,4 | 142,8 |
+| Monitoramento | 98,4 | 109,2 |
+| Gaps entre seções | 16 | 32 |
+| Padding vertical do body | 16 | 24 |
+| Conteúdo vertical requerido pelo body | 545 | 665 |
+| Body disponível | 590 | 743 |
+| Footer | 53 | 61 |
+| Altura total do drawer requerida | 696 | 836 |
+| Altura do viewport | 741 | 914 |
+| Scroll interno requerido | NO | NO |
+
+Em 2048×741, o body requer 545px (529px de seções e 16px de padding) para
+590px disponíveis; o drawer requer 696px de 741px. A câmera estava sem imagem,
+e a prova de imagem sintética manteve o mesmo orçamento de altura. Em
+2048×914, o body requer 665px (641px de seções e 24px de padding) para 743px
+disponíveis; o drawer requer 836px de 914px. A checagem em 1920×1080 também
+mediu 665px requeridos para 909px disponíveis, sem scroll interno.
+
+### Gates e proveniência
+
+```text
+RUNTIME_SOURCE = C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-b\projeto_argos
+RUNTIME_BRANCH = codex/ui-remediation-batch-b
+RUNTIME_HEAD = 7d38d0b6b43b1434e815f8fe8eb242753d5a502a
+RUNTIME = Django server live from this worktree; authenticated requests and asynchronous Quick Detail JSON
+QUICK_DETAIL_HTTP = 200 for all six viewport runs
+VIEWPORTS = 2048x741; 2048x914; 1920x1080; 1366x768; 900x768; 390x844
+TOTAL_CONTENT_HEIGHT_2048x741 = 545px body requirement
+AVAILABLE_HEIGHT_2048x741 = 590px body
+SCROLL_REQUIRED_2048x741 = NO
+TOTAL_CONTENT_HEIGHT_2048x914 = 665px body requirement
+AVAILABLE_HEIGHT_2048x914 = 743px body
+SCROLL_REQUIRED_2048x914 = NO
+SCROLL_REQUIRED_1920x1080 = NO
+SCROLL_REQUIRED_1366x768 = NO
+SCROLL_REQUIRED_900x768 = NO
+SCROLL_REQUIRED_390x844 = YES; 980px required / 621px available; body scrollTop 359px; last card visible and footer visible
+CONTENT_CLIPPED = NO
+HORIZONTAL_OVERFLOW = NO in document or drawer body at all six viewports
+CARDS_STACKED = YES; all cards full width
+ALL_INFORMATION_PRESERVED = YES; 4 populated groups in each of 3 cards
+PREVIEW_IMAGE_FIT = PASS; synthetic landscape rendered with object-fit: contain
+FOOTER_VISIBLE = YES; 44px action targets
+ESCAPE = PASS at all six viewports
+FOCUS_RESTORE = PASS at all six viewports
+KEYBOARD_NAVIGATION = PASS; initial focus on close, Tab reaches enabled Próxima and then Abrir detalhes completos
+DJANGO_CHECK = PASS
+TARGETED_TESTS = cameras.test_quick_detail — 4/4 PASS
+GIT_DIFF_CHECK = PASS
+SCREENSHOTS = six live-runtime Quick Detail viewport captures
+SYNTHETIC_IMAGE_SCREENSHOT = corrective-synthetic-image-2048x741.png; image injected in browser DOM only
+MOBILE_END_STATE_SCREENSHOT = corrective-final-quick-detail-390x844-viewport.png
+SCREENSHOT_DIRECTORY = C:\Users\walac\AppData\Local\Temp\argos-batch-b-visual
+```
+
+O teste móvel rolou o corpo até o fim e confirmou o último cartão visível e
+o rodapé visível. Em desktop, a comparação entre `scrollHeight` e
+`clientHeight` confirmou a ausência de scroll. O runtime foi reiniciado já no
+commit de refinamento corretivo para repetir o gate; as oito respostas
+observadas do endpoint de detalhes foram 200. As capturas finais estão em
+`corrective-final-quick-detail-<largura>x<altura>.png` no diretório registrado.
+
+`BATCH_B_TECHNICAL_IMPLEMENTATION = COMPLETE` agora reflete o gate técnico
+corrigido. `BATCH_B_USER_VISUAL_ACCEPTANCE` permanece `PENDING`; portanto o
+progresso máximo continua em 95% e a atividade aguarda a revisão visual do
+usuário.
+## 26. Polimento visual do Quick Detail — Batch B Phase 6 (2026-09-27)
+
+Esta passada implementa os ajustes visuais solicitados para largura do drawer,
+presença do preview e badge de status. Ela preserva os resultados aprovados de
+Phase 4 e Phase 5 e o gate técnico aprovado de Phase 6. O polimento visual é
+parcial: a prova com a imagem manual real revelou que o endpoint de preview já
+entrega um derivado cortado pelo backend. O contrato desta atividade proíbe
+alterar backend e rotas, então não é possível confirmar o requisito de ausência
+de crop ponta a ponta dentro do escopo atual.
+
+```text
+POLISH_COMMIT = 63cf54c81755f5371d98512d38dad1d00bf9b725
+POLISH_BRANCH = codex/ui-remediation-batch-b
+PHASE4_STATUS = PRESERVED_PASS
+PHASE5_STATUS = PRESERVED_PASS
+PHASE6_TECHNICAL_STATUS = PASS
+QUICK_DETAIL_VISUAL_POLISH_STATUS = PARTIAL_PASS
+QUICK_DETAIL_END_TO_END_CROP_NO = NOT_MET; existing PANEL rendition is pre-cropped by backend
+BATCH_B_USER_VISUAL_ACCEPTANCE = PENDING
+ACTIVITY_COMPLETION_PERCENT = 95%
+ACTIVITY_COMPLETE = NO
+READY_FOR_USER_REVIEW = YES; crop limitation disclosed
+PUSH_EXECUTED = NO
+MERGE_EXECUTED = NO
+```
+
+### Resultado visual e viewport
+
+A largura medida do drawer caiu de 704px para 470px no desktop e permanece
+full width no viewport móvel. O frame do preview cresceu para 126px no desktop
+normal: a seção mede 155px em 1920×1080 e 149px em 2048×914. No modo de baixa
+altura, a seção mede 125px em 2048×741, com frame de 92px. Em 1366×768 e
+900×768, a seção mede aproximadamente 129px. O badge "Não monitorada" fica
+em uma única linha (110,7×22,8px), sem alterar JavaScript.
+
+| Viewport | Corpo requerido / disponível | Rolagem interna | Preview | Rodapé |
+| --- | ---: | --- | ---: | --- |
+| 2048×741 | 586 / 590px | Não | 125px | Visível |
+| 2048×914 | 610 / 763px | Não | 149px | Visível |
+| 1920×1080 | 820 / 909px | Não | 155px | Visível |
+| 1366×768 | 590 / 617px | Não | 129px | Visível |
+| 900×768 | 590 / 617px | Não | 129px | Visível |
+| 390×844 | 664 / 641px | Sim; scrollTop final 23px | 139px | Visível |
+
+Os seis viewports mantiveram o conteúdo completo acessível, sem clipping ou
+overflow horizontal. Em todos eles, os três cartões permaneceram empilhados e
+os 12 grupos de informação foram preservados. Escape, restauração de foco,
+carregamento da imagem e visibilidade do rodapé foram conferidos.
+
+### Proveniência da imagem e limite de crop
+
+A validação usou a câmera sintética de QA com uma imagem real carregada por
+upload manual: metadata da origem de 1448×1086, tipo image/png. O navegador
+recebeu pelo endpoint PANEL uma imagem 640×448, que corresponde a outra
+proporção. O serviço existente usa ImageOps.fit para gerar esse derivado e
+corta a origem antes da renderização no navegador. No Quick Detail,
+object-fit: contain evita crop adicional e distorção no CSS, mas não recupera
+os pixels já removidos do derivado. Portanto:
+- REAL_IMAGE_RENDERED = YES
+- OBJECT_FIT = contain
+- CSS_ADDITIONAL_CROP = NO
+- DISTORTION = NO
+- BACKEND_PANEL_CROP = YES
+- END_TO_END_CROP_NO = NOT_MET
+
+Nenhuma alteração foi feita em backend, JavaScript funcional, rotas, contratos,
+dados ou outros produtos. As capturas finais dos seis viewports estão em
+C:\Users\walac\AppData\Local\Temp\argos-batch-b-visual, com nomes
+polish-final-<largura>x<altura>.png.
+
+### Gates e proveniência
+
+```text
+RUNTIME_WORKTREE = C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-b\projeto_argos
+RUNTIME_BRANCH = codex/ui-remediation-batch-b
+RUNTIME_HEAD = 63cf54c81755f5371d98512d38dad1d00bf9b725
+RUNTIME_DATA = ignored local SQLite database with synthetic QA user/camera; manual image asset
+RUNTIME_PRODUCTION_DATA = NOT USED
+VIEWPORTS = 2048x741; 2048x914; 1920x1080; 1366x768; 900x768; 390x844
+QUICK_DETAIL_JSON_AND_PANEL_IMAGE_HTTP = 200 across six viewport runs
+DJANGO_CHECK = PASS
+TARGETED_TESTS = cameras.test_quick_detail + cameras.test_display_image — 10/10 PASS
+GIT_DIFF_CHECK = PASS
+SCREENSHOTS = six final live-runtime viewport captures
+SERVER_STOPPED = YES
+PROJECT_STATE_UPDATE = PASS after documentation commit
+```
+
+O servidor e o banco usados foram locais e sintéticos; nenhum ambiente ou dado
+de produção foi acessado. O resultado está pronto para revisão visual, com a
+limitação de crop do derivado claramente registrada. Uma prova ponta a ponta
+sem crop requer mudança no pipeline/backend de imagem e, portanto, nova
+autorização de escopo antes dessa implementação.
+
+## 27. Alinhamento dos cards e balanço da prévia — Batch B Phase 6 (2026-09-27)
+
+Após a revisão visual do usuário, esta passada corrigiu o alinhamento dos campos
+de Localização e Monitoramento no modo compacto e aumentou somente a altura da
+prévia. O espaço que permanece após Monitoramento foi preservado para uma
+possível seção futura. A largura, altura e espaçamento dos três cards foram
+mantidos; o card Informações gerais também mantém os quatro valores na mesma
+coluna. O modo compacto agora restaura explicitamente a mesma grade de 25% para
+os campos que recebem uma grade especial no modo amplo.
+
+A altura da imagem usa `dvh` e `clamp` no mesmo conjunto de variáveis já usado
+pela interface. `object-fit: contain` permanece ativo. O teste mostrou que a
+renderização do navegador não adiciona corte nem distorção; permanece válida a
+limitação registrada na seção 25 de que o derivado PANEL já chega pré-cortado
+do backend.
+
+| Viewport | Frame da imagem | Alturas Informações gerais / Localização / Monitoramento | Espaço após Monitoramento | Rolagem interna |
+| --- | ---: | ---: | ---: | --- |
+| 2048×741 | 92px | 87 / 87 / 102px | 98px | Não |
+| 2048×914 | 194px | 106 / 106 / 121px | 73px | Não |
+| 1920×1080 | 237px | 115 / 143 / 140px | 100px | Não |
+| 1366×768 | 108px | 90 / 90 / 105px | 94px | Não |
+| 900×768 | 108px | 90 / 90 / 105px | 94px | Não |
+| 390×844 | 153px | 99 / 113 / 113px | conteúdo alcança a área do rodapé | Sim; rodapé visível |
+
+Nos viewports 2048×914 e 1920×1080, o espaço após Monitoramento caiu de cerca
+de 151px para 73px e de 200px para 100px, respectivamente, uma redução próxima
+de 50%. Em 2048×741, a prévia permaneceu compacta e todas as seções continuam
+visíveis sem rolagem interna. A revisão visual do usuário aprovou o resultado e
+autorizou encerrar esta atividade.
+
+```text
+CURRENT_UI_ACTIVITY = QUICK_DETAIL_VERTICAL_RHYTHM_AND_FIELD_ALIGNMENT
+CURRENT_UI_ACTIVITY_TECHNICAL_STATUS = PASS
+CURRENT_UI_ACTIVITY_USER_VISUAL_ACCEPTANCE = PASS
+CURRENT_UI_ACTIVITY_COMPLETION_PERCENT = 100%
+CURRENT_UI_ACTIVITY_COMPLETE = YES
+BATCH_B_END_TO_END_CROP_NO = NOT_MET; existing PANEL rendition is pre-cropped by backend
+CSS_COMMIT = 3db3e85a6675ab747d8e24d633e7428339bbba4a
+DJANGO_CHECK = PASS
+TARGETED_TESTS = cameras.test_quick_detail + cameras.test_display_image — 10/10 PASS
+GIT_DIFF_CHECK = PASS
+VIEWPORTS = 2048x741; 2048x914; 1920x1080; 1366x768; 900x768; 390x844
+SERVER_STOPPED = YES
+VIEWPORT_OVERRIDE_RESET = YES
+PROJECT_STATE_UPDATE = PASS after this documentation commit
+PUSH_EXECUTED = NO
+MERGE_EXECUTED = NO
+```
+
+
+## 28. Integração canônica do Batch B — validação pós-merge (2026-09-27)
+
+Este checkpoint reconcilia a formalização da trilha ARGOS UI V2, registrada na
+seção 23, com o fechamento técnico e a aceitação visual do Batch B registrados
+nas seções 24–27. O baseline Quick Detail aprovado é preservado; o gate visual
+pós-integração permanece pendente de revisão explícita do usuário.
+
+```text
+ACTIVITY = CONTROLLED INTEGRATION OF APPROVED UI REMEDIATION BATCH B
+REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+MASTER_BASELINE_HEAD = 3ec11897fcc8a2e5f405165951cb44eb8e6c04dd
+ORIGIN_MASTER_AT_PREFLIGHT = 47c6965f3a60c0026117584dae21ca8a280986a5
+BATCH_B_BRANCH = codex/ui-remediation-batch-b
+BATCH_B_HEAD = f494ff8e35291e78af211720ece59db4bbdf8555
+BATCH_B_CONTAINS_3DB3E85 = YES
+BATCH_B_CONTAINS_F494FF8 = YES
+PRE_MERGE_DIVERGENCE = master only 1; Batch B only 11
+MERGE_STRATEGY = explicit --no-ff branch merge; no rebase, squash or cherry-pick
+MERGE_RESULT = PENDING_VALIDATION
+MERGE_COMMIT = PENDING
+CONFLICTS = PROJECT_STATE.md only; semantic documentary reconciliation
+DOCUMENTATION_RECONCILIATION = PASS
+QUICK_DETAIL_USER_VISUAL_ACCEPTANCE = PASS on Batch B source branch
+QUICK_DETAIL_BASELINE_PRESERVED = YES; no visual/source edits during reconciliation
+UI_V2_DOCUMENTATION_PRESERVED = YES
+NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
+BACKEND_AND_UI_V2 = PARALLEL_TRACKS
+DJANGO_CHECK = PENDING
+TARGETED_TESTS = PENDING
+DIFF_CHECK = PENDING
+POST_INTEGRATION_VISUAL_GATE = PENDING_USER_REVIEW
+WORKTREE_FINAL = PENDING
+MASTER_VS_ORIGIN = PENDING
+PUSH_PERFORMED = NO
+FILES_CHANGED_BY_CONFLICT_RESOLUTION = docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md
+FINDINGS = Existing PANEL derivative is pre-cropped by backend; existing Batch B evidence records END_TO_END_CROP_NO = NOT_MET. No backend change was authorized or introduced.
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO
+FINAL_VERDICT = POST-MERGE_VALIDATION_PENDING
+```

@@ -153,6 +153,7 @@
 
 .metric-card.dashboard-metric {
     display: grid;
+    /* 7.75rem preserves a readable label, value and supporting line with existing card padding. */
     grid-template-rows:
         minmax(1.75rem, auto)
         2.75rem
@@ -295,13 +296,16 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.dashboard-metric-grid--monitoring {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .dashboard-metric-grid .dashboard-metric {
     --dashboard-accent: #185a85;
     --dashboard-tint: rgba(24, 90, 133, .045);
 
     position: relative;
     min-height: 7.75rem;
-    overflow: hidden;
     border-top: .25rem solid var(--dashboard-accent);
     background:
         linear-gradient(
@@ -440,7 +444,6 @@
         grid-column: 1 / -1;
     }
 
-    .dashboard-metric-grid--monitoring > :last-child,
     .dashboard-metric-grid--quality > :last-child {
         grid-column: 1 / -1;
     }
@@ -462,7 +465,6 @@
     }
 
     .dashboard-metric-grid--inventory > :first-child,
-    .dashboard-metric-grid--monitoring > :last-child,
     .dashboard-metric-grid--quality > :last-child {
         grid-column: auto;
     }
