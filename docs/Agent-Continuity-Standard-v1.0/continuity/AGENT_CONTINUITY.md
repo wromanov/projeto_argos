@@ -504,3 +504,48 @@ authority UI-DS e em `PROJECT_STATE.md`; o contrato do preview e as decisões de
 imagem ficam em `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`. Evidência funcional e QA
 visual foram fornecidas para esta reconciliação; os testes não foram
 reexecutados. Nenhuma rodada de reparo visual foi iniciada.
+
+## 16. Checkpoint vigente — UI-4A Desktop Shell Density Foundation (2026-09-26)
+
+```text
+UI-4A_USER_AUTHORIZED = YES
+UI-4A_SCOPE = shell global: largura e centralização do conteúdo, sidebar, topbar e gutters
+UI-4A_TECHNICAL_IMPLEMENTATION = COMPLETE
+UI-4A_VISUAL_ACCEPTANCE = PENDING_USER
+MAIN_CONTENT_MAX_WIDTH = 2304px -> 1400px
+MAIN_CONTENT_RENDERED_WIDTH = 2224px -> 1400px at 2552x866 / 100%
+SIDEBAR_WIDTH = 248px -> 164px; brand fits without clipping
+TOPBAR_HEIGHT = 60px -> 40px token / 42px rendered
+PAGE_TOP_SPACING = 40px -> 32px; PAGE_BOTTOM_SPACING = 48px -> 40px
+CONTENT_CENTERED = YES; EXCESSIVE_HORIZONTAL_STRETCH = NO
+DASHBOARD_LAYOUT_REGRESSION = NO; existing grids/card geometry preserved
+INVENTORY_FILTER_LAYOUT_AFTER_SHELL_CHANGE = ONE_ROW at 2552x866; TWO_ROWS at 1366x768
+INVENTORY_LAYOUT_REGRESSION = YES finding: local table-region horizontal bar (2px wide viewport; 7px at 1366); baseline attribution unverified
+HORIZONTAL_ROOT_OVERFLOW = NO; table-region remains locally scrollable
+BREAKPOINT_REGRESSION_FOUND = NO at 2552x866, 1366x768, 900x768, 390x844; zoom 100%
+QUICK_DETAIL_MODIFIED_BY_UI4A = NO; pre-existing UI-3 diff preserved
+FILES_CHANGED_BY_UI4A = static/css/argos.css; static/css/design-system.css
+PREEXISTING_DIFF = static/css/inventario.css (UI-3 Drawer), unchanged
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+BROWSER_CONSOLE_ERRORS = NONE observed
+GIT = master; HEAD cad0760; origin/master 47c6965; ahead 3 / behind 0; changes unstaged; staging empty
+READY_FOR_USER_VISUAL_REVIEW = YES
+ACTIVITY_COMPLETION_PERCENT = 95%; activity is not complete until user visual acceptance
+UI-4B / UI-4C / UI-4D / UI-4E = NOT_AUTHORIZED
+IMG-04 = NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+IMPLEMENTATION_AUTHORIZED = NO after this UI-4A slice
+LIVE_AUTHORIZED = NO
+COMMIT_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PASS
+```
+
+A checagem visual confirmou o shell centralizado e responsivo. A tabela mantém
+uma barra horizontal local de 2px no viewport alvo; uma tentativa de aumentar
+o max-width em 4px não removeu a diferença e foi revertida. Não foram alterados
+a tabela, os filtros, os cards do Dashboard, os controles ou o Quick Detail.
+A aceitação final da aparência pertence ao usuário; as fatias seguintes de
+UI-4 continuam sem autorização.

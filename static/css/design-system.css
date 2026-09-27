@@ -132,13 +132,13 @@
     --argos-surface: var(--color-surface);
     --argos-surface-subtle: var(--color-surface-muted);
     --argos-border: var(--color-border);
-    --argos-sidebar-width: 15.5rem;
-    --argos-topbar-height: 3.75rem;
-    --argos-content-max-width: 144rem;
+    --argos-sidebar-width: 12rem;
+    --argos-topbar-height: 2.5rem;
+    --argos-content-max-width: 87.5rem;
     --argos-reading-max-width: 48rem;
     --argos-shell-max-width: var(--argos-content-max-width);
     --argos-shell-gutter: clamp(1rem, 2.4vw, 2.5rem);
-    --argos-shell-space-block: clamp(1.5rem, 3vw, 2.5rem);
+    --argos-shell-space-block: clamp(1.25rem, 2vw, 2rem);
     --argos-elevated-surface: var(--color-surface-elevated);
     --argos-shadow-menu: var(--shadow-lg);
     --argos-z-header: 100;
@@ -155,8 +155,8 @@
     --argos-nav-min-height: 2.75rem;
     --content-max-width: var(--argos-content-max-width);
     --reading-max-width: var(--argos-reading-max-width);
-    --control-height-compact: 2.25rem;
-    --control-height-default: 2.75rem;
+    --control-height-compact: 2rem;
+    --control-height-default: 2.25rem;
     --control-height-touch: 2.75rem;
     --control-min-height: var(--control-height-default);
     --table-row-min-height: 3.25rem;
@@ -167,6 +167,14 @@
 }
 
 /* Breakpoints oficiais do ARGOS: compacto até 30rem, móvel até 44rem, tablet até 56rem e contexto amplo até 900px. */
+
+@media (pointer: coarse), (max-width: 44rem) {
+    :root {
+        --control-height-default: var(--control-height-touch);
+        --control-height-compact: var(--control-height-touch);
+        --control-min-height: var(--control-height-touch);
+    }
+}
 
 /* Normalização, tipografia e acessibilidade */
 *, *::before, *::after {
@@ -317,7 +325,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: var(--control-min-height);
-    padding: var(--space-2) var(--space-4);
+    padding: var(--space-1) var(--space-4);
     border: var(--border-width) solid transparent;
     border-radius: var(--radius-control);
     font: inherit;
@@ -622,7 +630,7 @@ body {
     font-weight: 700;
 }
 
-:is(.field, .form-field) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), select, textarea) {
+:is(.field, .form-field, .filter-panel) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), select, textarea) {
     width: 100%;
     min-width: 0;
     min-height: var(--control-min-height);
@@ -634,7 +642,12 @@ body {
     font: inherit;
 }
 
-:is(.field, .form-field) textarea {
+:is(.field, .form-field, .filter-panel) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), select) {
+    padding-block: var(--space-1);
+    line-height: var(--line-height-tight);
+}
+
+:is(.field, .form-field, .filter-panel) textarea {
     min-height: 6rem;
     resize: vertical;
 }
@@ -796,19 +809,6 @@ body {
     font-size: var(--font-size-xs);
 }
 
-.filter-panel input,
-.filter-panel select {
-    width: 100%;
-    min-width: 0;
-    min-height: var(--control-height-default);
-    padding: var(--space-2) var(--space-3);
-    color: var(--color-text);
-    background: var(--color-surface);
-    border: var(--border-width) solid var(--color-input);
-    border-radius: var(--radius-control);
-    font: inherit;
-}
-
 .filter-panel input:focus-visible,
 .filter-panel select:focus-visible {
     border-color: var(--color-focus);
@@ -826,7 +826,6 @@ body {
 }
 
 .filter-panel__actions .button {
-    min-height: var(--control-height-default);
     white-space: nowrap;
 }
 

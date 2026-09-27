@@ -31,7 +31,7 @@ a { color: inherit; text-decoration: none; }
 .app-sidebar__content {
     height: 100%;
     min-width: 0;
-    padding: var(--space-5) var(--space-3);
+    padding: var(--space-5) var(--space-2);
     display: flex;
     flex-direction: column;
     gap: var(--space-8);
@@ -39,7 +39,8 @@ a { color: inherit; text-decoration: none; }
 
 .app-sidebar .argos-brand {
     min-width: 0;
-    padding-inline: var(--space-2);
+    gap: var(--space-2);
+    padding-inline: 0;
     color: var(--argos-sidebar-text);
 }
 
@@ -110,7 +111,7 @@ a { color: inherit; text-decoration: none; }
     position: absolute;
     top: var(--space-2);
     bottom: var(--space-2);
-    left: -0.75rem;
+    left: -0.5rem;
     width: .1875rem;
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     background: var(--color-accent-600);
@@ -134,8 +135,10 @@ a { color: inherit; text-decoration: none; }
 }
 
 .app-topbar__content {
+    width: min(100% - (2 * var(--argos-shell-gutter)), var(--argos-content-max-width));
     min-height: var(--argos-topbar-height);
-    padding-inline: var(--argos-shell-gutter);
+    margin-inline: auto;
+    padding-inline: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -202,8 +205,15 @@ a { color: inherit; text-decoration: none; }
     width: min(100% - (2 * var(--argos-shell-gutter)), var(--argos-content-max-width));
     min-width: 0;
     margin-inline: auto;
-    padding-block: var(--argos-shell-space-block) var(--space-12);
+    padding-block: var(--argos-shell-space-block) var(--space-10);
     flex: 1 0 auto;
+}
+
+@media (pointer: coarse), (max-width: 44rem) {
+    .user-menu__panel a,
+    .user-menu__panel button {
+        min-height: var(--control-height-touch);
+    }
 }
 
 .page-heading { margin-bottom: var(--space-8); display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-6); }
@@ -218,7 +228,7 @@ a { color: inherit; text-decoration: none; }
 .table-region { min-width: 0; max-width: 100%; overflow-x: auto; contain: inline-size; }
 
 @media (max-width: 64rem) {
-    .app-layout { grid-template-columns: 14.5rem minmax(0, 1fr); }
+    .app-layout { grid-template-columns: var(--argos-sidebar-width) minmax(0, 1fr); }
     .app-sidebar__content { padding-inline: var(--space-2); }
     .main-navigation__link[aria-current="page"]::before { left: -.5rem; }
 }
@@ -235,7 +245,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 44rem) {
-    .app-topbar__content { padding-inline: var(--space-4); }
+    .app-topbar__content { width: min(100% - (2 * var(--space-4)), var(--argos-shell-max-width)); }
     .page-container.app-shell__main { width: min(100% - (2 * var(--space-4)), var(--argos-shell-max-width)); padding-block: var(--space-6) var(--space-8); }
     .page-heading { align-items: flex-start; flex-direction: column; }
 }

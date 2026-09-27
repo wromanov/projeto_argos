@@ -54,18 +54,9 @@
 }
 
 .button {
-    min-height: var(--control-height-default);
-    padding: var(--space-2) var(--space-4);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     gap: 8px;
-    border: 1px solid transparent;
-    border-radius: var(--radius-control);
-    font: inherit;
     font-weight: 600;
     font-size: var(--font-size-body);
-    cursor: pointer;
 }
 
 .button--primary {
@@ -868,7 +859,6 @@
 }
 
 .activity-card--history .activity-card__header > .button {
-    min-height: 2.25rem;
     padding-inline: var(--space-3);
 }
 
@@ -3008,7 +2998,7 @@
 .camera-quick-detail__navigation svg { width: 1rem; height: 1rem; }
 .camera-quick-detail__body { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: var(--space-4) var(--space-5); }
 .camera-quick-detail__body section { padding: 0; border: 0; }
-.camera-quick-detail__body [data-quick-detail-content] { display: grid; gap: var(--space-2); }
+.camera-quick-detail__body [data-quick-detail-content] { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
 .camera-quick-detail__body [data-quick-detail-content][hidden] { display: none; }
 .camera-quick-detail__body h3 { display: flex; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-2); font-size: var(--font-size-body); font-weight: 650; }
 .camera-quick-detail__body h3 svg { color: var(--color-primary); }
@@ -3070,6 +3060,40 @@
     .camera-quick-detail__image-frame[data-image-state="loading"] { height: 9rem; }
     .camera-quick-detail__footer { grid-template-columns: minmax(0, 1fr); }
     .camera-quick-detail__footer { padding-block: var(--space-2); }
+}
+/* Compact vertical fit keeps the approved card order and full-width layout. */
+@media (max-height: 800px) {
+    .camera-quick-detail__header { padding-block: var(--space-2); }
+    .camera-quick-detail__navigation { padding-block: 0; }
+    .camera-quick-detail__body { padding: 3px var(--space-3); }
+    .camera-quick-detail__body [data-quick-detail-content] { gap: 4px; }
+    .camera-quick-detail__preview { padding: 8px 12px; }
+    .camera-quick-detail__body .camera-quick-detail__card { padding: 7px 12px; }
+    .camera-quick-detail__image-frame { height: 130px; }
+    .camera-quick-detail__identity { padding-block: 0 !important; }
+    .camera-quick-detail__identity > div { display: grid; gap: 1px; }
+    .camera-quick-detail__identity p { margin: 0; line-height: 1.15; }
+    .camera-quick-detail__identity .camera-quick-detail__code,
+    .camera-quick-detail__identity .camera-quick-detail__breadcrumb { margin: 0; }
+    .camera-quick-detail__identity .camera-quick-detail__eyebrow { margin: 0; }
+    .camera-quick-detail__identity h3 { line-height: 1.15; }
+    .camera-quick-detail__body .camera-quick-detail__card h3 { margin-bottom: 4px; font-size: 13px; line-height: 1.2; }
+    .camera-quick-detail__body .camera-quick-detail__card h3 svg { width: 14px; height: 14px; }
+    .camera-quick-detail__body .camera-quick-detail__card dl { row-gap: 2px; }
+    .camera-quick-detail__body .camera-quick-detail__card dt { font-size: 12px; line-height: 1.2; }
+    .camera-quick-detail__body .camera-quick-detail__card dd { font-size: 13px; line-height: 1.2; }
+    .camera-quick-detail__footer { padding-block: var(--space-1); }
+
+    .app-layout:has(.camera-quick-detail[open]) {
+        height: 100dvh;
+        min-height: 0;
+    }
+    .app-layout:has(.camera-quick-detail[open]) .app-workspace { min-height: 0; }
+    .app-layout:has(.camera-quick-detail[open]) .page-container.app-shell__main {
+        min-height: 0;
+        flex: 1 1 0%;
+        overflow-y: auto;
+    }
 }
 @media (prefers-reduced-motion: reduce) {
     .camera-quick-detail__close, .camera-quick-detail__action { transition: none; }

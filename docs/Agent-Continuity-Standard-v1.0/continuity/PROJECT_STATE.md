@@ -1,22 +1,22 @@
 # ARGOS — Project State
 
 STATUS = CURRENT_SNAPSHOT
-SNAPSHOT_DATE = 2026-09-25
+SNAPSHOT_DATE = 2026-09-26
 PROJECT = ARGOS
-STATE_SOURCE = verified Git baseline + UI-3 integration merge + supplied integration validation evidence + canonical project authorities
+STATE_SOURCE = verified Git baseline + UI-3 integration merge + UI-4A shell implementation + responsive browser validation + Django system check
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = current documentary checkpoint after UI-3 integration; visual and product acceptance remain pending; earlier checkpoints remain historical
+SNAPSHOT_SCOPE = current checkpoint after UI-4A shell implementation; UI-4A visual acceptance and UI-3 product acceptance remain pending; earlier checkpoints remain historical
 
 ## 1. Executive status
 
-CURRENT_PHASE = FASE C — Captura manual e gestão de imagens (IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 integradas; UI-3 integrada com aceitação visual/produto pendente)
-CURRENT_ACTIVITY = reconciliação documental pós-integração UI-3 concluída; sem reparo visual ou implementação ativa autorizada
+CURRENT_PHASE = FASE C — Captura manual e gestão de imagens (IMG-02, IMG-03, SECURE_IMAGE_PREVIEW_DELIVERY, UI-1 e UI-2 integradas; UI-3 integrada e UI-4A implementada, ambas com aceitação pendente)
+CURRENT_ACTIVITY = UI-4A Shell Density Foundation implementada tecnicamente; aceitação visual do usuário pendente
 LAST_COMPLETED_ACTIVITY = SECURE_IMAGE_PREVIEW_DELIVERY — COMPLETE / INTEGRATED (7ca5f7c)
-LATEST_TECHNICAL_UI_ACTIVITY = UI-3 / INTEGRATED / VISUAL_ACCEPTANCE_PENDING
+LATEST_TECHNICAL_UI_ACTIVITY = UI-4A / TECHNICAL_IMPLEMENTATION_COMPLETE / VISUAL_ACCEPTANCE_PENDING
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
 LAST_PUBLISHED_BASELINE = 850efd2
-CURRENT_CANONICAL_GIT_BASELINE = HEAD 1015a8f0d7b6165ab057d81afb22007c3ae5e91b; origin/master 20be98d48ccfc19d458e393189168d9ecc93f309; ahead 2 / behind 0
-NEXT_PROJECT_ACTIVITY = IMG-04 / NEXT_CANDIDATE / NOT_AUTHORIZED; UI-3 visual/product acceptance remains pending; UI-4 NOT_AUTHORIZED
+CURRENT_CANONICAL_GIT_BASELINE = HEAD cad076099258e96b13f9e5ef11b301fc68891c4d; origin/master 47c6965f3a60c0026117584dae21ca8a280986a5; ahead 3 / behind 0
+NEXT_PROJECT_ACTIVITY = UI-4A visual acceptance pending; remaining UI-4 slices and IMG-04 remain NOT_AUTHORIZED; UI-3 visual/product acceptance remains pending
 NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 CURRENT_BASELINE_BEFORE_IMG02 = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
 
@@ -600,3 +600,68 @@ DOCUMENT_RECONCILIATION_GATE = PASS
 AGENT_HANDOFF_GATE_RESULT = PASS
 CONTINUITY_DISCOVERABILITY = YES; baseline, statuses, commits, acceptance gate, deferred decisions, next candidate, authorities and authorization recoverable without chat history
 ```
+
+## 18. Checkpoint vigente — UI-4A Desktop Shell Density Foundation (2026-09-26)
+
+Este checkpoint autoriza e registra somente a base geométrica global do shell.
+A aceitação visual do usuário continua pendente; a seção 17 permanece como
+histórico e seus bloqueios de UI-4 foram supersedidos apenas para UI-4A.
+
+```text
+PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+BRANCH = master
+HEAD = cad076099258e96b13f9e5ef11b301fc68891c4d
+ORIGIN_MASTER = 47c6965f3a60c0026117584dae21ca8a280986a5
+DIVERGENCE = ahead 3 / behind 0
+UI-4A_USER_AUTHORIZED = YES
+UI-4A_SCOPE = shell geometry: content max-width/centering, sidebar, topbar, shell gutters
+UI-4A_TECHNICAL_IMPLEMENTATION = COMPLETE
+UI-4A_VISUAL_ACCEPTANCE = PENDING_USER
+BASELINE_VIEWPORT = 2552x866 px; browser zoom 100%
+MAIN_CONTENT_MAX_WIDTH = 2304px -> 1400px
+MAIN_CONTENT_RENDERED_WIDTH = 2224px -> 1400px at 2552x866
+SIDEBAR_WIDTH = 248px -> 164px
+TOPBAR_HEIGHT = 60px baseline -> 40px token / 42px rendered
+PAGE_TOP_SPACING = 40px -> 32px at wide viewport
+PAGE_BOTTOM_SPACING = 48px -> 40px
+CONTENT_CENTERED = YES; main and topbar share the centered 1400px width
+EXCESSIVE_HORIZONTAL_STRETCH = NO
+SIDEBAR_BRAND_CLIPPED = NO; ARGOS and Central operacional fit
+DASHBOARD_LAYOUT_REGRESSION = NO; grids and existing card geometry unchanged
+DASHBOARD_LAYOUT_AT_2552 = inventory 5 columns; monitoring 3 columns with the fourth card in row 2; quality 3 columns; activity 2 columns
+INVENTORY_FILTER_LAYOUT_AFTER_SHELL_CHANGE = ONE_ROW at 2552x866; labels may wrap
+INVENTORY_FILTER_LAYOUT_AT_SMALLER_VIEWPORTS = TWO_ROWS at 1366x768; responsive reflow retained at 900x768 and 390x844
+INVENTORY_LAYOUT_REGRESSION = YES finding: table-region has a 2px local horizontal scroll at 2552x866 and 7px at 1366x768; baseline attribution is unverified
+HORIZONTAL_OVERFLOW = YES only inside table-region; document/root has no horizontal overflow at tested sizes
+BREAKPOINT_REGRESSION_FOUND = NO; existing 64rem, 56rem, 44rem and 30rem rules retained; mobile nav remains internally scrollable
+QUICK_DETAIL_MODIFIED_BY_UI4A = NO; pre-existing UI-3 diff in static/css/inventario.css preserved byte-for-byte during UI-4A
+FILES_MODIFIED_BY_UI4A = static/css/argos.css; static/css/design-system.css (shell tokens only)
+PREEXISTING_WORKTREE_DIFF = static/css/inventario.css (UI-3 Drawer); unchanged by UI-4A
+RESPONSIVE_VISUAL_QA = 2552x866; 1366x768; 900x768; 390x844 at 100%
+DJANGO_CHECK = PASS; System check identified no issues
+GIT_DIFF_CHECK = PASS
+BROWSER_CONSOLE_ERRORS = NONE observed
+CURRENT_WORKTREE = static/css/argos.css; static/css/design-system.css; static/css/inventario.css; continuity checkpoint files; all unstaged
+CURRENT_STAGING = EMPTY
+UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
+READY_FOR_USER_VISUAL_REVIEW = YES
+ACTIVITY_COMPLETION_PERCENT = 95%
+ACTIVITY_COMPLETE = NO; UI-4A visual acceptance pending
+NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
+UI-4B / UI-4C / UI-4D / UI-4E = NOT_AUTHORIZED
+IMG-04 = NOT_AUTHORIZED
+IMPLEMENTATION_AUTHORIZED = NO after the UI-4A shell slice
+LIVE_AUTHORIZED = NO
+COMMIT_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+PROJECT_STATE_UPDATE = PASS
+CONTINUITY_DISCOVERABILITY = YES
+FINAL_VERDICT = TECHNICAL IMPLEMENTATION COMPLETE WITH LOCAL TABLE-SCROLL FINDING; READY FOR USER VISUAL REVIEW
+```
+
+A folga de 4px no max-width foi testada e revertida: a diferença de 2px entre
+`.table-region` e a tabela acompanhou a largura do shell. Corrigir a barra
+exigiria alterar a tabela ou um override específico, ambos fora deste slice.
+A barra local permanece registrada para UI-4D; não há overflow horizontal no
+root da página. Nenhum filtro, tabela, card, controle, tipografia, spacing
+primitivo ou Quick Detail foi editado nesta atividade.
