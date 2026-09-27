@@ -5,18 +5,18 @@ SNAPSHOT_DATE = 2026-09-27
 PROJECT = ARGOS
 STATE_SOURCE = verified Git checkpoint + UI-AUD-01 report + frontend remediation directive v1 + IMG-DISPLAY-01 integration
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = documentary opening of frontend remediation after preserving prior UI work; visual/product acceptance remains pending; earlier checkpoints remain historical
+SNAPSHOT_SCOPE = Phase 0 technical work and user visual review passed with a local checkpoint; canonical integration pending; Phase 1 not started; earlier dated checkpoints remain historical
 
 ## 1. Executive status
 
-CURRENT_PHASE = FASE C — imagens e UI; IMG-DISPLAY-01 integrado, UI-3 integrada e UI-4A implementada com aceitação visual/produto pendente; remediação estrutural de UI planejada
-CURRENT_ACTIVITY = frente documental UI-AUD-01 / diretriz de remediação; Phase 0 ainda não iniciada
-LAST_COMPLETED_ACTIVITY = IMG-DISPLAY-01 — COMPLETE / INTEGRATED (4bcd81d; merge cad0760)
+CURRENT_PHASE = FASE C — imagens e UI; Phase 0 da remediação concluída tecnicamente, aceita visualmente e checkpointed localmente; integração canônica pendente; Phase 1 não iniciada
+CURRENT_ACTIVITY = ARGOS UI REMEDIATION — PHASE 0 / documentação reconciliada; integração canônica pendente
+LAST_COMPLETED_ACTIVITY = ARGOS UI REMEDIATION — PHASE 0 / technical implementation, user visual review and local checkpoint PASS; canonical integration pending
 LATEST_TECHNICAL_UI_ACTIVITY = UI-4A / TECHNICAL_IMPLEMENTATION_COMPLETE / VISUAL_ACCEPTANCE_PENDING
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
 LAST_PUBLISHED_BASELINE = 850efd2
 CURRENT_CANONICAL_GIT_BASELINE = checkpoint pré-remediação 768844d71891c8ac6762eaa0d9450d9cc73fcab3; origin/master 47c6965f3a60c0026117584dae21ca8a280986a5; ahead 4 / behind 0 before this documentary commit; revalidate Git on resume
-NEXT_PROJECT_ACTIVITY = ARGOS UI REMEDIATION — PHASE 0 / PLANNED / NOT_STARTED; UI-3 and UI-4A acceptance pending; IMG-04 remains NOT_AUTHORIZED
+NEXT_PROJECT_ACTIVITY = integração canônica da Phase 0 (PENDING); Phase 1 = NOT_STARTED; UI-3/UI-4A acceptance and IMG-04 authorization retain their separately recorded status
 NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 CURRENT_BASELINE_BEFORE_IMG02 = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
 
@@ -722,13 +722,13 @@ remediação, usar 192 px como baseline atual e medir novamente no runtime.
 
 A execução foi autorizada pelo usuário no baseline limpo `master @ c210fe6` e
 realizada no worktree dedicado abaixo, sem reutilizar ou alterar o worktree
-`codex/ui-03-visual-completion`. O delta permanece integralmente unstaged.
+`codex/ui-03-visual-completion`. A implementação técnica foi registrada no commit `7b938a33b3c6192b8294da98decd7b245c27d8db`; o estado Git abaixo é o checkpoint anterior a esta reconciliação documental.
 
 ```text
 CANONICAL_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos
 PHASE0_WORKTREE = C:\Users\walac\.codex\worktrees\argos-ui-remediation-phase-0\projeto_argos
 BRANCH = codex/ui-remediation-phase-0
-HEAD = c210fe62f49ec2ba259b0d3a64a1f6ea1e6fdf83
+HEAD = 7b938a33b3c6192b8294da98decd7b245c27d8db (pré-reconciliação documental)
 UPSTREAM = NONE
 DJANGO_BASE_DIR = C:\Users\walac\.codex\worktrees\argos-ui-remediation-phase-0\projeto_argos
 RUNTIME_SOURCE = PHASE0_WORKTREE / http://127.0.0.1:8010
@@ -872,9 +872,13 @@ P0-D03 = @media(max-height:800px) e :has() do drawer/shell; comportamento ativo;
 ```
 
 ```text
-PHASE0_TECHNICAL_IMPLEMENTATION = COMPLETE
-PHASE0_USER_REVIEW = PENDING
-ACTIVITY_COMPLETION_PERCENT = 95%
+PHASE0_TECHNICAL_IMPLEMENTATION = PASS
+PHASE0_USER_VISUAL_REVIEW = PASS
+PHASE0_LOCAL_CHECKPOINT = PASS
+PHASE0_DOCUMENTATION_RECONCILIATION = PASS
+PHASE0_CANONICAL_INTEGRATION = PENDING
+PHASE1 = NOT_STARTED
+ACTIVITY_COMPLETION_PERCENT = 100%
 FILES_MODIFIED = static/css/argos.css; static/css/inventario.css; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md
 CSS_RULE_COUNT_BEFORE = 1060
 CSS_RULE_COUNT_AFTER = 1035
@@ -891,9 +895,9 @@ FUNCTIONAL_DELTA = NONE; abertura, foco inicial, Escape e retorno de foco PASS n
 DJANGO_CHECK = PASS; System check identified no issues
 GIT_DIFF_CHECK = PASS
 STAGING = EMPTY
-COMMIT = NOT_CREATED
+TECHNICAL_COMMIT = 7b938a33b3c6192b8294da98decd7b245c27d8db
 PUSH = NOT_PERFORMED
-READY_FOR_USER_REVIEW = YES
+READY_FOR_CANONICAL_INTEGRATION = YES
 PROJECT_STATE_UPDATE = PASS
-FINAL_VERDICT = TECHNICAL IMPLEMENTATION COMPLETE; USER REVIEW PENDING
+FINAL_VERDICT = PHASE 0 TECHNICAL IMPLEMENTATION, USER VISUAL REVIEW, LOCAL CHECKPOINT AND DOCUMENTATION RECONCILIATION PASS; CANONICAL INTEGRATION PENDING
 ```
