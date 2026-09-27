@@ -1033,3 +1033,108 @@ A próxima atividade está autorizada pelo pedido atual e cobre exclusivamente
 o fechamento documental acima e as Phases 4, 5 e 6 do Batch B, com commits
 locais separados por fase e documentação final. Push, merge em `master`,
 rebase, tags e limpeza de worktrees permanecem não autorizados.
+
+## 23. Implementação técnica do Batch B — Fases 4–6 (2026-09-27)
+
+As três fases foram implementadas em commits locais separados no worktree
+`C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-b\projeto_argos`,
+branch `codex/ui-remediation-batch-b`, iniciado no checkpoint documental
+`323bfb0856a0bedc2b1b17cb07cb60dbcdd7c816`. A branch canônica `master` não
+recebeu mudanças de implementação. O trabalho não foi enviado nem integrado.
+
+```text
+BATCH_B_PHASE4 = PASS; COMMIT = fd8a8989096548ddf220bd01815ed2d8e2be26d2
+BATCH_B_PHASE5 = PASS; COMMIT = 5548b6bbefc94cc00d9a9c3b8c8338eeb11072fe
+BATCH_B_PHASE6 = PASS; COMMIT = 660904937c94fa2af5fbefa023f87340bfb03c88
+BATCH_B_TECHNICAL_IMPLEMENTATION = PASS
+BATCH_B_USER_VISUAL_ACCEPTANCE = PENDING
+ACTIVITY_COMPLETION_PERCENT = 95%
+ACTIVITY_COMPLETE = NO
+PROJECT_STATE_UPDATE = PASS
+READY_FOR_USER_REVIEW = YES
+FINAL_VERDICT = BATCH B TECHNICAL PASS; USER VISUAL ACCEPTANCE PENDING; NO PUSH OR MERGE
+PUSH_EXECUTED = NO
+MERGE_EXECUTED = NO
+NEXT_ACTIVITY = USER VISUAL REVIEW OF BATCH B
+```
+
+### Resultado por fase
+
+- **Fase 4 — Inventário:** os filtros passaram a reorganizar-se em colunas por
+  largura do painel; os controles permanecem alinhados; a tabela e suas ações
+  envolvem texto longo sem ampliar a página. No viewport de 900px, os
+  resultados usam cartões; em 390px, os filtros formam uma coluna e os
+  resultados permanecem em cartões.
+- **Fase 5 — Dashboard:** os quatro indicadores de Monitoramento ocupam quatro
+  colunas em larguras maiores, duas colunas no viewport de 900px e uma no de
+  390px. O quarto indicador conserva a mesma hierarquia e altura dos outros.
+- **Fase 6 — Quick Detail:** os três cartões continuam empilhados e em largura
+  total, com quatro pares de rótulo/valor cada. Os pares da lista foram
+  agrupados semanticamente para reduzir a densidade; todos os valores e títulos
+  originais foram mantidos. O diálogo usa uma única área de conteúdo rolável,
+  mantém as ações fixas, navegação e ações com alvo de 44px, e mantém o foco
+  acessível: abrir foca Fechar; Escape fecha e devolve o foco ao acionador.
+
+### Classificação dos estilos do Quick Detail
+
+- `REQUIRED`: posicionamento do diálogo modal; fluxo flexível; `min-height: 0`
+  no corpo; rolagem vertical local; texto longo com quebra; cartões em coluna;
+  área de enquadramento da imagem; navegação e ações com alvo mínimo de 44px.
+- `COMPENSATORY_REMOVED`: bloco condicionado a `max-height: 800px`, ajustes de
+  identidade com `!important`, tipografia compactada e espaçamentos reduzidos
+  somente para esse breakpoint.
+- `REDUNDANT_REMOVED`: regras finais duplicadas que dependiam do breakpoint de
+  altura removido.
+- `SHELL_COUPLING_REMOVED`: regras em `argos.css` que alteravam altura e
+  rolagem do shell por `.app-layout:has(.camera-quick-detail[open])`.
+- `SCOPED_OVERFLOW_RETAINED`: o enquadramento da imagem recorta apenas a imagem;
+  o subtítulo duplicado da câmera pode exibir reticências, enquanto o nome
+  completo permanece no bloco de identidade. Nenhuma dessas regras mascara a
+  altura ou a largura do conteúdo do drawer.
+
+O corpo do drawer permanece rolável quando os dados longos excedem o espaço
+disponível. No fixture mais extenso, `scrollHeight/clientHeight` do corpo foi
+790/570 em 2048×741, 790/743 em 2048×914, 790/695 em 2552×866, 909/909 em
+1920×1080, 790/597 em 1366×768, 857/597 em 900×768 e 1037/621 em 390×844.
+Os cartões não encolhem nem desaparecem para forçar ajuste: em todos esses
+casos o conteúdo completo continua acessível pela rolagem local. Não foi feita
+uma afirmação de ausência de scroll vertical dentro do drawer em todos os
+viewports.
+
+### Validação e proveniência do navegador
+
+```text
+RUNTIME_WORKTREE = C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-b\projeto_argos
+RUNTIME_BRANCH = codex/ui-remediation-batch-b
+RUNTIME_HEAD_AT_FINAL_TECHNICAL_VALIDATION = 660904937c94fa2af5fbefa023f87340bfb03c88
+RUNTIME_SERVER = Django runserver on 127.0.0.1:8012 from Batch B worktree
+RUNTIME_DATA = ignored local SQLite database with synthetic VisualQA user and camera rows
+RUNTIME_PRODUCTION_DATA = NOT USED
+DJANGO_CHECK = PASS
+TARGETED_TESTS = cameras.test_frontend; core.test_frontend; cameras.test_quick_detail — 47/47 PASS
+GIT_DIFF_CHECK = PASS after each phase
+BROWSER = headless Chrome 153.0.8010.53 at 100% zoom
+VIEWPORTS = 2552x866; 2048x741; 2048x914; 1920x1080; 1366x768; 900x768; 390x844
+ROUTES = Inventory, Dashboard, Governance substitution list, Quick Detail
+HTTP_RESPONSES = 200 for captured page routes
+NO_DOCUMENT_HORIZONTAL_OVERFLOW = YES across all four routes and seven viewports
+QUICK_DETAIL_BODY_HORIZONTAL_OVERFLOW = NO across all seven viewports
+QUICK_DETAIL_CARD_WIDTH = all three cards remained full-width at each viewport
+QUICK_DETAIL_FIELD_GROUPS = 4 in each of the three cards
+QUICK_DETAIL_KEYBOARD_CLOSE_AND_FOCUS_RETURN = PASS at all seven viewports
+QUICK_DETAIL_ACTION_TARGETS = 44px after asynchronous detail content is visible
+SCREENSHOTS = 28 after-state viewport captures; before-state inventory/dashboard captures and a before-state drawer measurement also saved locally
+SCREENSHOT_DIRECTORY = C:\Users\walac\AppData\Local\Temp\argos-batch-b-visual
+```
+
+As capturas foram feitas com o servidor Django e banco SQLite ignorado do
+próprio worktree Batch B. A identidade QA e os registros da câmera são
+sintéticos; nenhuma instância nem dado de produção foi acessado. A checagem
+visual/regressiva cobre os quatro caminhos registrados acima, mas não equivale
+à aceitação visual do usuário. O Quick Detail foi medido com conteúdo assíncrono
+visível; medições feitas antes do carregamento foram descartadas.
+
+`PROJECT_STATE_UPDATE = PASS` registra a implementação e a validação técnica.
+O gate `BATCH_B_USER_VISUAL_ACCEPTANCE` permanece `PENDING`, por isso a
+atividade permanece em 95% e o fechamento final aguarda a revisão visual do
+usuário.
