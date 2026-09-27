@@ -1260,3 +1260,96 @@ observadas do endpoint de detalhes foram 200. As capturas finais estão em
 corrigido. `BATCH_B_USER_VISUAL_ACCEPTANCE` permanece `PENDING`; portanto o
 progresso máximo continua em 95% e a atividade aguarda a revisão visual do
 usuário.
+## 25. Polimento visual do Quick Detail — Batch B Phase 6 (2026-09-27)
+
+Esta passada implementa os ajustes visuais solicitados para largura do drawer,
+presença do preview e badge de status. Ela preserva os resultados aprovados de
+Phase 4 e Phase 5 e o gate técnico aprovado de Phase 6. O polimento visual é
+parcial: a prova com a imagem manual real revelou que o endpoint de preview já
+entrega um derivado cortado pelo backend. O contrato desta atividade proíbe
+alterar backend e rotas, então não é possível confirmar o requisito de ausência
+de crop ponta a ponta dentro do escopo atual.
+
+```text
+POLISH_COMMIT = 63cf54c81755f5371d98512d38dad1d00bf9b725
+POLISH_BRANCH = codex/ui-remediation-batch-b
+PHASE4_STATUS = PRESERVED_PASS
+PHASE5_STATUS = PRESERVED_PASS
+PHASE6_TECHNICAL_STATUS = PASS
+QUICK_DETAIL_VISUAL_POLISH_STATUS = PARTIAL_PASS
+QUICK_DETAIL_END_TO_END_CROP_NO = NOT_MET; existing PANEL rendition is pre-cropped by backend
+BATCH_B_USER_VISUAL_ACCEPTANCE = PENDING
+ACTIVITY_COMPLETION_PERCENT = 95%
+ACTIVITY_COMPLETE = NO
+READY_FOR_USER_REVIEW = YES; crop limitation disclosed
+PUSH_EXECUTED = NO
+MERGE_EXECUTED = NO
+```
+
+### Resultado visual e viewport
+
+A largura medida do drawer caiu de 704px para 470px no desktop e permanece
+full width no viewport móvel. O frame do preview cresceu para 126px no desktop
+normal: a seção mede 155px em 1920×1080 e 149px em 2048×914. No modo de baixa
+altura, a seção mede 125px em 2048×741, com frame de 92px. Em 1366×768 e
+900×768, a seção mede aproximadamente 129px. O badge "Não monitorada" fica
+em uma única linha (110,7×22,8px), sem alterar JavaScript.
+
+| Viewport | Corpo requerido / disponível | Rolagem interna | Preview | Rodapé |
+| --- | ---: | --- | ---: | --- |
+| 2048×741 | 586 / 590px | Não | 125px | Visível |
+| 2048×914 | 610 / 763px | Não | 149px | Visível |
+| 1920×1080 | 820 / 909px | Não | 155px | Visível |
+| 1366×768 | 590 / 617px | Não | 129px | Visível |
+| 900×768 | 590 / 617px | Não | 129px | Visível |
+| 390×844 | 664 / 641px | Sim; scrollTop final 23px | 139px | Visível |
+
+Os seis viewports mantiveram o conteúdo completo acessível, sem clipping ou
+overflow horizontal. Em todos eles, os três cartões permaneceram empilhados e
+os 12 grupos de informação foram preservados. Escape, restauração de foco,
+carregamento da imagem e visibilidade do rodapé foram conferidos.
+
+### Proveniência da imagem e limite de crop
+
+A validação usou a câmera sintética de QA com uma imagem real carregada por
+upload manual: metadata da origem de 1448×1086, tipo image/png. O navegador
+recebeu pelo endpoint PANEL uma imagem 640×448, que corresponde a outra
+proporção. O serviço existente usa ImageOps.fit para gerar esse derivado e
+corta a origem antes da renderização no navegador. No Quick Detail,
+object-fit: contain evita crop adicional e distorção no CSS, mas não recupera
+os pixels já removidos do derivado. Portanto:
+- REAL_IMAGE_RENDERED = YES
+- OBJECT_FIT = contain
+- CSS_ADDITIONAL_CROP = NO
+- DISTORTION = NO
+- BACKEND_PANEL_CROP = YES
+- END_TO_END_CROP_NO = NOT_MET
+
+Nenhuma alteração foi feita em backend, JavaScript funcional, rotas, contratos,
+dados ou outros produtos. As capturas finais dos seis viewports estão em
+C:\Users\walac\AppData\Local\Temp\argos-batch-b-visual, com nomes
+polish-final-<largura>x<altura>.png.
+
+### Gates e proveniência
+
+```text
+RUNTIME_WORKTREE = C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-b\projeto_argos
+RUNTIME_BRANCH = codex/ui-remediation-batch-b
+RUNTIME_HEAD = 63cf54c81755f5371d98512d38dad1d00bf9b725
+RUNTIME_DATA = ignored local SQLite database with synthetic QA user/camera; manual image asset
+RUNTIME_PRODUCTION_DATA = NOT USED
+VIEWPORTS = 2048x741; 2048x914; 1920x1080; 1366x768; 900x768; 390x844
+QUICK_DETAIL_JSON_AND_PANEL_IMAGE_HTTP = 200 across six viewport runs
+DJANGO_CHECK = PASS
+TARGETED_TESTS = cameras.test_quick_detail + cameras.test_display_image — 10/10 PASS
+GIT_DIFF_CHECK = PASS
+SCREENSHOTS = six final live-runtime viewport captures
+SERVER_STOPPED = YES
+PROJECT_STATE_UPDATE = PASS after documentation commit
+```
+
+O servidor e o banco usados foram locais e sintéticos; nenhum ambiente ou dado
+de produção foi acessado. O resultado está pronto para revisão visual, com a
+limitação de crop do derivado claramente registrada. Uma prova ponta a ponta
+sem crop requer mudança no pipeline/backend de imagem e, portanto, nova
+autorização de escopo antes dessa implementação.
