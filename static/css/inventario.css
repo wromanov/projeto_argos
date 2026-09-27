@@ -2914,7 +2914,7 @@
     .camera-quick-detail__body [data-quick-detail-content] { gap: var(--space-1); }
     .camera-quick-detail__image-frame,
     .camera-quick-detail__image-frame:not([data-image-state="available"]),
-    .camera-quick-detail__image-frame[data-image-state="available"] { height: 5.5rem; }
+    .camera-quick-detail__image-frame[data-image-state="available"] { height: 5.75rem; }
     .camera-quick-detail__identity { padding-block: 0; }
     .camera-quick-detail__identity > div { gap: 0; }
     .camera-quick-detail__identity .camera-quick-detail__eyebrow { margin-bottom: 0; }
