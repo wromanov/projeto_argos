@@ -1009,3 +1009,27 @@ BLOCKERS = NONE for Batch A technical implementation
 READY_FOR_USER_REVIEW = YES
 FINAL_VERDICT = BATCH A TECHNICAL PASS; USER VISUAL ACCEPTANCE PENDING; NO PUSH OR MERGE
 ```
+
+## 22. Fechamento documental do Batch A e início autorizado do Batch B (2026-09-27)
+
+O registro acima preserva o estado factual no momento em que foi escrito.
+Conforme confirmação explícita do usuário nesta atividade, a integração
+canônica do Batch A, o gate visual pós-integração e o fechamento canônico
+foram concluídos. O HEAD atual `5205fbe` é o merge canônico do Batch A.
+
+```text
+BATCH_A_TECHNICAL_IMPLEMENTATION = PASS
+BATCH_A_USER_VISUAL_ACCEPTANCE = PASS
+BATCH_A_CANONICAL_CODE_INTEGRATION = PASS
+POST_INTEGRATION_VISUAL_GATE = PASS
+BATCH_A_CANONICAL_CLOSURE = PASS
+BATCH_A_STATUS = CLOSED
+PUSH_EXECUTED = NO
+NEXT_ACTIVITY = ARGOS UI REMEDIATION — FAST TRACK BATCH B
+PROJECT_STATE_UPDATE = PASS
+```
+
+A próxima atividade está autorizada pelo pedido atual e cobre exclusivamente
+o fechamento documental acima e as Phases 4, 5 e 6 do Batch B, com commits
+locais separados por fase e documentação final. Push, merge em `master`,
+rebase, tags e limpeza de worktrees permanecem não autorizados.
