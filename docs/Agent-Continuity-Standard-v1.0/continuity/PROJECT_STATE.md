@@ -3,20 +3,20 @@
 STATUS = CURRENT_SNAPSHOT
 SNAPSHOT_DATE = 2026-09-27
 PROJECT = ARGOS
-STATE_SOURCE = verified Git checkpoint + UI-AUD-01 report + frontend remediation directive v1 + IMG-DISPLAY-01 integration + Phase 0 canonical merge and user post-integration acceptance
+STATE_SOURCE = verified Git checkpoint + UI-AUD-01 report + frontend remediation directive v1 + Phase 0 canonical closure + Batch A technical validation
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = ARGOS UI REMEDIATION Phase 0 closed after canonical integration and user post-integration visual acceptance; Phase 1 ready/not started; earlier checkpoints remain historical
+SNAPSHOT_SCOPE = ARGOS UI REMEDIATION Batch A Phases 1–3 technically complete on a dedicated worktree; user visual acceptance pending; earlier checkpoints remain historical
 
 ## 1. Executive status
 
-CURRENT_PHASE = FASE C — imagens e UI; ARGOS UI REMEDIATION Phase 0 = CLOSED; Phase 1 = READY_NOT_STARTED
-CURRENT_ACTIVITY = ARGOS UI REMEDIATION — PHASE 1 / CSS OWNERSHIP CONSOLIDATION / READY_NOT_STARTED
+CURRENT_PHASE = FASE C — imagens e UI; ARGOS UI REMEDIATION Batch A = TECHNICAL_COMPLETE / USER_VISUAL_ACCEPTANCE_PENDING
+CURRENT_ACTIVITY = ARGOS UI REMEDIATION — FAST TRACK BATCH A / PHASES 1–3 / TECHNICAL_COMPLETE / USER_VISUAL_ACCEPTANCE_PENDING
 LAST_COMPLETED_ACTIVITY = ARGOS UI REMEDIATION — PHASE 0 / CLOSED / canonical merge 9bdea6a; post-integration user visual acceptance PASS
 LATEST_TECHNICAL_UI_ACTIVITY = UI-4A / TECHNICAL_IMPLEMENTATION_COMPLETE / VISUAL_ACCEPTANCE_PENDING
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
 LAST_PUBLISHED_BASELINE = 850efd2
-CURRENT_CANONICAL_GIT_BASELINE = master @ 9bdea6a9f39a908a2f19b33b8132102631868066; origin/master 47c6965f3a60c0026117584dae21ca8a280986a5; ahead 8 / behind 0 before this documentary commit; revalidate Git on resume
-NEXT_PROJECT_ACTIVITY = ARGOS UI REMEDIATION — PHASE 1 / CSS OWNERSHIP CONSOLIDATION / READY_NOT_STARTED; UI-3/UI-4A acceptance and IMG-04 authorization retain their separately recorded status
+CURRENT_CANONICAL_GIT_BASELINE = master @ be1adfb523c958d754e97f2dbf002aac65700b13; origin/master 47c6965f3a60c0026117584dae21ca8a280986a5; ahead 9 / behind 0 at Batch A start; canonical master unchanged by Batch A; revalidate Git on resume
+NEXT_PROJECT_ACTIVITY = ARGOS UI REMEDIATION — FAST TRACK BATCH B / PHASES 4–6 / CANDIDATE_AFTER_USER_REVIEW; UI-3/UI-4A acceptance and IMG-04 authorization retain their separately recorded status
 NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 CURRENT_BASELINE_BEFORE_IMG02 = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
 
@@ -908,4 +908,98 @@ TECHNICAL_COMMIT = 7b938a33b3c6192b8294da98decd7b245c27d8db
 PUSH = NOT_PERFORMED
 PROJECT_STATE_UPDATE = PASS
 FINAL_VERDICT = ARGOS UI REMEDIATION PHASE 0 CLOSED; CANONICAL INTEGRATION AND POST-INTEGRATION USER VISUAL ACCEPTANCE PASS; PHASE 1 READY_NOT_STARTED
+```
+
+## 21. ARGOS UI REMEDIATION — Fast Track Batch A (2026-09-27)
+
+Este é o checkpoint vigente da remediação UI. Os registros anteriores deste
+documento são históricos quando apontam a Phase 1 como ainda não iniciada.
+O usuário autorizou execução direta das Phases 1, 2 e 3, commits locais por
+fase e commit documental, sem push, merge ou início do Batch B.
+
+```text
+BASELINE_HEAD = be1adfb523c958d754e97f2dbf002aac65700b13
+CANONICAL_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos
+CANONICAL_BRANCH = master
+CANONICAL_HEAD_AT_START = be1adfb523c958d754e97f2dbf002aac65700b13
+BATCH_A_WORKTREE = C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-a\projeto_argos
+BATCH_A_BRANCH = codex/ui-remediation-batch-a
+BATCH_A_START_HEAD = be1adfb523c958d754e97f2dbf002aac65700b13
+PHASE1_TECHNICAL = PASS
+PHASE1_COMMIT = c64525c
+PHASE2_TECHNICAL = PASS
+PHASE2_COMMIT = 9365a07
+PHASE3_TECHNICAL = PASS
+PHASE3_COMMIT = 5fdf371
+BATCH_A_TECHNICAL = PASS
+BATCH_A_TECHNICAL_IMPLEMENTATION = COMPLETE
+BATCH_A_USER_VISUAL_ACCEPTANCE = PENDING
+ACTIVITY_COMPLETION_PERCENT = 95% (limite definido para aguardar revisão visual do usuário)
+ACTIVITY_COMPLETE = NO
+PROJECT_STATE_UPDATE = PASS
+PUSH_EXECUTED = NO
+MERGE_EXECUTED = NO
+NEXT_ACTIVITY = ARGOS UI REMEDIATION — FAST TRACK BATCH B / PHASE 4 + PHASE 5 + PHASE 6, após revisão do usuário e autorização própria
+```
+
+### Ownership e deltas técnicos
+
+- `design-system.css` concentra tokens, tipografia, botão base, inputs e native
+  selects, cards, badges, tabela genérica, `table-region`, page header,
+  multiselect, foco e alturas compartilhadas. O bloco de multiselect e o page
+  header saíram de `argos.css`. O foco da `table-region` saiu de `inventario.css`.
+- `argos.css` concentra sidebar, topbar, main, navegação e page container. A
+  regra do shell condicionada ao Quick Detail aberto saiu de `inventario.css`
+  sem mudança computada observada. O breakpoint de 64rem que repetia valores
+  do shell base foi removido.
+- `inventario.css` preserva composição da lista, tabela de câmeras, ações locais
+  e Quick Detail. As regras antes globais de botão foram limitadas ao main; o
+  `metric-card` local foi limitado a `inventory-result-count`.
+- `portal.css` permanece owner da composição do Dashboard;
+  `governanca.css`, da composição de Governança. Os três campos de filtro do
+  histórico de substituições passaram a consumir o primitive `.field` do
+  Design System, eliminando o controle local de 42px.
+- O summary do multiselect agora usa o mesmo contrato de altura mínima e
+  padding vertical dos demais controles. Medidas finais: desktop 36px,
+  compacto 32px, mobile/touch 44px. Não houve alteração funcional intencional.
+
+### Validação e proveniência
+
+```text
+DJANGO_BASE_DIR = C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-a\projeto_argos
+RUNTIME_SOURCE = Django source, templates, static assets and SQLite QA database from the Batch A worktree; HTML/JSON snapshots generated via Django test client from that same worktree and served on loopback for browser inspection
+RUNTIME_BRANCH = codex/ui-remediation-batch-a
+RUNTIME_HEAD_AT_FINAL_TECHNICAL_VALIDATION = 5fdf371
+RUNTIME_VALIDATION = PASS_FOR_RENDERED_UI_AND_SHARED_COMPONENTS; authenticated live request flow was not exercised by the snapshot server
+DJANGO_CHECK = PASS after each phase
+FRONTEND_TESTS = 18/18 PASS after Phase 1 and Phase 3
+GIT_DIFF_CHECK = PASS after each phase
+BROWSER_ZOOM = 100%
+VIEWPORTS_VALIDATED = 2552x866; 2048x914; 1920x1080; 1366x768; 900x768; 390x844
+NO_PAGE_HORIZONTAL_OVERFLOW = YES in Dashboard and Inventory at all six viewports; Governance at 1366x768 and 390x844
+SHELL_BASELINE = sidebar 192px desktop; page max-width 1400px; topbar computed approximately 43px; shell top/bottom spacing preserved
+DASHBOARD_REGRESSION = NONE observed; all six viewports checked for document overflow, sidebar and main geometry
+INVENTORY_REGRESSION = NONE observed for shared components; Phase 1 computed styles and geometry matched baseline at all six viewports
+GOVERNANCE_REGRESSION = NONE observed in filtered history view at desktop/mobile
+QUICK_DETAIL_REGRESSION = NONE observed in shared primitives/shell at 900x768; full synthetic detail content loaded, Escape closed and focus returned
+ACCESSIBILITY_REGRESSION = NONE observed in tested keyboard/focus flows; no WCAG-complete claim
+```
+
+O navegador recebeu HTML e a resposta JSON do Quick Detail gerados pelas
+views do worktree com um usuário e uma câmera sintéticos no SQLite local
+ignorado pelo Git. CSS e JS foram servidos pelo `manage.py runserver` do
+worktree. Esse método comprova a origem do código renderizado, mas não valida
+login real nem as chamadas autenticadas contra o servidor Django ao vivo.
+As medições do Quick Detail pertencem à regressão de shell e primitives; a
+reconstrução local do drawer continua reservada à Phase 6.
+
+### Findings preservados para o Batch B
+
+```text
+PHASE4 = grid de filtros baseado no viewport; label wrap; tabela/coluna Ações e conteúdo longo; comportamento 900/896px; card mode mobile
+PHASE5 = densidade e composição dos metric cards do Dashboard; quarto card de Monitoramento; min-height/grid-template-rows/gaps
+PHASE6 = scroll e composição local do Quick Detail; max-height:800px; identidade !important; navegação local de 32px; simplificação das regras compensatórias
+BLOCKERS = NONE for Batch A technical implementation
+READY_FOR_USER_REVIEW = YES
+FINAL_VERDICT = BATCH A TECHNICAL PASS; USER VISUAL ACCEPTANCE PENDING; NO PUSH OR MERGE
 ```
