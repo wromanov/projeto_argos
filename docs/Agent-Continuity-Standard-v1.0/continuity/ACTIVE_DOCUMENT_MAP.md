@@ -339,10 +339,11 @@ as especificações.
 | `docs/projeto/SPRINTS_ARGOS_V5.md` | Sequência executiva e gates da nova frente | CANONICAL / Phase 0 and Batch A closed; future visual changes gated by UI V2 prototypes |
 | `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`, seção 25 | Contrato de DISPLAY_IMAGE e status de IMG-DISPLAY-01 | CANONICAL / implementation integrated |
 
-O estado corrente está na seção 23 de `PROJECT_STATE.md`; o handoff operacional
-está na seção 19 de `AGENT_CONTINUITY.md`. A Phase 0 e o Batch A estão fechados;
-os achados do Batch B permanecem registrados, com mudanças visuais sequenciadas
-após os protótipos aprovados.
+O estado corrente da integração Batch B está na seção 28 de `PROJECT_STATE.md`; o handoff
+operacional vigente está na seção 19 de `AGENT_CONTINUITY.md`. Phase 0, Batch A e Batch B
+estão integrados localmente; a aceitação visual da origem do Batch B passou, e a revisão
+visual pós-integração em master permanece pendente. A próxima atividade UI continua sendo
+UI-V2-P0 — SCREEN CENSUS, sem autorização por este checkpoint.
 
 ## 14. Authority vigente — ARGOS UI V2
 

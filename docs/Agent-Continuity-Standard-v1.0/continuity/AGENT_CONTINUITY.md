@@ -599,7 +599,7 @@ Phase 1 não foi iniciada nem autorizada por este registro.
 
 ## 19. UI V2 — continuidade vigente (2026-09-27)
 
-O checkpoint atual e os fatos Git validados estão na seção 23 de
+O checkpoint atual e os fatos Git validados estão na seção 28 de
 `PROJECT_STATE.md`. A authority operacional da nova trilha é
 `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md`; a direção macro e a ordem executiva
 estão, respectivamente, em `docs/projeto/ROADMAP_ARGOS_V5.md` e
@@ -614,7 +614,7 @@ POST_IMPLEMENTATION_VISUAL_ACCEPTANCE_GATE = REQUIRED
 QUICK_DETAIL_VISUAL_BASELINE = APPROVED / PROTECTED
 QUICK_DETAIL_REDRAW_WITHOUT_NEW_EXPLICIT_AUTHORIZATION = PROHIBITED
 PHASE0_AND_BATCH_A = CLOSED / PRESERVED
-BATCH_B_VISUAL_SCOPES = RETAINED / SEQUENCED_AFTER_APPROVED_PROTOTYPES
+BATCH_B_STATUS = TECHNICALLY_INTEGRATED_ON_MASTER / SOURCE_VISUAL_ACCEPTANCE_PASS / INTEGRATED_VISUAL_REVIEW_PENDING
 ```
 
 `UI-3_VISUAL_ACCEPTANCE = PASS` para a baseline atual do Quick Detail, aprovada

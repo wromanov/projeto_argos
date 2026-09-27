@@ -3,20 +3,20 @@
 STATUS = CURRENT_SNAPSHOT
 SNAPSHOT_DATE = 2026-09-27
 PROJECT = ARGOS
-STATE_SOURCE = Git verified before documentary activity + ARGOS UI V2 master plan + current continuity and roadmap reconciliation
+STATE_SOURCE = Git verified at Batch B canonical integration + Batch B source validation records + ARGOS UI V2 master plan and continuity authorities
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = UI V2 formally documented as a parallel track; UI-V2-P0 is next; P0 and implementation not started
+SNAPSHOT_SCOPE = Batch B technically integrated on master; source visual acceptance PASS; integrated visual gate pending; UI V2 remains parallel and UI-V2-P0 is next
 
 ## 1. Executive status
 
 CURRENT_PHASE = FASE C — imagens e UI; ARGOS UI V2 = trilha paralela documental
-CURRENT_ACTIVITY = ARGOS UI V2 — CONTINUITY AND ROADMAP RECONCILIATION / PASS_WITH_FINDINGS
-LAST_COMPLETED_ACTIVITY = ARGOS UI REMEDIATION — FAST TRACK BATCH A / CLOSED / canonical integration and user visual acceptance PASS
-LATEST_TECHNICAL_UI_ACTIVITY = UI-3 integrated; Quick Detail visual baseline approved; UI-3 product acceptance pending
+CURRENT_ACTIVITY = CONTROLLED INTEGRATION OF APPROVED BATCH B / TECHNICAL PASS / POST-INTEGRATION VISUAL REVIEW PENDING
+LAST_COMPLETED_ACTIVITY = ARGOS UI REMEDIATION — FAST TRACK BATCH B / technically integrated locally; source visual acceptance PASS
+LATEST_TECHNICAL_UI_ACTIVITY = Batch B Quick Detail baseline approved and integrated; post-integration visual review pending
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
 LAST_PUBLISHED_BASELINE = 850efd2
-CURRENT_CANONICAL_GIT_BASELINE = master @ 323bfb0856a0bedc2b1b17cb07cb60dbcdd7c816; origin/master 47c6965f3a60c0026117584dae21ca8a280986a5; ahead 16 / behind 0; verified before this documentary activity
-NEXT_PROJECT_ACTIVITY = UI-V2-P0 — SCREEN CENSUS / PLANNED / NOT_STARTED / not authorized by this documentary update
+CURRENT_CANONICAL_GIT_BASELINE = master @ c7dce09819a1b3c838640cdcec73d70d1b36dd71; origin/master 47c6965f3a60c0026117584dae21ca8a280986a5; ahead 29 / behind 0 at local integration
+NEXT_PROJECT_ACTIVITY = UI-V2-P0 — SCREEN CENSUS / PLANNED / NOT_STARTED / not authorized by this integration
 NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 NEXT_BACKEND_ACTIVITY = IMG-04 candidate remains repository-recorded and not authorized; MON-AVAIL-02 recommended, sequencing unresolved
 UI_V2_TRACK_STATUS = DOCUMENTED / PARALLEL_TO_BACKEND
@@ -1509,8 +1509,8 @@ BATCH_B_CONTAINS_3DB3E85 = YES
 BATCH_B_CONTAINS_F494FF8 = YES
 PRE_MERGE_DIVERGENCE = master only 1; Batch B only 11
 MERGE_STRATEGY = explicit --no-ff branch merge; no rebase, squash or cherry-pick
-MERGE_RESULT = PENDING_VALIDATION
-MERGE_COMMIT = PENDING
+MERGE_RESULT = PASS / LOCAL_ONLY
+MERGE_COMMIT = c7dce09819a1b3c838640cdcec73d70d1b36dd71
 CONFLICTS = PROJECT_STATE.md only; semantic documentary reconciliation
 DOCUMENTATION_RECONCILIATION = PASS
 QUICK_DETAIL_USER_VISUAL_ACCEPTANCE = PASS on Batch B source branch
@@ -1518,16 +1518,17 @@ QUICK_DETAIL_BASELINE_PRESERVED = YES; no visual/source edits during reconciliat
 UI_V2_DOCUMENTATION_PRESERVED = YES
 NEXT_UI_ACTIVITY = UI-V2-P0 — SCREEN CENSUS
 BACKEND_AND_UI_V2 = PARALLEL_TRACKS
-DJANGO_CHECK = PENDING
-TARGETED_TESTS = PENDING
-DIFF_CHECK = PENDING
+DJANGO_CHECK = PASS — manage.py check, no issues
+TARGETED_TESTS = PASS — cameras.test_quick_detail + cameras.test_display_image, 10/10
+DIFF_CHECK = PASS — git diff --check HEAD^
 POST_INTEGRATION_VISUAL_GATE = PENDING_USER_REVIEW
-WORKTREE_FINAL = PENDING
-MASTER_VS_ORIGIN = PENDING
+WORKTREE_FINAL = CLEAN at integration merge commit
+MASTER_VS_ORIGIN = ahead 29 / behind 0 at integration merge commit
 PUSH_PERFORMED = NO
 FILES_CHANGED_BY_CONFLICT_RESOLUTION = docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md
 FINDINGS = Existing PANEL derivative is pre-cropped by backend; existing Batch B evidence records END_TO_END_CROP_NO = NOT_MET. No backend change was authorized or introduced.
 PROJECT_STATE_UPDATE = PASS
-ACTIVITY_COMPLETE = NO
-FINAL_VERDICT = POST-MERGE_VALIDATION_PENDING
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES — technical integration complete; visual gate remains pending
+FINAL_VERDICT = PASS; POST_INTEGRATION_VISUAL_GATE pending user review
 ```
