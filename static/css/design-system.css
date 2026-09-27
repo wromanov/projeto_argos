@@ -1061,7 +1061,8 @@ body {
 }
 
 .filter-multiselect__summary {
-    padding: var(--space-2) var(--space-3);
+    min-height: var(--control-height-default);
+    padding: var(--space-1) var(--space-3);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1247,10 +1248,6 @@ body {
 .filter-multiselect__option span {
     min-width: 0;
     overflow-wrap: anywhere;
-}
-
-.filter-multiselect__summary {
-    min-height: var(--control-height-default);
 }
 
 @media (max-width: 44rem) {
