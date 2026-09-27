@@ -12,13 +12,13 @@ REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-
 REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08B06854073CE16FE028DA14
 CURRENT_PHASE = FASE C — Captura manual e gestão de imagens
-CURRENT_PHASE_STATUS = EM_ANDAMENTO / IMG-DISPLAY-01 integrado; UI-3 integrada com aceitação visual/produto pendente; UI-4A implementada com aceitação visual pendente; Phase 0 planejada
+CURRENT_PHASE_STATUS = EM_ANDAMENTO / Phase 0 CLOSED após integração canônica e aceitação visual pós-integração; Phase 1 READY_NOT_STARTED; UI-3/UI-4A acceptance pending
 IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
-CURRENT_ACTIVITY = documentação de UI-AUD-01 e diretriz de remediação; Phase 0 não iniciada
-LAST_COMPLETED_ACTIVITY = IMG-DISPLAY-01 — integrado pelo merge cad0760
-LAST_COMPLETED_ACTIVITY_STATUS = COMPLETE / INTEGRATED
-NEXT_CANDIDATES = ARGOS UI REMEDIATION — PHASE 0; IMG-04
-NEXT_CANDIDATES_STATUS = Phase 0 PLANNED / NOT_STARTED; IMG-04 NOT_AUTHORIZED; UI-3 and UI-4A acceptance pending
+CURRENT_ACTIVITY = ARGOS UI REMEDIATION — PHASE 1 / CSS OWNERSHIP CONSOLIDATION / READY_NOT_STARTED
+LAST_COMPLETED_ACTIVITY = ARGOS UI REMEDIATION — PHASE 0 / canonical merge 9bdea6a; post-integration visual acceptance PASS
+LAST_COMPLETED_ACTIVITY_STATUS = CLOSED / INTEGRATED / VISUAL_ACCEPTANCE_PASS
+NEXT_CANDIDATES = ARGOS UI REMEDIATION — PHASE 1 / CSS OWNERSHIP CONSOLIDATION; IMG-04
+NEXT_CANDIDATES_STATUS = Phase 1 READY_NOT_STARTED; IMG-04 NOT_AUTHORIZED; UI-3 and UI-4A acceptance pending
 IMG02_IMPLEMENTATION_AUTHORIZATION = GRANTED_BY_EXPLICIT_USER_INSTRUCTION_FOR_THIS_SLICE_ONLY
 IMG-01 = COMPLETE após o checkpoint documental; contrato canônico:
 docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
@@ -393,8 +393,33 @@ A diretriz técnica completa está em
 | Phase 6 | Quick Detail Cleanup | Scroll previsível, footer visível, foco e acessibilidade preservados |
 
 Após Phase 6: regressão entre viewports e canonicalização do baseline do
-Design System. `Phase 0 = PLANNED / NOT_STARTED`; este registro não autoriza
+Design System. `Phase 0 = PLANNED / NOT_STARTED` era o status na abertura desta
+frente; seu fechamento atual está registrado na seção 15. Este mapa não autoriza
 implementação. Patches visuais novos ficam congelados até as fases. UI-3
 aguarda aceitação visual/produto e UI-4A aguarda aceitação visual; o checkpoint
 `768844d` apenas
 preserva o trabalho anterior. IMG-DISPLAY-01 já foi integrado em `cad0760`.
+
+## 15. Fechamento — ARGOS UI Remediation Phase 0 (2026-09-27)
+
+```text
+PHASE0_TECHNICAL_IMPLEMENTATION = PASS
+PHASE0_USER_VISUAL_REVIEW = PASS
+PHASE0_CANONICAL_CODE_INTEGRATION = PASS
+POST_INTEGRATION_VISUAL_GATE = PASS
+USER_POST_INTEGRATION_ACCEPTANCE = PASS
+PHASE0_CANONICAL_CLOSURE = PASS
+PHASE0_STATUS = CLOSED
+BASELINE_HEAD = c210fe62f49ec2ba259b0d3a64a1f6ea1e6fdf83
+IMPLEMENTATION_COMMIT = 7b938a33b3c6192b8294da98decd7b245c27d8db
+REVIEW_RECONCILIATION_COMMIT = baa51c61a942a1387990f73fea98b367568167c1
+CANONICAL_MERGE_COMMIT = 9bdea6a9f39a908a2f19b33b8132102631868066
+PHASE1 = READY_NOT_STARTED
+NEXT_ACTIVITY = ARGOS UI REMEDIATION — PHASE 1 / CSS OWNERSHIP CONSOLIDATION
+PUSH = NOT_PERFORMED
+```
+
+As métricas e os resultados detalhados da Phase 0 permanecem em
+`docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 20.
+Phase 1 está pronta para planejamento, mas não foi iniciada nem autorizada por
+este registro.

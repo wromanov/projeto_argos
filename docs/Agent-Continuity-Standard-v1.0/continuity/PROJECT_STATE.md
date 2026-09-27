@@ -3,20 +3,20 @@
 STATUS = CURRENT_SNAPSHOT
 SNAPSHOT_DATE = 2026-09-27
 PROJECT = ARGOS
-STATE_SOURCE = verified Git checkpoint + UI-AUD-01 report + frontend remediation directive v1 + IMG-DISPLAY-01 integration
+STATE_SOURCE = verified Git checkpoint + UI-AUD-01 report + frontend remediation directive v1 + IMG-DISPLAY-01 integration + Phase 0 canonical merge and user post-integration acceptance
 PROJECT_STATE_UPDATE = PASS
-SNAPSHOT_SCOPE = Phase 0 technical work and user visual review passed with a local checkpoint; canonical integration pending; Phase 1 not started; earlier dated checkpoints remain historical
+SNAPSHOT_SCOPE = ARGOS UI REMEDIATION Phase 0 closed after canonical integration and user post-integration visual acceptance; Phase 1 ready/not started; earlier checkpoints remain historical
 
 ## 1. Executive status
 
-CURRENT_PHASE = FASE C — imagens e UI; Phase 0 da remediação concluída tecnicamente, aceita visualmente e checkpointed localmente; integração canônica pendente; Phase 1 não iniciada
-CURRENT_ACTIVITY = ARGOS UI REMEDIATION — PHASE 0 / documentação reconciliada; integração canônica pendente
-LAST_COMPLETED_ACTIVITY = ARGOS UI REMEDIATION — PHASE 0 / technical implementation, user visual review and local checkpoint PASS; canonical integration pending
+CURRENT_PHASE = FASE C — imagens e UI; ARGOS UI REMEDIATION Phase 0 = CLOSED; Phase 1 = READY_NOT_STARTED
+CURRENT_ACTIVITY = ARGOS UI REMEDIATION — PHASE 1 / CSS OWNERSHIP CONSOLIDATION / READY_NOT_STARTED
+LAST_COMPLETED_ACTIVITY = ARGOS UI REMEDIATION — PHASE 0 / CLOSED / canonical merge 9bdea6a; post-integration user visual acceptance PASS
 LATEST_TECHNICAL_UI_ACTIVITY = UI-4A / TECHNICAL_IMPLEMENTATION_COMPLETE / VISUAL_ACCEPTANCE_PENDING
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 technical completion
 LAST_PUBLISHED_BASELINE = 850efd2
-CURRENT_CANONICAL_GIT_BASELINE = checkpoint pré-remediação 768844d71891c8ac6762eaa0d9450d9cc73fcab3; origin/master 47c6965f3a60c0026117584dae21ca8a280986a5; ahead 4 / behind 0 before this documentary commit; revalidate Git on resume
-NEXT_PROJECT_ACTIVITY = integração canônica da Phase 0 (PENDING); Phase 1 = NOT_STARTED; UI-3/UI-4A acceptance and IMG-04 authorization retain their separately recorded status
+CURRENT_CANONICAL_GIT_BASELINE = master @ 9bdea6a9f39a908a2f19b33b8132102631868066; origin/master 47c6965f3a60c0026117584dae21ca8a280986a5; ahead 8 / behind 0 before this documentary commit; revalidate Git on resume
+NEXT_PROJECT_ACTIVITY = ARGOS UI REMEDIATION — PHASE 1 / CSS OWNERSHIP CONSOLIDATION / READY_NOT_STARTED; UI-3/UI-4A acceptance and IMG-04 authorization retain their separately recorded status
 NEXT_PROJECT_ACTIVITY_AUTHORIZED = NONE
 CURRENT_BASELINE_BEFORE_IMG02 = 05b710a57137f9d0cdefd256c037e4d86fe0e3bb
 
@@ -876,8 +876,17 @@ PHASE0_TECHNICAL_IMPLEMENTATION = PASS
 PHASE0_USER_VISUAL_REVIEW = PASS
 PHASE0_LOCAL_CHECKPOINT = PASS
 PHASE0_DOCUMENTATION_RECONCILIATION = PASS
-PHASE0_CANONICAL_INTEGRATION = PENDING
-PHASE1 = NOT_STARTED
+BASELINE_HEAD = c210fe62f49ec2ba259b0d3a64a1f6ea1e6fdf83
+IMPLEMENTATION_COMMIT = 7b938a33b3c6192b8294da98decd7b245c27d8db
+REVIEW_RECONCILIATION_COMMIT = baa51c61a942a1387990f73fea98b367568167c1
+CANONICAL_MERGE_COMMIT = 9bdea6a9f39a908a2f19b33b8132102631868066
+PHASE0_CANONICAL_CODE_INTEGRATION = PASS
+POST_INTEGRATION_VISUAL_GATE = PASS
+USER_POST_INTEGRATION_ACCEPTANCE = PASS
+PHASE0_CANONICAL_CLOSURE = PASS
+PHASE0_STATUS = CLOSED
+PHASE1 = READY_NOT_STARTED
+NEXT_ACTIVITY = ARGOS UI REMEDIATION — PHASE 1 / CSS OWNERSHIP CONSOLIDATION
 ACTIVITY_COMPLETION_PERCENT = 100%
 FILES_MODIFIED = static/css/argos.css; static/css/inventario.css; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md
 CSS_RULE_COUNT_BEFORE = 1060
@@ -897,7 +906,6 @@ GIT_DIFF_CHECK = PASS
 STAGING = EMPTY
 TECHNICAL_COMMIT = 7b938a33b3c6192b8294da98decd7b245c27d8db
 PUSH = NOT_PERFORMED
-READY_FOR_CANONICAL_INTEGRATION = YES
 PROJECT_STATE_UPDATE = PASS
-FINAL_VERDICT = PHASE 0 TECHNICAL IMPLEMENTATION, USER VISUAL REVIEW, LOCAL CHECKPOINT AND DOCUMENTATION RECONCILIATION PASS; CANONICAL INTEGRATION PENDING
+FINAL_VERDICT = ARGOS UI REMEDIATION PHASE 0 CLOSED; CANONICAL INTEGRATION AND POST-INTEGRATION USER VISUAL ACCEPTANCE PASS; PHASE 1 READY_NOT_STARTED
 ```

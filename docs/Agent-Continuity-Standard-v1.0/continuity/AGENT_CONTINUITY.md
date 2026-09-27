@@ -574,3 +574,25 @@ e no Quick Detail pode usar upload manual somente em
 `NO_CAPTURE_AVAILABLE`; não muda a semântica de LATEST_CAMERA_CAPTURE. Revalidar Git,
 runtime e aceitação antes de declarar gates de implementação. Nenhum push foi
 autorizado por esta frente documental.
+
+## 18. Continuidade — fechamento da Phase 0 (2026-09-27)
+
+A seção 17 preserva o handoff anterior à execução da remediação. O estado
+vigente após integração canônica e aceitação visual pós-integração está em
+`docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 20,
+e `docs/projeto/SPRINTS_ARGOS_V5.md`, seção 15.
+
+```text
+CANONICAL_BRANCH = master
+CANONICAL_HEAD_AT_PHASE0_MERGE = 9bdea6a9f39a908a2f19b33b8132102631868066
+ARGOS_UI_REMEDIATION_PHASE0 = CLOSED
+PHASE0_CANONICAL_CODE_INTEGRATION = PASS
+POST_INTEGRATION_VISUAL_GATE = PASS
+PHASE0_CANONICAL_CLOSURE = PASS
+PHASE1 = READY_NOT_STARTED
+NEXT_ACTIVITY = ARGOS UI REMEDIATION — PHASE 1 / CSS OWNERSHIP CONSOLIDATION
+IMPLEMENTATION_AUTHORIZED = NO
+PUSH_AUTHORIZED = NO
+```
+
+Phase 1 não foi iniciada nem autorizada por este registro.
