@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR" data-direction="a">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>ARGOS · UI V2 Visual Style Lab</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <div class="lab-bar" aria-label="Comparador visual">
+    <div class="lab-title"><strong>ARGOS / UI V2</strong><span>Visual Style Lab · Inventário de Câmeras</span></div>
+    <fieldset class="direction-picker">
+      <legend>Direção visual</legend>
+      <label><input type="radio" name="direction" value="a" checked><span>A · Shadcn Corporate</span></label>
+      <label><input type="radio" name="direction" value="b"><span>B · PatternFly Enterprise</span></label>
+      <label><input type="radio" name="direction" value="c"><span>C · ARGOS Hybrid</span></label>
+    </fieldset>
+  </div>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegação principal">
+      <div class="brand"><img class="brand-mark" src="argos-icon.svg" alt=""><span><strong>ARGOS</strong><small>Controle CFTV</small></span></div>
+      <nav aria-label="Principal">
+        <p class="nav-group">VISÃO GERAL</p>
+        <a href="#conteudo">Início</a>
+        <a href="#conteudo">Dashboard</a>
+        <p class="nav-group">GESTÃO</p>
+        <a class="active" href="#conteudo" aria-current="page">Câmeras</a>
+        <a href="#conteudo">Eventos</a>
+      </nav>
+      <div class="sidebar-footer"><span class="user-avatar" aria-hidden="true">AD</span><span><strong>Administrador</strong><small>Ambiente de avaliação</small></span></div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar"><span>Inventário <span aria-hidden="true">/</span> Câmeras</span><div><span class="environment">AMBIENTE INTERNO</span><span class="topbar-avatar" aria-label="Conta do administrador">AD</span></div></header>
+      <main id="conteudo">
+        <section class="page-header" aria-labelledby="page-title">
+          <div><p class="eyebrow">Inventário CFTV</p><h1 id="page-title">Câmeras</h1><p class="lead">Consulte, filtre e acompanhe os equipamentos cadastrados.</p></div>
+          <div class="header-actions"><article class="metric-card" aria-label="Total de câmeras"><strong>248</strong><span>câmeras</span></article><button class="button primary" type="button">+ Nova câmera</button></div>
+        </section>
+        <section class="notice" role="status" aria-label="Atualização de dados"><p><strong>Dados de monitoramento defasados</strong><span>A última atualização foi há 18 minutos. Os dados do inventário continuam disponíveis.</span></p><button class="button quiet" type="button">Entendi</button></section>
+        <section class="panel filters" aria-labelledby="filters-title">
+          <div class="panel-heading"><p class="eyebrow">Refine a consulta</p><h2 id="filters-title">Filtros do inventário</h2></div>
+          <form class="filter-grid" role="search" aria-label="Filtros do inventário de câmeras">
+            <div class="field search"><label for="q">Pesquisar</label><input id="q" type="search" name="q" placeholder="Nome, patrimônio, IP ou fabricante"></div>
+            <div class="field"><label for="status">Status legado (histórico)</label><select id="status" name="status"><option>Todos</option><option>Ativa</option><option>Inativa</option></select></div>
+            <div class="field"><label for="situation">Situação operacional</label><select id="situation" name="situacao_operacional"><option>Todas</option><option>Operacional</option><option>Indisponível</option></select></div>
+            <div class="field"><label for="completeness">Completude</label><select id="completeness" name="completude"><option>Todos</option><option>Cadastro completo</option><option>Cadastro incompleto</option></select></div>
+            <div class="field"><label for="terminal">Terminal</label><select id="terminal" name="terminal"><option>Todos</option><option>Terminal 1</option><option>Terminal 2</option></select></div>
+            <div class="field"><label for="type">Tipo</label><select id="type" name="tipo"><option>Todos</option><option>Fixa</option><option>PTZ</option></select></div>
+            <div class="field"><label for="manufacturer">Fabricante</label><select id="manufacturer" name="fabricante"><option>Todos</option><option>Axis</option><option>Hikvision</option></select></div>
+            <div class="field"><label for="vlan">VLAN</label><select id="vlan" name="vlan"><option>Todas</option><option>120</option><option>210</option></select></div>
+            <div class="field"><label for="farm">Farm</label><select id="farm" name="farm"><option>Todas</option><option>Farm A</option><option>Farm B</option></select></div>
+            <div class="filter-actions"><button class="button primary" type="submit">Filtrar</button></div>
+          </form>
+        </section>
+        <section class="panel results" aria-labelledby="results-title">
+          <div class="results-heading"><div><p class="eyebrow">Resultados encontrados</p><h2 id="results-title">Câmeras</h2></div><p class="result-count"><strong>1–5</strong> de 248 registros</p></div>
+          <div class="table-region" role="region" aria-label="Câmeras encontradas" tabindex="0">
+            <table><caption>Relação de câmeras encontradas no inventário</caption><thead><tr><th scope="col">Monitoramento</th><th scope="col">Câmera</th><th scope="col">Localização</th><th scope="col">Rede</th><th scope="col">Equipamento</th><th scope="col">Governança</th><th scope="col">Ações</th></tr></thead><tbody>
+              <tr class="selected"><td><span class="badge online"><span class="dot"></span>Online</span></td><td><a class="camera-name" href="#conteudo">CAM-T1-001</a><small>Patrimônio: CFTV-1001</small></td><td>Terminal 1<small>Embarque · Portão 12</small></td><td class="mono">10.14.120.21<small>VLAN: 120</small></td><td>Axis P3245-LV<small>Tipo: Fixa</small></td><td><span class="badge neutral">Operacional</span><span class="badge success">Cadastro completo</span></td><td><button class="button subtle small" type="button">Ver detalhes</button></td></tr>
+              <tr><td><span class="badge offline"><span class="dot"></span>Offline</span></td><td><a class="camera-name" href="#conteudo">CAM-T2-014</a><small>Patrimônio: CFTV-1148</small></td><td>Terminal 2<small>Desembarque · Esteira 4</small></td><td class="mono">10.14.210.44<small>VLAN: 210</small></td><td>Hikvision DS-2CD<small>Tipo: Fixa</small></td><td><span class="badge neutral">Operacional</span><span class="badge warning">Cadastro incompleto</span></td><td><button class="button subtle small" type="button">Ver detalhes</button></td></tr>
+              <tr><td><span class="badge stale"><span class="dot"></span>Defasado</span></td><td><a class="camera-name" href="#conteudo">CAM-T1-028</a><small>Patrimônio: CFTV-1028</small></td><td>Terminal 1<small>Mezanino · Corredor B</small></td><td class="mono">10.14.120.67<small>VLAN: 120</small></td><td>Axis Q6135-LE<small>Tipo: PTZ</small></td><td><span class="badge neutral">Operacional</span><span class="badge success">Cadastro completo</span></td><td><button class="button subtle small" type="button">Ver detalhes</button></td></tr>
+              <tr><td><span class="badge online"><span class="dot"></span>Online</span></td><td><a class="camera-name" href="#conteudo">CAM-EST-006</a><small>Patrimônio: CFTV-1216</small></td><td>Estacionamento<small>Bloco C · Acesso Norte</small></td><td class="mono">10.14.130.08<small>VLAN: 130</small></td><td>Intelbras VIP 3230<small>Tipo: Fixa</small></td><td><span class="badge neutral">Operacional</span><span class="badge success">Cadastro completo</span></td><td><button class="button subtle small" type="button">Ver detalhes</button></td></tr>
+              <tr><td><span class="badge offline"><span class="dot"></span>Offline</span></td><td><a class="camera-name" href="#conteudo">CAM-T2-031</a><small>Patrimônio: CFTV-1171</small></td><td>Terminal 2<small>Check-in · Ilha 3</small></td><td class="mono">10.14.210.91<small>VLAN: 210</small></td><td>Axis M3067-P<small>Tipo: Panorâmica</small></td><td><span class="badge neutral">Indisponível</span><span class="badge warning">Cadastro incompleto</span></td><td><button class="button subtle small" type="button">Ver detalhes</button></td></tr>
+            </tbody></table>
+          </div>
+          <nav class="pagination" aria-label="Paginação"><span>5 resultados nesta página</span><div><button class="button subtle small" type="button" disabled>Anterior</button><button class="page-number" type="button" aria-current="page">1</button><button class="page-number" type="button">2</button><button class="page-number" type="button">3</button><span>…</span><button class="page-number" type="button">50</button><button class="button subtle small" type="button">Próxima</button></div></nav>
+        </section>
+        <section class="state-grid" aria-label="Estados de referência"><div class="state-card"><p class="eyebrow">ESTADO VAZIO</p><strong>Nenhuma câmera encontrada</strong><p>Não há câmeras correspondentes aos filtros informados.</p><button class="button subtle small" type="button">Limpar filtros</button></div><div class="state-card"><p class="eyebrow">ESTADO DE ERRO</p><strong>Não foi possível atualizar</strong><p>Os dados de monitoramento estão temporariamente indisponíveis.</p><button class="button subtle small" type="button">Tentar novamente</button></div></section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
