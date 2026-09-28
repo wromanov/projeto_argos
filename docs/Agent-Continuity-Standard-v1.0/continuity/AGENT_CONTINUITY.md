@@ -823,14 +823,15 @@ P3_FAMILY_IMPLEMENTATION_STARTED = NO
 PRODUCTION_CHANGED = NO
 P3_0_WORK_COMMIT = 7bf33de0456fbaaaf46943d73f44f82abb3e3a84
 USER_P3_0_APPROVAL = PASS
-CANONICAL_INTEGRATION = IN_PROGRESS / NO_FF AUTHORIZED
-POST_INTEGRATION_VALIDATION = NOT_YET
-REMOTE_SYNC_AFTER_P3_0 = NOT_YET
+CANONICAL_INTEGRATION = PASS / merged --no-ff; publication in progress
+MERGE_COMMIT = 02d1c03c8df784f82ae1d3d838a17d49a0db6eae
+POST_INTEGRATION_VALIDATION = PASS / Django check + HTTP_LOCAL prototype checks
+REMOTE_SYNC_AFTER_P3_0 = PENDING PUBLICATION
 FAN_OUT_READY = NO
 PROJECT_STATE_UPDATE = PASS
 CONTINUITY_RECONCILIATION = PASS / Card B is activity-specific authority; older roadmap snapshots retained
 ACTIVITY_COMPLETE = YES / technical harness and user review complete; canonical integration in progress
-PUSH_PERFORMED = NO
-MERGE_PERFORMED = NO
+PUSH_PERFORMED = PENDING / authorized; publication gate in progress
+MERGE_PERFORMED = YES / --no-ff
 
 O harness, índice, shell, fixture, quatro capturas e contratos estão em `docs/prototype/ui-v2/`. O master `SCREEN_COVERAGE.md` permanece root-owned; as famílias continuam sem artefatos. O usuário aprovou P3-0 e autorizou integração canônica/publicação; a validação pós-merge e a sincronização remota ainda precisam passar antes da liberação do fan-out.
