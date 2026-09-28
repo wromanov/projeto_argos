@@ -671,3 +671,103 @@ métricas fabricadas.
 
 P0 é documentalmente encerrado. Não iniciar P1, protótipos ou implementação sem
 autorização explícita própria.
+
+## 20. UI-V2-P2 — continuidade do início da execução (checkpoint histórico supersedido, 2026-09-28)
+
+Este checkpoint registra a execução antes da aprovação visual e é mantido para rastreabilidade. Seus estados e instruções operacionais foram supersedidos pelo checkpoint vigente na seção 20.3, por PROJECT_STATE.md seção 33 e pelo master plan seção 12.3. Consultar esses registros mais recentes para o status e próximos gates. A aprovação humana e a autorização de fechamento agora estão registradas nesses checkpoints atuais.
+
+CURRENT_ACTIVITY = UI-V2-P2 — VISUAL FOUNDATION
+CURRENT_STATUS = PASS / READY_FOR_USER_FOUNDATION_REVIEW
+DESIGN_STRATEGY = CODE_FIRST / STACK_NATIVE / PROTOTYPE_DRIVEN
+VISUAL_DIRECTION = C — ARGOS HYBRID / NOT_REOPENED
+CANONICAL_CSS = static/css/ui-v2/{tokens.css,base.css,components.css,patterns.css}
+DESIGN_SYSTEM_VERSION = 2.0.0-rc.1 / APPROVAL_PENDING
+FIGMA = PARTIAL_REFERENCE / OPTIONAL / NON-CANONICAL / BLOCKS_P2=NO
+PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
+PRODUCTION_UI_V2_INTEGRATION_STARTED = NO
+UI_V2_CSS_REFERENCED_BY_PRODUCTION = NO
+P3_STARTED = NO
+QUICK_DETAIL = APPROVED / PROTECTED / NO_TOKEN_MIGRATION
+ADMIN = INHERITED / NO_CUSTOM_REDESIGN
+DESIGN_QA = PASS / SCREENSHOT_EVIDENCE_PERSISTED
+COMMIT = NOT_CREATED / REVIEW_HANDOFF_READY
+
+Preservar os contratos visuais em docs/prototype/ui-v2/contracts/ e a foundation em docs/prototype/ui-v2/foundation/. O checkpoint 20.1 supersede a pendência de screenshots e gates de interação: ambos passaram, com evidências persistidas. A próxima ação é a revisão visual humana. Não aprovar em nome do usuário, não promover 2.0.0, não iniciar P3 e não alterar templates ou runtime de produção.
+
+
+
+### 20.1. UI-V2-P2 — QA técnico antes do aceite humano (snapshot histórico supersedido, 2026-09-28)
+
+O checkpoint 31 de PROJECT_STATE.md supersede os campos de validação pendente acima quanto ao QA. A revisão técnica passou; falta a decisão visual do usuário.
+
+CURRENT_STATUS = PASS / READY_FOR_USER_FOUNDATION_REVIEW
+ACTIVITY_COMPLETION_PERCENT = 98%
+DESIGN_QA = PASS / SCREENSHOT_EVIDENCE_PERSISTED
+VIEWPORTS = 1440x900; 1366x768; 1920x1080; 900x768; 768x900; 390x844
+ROUTE_VIEWPORT_SWEEP = PASS / 48 of 48
+KPI_LAYOUT = 260x78.3 at 1366/1440 / 3 columns; 2+1 at 900/768; single column at 390
+PROJECT_STATE_UPDATE = PASS
+USER_FOUNDATION_APPROVAL = PENDING
+UI_FOUNDATION_VISUAL_ACCEPTANCE = PENDING_USER
+DESIGN_SYSTEM_VERSION_PINNED = NO
+P3_STARTED = NO
+COMMIT = NOT_CREATED / review handoff
+
+As capturas ficam em docs/prototype/ui-v2/foundation/screenshots/; o relatório integral fica em design-qa.md. Não declarar ACTIVITY_COMPLETE até a aprovação visual humana.
+
+
+
+### 20.2. UI-V2-P2 — composição dos KPI tiles antes do aceite final (snapshot histórico supersedido, 2026-09-28)
+
+O checkpoint 32 de PROJECT_STATE.md supersede a composição KPI registrada em 20.1. Direção C preservada; esta atualização aplica a instrução visual explícita mais recente.
+
+CURRENT_STATUS = PASS / READY_FOR_USER_FOUNDATION_REVIEW
+ACTIVITY_COMPLETION_PERCENT = 98%
+KPI_GROUP_CENTERED = YES
+KPI_CONTENT_CENTERED = YES
+KPI_CARD_WIDTH = 220px
+KPI_CARD_HEIGHT = 77.3px / natural
+KPI_GROUP_WIDTH = 692px at desktop / centered
+KPI_GAP = 16px
+KPI_INTERNAL = padding 14x16; value-label gap 4px; value and label centers aligned
+KPI_RESPONSIVE = 3 desktop; 2+1 tablet with centered final tile; 1 mobile
+GENERIC_CARD_ALIGNMENT_CHANGED = NO
+RESPONSIVE_REGRESSION = NO
+UI_VISUAL_ACCEPTANCE = PENDING_USER
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO
+P3_STARTED = NO
+COMMIT = NOT_CREATED / review handoff
+
+As capturas atuais e a comparação ficam em docs/prototype/ui-v2/foundation/screenshots/. O aceite final continua pendente do usuário.
+
+
+
+### 20.3. UI-V2-P2 — aprovação e fechamento (2026-09-28)
+
+Este checkpoint supersede os estados históricos pendentes das seções 20–20.2. A aprovação humana foi concedida explicitamente no adendo de fechamento.
+
+CURRENT_ACTIVITY = UI-V2-P2 — VISUAL FOUNDATION + CANONICAL INTEGRATION
+P2_STATUS = CLOSED / PASS
+USER_VISUAL_ACCEPTANCE = PASS
+USER_FOUNDATION_APPROVAL = PASS
+DESIGN_SYSTEM_VERSION = 2.0.0
+DESIGN_SYSTEM_VERSION_PINNED = YES
+P2_GATES = PASS / tokens, components, density, responsive, interaction, domain-status language, desktop/mobile, accessibility interaction, long content
+P2_CLOSURE_COMMIT = PENDING_LOCAL_COMMIT
+CANONICAL_MERGE = AUTHORIZED / pending
+POST_MERGE_DJANGO_CHECK = PENDING
+PUSH_AUTHORIZED = YES / pending gates
+PUSH_PERFORMED = NO
+REMOTE_SYNC = PENDING
+PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
+PRODUCTION_UI_V2_INTEGRATION_STARTED = NO
+UI_V2_CSS_REFERENCED_BY_PRODUCTION = NO
+P3_STARTED = NO
+NEXT_ACTIVITY = UI-V2-P3 — NAVIGABLE SCREEN PROTOTYPES / NOT STARTED
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO / canonical integration pending
+
+O fechamento de P2 não inicia P3. A conclusão da atividade ampliada exige merge, Django check, push e sincronização remota.

@@ -1,0 +1,25 @@
+/* ARGOS UI V2 · 2.0.0 · reset and global defaults */
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { min-width: 320px; text-size-adjust: 100%; scroll-behavior: smooth; }
+  body { margin: 0; }
+  img, svg { display: block; max-width: 100%; }
+  button, input, select, textarea { font: inherit; }
+}
+@layer base {
+  body {
+    background: var(--argos-color-canvas);
+    color: var(--argos-color-ink);
+    font-family: var(--argos-font-sans);
+    font-size: var(--argos-text-body);
+    font-weight: var(--argos-weight-regular);
+    line-height: var(--argos-line-base);
+  }
+  a { color: var(--argos-color-action); text-underline-offset: .16em; }
+  a:hover { color: var(--argos-color-action-hover); }
+  h1, h2, h3, p { margin-block: 0; }
+  h1, h2, h3 { color: var(--argos-color-ink); font-weight: var(--argos-weight-semibold); line-height: var(--argos-line-tight); }
+  :focus-visible { outline: var(--argos-focus-width) solid var(--argos-color-action); outline-offset: var(--argos-focus-offset); }
+  ::selection { background: var(--argos-color-action); color: var(--argos-color-surface); }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+}

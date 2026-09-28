@@ -313,3 +313,115 @@ vigentes; o registro de P2 como próxima atividade não inicia essa fase.
 - UI V2 prototype-driven: este documento.
 - Design System/CameraQuickDetailPanel e contrato visual-funcional: `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`.
 - Auditoria e guardrails CSS: `docs/frontend/ARGOS_FRONTEND_AUDIT_REPORT.md` e `docs/frontend/ARGOS_DIRETRIZ_REMEDIACAO_FRONTEND_UI_UX_V1.md`.
+
+## 12. UI-V2-P2 — adjudicação code-first e checkpoint (2026-09-28)
+
+Este checkpoint implementa a adjudicação explícita do usuário para P2. A seção 10 permanece como registro histórico de P1; o campo P2_STARTED=NO e a ausência de início/autorização ali foram supersedidos para a atividade atual. A seleção visual C não é reaberta.
+
+STRATEGY = CODE_FIRST / STACK_NATIVE / PROTOTYPE_DRIVEN
+USER_SELECTION = C — ARGOS HYBRID
+DIRECTION_REOPENED = NO
+CANONICAL_DESIGN_SYSTEM = static/css/ui-v2/
+CANONICAL_FILES = tokens.css; base.css; components.css; patterns.css
+DESIGN_SYSTEM_VERSION = 2.0.0-rc.1 / USER_APPROVAL_PENDING
+FIGMA_CANONICAL = NO
+FIGMA_ROLE = OPTIONAL / INFORMATIVE / NON-CANONICAL
+FIGMA_STATUS = PARTIAL_REFERENCE / RATE_LIMIT_RECORDED
+FIGMA_BLOCKS_P2 = NO
+P2_STATUS = IN_PROGRESS / TECHNICAL_FOUNDATION_PRESENTED
+PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
+PRODUCTION_UI_V2_INTEGRATION_STARTED = NO
+UI_V2_CSS_REFERENCED_BY_PRODUCTION = NO
+P3_STARTED = NO
+QUICK_DETAIL = APPROVED / PROTECTED / NO_MIGRATION
+ADMIN_UI_V2_SCOPE = INHERITED / NO_CUSTOM_REDESIGN
+USER_FOUNDATION_APPROVAL = PENDING
+PRODUCT_DESIGN_DESIGN_QA = BLOCKED / VIEWPORT_SCREENSHOT_EVIDENCE_NOT_PERSISTED
+
+O CSS canônico contém 74 tokens com consumidores identificados. A foundation executável em docs/prototype/ui-v2/foundation/ tem oito páginas e referencia os quatro arquivos canônicos; não mantém cópia de CSS visual. Os contratos de ownership, estados, coverage e precedência estão em docs/prototype/ui-v2/contracts/.
+
+A revisão no navegador integrado mostrou a foundation em 1264 × 720 px de raster, inclusive espécime de dados extensos e foco por teclado. O browser não expôs CSS viewport/device scale nem permitiu persistir screenshot no workspace; 1440 × 900, 1366 × 768 e 390 × 844 permanecem pendentes. O relatório design-qa.md registra esta limitação e usa final result: blocked. Não declarar P2 concluído nem aprovar visualmente até terminar os gates técnicos e obter decisão humana.
+
+O estado mais recente de execução e Git está em docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md, seção 30. A revisão da estratégia não modifica domínio, comportamento, templates ou runtime de produção.
+
+
+
+### 12.1. UI-V2-P2 — passe de QA visual concluído tecnicamente (2026-09-28)
+
+Esta subseção supersede PRODUCT_DESIGN_DESIGN_QA=BLOCKED da seção 12 quanto à disponibilidade de evidência e validação técnica. A aceitação visual humana e o pin continuam pendentes.
+
+P2_STATUS = PASS / READY_FOR_USER_FOUNDATION_REVIEW
+ACTIVITY_COMPLETION_PERCENT = 98%
+PRODUCT_DESIGN_DESIGN_QA = PASS / screenshots persistidos
+FOUNDATION_PAGES_REVIEWED = 8
+VIEWPORTS = 1440x900; 1366x768; 1920x1080; 900x768; 768x900; 390x844
+ROUTE_VIEWPORT_SWEEP = PASS / 48 navegations
+USER_FOUNDATION_APPROVAL = PENDING
+DESIGN_SYSTEM_VERSION_PINNED = NO
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO / aguarda gate humano
+COMMIT = NOT CREATED / review handoff
+P3_STARTED = NO
+PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
+
+O relatório de QA é design-qa.md e as capturas revisáveis estão em docs/prototype/ui-v2/foundation/screenshots/. O refinamento adicional dos KPI cards mantém a direção C e tokens existentes. Não houve alteração em domínio, comportamento de produção, Quick Detail, Figma ou P3. A próxima ação é a revisão visual do usuário; não marcar conclusão, congelar versão ou iniciar P3 antes da decisão humana.
+
+
+
+### 12.2. UI-V2-P2 — refinamento final de KPI / metric tiles (snapshot histórico supersedido, 2026-09-28)
+
+Esta atualização aplica a instrução explícita final do usuário e supersede as dimensões/alinhamento de KPI registradas em 12.1. Mantém-se a direção C — ARGOS HYBRID e o escopo VISUAL_ONLY.
+
+KPI_GROUP_CENTERED = YES
+KPI_CONTENT_CENTERED = YES
+KPI_CARDS_VISUALLY_COMPACT = YES
+KPI_CARD_WIDTH = 220px at 1440/1366/1024
+KPI_CARD_HEIGHT = 77.3px / content-derived
+KPI_GAP = 16px
+KPI_INTERNAL = padding 14x16; value-label gap 4px
+KPI_RESPONSIVE = 3 desktop; 2+1 tablet with centered third tile; 1 per row mobile
+GENERIC_CARD_ALIGNMENT_CHANGED = NO
+TOKENS_CHANGED = NO
+RESPONSIVE_REGRESSION = NO
+UI_VISUAL_ACCEPTANCE = PENDING_USER
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO
+P3_STARTED = NO
+
+O grupo de KPIs mede 692px no desktop e fica centralizado na área de conteúdo; a tabela conserva largura maior. O relatório de QA e as capturas antes/depois estão em design-qa.md e docs/prototype/ui-v2/foundation/screenshots/.
+
+
+
+### 12.3. UI-V2-P2 — fechamento aprovado e versão pinada (2026-09-28)
+
+Esta seção supersede os snapshots 12, 12.1 e 12.2 quanto ao status corrente de P2. O usuário concedeu aprovação visual explícita e autorizou o fechamento e a integração canônica.
+
+P2_STATUS = CLOSED / PASS
+USER_VISUAL_ACCEPTANCE = PASS
+USER_FOUNDATION_APPROVAL = PASS
+DESIGN_SYSTEM_VERSION = 2.0.0
+DESIGN_SYSTEM_VERSION_PINNED = YES
+CANONICAL_DESIGN_SYSTEM = static/css/ui-v2/
+TOKENS_APPROVED = PASS
+COMPONENTS_APPROVED = PASS
+DENSITY_APPROVED = PASS
+RESPONSIVE_FOUNDATION_APPROVED = PASS
+INTERACTION_STATES_APPROVED = PASS
+DOMAIN_STATUS_LANGUAGE_APPROVED = PASS
+DESKTOP_DENSITY_APPROVED = PASS
+MOBILE_DENSITY_APPROVED = PASS
+ACCESSIBILITY_INTERACTION_GATE = PASS / sem claim WCAG
+LONG_CONTENT_GATE = PASS
+PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
+PRODUCTION_UI_V2_INTEGRATION_STARTED = NO
+UI_V2_CSS_REFERENCED_BY_PRODUCTION = NO
+P3_STARTED = NO
+P2_CLOSURE_COMMIT = PENDING
+CANONICAL_MERGE = AUTHORIZED / pending
+PUSH_AUTHORIZED = YES / pending validation gates
+ACTIVITY_COMPLETE = NO / integration and remote sync pending
+
+Os contratos registram versão final e aprovação humana. O fechamento P2 não inicia P3 nem integra o CSS ao runtime Django. Referências anteriores ao estado candidato/revisão pendente são snapshots históricos.
