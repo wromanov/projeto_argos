@@ -1621,3 +1621,205 @@ Este checkpoint supersede o status prévio de P0 ainda planejado na seção 23 e
 nos registros de continuidade anteriores. A baseline factual do census
 permanece em ARGOS_UI_V2_SCREEN_CENSUS.md; este snapshot não declara aprovação
 visual integrada do Batch B.
+
+## 30. UI-V2-P2 — checkpoint de estratégia e foundation (2026-09-28)
+
+ACTIVITY = UI-V2-P2 — VISUAL FOUNDATION
+ACTIVITY_STATUS = IN_PROGRESS / PASS_WITH_FINDINGS
+ACTIVITY_COMPLETION_PERCENT = 86%
+REPOSITORY_ROOT = C:/Users/walac/.codex/worktrees/ui-v2-p2-visual-foundation/projeto_argos
+BASELINE_HEAD = 6de91063526ab9e323114ad69f0967cc2849145a
+BRANCH = codex/ui-v2-p2-visual-foundation
+WORKTREE = C:/Users/walac/.codex/worktrees/ui-v2-p2-visual-foundation/projeto_argos
+FINAL_HEAD = 6de91063526ab9e323114ad69f0967cc2849145a / no commit yet
+DESIGN_STRATEGY = CODE_FIRST / STACK_NATIVE / PROTOTYPE_DRIVEN
+SELECTED_DIRECTION = C — ARGOS HYBRID
+DIRECTION_REOPENED = NO
+CANONICAL_DESIGN_SYSTEM = static/css/ui-v2/
+DESIGN_SYSTEM_FILES = tokens.css; base.css; components.css; patterns.css
+CANONICAL_TOKEN_COUNT = 74 / all have consumers / under 100
+CASCADE_LAYERS = PASS
+NAMESPACING = PASS / argos-* for all new component and pattern selectors
+OWNERSHIP_MODEL = PASS / component vs. pattern catalogued
+DESIGN_SYSTEM_VERSION = 2.0.0-rc.1
+EXECUTABLE_FOUNDATION = 8 pages / shared canonical CSS / no copied visual CSS
+VISUAL_CONTRACT = CREATED
+COMPONENT_CATALOG = CREATED
+STATE_MATRIX = CREATED / image-state name divergence preserved by consumer
+SCREEN_COVERAGE = CREATED / 35 census screens
+FIGMA_STATUS = PARTIAL_REFERENCE / rate limit documented
+FIGMA_ROLE = OPTIONAL / INFORMATIVE / NON-CANONICAL
+FIGMA_BLOCKS_P2 = NO
+PRODUCT_DESIGN_GET_CONTEXT = NOT_REQUIRED / no unresolved design brief after source review
+PRODUCT_DESIGN_DESIGN_QA = BLOCKED / screenshot cannot be persisted or viewport normalized with current browser surface
+STYLE_LAB_C_ALIGNMENT = PRELIMINARY DESKTOP VISUAL REVIEW
+DIVERGENCE_RESOLUTION = D1-D5 recorded in foundation README; visual-only
+RUNTIME_VALIDATION = PARTIAL / in-app browser raster 1264x720
+VIEWPORTS_VALIDATED = 1264x720 browser raster only
+REQUIRED_VIEWPORTS_PENDING = 1440x900; 1366x768; 390x844
+DESKTOP_DENSITY_VALIDATED = PARTIAL
+MOBILE_DENSITY_VALIDATED = NO
+ACCESSIBILITY_INTERACTION_CHECK = PARTIAL / keyboard focus and disabled visible; reduced motion not toggled
+LONG_CONTENT_CHECK = PARTIAL PASS / long table content wraps within its own scroll region at observed viewport
+QUICK_DETAIL_PROTECTED = YES
+QUICK_DETAIL_TOKEN_MIGRATION_PERFORMED = NO
+ADMIN_SCOPE_PRESERVED = YES
+UI_V2_CANONICAL_CSS_CREATED = YES
+PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
+PRODUCTION_UI_V2_INTEGRATION_STARTED = NO
+UI_V2_CSS_REFERENCED_BY_PRODUCTION = NO
+P2_USER_APPROVAL_REQUIRED = YES
+P2_USER_APPROVAL = PENDING
+DESIGN_SYSTEM_VERSION_PINNED = NO
+P3_STARTED = NO
+PROJECT_STATE_UPDATE = PASS / dated P2 checkpoint supersedes historical P2_STARTED=NO entries
+CONTINUITY_RECONCILIATION = PASS / earlier entries remain historical
+COMMIT = NOT CREATED / required viewport and persisted screenshot gates are incomplete
+WORKTREE_FINAL = EXPECTED UNCOMMITTED CHANGES / explicit P2 files only
+PUSH_PERFORMED = NO
+MERGE_PERFORMED = NO
+ACTIVITY_COMPLETE = NO
+FILES_CHANGED = static/css/ui-v2/*; docs/prototype/ui-v2/foundation/*; docs/prototype/ui-v2/contracts/*; docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md; design-qa.md
+FINDINGS = Product Design QA report is blocked by missing saved/normalized viewport captures; technical visual review is partial. Screen Census vs DisplayImageState name divergence documented without code reconciliation.
+BLOCKERS = Required 1440x900, 1366x768, 390x844 screenshots and saved design-QA evidence not available through the current selected browser surface.
+NEXT_ACTIVITY = complete exact viewport visual validation and present foundation for human approval
+FINAL_VERDICT = PASS_WITH_FINDINGS / foundation reviewable; P2 remains open
+
+### Autoridade e escopo vigentes
+
+A decisão atual substitui apenas os estados anteriores de início/roteamento de P2; a seleção C, o domínio e os contratos funcionais permanecem. Figma está como referência parcial opcional, sem novas chamadas. A foundation e CSS são canônicos para UI V2, mas não são carregados em templates produtivos. A atividade permanece visual only. Ver detalhes de tokens, divergências e contratos em docs/prototype/ui-v2/foundation/README.md e docs/prototype/ui-v2/contracts/.
+
+P2 não está completo: a confirmação visual dos viewports exigidos e a revisão humana permanecem pendentes. Não iniciar P3, não congelar a versão 2.0.0 e não integrar CSS V2 à produção. A mesma branch/worktree UI-V2-P2 continua ativa.
+
+## 31. UI-V2-P2 — resultado do passe visual e refinamento (2026-09-28)
+
+Este checkpoint supersede, apenas para o status técnico de revisão visual, os campos pendentes de viewport/screenshot e o status blocked da seção 30. A aprovação humana continua pendente; a estratégia, escopo visual e authority da direção C permanecem.
+
+ACTIVITY = UI-V2-P2 — VISUAL FOUNDATION
+ACTIVITY_STATUS = PASS / READY_FOR_USER_FOUNDATION_REVIEW
+ACTIVITY_COMPLETION_PERCENT = 98%
+REPOSITORY_ROOT = C:/Users/walac/.codex/worktrees/ui-v2-p2-visual-foundation/projeto_argos
+BRANCH = codex/ui-v2-p2-visual-foundation
+BASELINE_HEAD = 6de91063526ab9e323114ad69f0967cc2849145a
+FINAL_HEAD = 6de91063526ab9e323114ad69f0967cc2849145a / review handoff, no commit
+DESIGN_STRATEGY = CODE_FIRST / STACK_NATIVE / PROTOTYPE_DRIVEN
+SELECTED_DIRECTION = C — ARGOS HYBRID / NOT REOPENED
+CANONICAL_DESIGN_SYSTEM = static/css/ui-v2/
+DESIGN_SYSTEM_VERSION = 2.0.0-rc.1 / NOT PINNED / USER REVIEW PENDING
+CANONICAL_TOKEN_COUNT = 74 / no token changes in refinement
+EXECUTABLE_FOUNDATION = 8 pages / shared canonical CSS
+VIEWPORTS_VALIDATED = 1440x900; 1366x768; 1920x1080; 900x768; 768x900; 390x844
+ROUTE_VIEWPORT_SWEEP = PASS / 48 of 48 HTTP 200 / no console or page errors / no document horizontal overflow
+KPI_DESKTOP = 3 columns / 260x78.3 at 1366 and 1440
+KPI_1024 = 3 columns / about 233x78.3
+KPI_TABLET = 2+1 at 900 and 768 / cards 260x78.3
+KPI_MOBILE = 1 column at 390 / cards 362x78.3
+KPI_INTERNAL_RHYTHM = 14x18 padding; 5px value-label gap; top-left; no fixed height
+CONTROL_TOUCH_TARGETS = PASS / 44px minimum on mobile for buttons, inputs, selects, and checkbox label
+KEYBOARD_FOCUS = PASS / visible 3px outline
+REDUCED_MOTION = PASS / spinner animation disabled
+HOVER_ACTIVE_DISABLED_SELECTED = PASS / controls verified in Chrome
+LONG_CONTENT = PASS / table cell content wraps; horizontal scroll stays in table region
+SCREENSHOT_EVIDENCE = PERSISTED / docs/prototype/ui-v2/foundation/screenshots/
+FIGMA_STATUS = PARTIAL_REFERENCE / RATE_LIMIT / NON-CANONICAL / does not block P2
+QUICK_DETAIL_PROTECTED = YES / no token migration
+PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
+PRODUCTION_UI_V2_INTEGRATION_STARTED = NO
+UI_V2_CSS_REFERENCED_BY_PRODUCTION = NO
+P3_STARTED = NO
+USER_FOUNDATION_APPROVAL = PENDING
+UI_FOUNDATION_VISUAL_ACCEPTANCE = PENDING_USER
+READY_FOR_USER_FOUNDATION_REVIEW = YES
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO / human visual gate pending
+COMMIT = NOT CREATED / handoff remains uncommitted
+PUSH_PERFORMED = NO
+MERGE_PERFORMED = NO
+FINAL_VERDICT = PASS / TECHNICAL_REFINEMENT_COMPLETE / HUMAN_GATE_PENDING
+
+The review report is design-qa.md. Evidence includes all eight pages at desktop/mobile, KPI before/after, KPI 1366/768/390 final, and controls default/active/icon-hover. The KPI modifier remains the existing argos-kpi-grid--contained; only canonical patterns.css owns its layout. No new variant, token, runtime dependency, domain behavior, production template, or Quick Detail change was introduced. Continue only with the user's visual acceptance; do not pin version or start P3 before that gate.
+
+## 32. UI-V2-P2 — decisão final de composição dos KPI tiles (2026-09-28)
+
+Este checkpoint supersede a seção 31 somente para a composição dos KPI tiles e percentual de execução. A aprovação humana de toda a foundation permanece pendente.
+
+ACTIVITY = UI-V2-P2 — VISUAL FOUNDATION
+ACTIVITY_STATUS = PASS / READY_FOR_USER_FOUNDATION_REVIEW
+ACTIVITY_COMPLETION_PERCENT = 98%
+CANONICAL_DESIGN_SYSTEM = static/css/ui-v2/
+DESIGN_SYSTEM_VERSION = 2.0.0-rc.1 / NOT PINNED
+KPI_GROUP_CENTERED = YES
+KPI_CONTENT_CENTERED = YES
+KPI_CARD_WIDTH = 220px at 1440/1366/1024; shrink only if available width is less
+KPI_CARD_HEIGHT = 77.3px / content-derived / no fixed height
+KPI_GROUP_WIDTH = 692px at 1440/1366/1024 / centered to available content
+KPI_GAP = 16px between cards
+KPI_INTERNAL_ALIGNMENT = centered value and label / same centers across all tiles
+KPI_INTERNAL_SPACING = padding 14px vertical x 16px horizontal; value-label gap 4px
+TABLE_WIDTH = preserved / wider region than KPI group
+GENERIC_CARD_ALIGNMENT_CHANGED = NO
+TOKENS_CHANGED = NO
+RESPONSIVE_REGRESSION = NO / 3 columns desktop; 2+1 tablet; 1 per row mobile
+ROUTE_VIEWPORT_SWEEP = PASS / 48 of 48 / final foundation review
+UI_VISUAL_ACCEPTANCE = PENDING_USER
+READY_FOR_USER_FOUNDATION_REVIEW = YES
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO / human visual gate pending
+DESIGN_SYSTEM_VERSION_PINNED = NO
+P3_STARTED = NO
+PRODUCTION_CHANGED = NO
+COMMIT = NOT CREATED / handoff remains uncommitted
+
+The final KPI preview and before/after screenshots are in docs/prototype/ui-v2/foundation/screenshots/. The full review is in design-qa.md. Only the existing KPI pattern owns centered alignment; the generic Card, table, filters, colors, borders, radius, shadows, global typography tokens, domain behavior and production were not changed.
+
+## 33. UI-V2-P2 — fechamento humano aprovado e promoção 2.0.0 (2026-09-28)
+
+Este checkpoint supersede as seções 30–32 para status vigente, aceite visual e versão. O usuário aprovou explicitamente a foundation e autorizou commit, merge e push.
+
+ACTIVITY = UI-V2-P2 — VISUAL FOUNDATION + CANONICAL INTEGRATION
+ACTIVITY_STATUS = P2_CLOSED / PASS / INTEGRATION_PENDING
+ACTIVITY_COMPLETION_PERCENT = 90%
+P2_STATUS = CLOSED / PASS
+USER_VISUAL_ACCEPTANCE = PASS
+USER_FOUNDATION_APPROVAL = PASS
+DESIGN_SYSTEM_VERSION = 2.0.0
+DESIGN_SYSTEM_VERSION_PINNED = YES
+CANONICAL_DESIGN_SYSTEM = static/css/ui-v2/
+TOKENS_APPROVED = PASS
+COMPONENTS_APPROVED = PASS
+DENSITY_APPROVED = PASS
+RESPONSIVE_FOUNDATION_APPROVED = PASS
+INTERACTION_STATES_APPROVED = PASS
+DOMAIN_STATUS_LANGUAGE_APPROVED = PASS
+DESKTOP_DENSITY_APPROVED = PASS
+MOBILE_DENSITY_APPROVED = PASS
+ACCESSIBILITY_INTERACTION_GATE = PASS / interaction review only; no WCAG conformance claim
+LONG_CONTENT_GATE = PASS
+P2_CLOSURE_COMMIT = PENDING_LOCAL_COMMIT
+P2_BRANCH = codex/ui-v2-p2-visual-foundation
+P2_BASELINE_HEAD = 6de91063526ab9e323114ad69f0967cc2849145a
+MASTER_BEFORE = 6de91063526ab9e323114ad69f0967cc2849145a / confirm remote after fetch
+MASTER_FINAL_HEAD = PENDING
+ORIGIN_MASTER_FINAL = PENDING
+MERGE_COMMIT = PENDING / NO_FF authorized
+INTEGRATION_GATE = PENDING
+POST_MERGE_DJANGO_CHECK = PENDING
+PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
+PRODUCTION_UI_V2_INTEGRATION_STARTED = NO
+UI_V2_CSS_REFERENCED_BY_PRODUCTION = NO
+PUSH_AUTHORIZED = YES
+PUSH_PERFORMED = NO
+REMOTE_SYNC = PENDING
+P3_STARTED = NO
+NEXT_ACTIVITY = UI-V2-P3 — NAVIGABLE SCREEN PROTOTYPES / NOT STARTED
+PROJECT_STATE_UPDATE = PASS / P2 closure recorded before P2_ACTIVITY_COMPLETE
+CONTINUITY_RECONCILIATION = PASS / pending historical snapshots explicitly superseded
+P2_ACTIVITY_COMPLETE = YES
+ACTIVITY_COMPLETE = NO / master integration, Django check, push and remote sync pending
+COMMIT = PENDING / local P2 closure
+WORKTREE_FINAL = P2 changes ready for explicit file staging
+
+A aprovação e os gates P2 foram registrados; o commit local ainda precisa ser criado. Após o merge, validar referências do CSS em produção e executar manage.py check na master. Não iniciar P3.
