@@ -197,11 +197,11 @@ Contagem: 35 IDs únicos; ROOT 1; P3-A 5; P3-B 4; P3-C 10; P3-D 15. Os 24 `PROTO
 
 Não existe atribuição dupla ou tela elegível sem owner. `BACKEND_PARALLELISM = ALLOWED` em worktree separado: backend não toca artefatos de protótipo; P3 não toca backend; conflitos funcionais são reportados, não resolvidos silenciosamente.
 
-Fan-out ainda não liberado. Depois do gate canônico, P3-A/B/C/D recebem branches e worktrees próprios, todas partindo exatamente do mesmo `FAN_OUT_BASE_COMMIT`. Cada família altera somente suas páginas, JS/fixtures exclusivos, screenshots e relatório local de coverage. Family agents não alteram index, harness compartilhado, Design System, `SCREEN_COVERAGE.md` master, PROJECT_STATE, AGENT_CONTINUITY, roadmap ou sprints.
+Fan-out liberado após publicação canônica. P3-A/B/C/D devem receber branches e linked worktrees próprios, todas partindo exatamente do mesmo `FAN_OUT_BASE_COMMIT`; worktree dedicado por família é obrigatório. Cada família altera somente suas páginas, JS/fixtures exclusivos, screenshots e relatório local de coverage. Family agents não alteram index, harness compartilhado, Design System, `SCREEN_COVERAGE.md` master, PROJECT_STATE, AGENT_CONTINUITY, roadmap ou sprints.
 
 ## 11. Integração e gates
 
-O harness P3-0 foi aprovado pelo usuário (`USER_P3_0_APPROVAL = PASS`; `SCR-SHELL-001 = USER_APPROVED`). A integração canônica autorizada segue como gate separado: merge sem fast-forward para master; validação pós-integração; publicação; confirmação `HEAD == origin/master` e divergência `0/0`. Só então registrar `FAN_OUT_BASE_COMMIT` e avaliar `FAN_OUT_READY`.
+O harness P3-0 foi aprovado pelo usuário (`USER_P3_0_APPROVAL = PASS`; `SCR-SHELL-001 = USER_APPROVED`), integrado com merge sem fast-forward, validado e publicado. O gate confirmou `HEAD == origin/master` e divergência `0/0`; `FAN_OUT_READY = YES`. O SHA exato do `FAN_OUT_BASE_COMMIT` publicado consta no relatório final do gate.
 
 No futuro, integrar uma família por vez. Para cada família: revisar; validar ownership; merge; resolver e validar conflitos; executar QA integrado; consolidar seus relatórios locais no `SCREEN_COVERAGE.md` master; só então seguir à próxima. `USER_APPROVED` exige aprovação humana por família. Nenhuma aprovação é automática.
 
