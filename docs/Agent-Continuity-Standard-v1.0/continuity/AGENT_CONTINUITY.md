@@ -836,3 +836,49 @@ PUSH_PERFORMED = YES / origin/master; divergence 0/0
 MERGE_PERFORMED = YES / --no-ff
 
 O harness, índice, shell, fixture, quatro capturas e contratos estão em `docs/prototype/ui-v2/`. O master `SCREEN_COVERAGE.md` permanece root-owned; as famílias continuam sem artefatos. P3-0 foi aprovado, integrado, validado e publicado; fan-out liberado a partir do `FAN_OUT_BASE_COMMIT` indicado no relatório final. P3-A/B/C/D não foram iniciadas.
+
+### 20.7. UI-V2 ROOT — sincronização e patch semântico do Design System (2026-09-28)
+
+CURRENT_ACTIVITY = UI-V2 ROOT — HOME SYNCHRONIZATION + DSCR-UIV2-001-HIDDEN-SEMANTICS
+CURRENT_STATUS = COMPLETE / PASS / PUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 100%
+CANONICAL_REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+MASTER_SYNC = PASS / FF_ONLY to 9943e20d9b1e04159e067c72aa4dd70eab2bdb36
+ROOT_PATCH_BRANCH = codex/ui-v2-ds-2.0.1-hidden-semantics
+DESIGN_SYSTEM_VERSION = 2.0.1
+DS_PATCH_WORK_COMMIT = 8121ed38cc15e1ff6e72cb46bbb2ca865100bce0
+DS_PATCH_INTEGRATION_COMMIT = 70e996f5e25d9c9b5d0f4ec0a256c44efcec6274 / NO_FF
+REMOTE_SYNC_AFTER_PATCH_PUSH = PASS / HEAD == origin/master at 70e996f; divergence 0/0
+REMOTE_HANDOFFS = 4/4 MATCH
+P3_A = 2ca597826af7b32c884f4efd91cc49381ee646a5
+P3_B = b57ad0044722a838e761f987eeb0aa556c6646b0
+P3_C = ed7e2e5567b312b52c190484e2c174b26912415c
+P3_D = ce13ff299d5c5419994aab0dc574a914a56760aa
+ROOT_CAUSE = author display declarations overrode native hidden semantics
+HIDDEN_RULE = [hidden]:not([hidden="until-found" i]) { display: none !important; }
+HIDDEN_RULE_OWNER = static/css/ui-v2/base.css / @layer reset
+DCR = docs/prototype/ui-v2/contracts/DSCR-UIV2-001-HIDDEN-SEMANTICS.md
+DCR_PATCH_COMMIT = resolves to DS_PATCH_WORK_COMMIT in this checkpoint
+VALIDATION = browser cases A-F PASS; P3-A targeted state/fixture regression PASS; Django check PASS; diff check PASS
+PRODUCT_DESIGN_GET_CONTEXT = COMPLETE
+PRODUCT_DESIGN_DESIGN_QA = PASS_WITH_FINDINGS / limited to root patch regression
+FULL_P3_FAMILY_DESIGN_QA = NOT_RUN / remains a family gate after propagation
+P3_FAMILY_FILES_CHANGED = NO
+PRODUCTION_CHANGED = NO
+P3_D_LOCAL_HIDDEN_WORKAROUND = REQUIRES_REVIEW_AFTER_DS_2_0_1_PROPAGATION
+TEMP_VALIDATION_CLEANUP = PASS / archived after stopping local server and removing scratch
+
+P2 approval and P3-0/handoff references to Design System 2.0.0 are historical baselines and were not rewritten. The active CSS and ROOT harness version metadata now state 2.0.1. The 21 screen IDs consuming hidden across P3-A/B/C/D and the zero until-found consumers are listed in the DCR.
+
+No P3-A/B/C/D family branch or artifact was modified or pushed. The temporary P3-A worktree was used only to validate the exact DS_PATCH_WORK_COMMIT and then archived. Product Design QA covered the semantic patch and active variant rendering only; it does not complete family responsive review, named screenshot evidence, human review or overall design QA.
+
+CURRENT_BLOCKERS = none for the ROOT patch; P3 family completion awaits controlled patch propagation and family-specific QA
+NEXT_ACTIVITY = controlled propagation of DS_PATCH_WORK_COMMIT to P3-A/B/C/D while keeping the ROOT-only DCR out of family changes; then reassess the family handoffs
+NEXT_ACTIVITY_STATUS = PLANNED / NOT AUTHORIZED
+P3_D_WORKAROUND_REVIEW = after patch propagation; do not remove automatically
+IMPLEMENTATION_AUTHORIZED = NO / the root patch authorization was consumed
+LIVE_AUTHORIZED = NO
+PROJECT_STATE_UPDATE = PASS / see PROJECT_STATE.md section 37
+CONTINUITY_RECONCILIATION = PASS
+AGENT_HANDOFF_GATE = PASS
+ACTIVITY_COMPLETE = YES / final state checkpoint published and synchronization verified at activity close

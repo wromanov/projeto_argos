@@ -11,18 +11,18 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; UI-V2-P0 CLOSED_PASS, P1 next / not started |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; UI V2 continuity in section 19 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; UI V2 authority mapped |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; P0 closed, P1 next, read PROJECT_STATE first |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; UI-V2 ROOT patch em section 37 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; UI V2 continuity in section 20.7 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; UI V2 authority mapped in section 16 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
 ## 2. Authorities canônicas do projeto
 
 | Path | Role | Authority scope | Status |
 |---|---|---|---|
 | `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; UI V2 is parallel and prototype-driven |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; P0 closed, P1 next / not authorized; IMG-04 not authorized |
-| `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md` | Authority operacional da UI V2 | Escopo, princípios, fluxo P0–P7, gates e próxima atividade visual | PRESENT / CANONICAL / ACTIVE; P0 closed, P1 next / not started |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; snapshot amplo de P1 preservado; ver PROJECT_STATE section 37 para status atual da UI-V2 |
+| `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md` | Authority operacional da UI V2 | Escopo, princípios, fluxo P0–P7, gates e próxima atividade visual | PRESENT / CANONICAL; P3-0 é o checkpoint anterior; patch ROOT e próximo gate constam no DCR e em PROJECT_STATE section 37 |
 | `docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md` | Censo factual de superfícies e matrizes UI-V2-P0 | PRESENT / CANONICAL; P0 CLOSED_PASS |
 | `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; DISPLAY_IMAGE integrated, deferred production backend decision |
 | `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; Quick Detail baseline approved; UI-3 product acceptance pending, section 18 |
@@ -387,3 +387,23 @@ USER_P3_0_APPROVAL = PENDING
 FAN_OUT_READY = NO
 
 P2 permanece fechado, Design System 2.0.0 pinado e Quick Detail protegido. O Card B é a autoridade específica para P3-0. Os snapshots amplos de roadmap/sprint ainda citam P1 como próximo; isso não inicia famílias nem autoriza mudança na sequência global. P3-A/B/C/D continuam proibidas até review humano P3-0, integração canônica, validação pós-integração e publicação.
+
+## 16. UI-V2 ROOT — semântica de hidden no Design System 2.0.1 (2026-09-28)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/prototype/ui-v2/contracts/DSCR-UIV2-001-HIDDEN-SEMANTICS.md` | DCR ROOT do invariante HTML `hidden`, causa, alcance, versão e validações | CURRENT / APPROVED / PUBLISHED |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 37 | Snapshot atual de Git, gates, autorização e próxima atividade | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.7 | Decisões recentes, limites, achados e handoff para retomada | CURRENT / AGENT_HANDOFF_GATE PASS |
+| `docs/prototype/ui-v2/contracts/P3_PROTOTYPE_HARNESS.md` | Handoff histórico P3-0 e composição compartilhada | BASELINE HISTÓRICO / 2.0.0 |
+| `docs/prototype/ui-v2/contracts/SCREEN_COVERAGE.md` | Matriz principal de ownership das telas; não alterada por este patch | SOB OWNERSHIP ROOT / SEM RESULTADOS DE FAMÍLIA ADICIONADOS |
+
+ROOT_PATCH_BRANCH = codex/ui-v2-ds-2.0.1-hidden-semantics
+DS_PATCH_WORK_COMMIT = 8121ed38cc15e1ff6e72cb46bbb2ca865100bce0
+DS_PATCH_INTEGRATION_COMMIT = 70e996f5e25d9c9b5d0f4ec0a256c44efcec6274
+CURRENT_DESIGN_SYSTEM_VERSION = 2.0.1
+P3_A/B/C/D_HANDOFFS = unchanged / branches not resumed
+NEXT_GATE = aplicar controladamente DS_PATCH_WORK_COMMIT às famílias, mantendo o DCR ROOT fora das alterações familiares, e executar QA específica
+NEXT_GATE_STATUS = PLANNED / NOT AUTHORIZED
+
+Os registros históricos de P2/P3-0 permanecem inalterados na versão 2.0.0. Esta seção 16 substitui o status de prontidão registrado na seção 15: P3-0 foi concluída e publicada antes deste patch. A atividade ROOT não autoriza implementação ou integração das famílias, atualização da cobertura global nem integração da UI de produção.

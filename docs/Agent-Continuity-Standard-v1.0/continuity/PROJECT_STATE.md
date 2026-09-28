@@ -1925,3 +1925,76 @@ WORKTREE_FINAL = CLEAN
 ```
 
 A documentação P3-0 registra a matriz e os gates. Roadmap e sprint mantêm snapshots anteriores que apontam P1 como próximo; o Card B atual autoriza especificamente P3-0 e não inicia as famílias nem altera a ordem global. A integração canônica e a liberação do fan-out continuam separadas e pendentes.
+
+## 37. UI-V2 ROOT — HOME SYNCHRONIZATION + DSCR-UIV2-001-HIDDEN-SEMANTICS (2026-09-28)
+
+Este checkpoint é a fonte atual para a atividade ROOT do Design System. Ele complementa o P3-0 e mantém as famílias P3 sem retomada ou alterações.
+
+ACTIVITY = UI-V2 ROOT — HOME SYNCHRONIZATION + DSCR-UIV2-001-HIDDEN-SEMANTICS
+ACTIVITY_STATUS = COMPLETE / PASS / PUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 100%
+CANONICAL_REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+BRANCH = master
+LOCAL_HEAD_BEFORE_ACTIVITY = 7702b4c14cac6f7338625ccd08730e8d89fb9495
+ORIGIN_MASTER_BEFORE_FETCH = 7702b4c14cac6f7338625ccd08730e8d89fb9495
+HOME_SYNC = PASS / FF_ONLY
+ROOT_PATCH_BASE = 9943e20d9b1e04159e067c72aa4dd70eab2bdb36
+ROOT_PATCH_BRANCH = codex/ui-v2-ds-2.0.1-hidden-semantics
+ROOT_PATCH_WORKTREE = C:\Users\walac\.codex\worktrees\ui-v2-ds-2-0-1-hidden-semantics\projeto_argos
+DESIGN_SYSTEM_VERSION = 2.0.1
+DS_PATCH_WORK_COMMIT = 8121ed38cc15e1ff6e72cb46bbb2ca865100bce0
+DS_PATCH_INTEGRATION_COMMIT = 70e996f5e25d9c9b5d0f4ec0a256c44efcec6274 / NO_FF
+MASTER_REMOTE_AFTER_PATCH_PUSH = 70e996f5e25d9c9b5d0f4ec0a256c44efcec6274 / HEAD == origin/master; divergence 0/0
+FINAL_STATE_DOCUMENT_COMMIT = this checkpoint's publication commit; exact SHA recorded in the final activity report
+
+P3_A_REMOTE_HANDOFF = 2ca597826af7b32c884f4efd91cc49381ee646a5 / MATCH
+P3_B_REMOTE_HANDOFF = b57ad0044722a838e761f987eeb0aa556c6646b0 / MATCH
+P3_C_REMOTE_HANDOFF = ed7e2e5567b312b52c190484e2c174b26912415c / MATCH
+P3_D_REMOTE_HANDOFF = ce13ff299d5c5419994aab0dc574a914a56760aa / MATCH
+REMOTE_HANDOFFS_VALIDATED = 4/4 MATCH
+FAMILY_REMOTE_BRANCHES_MUTATED = NO
+P3_FAMILY_FILES_CHANGED = NO
+PRODUCTION_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
+BACKEND_OR_DATABASE_CHANGED = NO
+
+ROOT_CAUSE_REPRODUCED = YES / author display declarations overrode native [hidden]
+HIDDEN_RULE_OWNER = static/css/ui-v2/base.css / @layer reset
+PATCH_RULE = [hidden]:not([hidden="until-found" i]) { display: none !important; }
+IMPORTANT_USED = YES
+IMPORTANT_JUSTIFICATION = preservar semântica HTML [hidden] contra display autoral
+HIDDEN_SEMANTIC_TEST = PASS / cases A-F
+UNTIL_FOUND_CONSUMERS = 0 in P3-A/B/C/D; synthetic browser behavior preserved
+HIDDEN_CONSUMERS = 21 screen IDs across P3-A/B/C/D
+P3_A_DS_PATCH_REGRESSION = PASS / four defaults, supported hidden states, and long fixtures
+ROOT_PATCH_DESIGN_QA = PASS_WITH_FINDINGS / targeted patch review only; family responsive/design QA remains pending
+DJANGO_CHECK = PASS / repository .venv; System check identified no issues
+GIT_DIFF_CHECK = PASS
+DCR_RECORD = docs/prototype/ui-v2/contracts/DSCR-UIV2-001-HIDDEN-SEMANTICS.md
+DCR_PATCH_COMMIT_SELF_REFERENCE = resolves to DS_PATCH_WORK_COMMIT above
+DESIGN_SYSTEM_VERSION_BEFORE = 2.0.0
+DESIGN_SYSTEM_VERSION_AFTER = 2.0.1
+BREAKING_CHANGE = NO
+VISUAL_REDESIGN = NO
+USER_REAPPROVAL_REQUIRED = NO
+P3_D_LOCAL_HIDDEN_WORKAROUND = REQUIRES_REVIEW_AFTER_DS_2_0_1_PROPAGATION
+TEMP_VALIDATION_CLEANUP = PASS / server stopped, scratch removed, P3-A validation worktree archived
+
+CURRENT_MACROPHASE = UI V2 prototype track / P3 family recovery
+CURRENT_ACTIVITY = UI-V2 ROOT hidden semantics patch / COMPLETE
+LAST_COMPLETED_ACTIVITY = UI-V2-P3-0 harness, then UI-V2 ROOT DS 2.0.1 patch
+NEXT_ACTIVITY = controlled propagation of DS_PATCH_WORK_COMMIT to P3-A/B/C/D, keeping the ROOT-only DCR out of family changes, then post-propagation handoff review
+NEXT_ACTIVITY_STATUS = PLANNED / NOT AUTHORIZED
+NEXT_ACTIVITY_AUTHORITY = this PROJECT_STATE section, DCR above, and each family handoff
+IMPLEMENTATION_AUTHORIZED = NO / Card B authorization consumed; a separate propagation activity requires explicit authorization
+LIVE_AUTHORIZED = NO
+OPEN_DECISIONS = NONE for the ROOT patch; review the P3-D workaround after propagation
+BLOCKERS = NONE for the ROOT patch; family completion remains gated on propagation and their own QA
+CANONICAL_AUTHORITIES = AGENTS.md; ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md; DSCR-UIV2-001-HIDDEN-SEMANTICS.md; P3-A/B/C/D handoffs
+PROJECT_STATE_UPDATE = PASS / checkpoint published on origin/master; final HEAD and remote equality verified at activity close
+CONTINUITY_RECONCILIATION = PASS / current patch and separate next gate are recorded; older broad roadmap snapshots remain historical
+AGENT_HANDOFF_GATE = PASS
+ACTIVITY_COMPLETE = YES / patch, regression, integration, publication, state update and final sync verified at activity close
+PUSH_PERFORMED = YES / origin master
+MERGE_PERFORMED = YES / --no-ff
+WORKTREE_FINAL = CLEAN
