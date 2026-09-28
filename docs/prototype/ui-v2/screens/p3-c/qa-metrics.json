@@ -1,0 +1,4743 @@
+{
+  "baseUrl": "local HTTP preview",
+  "zoom": 100,
+  "deviceScaleFactor": 1,
+  "expectedViewports": [
+    [
+      1920,
+      1080
+    ],
+    [
+      1440,
+      900
+    ],
+    [
+      1366,
+      768
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "capturedCount": 84,
+  "failures": [],
+  "captures": [
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-list-001__1920x1080__default__default.png",
+      "slug": "scr-act-list-001",
+      "screenId": "SCR-ACT-LIST-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1920,
+        1080
+      ],
+      "imageDimensions": [
+        1920,
+        1080
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1920,
+          "height": 1091,
+          "bodyWidth": 1920
+        },
+        "globalOverflow": false,
+        "title": "Histórico de atividades — ARGOS",
+        "screenId": "SCR-ACT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Histórico de atividades da câmera",
+            "client": 1336,
+            "scroll": 1336,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-list-001__1440x900__default__default.png",
+      "slug": "scr-act-list-001",
+      "screenId": "SCR-ACT-LIST-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1091,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Histórico de atividades — ARGOS",
+        "screenId": "SCR-ACT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Histórico de atividades da câmera",
+            "client": 1104,
+            "scroll": 1104,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-list-001__1366x768__default__default.png",
+      "slug": "scr-act-list-001",
+      "screenId": "SCR-ACT-LIST-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1366,
+        768
+      ],
+      "imageDimensions": [
+        1366,
+        768
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1366,
+          "height": 1091,
+          "bodyWidth": 1366
+        },
+        "globalOverflow": false,
+        "title": "Histórico de atividades — ARGOS",
+        "screenId": "SCR-ACT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Histórico de atividades da câmera",
+            "client": 1030,
+            "scroll": 1030,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-list-001__390x844__default__default.png",
+      "slug": "scr-act-list-001",
+      "screenId": "SCR-ACT-LIST-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1507,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Histórico de atividades — ARGOS",
+        "screenId": "SCR-ACT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Histórico de atividades da câmera",
+            "client": 326,
+            "scroll": 760,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-list-001__1440x900__default__long.png",
+      "slug": "scr-act-list-001",
+      "screenId": "SCR-ACT-LIST-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1136,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Histórico de atividades — ARGOS",
+        "screenId": "SCR-ACT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Histórico de atividades da câmera",
+            "client": 1104,
+            "scroll": 1104,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-list-001__390x844__default__long.png",
+      "slug": "scr-act-list-001",
+      "screenId": "SCR-ACT-LIST-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1715,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Histórico de atividades — ARGOS",
+        "screenId": "SCR-ACT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Histórico de atividades da câmera",
+            "client": 326,
+            "scroll": 760,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-create-001__1920x1080__default__default.png",
+      "slug": "scr-act-create-001",
+      "screenId": "SCR-ACT-CREATE-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1920,
+        1080
+      ],
+      "imageDimensions": [
+        1920,
+        1080
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1920,
+          "height": 1080,
+          "bodyWidth": 1920
+        },
+        "globalOverflow": false,
+        "title": "Registrar atividade — ARGOS",
+        "screenId": "SCR-ACT-CREATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-create-001__1440x900__default__default.png",
+      "slug": "scr-act-create-001",
+      "screenId": "SCR-ACT-CREATE-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1049,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Registrar atividade — ARGOS",
+        "screenId": "SCR-ACT-CREATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-create-001__1366x768__default__default.png",
+      "slug": "scr-act-create-001",
+      "screenId": "SCR-ACT-CREATE-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1366,
+        768
+      ],
+      "imageDimensions": [
+        1366,
+        768
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1366,
+          "height": 1049,
+          "bodyWidth": 1366
+        },
+        "globalOverflow": false,
+        "title": "Registrar atividade — ARGOS",
+        "screenId": "SCR-ACT-CREATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-create-001__390x844__default__default.png",
+      "slug": "scr-act-create-001",
+      "screenId": "SCR-ACT-CREATE-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1333,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Registrar atividade — ARGOS",
+        "screenId": "SCR-ACT-CREATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-create-001__1440x900__default__long.png",
+      "slug": "scr-act-create-001",
+      "screenId": "SCR-ACT-CREATE-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1070,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Registrar atividade — ARGOS",
+        "screenId": "SCR-ACT-CREATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-create-001__390x844__default__long.png",
+      "slug": "scr-act-create-001",
+      "screenId": "SCR-ACT-CREATE-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1438,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Registrar atividade — ARGOS",
+        "screenId": "SCR-ACT-CREATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-edit-001__1920x1080__default__default.png",
+      "slug": "scr-act-edit-001",
+      "screenId": "SCR-ACT-EDIT-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1920,
+        1080
+      ],
+      "imageDimensions": [
+        1920,
+        1080
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1920,
+          "height": 1090,
+          "bodyWidth": 1920
+        },
+        "globalOverflow": false,
+        "title": "Editar atividade — ARGOS",
+        "screenId": "SCR-ACT-EDIT-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-edit-001__1440x900__default__default.png",
+      "slug": "scr-act-edit-001",
+      "screenId": "SCR-ACT-EDIT-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1090,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Editar atividade — ARGOS",
+        "screenId": "SCR-ACT-EDIT-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-edit-001__1366x768__default__default.png",
+      "slug": "scr-act-edit-001",
+      "screenId": "SCR-ACT-EDIT-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1366,
+        768
+      ],
+      "imageDimensions": [
+        1366,
+        768
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1366,
+          "height": 1090,
+          "bodyWidth": 1366
+        },
+        "globalOverflow": false,
+        "title": "Editar atividade — ARGOS",
+        "screenId": "SCR-ACT-EDIT-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-edit-001__390x844__default__default.png",
+      "slug": "scr-act-edit-001",
+      "screenId": "SCR-ACT-EDIT-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1374,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Editar atividade — ARGOS",
+        "screenId": "SCR-ACT-EDIT-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-edit-001__1440x900__default__long.png",
+      "slug": "scr-act-edit-001",
+      "screenId": "SCR-ACT-EDIT-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1111,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Editar atividade — ARGOS",
+        "screenId": "SCR-ACT-EDIT-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-edit-001__390x844__default__long.png",
+      "slug": "scr-act-edit-001",
+      "screenId": "SCR-ACT-EDIT-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1479,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Editar atividade — ARGOS",
+        "screenId": "SCR-ACT-EDIT-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-state-001__1920x1080__default__default.png",
+      "slug": "scr-gov-state-001",
+      "screenId": "SCR-GOV-STATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1920,
+        1080
+      ],
+      "imageDimensions": [
+        1920,
+        1080
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1920,
+          "height": 1080,
+          "bodyWidth": 1920
+        },
+        "globalOverflow": false,
+        "title": "Alterar situação operacional — ARGOS",
+        "screenId": "SCR-GOV-STATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-state-001__1440x900__default__default.png",
+      "slug": "scr-gov-state-001",
+      "screenId": "SCR-GOV-STATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 900,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Alterar situação operacional — ARGOS",
+        "screenId": "SCR-GOV-STATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-state-001__1366x768__default__default.png",
+      "slug": "scr-gov-state-001",
+      "screenId": "SCR-GOV-STATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1366,
+        768
+      ],
+      "imageDimensions": [
+        1366,
+        768
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1366,
+          "height": 869,
+          "bodyWidth": 1366
+        },
+        "globalOverflow": false,
+        "title": "Alterar situação operacional — ARGOS",
+        "screenId": "SCR-GOV-STATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-state-001__390x844__default__default.png",
+      "slug": "scr-gov-state-001",
+      "screenId": "SCR-GOV-STATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1171,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Alterar situação operacional — ARGOS",
+        "screenId": "SCR-GOV-STATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-state-001__1440x900__default__long.png",
+      "slug": "scr-gov-state-001",
+      "screenId": "SCR-GOV-STATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 900,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Alterar situação operacional — ARGOS",
+        "screenId": "SCR-GOV-STATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-state-001__390x844__default__long.png",
+      "slug": "scr-gov-state-001",
+      "screenId": "SCR-GOV-STATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1276,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Alterar situação operacional — ARGOS",
+        "screenId": "SCR-GOV-STATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-disable-001__1920x1080__default__default.png",
+      "slug": "scr-gov-disable-001",
+      "screenId": "SCR-GOV-DISABLE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1920,
+        1080
+      ],
+      "imageDimensions": [
+        1920,
+        1080
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1920,
+          "height": 1080,
+          "bodyWidth": 1920
+        },
+        "globalOverflow": false,
+        "title": "Desativar câmera — ARGOS",
+        "screenId": "SCR-GOV-DISABLE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-disable-001__1440x900__default__default.png",
+      "slug": "scr-gov-disable-001",
+      "screenId": "SCR-GOV-DISABLE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 900,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Desativar câmera — ARGOS",
+        "screenId": "SCR-GOV-DISABLE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-disable-001__1366x768__default__default.png",
+      "slug": "scr-gov-disable-001",
+      "screenId": "SCR-GOV-DISABLE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1366,
+        768
+      ],
+      "imageDimensions": [
+        1366,
+        768
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1366,
+          "height": 792,
+          "bodyWidth": 1366
+        },
+        "globalOverflow": false,
+        "title": "Desativar câmera — ARGOS",
+        "screenId": "SCR-GOV-DISABLE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-disable-001__390x844__default__default.png",
+      "slug": "scr-gov-disable-001",
+      "screenId": "SCR-GOV-DISABLE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1107,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Desativar câmera — ARGOS",
+        "screenId": "SCR-GOV-DISABLE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-disable-001__1440x900__default__long.png",
+      "slug": "scr-gov-disable-001",
+      "screenId": "SCR-GOV-DISABLE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 900,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Desativar câmera — ARGOS",
+        "screenId": "SCR-GOV-DISABLE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-disable-001__390x844__default__long.png",
+      "slug": "scr-gov-disable-001",
+      "screenId": "SCR-GOV-DISABLE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1212,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Desativar câmera — ARGOS",
+        "screenId": "SCR-GOV-DISABLE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-reactivate-001__1920x1080__default__default.png",
+      "slug": "scr-gov-reactivate-001",
+      "screenId": "SCR-GOV-REACTIVATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1920,
+        1080
+      ],
+      "imageDimensions": [
+        1920,
+        1080
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1920,
+          "height": 1086,
+          "bodyWidth": 1920
+        },
+        "globalOverflow": false,
+        "title": "Reativar câmera — ARGOS",
+        "screenId": "SCR-GOV-REACTIVATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-reactivate-001__1440x900__default__default.png",
+      "slug": "scr-gov-reactivate-001",
+      "screenId": "SCR-GOV-REACTIVATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1086,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Reativar câmera — ARGOS",
+        "screenId": "SCR-GOV-REACTIVATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-reactivate-001__1366x768__default__default.png",
+      "slug": "scr-gov-reactivate-001",
+      "screenId": "SCR-GOV-REACTIVATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1366,
+        768
+      ],
+      "imageDimensions": [
+        1366,
+        768
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1366,
+          "height": 1086,
+          "bodyWidth": 1366
+        },
+        "globalOverflow": false,
+        "title": "Reativar câmera — ARGOS",
+        "screenId": "SCR-GOV-REACTIVATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-reactivate-001__390x844__default__default.png",
+      "slug": "scr-gov-reactivate-001",
+      "screenId": "SCR-GOV-REACTIVATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1430,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Reativar câmera — ARGOS",
+        "screenId": "SCR-GOV-REACTIVATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-reactivate-001__1440x900__default__long.png",
+      "slug": "scr-gov-reactivate-001",
+      "screenId": "SCR-GOV-REACTIVATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1128,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Reativar câmera — ARGOS",
+        "screenId": "SCR-GOV-REACTIVATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-reactivate-001__390x844__default__long.png",
+      "slug": "scr-gov-reactivate-001",
+      "screenId": "SCR-GOV-REACTIVATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1598,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Reativar câmera — ARGOS",
+        "screenId": "SCR-GOV-REACTIVATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-substitute-001__1920x1080__default__default.png",
+      "slug": "scr-gov-substitute-001",
+      "screenId": "SCR-GOV-SUBSTITUTE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1920,
+        1080
+      ],
+      "imageDimensions": [
+        1920,
+        1080
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1920,
+          "height": 1221,
+          "bodyWidth": 1920
+        },
+        "globalOverflow": false,
+        "title": "Substituir câmera — ARGOS",
+        "screenId": "SCR-GOV-SUBSTITUTE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-substitute-001__1440x900__default__default.png",
+      "slug": "scr-gov-substitute-001",
+      "screenId": "SCR-GOV-SUBSTITUTE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1221,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Substituir câmera — ARGOS",
+        "screenId": "SCR-GOV-SUBSTITUTE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-substitute-001__1366x768__default__default.png",
+      "slug": "scr-gov-substitute-001",
+      "screenId": "SCR-GOV-SUBSTITUTE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1366,
+        768
+      ],
+      "imageDimensions": [
+        1366,
+        768
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1366,
+          "height": 1221,
+          "bodyWidth": 1366
+        },
+        "globalOverflow": false,
+        "title": "Substituir câmera — ARGOS",
+        "screenId": "SCR-GOV-SUBSTITUTE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-substitute-001__390x844__default__default.png",
+      "slug": "scr-gov-substitute-001",
+      "screenId": "SCR-GOV-SUBSTITUTE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1715,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Substituir câmera — ARGOS",
+        "screenId": "SCR-GOV-SUBSTITUTE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-substitute-001__1440x900__default__long.png",
+      "slug": "scr-gov-substitute-001",
+      "screenId": "SCR-GOV-SUBSTITUTE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1284,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Substituir câmera — ARGOS",
+        "screenId": "SCR-GOV-SUBSTITUTE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-substitute-001__390x844__default__long.png",
+      "slug": "scr-gov-substitute-001",
+      "screenId": "SCR-GOV-SUBSTITUTE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1946,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Substituir câmera — ARGOS",
+        "screenId": "SCR-GOV-SUBSTITUTE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-list-001__1920x1080__default__default.png",
+      "slug": "scr-event-list-001",
+      "screenId": "SCR-EVENT-LIST-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1920,
+        1080
+      ],
+      "imageDimensions": [
+        1920,
+        1080
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1920,
+          "height": 1195,
+          "bodyWidth": 1920
+        },
+        "globalOverflow": false,
+        "title": "Eventos de auditoria — ARGOS",
+        "screenId": "SCR-EVENT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Tabela global de eventos de auditoria; use as setas para rolar horizontalmente",
+            "client": 1336,
+            "scroll": 1336,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-list-001__1440x900__default__default.png",
+      "slug": "scr-event-list-001",
+      "screenId": "SCR-EVENT-LIST-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1195,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Eventos de auditoria — ARGOS",
+        "screenId": "SCR-EVENT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Tabela global de eventos de auditoria; use as setas para rolar horizontalmente",
+            "client": 1104,
+            "scroll": 1104,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-list-001__1366x768__default__default.png",
+      "slug": "scr-event-list-001",
+      "screenId": "SCR-EVENT-LIST-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1366,
+        768
+      ],
+      "imageDimensions": [
+        1366,
+        768
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1366,
+          "height": 1243,
+          "bodyWidth": 1366
+        },
+        "globalOverflow": false,
+        "title": "Eventos de auditoria — ARGOS",
+        "screenId": "SCR-EVENT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Tabela global de eventos de auditoria; use as setas para rolar horizontalmente",
+            "client": 1030,
+            "scroll": 1030,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-list-001__390x844__default__default.png",
+      "slug": "scr-event-list-001",
+      "screenId": "SCR-EVENT-LIST-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1837,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Eventos de auditoria — ARGOS",
+        "screenId": "SCR-EVENT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Tabela global de eventos de auditoria; use as setas para rolar horizontalmente",
+            "client": 326,
+            "scroll": 760,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-list-001__1440x900__default__long.png",
+      "slug": "scr-event-list-001",
+      "screenId": "SCR-EVENT-LIST-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1231,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Eventos de auditoria — ARGOS",
+        "screenId": "SCR-EVENT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Tabela global de eventos de auditoria; use as setas para rolar horizontalmente",
+            "client": 1104,
+            "scroll": 1104,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-list-001__390x844__default__long.png",
+      "slug": "scr-event-list-001",
+      "screenId": "SCR-EVENT-LIST-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1954,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Eventos de auditoria — ARGOS",
+        "screenId": "SCR-EVENT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Tabela global de eventos de auditoria; use as setas para rolar horizontalmente",
+            "client": 326,
+            "scroll": 760,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-detail-001__1920x1080__default__default.png",
+      "slug": "scr-event-detail-001",
+      "screenId": "SCR-EVENT-DETAIL-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1920,
+        1080
+      ],
+      "imageDimensions": [
+        1920,
+        1080
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1920,
+          "height": 1080,
+          "bodyWidth": 1920
+        },
+        "globalOverflow": false,
+        "title": "Detalhe do evento — ARGOS",
+        "screenId": "SCR-EVENT-DETAIL-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-detail-001__1440x900__default__default.png",
+      "slug": "scr-event-detail-001",
+      "screenId": "SCR-EVENT-DETAIL-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1038,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Detalhe do evento — ARGOS",
+        "screenId": "SCR-EVENT-DETAIL-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-detail-001__1366x768__default__default.png",
+      "slug": "scr-event-detail-001",
+      "screenId": "SCR-EVENT-DETAIL-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1366,
+        768
+      ],
+      "imageDimensions": [
+        1366,
+        768
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1366,
+          "height": 1038,
+          "bodyWidth": 1366
+        },
+        "globalOverflow": false,
+        "title": "Detalhe do evento — ARGOS",
+        "screenId": "SCR-EVENT-DETAIL-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-detail-001__390x844__default__default.png",
+      "slug": "scr-event-detail-001",
+      "screenId": "SCR-EVENT-DETAIL-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1649,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Detalhe do evento — ARGOS",
+        "screenId": "SCR-EVENT-DETAIL-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-detail-001__1440x900__default__long.png",
+      "slug": "scr-event-detail-001",
+      "screenId": "SCR-EVENT-DETAIL-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1122,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Detalhe do evento — ARGOS",
+        "screenId": "SCR-EVENT-DETAIL-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-detail-001__390x844__default__long.png",
+      "slug": "scr-event-detail-001",
+      "screenId": "SCR-EVENT-DETAIL-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1817,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Detalhe do evento — ARGOS",
+        "screenId": "SCR-EVENT-DETAIL-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-camera-001__1920x1080__default__default.png",
+      "slug": "scr-event-camera-001",
+      "screenId": "SCR-EVENT-CAMERA-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1920,
+        1080
+      ],
+      "imageDimensions": [
+        1920,
+        1080
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1920,
+          "height": 1080,
+          "bodyWidth": 1920
+        },
+        "globalOverflow": false,
+        "title": "Eventos da câmera — ARGOS",
+        "screenId": "SCR-EVENT-CAMERA-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Eventos desta câmera; use as setas para rolar horizontalmente",
+            "client": 1336,
+            "scroll": 1336,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-camera-001__1440x900__default__default.png",
+      "slug": "scr-event-camera-001",
+      "screenId": "SCR-EVENT-CAMERA-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1003,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Eventos da câmera — ARGOS",
+        "screenId": "SCR-EVENT-CAMERA-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Eventos desta câmera; use as setas para rolar horizontalmente",
+            "client": 1104,
+            "scroll": 1104,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-camera-001__1366x768__default__default.png",
+      "slug": "scr-event-camera-001",
+      "screenId": "SCR-EVENT-CAMERA-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1366,
+        768
+      ],
+      "imageDimensions": [
+        1366,
+        768
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1366,
+          "height": 768,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1366,
+          "height": 1003,
+          "bodyWidth": 1366
+        },
+        "globalOverflow": false,
+        "title": "Eventos da câmera — ARGOS",
+        "screenId": "SCR-EVENT-CAMERA-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Eventos desta câmera; use as setas para rolar horizontalmente",
+            "client": 1030,
+            "scroll": 1030,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-camera-001__390x844__default__default.png",
+      "slug": "scr-event-camera-001",
+      "screenId": "SCR-EVENT-CAMERA-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1297,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Eventos da câmera — ARGOS",
+        "screenId": "SCR-EVENT-CAMERA-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Eventos desta câmera; use as setas para rolar horizontalmente",
+            "client": 326,
+            "scroll": 760,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-camera-001__1440x900__default__long.png",
+      "slug": "scr-event-camera-001",
+      "screenId": "SCR-EVENT-CAMERA-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1064,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Eventos da câmera — ARGOS",
+        "screenId": "SCR-EVENT-CAMERA-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Eventos desta câmera; use as setas para rolar horizontalmente",
+            "client": 1104,
+            "scroll": 1104,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-camera-001__390x844__default__long.png",
+      "slug": "scr-event-camera-001",
+      "screenId": "SCR-EVENT-CAMERA-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "default",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 1535,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Eventos da câmera — ARGOS",
+        "screenId": "SCR-EVENT-CAMERA-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Eventos desta câmera; use as setas para rolar horizontalmente",
+            "client": 326,
+            "scroll": 760,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-list-001__1440x900__empty__default.png",
+      "slug": "scr-act-list-001",
+      "screenId": "SCR-ACT-LIST-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "empty",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 900,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Histórico de atividades — ARGOS",
+        "screenId": "SCR-ACT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "empty",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "empty"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Histórico de atividades da câmera",
+            "client": 0,
+            "scroll": 0,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-create-001__1440x900__focus__default.png",
+      "slug": "scr-act-create-001",
+      "screenId": "SCR-ACT-CREATE-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "focus",
+      "caseFixture": "default",
+      "demo": "focus",
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1049,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Registrar atividade — ARGOS",
+        "screenId": "SCR-ACT-CREATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "activity-type",
+        "focusVisible": true,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-create-001__1440x900__error__default.png",
+      "slug": "scr-act-create-001",
+      "screenId": "SCR-ACT-CREATE-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "error",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1237,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Registrar atividade — ARGOS",
+        "screenId": "SCR-ACT-CREATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "error",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "error",
+            "error",
+            "error",
+            "error",
+            "error"
+          ]
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-create-001__1440x900__success__default.png",
+      "slug": "scr-act-create-001",
+      "screenId": "SCR-ACT-CREATE-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "success",
+      "caseFixture": "default",
+      "demo": "success",
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1137,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Registrar atividade — ARGOS",
+        "screenId": "SCR-ACT-CREATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": true,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-edit-001__1440x900__selected__default.png",
+      "slug": "scr-act-edit-001",
+      "screenId": "SCR-ACT-EDIT-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "selected",
+      "caseFixture": "default",
+      "demo": "selected",
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1090,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Editar atividade — ARGOS",
+        "screenId": "SCR-ACT-EDIT-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-edit-001__1440x900__error__default.png",
+      "slug": "scr-act-edit-001",
+      "screenId": "SCR-ACT-EDIT-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "error",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1278,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Editar atividade — ARGOS",
+        "screenId": "SCR-ACT-EDIT-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "error",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "error",
+            "error",
+            "error",
+            "error",
+            "error"
+          ]
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C1-activities/scr-act-edit-001__1440x900__success__default.png",
+      "slug": "scr-act-edit-001",
+      "screenId": "SCR-ACT-EDIT-001",
+      "group": "C1-activities",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "success",
+      "caseFixture": "default",
+      "demo": "success",
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1178,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Editar atividade — ARGOS",
+        "screenId": "SCR-ACT-EDIT-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": true,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-state-001__1440x900__focus__default.png",
+      "slug": "scr-gov-state-001",
+      "screenId": "SCR-GOV-STATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "focus",
+      "caseFixture": "default",
+      "demo": "focus",
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 900,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Alterar situação operacional — ARGOS",
+        "screenId": "SCR-GOV-STATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "change-target",
+        "focusVisible": true,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-state-001__1440x900__error__default.png",
+      "slug": "scr-gov-state-001",
+      "screenId": "SCR-GOV-STATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "error",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1007,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Alterar situação operacional — ARGOS",
+        "screenId": "SCR-GOV-STATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "error",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "error",
+            "error",
+            "error"
+          ]
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-state-001__1440x900__success__default.png",
+      "slug": "scr-gov-state-001",
+      "screenId": "SCR-GOV-STATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "success",
+      "caseFixture": "default",
+      "demo": "success",
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 957,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Alterar situação operacional — ARGOS",
+        "screenId": "SCR-GOV-STATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": true,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-disable-001__1440x900__focus__default.png",
+      "slug": "scr-gov-disable-001",
+      "screenId": "SCR-GOV-DISABLE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "focus",
+      "caseFixture": "default",
+      "demo": "focus",
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 900,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Desativar câmera — ARGOS",
+        "screenId": "SCR-GOV-DISABLE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "disable-reason",
+        "focusVisible": true,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-disable-001__1440x900__error__default.png",
+      "slug": "scr-gov-disable-001",
+      "screenId": "SCR-GOV-DISABLE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "error",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 905,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Desativar câmera — ARGOS",
+        "screenId": "SCR-GOV-DISABLE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "error",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "error",
+            "error"
+          ]
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-disable-001__1440x900__success__default.png",
+      "slug": "scr-gov-disable-001",
+      "screenId": "SCR-GOV-DISABLE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "success",
+      "caseFixture": "default",
+      "demo": "success",
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 900,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Desativar câmera — ARGOS",
+        "screenId": "SCR-GOV-DISABLE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": true,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-reactivate-001__1440x900__focus__default.png",
+      "slug": "scr-gov-reactivate-001",
+      "screenId": "SCR-GOV-REACTIVATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "focus",
+      "caseFixture": "default",
+      "demo": "focus",
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1086,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Reativar câmera — ARGOS",
+        "screenId": "SCR-GOV-REACTIVATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "reactivate-destination",
+        "focusVisible": true,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-reactivate-001__1440x900__error__default.png",
+      "slug": "scr-gov-reactivate-001",
+      "screenId": "SCR-GOV-REACTIVATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "error",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1224,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Reativar câmera — ARGOS",
+        "screenId": "SCR-GOV-REACTIVATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "error",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "error",
+            "error",
+            "error"
+          ]
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-reactivate-001__1440x900__success__default.png",
+      "slug": "scr-gov-reactivate-001",
+      "screenId": "SCR-GOV-REACTIVATE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "success",
+      "caseFixture": "default",
+      "demo": "success",
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1174,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Reativar câmera — ARGOS",
+        "screenId": "SCR-GOV-REACTIVATE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": true,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-substitute-001__1440x900__focus__default.png",
+      "slug": "scr-gov-substitute-001",
+      "screenId": "SCR-GOV-SUBSTITUTE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "focus",
+      "caseFixture": "default",
+      "demo": "focus",
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1221,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Substituir câmera — ARGOS",
+        "screenId": "SCR-GOV-SUBSTITUTE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "replacement-camera",
+        "focusVisible": true,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-substitute-001__1440x900__error__default.png",
+      "slug": "scr-gov-substitute-001",
+      "screenId": "SCR-GOV-SUBSTITUTE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "error",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1363,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Substituir câmera — ARGOS",
+        "screenId": "SCR-GOV-SUBSTITUTE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "error",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "error",
+            "error",
+            "error",
+            "error"
+          ]
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-substitute-001__1440x900__success__default.png",
+      "slug": "scr-gov-substitute-001",
+      "screenId": "SCR-GOV-SUBSTITUTE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "success",
+      "caseFixture": "default",
+      "demo": "success",
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1309,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Substituir câmera — ARGOS",
+        "screenId": "SCR-GOV-SUBSTITUTE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": []
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": true,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-list-001__1440x900__selected__default.png",
+      "slug": "scr-event-list-001",
+      "screenId": "SCR-EVENT-LIST-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "selected",
+      "caseFixture": "default",
+      "demo": "selected",
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 1278,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Eventos de auditoria — ARGOS",
+        "screenId": "SCR-EVENT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "default",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "default"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Tabela global de eventos de auditoria; use as setas para rolar horizontalmente",
+            "client": 1104,
+            "scroll": 1104,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 5,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-list-001__1440x900__empty__default.png",
+      "slug": "scr-event-list-001",
+      "screenId": "SCR-EVENT-LIST-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "empty",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 900,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Eventos de auditoria — ARGOS",
+        "screenId": "SCR-EVENT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "empty",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "empty"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Tabela global de eventos de auditoria; use as setas para rolar horizontalmente",
+            "client": 0,
+            "scroll": 0,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-list-001__1440x900__error__default.png",
+      "slug": "scr-event-list-001",
+      "screenId": "SCR-EVENT-LIST-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "error",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 900,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Eventos de auditoria — ARGOS",
+        "screenId": "SCR-EVENT-LIST-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "error",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "error"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Tabela global de eventos de auditoria; use as setas para rolar horizontalmente",
+            "client": 0,
+            "scroll": 0,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": true
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C3-events-audit/scr-event-camera-001__1440x900__empty__default.png",
+      "slug": "scr-event-camera-001",
+      "screenId": "SCR-EVENT-CAMERA-001",
+      "group": "C3-events-audit",
+      "expectedViewport": [
+        1440,
+        900
+      ],
+      "imageDimensions": [
+        1440,
+        900
+      ],
+      "caseState": "empty",
+      "caseFixture": "default",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 1440,
+          "height": 900,
+          "bodyWidth": 1440
+        },
+        "globalOverflow": false,
+        "title": "Eventos da câmera — ARGOS",
+        "screenId": "SCR-EVENT-CAMERA-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "empty",
+        "fixture": "default",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "empty"
+          ]
+        },
+        "tableRegions": [
+          {
+            "label": "Eventos desta câmera; use as setas para rolar horizontalmente",
+            "client": 0,
+            "scroll": 0,
+            "tabindex": "0",
+            "role": "region"
+          }
+        ],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    },
+    {
+      "file": "docs/prototype/ui-v2/evidence/screenshots/p3-c/C2-governance/scr-gov-substitute-001__390x844__error__long.png",
+      "slug": "scr-gov-substitute-001",
+      "screenId": "SCR-GOV-SUBSTITUTE-001",
+      "group": "C2-governance",
+      "expectedViewport": [
+        390,
+        844
+      ],
+      "imageDimensions": [
+        390,
+        844
+      ],
+      "caseState": "error",
+      "caseFixture": "long",
+      "demo": null,
+      "ready": true,
+      "metrics": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1,
+          "scale": 1
+        },
+        "document": {
+          "width": 390,
+          "height": 2109,
+          "bodyWidth": 390
+        },
+        "globalOverflow": false,
+        "title": "Substituir câmera — ARGOS",
+        "screenId": "SCR-GOV-SUBSTITUTE-001",
+        "prototypeStatus": "TECHNICAL_READY_FOR_REVIEW",
+        "state": "error",
+        "fixture": "long",
+        "activeElement": "BODY",
+        "focusVisible": false,
+        "variantVisibility": {
+          "state": true,
+          "fixture": true,
+          "visibleStates": [
+            "error",
+            "error",
+            "error",
+            "error"
+          ]
+        },
+        "tableRegions": [],
+        "tableRegionsKeyboardAccessible": true,
+        "missingFormLabels": [],
+        "unassociatedAriaErrors": [],
+        "h1Count": 1,
+        "mainCount": 1,
+        "activeFilterChips": 0,
+        "successVisible": false,
+        "errorVisible": false
+      }
+    }
+  ],
+  "browserExceptions": []
+}
