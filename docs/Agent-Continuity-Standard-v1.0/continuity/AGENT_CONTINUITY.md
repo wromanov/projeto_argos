@@ -809,7 +809,7 @@ PRODUCTION_TEMPLATES_CHANGED = NO
 ### 20.6. UI-V2-P3-0 — harness em revisão técnica (2026-09-28)
 
 CURRENT_ACTIVITY = UI-V2-P3-0 / PROTOTYPE HARNESS & COMPOSITION CONTRACT
-CURRENT_STATUS = COMPLETE / TECHNICAL PASS / USER REVIEW PENDING
+CURRENT_STATUS = TECHNICAL PASS / USER APPROVED / CANONICAL INTEGRATION IN PROGRESS
 ACTIVITY_COMPLETION_PERCENT = 100%
 CANONICAL_REPOSITORY_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
 P3_0_BASELINE_HEAD = 7702b4c14cac6f7338625ccd08730e8d89fb9495
@@ -822,15 +822,15 @@ FAMILY_PARTITION = P3-A/B/C/D / 24 eligible / 11 inherited or protected
 P3_FAMILY_IMPLEMENTATION_STARTED = NO
 PRODUCTION_CHANGED = NO
 P3_0_WORK_COMMIT = 7bf33de0456fbaaaf46943d73f44f82abb3e3a84
-USER_P3_0_APPROVAL = PENDING
-CANONICAL_INTEGRATION = NOT_YET
+USER_P3_0_APPROVAL = PASS
+CANONICAL_INTEGRATION = IN_PROGRESS / NO_FF AUTHORIZED
 POST_INTEGRATION_VALIDATION = NOT_YET
 REMOTE_SYNC_AFTER_P3_0 = NOT_YET
 FAN_OUT_READY = NO
 PROJECT_STATE_UPDATE = PASS
 CONTINUITY_RECONCILIATION = PASS / Card B is activity-specific authority; older roadmap snapshots retained
-ACTIVITY_COMPLETE = YES / technical harness complete; user review pending
+ACTIVITY_COMPLETE = YES / technical harness and user review complete; canonical integration in progress
 PUSH_PERFORMED = NO
 MERGE_PERFORMED = NO
 
-O harness, índice, shell, fixture, quatro capturas e contratos estão em `docs/prototype/ui-v2/`. O master `SCREEN_COVERAGE.md` permanece root-owned; as famílias continuam sem artefatos. Próximo gate: registrar o commit técnico, apresentar P3-0 para revisão humana e aguardar aprovação antes da integração canônica.
+O harness, índice, shell, fixture, quatro capturas e contratos estão em `docs/prototype/ui-v2/`. O master `SCREEN_COVERAGE.md` permanece root-owned; as famílias continuam sem artefatos. O usuário aprovou P3-0 e autorizou integração canônica/publicação; a validação pós-merge e a sincronização remota ainda precisam passar antes da liberação do fan-out.

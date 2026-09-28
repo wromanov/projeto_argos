@@ -147,7 +147,7 @@ Fonte da partição: roster canônico do Census, conferido contra as 35 linhas d
 
 | SCREEN_ID | SCREEN_NAME | FAMILY | OWNER | PROTOTYPE_PATH | STATUS |
 |---|---|---|---|---|---|
-| SCR-SHELL-001 | Shell autenticado | SHELL | ROOT | `docs/prototype/ui-v2/screens/index.html` | TECHNICAL_READY_FOR_REVIEW |
+| SCR-SHELL-001 | Shell autenticado | SHELL | ROOT | `docs/prototype/ui-v2/screens/index.html` | USER_APPROVED |
 | SCR-PORTAL-001 | Início / portal | OTHER | P3-A | `docs/prototype/ui-v2/screens/p3-a/scr-portal-001.html` | PLANNED |
 | SCR-DASH-001 | Dashboard | DASHBOARD | P3-A | `docs/prototype/ui-v2/screens/p3-a/scr-dash-001.html` | PLANNED |
 | SCR-INV-001 | Inventário de câmeras | INVENTORY | P3-A | `docs/prototype/ui-v2/screens/p3-a/scr-inv-001.html` | PLANNED |
@@ -201,7 +201,7 @@ Fan-out ainda não liberado. Depois do gate canônico, P3-A/B/C/D recebem branch
 
 ## 11. Integração e gates
 
-Esta branch P3-0 fecha tecnicamente o harness; nesta execução inicial não há merge, push ou rebase. Após revisão humana P3-0, a integração canônica é uma atividade separada: merge autorizado para master; validação pós-integração; publicação autorizada; confirmação `HEAD == origin/master` e divergência `0/0`. Só então registrar `FAN_OUT_BASE_COMMIT` e avaliar `FAN_OUT_READY`.
+O harness P3-0 foi aprovado pelo usuário (`USER_P3_0_APPROVAL = PASS`; `SCR-SHELL-001 = USER_APPROVED`). A integração canônica autorizada segue como gate separado: merge sem fast-forward para master; validação pós-integração; publicação; confirmação `HEAD == origin/master` e divergência `0/0`. Só então registrar `FAN_OUT_BASE_COMMIT` e avaliar `FAN_OUT_READY`.
 
 No futuro, integrar uma família por vez. Para cada família: revisar; validar ownership; merge; resolver e validar conflitos; executar QA integrado; consolidar seus relatórios locais no `SCREEN_COVERAGE.md` master; só então seguir à próxima. `USER_APPROVED` exige aprovação humana por família. Nenhuma aprovação é automática.
 
@@ -219,7 +219,7 @@ P3_0_STATUS = PASS / TECHNICAL HARNESS COMPLETE
 P3_0_BASELINE_HEAD = 7702b4c14cac6f7338625ccd08730e8d89fb9495
 P3_0_WORK_COMMIT = 7bf33de0456fbaaaf46943d73f44f82abb3e3a84
 P3_0_WORKTREE = C:\Users\walacedelgado\PycharmProjects\projeto_argos / isolated branch; no separate linked worktree
-USER_P3_0_APPROVAL = PENDING
+USER_P3_0_APPROVAL = PASS
 HARNESS_CANONICAL_INTEGRATION_COMMIT = NOT_YET
 POST_INTEGRATION_VALIDATION = NOT_YET
 REMOTE_SYNC_AFTER_P3_0 = NOT_YET
