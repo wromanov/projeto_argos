@@ -370,3 +370,20 @@ MON-AVAIL-01 e MON-AVAIL-02 foram citados na instrução atual do usuário e
 não foram localizados em documentos do checkout nesta reconciliação. O mapa de
 sprints mantém IMG-04 como candidata backend/imagens não autorizada; a ordem
 entre as candidatas continua sem adjudicação.
+
+## 15. UI-V2-P3-0 — harness compartilhado (2026-09-28)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| docs/prototype/ui-v2/contracts/P3_PROTOTYPE_HARNESS.md | Contrato operacional do harness, preview, states, fixtures, evidence, ownership, fan-out e integração | CURRENT / P3-0 TECHNICAL PASS / USER REVIEW PENDING |
+| docs/prototype/ui-v2/screens/index.html | Entry point P3 e demonstração do shell compartilhado | TECHNICAL_READY_FOR_REVIEW |
+| docs/prototype/ui-v2/contracts/SCREEN_COVERAGE.md | Matriz master owned por ROOT; integração das famílias após review individual | CURRENT / ROOT-ONLY |
+| docs/prototype/ui-v2/evidence/screenshots/shell/ | Evidence determinística do shell nos quatro viewports requeridos | CAPTURED / PRODUCT DESIGN QA PASS |
+| design-qa.md | Relatório acumulado; preserva o histórico P2 e registra o QA P3-0 | CURRENT |
+
+P3_0_WORK_COMMIT = 7bf33de0456fbaaaf46943d73f44f82abb3e3a84
+P3_0_STATUS = PASS / TECHNICAL HARNESS COMPLETE
+USER_P3_0_APPROVAL = PENDING
+FAN_OUT_READY = NO
+
+P2 permanece fechado, Design System 2.0.0 pinado e Quick Detail protegido. O Card B é a autoridade específica para P3-0. Os snapshots amplos de roadmap/sprint ainda citam P1 como próximo; isso não inicia famílias nem autoriza mudança na sequência global. P3-A/B/C/D continuam proibidas até review humano P3-0, integração canônica, validação pós-integração e publicação.

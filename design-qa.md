@@ -78,3 +78,31 @@ P2 foi fechado; a integração canônica, a checagem Django, o push e a sincroni
 ## Integração canônica — 2026-09-28
 
 P2 closure commit: 7277f16f3f6470c975d2e9624309c1dd04e78eb1. O merge --no-ff em master produziu 7da532ffd93311a4d8d7ea86ec668fb7ec7d0165. A origem estava alinhada com master antes da integração. A master foi publicada em origin e o fetch pós-push confirmou igualdade do HEAD local/remoto, divergência 0/0 e worktree limpo. `.\.venv\Scripts\python.exe manage.py check` passou: nenhum issue detectado. A auditoria não encontrou carregamento do CSS V2 por template ou runtime produtivo.
+## UI-V2-P3-0 — Prototype Harness & Composition Contract (2026-09-28)
+
+```text
+final result: passed
+activity: UI-V2-P3-0
+product design: available; get-context and design-qa loaded
+source baseline: approved ARGOS UI V2 foundation / direction C
+implementation: P3 shared index and shell, DESIGN_SYSTEM_VERSION 2.0.0
+preview: HTTP_LOCAL, 100% browser zoom, default state / default fixture
+viewport method: Chrome DevTools device metrics override, CSS viewport and DPR=1 verified at each required size
+```
+
+### Evidência e comparação
+
+- `docs/prototype/ui-v2/evidence/screenshots/shell/shell__1920x1080__default__default.png` — 1920×1080, wide desktop.
+- `docs/prototype/ui-v2/evidence/screenshots/shell/shell__1440x900__default__default.png` — 1440×900, comparação lado a lado com `docs/prototype/ui-v2/foundation/screenshots/foundation-1440x900-index.png`.
+- `docs/prototype/ui-v2/evidence/screenshots/shell/shell__1366x768__default__default.png` — 1366×768, compact desktop.
+- `docs/prototype/ui-v2/evidence/screenshots/shell/shell__390x844__default__default.png` — 390×844, comparação lado a lado com `docs/prototype/ui-v2/foundation/screenshots/overview-390x844.png`.
+
+A comparação cobre linguagem visual e comportamento do shell; conteúdo e arquitetura de informação da foundation pertencem ao Style Lab, então não foram tratados como paridade de página. O shell preserva a navegação atual do ARGOS e consome diretamente os quatro CSS canônicos. Desktop mantém proporção da sidebar, max-width, alinhamento e density sem esticar o conteúdo em 1920 px. Em 1366×768 a hierarquia segue legível. Em 390×844 o documento não tem overflow horizontal; somente a faixa de navegação e a região da tabela larga rolam internamente, conforme os patterns canônicos.
+
+### Acessibilidade e findings
+
+Título e hierarquia de headings presentes; landmarks `header`, `nav`, `main` e `aside` semânticos; item ativo tem `aria-current="page"`; link de marca tem nome acessível. Após três Tabs, o item ativo recebeu `:focus-visible` e outline sólido de 3 px. Todos os links da navegação e botões medem 44 px no mobile. Com `prefers-reduced-motion: reduce`, scroll behavior é `auto` e a transição dos botões é `0s`. Não há icon buttons nem dialogs. Esta revisão não declara conformidade WCAG completa.
+
+P0: nenhum. P1: nenhum. P2: nenhum. P3: revisar o conteúdo e a navegação por tabela em cada tela de família quando seus próprios estados e fixtures forem renderizados. Nenhuma tela de família foi iniciada ou aprovada nesta atividade.
+
+`DESIGN_QA_COMPLETE = YES` para o harness compartilhado. Aprovação humana do P3-0 continua pendente e não é inferida deste resultado técnico.
