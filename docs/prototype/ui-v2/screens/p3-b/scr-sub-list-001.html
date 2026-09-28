@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="argos-ui-version" content="2.0.0">
+  <meta name="argos-screen-id" content="SCR-SUB-LIST-001">
+  <meta name="argos-screen-family" content="SUBSTITUTIONS">
+  <meta name="argos-prototype-status" content="IN_PROGRESS">
+  <title>Histórico de substituições · ARGOS UI V2</title>
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/tokens.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/base.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/components.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/patterns.css">
+  <script src="../harness.js" defer></script>
+  <script src="p3-b.js" defer></script>
+</head>
+<body>
+  <a class="argos-skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="argos-docs-layout">
+    <aside class="argos-docs-sidebar">
+      <a class="argos-brand" href="../index.html" aria-label="ARGOS — início do protótipo">
+        <img src="../../style-lab/argos-icon.svg" alt="" width="34" height="34">
+        <span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">UI V2 · protótipos</span></span>
+      </a>
+      <nav class="argos-docs-nav" aria-label="Navegação principal demonstrativa">
+        <span class="argos-docs-nav__group">Central operacional</span>
+        <a href="../index.html">Início</a>
+          <a href="../index.html#screen-scr-inv-001">Inventário</a>
+          <a href="scr-mon-history-001.html">Monitoramento</a>
+          <a href="scr-sub-list-001.html" aria-current="page">Substituições</a>
+          <a href="../index.html#screen-scr-event-list-001">Eventos</a>
+      </nav>
+      <p class="argos-docs-sidebar__foot">P3-B · DS 2.0.0 · protótipo</p>
+    </aside>
+    <div class="argos-docs-main">
+      <header class="argos-docs-topbar">
+        <span>ARGOS / UI V2 / P3-B</span>
+        <span class="argos-badge argos-badge--info">Design System 2.0.0</span>
+      </header>
+      <main class="argos-docs-content" id="main">
+        <header class="argos-page-header">
+          <div class="argos-page-header__copy">
+            <p class="argos-eyebrow">Substituições · consulta global</p>
+            <h1 class="argos-page-title">Histórico de substituições</h1>
+            <p class="argos-lead">Pesquise registros históricos por câmera, identificação e período.</p>
+          </div>
+          <div class="argos-page-header__actions"><a class="argos-button argos-button--secondary" href="../index.html">Índice de protótipos</a></div>
+        </header>
+
+        <div class="argos-stack">
+          <section class="argos-card" aria-labelledby="filters-heading">
+            <div class="argos-card__header"><h2 class="argos-card__title" id="filters-heading">Filtros</h2></div>
+            <div class="argos-card__body">
+              <form class="argos-filter-bar" method="get" action="scr-sub-list-001.html">
+                <label class="argos-field"><span class="argos-field__label">Câmera ou identificação</span><input class="argos-input" type="search" name="q" autocomplete="off" placeholder="Nome, patrimônio ou série" data-bind="sub-search"></label>
+                <label class="argos-field"><span class="argos-field__label">Data inicial</span><input class="argos-input" type="date" name="data_inicial" data-bind="sub-date-start"></label>
+                <label class="argos-field"><span class="argos-field__label">Data final</span><input class="argos-input" type="date" name="data_final" data-bind="sub-date-end"></label>
+                <input type="hidden" name="state" value="default">
+                <input type="hidden" name="fixture" value="default" data-bind="sub-fixture">
+                <button class="argos-button argos-button--primary" type="submit">Aplicar filtros</button>
+                <a class="argos-button argos-button--secondary" href="scr-sub-list-001.html">Limpar</a>
+              </form>
+              <div hidden data-bind="sub-filter-error"><div class="argos-alert argos-alert--danger" role="alert">
+                <div><strong>Período inválido</strong><p id="period-error-copy">A data inicial deve ser anterior ou igual à data final. Ajuste o intervalo e aplique os filtros novamente.</p></div>
+              </div></div>
+            </div>
+          </section>
+
+          <section class="argos-card" aria-labelledby="results-heading">
+            <div class="argos-card__header"><div><h2 class="argos-card__title" id="results-heading">Registros encontrados</h2><p class="argos-caption" data-bind="sub-result-summary"></p></div></div>
+            <div class="argos-card__body argos-stack">
+              <div hidden data-bind="sub-active-filters-shell"><div class="argos-chip-group" aria-label="Filtros ativos" data-bind="sub-active-filters"></div></div>
+              <div class="argos-table-region" role="region" aria-label="Tabela global de substituições" tabindex="0" data-bind="sub-table-region">
+                <table class="argos-table argos-table--compact">
+                  <caption>Histórico global de substituições; cada linha é um registro imutável</caption>
+                  <thead><tr><th scope="col">Data da substituição</th><th scope="col">Câmera anterior</th><th scope="col">Câmera substituta</th><th scope="col">Nome operacional</th><th scope="col">Motivo</th><th scope="col">Registro</th></tr></thead>
+                  <tbody data-bind="sub-rows"></tbody>
+                </table>
+              </div>
+              <div hidden data-bind="sub-empty" role="status"><div class="argos-state"><strong class="argos-state__title">Nenhum registro encontrado</strong><p class="argos-state__copy">Não há substituições que correspondam à consulta apresentada.</p></div></div>
+              <div hidden data-bind="sub-pagination"><nav class="argos-pagination" aria-label="Paginação dos registros"></nav></div>
+            </div>
+          </section>
+          <p><a class="argos-button argos-button--secondary" href="scr-sub-camera-001.html?camera=CAM-1204">Consultar substituições de uma câmera específica</a></p>
+        </div>
+        <p class="argos-caption">Dados de demonstração determinísticos. Esta superfície é somente visual e não persiste alterações.</p>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
