@@ -1880,3 +1880,42 @@ P3_STARTED = NO
 NEXT_ACTIVITY = UI-V2-P3 / NOT STARTED / separate authorization required
 
 A atualização de estado foi publicada junto com a conclusão. A branch P2 foi preservada. Não houve alteração no runtime ou templates Django, e P3 não foi iniciado.
+## 36. UI-V2-P3-0 — Prototype Harness (2026-09-28)
+
+Este checkpoint registra a execução autorizada pelo Card B. P2 permanece fechado; a execução cobre somente o harness P3-0. As quatro famílias não iniciaram implementação.
+
+```text
+ACTIVITY = UI-V2-P3-0 / PROTOTYPE HARNESS & COMPOSITION CONTRACT
+ACTIVITY_STATUS = TECHNICAL PASS / LOCAL WORK COMMIT PENDING / USER REVIEW PENDING
+ACTIVITY_COMPLETION_PERCENT = 95%
+CANONICAL_REPOSITORY_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+P3_0_BASELINE_HEAD = 7702b4c14cac6f7338625ccd08730e8d89fb9495
+BRANCH = codex/ui-v2-p3-0-prototype-harness
+DESIGN_SYSTEM_VERSION = 2.0.0 / PINNED
+DESIGN_SYSTEM_MODIFIED = NO
+PRODUCT_DESIGN_STATUS = AVAILABLE
+PRODUCT_DESIGN_GET_CONTEXT = PASS
+PRODUCT_DESIGN_DESIGN_QA = PASS / shared shell only
+DESIGN_QA_COMPLETE = YES
+SCREEN_OWNERSHIP = 35 SCREEN_IDs / 35 unique owners / 0 conflicts
+FAMILY_PARTITION = P3-A 5 / P3-B 4 / P3-C 10 / P3-D 15 / ROOT 1
+PROTOTYPE_ROOT = docs/prototype/ui-v2/screens/
+PREVIEW_MODE = HTTP_LOCAL
+RESPONSIVE_QA = PASS / 1920x1080, 1440x900, 1366x768, 390x844
+P3_FAMILY_IMPLEMENTATION_STARTED = NO
+PRODUCTION_CHANGED = NO
+QUICK_DETAIL_PROTECTED = YES
+ADMIN_SCOPE_PRESERVED = YES
+P3_0_WORK_COMMIT = PENDING_LOCAL_CHECKPOINT
+USER_P3_0_APPROVAL = PENDING
+CANONICAL_INTEGRATION = NOT_YET
+FAN_OUT_READY = NO
+PROJECT_STATE_UPDATE = PASS / P3-0 checkpoint recorded before activity completion
+ACTIVITY_COMPLETE = NO / work commit and user review handoff pending
+PUSH_PERFORMED = NO
+MERGE_PERFORMED = NO
+REBASE_PERFORMED = NO
+WORKTREE_FINAL = PENDING_LOCAL_COMMIT
+```
+
+A documentação P3-0 registra a matriz e os gates. Roadmap e sprint mantêm snapshots anteriores que apontam P1 como próximo; o Card B atual autoriza especificamente P3-0 e não inicia as famílias nem altera a ordem global. A integração canônica e a liberação do fan-out continuam separadas e pendentes.

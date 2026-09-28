@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="argos-ui-version" content="2.0.0">
+  <meta name="argos-screen-id" content="SCR-SHELL-001">
+  <meta name="argos-screen-family" content="SHELL">
+  <meta name="argos-prototype-status" content="TECHNICAL_READY_FOR_REVIEW">
+  <title>ARGOS UI V2 — Prototype Harness</title>
+  <link rel="stylesheet" href="../../../../static/css/ui-v2/tokens.css">
+  <link rel="stylesheet" href="../../../../static/css/ui-v2/base.css">
+  <link rel="stylesheet" href="../../../../static/css/ui-v2/components.css">
+  <link rel="stylesheet" href="../../../../static/css/ui-v2/patterns.css">
+  <script src="harness.js" defer></script>
+</head>
+<body>
+  <a class="argos-skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="argos-docs-layout">
+    <aside class="argos-docs-sidebar">
+      <a class="argos-brand" href="index.html" aria-label="ARGOS — início do protótipo">
+        <img src="../style-lab/argos-icon.svg" alt="" width="34" height="34">
+        <span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">UI V2 · protótipos</span></span>
+      </a>
+      <nav class="argos-docs-nav" aria-label="Navegação principal demonstrativa">
+        <span class="argos-docs-nav__group">Central operacional</span>
+        <a href="#screen-scr-portal-001" aria-current="page" data-conceptual-route="/">Início</a>
+        <a href="#screen-scr-dash-001" data-conceptual-route="/dashboard/">Dashboard</a>
+        <a href="#screen-scr-inv-001" data-conceptual-route="/cameras/">Inventário</a>
+        <a href="#screen-scr-sub-list-001" data-conceptual-route="/cameras/substituicoes/">Governança</a>
+        <a href="#screen-scr-event-list-001" data-conceptual-route="/eventos/">Eventos</a>
+      </nav>
+      <p class="argos-docs-sidebar__foot">P3-0 · harness compartilhado · DS 2.0.0</p>
+    </aside>
+    <div class="argos-docs-main">
+      <header class="argos-docs-topbar">
+        <span>ARGOS / UI V2 / P3</span>
+        <span class="argos-badge argos-badge--info">Design System 2.0.0</span>
+      </header>
+      <main class="argos-docs-content" id="main">
+        <header class="argos-page-header">
+          <div class="argos-page-header__copy">
+            <p class="argos-eyebrow">Prototype Harness · P3-0</p>
+            <h1 class="argos-page-title">Protótipos navegáveis</h1>
+            <p class="argos-lead">Índice e shell compartilhado para as famílias P3. Os links representam rotas conceituais e navegam dentro deste índice; não há backend, autenticação nem persistência.</p>
+          </div>
+          <div class="argos-page-header__actions">
+            <a class="argos-button argos-button--secondary" href="../foundation/index.html">Visual Foundation</a>
+            <a class="argos-button argos-button--primary" href="#screen-scr-account-profile-001" data-conceptual-route="/perfil/">Minha conta</a>
+          </div>
+        </header>
+
+        <div class="argos-stack">
+          <section class="argos-kpi-grid" aria-label="Resumo do censo de telas">
+            <article class="argos-kpi-card"><strong>35</strong><span>SCREEN_IDs no Census</span></article>
+            <article class="argos-kpi-card"><strong>4</strong><span>famílias de implementação</span></article>
+            <article class="argos-kpi-card"><strong>24</strong><span>protótipos de tela planejados</span></article>
+          </section>
+
+          <aside class="argos-alert argos-alert--info" aria-label="Aviso de escopo">
+            <div>
+              <strong>Shell ARGOS atual · linguagem visual UI V2</strong>
+              <p>Os itens de navegação e suas rotas vêm do ARGOS. Visibilidade de Dashboard, Inventário, Governança e Eventos depende das permissões reais; este protótipo não simula permissões. Quick Detail permanece protegido e o Django Admin é herdado.</p>
+            </div>
+          </aside>
+
+          <section class="argos-card" aria-labelledby="shell-title">
+            <div class="argos-card__header"><h2 class="argos-card__title" id="shell-title">Shell compartilhado</h2></div>
+            <div class="argos-card__body argos-stack">
+              <p><strong>SCR-SHELL-001 · TECHNICAL_READY_FOR_REVIEW · owner ROOT</strong></p>
+              <p>Este índice renderiza sidebar, cabeçalho, área de conteúdo, Page Header, navegação ativa e navegação móvel rolável. O foco visível e o comportamento responsivo vêm diretamente do Design System 2.0.0.</p>
+              <p>Em viewport móvel, a navegação principal passa a uma faixa horizontal rolável, conforme o pattern canônico. Navegação de demonstração não executa rotas Django.</p>
+            </div>
+          </section>
+
+          <section class="argos-stack" aria-labelledby="families-title">
+            <header class="argos-section-header"><h2 id="families-title">Cobertura por família</h2><span class="argos-badge argos-badge--neutral">Status inicial do P3</span></header>
+
+            <section class="argos-card" id="family-p3-a" aria-labelledby="p3-a-title">
+              <div class="argos-card__header"><h3 class="argos-card__title" id="p3-a-title">P3-A · Core / Inventory</h3></div>
+              <div class="argos-card__body">
+                <p>Owner exclusivo: P3-A · status da família: <span class="argos-badge argos-badge--neutral">PLANNED</span></p>
+                <div class="argos-table-region" role="region" aria-label="Telas P3-A" tabindex="0">
+                  <table class="argos-table">
+                    <thead><tr><th scope="col">SCREEN_ID</th><th scope="col">Tela</th><th scope="col">Família Census</th><th scope="col">Status</th></tr></thead>
+                    <tbody>
+                      <tr id="screen-scr-portal-001"><td>SCR-PORTAL-001</td><td>Início / portal</td><td>OTHER</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-dash-001"><td>SCR-DASH-001</td><td>Dashboard</td><td>DASHBOARD</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-inv-001"><td>SCR-INV-001</td><td>Inventário de câmeras</td><td>INVENTORY</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-cam-detail-001"><td>SCR-CAM-DETAIL-001</td><td>Detalhe da câmera</td><td>CAMERA_DETAIL</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-cam-quick-001"><td>SCR-CAM-QUICK-001</td><td>Quick Detail</td><td>CAMERA_DETAIL</td><td>PROTECTED</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <section class="argos-card" id="family-p3-b" aria-labelledby="p3-b-title">
+              <div class="argos-card__header"><h3 class="argos-card__title" id="p3-b-title">P3-B · Monitoring / Operational</h3></div>
+              <div class="argos-card__body">
+                <p>Owner exclusivo: P3-B · status da família: <span class="argos-badge argos-badge--neutral">PLANNED</span></p>
+                <div class="argos-table-region" role="region" aria-label="Telas P3-B" tabindex="0">
+                  <table class="argos-table">
+                    <thead><tr><th scope="col">SCREEN_ID</th><th scope="col">Tela</th><th scope="col">Família Census</th><th scope="col">Status</th></tr></thead>
+                    <tbody>
+                      <tr id="screen-scr-mon-history-001"><td>SCR-MON-HISTORY-001</td><td>Histórico de monitoramento</td><td>MONITORING</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-sub-list-001"><td>SCR-SUB-LIST-001</td><td>Substituições</td><td>SUBSTITUTIONS</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-sub-detail-001"><td>SCR-SUB-DETAIL-001</td><td>Detalhe da substituição</td><td>SUBSTITUTIONS</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-sub-camera-001"><td>SCR-SUB-CAMERA-001</td><td>Substituições da câmera</td><td>SUBSTITUTIONS</td><td>PLANNED</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <section class="argos-card" id="family-p3-c" aria-labelledby="p3-c-title">
+              <div class="argos-card__header"><h3 class="argos-card__title" id="p3-c-title">P3-C · Governance / Audit / Activities</h3></div>
+              <div class="argos-card__body">
+                <p>Owner exclusivo: P3-C · status da família: <span class="argos-badge argos-badge--neutral">PLANNED</span></p>
+                <div class="argos-table-region" role="region" aria-label="Telas P3-C" tabindex="0">
+                  <table class="argos-table">
+                    <thead><tr><th scope="col">SCREEN_ID</th><th scope="col">Tela</th><th scope="col">Família Census</th><th scope="col">Status</th></tr></thead>
+                    <tbody>
+                      <tr id="screen-scr-act-list-001"><td>SCR-ACT-LIST-001</td><td>Atividades da câmera</td><td>ACTIVITIES</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-act-create-001"><td>SCR-ACT-CREATE-001</td><td>Registrar atividade</td><td>ACTIVITIES</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-act-edit-001"><td>SCR-ACT-EDIT-001</td><td>Editar atividade</td><td>ACTIVITIES</td><td>INHERITED</td></tr>
+                      <tr id="screen-scr-gov-state-001"><td>SCR-GOV-STATE-001</td><td>Alterar situação</td><td>GOVERNANCE</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-gov-disable-001"><td>SCR-GOV-DISABLE-001</td><td>Desativar câmera</td><td>GOVERNANCE</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-gov-reactivate-001"><td>SCR-GOV-REACTIVATE-001</td><td>Reativar câmera</td><td>GOVERNANCE</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-gov-substitute-001"><td>SCR-GOV-SUBSTITUTE-001</td><td>Substituir câmera</td><td>GOVERNANCE</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-event-list-001"><td>SCR-EVENT-LIST-001</td><td>Eventos de auditoria</td><td>EVENTS_AUDIT</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-event-detail-001"><td>SCR-EVENT-DETAIL-001</td><td>Detalhe do evento</td><td>EVENTS_AUDIT</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-event-camera-001"><td>SCR-EVENT-CAMERA-001</td><td>Eventos da câmera</td><td>EVENTS_AUDIT</td><td>PLANNED</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <section class="argos-card" id="family-p3-d" aria-labelledby="p3-d-title">
+              <div class="argos-card__header"><h3 class="argos-card__title" id="p3-d-title">P3-D · Forms / Account / Auth / Secondary</h3></div>
+              <div class="argos-card__body">
+                <p>Owner exclusivo: P3-D · status da família: <span class="argos-badge argos-badge--neutral">PLANNED</span></p>
+                <div class="argos-table-region" role="region" aria-label="Telas P3-D" tabindex="0">
+                  <table class="argos-table">
+                    <thead><tr><th scope="col">SCREEN_ID</th><th scope="col">Tela</th><th scope="col">Família Census</th><th scope="col">Status</th></tr></thead>
+                    <tbody>
+                      <tr id="screen-scr-cam-create-001"><td>SCR-CAM-CREATE-001</td><td>Nova câmera</td><td>CAMERA_FORMS</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-cam-edit-001"><td>SCR-CAM-EDIT-001</td><td>Editar câmera</td><td>CAMERA_FORMS</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-account-profile-001"><td>SCR-ACCOUNT-PROFILE-001</td><td>Perfil</td><td>PROFILE_ACCOUNT</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-account-edit-001"><td>SCR-ACCOUNT-EDIT-001</td><td>Editar perfil</td><td>PROFILE_ACCOUNT</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-account-password-001"><td>SCR-ACCOUNT-PASSWORD-001</td><td>Alterar senha</td><td>PROFILE_ACCOUNT</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-auth-login-001"><td>SCR-AUTH-LOGIN-001</td><td>Login ARGOS</td><td>AUTH</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-error-403-001"><td>SCR-ERROR-403-001</td><td>Acesso negado</td><td>ERROR_PAGES</td><td>PLANNED</td></tr>
+                      <tr id="screen-scr-admin-login-001"><td>SCR-ADMIN-LOGIN-001</td><td>Login Admin</td><td>ADMIN</td><td>INHERITED</td></tr>
+                      <tr id="screen-scr-admin-index-001"><td>SCR-ADMIN-INDEX-001</td><td>Índice Admin</td><td>ADMIN</td><td>INHERITED</td></tr>
+                      <tr id="screen-scr-admin-app-001"><td>SCR-ADMIN-APP-001</td><td>Lista de app Admin</td><td>ADMIN</td><td>INHERITED</td></tr>
+                      <tr id="screen-scr-admin-change-list-001"><td>SCR-ADMIN-CHANGE-LIST-001</td><td>Changelist Admin</td><td>ADMIN</td><td>INHERITED</td></tr>
+                      <tr id="screen-scr-admin-form-001"><td>SCR-ADMIN-FORM-001</td><td>Formulário Admin</td><td>ADMIN</td><td>INHERITED</td></tr>
+                      <tr id="screen-scr-admin-history-001"><td>SCR-ADMIN-HISTORY-001</td><td>Histórico Admin</td><td>ADMIN</td><td>INHERITED</td></tr>
+                      <tr id="screen-scr-admin-delete-001"><td>SCR-ADMIN-DELETE-001</td><td>Confirmação Admin</td><td>ADMIN</td><td>INHERITED</td></tr>
+                      <tr id="screen-scr-admin-password-001"><td>SCR-ADMIN-PASSWORD-001</td><td>Troca de senha Admin</td><td>ADMIN</td><td>INHERITED</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <section class="argos-card" aria-labelledby="next-title">
+            <div class="argos-card__header"><h2 class="argos-card__title" id="next-title">Próximo gate</h2></div>
+            <div class="argos-card__body argos-stack">
+              <p>Famílias P3-A/B/C/D continuam <strong>PLANNED</strong>. Implementação de telas, aprovação visual e integração só começam depois do Fan-out Release Gate e da aprovação humana do P3-0.</p>
+              <p>Quick Detail: <strong>PROTECTED / INHERITED</strong>. Django Admin: <strong>INHERITED</strong>, sem redesign customizado por padrão.</p>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

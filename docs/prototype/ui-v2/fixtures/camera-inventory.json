@@ -1,0 +1,29 @@
+{
+  "fixture_version": "1",
+  "screen_family": "INVENTORY",
+  "design_system_version": "2.0.0",
+  "fixtures": {
+    "default": [
+      {
+        "id": "CAM-DEMO-0101",
+        "name": "Câmera de demonstração — Portão Norte",
+        "manufacturer": "Fabricante Exemplo",
+        "model": "Modelo Exemplo 1080p",
+        "location": "Prédio administrativo — Portão Norte",
+        "identifier": "CAM-DEMO-0101",
+        "label": "Demonstração"
+      }
+    ],
+    "long": [
+      {
+        "id": "CAM-DEMO-2026-000001-LONG-CONTENT",
+        "name": "Câmera externa da ala norte — acesso secundário de logística",
+        "manufacturer": "Fabricante de Demonstração de Equipamentos de Segurança",
+        "model": "Modelo de demonstração com telemetria estendida 4K",
+        "location": "Complexo administrativo, edifício anexo, corredor de serviço do pavimento térreo",
+        "identifier": "CAM-DEMO-ARGOS-2026-000001-LONG-CONTENT",
+        "label": "Fora do escopo de monitoramento automatizado"
+      }
+    ]
+  }
+}

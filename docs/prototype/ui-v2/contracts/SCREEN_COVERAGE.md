@@ -1,6 +1,6 @@
 # ARGOS UI V2 — Screen Coverage
 
-Matriz de planejamento derivada do Screen Census. Esta foundation não inicia P3 nem implementa protótipos de tela. Estado: Design System 2.0.0 aprovado. Protótipos, aprovação visual por tela, implementação e QA de runtime continuam planejados para atividades futuras; P3 não foi iniciado.
+Matriz de planejamento derivada do Screen Census. O harness comum P3-0 está criado e validado; as telas das famílias P3-A/B/C/D continuam planejadas e ainda não foram implementadas. Estado: Design System 2.0.0 aprovado e pinado. Aprovação visual e QA de runtime por tela permanecem futuros.
 
 - Fonte: docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md, seção 10.
 - Prototype e responsive relevance vêm do census.
@@ -45,3 +45,11 @@ Matriz de planejamento derivada do Screen Census. Esta foundation não inicia P3
 | SCR-ADMIN-HISTORY-001 — Histórico Admin | ADMIN | INHERITED | MEDIUM | YES (census) | NOT_DECLARED | NOT_DECLARED | PLANNED | NO | 2.0.0 | NO | PENDING |
 | SCR-ADMIN-DELETE-001 — Confirmação Admin | ADMIN | INHERITED | MEDIUM | NOT_DECLARED | NOT_DECLARED | YES (census) | PLANNED | NO | 2.0.0 | NO | PENDING |
 | SCR-ADMIN-PASSWORD-001 — Troca de senha Admin | ADMIN | INHERITED | MEDIUM | NOT_DECLARED | NOT_DECLARED | YES (census) | PLANNED | NO | 2.0.0 | NO | PENDING |
+
+## UI-V2-P3-0 — modelo de ownership e integração
+
+Este master continua owned por ROOT/Integrator. O índice atual do Census mantém os 35 `SCREEN_ID`s e suas famílias; a matriz canônica de owner exclusivo, `PROTOTYPE_PATH` planejado e status inicial foi derivada dessa lista e está em [`P3_PROTOTYPE_HARNESS.md`, seção 9](P3_PROTOTYPE_HARNESS.md#9-ownership-matrix-por-screen_id). Cada ID aparece uma vez; screens inherited continuam cobertas sem criar redesign.
+
+Status após validação do harness: `SCR-SHELL-001 = TECHNICAL_READY_FOR_REVIEW`; `SCR-CAM-QUICK-001 = PROTECTED`; `SCR-ACT-EDIT-001` e oito screens ADMIN = `INHERITED`; as 24 screens elegíveis = `PLANNED`. Nenhuma screen de família foi implementada ou aprovada. A cobertura de estados e runtime visual por tela permanece pendente até as páginas de cada família serem produzidas e validadas.
+
+Durante o fan-out, famílias registram coverage/evidence localmente. ROOT consolida o master somente após revisar e integrar uma família por vez. Cada relatório deve declarar owner e `SCREEN_ID`; `STATE_COVERAGE` por estado usa `SUPPORTED`, `TESTED` ou `NOT_APPLICABLE`, e responsive status registra o resultado por viewport. `USER_APPROVED` exige aprovação humana explícita. `DESIGN_SYSTEM_VERSION = 2.0.0` é herdado por toda linha.
