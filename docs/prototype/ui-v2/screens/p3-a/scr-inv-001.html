@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="argos-ui-version" content="2.0.0">
+  <meta name="argos-screen-id" content="SCR-INV-001">
+  <meta name="argos-screen-family" content="P3-A">
+  <meta name="argos-prototype-status" content="IN_PROGRESS">
+  <title>Inventário de câmeras — ARGOS</title>
+  <link rel="icon" href="../../style-lab/argos-icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/tokens.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/base.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/components.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/patterns.css">
+  <script src="../harness.js" defer></script>
+  <script src="p3-a-interactions.js" defer></script>
+</head>
+<body>
+  <a class="argos-skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="argos-docs-layout">
+    <aside class="argos-docs-sidebar">
+      <a class="argos-brand" href="scr-portal-001.html" aria-label="ARGOS — Início">
+        <img src="../../style-lab/argos-icon.svg" alt="" width="34" height="34">
+        <span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">UI V2 · protótipos</span></span>
+      </a>
+      <nav class="argos-docs-nav" aria-label="Navegação principal">
+        <span class="argos-docs-nav__group">Central operacional</span>
+        <a href="scr-portal-001.html" data-conceptual-route="/">Início</a>
+        <a href="scr-dash-001.html" data-conceptual-route="/dashboard/">Dashboard</a>
+        <a href="scr-inv-001.html" aria-current="page" data-conceptual-route="/cameras/">Inventário</a>
+        <a href="../index.html#screen-scr-sub-list-001" data-conceptual-route="/cameras/substituicoes/">Governança</a>
+        <a href="../index.html#screen-scr-event-list-001" data-conceptual-route="/eventos/">Eventos</a>
+      </nav>
+      <p class="argos-docs-sidebar__foot">P3-A · protótipo · DS 2.0.0</p>
+    </aside>
+    <div class="argos-docs-main">
+      <header class="argos-docs-topbar">
+        <span>ARGOS / UI V2 / P3-A</span>
+        <a href="../index.html#screen-scr-account-profile-001">Meu Perfil · superfície planejada</a>
+      </header>
+      <main class="argos-docs-content" id="main">
+        <header class="argos-page-header">
+          <div class="argos-page-header__copy">
+            <p class="argos-eyebrow">Central operacional</p>
+            <h1 class="argos-page-title">Inventário de câmeras</h1>
+            <p class="argos-lead">Localize registros e consulte sua situação operacional, monitoramento e completude.</p>
+          </div>
+          <div class="argos-page-header__actions"><a class="argos-button argos-button--secondary" href="scr-dash-001.html">Ver Dashboard</a><a class="argos-button argos-button--primary" href="../index.html#screen-scr-cam-create-001">Nova câmera · planejada</a></div>
+        </header>
+
+        <div class="argos-stack">
+          <article class="argos-card" aria-labelledby="inventory-filters-title">
+            <div class="argos-card__header"><h2 class="argos-card__title" id="inventory-filters-title">Filtros</h2><p>Busca demonstrativa somente no navegador; nenhum GET ou backend.</p></div>
+            <div class="argos-card__body argos-stack">
+              <div class="argos-filter-bar" role="search" aria-label="Filtrar câmeras demonstrativas">
+                <label class="argos-field"><span class="argos-field__label">Busca</span><input class="argos-input" type="search" data-filter="search" placeholder="Nome, identificador ou modelo" autocomplete="off"></label>
+                <label class="argos-field"><span class="argos-field__label">Situação operacional</span><select class="argos-select" data-filter="operational_label"><option value="">Todas</option><option>Produção</option><option>Estoque</option><option>Desativada</option></select></label>
+                <label class="argos-field"><span class="argos-field__label">Monitoramento</span><select class="argos-select" data-filter="monitoring_label"><option value="">Todos</option><option>Online</option><option>Offline</option><option>Desconhecido</option><option>Não monitorada</option><option>Fora do escopo de monitoramento automatizado</option></select></label>
+                <label class="argos-field"><span class="argos-field__label">Completude</span><select class="argos-select" data-filter="completeness"><option value="">Todas</option><option value="COMPLETE">Completo</option><option value="INCOMPLETE">Incompleto</option></select></label>
+              </div>
+              <div class="argos-filter-bar" aria-label="Filtros complementares">
+                <label class="argos-field"><span class="argos-field__label">Terminal</span><select class="argos-select" data-filter="terminal"><option value="">Todos</option></select></label>
+                <label class="argos-field"><span class="argos-field__label">Tipo</span><select class="argos-select" data-filter="type"><option value="">Todos</option><option>Bullet</option><option>Dome</option><option>Speed Dome</option><option>Fisheye</option></select></label>
+                <label class="argos-field"><span class="argos-field__label">Fabricante</span><select class="argos-select" data-filter="manufacturer"><option value="">Todos</option></select></label>
+                <label class="argos-field"><span class="argos-field__label">VLAN</span><select class="argos-select" data-filter="vlan"><option value="">Todas</option></select></label>
+                <label class="argos-field"><span class="argos-field__label">Fazenda</span><select class="argos-select" data-filter="farm"><option value="">Todas</option></select></label>
+              </div>
+              <div class="argos-inline"><button class="argos-button argos-button--secondary" type="button" data-clear-filters>Limpar filtros</button><span data-filter-feedback role="status" aria-live="polite">Filtros locais carregando.</span></div>
+              <div class="argos-chip-group" data-active-filters aria-label="Filtros ativos" aria-live="polite"></div>
+            </div>
+          </article>
+
+          <section aria-labelledby="inventory-results-title">
+            <div class="argos-section-header"><h2 id="inventory-results-title">Resultados</h2><p data-results-summary role="status" aria-live="polite">Carregando fixture…</p></div>
+            <p data-selection-status role="status" aria-live="polite">Nenhuma câmera selecionada.</p>
+            <p id="inventory-selection-help">Focalize uma linha e use Enter ou Espaço, ou clique nela, para alternar a seleção.</p>
+            <div class="argos-stack" id="inventory-results" aria-busy="true">
+              <div class="argos-table-region" data-argos-state-variant="default" aria-describedby="inventory-scroll-help inventory-selection-help">
+                <table class="argos-table argos-table--compact">
+                  <caption>Câmeras demonstrativas com situação, monitoramento, completude e acesso a detalhes.</caption>
+                  <thead><tr><th scope="col">Câmera / identificação</th><th scope="col">Imagem</th><th scope="col">Situação</th><th scope="col">Monitoramento</th><th scope="col">Completude</th><th scope="col">Fabricante / modelo</th><th scope="col">Terminal / setor</th><th scope="col">Ações</th></tr></thead>
+                  <tbody data-inventory-rows aria-live="polite"></tbody>
+                </table>
+              </div>
+              <p id="inventory-scroll-help">Em telas estreitas, deslize horizontalmente na tabela para consultar todas as colunas; dados essenciais continuam disponíveis.</p>
+              <nav class="argos-pagination" data-pagination aria-label="Paginação do inventário demonstrativo"></nav>
+              <section class="argos-state" data-filter-empty hidden aria-labelledby="inventory-filter-empty-title">
+                <h3 class="argos-state__title" id="inventory-filter-empty-title">Nenhum resultado para esta busca</h3>
+                <p class="argos-state__copy">Ajuste ou limpe os filtros para consultar outros registros demonstrativos.</p>
+              </section>
+              <section class="argos-state" data-argos-state-variant="empty" hidden aria-labelledby="inventory-empty-title">
+                <h3 class="argos-state__title" id="inventory-empty-title">Nenhuma câmera encontrada</h3>
+                <p class="argos-state__copy">Não há registros para os filtros demonstrativos selecionados.</p>
+                <button class="argos-button argos-button--secondary" type="button" data-clear-filters>Limpar filtros</button>
+              </section>
+              <section class="argos-state" data-argos-state-variant="loading" hidden aria-labelledby="inventory-loading-title" aria-busy="true">
+                <span class="argos-spinner" aria-hidden="true"></span><h3 class="argos-state__title" id="inventory-loading-title">Carregando inventário</h3>
+                <p class="argos-state__copy">Estado demonstrativo; nenhuma consulta a serviço está em andamento.</p>
+              </section>
+              <section class="argos-state" data-argos-state-variant="error" hidden aria-labelledby="inventory-error-title">
+                <div class="argos-alert argos-alert--danger" role="alert"><div><h3 class="argos-state__title" id="inventory-error-title">Não foi possível carregar o inventário</h3><p class="argos-state__copy">A fixture local não está disponível neste estado demonstrativo. Isso não altera a situação operacional das câmeras.</p></div></div>
+                <a class="argos-button argos-button--secondary" href="scr-inv-001.html">Tentar novamente</a>
+              </section>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

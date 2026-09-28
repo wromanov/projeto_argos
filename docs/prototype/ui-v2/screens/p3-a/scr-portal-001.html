@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="argos-ui-version" content="2.0.0">
+  <meta name="argos-screen-id" content="SCR-PORTAL-001">
+  <meta name="argos-screen-family" content="P3-A">
+  <meta name="argos-prototype-status" content="IN_PROGRESS">
+  <title>Início — ARGOS</title>
+  <link rel="icon" href="../../style-lab/argos-icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/tokens.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/base.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/components.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/patterns.css">
+  <script src="../harness.js" defer></script>
+</head>
+<body>
+  <a class="argos-skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="argos-docs-layout">
+    <aside class="argos-docs-sidebar">
+      <a class="argos-brand" href="scr-portal-001.html" aria-label="ARGOS — Início">
+        <img src="../../style-lab/argos-icon.svg" alt="" width="34" height="34">
+        <span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">UI V2 · protótipos</span></span>
+      </a>
+      <nav class="argos-docs-nav" aria-label="Navegação principal">
+        <span class="argos-docs-nav__group">Central operacional</span>
+        <a href="scr-portal-001.html" aria-current="page" data-conceptual-route="/">Início</a>
+        <a href="scr-dash-001.html" data-conceptual-route="/dashboard/" data-argos-state-variant="default">Dashboard</a>
+        <a href="scr-inv-001.html" data-conceptual-route="/cameras/" data-argos-state-variant="default">Inventário</a>
+        <a href="../index.html#screen-scr-sub-list-001" data-conceptual-route="/cameras/substituicoes/" data-argos-state-variant="default">Governança</a>
+        <a href="../index.html#screen-scr-event-list-001" data-conceptual-route="/eventos/" data-argos-state-variant="default">Eventos</a>
+      </nav>
+      <p class="argos-docs-sidebar__foot">P3-A · protótipo · DS 2.0.0</p>
+    </aside>
+    <div class="argos-docs-main">
+      <header class="argos-docs-topbar">
+        <span>ARGOS / UI V2 / P3-A</span>
+        <a href="../index.html#screen-scr-account-profile-001">Meu Perfil · superfície planejada</a>
+      </header>
+      <main class="argos-docs-content" id="main">
+        <header class="argos-page-header">
+          <div class="argos-page-header__copy">
+            <p class="argos-eyebrow">Portal ARGOS</p>
+            <h1 class="argos-page-title">Início</h1>
+            <p class="argos-lead">Escolha um módulo para continuar no sistema de inventário e monitoramento.</p>
+          </div>
+          <div class="argos-page-header__actions"><span class="argos-badge argos-badge--info">Acesso conforme permissões da conta</span></div>
+        </header>
+
+        <div class="argos-stack">
+          <aside class="argos-alert argos-alert--info" aria-label="Informação sobre acesso aos módulos">
+            <div><strong>Os módulos operacionais dependem das permissões ARGOS.</strong><p>Esta demonstração mostra a navegação conceitual; não autentica usuários nem simula uma matriz de acesso.</p></div>
+          </aside>
+          <section class="argos-two-column" aria-label="Módulos disponíveis" data-argos-state-variant="default">
+            <article class="argos-card">
+              <div class="argos-card__header"><h2 class="argos-card__title"><a href="scr-inv-001.html">Inventário</a></h2><span class="argos-badge argos-badge--neutral">Conforme permissão</span></div>
+              <div class="argos-card__body argos-stack"><p data-argos-fixture-variant="default">Consulte e gerencie as câmeras cadastradas.</p><p data-argos-fixture-variant="long" hidden>Consulte câmeras cadastradas, refine os resultados por situação operacional e completude, e acompanhe fabricante, modelo, localização e monitoramento técnico.</p><a class="argos-button argos-button--primary" href="scr-inv-001.html">Abrir Inventário</a></div>
+            </article>
+            <article class="argos-card">
+              <div class="argos-card__header"><h2 class="argos-card__title"><a href="scr-dash-001.html">Dashboard</a></h2><span class="argos-badge argos-badge--neutral">Conforme permissão</span></div>
+              <div class="argos-card__body argos-stack"><p data-argos-fixture-variant="default">Acompanhe os indicadores operacionais.</p><p data-argos-fixture-variant="long" hidden>Acompanhe situação operacional, monitoramento técnico, qualidade do inventário e as informações de atividade e atualização mais recentes.</p><a class="argos-button argos-button--secondary" href="scr-dash-001.html">Abrir Dashboard</a></div>
+            </article>
+            <article class="argos-card">
+              <div class="argos-card__header"><h2 class="argos-card__title"><a href="../index.html#screen-scr-event-list-001">Eventos</a></h2><span class="argos-badge argos-badge--neutral">Conforme permissão</span></div>
+              <div class="argos-card__body argos-stack"><p data-argos-fixture-variant="default">Consulte o histórico de auditoria.</p><p data-argos-fixture-variant="long" hidden>Consulte os registros de auditoria e navegue conceitualmente até eventos relacionados a câmeras.</p><a class="argos-button argos-button--secondary" href="../index.html#screen-scr-event-list-001">Eventos · planejado</a></div>
+            </article>
+            <article class="argos-card">
+              <div class="argos-card__header"><h2 class="argos-card__title"><a href="../index.html#screen-scr-sub-list-001">Governança</a></h2><span class="argos-badge argos-badge--neutral">Conforme permissão</span></div>
+              <div class="argos-card__body argos-stack"><p data-argos-fixture-variant="default">Consulte o histórico de substituições de câmeras.</p><p data-argos-fixture-variant="long" hidden>Consulte os registros de substituição e as relações históricas entre câmeras no inventário.</p><a class="argos-button argos-button--secondary" href="../index.html#screen-scr-sub-list-001">Governança · planejada</a></div>
+            </article>
+          </section>
+          <section class="argos-state" data-argos-state-variant="empty" hidden aria-labelledby="portal-empty-title">
+            <h2 class="argos-state__title" id="portal-empty-title">Acesso operacional indisponível</h2>
+            <p class="argos-state__copy">Seu usuário ainda não possui permissões para acessar os módulos operacionais do ARGOS.</p>
+            <a class="argos-button argos-button--secondary" href="../index.html#screen-scr-account-profile-001">Meu Perfil · superfície planejada</a>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

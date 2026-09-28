@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="argos-ui-version" content="2.0.0">
+  <meta name="argos-screen-id" content="SCR-CAM-DETAIL-001">
+  <meta name="argos-screen-family" content="P3-A">
+  <meta name="argos-prototype-status" content="IN_PROGRESS">
+  <title>Detalhe da câmera — ARGOS</title>
+  <link rel="icon" href="../../style-lab/argos-icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/tokens.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/base.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/components.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/patterns.css">
+  <script src="../harness.js" defer></script>
+  <script src="p3-a-interactions.js" defer></script>
+</head>
+<body>
+  <a class="argos-skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="argos-docs-layout">
+    <aside class="argos-docs-sidebar">
+      <a class="argos-brand" href="scr-portal-001.html" aria-label="ARGOS — Início">
+        <img src="../../style-lab/argos-icon.svg" alt="" width="34" height="34">
+        <span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">UI V2 · protótipos</span></span>
+      </a>
+      <nav class="argos-docs-nav" aria-label="Navegação principal">
+        <span class="argos-docs-nav__group">Central operacional</span>
+        <a href="scr-portal-001.html" data-conceptual-route="/">Início</a>
+        <a href="scr-dash-001.html" data-conceptual-route="/dashboard/">Dashboard</a>
+        <a href="scr-inv-001.html" aria-current="location" data-conceptual-route="/cameras/">Inventário</a>
+        <a href="../index.html#screen-scr-sub-list-001" data-conceptual-route="/cameras/substituicoes/">Governança</a>
+        <a href="../index.html#screen-scr-event-list-001" data-conceptual-route="/eventos/">Eventos</a>
+      </nav>
+      <p class="argos-docs-sidebar__foot">P3-A · protótipo · DS 2.0.0</p>
+    </aside>
+    <div class="argos-docs-main">
+      <header class="argos-docs-topbar">
+        <span>ARGOS / UI V2 / P3-A</span>
+        <a href="../index.html#screen-scr-account-profile-001">Meu Perfil · superfície planejada</a>
+      </header>
+      <main class="argos-docs-content" id="main">
+        <header class="argos-page-header">
+          <div class="argos-page-header__copy">
+            <p class="argos-eyebrow">Inventário / Detalhe da câmera</p>
+            <h1 class="argos-page-title" data-camera-field="name">Carregando câmera demonstrativa…</h1>
+            <p class="argos-lead">Identificador <strong data-camera-field="identifier">—</strong></p>
+          </div>
+          <div class="argos-page-header__actions">
+            <a class="argos-button argos-button--secondary" href="scr-inv-001.html">Voltar ao Inventário</a>
+            <a class="argos-button argos-button--secondary" href="../index.html#screen-scr-cam-quick-001">Quick Detail · baseline protegida</a>
+            <a class="argos-button argos-button--primary" href="../index.html#screen-scr-cam-edit-001">Editar câmera · planejado</a>
+          </div>
+        </header>
+
+        <div class="argos-stack">
+          <div class="argos-inline" aria-label="Resumo da câmera">
+            <span class="argos-status-badge argos-status-badge--neutral" data-camera-operational>Carregando situação</span>
+            <span class="argos-status-badge argos-status-badge--neutral" data-camera-monitoring>Carregando monitoramento</span>
+            <span class="argos-status-badge argos-status-badge--neutral" data-camera-completeness>Carregando completude</span>
+            <span class="argos-status-badge argos-status-badge--warning" data-camera-stale hidden>Dados de monitoramento desatualizados</span>
+          </div>
+          <aside class="argos-alert argos-alert--warning" data-camera-stale-alert hidden aria-label="Aviso de atualização desatualizada">
+            <div><strong>O dado de monitoramento está desatualizado.</strong><p>Frescor é um qualificador separado do estado técnico apresentado acima.</p></div>
+          </aside>
+          <aside class="argos-alert argos-alert--danger" data-argos-state-variant="error" hidden role="alert">
+            <div><strong>Não foi possível atualizar o monitoramento.</strong><p>O último dado demonstrativo permanece visível; uma falha de consulta não significa que a câmera esteja Offline.</p></div>
+          </aside>
+
+          <section class="argos-two-column" aria-label="Identidade e localização">
+            <article class="argos-card">
+              <div class="argos-card__header"><h2 class="argos-card__title">Imagem da câmera</h2></div>
+              <div class="argos-card__body argos-stack">
+                <p class="argos-badge argos-badge--neutral" data-camera-image-state>Imagem não disponível nesta fixture</p>
+                <p>A demonstração não usa serviço de imagens nem cria uma captura fictícia.</p>
+              </div>
+            </article>
+            <article class="argos-card">
+              <div class="argos-card__header"><h2 class="argos-card__title">Localização</h2></div>
+              <div class="argos-card__body argos-stack">
+                <p><strong>Terminal:</strong> <span data-camera-field="terminal">—</span></p>
+                <p><strong>Pavimento:</strong> <span data-camera-field="floor">—</span></p>
+                <p><strong>Setor:</strong> <span data-camera-field="sector">—</span></p>
+                <p><strong>Ambiente:</strong> <span data-camera-field="environment">—</span></p>
+                <p><strong>Ponto de referência:</strong> <span data-camera-field="reference_point">—</span></p>
+              </div>
+            </article>
+          </section>
+
+          <section class="argos-two-column" aria-label="Cadastro e monitoramento">
+            <article class="argos-card">
+              <div class="argos-card__header"><h2 class="argos-card__title">Dados cadastrais</h2></div>
+              <div class="argos-card__body argos-stack">
+                <p><strong>Fabricante:</strong> <span data-camera-field="manufacturer">—</span></p>
+                <p><strong>Modelo:</strong> <span data-camera-field="model">—</span></p>
+                <p><strong>Tipo:</strong> <span data-camera-field="type">—</span></p>
+                <p><strong>Descrição:</strong> <span data-camera-field="description">—</span></p>
+                <p><strong>Fazenda:</strong> <span data-camera-field="farm">—</span></p>
+                <p><strong>VLAN:</strong> <span data-camera-field="vlan">—</span></p>
+              </div>
+            </article>
+            <article class="argos-card">
+              <div class="argos-card__header"><h2 class="argos-card__title">Rede</h2></div>
+              <div class="argos-card__body argos-stack">
+                <p><strong>Endereço IP:</strong> <span data-camera-network="ip">—</span></p>
+                <p><strong>Máscara de sub-rede:</strong> <span data-camera-network="subnet">—</span></p>
+                <p><strong>Gateway:</strong> <span data-camera-network="gateway">—</span></p>
+                <p>Valores de rede não são preenchidos na fixture demonstrativa.</p>
+              </div>
+            </article>
+          </section>
+
+          <section class="argos-card" aria-labelledby="camera-actions-title">
+            <div class="argos-card__header"><h2 class="argos-card__title" id="camera-actions-title">Ações operacionais</h2><span class="argos-badge argos-badge--neutral">Conforme situação e permissão</span></div>
+            <div class="argos-card__body argos-stack">
+              <p>Destinos conceituais planejados; o protótipo não executa mudanças nem simula a matriz de acesso.</p>
+              <div class="argos-inline">
+                <a class="argos-button argos-button--secondary" href="../index.html#screen-scr-gov-state-001">Alterar situação · planejado</a>
+                <a class="argos-button argos-button--secondary" href="../index.html#screen-scr-gov-disable-001">Desativar · planejado</a>
+                <a class="argos-button argos-button--secondary" href="../index.html#screen-scr-gov-reactivate-001">Reativar · planejado</a>
+                <a class="argos-button argos-button--secondary" href="../index.html#screen-scr-gov-substitute-001">Substituir · planejado</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="argos-card">
+            <div class="argos-card__header"><h2 class="argos-card__title">Histórico relacionado</h2><a href="../index.html#screen-scr-event-camera-001">Eventos da câmera · planejado</a></div>
+            <div class="argos-card__body argos-stack">
+              <div class="argos-stack" data-camera-history-content>
+                <section class="argos-two-column" aria-label="Indisponibilidades e atividades" data-camera-history>
+                  <article><h3>Indisponibilidades</h3><ul data-history="outages"></ul></article>
+                  <article><h3>Atividades</h3><ul data-history="activities"></ul><a href="../index.html#screen-scr-act-list-001">Atividades da câmera · planejado</a></article>
+                </section>
+                <section class="argos-two-column" aria-label="Substituições e eventos" data-camera-history>
+                  <article><h3>Substituições</h3><ul data-history="substitutions"></ul><a href="../index.html#screen-scr-sub-camera-001">Substituições da câmera · planejado</a></article>
+                  <article><h3>Eventos de auditoria</h3><ul data-history="events"></ul><a href="../index.html#screen-scr-event-camera-001">Eventos da câmera · planejado</a></article>
+                </section>
+              </div>
+              <section class="argos-state" data-argos-state-variant="empty" hidden aria-labelledby="detail-history-empty-title">
+                <h3 class="argos-state__title" id="detail-history-empty-title">Nenhum histórico relacionado</h3>
+                <p class="argos-state__copy">Este estado demonstra uma câmera sem indisponibilidades, atividades, substituições ou eventos relacionados.</p>
+              </section>
+            </div>
+          </section>
+
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
