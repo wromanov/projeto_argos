@@ -1,4 +1,4 @@
-/* ARGOS UI V2 · 2.0.0 · reusable compositions */
+/* ARGOS UI V2 · 2.0.1 · reusable compositions */
 @layer patterns {
   .argos-docs-layout { display: grid; min-height: 100vh; grid-template-columns: 232px minmax(0, 1fr); }
   .argos-docs-sidebar { display: flex; flex-direction: column; gap: var(--argos-space-6); padding: var(--argos-space-5) var(--argos-space-4); background: var(--argos-color-surface-inverse); color: var(--argos-color-ink-inverse); }

@@ -1,6 +1,7 @@
-/* ARGOS UI V2 · 2.0.0 · reset and global defaults */
+/* ARGOS UI V2 · 2.0.1 · reset and global defaults */
 @layer reset {
   *, *::before, *::after { box-sizing: border-box; }
+  [hidden]:not([hidden="until-found" i]) { display: none !important; }
   html { min-width: 320px; text-size-adjust: 100%; scroll-behavior: smooth; }
   body { margin: 0; }
   img, svg { display: block; max-width: 100%; }
