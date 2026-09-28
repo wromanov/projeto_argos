@@ -215,6 +215,15 @@ No futuro, integrar uma família por vez. Para cada família: revisar; validar o
 DESIGN_SYSTEM_VERSION = 2.0.0
 DESIGN_SYSTEM_2_0_0_PINNED = YES
 DESIGN_SYSTEM_MODIFIED = NO
+P3_0_STATUS = PASS / TECHNICAL HARNESS COMPLETE
+P3_0_BASELINE_HEAD = 7702b4c14cac6f7338625ccd08730e8d89fb9495
+P3_0_WORK_COMMIT = 7bf33de0456fbaaaf46943d73f44f82abb3e3a84
+P3_0_WORKTREE = C:\Users\walacedelgado\PycharmProjects\projeto_argos / isolated branch; no separate linked worktree
+USER_P3_0_APPROVAL = PENDING
+HARNESS_CANONICAL_INTEGRATION_COMMIT = NOT_YET
+POST_INTEGRATION_VALIDATION = NOT_YET
+REMOTE_SYNC_AFTER_P3_0 = NOT_YET
+FAN_OUT_BASE_COMMIT = NOT_YET
 PRODUCTION_CHANGED = NO
 PRODUCTION_UI_V2_INTEGRATION_STARTED = NO
 QUICK_DETAIL_PROTECTED = YES
@@ -225,6 +234,8 @@ PRODUCT_DESIGN_GET_CONTEXT = PASS / loaded and aligned with local canonical sour
 PRODUCT_DESIGN_DESIGN_QA = PASS / rendered shell compared with approved foundation
 DESIGN_QA_COMPLETE = YES
 FAN_OUT_READY = NO
+PUSH_PERFORMED = NO
+MERGE_PERFORMED = NO
 ```
 
 O estado técnico final, a conclusão da validação e o commit desta atividade são registrados em `PROJECT_STATE.md`, `AGENT_CONTINUITY.md` e no relatório final da execução. Próximo gate: revisão humana P3-0 e integração canônica autorizada separadamente.

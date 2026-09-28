@@ -1886,8 +1886,8 @@ Este checkpoint registra a execução autorizada pelo Card B. P2 permanece fecha
 
 ```text
 ACTIVITY = UI-V2-P3-0 / PROTOTYPE HARNESS & COMPOSITION CONTRACT
-ACTIVITY_STATUS = TECHNICAL PASS / LOCAL WORK COMMIT PENDING / USER REVIEW PENDING
-ACTIVITY_COMPLETION_PERCENT = 95%
+ACTIVITY_STATUS = COMPLETE / PASS / USER REVIEW PENDING
+ACTIVITY_COMPLETION_PERCENT = 100%
 CANONICAL_REPOSITORY_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
 P3_0_BASELINE_HEAD = 7702b4c14cac6f7338625ccd08730e8d89fb9495
 BRANCH = codex/ui-v2-p3-0-prototype-harness
@@ -1906,16 +1906,21 @@ P3_FAMILY_IMPLEMENTATION_STARTED = NO
 PRODUCTION_CHANGED = NO
 QUICK_DETAIL_PROTECTED = YES
 ADMIN_SCOPE_PRESERVED = YES
-P3_0_WORK_COMMIT = PENDING_LOCAL_CHECKPOINT
+P3_0_WORK_COMMIT = 7bf33de0456fbaaaf46943d73f44f82abb3e3a84
 USER_P3_0_APPROVAL = PENDING
 CANONICAL_INTEGRATION = NOT_YET
+HARNESS_CANONICAL_INTEGRATION_COMMIT = NOT_YET
+POST_INTEGRATION_VALIDATION = NOT_YET
+REMOTE_SYNC_AFTER_P3_0 = NOT_YET
+FAN_OUT_BASE_COMMIT = NOT_YET
 FAN_OUT_READY = NO
-PROJECT_STATE_UPDATE = PASS / P3-0 checkpoint recorded before activity completion
-ACTIVITY_COMPLETE = NO / work commit and user review handoff pending
+PROJECT_STATE_UPDATE = PASS / final P3-0 checkpoint records the technical work commit
+CONTINUITY_RECONCILIATION = PASS / current activity reflected; historical roadmap/sprint snapshots noted
+ACTIVITY_COMPLETE = YES / technical harness complete; user review and canonical integration are separate gates
 PUSH_PERFORMED = NO
 MERGE_PERFORMED = NO
 REBASE_PERFORMED = NO
-WORKTREE_FINAL = PENDING_LOCAL_COMMIT
+WORKTREE_FINAL = CLEAN
 ```
 
 A documentação P3-0 registra a matriz e os gates. Roadmap e sprint mantêm snapshots anteriores que apontam P1 como próximo; o Card B atual autoriza especificamente P3-0 e não inicia as famílias nem altera a ordem global. A integração canônica e a liberação do fan-out continuam separadas e pendentes.
