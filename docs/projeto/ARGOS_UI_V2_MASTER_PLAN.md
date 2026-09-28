@@ -443,3 +443,21 @@ PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
 PRODUCTION_TEMPLATES_CHANGED = NO
 
 Não iniciar P3. Publicar master somente após os gates já registrados e validar sincronização remota ao final.
+### 12.5. UI-V2-P2 — encerramento e sincronização remota (2026-09-28)
+
+Os gates de aprovação visual, fechamento P2, integração --no-ff, Django, push e sincronização remota passaram.
+
+P2_STATUS = CLOSED / PASS
+DESIGN_SYSTEM_VERSION = 2.0.0 / PINNED
+P2_CLOSURE_COMMIT = 7277f16f3f6470c975d2e9624309c1dd04e78eb1
+MERGE_COMMIT = 7da532ffd93311a4d8d7ea86ec668fb7ec7d0165 / NO_FF
+POST_MERGE_DJANGO_CHECK = PASS
+PUSH_PERFORMED = YES / origin master
+REMOTE_SYNC = PASS / fetch final, HEAD igual, divergence 0/0, worktree limpo
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES
+P3_STARTED = NO
+PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
+
+P3 permanece uma atividade separada, não iniciada e sem autorização implícita.
