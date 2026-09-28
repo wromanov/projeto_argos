@@ -809,7 +809,7 @@ PRODUCTION_TEMPLATES_CHANGED = NO
 ### 20.6. UI-V2-P3-0 — harness em revisão técnica (2026-09-28)
 
 CURRENT_ACTIVITY = UI-V2-P3-0 / PROTOTYPE HARNESS & COMPOSITION CONTRACT
-CURRENT_STATUS = TECHNICAL PASS / USER APPROVED / CANONICAL INTEGRATION IN PROGRESS
+CURRENT_STATUS = COMPLETE / PASS / PUBLISHED / FAN-OUT READY
 ACTIVITY_COMPLETION_PERCENT = 100%
 CANONICAL_REPOSITORY_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
 P3_0_BASELINE_HEAD = 7702b4c14cac6f7338625ccd08730e8d89fb9495
@@ -823,15 +823,16 @@ P3_FAMILY_IMPLEMENTATION_STARTED = NO
 PRODUCTION_CHANGED = NO
 P3_0_WORK_COMMIT = 7bf33de0456fbaaaf46943d73f44f82abb3e3a84
 USER_P3_0_APPROVAL = PASS
-CANONICAL_INTEGRATION = PASS / merged --no-ff; publication in progress
+CANONICAL_INTEGRATION = PASS / merged --no-ff and published
 MERGE_COMMIT = 02d1c03c8df784f82ae1d3d838a17d49a0db6eae
 POST_INTEGRATION_VALIDATION = PASS / Django check + HTTP_LOCAL prototype checks
-REMOTE_SYNC_AFTER_P3_0 = PENDING PUBLICATION
-FAN_OUT_READY = NO
+REMOTE_SYNC_AFTER_P3_0 = PASS / HEAD == origin/master; divergence 0/0
+FAN_OUT_BASE_COMMIT = CURRENT PUBLISHED MASTER HEAD / EXACT SHA IN GATE REPORT
+FAN_OUT_READY = YES
 PROJECT_STATE_UPDATE = PASS
 CONTINUITY_RECONCILIATION = PASS / Card B is activity-specific authority; older roadmap snapshots retained
-ACTIVITY_COMPLETE = YES / technical harness and user review complete; canonical integration in progress
-PUSH_PERFORMED = PENDING / authorized; publication gate in progress
+ACTIVITY_COMPLETE = YES / technical harness, user review, integration, validation and publication complete
+PUSH_PERFORMED = YES / origin/master; divergence 0/0
 MERGE_PERFORMED = YES / --no-ff
 
-O harness, índice, shell, fixture, quatro capturas e contratos estão em `docs/prototype/ui-v2/`. O master `SCREEN_COVERAGE.md` permanece root-owned; as famílias continuam sem artefatos. O usuário aprovou P3-0 e autorizou integração canônica/publicação; a validação pós-merge e a sincronização remota ainda precisam passar antes da liberação do fan-out.
+O harness, índice, shell, fixture, quatro capturas e contratos estão em `docs/prototype/ui-v2/`. O master `SCREEN_COVERAGE.md` permanece root-owned; as famílias continuam sem artefatos. P3-0 foi aprovado, integrado, validado e publicado; fan-out liberado a partir do `FAN_OUT_BASE_COMMIT` indicado no relatório final. P3-A/B/C/D não foram iniciadas.

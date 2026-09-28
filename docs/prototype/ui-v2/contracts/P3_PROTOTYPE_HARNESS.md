@@ -220,12 +220,12 @@ P3_0_BASELINE_HEAD = 7702b4c14cac6f7338625ccd08730e8d89fb9495
 P3_0_WORK_COMMIT = 7bf33de0456fbaaaf46943d73f44f82abb3e3a84
 P3_0_WORKTREE = C:\Users\walacedelgado\PycharmProjects\projeto_argos / isolated branch; no separate linked worktree
 USER_P3_0_APPROVAL = PASS
-HARNESS_CANONICAL_INTEGRATION_COMMIT = MASTER HEAD AFTER VALIDATION / SEE FINAL GATE REPORT
+HARNESS_CANONICAL_INTEGRATION_COMMIT = CURRENT PUBLISHED MASTER HEAD / EXACT SHA IN GATE REPORT
 POST_INTEGRATION_VALIDATION = PASS
 DJANGO_CHECK = PASS
 PROTOTYPE_INTEGRATION_VALIDATION = PASS / HTTP_LOCAL, relative links, canonical DS 2.0.0
-REMOTE_SYNC_AFTER_P3_0 = PENDING PUBLICATION
-FAN_OUT_BASE_COMMIT = NOT_YET
+REMOTE_SYNC_AFTER_P3_0 = PASS / HEAD == origin/master; divergence 0/0
+FAN_OUT_BASE_COMMIT = CURRENT PUBLISHED MASTER HEAD / EXACT SHA IN GATE REPORT
 PRODUCTION_CHANGED = NO
 PRODUCTION_UI_V2_INTEGRATION_STARTED = NO
 QUICK_DETAIL_PROTECTED = YES
@@ -235,9 +235,9 @@ PRODUCT_DESIGN_STATUS = AVAILABLE
 PRODUCT_DESIGN_GET_CONTEXT = PASS / loaded and aligned with local canonical sources
 PRODUCT_DESIGN_DESIGN_QA = PASS / rendered shell compared with approved foundation
 DESIGN_QA_COMPLETE = YES
-FAN_OUT_READY = NO
-PUSH_PERFORMED = PENDING / authorized; publication gate in progress
+FAN_OUT_READY = YES
+PUSH_PERFORMED = YES / origin/master
 MERGE_PERFORMED = YES / --no-ff
 ```
 
-O resultado da aprovação, integração e validação é registrado em `PROJECT_STATE.md`, `AGENT_CONTINUITY.md` e no relatório do gate. Próximo gate: confirmar publicação em `origin/master` com divergência `0/0`; somente então liberar o fan-out, sem iniciar famílias nesta atividade.
+O resultado da aprovação, integração, validação e publicação é registrado em `PROJECT_STATE.md`, `AGENT_CONTINUITY.md` e no relatório do gate. P3-0 liberou o fan-out a partir do `FAN_OUT_BASE_COMMIT` publicado; as famílias ainda não foram iniciadas.
