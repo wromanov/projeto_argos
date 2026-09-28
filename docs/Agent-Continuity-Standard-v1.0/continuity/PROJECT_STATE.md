@@ -1823,3 +1823,33 @@ COMMIT = PENDING / local P2 closure
 WORKTREE_FINAL = P2 changes ready for explicit file staging
 
 A aprovação e os gates P2 foram registrados; o commit local ainda precisa ser criado. Após o merge, validar referências do CSS em produção e executar manage.py check na master. Não iniciar P3.
+## 34. UI-V2-P2 — merge canônico e validação pós-merge (2026-09-28)
+
+Este checkpoint registra a integração local autorizada após o fechamento P2 e antes da publicação remota. Supersede a seção 33 somente nos campos de integração e gates pós-merge.
+
+ACTIVITY = UI-V2-P2 — VISUAL FOUNDATION + CANONICAL INTEGRATION
+ACTIVITY_STATUS = P2_CLOSED / PASS / MERGED / DJANGO_PASS / PUSH_PENDING
+ACTIVITY_COMPLETION_PERCENT = 97%
+P2_STATUS = CLOSED / PASS
+USER_VISUAL_ACCEPTANCE = PASS
+USER_FOUNDATION_APPROVAL = PASS
+DESIGN_SYSTEM_VERSION = 2.0.0 / PINNED
+P2_CLOSURE_COMMIT = 7277f16f3f6470c975d2e9624309c1dd04e78eb1
+MASTER_BEFORE = 6de91063526ab9e323114ad69f0967cc2849145a
+P2_BRANCH = codex/ui-v2-p2-visual-foundation
+MERGE_COMMIT = 7da532ffd93311a4d8d7ea86ec668fb7ec7d0165 / NO_FF
+INTEGRATION_GATE = PASS / clean pre-merge tree; diff check PASS; production reference audit PASS
+POST_MERGE_DJANGO_CHECK = PASS / System check identified no issues
+PUSH_AUTHORIZED = YES
+PUSH_PERFORMED = NO / pending
+REMOTE_SYNC = PENDING
+MASTER_WORKTREE = integration checkpoint pending commit
+PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
+PRODUCTION_UI_V2_INTEGRATION_STARTED = NO
+UI_V2_CSS_REFERENCED_BY_PRODUCTION = NO
+P3_STARTED = NO
+PROJECT_STATE_UPDATE = PASS / integration checkpoint persisted
+ACTIVITY_COMPLETE = NO / push and final remote sync pending
+
+A master local ainda aguarda push. A checagem Django foi executada após o merge em master. Não iniciar P3 nem integrar o CSS aos templates produtivos.

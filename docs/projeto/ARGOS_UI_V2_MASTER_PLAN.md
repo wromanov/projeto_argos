@@ -425,3 +425,21 @@ PUSH_AUTHORIZED = YES / pending validation gates
 ACTIVITY_COMPLETE = NO / integration and remote sync pending
 
 Os contratos registram versão final e aprovação humana. O fechamento P2 não inicia P3 nem integra o CSS ao runtime Django. Referências anteriores ao estado candidato/revisão pendente são snapshots históricos.
+### 12.4. UI-V2-P2 — integração canônica local validada (2026-09-28)
+
+O fechamento P2 foi mesclado em master com --no-ff após confirmar master/origin alinhadas e worktree limpa.
+
+P2_CLOSURE_COMMIT = 7277f16f3f6470c975d2e9624309c1dd04e78eb1
+MASTER_BEFORE = 6de91063526ab9e323114ad69f0967cc2849145a
+MERGE_COMMIT = 7da532ffd93311a4d8d7ea86ec668fb7ec7d0165 / NO_FF
+INTEGRATION_GATE = PASS
+POST_MERGE_DJANGO_CHECK = PASS / nenhum issue detectado
+PUSH_AUTHORIZED = YES
+PUSH_PERFORMED = NO / aguardando publicação
+REMOTE_SYNC = PENDING
+ACTIVITY_COMPLETE = NO / push e sincronização final pendentes
+P3_STARTED = NO
+PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
+
+Não iniciar P3. Publicar master somente após os gates já registrados e validar sincronização remota ao final.

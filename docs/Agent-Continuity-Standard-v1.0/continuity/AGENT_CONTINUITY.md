@@ -771,3 +771,21 @@ PROJECT_STATE_UPDATE = PASS
 ACTIVITY_COMPLETE = NO / canonical integration pending
 
 O fechamento de P2 não inicia P3. A conclusão da atividade ampliada exige merge, Django check, push e sincronização remota.
+
+### 20.4. UI-V2-P2 — merge canônico e validação Django (2026-09-28)
+
+Checkpoint vigente de integração antes do push. Os estados de P2 e aprovação permanecem os da seção 20.3; esta seção registra o merge e gates posteriores.
+
+P2_CLOSURE_COMMIT = 7277f16f3f6470c975d2e9624309c1dd04e78eb1
+MASTER_BEFORE = 6de91063526ab9e323114ad69f0967cc2849145a
+MERGE_COMMIT = 7da532ffd93311a4d8d7ea86ec668fb7ec7d0165 / NO_FF
+INTEGRATION_GATE = PASS
+POST_MERGE_DJANGO_CHECK = PASS / System check identified no issues
+PUSH_AUTHORIZED = YES
+PUSH_PERFORMED = NO / pending
+REMOTE_SYNC = PENDING
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO / push and remote sync pending
+P3_STARTED = NO
+PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
