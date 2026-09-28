@@ -258,7 +258,7 @@ autorizada. O repositório não registra uma decisão de sequência entre essa
 candidata e `MON-AVAIL-02`; ambas permanecem distintas e sem autorização. O
 estado atual deve ser lido em `PROJECT_STATE.md` e `SPRINTS_ARGOS_V5.md`.
 
-## 10. Estado atual e próxima atividade
+## 10. Estado registrado no fechamento de P0 (histórico)
 
 ```text
 UI_V2_TRACK_STATUS = DOCUMENTED / PARALLEL_TO_BACKEND
@@ -279,6 +279,31 @@ Esta autoridade registra processo e sequência. O census factual está concluíd
 e permanece como authority. A próxima atividade é P1, mas está não iniciada e
 não autorizada por este checkpoint. Parar após a reconciliação documental; não
 iniciar P1, protótipos ou implementação sem autorização explícita própria.
+
+### Fechamento de execução — UI-V2-P1 Visual Selection (2026-09-27)
+
+O usuário selecionou C — ARGOS HYBRID como direção visual do ARGOS UI V2. Os
+artefatos versionados e as capturas A/B/C estão em
+`docs/prototype/ui-v2/style-lab/`. A/B permanecem alternativas históricas e
+não selecionadas; C é a autoridade visual selecionada.
+
+```text
+USER_SELECTION = C — ARGOS HYBRID
+USER_VISUAL_SELECTION_GATE = PASS
+DIRECTION_A_STATUS = HISTORICAL_ALTERNATIVE / NOT_SELECTED
+DIRECTION_B_STATUS = HISTORICAL_ALTERNATIVE / NOT_SELECTED
+DIRECTION_C_STATUS = SELECTED / VISUAL_DIRECTION_AUTHORITY
+P1_STATUS = CLOSED / PASS
+P2_STARTED = NO
+NEXT_ACTIVITY = UI-V2-P2 — VISUAL FOUNDATION
+QUICK_DETAIL = APPROVED / PROTECTED
+ADMIN_UI_V2_SCOPE = TRACKED_AS_INHERITED / NO_CUSTOM_REDESIGN_BY_DEFAULT
+PROTOTYPE_STACK_COMPATIBILITY = REQUIRED_GATE
+PRODUCTION_FILES_CHANGED = NO
+```
+
+A seleção encerra P1. A sequência e os gates desta authority permanecem
+vigentes; o registro de P2 como próxima atividade não inicia essa fase.
 
 ## 11. Authorities relacionadas
 
