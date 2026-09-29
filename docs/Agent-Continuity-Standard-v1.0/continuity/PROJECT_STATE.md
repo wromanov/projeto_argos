@@ -2087,3 +2087,53 @@ ACTIVITY_COMPLETE = YES / root adjudication and capture-tooling outcome recorded
 ```
 
 Não houve edição de P3-A/B/C/D, produção, integração à master, commit ou push. As capturas temporárias da prova foram removidas após inspeção; P3-C mantém seus artefatos pós-2.0.1 no commit remoto indicado acima.
+
+## 39. UI-V2 ROOT — DS 2.0.2 mobile table readability (2026-09-29)
+
+Este checkpoint registra a implementação compartilhada, regressão cross-family e integração ROOT. A publicação da master e a confirmação de sincronização remota permanecem como o próximo gate imediato.
+
+```text
+ACTIVITY = UI-V2 ROOT — DSCR-UIV2-002 MOBILE DATA TABLE READABILITY
+ACTIVITY_STATUS = IMPLEMENTED / VALIDATED / MASTER_INTEGRATED / PUBLICATION_PENDING
+ACTIVITY_COMPLETION_PERCENT = 95%
+BASELINE_MASTER = fa4638a6799b8284b091a1a9ef5b54a9e2981947
+BRANCH = master
+DS_2_0_2_PATCH_BRANCH = codex/ui-v2-ds-2.0.2-mobile-table-readability
+DS_2_0_2_PATCH_COMMIT = 8a480a50a338ef3961a242e9dce0ccaf09cdf49b
+DS_2_0_2_INTEGRATION_COMMIT = 06f0d50af564a7f711f7fdfd81c7c967ec325bc7 / NO_FF
+DESIGN_SYSTEM_VERSION = 2.0.2
+DSCR = DSCR-UIV2-002-MOBILE-TABLE-READABILITY / IMPLEMENTED / VALIDATED
+ROOT_CAUSE = shared overflow-wrap:anywhere let automatic table sizing compress cells and split normal words; long inventory labels amplified the effect
+PATCH_RULES = table data cells and badges/status badges use overflow-wrap:break-word; retain natural cell sizing, 760px minimum table width, contained horizontal scrolling, all columns and actions
+ROOT_OWNER = static/css/ui-v2/patterns.css
+FILES_CHANGED = four shared UI V2 CSS files; screens/index.html; screens/harness.js; DSCR-UIV2-002-MOBILE-TABLE-READABILITY.md
+AFFECTED_CONSUMERS = 7 / SCR-INV-001; SCR-MON-HISTORY-001; SCR-SUB-LIST-001; SCR-SUB-CAMERA-001; SCR-ACT-LIST-001; SCR-EVENT-LIST-001; SCR-EVENT-CAMERA-001
+BASELINE_MOBILE = PASS / 7 of 7 at 390x844 on DS 2.0.1
+SCR_INV_001_ROW_HEIGHT = 283px → 127px / default; 283px → 217px / long fixture
+CROSS_FAMILY_REGRESSION = PASS / 7 of 7 after merge at 390x844
+GLOBAL_HORIZONTAL_OVERFLOW = NO / 7 of 7
+LOCAL_TABLE_SCROLL = FUNCTIONAL / 7 of 7
+WORD_FRAGMENTATION = NO DESTRUCTIVE FRAGMENTATION; hyphenated identifiers wrap at separators; long identifiers may use fallback break
+BADGE_FRAGMENTATION = NO / including long status label
+ACTION_AND_KEYBOARD_ACCESSIBILITY = PASS / 17 of 17 available action links reachable by Tab
+DESKTOP_REGRESSION = PASS / 1440x900 all seven; SCR-INV-001 also at 1366x768; dimensions and row heights unchanged
+ROOT_DESIGN_QA = PASS
+EVIDENCE_CAPTURE = PASS / Node + Playwright + installed Chrome; temporary ROOT captures outside family evidence
+DJANGO_CHECK = PASS / repo .venv; System check identified no issues
+PRODUCTION_CHANGED = NO
+PRODUCTION_TEMPLATES_CHANGED = NO
+BACKEND_CHANGED = NO
+DATABASE_CHANGED = NO
+MIGRATIONS_CHANGED = NO
+P3_A_REMOTE_HEAD = 1f833aed523420db47ba06faa5d5cf5cc114de0b / UNCHANGED
+P3_B_REMOTE_HEAD = b57ad0044722a838e761f987eeb0aa556c6646b0 / UNCHANGED
+P3_C_REMOTE_HEAD = c26840e8c9c21b9105b7c3bb42c96bc5186c9227 / UNCHANGED
+PREFLIGHT_MASTER_DRIFT = NO / exact expected baseline; clean; divergence 0/0
+POST_MERGE_VALIDATION = PASS / version pins, 7-consumer mobile regression, Django check, diff and changed-file scope
+PROJECT_STATE_UPDATE = PASS / integration checkpoint recorded; final remote sync pending
+MASTER_PUSH = AUTHORIZED / POST_MERGE_VALIDATION PASS
+MASTER_REMOTE_SYNC = PENDING
+ACTIVITY_COMPLETE = NO / awaiting master push and final sync verification
+NEXT_GATE = push origin/master; fetch; require HEAD == origin/master, divergence 0/0 and clean worktree
+AFTER_PUBLICATION_NEXT_GATE = propagate DS_2_0_2_PATCH_COMMIT to affected P3 family branches under separate activity authorization
+```
