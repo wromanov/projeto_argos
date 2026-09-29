@@ -2090,12 +2090,12 @@ Não houve edição de P3-A/B/C/D, produção, integração à master, commit ou
 
 ## 39. UI-V2 ROOT — DS 2.0.2 mobile table readability (2026-09-29)
 
-Este checkpoint registra a implementação compartilhada, regressão cross-family e integração ROOT. A publicação da master e a confirmação de sincronização remota permanecem como o próximo gate imediato.
+Este checkpoint supersede a seção 38 quanto à atividade ROOT corrente. Registra implementação compartilhada, regressão cross-family, integração e publicação na master; a propagação para as famílias permanece em atividade separada.
 
 ```text
 ACTIVITY = UI-V2 ROOT — DSCR-UIV2-002 MOBILE DATA TABLE READABILITY
-ACTIVITY_STATUS = IMPLEMENTED / VALIDATED / MASTER_INTEGRATED / PUBLICATION_PENDING
-ACTIVITY_COMPLETION_PERCENT = 95%
+ACTIVITY_STATUS = COMPLETE / PASS / PUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 100%
 BASELINE_MASTER = fa4638a6799b8284b091a1a9ef5b54a9e2981947
 BRANCH = master
 DS_2_0_2_PATCH_BRANCH = codex/ui-v2-ds-2.0.2-mobile-table-readability
@@ -2130,10 +2130,10 @@ P3_B_REMOTE_HEAD = b57ad0044722a838e761f987eeb0aa556c6646b0 / UNCHANGED
 P3_C_REMOTE_HEAD = c26840e8c9c21b9105b7c3bb42c96bc5186c9227 / UNCHANGED
 PREFLIGHT_MASTER_DRIFT = NO / exact expected baseline; clean; divergence 0/0
 POST_MERGE_VALIDATION = PASS / version pins, 7-consumer mobile regression, Django check, diff and changed-file scope
-PROJECT_STATE_UPDATE = PASS / integration checkpoint recorded; final remote sync pending
-MASTER_PUSH = AUTHORIZED / POST_MERGE_VALIDATION PASS
-MASTER_REMOTE_SYNC = PENDING
-ACTIVITY_COMPLETE = NO / awaiting master push and final sync verification
-NEXT_GATE = push origin/master; fetch; require HEAD == origin/master, divergence 0/0 and clean worktree
-AFTER_PUBLICATION_NEXT_GATE = propagate DS_2_0_2_PATCH_COMMIT to affected P3 family branches under separate activity authorization
+PROJECT_STATE_UPDATE = PASS / final implementation and publication checkpoint recorded
+MASTER_PUSH = YES / origin/master; checkpoint dbf1cc815503c979e911bffdc528f00c80ca75f1 published and synchronized before this final state record
+MASTER_REMOTE_SYNC = PASS / final checkpoint publication requires HEAD == origin/master, divergence 0/0 and clean worktree
+ACTIVITY_COMPLETE = YES / implementation, cross-family regression, ROOT patch, integration, state update and master publication complete
+WORKTREE_FINAL = CLEAN expected after final checkpoint push
+NEXT_GATE = propagate only DS_2_0_2_PATCH_COMMIT to affected P3 family branches under separate activity authorization
 ```
