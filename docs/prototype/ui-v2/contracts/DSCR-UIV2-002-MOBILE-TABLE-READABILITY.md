@@ -105,3 +105,55 @@ PRODUCTION_CHANGED = NO
 Approved policy for the separate ROOT patch: preserve every factual field and the contained horizontal scroller; prevent destructive word fragmentation; establish readable minimum column/cell behavior; preserve keyboard and touch access to actions; do not hide columns arbitrarily or convert shared tables to cards. Run cross-family regression on P3-A and representative P3-B/P3-C consumers. If canonical shared CSS changes, promote 2.0.1 to 2.0.2. Keep this adjudication checkpoint documentary only.
 
 NEXT_GATE = new ROOT activity to implement the approved DS 2.0.2 mobile data table policy; return its commit SHA for human adjudication before integration or propagation
+
+## Implementação ROOT — Design System 2.0.2
+
+```text
+IMPLEMENTATION_STATUS = PASS / ROOT PATCH COMPLETE
+ROOT_CAUSE = .argos-table th/td and nested badges used overflow-wrap:anywhere, allowing min-content sizing to compress table columns and split ordinary words; P3-A's 8-column table amplified this shared behavior
+PATCH_RULES = remove anywhere from shared table cells; use overflow-wrap:break-word on table data cells and badges/status badges inside those cells; retain automatic table layout, 760px table minimum, local overflow-x:auto, and all columns/actions
+CURRENT_SELECTORS = .argos-table th, .argos-table td; .argos-table td; .argos-table td .argos-badge; .argos-table td .argos-status-badge
+CURRENT_PROPERTIES = overflow-wrap:anywhere → removed; overflow-wrap:break-word on table data cells and their badges
+CURRENT_OWNER_FILE = static/css/ui-v2/patterns.css / ROOT
+FILES_CHANGED = static/css/ui-v2/{tokens,base,components,patterns}.css; docs/prototype/ui-v2/screens/{index.html,harness.js}; this DSCR
+AFFECTED_CONSUMERS = 7 / SCR-INV-001; SCR-MON-HISTORY-001; SCR-SUB-LIST-001; SCR-SUB-CAMERA-001; SCR-ACT-LIST-001; SCR-EVENT-LIST-001; SCR-EVENT-CAMERA-001
+REPRODUCED_CONSUMERS = SCR-INV-001; SCR-SUB-LIST-001; SCR-SUB-CAMERA-001; SCR-ACT-LIST-001; SCR-EVENT-LIST-001
+NON_REPRODUCED_CONSUMERS = SCR-MON-HISTORY-001; SCR-EVENT-CAMERA-001
+VERSION_AFTER = 2.0.2
+```
+
+### ROOT regression results
+
+Baseline and candidate runs used temporary copies at P3-A `1f833aed523420db47ba06faa5d5cf5cc114de0b`, P3-B remote HEAD `b57ad0044722a838e761f987eeb0aa556c6646b0`, and P3-C `c26840e8c9c21b9105b7c3bb42c96bc5186c9227`. P3-B's temporary copy received the canonical 2.0.1 CSS before baseline; no P3 family branch or worktree was changed.
+
+| Screen | 2.0.1 max row | 2.0.1 split words / badges | 2.0.2 max row | 2.0.2 split words / badges |
+|---|---:|---:|---:|---:|
+| SCR-INV-001 | 283px | 20 / 11 | 127px | 0 / 0 |
+| SCR-MON-HISTORY-001 | 56px | 0 / 0 | 56px | 0 / 0 |
+| SCR-SUB-LIST-001 | 91px | 8 / 0 | 81px | 0 / 0 |
+| SCR-SUB-CAMERA-001 | 85px | 4 / 0 | 81px | 0 / 0 |
+| SCR-ACT-LIST-001 | 95px | 10 / 0 | 95px | 0 / 0 |
+| SCR-EVENT-LIST-001 | 73px | 10 / 2 | 73px | 5 / 0 |
+| SCR-EVENT-CAMERA-001 | 64px | 0 / 0 | 64px | 0 / 0 |
+
+All seven mobile runs at 390x844 retained contained horizontal scroll and had no page-level horizontal overflow. Every action in the four screens that expose actions (17 links total) remained reachable by Tab; focusing the action column scrolled its table region. The five residual multi-rectangle text ranges on SCR-EVENT-LIST-001 are hyphenated factual identifiers wrapping at their hyphen separators; no ordinary word or badge remains fragmented. The long inventory fixture reduced its maximum row from 283px to 217px; its long status badge wrapped at spaces without fragmentation, and its single long identifier used the fallback break.
+
+At 1440x900, table widths and maximum row heights were unchanged on all seven consumers. SCR-INV-001 was also checked at 1366x768 with unchanged 1072px table width and 103px maximum row height. There was no global overflow, browser error, or production/runtime change. Desktop horizontal scrolling was absent because each table fit its container.
+
+```text
+BASELINE_7_CONSUMERS = PASS / DS 2.0.1, 390x844
+CROSS_FAMILY_REGRESSION = PASS / 7 of 7, DS 2.0.2, 390x844
+GLOBAL_HORIZONTAL_OVERFLOW = NO / 7 of 7
+LOCAL_TABLE_SCROLL = FUNCTIONAL / 7 of 7
+WORD_FRAGMENTATION = NO DESTRUCTIVE FRAGMENTATION; hyphenated identifiers wrap at delimiters and a long unbroken identifier uses fallback break
+BADGE_FRAGMENTATION = NO / all seven; long status wraps at spaces
+ACTION_ACCESSIBILITY = PASS / 17 of 17 available action links
+KEYBOARD_ACCESSIBILITY = PASS / all available actions reached by Tab
+DESKTOP_REGRESSION = PASS / 1440x900 all seven; 1366x768 SCR-INV-001
+MOBILE_REGRESSION = PASS / 390x844 all seven; SCR-INV-001 default and long fixture
+ROOT_DS_2_0_2_DESIGN_QA = PASS
+DESIGN_QA = readability and scanability improved in consumers with split words; action access and hierarchy preserved; desktop density and table widths unchanged
+EVIDENCE_CAPTURE = PASS / Node + Playwright + installed Chrome; HTTP bound to 127.0.0.1; captures and metrics retained temporarily under the system temp directory, not family evidence
+PRODUCTION_CHANGED = NO
+P3_FAMILY_BRANCHES_CHANGED = NO
+```
