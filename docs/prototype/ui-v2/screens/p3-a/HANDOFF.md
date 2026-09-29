@@ -1,5 +1,58 @@
 # P3-A — Workstation handoff
 
+## Retomada final após DS 2.0.2 (2026-09-29)
+
+```text
+CHECKOUT_ERROR_CORRECTED = YES
+P3_A_WORKTREE = C:\Users\walacedelgado\PycharmProjects\projeto_argos_ui_v2_p3_a
+P3_A_BRANCH = codex/ui-v2-p3-a-core-inventory
+CHERRY_PICK_STATE_FOUND = STATE_A
+DS_PATCH_SOURCE = 8a480a50a338ef3961a242e9dce0ccaf09cdf49b
+ROOT_DCR_CONFLICT = YES / modify-delete only
+ROOT_DCR_CONFLICT_RESOLUTION = KEEP_FAMILY_ABSENCE
+P3_A_DS_2_0_2_PROPAGATION_COMMIT = d0c495cea2a302b70845e38e97225dd8daf5c5d2
+CANONICAL_MASTER_CHANGED = NO
+DESIGN_SYSTEM_VERSION = 2.0.2
+CHERRY_PICK_IN_PROGRESS = NO
+DCR_FILE_IN_P3_A = ABSENT
+CANONICAL_DCR_IN_ORIGIN_MASTER = PRESENT
+SHARED_DS_2_0_2_IMPLEMENTATION = PRESENT
+ROOT_OWNERSHIP_PRESERVED = YES
+STATE_QA = PASS
+RESPONSIVE_QA = PASS / 16 combinations, four screens × four viewports
+INVENTORY_MOBILE_ROW_HEIGHT = 127px default / 217px long / previous 283px
+ACCESSIBILITY_BASELINE = PASS_WITH_LIMITS
+EVIDENCE_CAPTURE_STATUS = BLOCKED / browser capture is not persistable through available interface
+NODE_PLAYWRIGHT_AVAILABLE = NO / node and npm are not installed in PATH
+CONSOLE_LOG_CAPTURE = NOT_AVAILABLE
+PRODUCT_DESIGN_DESIGN_QA = BLOCKED_BY_MISSING_PERSISTED_EVIDENCE
+TECHNICAL_READY_FOR_REVIEW = NO
+DESIGN_QA_COMPLETE = NO
+USER_VISUAL_APPROVAL = PENDING
+P3_A_FINAL_COMPLETION_COMMIT = NOT_CREATED
+BLOCKED_CHECKPOINT_COMMIT = AUTHORIZED / family-owned records only
+PUSH_AUTHORIZED = YES / codex/ui-v2-p3-a-core-inventory only
+```
+
+A propagação preservou os seis arquivos de implementação compartilhados e
+excluiu somente o DCR canônico ROOT. A revisão confirmou a ausência do DCR em
+P3-A e sua presença em `origin/master`; o checkout canônico não foi modificado.
+Os metadados das quatro telas P3-A foram atualizados para DS 2.0.2.
+
+A matriz técnica passou para estados, responsividade, tabela, interação e
+baseline de acessibilidade. A altura das linhas de Inventário passou de 283px
+para 127px na fixture padrão em 390×844; a fixture longa mede 217px. A comparação
+visual pareada foi inspecionada em Edge, mas as capturas só podem ser exibidas
+na sessão, sem persistência PNG no caminho oficial. O resultado Product Design
+continua bloqueado e nenhuma aprovação visual humana está implícita.
+
+Próximo passo: disponibilizar captura Playwright com escrita local aprovada,
+salvar screenshots determinísticos em
+`docs/prototype/ui-v2/evidence/screenshots/p3-a/`, repetir o gate visual e
+solicitar revisão humana. Não retomar recuperação do checkout ou reaplicar a
+propagação. Não editar ROOT DCR, estado global, nem outras famílias.
+---
+
 ## Retomada local — propagação DS 2.0.1 e QA técnico (2026-09-28)
 
 ```text

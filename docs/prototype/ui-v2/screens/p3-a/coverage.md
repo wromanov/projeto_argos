@@ -1,5 +1,59 @@
 # P3-A — Coverage local
 
+## Checkpoint pós-propagação DS 2.0.2 (2026-09-29)
+
+```text
+REMOTE_HEAD_BEFORE_PROPAGATION = 1f833aed523420db47ba06faa5d5cf5cc114de0b
+DS_PATCH_SOURCE_COMMIT = 8a480a50a338ef3961a242e9dce0ccaf09cdf49b
+P3_A_DS_2_0_2_PROPAGATION_COMMIT = d0c495cea2a302b70845e38e97225dd8daf5c5d2
+PROPAGATION_MODE = CHERRY_PICK_WITH_ROOT_DOCUMENT_EXCLUSION
+ROOT_DOCUMENT_EXCLUDED = DSCR-UIV2-002-MOBILE-TABLE-READABILITY.md
+EXCLUSION_REASON = ROOT-owned canonical governance artifact absent from family lineage; P3-A consumes shared implementation without duplicating ROOT governance
+SHARED_DS_IMPLEMENTATION_PROPAGATED = YES
+DESIGN_SYSTEM_VERSION = 2.0.2
+CHERRY_PICK_IN_PROGRESS = NO
+DCR_FILE_IN_P3_A = ABSENT
+CANONICAL_DCR_IN_ORIGIN_MASTER = PRESENT
+ROOT_OWNERSHIP_PRESERVED = YES
+CHECKOUT_ERROR_CORRECTED = YES
+CANONICAL_MASTER_CHANGED = NO
+STATE_QA = PASS
+RESPONSIVE_QA = PASS / four screens × four viewports
+INVENTORY_MOBILE_ROW_HEIGHT = 127px default / 217px long fixture / 283px before DS 2.0.2
+ACCESSIBILITY_BASELINE = PASS_WITH_LIMITS
+NODE_PLAYWRIGHT_AVAILABLE = NO / node and npm are not installed in PATH
+CONSOLE_LOG_CAPTURE = NOT_AVAILABLE
+EVIDENCE_CAPTURE_STATUS = BLOCKED / no persistent screenshot destination in available browser capture interface
+TECHNICAL_READY_FOR_REVIEW = NO / persisted evidence gate remains open
+PRODUCT_DESIGN_DESIGN_QA = BLOCKED
+DESIGN_QA_COMPLETE = NO
+USER_VISUAL_APPROVAL = PENDING
+P3_A_FINAL_COMPLETION_COMMIT = NOT_CREATED
+BLOCKED_CHECKPOINT_COMMIT = AUTHORIZED / family-owned records only
+PUSH_AUTHORIZED = YES / codex/ui-v2-p3-a-core-inventory only
+```
+
+| Área | Resultado observado |
+|---|---|
+| Portal, Dashboard, Inventário, Detalhe — 390×844, 1366×768, 1440×900, 1920×1080 | 16/16 sem overflow horizontal global em `html`/`body` |
+| Estados | Portal/Dashboard default, empty, long; Inventário default, empty, loading, error, long; Detalhe default/stale, history empty, error, long |
+| Inventário em 390×844 | wrapper com 360px úteis; tabela 920px com rolagem local; linha default 127px; fixture longa 217px; antes do DS 2.0.2 a linha padrão media 283px |
+| Inventário funcional | busca vazia, limpar filtros, página 2, seleção por Enter, link de ação alcançável por teclado e Quick Detail protegido verificados |
+| Acessibilidade baseline | `pt-BR`, título, um H1, main/nav nomeados, controles rotulados, imagens com alt e seleção por teclado; não representa certificação WCAG |
+| Evidência visual | comparação de referência e implementação inspecionada em Edge, sem PNG nomeado persistido; Product Design permanece bloqueado |
+
+O commit de propagação contém apenas `harness.js`, `index.html` e os quatro CSS
+canônicos compartilhados. O arquivo ROOT DCR está ausente no HEAD P3-A e presente
+em `origin/master`. As quatro páginas P3-A agora identificam DS 2.0.2 no meta e
+no rodapé; nenhum override de CSS específico de família foi adicionado.
+
+O preview HTTP local executa as páginas em Edge. A interface disponível mostra
+capturas na sessão, mas não expõe destino de arquivo; o diretório oficial de
+evidências P3-A permanece sem as capturas requeridas. `TECHNICAL_READY_FOR_REVIEW`
+e `DESIGN_QA_COMPLETE` ficam `NO` até persistir os PNGs e concluir revisão visual
+humana. O console não foi capturado nesta sessão.
+---
+
 ## Checkpoint de retomada após DS 2.0.1 (2026-09-28)
 
 ```text

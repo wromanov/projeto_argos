@@ -1,5 +1,61 @@
 # P3-A — Product Design / design QA
 
+## Regressão final após propagação DS 2.0.2 (2026-09-29)
+
+**final result: blocked**
+
+```text
+P3_A_WORKTREE = C:\Users\walacedelgado\PycharmProjects\projeto_argos_ui_v2_p3_a
+BRANCH = codex/ui-v2-p3-a-core-inventory
+DS_PATCH_SOURCE_COMMIT = 8a480a50a338ef3961a242e9dce0ccaf09cdf49b
+P3_A_DS_2_0_2_PROPAGATION_COMMIT = d0c495cea2a302b70845e38e97225dd8daf5c5d2
+DESIGN_SYSTEM_VERSION = 2.0.2
+CHERRY_PICK_CONFLICT = ROOT_GOVERNANCE_DOCUMENT_ONLY
+CONFLICT_RESOLUTION = KEEP_FAMILY_ABSENCE
+CANONICAL_DCR_LOCATION = origin/master
+ROOT_DOCUMENT_DUPLICATED_IN_P3_A = NO
+ROOT_OWNERSHIP_PRESERVED = YES
+F01 = PASS / state isolation on DS 2.0.2
+F02 = RESOLVED_AT_ROOT / mobile table readability regression PASS
+F03 = OPEN / named screenshot persistence unavailable
+STATE_QA = PASS / supported variants and Inventory interaction matrix
+RESPONSIVE_QA = PASS / four screens × 390x844, 1366x768, 1440x900, 1920x1080
+ACCESSIBILITY_BASELINE = PASS_WITH_LIMITS / semantic and keyboard baseline; no WCAG conformance claim
+NODE_PLAYWRIGHT_AVAILABLE = NO / node and npm are not installed in PATH
+CONSOLE_LOG_CAPTURE = NOT_AVAILABLE
+PRODUCT_DESIGN_DESIGN_QA = BLOCKED_BY_MISSING_PERSISTED_EVIDENCE
+EVIDENCE_CAPTURE_STATUS = BLOCKED
+TECHNICAL_READY_FOR_REVIEW = NO
+USER_VISUAL_APPROVAL = PENDING
+P3_A_FINAL_COMPLETION_COMMIT = NOT_CREATED
+BLOCKED_CHECKPOINT_COMMIT = AUTHORIZED / family-owned records only
+PUSH_AUTHORIZED = YES / codex/ui-v2-p3-a-core-inventory only
+```
+
+### Fonte visual e capturas
+
+- Direção visual consultada: `docs/prototype/ui-v2/style-lab/screenshots/argos-style-c.png`.
+- Shell compartilhado consultado: `docs/prototype/ui-v2/evidence/screenshots/shell/shell__1440x900__default__default.png`.
+- A comparação normalizada 1440×900 foi inspecionada lado a lado em Edge: direção de cor, shell, tipografia, espaçamento, superfícies e hierarquia estão coerentes com a referência. A fonte representa direção visual e shell, não um mock individual de cada tela.
+- As quatro telas foram exercitadas no preview HTTP local; o browser permite exibir capturas na sessão, mas a interface de captura disponível não oferece caminho de arquivo. Não há PNGs persistidos em `docs/prototype/ui-v2/evidence/screenshots/p3-a/`.
+- A revisão final permanece bloqueada porque o contrato pede evidência nomeada persistida. Captura inline da sessão não substitui o artefato.
+
+### Resultado técnico observado
+
+- Quatro telas × quatro viewports CSS: 16 combinações sem overflow horizontal global em `html` ou `body`. Viewports: 390×844, 1366×768, 1440×900 e 1920×1080.
+- Inventário em 390×844: rolagem horizontal contida no wrapper (largura útil 360px; tabela 920px); linhas padrão com 127px. Em desktop, sem rolagem local e linhas com 103px. Fixture longa, página 2: registro longo com 217px e demais linhas com 127px.
+- Inventário: filtro sem resultados mostra estado vazio; limpar filtros restaura resultados; paginação apresenta a segunda página; Enter seleciona a linha e anuncia a câmera; o Quick Detail continua apontando ao baseline protegido. O link da ação é alcançável pelo teclado e traz alvo de 44px dentro da região rolável.
+- Estados: Portal e Dashboard default/empty/long; Inventário default/empty/loading/error/long; Detalhe default (freshness stale), histórico empty/error/long. Uma variante ativa por vez.
+- Baseline acessível: `pt-BR`, título, um H1, landmarks `main` e navegação nomeada, nomes de campos/botões, imagens com `alt`, seleção por teclado. Baseline não é declaração de conformidade WCAG. A captura de console não ficou disponível nesta sessão e não é declarada como aprovada.
+- F-02: o DS 2.0.2 reduz a altura móvel da linha padrão medida anteriormente em 283px para 127px. Não foi criado workaround P3-A; os dados e ações continuam na tabela compartilhada com rolagem interna.
+
+### Limite de conclusão
+
+A implementação e a regressão técnica estão prontas para revisão, mas o gate Product Design exige PNGs nomeados persistidos; a ferramenta de browser disponível só retorna capturas à sessão. Nenhuma aprovação visual humana foi dada. `final result: blocked` e `DESIGN_QA_COMPLETE = NO` permanecem até anexar evidência no caminho canônico e concluir a revisão visual humana.
+
+O checkpoint anterior abaixo é mantido como histórico; os achados de 283px e o bloqueio de DS 2.0.1 foram resolvidos pela propagação 2.0.2.
+---
+
 ## Retomada pós-DS 2.0.1 — QA técnico (2026-09-28)
 
 **final result: blocked**
