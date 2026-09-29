@@ -1,4 +1,4 @@
-/* ARGOS UI V2 · 2.0.1 · reusable compositions */
+/* ARGOS UI V2 · 2.0.2 · reusable compositions */
 @layer patterns {
   .argos-docs-layout { display: grid; min-height: 100vh; grid-template-columns: 232px minmax(0, 1fr); }
   .argos-docs-sidebar { display: flex; flex-direction: column; gap: var(--argos-space-6); padding: var(--argos-space-5) var(--argos-space-4); background: var(--argos-color-surface-inverse); color: var(--argos-color-ink-inverse); }
@@ -31,7 +31,9 @@
   .argos-filter-bar > .argos-button { flex: 0 0 auto; }
   .argos-table-region { max-width: 100%; overflow-x: auto; border: var(--argos-border-width) solid var(--argos-color-border); border-radius: var(--argos-radius-surface); background: var(--argos-color-surface); }
   .argos-table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: var(--argos-text-secondary); text-align: left; }
-  .argos-table th, .argos-table td { padding: var(--argos-table-cell-block) var(--argos-table-cell-inline); border-bottom: var(--argos-border-width) solid var(--argos-color-border); overflow-wrap: anywhere; vertical-align: top; }
+  .argos-table th, .argos-table td { padding: var(--argos-table-cell-block) var(--argos-table-cell-inline); border-bottom: var(--argos-border-width) solid var(--argos-color-border); vertical-align: top; }
+  .argos-table td { overflow-wrap: break-word; }
+  .argos-table td .argos-badge, .argos-table td .argos-status-badge { overflow-wrap: break-word; }
   .argos-table th { background: var(--argos-color-surface-subtle); color: var(--argos-color-ink-muted); font-size: var(--argos-text-caption); font-weight: var(--argos-weight-bold); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
   .argos-table tbody tr { height: var(--argos-table-row-height); }
   .argos-table--compact tbody tr { height: var(--argos-table-row-height-compact); }
