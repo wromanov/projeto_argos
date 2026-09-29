@@ -1,5 +1,65 @@
 # P3-A — Product Design / design QA
 
+## Retomada pós-DS 2.0.1 — QA técnico (2026-09-28)
+
+**final result: blocked**
+
+```text
+F01 = RESOLVED / DS 2.0.1 hidden semantics regression PASS
+F02 = OPEN / mobile inventory table readability / ROOT adjudication required
+F03 = OPEN / evidence capture mechanism blocked
+PORTAL = QA EXECUTED
+DASHBOARD = QA EXECUTED
+INVENTORY = QA EXECUTED WITH F02
+CAMERA_DETAIL = QA EXECUTED
+QUICK_DETAIL = PROTECTED / INHERITED
+EVIDENCE_CAPTURE_STATUS = BLOCKED
+P3_A_FINAL_COMPLETION_COMMIT = NOT_CREATED / technical gate did not pass
+BLOCKED_CHECKPOINT_COMMIT = AUTHORIZED / family-owned records only; SHA reported after creation
+PUSH_AUTHORIZED = YES / codex/ui-v2-p3-a-core-inventory only
+USER_VISUAL_APPROVAL = PENDING
+```
+
+### Fonte visual e evidência
+
+- Direção ARGOS HYBRID: `docs/prototype/ui-v2/style-lab/screenshots/argos-style-c.png`.
+- Referência do shell: `docs/prototype/ui-v2/evidence/screenshots/shell/shell__1440x900__default__default.png`.
+- Implementação: preview HTTP local em `http://127.0.0.1:8766/docs/prototype/ui-v2/screens/p3-a/`.
+- Viewports inspecionados: 1920×1080, 1440×900, 1366×768 e 390×844, zoom 100%.
+- Capturas de implementação foram vistas no browser para as quatro telas e estados relevantes; os PNGs não puderam ser persistidos. O caminho `docs/prototype/ui-v2/evidence/screenshots/p3-a/` não contém as capturas nomeadas requeridas.
+- Não houve comparação visual pareada arquivada com fonte e implementação no mesmo artefato. Portanto, a revisão de fidelidade permanece parcial.
+
+### Resultado das verificações
+
+- F-01: PASS. Em Portal, Dashboard, Inventário e Detalhe, todos os elementos com `[hidden]` computaram `display: none`; cada estado solicitado ficou isolado. `hidden="until-found"` não é consumido por P3-A.
+- Estados: Portal default/empty/long; Dashboard default/empty/long; Inventário default/empty/loading/error/long (página 2) e seleção por Enter; Detalhe default com freshness stale, empty, error e long. Nenhuma colisão de estado foi observada.
+- Responsivo: não houve overflow global nas quatro larguras. A tabela preservou rolagem horizontal interna, mas a composição móvel perdeu densidade e scanability.
+- Acessibilidade baseline: títulos e um H1 por tela; landmarks `main`/`nav` nomeados; imagens com `alt`; filtros rotulados; Skip Link focável com outline sólido de 3px; seleção da linha via Enter anunciou o resultado. Isso não é declaração de conformidade WCAG.
+- Interação/filtros: busca sem resultado exibiu empty state; limpar filtros restaurou três linhas; página 2 expôs os registros longos. Quick Detail continua apenas apontando ao baseline protegido, sem nova página.
+- Console: sem erros ou warnings durante a revisão.
+- Comparação visual de desktop: cores, shell escuro, fundo claro, cards, hierarquia de títulos e tratamento de estados seguem a direção da fonte. A composição usa conteúdo próprio P3-A e a fonte Style Lab é uma referência de direção, não um mock por tela; sem pareamento salvo não certifica fidelidade final.
+
+### Findings
+
+- **[P2] Linhas do Inventário ficam excessivamente altas em 390px.** A tabela mede 859px dentro de um wrapper de 345px; a coluna de ações cai para 61px e as três linhas visíveis medem 283px cada por quebra intensa de texto. O usuário precisa rolar horizontalmente e também percorre muito espaço vertical para comparar câmeras. O sizing pertence ao pattern compartilhado; registrar como `DSCR-UIV2-002-MOBILE-TABLE-READABILITY` para revisão ROOT. P3-A não introduziu CSS local ou override.
+- **Bloqueio de evidência:** não foi possível gravar os PNGs nomeados exigidos no caminho P3-A. O browser recusou a navegação `data:` usada para salvar a imagem e sua política bloqueia contornar a recusa. Capturas mostradas durante a execução não substituem os arquivos persistidos para o gate.
+
+### Histórico de comparação
+
+F-01 foi o bloqueador anterior. O cherry-pick do patch ROOT `8121ed38cc15e1ff6e72cb46bbb2ca865100bce0` corrigiu a semântica global; a regressão atual passou. Nenhum finding P0/P1 foi observado. O finding P2 de densidade móvel e a falta de evidência nomeada permanecem, então o resultado final continua `blocked`.
+
+### Checklist de handoff
+
+- [x] Confirmar DS 2.0.1 e F-01 resolvido em runtime.
+- [x] Retestar estados e interação de Inventário.
+- [x] Inspecionar os quatro viewports e baseline de acessibilidade.
+- [ ] Revisar o request ROOT de sizing da tabela móvel.
+- [ ] Persistir screenshots nomeados no diretório canônico.
+- [ ] Completar comparação visual pareada e repetir o gate técnico.
+- [ ] Apresentar as telas para revisão visual humana.
+
+O relatório anterior abaixo permanece como histórico do checkpoint que estava bloqueado por F-01.
+
 ```text
 PRODUCT_DESIGN_STATUS = AVAILABLE
 PRODUCT_DESIGN_SKILLS_LOADED = get-context, design-qa

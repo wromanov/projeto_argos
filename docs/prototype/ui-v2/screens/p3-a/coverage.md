@@ -1,5 +1,55 @@
 # P3-A — Coverage local
 
+## Checkpoint de retomada após DS 2.0.1 (2026-09-28)
+
+```text
+REMOTE_HANDOFF_RECOVERY = PASS / 2ca597826af7b32c884f4efd91cc49381ee646a5
+FAN_OUT_BASE_COMMIT = 9943e20d9b1e04159e067c72aa4dd70eab2bdb36
+P3_A_HEAD_AFTER_DS_PATCH = cc43b1921f6d8dbb1de7aa32122af90c2ca45706
+DS_PATCH_WORK_COMMIT = 8121ed38cc15e1ff6e72cb46bbb2ca865100bce0
+DS_PATCH_PROPAGATION = PASS / exact commit; no master merge
+DESIGN_SYSTEM_VERSION = 2.0.1
+F01_STATUS = RESOLVED_BY_DS_2_0_1
+F01_REGRESSION = PASS
+F02 = OPEN / mobile inventory table readability / ROOT adjudication required
+F03 = OPEN / evidence capture mechanism blocked
+STATE_QA = PASS / visible state isolation and hidden computed display checked in HTTP preview
+RESPONSIVE_QA = FAIL_WITH_FINDING / inventory mobile row height 283px; shared table sizing
+ACCESSIBILITY_BASELINE = PASS_WITH_FINDINGS
+PRODUCT_DESIGN_DESIGN_QA = BLOCKED
+DESIGN_QA_COMPLETE = NO
+EVIDENCE_PATH = docs/prototype/ui-v2/evidence/screenshots/p3-a/
+EVIDENCE_SCREENSHOTS = NOT_SAVED / browser policy blocked screenshot download
+EVIDENCE_CAPTURE_STATUS = BLOCKED
+DS_CHANGE_REQUESTS = DSCR-UIV2-002-MOBILE-TABLE-READABILITY / ROOT_REVIEW_REQUIRED
+TECHNICAL_READY_FOR_REVIEW = NO
+P3_A_FINAL_COMPLETION_COMMIT = NOT_CREATED / technical gate did not pass
+BLOCKED_CHECKPOINT_COMMIT = AUTHORIZED / family-owned records only; SHA reported after creation
+PUSH_AUTHORIZED = YES / codex/ui-v2-p3-a-core-inventory only
+USER_VISUAL_APPROVAL = PENDING
+```
+
+```text
+PORTAL = QA EXECUTED
+DASHBOARD = QA EXECUTED
+INVENTORY = QA EXECUTED WITH F02
+CAMERA_DETAIL = QA EXECUTED
+QUICK_DETAIL = PROTECTED / INHERITED
+```
+
+O teste do inventário em `?fixture=long`, página 2, confirmou que os registros
+longos não causam overflow global; a tabela permanece em um contêiner rolável.
+O problema observado é densidade: em 390px, a tabela tem 859px de largura,
+mas a coluna de ações fica com 61px e cada linha mede 283px. O finding depende
+do sizing do pattern compartilhado. Não foi aplicado workaround local.
+
+O navegador exibiu as quatro telas nos viewports pedidos, mas a gravação de
+PNG no caminho canônico falhou porque a política do browser recusou navegação
+para `data:` e proíbe contornar essa recusa. Nenhuma captura nomeada está
+armazenada no diretório de evidências. Por isso, as telas ainda não atingem
+`TECHNICAL_READY_FOR_REVIEW`; o commit final permanece bloqueado. O checkpoint
+WIP e o push desta branch estão autorizados para preservar o estado.
+
 Snapshot de implementação da família P3-A. Este relatório pertence à família; não substitui nem altera `contracts/SCREEN_COVERAGE.md`.
 
 ```text

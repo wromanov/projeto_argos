@@ -1,5 +1,57 @@
 # P3-A — Workstation handoff
 
+## Retomada local — propagação DS 2.0.1 e QA técnico (2026-09-28)
+
+```text
+REMOTE_HANDOFF_RECOVERY = PASS / origin branch verified at 2ca597826af7b32c884f4efd91cc49381ee646a5
+HOME_WORKTREE = C:\\Users\\walac\\.codex\\worktrees\\ui-v2-p3-a-recovery\\projeto_argos
+BRANCH = codex/ui-v2-p3-a-core-inventory / tracking origin
+P3_A_HEAD_BEFORE_DS_PATCH = 2ca597826af7b32c884f4efd91cc49381ee646a5
+DS_PATCH_WORK_COMMIT = 8121ed38cc15e1ff6e72cb46bbb2ca865100bce0
+DS_PATCH_INTEGRATION_COMMIT = 70e996f5e25d9c9b5d0f4ec0a256c44efcec6274 / NOT_CHERRY_PICKED
+ROOT_CONTINUITY_COMMIT = ebf14c83e75188bc01cc6d23d99c6356f595edef / NOT_CHERRY_PICKED
+P3_A_HEAD_AFTER_DS_PATCH = cc43b1921f6d8dbb1de7aa32122af90c2ca45706
+DS_PATCH_PROPAGATION = PASS / exact work commit cherry-picked separately
+DESIGN_SYSTEM_VERSION = 2.0.1 / active screen metadata aligned
+F01_STATUS = RESOLVED_BY_DS_2_0_1
+F01_REGRESSION = PASS / hidden computed display none; selected variants isolated
+F02 = OPEN / mobile inventory table readability / ROOT adjudication required
+F03 = OPEN / evidence capture mechanism blocked
+STATE_QA = PASS / supported default, empty, loading, error, stale and long scenarios checked in HTTP preview
+RESPONSIVE_QA = FAIL_WITH_FINDING / inventory table rows expand to 283px at 390px width
+ACCESSIBILITY_BASELINE = PASS_WITH_FINDINGS / semantic landmarks, labels, keyboard selection and visible focus verified
+DS_CHANGE_REQUEST = DSCR-UIV2-002-MOBILE-TABLE-READABILITY / ROOT REVIEW REQUIRED
+DESIGN_QA_COMPLETE = NO / P2 responsive finding and named screenshot evidence pending
+REQUIRED_EVIDENCE = NOT_SAVED / browser policy rejected data URL download; no workaround used
+EVIDENCE_CAPTURE_STATUS = BLOCKED
+TECHNICAL_READY_FOR_REVIEW = NO
+P3_A_FINAL_COMPLETION_COMMIT = NOT_CREATED / technical gate did not pass
+BLOCKED_CHECKPOINT_COMMIT = AUTHORIZED / family-owned records only; SHA reported after creation
+PUSH_AUTHORIZED = YES / codex/ui-v2-p3-a-core-inventory only
+USER_VISUAL_APPROVAL = PENDING
+```
+
+```text
+PORTAL = QA EXECUTED
+DASHBOARD = QA EXECUTED
+INVENTORY = QA EXECUTED WITH F02
+CAMERA_DETAIL = QA EXECUTED
+QUICK_DETAIL = PROTECTED / INHERITED
+```
+
+The active P3-A metadata and footer now identify Design System 2.0.1. The
+protected Quick Detail remains inherited and unchanged. Browser checks found
+no global horizontal overflow at 1920×1080, 1440×900, 1366×768 or 390×844;
+the inventory table scrolls within its wrapper. On mobile, however, columns
+shrink enough to wrap each row to 283px tall. This is a shared table-pattern
+issue and is recorded for ROOT review; P3-A did not add a local CSS workaround.
+
+Runtime screenshots were inspected during QA but could not be saved to the
+family evidence directory: the in-app browser blocked the required data-URL
+download, and its security policy disallows alternate-surface workarounds.
+The activity remains open pending resolution of the responsive finding and
+named evidence. See the latest details in `coverage.md` and `design-qa.md`.
+
 ```text
 PROJECT = ARGOS
 TRACK = UI-V2-P3
