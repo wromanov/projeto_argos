@@ -1,62 +1,67 @@
-# P3-B — coverage local e checkpoint de pausa
+# P3-B — cobertura local e checkpoint de recuperação
 
-**Atividade:** UI-V2-P3-B — Monitoring / Substitutions\
-**Fan-out base:** 9943e20d9b1e04159e067c72aa4dd70eab2bdb36\
-**Branch:** codex/ui-v2-p3-b-monitoring-activities\
-**Worktree:** C:/Users/walacedelgado/PycharmProjects/projeto_argos_ui_v2_p3_b\
-**Status:** QA_PARTIAL — WIP checkpoint para retomada\
-**Conclusão estimada:** 88%\
-**Design System:** 2.0.0, consumido diretamente; sem alteração.
+**Atividade:** UI-V2-P3-B — Monitoring / Substitutions
+**Branch:** `codex/ui-v2-p3-b-monitoring-activities`
+**Worktree:** `C:/Users/walac/.codex/worktrees/ui-v2-p3-b/projeto_argos`
+**Base recebida:** `b57ad0044722a838e761f987eeb0aa556c6646b0`
+**Patch DS 2.0.1:** `8121ed38cc15e1ff6e72cb46bbb2ca865100bce0`, ancestral de `origin/master`; cherry-pick local `94da3b6`
+**Estado:** QA parcial; evidência pendente; autorização para Playwright local concedida neste checkpoint.
+**PROJECT_STATE_UPDATE:** PASS — atualização restrita a este relatório e ao HANDOFF da família; arquivos root-owned permanecem intocados.
 
-## Ownership canônico
+## Ownership
 
-A matriz de P3_PROTOTYPE_HARNESS.md e SCREEN_COVERAGE.md confirma:
+A matriz canônica atribui estas quatro telas a P3-B. Nenhum desvio de ownership ou conflito foi encontrado.
 
-| SCREEN_ID | Path canônico | Estado |
+| SCREEN_ID | Path canônico | Metadado atual |
 |---|---|---|
-| SCR-MON-HISTORY-001 | docs/prototype/ui-v2/screens/p3-b/scr-mon-history-001.html | QA_PARTIAL |
-| SCR-SUB-LIST-001 | docs/prototype/ui-v2/screens/p3-b/scr-sub-list-001.html | QA_PARTIAL |
-| SCR-SUB-DETAIL-001 | docs/prototype/ui-v2/screens/p3-b/scr-sub-detail-001.html | QA_PARTIAL |
-| SCR-SUB-CAMERA-001 | docs/prototype/ui-v2/screens/p3-b/scr-sub-camera-001.html | QA_PARTIAL |
+| SCR-MON-HISTORY-001 | `docs/prototype/ui-v2/screens/p3-b/scr-mon-history-001.html` | `IN_PROGRESS` |
+| SCR-SUB-LIST-001 | `docs/prototype/ui-v2/screens/p3-b/scr-sub-list-001.html` | `IN_PROGRESS` |
+| SCR-SUB-DETAIL-001 | `docs/prototype/ui-v2/screens/p3-b/scr-sub-detail-001.html` | `IN_PROGRESS` |
+| SCR-SUB-CAMERA-001 | `docs/prototype/ui-v2/screens/p3-b/scr-sub-camera-001.html` | `IN_PROGRESS` |
 
-Ownership drift = NO. Conflitos = NONE.
+## Implementação e propagação
 
-## Conteúdo e interações
+- A família agora declara DS 2.0.1 nos metadados e badges das quatro telas.
+- O patch canônico foi propagado sem cherry-pick de commits de integração ou continuidade.
+- `p3-b.js` corrige contagens em estados vazios e nomes acessíveis específicos da paginação; os rótulos iniciais nos wrappers HTML também foram alinhados.
+- Monitoramento mostra registros abertos/fechados e distingue stale: o efetivo aparece como “Desconhecido”, preservando o último estado estável como evidência; não introduz estado `RECOVERING`.
+- A lista global trata período invertido como erro de validação do filtro. O detalhe permanece somente para consulta. A consulta por câmera apresenta os papéis “Foi substituída” e “Entrou como substituta”.
+- Fixtures são sintéticas e determinísticas; links, filtros e paginação são conceituais. Não há persistência, backend nem alteração produtiva.
 
-- Monitoramento mostra incidentes abertos/fechados, início/fim, duração fictícia, origem e motivo de fechamento. Stale é evidência distinta; o estado efetivo aparece como Desconhecido e preserva o último estado estável como evidência.
-- Substituições são histórico somente para consulta. A lista global aceita busca e período; período invertido é erro de validação; o detalhe não oferece mutação.
-- A consulta por câmera identifica o papel desempenhado em cada relação histórica.
-- Links, filtros e paginação são locais/conceituais. Não há persistência, backend ou integração produtiva.
-- Fixtures sintéticas e determinísticas estão em docs/prototype/ui-v2/fixtures/p3-b.json.
+## Estados exercitados no navegador
 
-## Estados e QA renderizado
+| Tela | Cenários pós-correção exercitados |
+|---|---|
+| Monitoramento | default, vazio (0 registros), stale em 390×844, fixture longa em 390×844 |
+| Lista global | default, busca `CAM`, vazio, `state=error` como validação de período, intervalo invertido em 390×844, fixture longa em 390×844 |
+| Detalhe | default somente leitura, fixture longa em 390×844 |
+| Consulta por câmera | default, vazio (0 registros), fixture longa em 390×844; página 2 confirma “Entrou como substituta” |
 
-| Tela | Estados implementados e exercitados no DOM | Estado do QA |
-|---|---|---|
-| Monitoramento | default, empty, stale, fixture long | DOM validado; screenshots default nos 4 viewports; empty/stale em 1440×900 e empty em 390×844; long em 1440×900. Stale mobile precisa recaptura correta. |
-| Lista global | default, selected (q=CAM), empty, erro de período, fixture long | DOM validado; screenshots default nos 4 viewports; selected em 1440×900; empty e long em 390×844. Capturas de error/empty/long desktop e selected mobile pendentes. |
-| Detalhe | default, fixture long | DOM validado; screenshot default nos 4 viewports; long pendente. |
-| Consulta por câmera | default, empty, fixture long | DOM validado; default capturado nos 4 viewports; empty e long pendentes. |
+Em todos os 15 cenários da matriz DOM: `hidden` inativo permaneceu visualmente oculto e a página não teve overflow global. A paginação fica oculta em estados vazios/erro e usa nomes em português específicos. A tabela usa rolagem horizontal local em mobile; o shell de navegação horizontal também pode rolar sem alargar o documento.
 
-**Viewports:** defaults verificados em 1920×1080, 1440×900, 1366×768 e 390×844. Em todos, a largura do documento ficou dentro da largura CSS medida. Cenários de estado em 390×844 também não tiveram overflow global. Tabelas mantêm colunas essenciais com rolagem horizontal local.
+Defaults das quatro telas foram conferidos em 1920×1080, 1440×900, 1366×768 e 390×844. Fixtures longas foram conferidas em 390×844. A escala CSS foi medida com `devicePixelRatio=1` na viewport 390×844.
 
-**Acessibilidade:** inspeção estática anterior observou títulos, H1, landmarks, labels e semântica de tabelas. Keyboard, foco visível, nomes acessíveis e touch targets permanecem pendentes. Não declarar conformidade WCAG.
+## Acessibilidade verificada
 
-**Design QA:** parcial. Style Lab C foi comparado com os quatro defaults mobile. Direção ARGOS Hybrid, paleta, tipografia e cartões são coerentes. O gate formal design-qa não está completo; zoom 100%, variantes restantes e revisão integral pendem.
+- Um H1 por tela; hierarquia de títulos, landmarks `nav`/`main`, tabelas e cabeçalhos semânticos presentes.
+- Campos da lista têm labels. No período inválido, ambos os campos usam `aria-invalid=true` e apontam para `period-error-copy`.
+- A navegação por teclado expõe foco visível com contorno de 3 px; campos de filtro e ações principais recebem foco.
+- Os links, botões e campos visíveis dentro de `main` têm dimensões mínimas de 44×44 CSS px em 390×844.
+- O detalhe não apresenta controles de edição ou exclusão.
+- O shell herdado tem alvos menores (link de marca ~36 px e link de pular ~37 px), sem bloqueio conhecido neste gate. Não declarar conformidade WCAG.
 
-## Evidências
+## Design QA e evidências
 
-- Diretório: docs/prototype/ui-v2/evidence/screenshots/p3-b/
-- 23 PNGs canônicos estão incluídos no checkpoint.
-- Um PNG local não canônico, scr-mon-history-001__390x844__stale__default.png, registra uma captura feita em 1698×757 CSS. Está excluído do checkpoint; recapturar stale mobile em 390×844.
-- O Edge expirou chamadas Page.captureScreenshot nas variantes sub-list error/empty/long desktop e selected mobile; esses screenshots não estão disponíveis. Outras variantes marcadas pendentes na tabela acima não foram capturadas antes da pausa.
-- Fonte visual: docs/prototype/ui-v2/style-lab/screenshots/argos-style-c.png.
+A direção Style Lab C foi inspecionada contra capturas atuais em memória do Browser do Codex. Paleta azul-marinho/azul, tipografia, cartões, tabelas e chips estão coerentes; a fonte é referência de direção, não mock de composição desta página. Não foi observado desvio visual material nos defaults desktop/mobile inspecionados.
 
-## Findings e escopo
+**DESIGN_QA_COMPLETE = NO — final result: blocked.** O gate requer capturas PNG atuais persistidas nos caminhos canônicos e revisão integral dos estados/regions. O Browser do Codex exibe as capturas, mas não as grava no repositório. A autorização para Playwright local está concedida; as capturas permanecem pendentes porque este checkpoint proíbe iniciar nova QA. As 23 imagens que já existem foram feitas antes da propagação 2.0.1 e não devem ser usadas como evidência pós-patch. Nenhuma `USER_VISUAL_APPROVAL` foi registrada.
 
-- Quatro arquivos HTML permanecem com argos-prototype-status=IN_PROGRESS.
-- Product Design get-context: realizado. Product Design design-qa: parcial, sem PASS.
-- DS_CHANGE_REQUESTS = NONE. ROOT_CHANGE_REQUESTS = NONE.
-- DESIGN_SYSTEM_MODIFIED = NO; ROOT_OWNED_FILES_CHANGED = NO; CROSS_FAMILY_FILES_CHANGED = NO; PRODUCTION_CHANGED = NO.
-- USER_VISUAL_APPROVAL = PENDING.
-- Este relatório é local à família P3-B; não editar SCREEN_COVERAGE.md mestre nem outros arquivos root-owned.
+- Fonte visual: `docs/prototype/ui-v2/style-lab/screenshots/argos-style-c.png`.
+- Diretório canônico de capturas: `docs/prototype/ui-v2/evidence/screenshots/p3-b/`.
+- Histórico/finding de QA: os dois estados vazios contavam os registros-base; ambos agora exibem zero. Rótulos genéricos de paginação também foram corrigidos e revalidados.
+
+## Escopo e estado do projeto
+
+`DESIGN_SYSTEM_MODIFIED = NO` · `ROOT_OWNED_FILES_CHANGED = NO` · `CROSS_FAMILY_FILES_CHANGED = NO` · `PRODUCTION_CHANGED = NO` · `USER_VISUAL_APPROVAL = PENDING`.
+
+Não promover metadados para `TECHNICAL_READY_FOR_REVIEW` nem declarar `ACTIVITY_COMPLETE` enquanto o gate visual e as evidências persistidas estiverem pendentes.

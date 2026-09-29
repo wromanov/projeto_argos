@@ -1,34 +1,28 @@
-# P3-B — design-qa (parcial; resultado bloqueado)
+# P3-B — design-qa
 
-**Fonte visual:** docs/prototype/ui-v2/style-lab/screenshots/argos-style-c.png (ARGOS Hybrid).\
-**Implementações comparadas:**\
-- scr-mon-history-001__390x844__default__default.png
-- scr-sub-list-001__390x844__default__default.png
-- scr-sub-detail-001__390x844__default__default.png
-- scr-sub-camera-001__390x844__default__default.png
+**Fonte visual:** `docs/prototype/ui-v2/style-lab/screenshots/argos-style-c.png` (ARGOS Hybrid; 1425×1395 px).
+**Implementações:** `SCR-MON-HISTORY-001`, `SCR-SUB-LIST-001`, `SCR-SUB-DETAIL-001`, `SCR-SUB-CAMERA-001`.
+**Viewports inspecionadas:** 1440×900 e 390×844 CSS px; capturas atuais ainda não persistidas no diretório canônico.
 
 ## Resultado
 
-**DESIGN_QA_COMPLETE = NO**\
-**Final result = blocked**
+**DESIGN_QA_COMPLETE = NO**
+**final result: blocked**
 
-Product Design design-qa foi carregado; houve comparação visual parcial entre a fonte Style Lab C e os quatro defaults mobile. A direção de cor, tipografia, cartões, bordas e densidade do ARGOS Hybrid aparece coerente. Isso não equivale ao gate final de design-qa.
+A revisão visual no Browser do Codex mostrou linguagem visual coerente com a referência: sidebar azul-marinho, azul de seleção, canvas claro, cartões, tabelas, tipografia e chips. A Style Lab C fornece direção visual; não é um mock aprovado da composição P3-B. Os quatro defaults foram vistos em desktop e mobile. Estados funcionais e comportamento responsivo foram revalidados no DOM.
 
-## Observações registradas
+O gate formal está bloqueado porque as capturas do Browser do Codex ficam em memória e não podem ser salvas como PNGs nos caminhos de evidência. A autorização para usar Playwright local foi concedida neste checkpoint. As capturas continuam pendentes porque a instrução de hoje é não iniciar nova QA. As imagens históricas do checkpoint são DS 2.0.0 e não são evidência válida do estado após a propagação.
 
-- Nas capturas mobile, o shell usa navegação horizontal própria. A página não apresenta overflow global; essa navegação mostra sua barra horizontal.
-- As tabelas preservam as informações e usam rolagem horizontal local no mobile; não removem colunas técnicas.
-- A listagem global empilha os campos de período e mantém a ação aplicar próxima ao campo correspondente.
-- A composição de detalhe comunica registro histórico somente para consulta e não oferece botões de mutação.
-- No detalhe por câmera, os rótulos distinguem “Foi substituída” e “Entrou como substituta”.
-- A comparação de long-content, estados restantes e viewports não foi concluída como revisão visual integral.
+## Comparação e findings
 
-## Pendências para retomar
+- **P0/P1:** nenhum observado nas vistas examinadas.
+- **P2:** nenhum desvio visual material observado nos defaults; a navegação do shell rola horizontalmente em mobile sem overflow do documento, e as tabelas usam sua própria rolagem horizontal.
+- **Correções concluídas durante QA:** contagem dos vazios de monitoramento e consulta por câmera ajustada para `0 registros`; nomes de paginação traduzidos e específicos em estados com e sem resultados.
+- **Acessibilidade relacionada ao visual:** foco de teclado visível (contorno de 3 px); campos e controles principais com pelo menos 44×44 CSS px; detalhes imutáveis sem ações de edição/exclusão.
 
-1. Revalidar as capturas no nome/viewport correspondente; o arquivo stale com sufixo mobile foi excluído do checkpoint porque sua viewport CSS real era 1698×757.
-2. Completar screenshots de estados que faltam; algumas tentativas Edge timed out.
-3. Confirmar escala/zoom de navegador em 100%.
-4. Executar revisão visual completa nos quatro viewports e estados aplicáveis; registrar um resultado final passed ou blocked e findings por tela.
-5. Concluir acessibilidade interativa em relatório próprio da família.
+## Para fechar o gate
 
-Não foi identificada lacuna material do Design System nesta revisão parcial. **DS_CHANGE_REQUESTS = NONE.**
+1. Gerar e persistir as capturas atuais com os nomes e viewports definidos na cobertura P3-B; cobrir os estados aplicáveis e variantes longas.
+2. Confirmar zoom/escala e registrar dimensões CSS e pixels das capturas.
+3. Fazer a comparação lado a lado por tela/estado, registrar findings por prioridade e atualizar `final result` para `passed` ou manter `blocked` com razão objetiva.
+4. Só depois promover as quatro telas a `TECHNICAL_READY_FOR_REVIEW`; manter `USER_VISUAL_APPROVAL = PENDING` para a revisão humana.

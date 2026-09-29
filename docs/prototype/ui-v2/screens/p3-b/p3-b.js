@@ -77,7 +77,6 @@
     setText("monitor-camera-location", item.camera.location);
     const substitutionsLink = document.querySelector('[data-bind="monitor-substitutions-link"]');
     substitutionsLink.href = "scr-sub-camera-001.html?camera=" + encodeURIComponent(item.camera.id) + "&fixture=" + encodeURIComponent(fixtureName);
-    setText("monitor-count", item.outages.length + " registros");
     const stale = params.get("freshness") === "stale";
     const staleNotice = document.querySelector('[data-bind="monitor-stale"]');
     const status = document.querySelector('[data-bind="monitor-status"]');
@@ -91,6 +90,7 @@
       setTime("monitor-evidence", item.evidenceAt);
     }
     const empty = state === "empty";
+    setText("monitor-count", (empty ? 0 : item.outages.length) + " registros");
     document.querySelector('[data-bind="monitor-empty"]').hidden = !empty;
     document.querySelector('[data-bind="monitor-table-region"]').hidden = empty;
     document.querySelector('[data-bind="monitor-pagination"]').hidden = empty;
@@ -111,7 +111,7 @@
       cell(tr, outage.closeReasonLabel || "—");
       body.append(tr);
     }
-    addPagination(document.querySelector('[data-bind="monitor-pagination"]'), page, totalPages, "Monitoring history pagination");
+    addPagination(document.querySelector('[data-bind="monitor-pagination"]'), page, totalPages, "Paginação do histórico de monitoramento");
   };
   const renderSubList = (data) => {
     const all = data.substitutions[fixtureName] || data.substitutions.default;
@@ -202,8 +202,8 @@
     const cameraIsPrevious = sample ? sample.previous.id.includes(cameraId) : true;
     setText("scoped-camera-id", cameraId);
     setText("scoped-camera-name", cameraIsPrevious ? sample?.previous.name || "Câmera da fixture" : sample?.replacement.name || "Câmera da fixture");
-    setText("scoped-count", related.length + " registros");
     const empty = state === "empty" || related.length === 0;
+    setText("scoped-count", (empty ? 0 : related.length) + " registros");
     document.querySelector('[data-bind="scoped-empty"]').hidden = !empty;
     document.querySelector('[data-bind="scoped-table-region"]').hidden = empty;
     document.querySelector('[data-bind="scoped-pagination"]').hidden = empty;
@@ -228,7 +228,7 @@
       action.append(detailLink);
       rows.append(tr);
     }
-    addPagination(document.querySelector('[data-bind="scoped-pagination"]'), page, totalPages, "Camera substitutions pagination");
+    addPagination(document.querySelector('[data-bind="scoped-pagination"]'), page, totalPages, "Paginação das substituições da câmera");
   };
   load().then((data) => {
     if (screenId === "SCR-MON-HISTORY-001") renderMonitoring(data);
