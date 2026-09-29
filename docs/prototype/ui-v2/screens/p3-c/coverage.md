@@ -3,7 +3,7 @@
 Data: 2026-09-28
 Base imutável: `9943e20d9b1e04159e067c72aa4dd70eab2bdb36`
 Branch/worktree: `codex/ui-v2-p3-c-governance-audit`
-Design System: `2.0.0` (consumido; sem alterações)
+Design System: 2.0.0 na autoria original; propagação e revalidação visual/regressiva concluídas sobre 2.0.1.
 
 ## Ownership e paths canônicos
 
@@ -69,9 +69,18 @@ Resultado local: `PASS` (baseline; não representa certificação WCAG).
 ## Requests e limites de escopo
 
 `DS_CHANGE_REQUESTS = 0` — não há componente visual ausente nem workaround de componente.
-`ROOT_CHANGE_REQUESTS = 1 (OPEN)` — `ROOT-REQ-P3-C-001`: estilos compartilhados de `.argos-alert` (`display:flex`) e `.argos-state` (`display:grid`) podem sobrepor o comportamento nativo de `[hidden]`. O JS específico P3-C mantém variantes e feedback ocultos como o harness espera. Solicita-se correção compartilhada para honrar `[hidden]`; nenhum arquivo root/shared/DS foi alterado.
-`BLOCKED_BY_DS_CHANGE = NONE` — o comportamento requerido está mitigado no escopo permitido; o request é follow-up compartilhado não bloqueante.
+ROOT_CHANGE_REQUESTS = 1 (RESOLVED) — ROOT-REQ-P3-C-001 foi resolvido pelo patch root 8121ed38cc15e1ff6e72cb46bbb2ca865100bce0, aplicado como commit ad7926b. O CSS compartilhado 2.0.1 mantém .argos-alert/.argos-state compatíveis com [hidden]; o workaround JavaScript local foi removido.
+BLOCKED_BY_DS_CHANGE = NONE — [hidden] foi verificado no navegador sem correção local.
 
-`ROOT_OWNED_FILES_CHANGED = NO` · `CROSS_FAMILY_FILES_CHANGED = NO` · `PRODUCTION_CHANGED = NO` · `STATIC/CSS/UI-V2_CHANGED = NO` · `PRODUCTION_UI_V2_INTEGRATION_STARTED = NO`.
+ROOT_OWNED_FILES_CHANGED = YES (authorized root patch 8121ed3) · CROSS_FAMILY_FILES_CHANGED = NO · PRODUCTION_CHANGED = NO · STATIC/CSS/UI-V2_CHANGED = YES (root patch 8121ed3) · PRODUCTION_UI_V2_INTEGRATION_STARTED = NO.
 
-Aprovação visual humana: `PENDING`. Este relatório cobre apenas a família P3-C; consolidação de `PROJECT_STATE.md` permanece com o root owner.
+Aprovação visual humana: PENDING. PROJECT_STATE_UPDATE = DEFERRED_NO_AUTHORITY; ACTIVITY_COMPLETE = NO. Este relatório cobre apenas a família P3-C; a consolidação de PROJECT_STATE.md permanece com o root owner.
+
+## Revalidação pós-patch — Design System 2.0.1
+
+- Patch autorizado 8121ed38cc15e1ff6e72cb46bbb2ca865100bce0, cherry-pick ad7926bce2f099230d1d4857723018aceafc329d; branch familiar codex/ui-v2-p3-c-governance-audit.
+- ROOT-REQ-P3-C-001 = RESOLVED_BY_DS_2_0_1; o teste confirmou zero elementos [hidden] visíveis e zero dependência de style.display inline.
+- POST_DS_DESIGN_QA = PASS; POST_DS_REGRESSION = PASS. O relatório contém 75 medições dos dez SCREEN_IDs: estados default, empty, loading, error, fixtures default e long, e viewports 1440×900 e 390×844. Estados de sucesso da governança e filtros selecionados da auditoria também passaram.
+- Zero overflow horizontal, erros de console, requests externos e requests não-GET.
+- 84 capturas históricas preservadas sem alteração. Evidência nova: 20 capturas pós-patch (10 IDs em desktop e mobile), três comparativos visuais e post-ds-regression.json em docs/prototype/ui-v2/evidence/screenshots/p3-c/post-ds-2.0.1/.
+- Resultado técnico: dez IDs TECHNICAL_READY_FOR_REVIEW; SCR-ACT-EDIT-001 é o modo herdado validado. A aprovação visual humana segue pendente.

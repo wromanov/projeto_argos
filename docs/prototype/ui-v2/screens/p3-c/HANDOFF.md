@@ -11,7 +11,15 @@ HEAD_BEFORE_HANDOFF = `9943e20d9b1e04159e067c72aa4dd70eab2bdb36`
 DESIGN_SYSTEM_VERSION_USED = `2.0.0`
 STATUS_AT_PAUSE = `WIP — checkpoint for workstation handoff; awaiting human visual review`
 ACTIVITY_COMPLETION_PERCENT = `93%`
-COMPLETION_BASIS = all ten canonical IDs have a rendered P3-C composition or inherited edit mode, 84 viewport/state evidence captures, local state/responsive/accessibility baseline, and Product Design design-qa. The activity is not declared complete: human approval and root-state consolidation remain pending.
+COMPLETION_BASIS = all ten canonical IDs have a rendered P3-C composition or inherited edit mode, the original 84 viewport/state evidence captures, local state/responsive/accessibility baseline, and Product Design design-qa. The activity is not declared complete: human approval and root-state consolidation remain pending.
+
+## Revalidation continuation — Design System 2.0.1
+
+- Current technical status: PASS, ready for human visual review; activity completion remains unclaimed.
+- Authorized root patch 8121ed38cc15e1ff6e72cb46bbb2ca865100bce0 was cherry-picked as ad7926bce2f099230d1d4857723018aceafc329d onto the familiar branch. Shared [hidden] semantics now follow DS 2.0.1; the P3-C inline-display workaround was removed.
+- Post-patch Design QA and regression: PASS; 75 measurements across ten IDs, state/fixture isolation, governance success and selected audit filters. Desktop/mobile were checked at 1440×900 and 390×844.
+- New targeted evidence: 20 post-patch screen captures, three visual comparisons and post-ds-regression.json in docs/prototype/ui-v2/evidence/screenshots/p3-c/post-ds-2.0.1/. All 84 prior captures remain unchanged.
+- No production integration or operation was executed. Human visual approval remains PENDING; PROJECT_STATE_UPDATE = DEFERRED_NO_AUTHORITY; ACTIVITY_COMPLETE = NO.
 
 ## Canonical ownership
 
@@ -56,23 +64,19 @@ Accessibility status means the requested baseline only; it is not a WCAG conform
 - Browser QA metrics: 84/84 captures, no failures, no wrong PNG dimensions, no global overflow, no missing labels, no unassociated `aria-invalid` controls, and accessible table regions. Five focus captures show the shared `:focus-visible` ring after actual keyboard input.
 - Product Design `$get-context` performed; local ARGOS contracts, current UI facts and Style Lab C were the design context. `$design-qa` completed with `final result: passed`; its source-target limitations and comparison evidence are in `design-qa.md`.
 - Family-local reports: `coverage.md`, `design-qa.md`; visual comparison artifacts are in this directory.
-- No Design System, root-owned, production or cross-family files changed.
+- At the original handoff pause no shared/root, production or cross-family file had changed. The later authorized root patch above is the explicit exception; no production integration or unrelated family work was made.
 
 ## Remaining work / next steps
 
-1. On the receiving workstation, fetch and check out only `origin/codex/ui-v2-p3-c-governance-audit` in a dedicated worktree; verify branch, HEAD and clean status before continuing.
-2. Open this handoff, `coverage.md`, `design-qa.md`, the P3-0 harness and canonical ownership matrix. Review evidence grouped C1/C2/C3; human visual approval is pending.
-3. Resolve human review findings, if any, within P3-C ownership; do not set `USER_APPROVED` without explicit user decision.
-4. Route `ROOT-REQ-P3-C-001` to the root owner for shared `[hidden]` semantics adjudication. Existing P3-C JS locally maintains harness hidden states; do not edit shared DS/harness during this handoff.
-5. Root owner consolidates project state later. `PROJECT_STATE.md` is root-owned and was not changed here; therefore this handoff does not claim `ACTIVITY_COMPLETE=YES`.
-6. Continue only after the new activity/agent confirms the scope and the human review outcome.
+1. Human reviews the updated evidence grouped C1/C2/C3 and records any visual findings; do not set USER_APPROVED without explicit user decision.
+2. Root owner consolidates PROJECT_STATE.md when authorized. Until then PROJECT_STATE_UPDATE = DEFERRED_NO_AUTHORITY and this handoff does not claim ACTIVITY_COMPLETE=YES.
 
 ## Blockers and dependencies
 
-- `BLOCKERS = NONE` for preserving and previewing the local WIP state.
-- `DEPENDENCIES = human visual review; root adjudication of ROOT-REQ-P3-C-001`.
-- `DS_CHANGE_REQUESTS = NONE` (no missing component; no DS edit made).
-- `ROOT_CHANGE_REQUESTS = ROOT-REQ-P3-C-001 OPEN`: shared `.argos-alert` (`display:flex`) and `.argos-state` (`display:grid`) may override native `[hidden]`; P3-C currently handles this in family-local JS. Request the shared fix in the correct root-owned activity.
+- BLOCKERS = NONE for technical readiness; human visual approval is the remaining activity gate.
+- DEPENDENCIES = human visual review; root-owner consolidation of PROJECT_STATE.md.
+- DS_CHANGE_REQUESTS = NONE (no missing component; shared semantics fix was propagated from the authorized root patch).
+- ROOT_CHANGE_REQUESTS = ROOT-REQ-P3-C-001 RESOLVED: shared DS 2.0.1 rules preserve native [hidden]; P3-C no longer has a JavaScript workaround.
 - `CROSS_FAMILY_DEPENDENCIES = NONE` (cross-family references are static conceptual links only).
 - `USER_DECISIONS_PENDING = P3-C human visual approval`.
 - `PROJECT_STATE_UPDATE = DEFERRED_NO_AUTHORITY` (root-owned file).
@@ -86,6 +90,6 @@ Accessibility status means the requested baseline only; it is not a WCAG conform
 - `FIXTURE_PATHS = docs/prototype/ui-v2/fixtures/p3-c/fixtures.json`
 - No host, port or Windows absolute path is embedded as a prototype requirement.
 
-## Git safety at pause
+## Git safety and checkpoint
 
-The branch was at the immutable fan-out base before checkpointing. Existing untracked artifacts are restricted to P3-C screen, fixture and evidence paths. `git diff --check`, `git diff --name-status` and `git diff --stat` were run before staging; the tracked diff was empty because family artifacts were untracked. The WIP commit/push are authorized by the safe-pause Card and must target this feature branch only. No merge, rebase, force push or master update is authorized.
+The receiving workstation fetched the expected branch at ed7e2e5567b312b52c190484e2c174b26912415c; the authorized root patch is the current committed parent. The remaining checkpoint is restricted to P3-C-owned pages, reports and targeted evidence. Stage explicit family paths; push only codex/ui-v2-p3-c-governance-audit. No merge, rebase, force push or master update is authorized.

@@ -3,11 +3,6 @@
  const root=document.documentElement, query=new URLSearchParams(location.search);
  const fixtureName=root.dataset.argosPrototypeFixture==="long"?"long":"default";
  const state=root.dataset.argosPrototypeState||"default", demo=query.get("demo")||"";
- // Canonical DS component display rules override the browser's default [hidden] rule.
- // Keep P3 harness variants and demonstrative feedback semantically hidden without local CSS.
- const syncHidden=(node)=>{if(node.hidden)node.style.setProperty("display","none");else node.style.removeProperty("display");};
- document.querySelectorAll("[hidden]").forEach(syncHidden);
- new MutationObserver((changes)=>changes.forEach((change)=>{if(change.attributeName==="hidden")syncHidden(change.target);})).observe(document.body,{attributes:true,subtree:true,attributeFilter:["hidden"]});
  const read=(obj,path)=>path.split(".").reduce((v,k)=>v==null?undefined:v[k],obj);
  const put=(node,value)=>{if(value==null)return;if(node.matches("input,textarea,select"))node.value=String(value);else node.textContent=String(value);};
  const cell=(value)=>{const n=document.createElement("td");n.textContent=value||"—";return n;};
