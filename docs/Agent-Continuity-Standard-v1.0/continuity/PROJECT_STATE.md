@@ -1998,3 +1998,92 @@ ACTIVITY_COMPLETE = YES / patch, regression, integration, publication, state upd
 PUSH_PERFORMED = YES / origin master
 MERGE_PERFORMED = YES / --no-ff
 WORKTREE_FINAL = CLEAN
+
+## 38. UI-V2 ROOT — DSCR-UIV2-002 e captura de evidências (2026-09-29)
+
+Este checkpoint supersede a seção 37 somente quanto à atividade ROOT corrente e ao próximo gate. A adjudicação está concluída; nenhuma correção visual foi implementada.
+
+```text
+ACTIVITY = UI-V2 ROOT — DSCR-UIV2-002 MOBILE TABLE READABILITY + EVIDENCE CAPTURE
+ACTIVITY_STATUS = COMPLETE / PASS_WITH_FINDINGS / ADJUDICATED
+ACTIVITY_COMPLETION_PERCENT = 100%
+CANONICAL_REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+BASELINE_HEAD = ebf14c83e75188bc01cc6d23d99c6356f595edef
+ORIGIN_MASTER_AT_PREFLIGHT = ebf14c83e75188bc01cc6d23d99c6356f595edef
+MASTER_DIVERGENCE_AT_PREFLIGHT = 0 / 0
+WORKTREE_AT_PREFLIGHT = CLEAN after resolving the single temporary file
+
+PREFLIGHT_BLOCKER = .tmp-p3c-ds-regression.cjs
+BLOCKER_FILE_CLASS = P3_C_WORK_PRODUCT_NOT_YET_PRESERVED
+BLOCKER_FILE_SIZE = 12196 bytes
+BLOCKER_FILE_SHA256 = AEB976B2BDAD76DF684F84906D63F3BF44EBAB974BC36B6F76C9C8455C656991
+BLOCKER_FILE_CREATED_UTC = 2026-09-29T00:33:30.4475870Z
+BLOCKER_FILE_MODIFIED_UTC = 2026-09-29T00:33:30.4497527Z
+TRACKED_HISTORICALLY = NO
+IGNORED = NO
+REFERENCED_BY_REPOSITORY = NO
+UNIQUE_UNPRESERVED_CONTENT = YES / the P3-C results are now preserved remotely, but the generating script itself is not in the family branch or handoff
+P3_C_REMOTE_HEAD_AT_REVIEW = c26840e8c9c21b9105b7c3bb42c96bc5186c9227
+P3_C_POST_DS_2_0_1_REPORT = PASS / 75 measurements; 20 screenshots; 0 failures
+RECOVERY_COPY_PATH = C:\Users\walac\desenvolvimento\_argos_local_recovery\tmp-p3c-ds-regression__20260929T004215Z__.cjs
+RECOVERY_COPY_SHA256 = AEB976B2BDAD76DF684F84906D63F3BF44EBAB974BC36B6F76C9C8455C656991
+BYTE_PRESERVATION = PASS
+ORIGINAL_FILE_REMOVED = YES / only the authorized path
+WORKTREE_AFTER_DISPOSITION = CLEAN / same HEAD and origin/master; no commit or push
+DSCR_002_PREFLIGHT_UNBLOCKED = YES
+
+P3_A_REMOTE_HEAD = 1f833aed523420db47ba06faa5d5cf5cc114de0b
+DSCR_UIV2_002_REPRODUCED = YES / default fixture
+VIEWPORT = 390x844 / 100% browser scale / DPR 1
+INVENTORY_CONTAINER_WIDTH = 362px available content; 390px outer main container
+TABLE_WIDTH = 858.78px
+TABLE_SCROLLPORT = 360px client width / 859px scroll width
+GLOBAL_HORIZONTAL_OVERFLOW = NO
+LOCAL_TABLE_OVERFLOW = YES
+ACTIONS_ACCESSIBLE = YES / keyboard Tab scrolls the action into view
+TEXT_READABLE = NO
+ROW_HEIGHT_PATHOLOGICAL = YES / 283px
+TABLE_PATTERN_OWNER = ROOT / static/css/ui-v2/patterns.css
+ADJUDICATION_OUTCOME = SHARED_DESIGN_SYSTEM_DEFECT
+MOBILE_TABLE_POLICY_APPROVED = YES / preserve factual fields and local horizontal scroll; prevent destructive word fragmentation; establish readable minimum column/cell behavior; preserve action accessibility; no arbitrary hidden columns or shared table-to-card conversion
+CROSS_FAMILY_REGRESSION_REQUIRED = YES
+OWNER = ROOT / UI-V2 Design System
+AFFECTED_SCREEN_IDS = SCR-INV-001; SCR-MON-HISTORY-001; SCR-SUB-LIST-001; SCR-SUB-CAMERA-001; SCR-ACT-LIST-001; SCR-EVENT-LIST-001; SCR-EVENT-CAMERA-001
+CROSS_FAMILY_IMPACT = BROAD / six additional P3-B/P3-C consumers require regression if shared rules change
+DESIGN_SYSTEM_VERSION_IMPACT = PATCH if shared CSS changes
+DESIGN_SYSTEM_TARGET_VERSION = 2.0.2 / approved target for the separate ROOT implementation activity; not created in this documentary checkpoint
+IMPLEMENTATION_AUTHORIZED = YES / separate follow-up ROOT activity only
+IMPLEMENTATION_PERFORMED = NO
+ROOT_FIX_COMMIT = NONE
+USER_REAPPROVAL_REQUIRED = NO for the approved policy; material deviation requires a new decision
+
+FAILED_CAPTURE_MECHANISM = in-app browser data-URL download
+BROWSER_RENDER_WORKED = YES
+APPROVED_CAPTURE_MECHANISM = Node + Playwright + locally available Chrome
+CAPTURE_MODE = LOCAL HTTP PREVIEW ONLY
+OUTPUT = PNG directly into controlled evidence paths
+CAPTURE_OUTCOME = EXISTING_ALLOWED_MECHANISM_FOUND / bundled Node.js + Playwright + installed Chrome
+DEPENDENCY_INSTALL_REQUIRED = NO
+REPO_CHANGE_REQUIRED_FOR_CAPTURE = NO
+CAPTURE_PROOF = PASS / two identical 390x844 PNGs; SHA-256 recorded in ROOT-REQ; temporary files deleted after inspection
+EVIDENCE_GATE = READY for the mechanism; P3-A family evidence matrix remains incomplete
+ROOT_DECISION_RECORDS = docs/prototype/ui-v2/contracts/DSCR-UIV2-002-MOBILE-TABLE-READABILITY.md; docs/prototype/ui-v2/contracts/ROOT-REQ-UIV2-EVIDENCE-CAPTURE-001.md
+
+P3_A_CHANGED = NO
+PRODUCTION_CHANGED = NO
+MASTER_MERGED = NO
+MASTER_PUSHED = NO
+COMMIT_CREATED = NO
+CURRENT_MACROPHASE = UI V2 prototype track / P3 family recovery
+CURRENT_ACTIVITY = UI-V2 ROOT — DSCR-UIV2-002 and evidence capture / COMPLETE
+NEXT_ACTIVITY = NEW ROOT ACTIVITY — implement approved DS 2.0.2 mobile data table policy with cross-family regression
+NEXT_ACTIVITY_STATUS = AUTHORIZED / NOT STARTED
+P3_A_RESUME = AFTER ROOT PATCH AND AUTHORIZED PROPAGATION; P3-A remains unmodified
+BLOCKERS = NONE for this documentary checkpoint; implementation remains a separate authorized ROOT activity
+PROJECT_STATE_UPDATE = PASS / this checkpoint records both adjudications before ACTIVITY_COMPLETE
+CONTINUITY_RECONCILIATION = PASS / section 37 remains historical; current owner, version gate, capture proof and next step are explicit
+AGENT_HANDOFF_GATE = PASS
+ACTIVITY_COMPLETE = YES / root adjudication and capture-tooling outcome recorded; implementation is a separate pending gate
+```
+
+Não houve edição de P3-A/B/C/D, produção, integração à master, commit ou push. As capturas temporárias da prova foram removidas após inspeção; P3-C mantém seus artefatos pós-2.0.1 no commit remoto indicado acima.
