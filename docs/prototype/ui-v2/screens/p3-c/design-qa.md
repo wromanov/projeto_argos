@@ -56,3 +56,28 @@ O request compartilhado ROOT-REQ-P3-C-001 foi resolvido pelo DS 2.0.1: [hidden] 
 - Regressão complementar: 75 medições, incluindo isolamento de estados e fixtures, [hidden], overflow, sucesso demonstrativo de governança e filtros selecionados de auditoria; zero erro de console, request externo ou request não-GET. Relatório: docs/prototype/ui-v2/evidence/screenshots/p3-c/post-ds-2.0.1/post-ds-regression.json.
 - As 84 capturas anteriores foram preservadas. A nova evidência está restrita a docs/prototype/ui-v2/evidence/screenshots/p3-c/post-ds-2.0.1/.
 - A avaliação confirma prontidão técnica; aprovação visual humana permanece PENDING.
+
+## QA direcionado pós-DS 2.0.2 — 2026-09-29
+
+### Escopo e resultado
+
+- Reavaliados somente os consumidores afetados: `SCR-ACT-LIST-001`, `SCR-EVENT-LIST-001` e `SCR-EVENT-CAMERA-001`.
+- Em 390×844: scroll horizontal contido e funcional nas três regiões (310px client / 760px scroll width); largura global não excedeu o viewport; nenhum token de palavra ou badge foi fragmentado em múltiplas linhas de forma destrutiva. As fixtures default e long foram lidas.
+- Ações e links permaneceram descobríveis por nome. As três regiões têm `role=region`, nome acessível e `tabindex=0`. Tab alcançou links em cada tabela; no histórico de atividades, o foco na ação `Editar` rolou o contêiner e deixou a ação totalmente visível.
+- Em 1440×900, cada tabela coube no contêiner de 1088px, sem scroll horizontal, com linhas de dados em 64px. O DCR ROOT DSCR-UIV2-002 registra largura e altura de linhas desktop inalteradas nos sete consumidores validados.
+- Spot checks P3-C: form Activities, ação Governance e detalhe Event em 390×844 e 1440×900; sem overflow global ou regressão evidente. Estados `default` visíveis; conteúdo `[hidden]` continuou oculto, sem workaround `style.display` local.
+
+### Limites e findings
+
+A inspeção foi por browser conectado, árvore de acessibilidade e medições DOM. A captura persistente não funcionou neste workstation; Node/npm e Playwright local não estão disponíveis, e nenhuma dependência foi instalada. Não houve novas capturas 2.0.2. O total anterior (84 + 20 + 3 = 107 PNGs) permaneceu intacto. Portanto, o gate visual humano segue PENDING.
+
+Finding: as nove páginas P3-C ainda apresentam metadados e selo `Design System 2.0.1`, enquanto o harness e o CSS compartilhados já anunciam `2.0.2`. Registrar para correção/adjudicação visual posterior; não há falha funcional da tabela.
+
+No browser console não foram observados erros; recursos vieram apenas do preview local, sem requests externos ou não-GET. O preview utilizou fixture fictícia e não possui persistência.
+
+`PRODUCT_DESIGN_TARGETED_QA = PASS_WITH_FINDINGS`
+`IMPLEMENTATION_REGRESSION = PASS`
+`FAMILY_TECHNICAL_LOGIC = PASS`
+`EVIDENCE_REFRESH = DEFERRED_BY_WORKSTATION_CAPABILITY`
+`USER_VISUAL_APPROVAL = PENDING`
+`PROJECT_STATE_UPDATE = DEFERRED_NO_AUTHORITY`

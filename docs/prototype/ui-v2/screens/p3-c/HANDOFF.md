@@ -93,3 +93,17 @@ Accessibility status means the requested baseline only; it is not a WCAG conform
 ## Git safety and checkpoint
 
 The receiving workstation fetched the expected branch at ed7e2e5567b312b52c190484e2c174b26912415c; the authorized root patch is the current committed parent. The remaining checkpoint is restricted to P3-C-owned pages, reports and targeted evidence. Stage explicit family paths; push only codex/ui-v2-p3-c-governance-audit. No merge, rebase, force push or master update is authorized.
+
+## Revalidação direcionada pós-DS 2.0.2 — 2026-09-29
+
+- Recuperação: fast-forward de `ed7e2e5` até o checkpoint remoto `c26840e8c9c21b9105b7c3bb42c96bc5186c9227`; árvore limpa após recuperação.
+- Propagação: somente o patch raiz puro `8a480a50a338ef3961a242e9dce0ccaf09cdf49b`, aplicado como `f8cd8cea0e1f0cbd1ff072aafa341cbcf5c8c732`. O único conflito foi o `modify/delete` do DCR ROOT; ficou ausente em P3-C conforme a política pré-autorizada. Nenhum outro caminho foi resolvido manualmente.
+- O patch promove os arquivos compartilhados para Design System 2.0.2 e ajusta o wrapping das células/badges da tabela. Nenhum arquivo de implementação P3-C, backend ou funcionalidade de produção entrou no commit de propagação.
+- `DSCR-UIV2-002 = CONSUMED / TARGETED REGRESSION PASS` para `SCR-ACT-LIST-001`, `SCR-EVENT-LIST-001` e `SCR-EVENT-CAMERA-001`. Métricas e limites estão em `evidence/screenshots/p3-c/post-ds-2.0.2/post-ds-regression.md`.
+- Resultado técnico: sem overflow global; rolagem local funcional no mobile; nenhuma palavra ou badge com fragmentação destrutiva; nomes de ações/links acessíveis e foco por Tab alcança conteúdo e ações. Regressão desktop das tabelas PASS; spot checks de formulário Activities, ação Governance e detalhe Event sem regressão evidente.
+- O contrato ROOT DSCR-UIV2-002 registra a regressão cruzada 2.0.2 como PASS em 7/7 consumidores, incluindo os três consumidores P3-C; não houve alteração em P3-A, P3-B ou P3-D.
+- Sem erros de console observados, requests externos ou não-GET; o preview serviu apenas arquivos locais e fixtures fictícias via GET. Sem persistência ou mutação de produção.
+- Sem Node/npm e sem Playwright local; nada foi instalado. A conexão de browser permitiu inspeção DOM/medição, mas não persistiu capturas. `EVIDENCE_2_0_2_CAPTURE = DEFERRED_BY_WORKSTATION_CAPABILITY`; as 84 capturas originais, 20 capturas pós-2.0.1 e 3 comparativos (107 PNGs) foram preservados.
+- `FINDING =` os metadados e selos visíveis das nove páginas P3-C ainda dizem `2.0.1`, embora o CSS/harness compartilhado esteja em `2.0.2`. Isso não altera a regressão da tabela; manter registrado para adjudicação antes de aprovar a evidência visual.
+- `IMPLEMENTATION_REGRESSION = PASS`; `FAMILY_TECHNICAL_LOGIC = PASS`; `USER_VISUAL_APPROVAL = PENDING`; `PROJECT_STATE_UPDATE = DEFERRED_NO_AUTHORITY`; `ACTIVITY_COMPLETE = NO`.
+- Próximo gate: revisão visual humana P3-C e atualização de evidência se requerida; não repetir implementação completa.

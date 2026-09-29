@@ -84,3 +84,15 @@ Aprovação visual humana: PENDING. PROJECT_STATE_UPDATE = DEFERRED_NO_AUTHORITY
 - Zero overflow horizontal, erros de console, requests externos e requests não-GET.
 - 84 capturas históricas preservadas sem alteração. Evidência nova: 20 capturas pós-patch (10 IDs em desktop e mobile), três comparativos visuais e post-ds-regression.json em docs/prototype/ui-v2/evidence/screenshots/p3-c/post-ds-2.0.1/.
 - Resultado técnico: dez IDs TECHNICAL_READY_FOR_REVIEW; SCR-ACT-EDIT-001 é o modo herdado validado. A aprovação visual humana segue pendente.
+
+## Propagação e regressão direcionada — Design System 2.0.2 (2026-09-29)
+
+`DESIGN_SYSTEM_VERSION = 2.0.2` nos arquivos compartilhados. Patch raiz `8a480a50a338ef3961a242e9dce0ccaf09cdf49b`, propagado como `f8cd8cea0e1f0cbd1ff072aafa341cbcf5c8c732`. O DCR ROOT `DSCR-UIV2-002-MOBILE-TABLE-READABILITY.md` permanece ausente desta família; `DSCR-002 = CONSUMED / REGRESSION PASS`.
+
+Os três consumidores de tabela passaram a regressão focal em 390×844 e 1440×900. No mobile, overflow global = NO, scroll local = FUNCTIONAL e fragmentação destrutiva de palavras/badges = NO; as regiões são nomeadas e alcançáveis por teclado, e os links/ações têm nomes. No desktop, tabelas cabem em 1088px e as linhas medidas permanecem em 64px, sem scroll horizontal ou regressão material de largura/altura. Valores detalhados, incluindo fixture longa e ressalva do viewport Edge, estão no relatório pós-2.0.2.
+
+Spot checks sem overflow global: form Activities, ação Governance e detalhe Event em mobile/desktop. Sem elemento `[hidden]` visível, sem estilo inline de display reintroduzido e sem alteração de persistência.
+
+A validação ROOT do mesmo DCR registra `CROSS_FAMILY_REGRESSION = PASS / 7 of 7`; P3-C não alterou arquivos de P3-A/B/D. Evidência 2.0.2 persistente = DEFERRED_BY_WORKSTATION_CAPABILITY. As 107 capturas/comparativos anteriores seguem preservados. Aprovação visual humana = PENDING.
+
+Finding não funcional: metadados e selos visíveis das nove páginas P3-C ainda anunciam Design System 2.0.1, embora a implementação compartilhada seja 2.0.2. PROJECT_STATE_UPDATE permanece `DEFERRED_NO_AUTHORITY`; ACTIVITY_COMPLETE = NO.
