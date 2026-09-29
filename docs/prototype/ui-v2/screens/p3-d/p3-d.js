@@ -5,15 +5,10 @@
   const fixture = root.dataset.argosPrototypeFixture || "default";
   const setHidden = (element, hidden) => {
     element.hidden = hidden;
-    if (hidden) element.style.display = "none";
-    else element.style.removeProperty("display");
   };
 
   document.querySelectorAll("[data-argos-state-variant]").forEach((element) => {
     setHidden(element, element.dataset.argosStateVariant !== state);
-  });
-  document.querySelectorAll("[hidden]").forEach((element) => {
-    element.style.display = "none";
   });
 
   document.querySelectorAll("[data-fixture-default][data-fixture-long]").forEach((element) => {

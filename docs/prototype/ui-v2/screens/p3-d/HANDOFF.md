@@ -1,3 +1,65 @@
+# P3-D — checkpoint de recuperação e QA técnico
+
+```text
+PROJECT = ARGOS
+ACTIVITY = UI-V2-P3-D
+DATE = 2026-09-28
+BRANCH = codex/ui-v2-p3-d-forms-account-secondary
+HANDOFF_COMMIT = ce13ff299d5c5419994aab0dc574a914a56760aa
+DS_PATCH_WORK_COMMIT = 8121ed38cc15e1ff6e72cb46bbb2ca865100bce0
+DS_PATCH_INTEGRATION_COMMIT = 70e996f5e25d9c9b5d0f4ec0a256c44efcec6274
+DESIGN_SYSTEM_VERSION = 2.0.1
+P3_D_LOCAL_HIDDEN_WORKAROUND = REMOVED
+STATE_QA = PASS
+RESPONSIVE_QA = PASS / 1920x1080, 1440x900, 1366x768, 390x844
+ACCESSIBILITY_BASELINE = PASS / nota de 36px no link de marca compartilhado; sem alegação WCAG
+PRODUCT_DESIGN_DESIGN_QA = PASS_WITH_NON_BLOCKING_SHARED_SHELL_NOTES
+DESIGN_QA_COMPLETE = YES
+EVIDENCE_SCREENSHOTS = 53 / 2 existentes preservadas + 51 novas
+OWN_SCREENS = 7 / TECHNICAL_READY_FOR_REVIEW
+ADMIN_SCREENS = 8 / INHERITED
+ADMIN_CUSTOM_REDESIGN = NO
+PRODUCTION_CHANGED = NO
+ADMIN_RUNTIME_CHANGED = NO
+USER_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = DEFERRED_ROOT_INTEGRATOR_OWNERSHIP
+ACTIVITY_COMPLETE = NO / aguarda atualização do snapshot root e revisão visual humana
+NEXT_GATE = P3-D HUMAN VISUAL REVIEW
+```
+
+> Este checkpoint prevalece sobre a fotografia de pausa abaixo. O texto original foi preservado como histórico de retomada; os status QA antigos nele estão superados.
+
+## Estado técnico por tela
+
+| SCREEN_ID | Status | Estados exercitados |
+|---|---|---|
+| `SCR-CAM-CREATE-001` | `TECHNICAL_READY_FOR_REVIEW` | default, focus por teclado, selected, error, success, long |
+| `SCR-CAM-EDIT-001` | `TECHNICAL_READY_FOR_REVIEW` | default, focus por teclado, selected, error, success, long; valores existentes preservados |
+| `SCR-ACCOUNT-PROFILE-001` | `TECHNICAL_READY_FOR_REVIEW` | default, empty, long e foco por teclado |
+| `SCR-ACCOUNT-EDIT-001` | `TECHNICAL_READY_FOR_REVIEW` | default, focus por teclado, error, success, long; username, cargo e setor somente leitura |
+| `SCR-ACCOUNT-PASSWORD-001` | `TECHNICAL_READY_FOR_REVIEW` | default, focus por teclado, error, success, long; campos sempre vazios |
+| `SCR-AUTH-LOGIN-001` | `TECHNICAL_READY_FOR_REVIEW` | default, focus por teclado, error, long; sem recursos de autenticação inventados |
+| `SCR-ERROR-403-001` | `TECHNICAL_READY_FOR_REVIEW` | default e foco por teclado; mensagem 403 e retorno seguro |
+
+Estados de carregamento ou vazio não aplicáveis foram mantidos como não aplicáveis quando não fazem parte do contrato da tela. `SCR-ERROR-403-001` não tem fixture longa.
+
+## Adjudicação de `[hidden]`
+
+```text
+WORKAROUND_FILE = docs/prototype/ui-v2/screens/p3-d/p3-d.js
+WORKAROUND_FUNCTION = setHidden + normalização global de [hidden]
+WORKAROUND_LINES_BEFORE_REMOVAL = 6-9 e 15-17 no handoff ce13ff299d5c5419994aab0dc574a914a56760aa
+WORKAROUND_BEHAVIOR = adicionava/removia display:none inline em setHidden e impunha display:none inline em cada elemento [hidden]
+WHY_IT_EXISTED = compensar regras de display autorais que venciam a regra nativa de [hidden] no DS 2.0.0
+WORKAROUND_REDUNDANT = YES / relação confirmada pelo DSCR-UIV2-001 e teste com DS 2.0.1
+P3_D_LOCAL_HIDDEN_WORKAROUND = REMOVED
+```
+
+A remoção ficou restrita a essas declarações; as mudanças de estado, atributos `required`, foco ao revelar e feedback local foram preservados. Com DS 2.0.1 sozinho, os estados permanecem ocultos corretamente e o caso `hidden="until-found"` preserva `display:grid` com `content-visibility:hidden`.
+
+Veja [design-qa.md](design-qa.md) para método, resultados visuais e observações não bloqueantes. Evidências estão em `docs/prototype/ui-v2/evidence/screenshots/p3-d/`.
+
+## Histórico do handoff anterior à recuperação
 # P3-D — workstation handoff
 
 ```text
