@@ -424,3 +424,71 @@ NAMED_SCREENSHOT_EVIDENCE = NOT_GENERATED
 TECHNICAL_READY_FOR_REVIEW = NO
 DESIGN_QA_COMPLETE = NO
 ```
+
+## SCR-INV-001 targeted refinement — 2026-09-30
+
+The legacy F-01 block above is historical for Inventory: this branch includes
+the canonical DS 2.0.2 hidden-semantics correction. This review covers only
+SCR-INV-001 and does not transfer approval to another P3-A screen.
+
+```text
+SCR_INV_001_REFINEMENT_REPORT
+STATUS = TECHNICAL_READY_FOR_REVIEW / PASS_WITH_FINDING
+F05_MOBILE_FILTER_SOLUTION = button disclosure with aria-controls and aria-expanded; Vanilla JS
+SEARCH_ALWAYS_VISIBLE_MOBILE = YES
+ADVANCED_FILTERS_PROGRESSIVE_DISCLOSURE = YES / all 8 advanced filters retained
+FILTERS_REMOVED = NO
+F06_TABLE_PATTERN = KEEP_HORIZONTAL_TABLE_SCROLL / discovery finding open
+TABLE_MOBILE_START_EVIDENCE = docs/prototype/ui-v2/evidence/screenshots/p3-a/review-2026-09-30/SCR-INV-001__390x844__default__default__table-mobile-start.png
+TABLE_MOBILE_SCROLLED_EVIDENCE = docs/prototype/ui-v2/evidence/screenshots/p3-a/review-2026-09-30/SCR-INV-001__390x844__default__default__table-mobile-scrolled.png
+MOBILE_TABLE_VISUAL_VERDICT = FINDING
+F07_RESULTS_INSTRUCTION = “Nenhuma câmera selecionada · Clique em uma linha ou use Enter/Espaço para selecionar.” / one live status
+TABLE_CAPTION_TREATMENT = semantic caption retained; muted, left-aligned, 11px
+F08_USER_FACING_QUICK_DETAIL_LABEL = “Visão rápida”; full-detail action = “Ver detalhes”
+DESIGN_SYSTEM_CHANGED = NO
+DASHBOARD_CHANGED = NO
+PRODUCTION_CHANGED = NO
+VIEWPORT_1920x1080 = PASS
+VIEWPORT_1440x900 = PASS
+VIEWPORT_1366x768 = PASS
+VIEWPORT_390x844 = PASS
+HUMAN_VISUAL_APPROVAL = PENDING
+READY_FOR_USER_REVIEW = YES
+FINAL_VERDICT = PASS_WITH_FINDING / F06 requires user adjudication before table-pattern changes
+ACTIVITY_COMPLETION_PERCENT = 90%
+RESPONSIVE_FOCUS_PRESERVED = YES / focused advanced filter remains visible and active in both resize directions
+```
+
+### Validação e finding F06
+
+| Viewport | Resultado técnico | Evidência objetiva |
+|---|---|---|
+| 1920×1080 | PASS | Filtros, botão Limpar e tabela sem regressão de layout; sem overflow/clipping |
+| 1440×900 | PASS | Geometria dos 9 controles e de Limpar idêntica à baseline anterior (0 px) |
+| 1366×768 | PASS | Geometria dos 9 controles e de Limpar idêntica à baseline anterior (0 px) |
+| 390×844 | PASS_WITH_FINDING | busca sempre visível; cinco itens de navegação; scroller local 360 px, tabela 924,3 px |
+
+Em desktop, a comparação da caixa e posição dos 9 filtros e do botão “Limpar”
+contra a composição anterior produziu delta de 0 px nos três viewports. No
+mobile, os 8 filtros avançados ficam recolhidos inicialmente; há 9 filtros no
+DOM contando Busca. Enter abre e fecha o controle com foco visível; toque abre
+o painel; selecionar “Produção” e acionar Limpar restaura todos os campos e
+retorna o foco à busca. Touch targets de Filtros e Limpar medem 44 px de altura.
+
+Para F06, a captura inicial mostra status, tabela e o começo de uma coluna
+seguinte; a captura deslocada mostra “Fabricante / modelo”, “Terminal / setor”,
+“Ações” e ambos os links. O deslocamento máximo é 564 px. A instrução existente
+para deslizar horizontalmente fica abaixo da tabela e não aparece no primeiro
+viewport de captura; não há barra persistente visível. Classificação:
+`MOBILE_TABLE_VISUAL_VERDICT = FINDING`. A tabela não foi convertida em cards nem
+recebeu mudança de pattern; aguardar adjudicação humana antes de alterar essa
+estratégia.
+
+As quatro capturas padrão estão no mesmo diretório de evidências; as duas
+capturas de tabela usam sufixos `table-mobile-start` e
+`table-mobile-scrolled` para distinguir posição e estado sem substituir os
+quatro estados canônicos. Runtime: zoom 100%, device scale factor 1, zero erros
+de console/page e zero requisições externas/falhas. Nenhum elemento de conteúdo
+fora da tabela/navegação foi cortado. O caption conserva seu texto semântico e
+foi reduzido visualmente para texto muted de 11 px. O Quick Detail protegido
+permanece apenas como destino do link “Visão rápida”.

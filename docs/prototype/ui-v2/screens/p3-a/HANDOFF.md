@@ -414,3 +414,53 @@ USER_VISUAL_APPROVAL = PENDING
 ```
 
 No P3-A file was committed or pushed before this checkpoint. This handoff does not close the activity, authorize a merge, or change production.
+
+## 39. SCR-INV-001 targeted refinement checkpoint (2026-09-30)
+
+This checkpoint supersedes the older Inventory-only blocked/QA-pending entries
+above. The historical F-01 `hidden` issue is resolved in the integrated
+Design System 2.0.2 used by this branch. Dashboard remains user-approved and
+frozen; this checkpoint does not change it.
+
+```text
+CURRENT_ACTIVITY = UI-V2-P3-A / SCR-INV-001 targeted refinement
+ACTIVITY_STATUS = TECHNICAL_READY_FOR_REVIEW / PASS_WITH_FINDING
+ACTIVITY_COMPLETION_PERCENT = 90%
+ACTIVITY_COMPLETE = NO / human visual approval pending; F06 adjudication open
+PROJECT_STATE_UPDATE = PASS / this entry records current Inventory state before completion
+BRANCH = codex/ui-v2-p3-a-core-inventory
+DESIGN_SYSTEM_VERSION = 2.0.2 / unchanged
+SCR_INV_001_STATUS = TECHNICAL_READY_FOR_REVIEW / USER_VISUAL_APPROVAL_PENDING
+F05 = RESOLVED / mobile disclosure retains all 8 advanced filters; Search remains visible
+F06 = FINDING / scroll instruction is below the initial table viewport
+F06_TABLE_PATTERN = horizontal table scrolling retained / no pattern change pending user decision
+F07 = RESOLVED / one concise live selection message; caption remains semantic and subdued
+F08 = RESOLVED / “Visão rápida” and “Ver detalhes”
+VIEWPORTS = 1920x1080 PASS; 1440x900 PASS; 1366x768 PASS; 390x844 PASS_WITH_FINDING
+DESKTOP_FILTER_GEOMETRY = baseline identical / 0px delta for 9 controls and Limpar at 3 widths
+GLOBAL_HORIZONTAL_OVERFLOW = NONE
+CONTENT_CLIPPED = NO
+MOBILE_NAVIGATION = PASS / all 5 links visible at 390x844
+CONSOLE_ERRORS = 0
+PAGE_ERRORS = 0
+EXTERNAL_OR_FAILED_REQUESTS = 0
+PERSISTED_SCREENSHOTS = 6 new Inventory captures / review-2026-09-30
+RESPONSIVE_FOCUS_PRESERVED = YES / focused advanced filter remains visible and active desktop ↔ mobile
+SCR_DASH_001_STATUS = USER_APPROVED / FROZEN / unchanged
+SHARED_DESIGN_SYSTEM_CHANGED = NO
+PRODUCTION_CHANGED = NO
+HUMAN_VISUAL_APPROVAL = PENDING / SCR-INV-001
+READY_FOR_USER_REVIEW = YES
+FINAL_VERDICT = PASS_WITH_FINDING / F06
+NEXT_SURFACE = SCR-CAM-DETAIL-001 after Inventory approval, by Screen Census roster order
+MERGE_AUTHORIZED = NO
+```
+
+Evidence is stored under
+`docs/prototype/ui-v2/evidence/screenshots/p3-a/review-2026-09-30/`. At
+390×844 the table is 924.3 px wide inside a 360 px local scroller, with 564 px
+maximum horizontal movement. The start capture shows the leading columns and
+the scrolled capture shows later headers and both actions. The table, its
+columns, badge colors, Design System, Dashboard, backend and production were
+not changed. F06 asks the user to decide whether the horizontal-scroll pattern
+and its current discoverability are acceptable before any table-pattern edit.

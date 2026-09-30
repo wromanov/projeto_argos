@@ -58,32 +58,38 @@
           <article class="argos-card" aria-labelledby="inventory-filters-title">
             <div class="argos-card__header"><h2 class="argos-card__title" id="inventory-filters-title">Filtros</h2><p>Busca demonstrativa somente no navegador; nenhum GET ou backend.</p></div>
             <div class="argos-card__body argos-stack">
-              <div class="argos-filter-bar" role="search" aria-label="Filtrar câmeras demonstrativas">
+              <div class="argos-filter-bar p3-a-inventory-filter-bar" role="search" aria-label="Filtrar câmeras demonstrativas">
                 <label class="argos-field"><span class="argos-field__label">Busca</span><input class="argos-input" type="search" data-filter="search" placeholder="Nome, identificador ou modelo" autocomplete="off"></label>
-                <label class="argos-field"><span class="argos-field__label">Situação operacional</span><select class="argos-select" data-filter="operational_label"><option value="">Todas</option><option>Produção</option><option>Estoque</option><option>Desativada</option></select></label>
-                <label class="argos-field"><span class="argos-field__label">Monitoramento</span><select class="argos-select" data-filter="monitoring_label"><option value="">Todos</option><option>Online</option><option>Offline</option><option>Desconhecido</option><option>Não monitorada</option><option>Fora do escopo de monitoramento automatizado</option></select></label>
-                <label class="argos-field"><span class="argos-field__label">Completude</span><select class="argos-select" data-filter="completeness"><option value="">Todas</option><option value="COMPLETE">Completo</option><option value="INCOMPLETE">Incompleto</option></select></label>
+                <div class="p3-a-inventory-mobile-controls" data-inventory-mobile-controls>
+                  <button class="argos-button argos-button--secondary p3-a-inventory-filter-toggle" type="button" data-inventory-filter-toggle aria-expanded="false" aria-controls="inventory-advanced-filter-panel"><span>Filtros</span><span class="p3-a-inventory-filter-chevron" aria-hidden="true">⌄</span></button>
+                  <div class="argos-inline p3-a-inventory-filter-actions"><button class="argos-button argos-button--secondary" type="button" data-clear-filters>Limpar filtros</button><span data-filter-feedback role="status" aria-live="polite">Filtros locais carregando.</span></div>
+                </div>
+                <div class="argos-stack p3-a-inventory-advanced-filter-panel" id="inventory-advanced-filter-panel" role="group" aria-label="Filtros avançados" hidden>
+                  <div class="argos-filter-bar p3-a-inventory-filter-group--primary">
+                    <label class="argos-field"><span class="argos-field__label">Situação operacional</span><select class="argos-select" data-filter="operational_label"><option value="">Todas</option><option>Produção</option><option>Estoque</option><option>Desativada</option></select></label>
+                    <label class="argos-field"><span class="argos-field__label">Monitoramento</span><select class="argos-select" data-filter="monitoring_label"><option value="">Todos</option><option>Online</option><option>Offline</option><option>Desconhecido</option><option>Não monitorada</option><option>Fora do escopo de monitoramento automatizado</option></select></label>
+                    <label class="argos-field"><span class="argos-field__label">Completude</span><select class="argos-select" data-filter="completeness"><option value="">Todas</option><option value="COMPLETE">Completo</option><option value="INCOMPLETE">Incompleto</option></select></label>
+                  </div>
+                  <div class="argos-filter-bar p3-a-inventory-filter-group--secondary" aria-label="Filtros complementares">
+                    <label class="argos-field"><span class="argos-field__label">Terminal</span><select class="argos-select" data-filter="terminal"><option value="">Todos</option></select></label>
+                    <label class="argos-field"><span class="argos-field__label">Tipo</span><select class="argos-select" data-filter="type"><option value="">Todos</option><option>Bullet</option><option>Dome</option><option>Speed Dome</option><option>Fisheye</option></select></label>
+                    <label class="argos-field"><span class="argos-field__label">Fabricante</span><select class="argos-select" data-filter="manufacturer"><option value="">Todos</option></select></label>
+                    <label class="argos-field"><span class="argos-field__label">VLAN</span><select class="argos-select" data-filter="vlan"><option value="">Todas</option></select></label>
+                    <label class="argos-field"><span class="argos-field__label">Fazenda</span><select class="argos-select" data-filter="farm"><option value="">Todas</option></select></label>
+                  </div>
+                </div>
               </div>
-              <div class="argos-filter-bar" aria-label="Filtros complementares">
-                <label class="argos-field"><span class="argos-field__label">Terminal</span><select class="argos-select" data-filter="terminal"><option value="">Todos</option></select></label>
-                <label class="argos-field"><span class="argos-field__label">Tipo</span><select class="argos-select" data-filter="type"><option value="">Todos</option><option>Bullet</option><option>Dome</option><option>Speed Dome</option><option>Fisheye</option></select></label>
-                <label class="argos-field"><span class="argos-field__label">Fabricante</span><select class="argos-select" data-filter="manufacturer"><option value="">Todos</option></select></label>
-                <label class="argos-field"><span class="argos-field__label">VLAN</span><select class="argos-select" data-filter="vlan"><option value="">Todas</option></select></label>
-                <label class="argos-field"><span class="argos-field__label">Fazenda</span><select class="argos-select" data-filter="farm"><option value="">Todas</option></select></label>
-              </div>
-              <div class="argos-inline"><button class="argos-button argos-button--secondary" type="button" data-clear-filters>Limpar filtros</button><span data-filter-feedback role="status" aria-live="polite">Filtros locais carregando.</span></div>
               <div class="argos-chip-group" data-active-filters aria-label="Filtros ativos" aria-live="polite"></div>
             </div>
           </article>
 
           <section aria-labelledby="inventory-results-title">
             <div class="argos-section-header"><h2 id="inventory-results-title">Resultados</h2><p data-results-summary role="status" aria-live="polite">Carregando fixture…</p></div>
-            <p data-selection-status role="status" aria-live="polite">Nenhuma câmera selecionada.</p>
-            <p id="inventory-selection-help">Focalize uma linha e use Enter ou Espaço, ou clique nela, para alternar a seleção.</p>
+            <p id="inventory-selection-status" data-selection-status role="status" aria-live="polite">Nenhuma câmera selecionada · Clique em uma linha ou use Enter/Espaço para selecionar.</p>
             <div class="argos-stack" id="inventory-results" aria-busy="true">
-              <div class="argos-table-region" data-argos-state-variant="default" aria-describedby="inventory-scroll-help inventory-selection-help">
+              <div class="argos-table-region" data-argos-state-variant="default" aria-describedby="inventory-scroll-help inventory-selection-status">
                 <table class="argos-table argos-table--compact">
-                  <caption>Câmeras demonstrativas com situação, monitoramento, completude e acesso a detalhes.</caption>
+                  <caption class="p3-a-inventory-table-caption">Câmeras demonstrativas com situação, monitoramento, completude e acesso a detalhes.</caption>
                   <thead><tr><th scope="col">Câmera / identificação</th><th scope="col">Imagem</th><th scope="col">Situação</th><th scope="col">Monitoramento</th><th scope="col">Completude</th><th scope="col">Fabricante / modelo</th><th scope="col">Terminal / setor</th><th scope="col">Ações</th></tr></thead>
                   <tbody data-inventory-rows aria-live="polite"></tbody>
                 </table>

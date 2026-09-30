@@ -26,7 +26,10 @@
     initializeDashboardNavigation();
   }
 
-  if (screenId === "SCR-INV-001") initializeInventoryNavigation();
+  if (screenId === "SCR-INV-001") {
+    initializeInventoryNavigation();
+    initializeInventoryProgressiveFilters();
+  }
 
   function initializeDashboardPanelFlow() {
     const flow = document.querySelector("[data-dashboard-panels]");
@@ -119,6 +122,57 @@
     });
     window.addEventListener("resize", updateScrollHint, { passive: true });
     updateScrollHint();
+  }
+
+  function initializeInventoryProgressiveFilters() {
+    const filterRow = document.querySelector(".p3-a-inventory-filter-bar");
+    const mobileControls = filterRow?.querySelector("[data-inventory-mobile-controls]");
+    const toggle = filterRow?.querySelector("[data-inventory-filter-toggle]");
+    const panel = filterRow?.querySelector("#inventory-advanced-filter-panel");
+    const primary = panel?.querySelector(".p3-a-inventory-filter-group--primary");
+    const secondary = panel?.querySelector(".p3-a-inventory-filter-group--secondary");
+    const actions = mobileControls?.querySelector(".p3-a-inventory-filter-actions");
+    const layout = filterRow?.parentElement;
+    const chips = layout?.querySelector("[data-active-filters]");
+    if (!filterRow || !mobileControls || !toggle || !panel || !primary || !secondary || !actions || !layout || !chips) return;
+
+    const primaryFields = [...primary.querySelectorAll(":scope > .argos-field")];
+    const mobile = window.matchMedia("(max-width: 680px)");
+    function arrange(event) {
+      const focusedElement = document.activeElement;
+      const focusedAdvancedControl = primaryFields.some((field) => field.contains(focusedElement))
+        || secondary.contains(focusedElement);
+
+      if (event.matches) {
+        primary.append(...primaryFields);
+        if (secondary.parentElement !== panel) panel.append(secondary);
+        if (actions.parentElement !== mobileControls) mobileControls.append(actions);
+        panel.hidden = !focusedAdvancedControl;
+        toggle.setAttribute("aria-expanded", String(focusedAdvancedControl));
+        if (focusedAdvancedControl) focusedElement.focus({ preventScroll: true });
+        return;
+      }
+
+      const focusWasOnToggle = focusedElement === toggle;
+      const focusWasInActions = actions.contains(focusedElement);
+      primaryFields.forEach((field) => filterRow.insertBefore(field, mobileControls));
+      if (secondary.parentElement !== layout) layout.insertBefore(secondary, chips);
+      if (actions.parentElement !== layout) layout.insertBefore(actions, chips);
+      panel.hidden = true;
+      toggle.setAttribute("aria-expanded", "false");
+      if (focusWasOnToggle) filterRow.querySelector('[data-filter="search"]')?.focus({ preventScroll: true });
+      else if (focusedAdvancedControl || focusWasInActions) focusedElement.focus({ preventScroll: true });
+    }
+
+    toggle.addEventListener("click", () => {
+      const expanded = toggle.getAttribute("aria-expanded") !== "true";
+      toggle.setAttribute("aria-expanded", String(expanded));
+      panel.hidden = !expanded;
+    });
+
+    arrange(mobile);
+    if (mobile.addEventListener) mobile.addEventListener("change", arrange);
+    else mobile.addListener(arrange);
   }
 
   fetch(fixtureUrl, { headers: { Accept: "application/json" } })
@@ -301,10 +355,10 @@
 
         const actionsCell = element("td");
         const actions = element("div", "argos-stack");
-        const quickLink = element("a", "argos-button argos-button--secondary argos-button--compact", "Quick Detail");
+        const quickLink = element("a", "argos-button argos-button--secondary argos-button--compact", "Visão rápida");
         quickLink.href = "../index.html#screen-scr-cam-quick-001";
-        quickLink.setAttribute("aria-label", `Quick Detail protegido da câmera ${camera.identifier}`);
-        const fullLink = element("a", "argos-button argos-button--secondary argos-button--compact", "Detalhe");
+        quickLink.setAttribute("aria-label", `Visão rápida protegida da câmera ${camera.identifier}`);
+        const fullLink = element("a", "argos-button argos-button--secondary argos-button--compact", "Ver detalhes");
         fullLink.href = `scr-cam-detail-001.html#${encodeURIComponent(camera.id)}`;
         fullLink.setAttribute("aria-label", `Abrir detalhe completo da câmera ${camera.identifier}`);
         actions.append(quickLink, fullLink);
@@ -313,7 +367,7 @@
         row.append(nameCell, imageCell, operationCell, monitoringCell, completenessCell, modelCell, locationCell, actionsCell);
         return row;
       }));
-      if (selectionStatus) selectionStatus.textContent = "Nenhuma câmera selecionada.";
+      if (selectionStatus) selectionStatus.textContent = "Nenhuma câmera selecionada · Clique em uma linha ou use Enter/Espaço para selecionar.";
 
       if (summary) summary.textContent = state === "empty"
         ? "Nenhum resultado neste estado demonstrativo"
@@ -389,8 +443,8 @@
       rowsBody.querySelectorAll("tr[aria-selected='true']").forEach((selected) => selected.setAttribute("aria-selected", "false"));
       row.setAttribute("aria-selected", wasSelected ? "false" : "true");
       if (selectionStatus) selectionStatus.textContent = wasSelected
-        ? "Seleção removida."
-        : `Câmera ${row.dataset.rowCameraId} selecionada.`;
+        ? "Seleção removida · Clique em uma linha ou use Enter/Espaço para selecionar."
+        : `Câmera ${row.dataset.rowCameraId} selecionada · Clique ou use Enter/Espaço para desmarcar.`;
     }
 
     renderRows();

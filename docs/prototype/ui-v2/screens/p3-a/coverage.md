@@ -384,3 +384,67 @@ COMMIT = NO — gates técnicos visuais ainda pendentes
 MERGE_PERFORMED = NO
 PUSH_PERFORMED = NO
 ```
+
+## 39. SCR-INV-001 — refinamento direcionado e adjudicação da tabela (2026-09-30)
+
+Este registro atualiza somente o Inventário após a revisão humana. As entradas
+antigas que o marcavam bloqueado por F-01 são históricas: a semântica `hidden`
+do Design System 2.0.2 já está integrada nesta branch. O novo finding F06 é
+visual e aguarda adjudicação humana; nenhuma mudança no pattern da tabela foi
+feita.
+
+```text
+SCREEN_ID = SCR-INV-001
+STATUS = TECHNICAL_READY_FOR_REVIEW / PASS_WITH_FINDING
+ACTIVITY_COMPLETION_PERCENT = 90%
+F05 = RESOLVED / mobile advanced filters use an accessible button disclosure
+SEARCH_ALWAYS_VISIBLE_MOBILE = YES
+ADVANCED_FILTERS_PROGRESSIVE_DISCLOSURE = YES / all 8 controls retained
+FILTERS_REMOVED = NO
+F06_TABLE_PATTERN = KEEP_HORIZONTAL_TABLE_SCROLL / visual discoverability finding open
+TABLE_WIDTH_AT_390 = 924.3px
+SCROLLER_WIDTH_AT_390 = 360px
+MAX_HORIZONTAL_MOVEMENT_AT_390 = 564px
+SCROLLED_COLUMNS_AND_ACTIONS = VISIBLE / later headers and both actions remain legible
+TABLE_SCROLL_HELP_VISIBLE_AT_ENTRY = NO / helper falls below the initial viewport
+MOBILE_TABLE_VISUAL_VERDICT = FINDING / ask for adjudication before changing table pattern
+F07 = RESOLVED / one concise selection status line; semantic table caption retained
+F08 = RESOLVED / user-facing labels are “Visão rápida” and “Ver detalhes”
+DESIGN_SYSTEM_CHANGED = NO
+DASHBOARD_CHANGED = NO
+PRODUCTION_CHANGED = NO
+BACKEND_CHANGED = NO
+VIEWPORT_1920x1080 = PASS
+VIEWPORT_1440x900 = PASS
+VIEWPORT_1366x768 = PASS
+VIEWPORT_390x844 = PASS
+DESKTOP_FILTER_GEOMETRY_DELTA = 0px for all 9 controls and “Limpar” at all 3 desktop widths
+GLOBAL_HORIZONTAL_OVERFLOW = NO
+CONTENT_CLIPPED = NO
+MOBILE_NAV_REGRESSION = NO / all five links visible
+CONSOLE_ERRORS = 0
+PAGE_ERRORS = 0
+FAILED_OR_EXTERNAL_REQUESTS = 0
+HUMAN_VISUAL_APPROVAL = PENDING
+READY_FOR_USER_REVIEW = YES
+FINAL_VERDICT = PASS_WITH_FINDING / F06
+```
+
+### Evidências desta revisão
+
+As quatro capturas padrão e as duas posições da tabela foram persistidas em
+`docs/prototype/ui-v2/evidence/screenshots/p3-a/review-2026-09-30/`:
+
+- `SCR-INV-001__1920x1080__default__default.png`
+- `SCR-INV-001__1440x900__default__default.png`
+- `SCR-INV-001__1366x768__default__default.png`
+- `SCR-INV-001__390x844__default__default.png`
+- `SCR-INV-001__390x844__default__default__table-mobile-start.png`
+- `SCR-INV-001__390x844__default__default__table-mobile-scrolled.png`
+
+F06: a tabela continua legível quando deslocada até as colunas posteriores,
+incluindo situação inicial e ações no estado deslocado. Porém, o início não
+mostra uma barra horizontal persistente e a orientação para deslizar fica depois
+do conteúdo; o recorte parcial da coluna seguinte é a única pista no primeiro
+estado. O padrão de tabela permanece intacto enquanto aguarda a decisão do
+usuário sobre essa descoberta visual.

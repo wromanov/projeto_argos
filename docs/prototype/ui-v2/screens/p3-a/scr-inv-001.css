@@ -1,4 +1,64 @@
 @layer pages {
+  .p3-a-inventory-table-caption {
+    padding: var(--argos-space-2) var(--argos-space-3);
+    color: var(--argos-color-ink-muted);
+    font-size: var(--argos-text-label);
+    font-weight: var(--argos-weight-regular);
+    text-align: left;
+  }
+
+  .p3-a-inventory-filter-chevron {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .p3-a-inventory-filter-toggle[aria-expanded="true"] .p3-a-inventory-filter-chevron {
+    transform: rotate(180deg);
+  }
+
+  .p3-a-inventory-mobile-controls {
+    display: none;
+  }
+
+  @media (max-width: 680px) {
+    .p3-a-inventory-filter-bar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--argos-space-3);
+      align-items: stretch;
+    }
+
+    .p3-a-inventory-mobile-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--argos-space-3);
+    }
+
+    .p3-a-inventory-filter-toggle {
+      display: inline-flex;
+      min-height: var(--argos-touch-target-min);
+      align-items: center;
+      gap: var(--argos-space-2);
+    }
+
+    .p3-a-inventory-filter-group--primary,
+    .p3-a-inventory-filter-group--secondary {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--argos-space-3);
+      width: auto;
+    }
+
+    .p3-a-inventory-filter-actions {
+      justify-content: flex-end;
+    }
+
+    .p3-a-inventory-filter-actions [data-filter-feedback] {
+      display: none;
+    }
+  }
+
   .p3-a-inventory-nav-frame {
     min-width: 0;
   }

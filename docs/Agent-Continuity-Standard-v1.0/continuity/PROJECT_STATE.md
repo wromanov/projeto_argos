@@ -1996,3 +1996,59 @@ MERGE_AUTHORIZED = NO
 The 390x844 Inventory table remains horizontally contained in its 360px local
 scroller; the page itself has no horizontal overflow. Existing state and
 interaction coverage remains in the P3-A family reports.
+
+## 39. UI-V2-P3-A — SCR-INV-001 targeted refinement (2026-09-30)
+
+This checkpoint records the user-requested mobile filter prioritization,
+results-copy cleanup, Portuguese action labels, responsive regression matrix,
+and visual evidence for the existing mobile table pattern. It does not close
+Inventory: human review remains pending and F06 is reported for adjudication.
+
+```text
+CURRENT_ACTIVITY = UI-V2-P3-A / SCR-INV-001 targeted refinement
+ACTIVITY_STATUS = TECHNICAL_READY_FOR_REVIEW / PASS_WITH_FINDING
+ACTIVITY_COMPLETION_PERCENT = 90%
+ACTIVITY_COMPLETE = NO / human visual approval and F06 adjudication pending
+PROJECT_STATE_UPDATE = PASS / current Inventory state recorded before completion
+BRANCH = codex/ui-v2-p3-a-core-inventory
+HEAD_BEFORE_CHECKPOINT = 17d054ae0b87dc381619bd7720ad4a6a9f08aabb
+DESIGN_SYSTEM_VERSION = 2.0.2 / unchanged
+SCR_INV_001_STATUS = TECHNICAL_READY_FOR_REVIEW / USER_VISUAL_APPROVAL_PENDING
+F05 = RESOLVED / Search always visible; all 8 advanced filters behind accessible disclosure
+F06 = FINDING / scroll help is below the initial mobile table viewport
+F06_TABLE_PATTERN = horizontal table scroll retained / no pattern edit before user adjudication
+TABLE_WIDTH_AT_390 = 924.3px
+TABLE_SCROLLER_WIDTH_AT_390 = 360px
+TABLE_MAX_HORIZONTAL_MOVEMENT_AT_390 = 564px
+F07 = RESOLVED / single concise selection status; semantic caption subdued, not removed
+F08 = RESOLVED / “Visão rápida”; “Ver detalhes”
+FILTERS_REMOVED = NO
+VIEWPORT_1920x1080 = PASS
+VIEWPORT_1440x900 = PASS
+VIEWPORT_1366x768 = PASS
+VIEWPORT_390x844 = PASS_WITH_FINDING
+DESKTOP_FILTER_GEOMETRY_DELTA = 0px / all 9 controls plus Limpar at all 3 widths
+GLOBAL_HORIZONTAL_OVERFLOW = NO
+CONTENT_CLIPPED = NO
+MOBILE_NAVIGATION = PASS / all 5 links visible at 390x844
+CONSOLE_ERRORS = 0
+PAGE_ERRORS = 0
+FAILED_OR_EXTERNAL_REQUESTS = 0
+PERSISTED_SCREENSHOTS = 6 new Inventory captures / review-2026-09-30
+RESPONSIVE_FOCUS_PRESERVED = YES / focused advanced filter remains visible and active desktop ↔ mobile
+HUMAN_VISUAL_APPROVAL = PENDING / SCR-INV-001
+READY_FOR_USER_REVIEW = YES
+FINAL_VERDICT = PASS_WITH_FINDING / F06
+SCR_DASH_001_STATUS = USER_APPROVED / FROZEN / unchanged
+SHARED_DESIGN_SYSTEM_CHANGED = NO
+PRODUCTION_CHANGED = NO
+MERGE_AUTHORIZED = NO
+NEXT_SURFACE = SCR-CAM-DETAIL-001 after Inventory approval
+```
+
+At 390×844 the initial table capture shows the leading columns, while the
+horizontally scrolled capture exposes later column headers and both row actions.
+The current instruction to swipe sits after the table and is not visible in the
+initial table viewport; that discoverability finding is recorded without
+changing the table pattern. Search remains visible above “Filtros” and “Limpar”;
+keyboard and touch both open the advanced controls, and Clear resets the fields.
