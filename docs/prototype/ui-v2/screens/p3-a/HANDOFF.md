@@ -1,6 +1,75 @@
 # Fechamento técnico final — evidência persistida e pronto para revisão (2026-09-29)
 
-## Atualização mais recente — adjudicação visual SCR-DASH-001 F03/F04 (2026-09-29)
+## Aprovação humana e fechamento — SCR-DASH-001 (2026-09-29)
+
+SCR-DASH-001_VISUAL_REVIEW = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+SCR-DASH-001_STATUS = USER_APPROVED / FROZEN
+TECHNICAL_READY_FOR_REVIEW = YES
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES / escopo desta atividade de tela
+PROJECT_STATE_UPDATE = PASS / seção 37 de PROJECT_STATE.md
+F03 = CLOSED
+F04 = CLOSED
+KPI_PATTERN = APPROVED / FREEZE
+PAGE_HEADER = APPROVED / ação desktop e adaptação mobile
+DESKTOP = PASS / 1920x1080, 1440x900, 1366x768
+MOBILE = PASS / 390x844
+MOBILE_READING_ORDER = Situação → Monitoramento → Atividade → Câmera / aceita
+DASHBOARD_FREEZE = ACTIVE / sem novo polishing sem requisito, mudança DS aprovada, finding de regressão ou integração produtiva
+OBSERVATION = timestamp de Atividade recente pode quebrar entre data e hora em 1366x768
+OBSERVATION_CLASS = NON_BLOCKING / avaliar o pattern Activity/List com dataset representativo; sem patch nesta tela
+PROTOTYPE_CONTENT = aviso de valores demonstrativos
+PLANNED_SURFACE_INDICATOR = Meu Perfil
+PRODUCTION_CHANGED = NO
+SHARED_DESIGN_SYSTEM_CHANGED = NO
+FINAL_VERDICT = PASS / observação não bloqueante registrada
+
+O usuário aprovou as pilhas desktop e sua assimetria natural. Em 390x844 os
+cinco itens de navegação estão visíveis, sem clipping; o scroll de 320px foi
+aceito por teclado e toque. KPI e cabeçalho estão congelados. Não reabrir
+max-width, sidebar, cards ou densidade. Os conteúdos demonstrativos continuam
+exclusivos do protótipo e não devem migrar automaticamente para produção.
+
+NEXT_SURFACE = SCR-INV-001 / Inventário
+NEXT_SURFACE_BASIS = próxima linha P3-A no Screen Census; o plano mestre não define ordem mais detalhada
+NEXT_SURFACE_IMPLEMENTATION = EXISTS
+NEXT_SURFACE_TECHNICAL_EVIDENCE = EXISTS
+NEXT_SURFACE_VISUAL_APPROVAL = PENDING / aprovação não se transfere do Dashboard
+
+
+## Próxima superfície — SCR-INV-001 / Inventário (2026-09-29)
+
+SCR-INV-001 = TECHNICAL_READY_FOR_REVIEW
+IMPLEMENTATION_SCOPE = page-local navigation cue and clipping correction
+FINDING = Eventos label was partially clipped at 390x844 in Inventory shell
+ROOT_CAUSE = total navigation link padding exceeded the visible mobile nav width
+RESOLUTION = Inventory-only 8px inline link padding, 8px trailing scroll room, conditional hint, and focus-to-visible behavior
+DESIGN_SYSTEM_CHANGED = NO
+DASHBOARD_CHANGED = NO / frozen
+GLOBAL_HORIZONTAL_OVERFLOW = NONE / 1920x1080, 1440x900, 1366x768, 390x844
+390_NAV = all five items fully visible; 44px minimum targets preserved
+320_NAV = horizontal scroll signaled; keyboard and touch reveal all of Eventos
+320_KEYBOARD = PASS / active Eventos; scrollLeft 63 of 63; full label visible
+320_TOUCH = PASS / reached scrollLeft 63 of 63; full label visible
+MOBILE_TABLE = 921px table inside 360px scroller; document width remains 390px
+CONSOLE_ERRORS = 0 / PAGE_ERRORS = 0 / DENIED_REQUESTS = 0
+PERSISTED_SCREENSHOTS = 40 total / 4 new Inventory viewport captures
+USER_VISUAL_APPROVAL = PENDING / independent screen gate
+ACTIVITY_COMPLETION_PERCENT = 85%
+ACTIVITY_COMPLETE = NO / awaiting Inventory adjudication
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md section 38
+NEXT_SURFACE = SCR-CAM-DETAIL-001 after Inventory approval, following Screen Census roster order
+
+The original default mobile capture was retained because it showed the page after
+scrolling. Four fresh top-of-page captures are in
+docs/prototype/ui-v2/evidence/screenshots/p3-a/review-2026-09-29/. The correction
+is local to Inventory; no shared shell or Design System file and no Dashboard
+file was changed. Existing Inventory interaction/state QA remains in the earlier
+family record. Approval of SCR-DASH-001 does not transfer to SCR-INV-001.
+
+
+## Registro técnico pré-aprovação humana — SCR-DASH-001 F03/F04 (2026-09-29)
 
 CARD = ADJUDICAÇÃO VISUAL — SCR-DASH-001 REFINED DEFAULT REVIEW
 BRANCH = codex/ui-v2-p3-a-core-inventory

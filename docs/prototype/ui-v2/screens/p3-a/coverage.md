@@ -1,6 +1,68 @@
 # P3-A — Cobertura final e evidência (2026-09-29)
 
-## Adjudicação mais recente — SCR-DASH-001 F03/F04 (2026-09-29)
+## Aprovação humana — SCR-DASH-001 (2026-09-29)
+
+SCR-DASH-001_VISUAL_REVIEW = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+SCR-DASH-001_STATUS = USER_APPROVED / FROZEN
+TECHNICAL_READY_FOR_REVIEW = YES
+F03 = CLOSED
+F04 = CLOSED
+KPI_PATTERN = APPROVED / FREEZE
+PAGE_HEADER = APPROVED / inclui adaptação mobile do botão
+DESKTOP = PASS / 1920x1080, 1440x900, 1366x768
+MOBILE = PASS / 390x844
+MOBILE_READING_ORDER = Situação → Monitoramento → Atividade → Câmera / aceita
+MOBILE_NAVIGATION = 5/5 itens visíveis a 390x844; scroll de 320px aceito por teclado e toque
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES / escopo desta adjudicação do Dashboard
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md, seção 37
+DASHBOARD_FREEZE = ACTIVE
+OBSERVATION = timestamp em Atividade pode quebrar entre data e hora em 1366x768
+OBSERVATION_STATUS = NON_BLOCKING / sem patch local; revisar com dataset representativo no pattern Activity/List
+PROTOTYPE_CONTENT = aviso demonstrativo e indicador de superfície planejada permanecem protótipo
+PRODUCTION_CHANGED = NO
+FINAL_VERDICT = PASS
+
+NEXT_SURFACE = SCR-INV-001 / Inventário
+NEXT_SURFACE_BASIS = próxima tela P3-A no Screen Census
+NEXT_SURFACE_VISUAL_APPROVAL = PENDING / gate independente
+
+
+## SCR-INV-001 — revisão técnica de navegação e evidência (2026-09-29)
+
+SCR-INV-001_STATUS = TECHNICAL_READY_FOR_REVIEW
+FINDING = label Eventos parcialmente cortada em 390x844
+CAUSE = soma do padding inline excedia a largura visível da navegação móvel
+RESOLUTION = ajuste local da tela; padding inline de 8px, reserva final de scroll de 8px, dica condicional e foco revela link
+SHARED_DESIGN_SYSTEM_CHANGED = NO
+SCR_DASH_001_CHANGED = NO / frozen
+VIEWPORTS = 1920x1080 PASS; 1440x900 PASS; 1366x768 PASS; 390x844 PASS
+390_NAV = 5/5 labels fully visible; targets remain 44px
+320_NAV = scroll cue visible; keyboard focus and touch reach Eventos
+320_KEYBOARD = PASS / Eventos focused; 63px max scroll; label fully visible
+320_TOUCH = PASS / 63px max scroll reached; label fully visible
+GLOBAL_DOCUMENT_OVERFLOW = NONE / all four viewports
+MOBILE_TABLE = 921px inside 360px scroller / no page overflow
+CONSOLE_ERRORS = 0
+PAGE_ERRORS = 0
+DENIED_REQUESTS = 0
+PERSISTED_SCREENSHOTS = 40 total / 4 new captures
+USER_VISUAL_APPROVAL = PENDING / Inventory review is independent
+ACTIVITY_COMPLETION_PERCENT = 85%
+ACTIVITY_COMPLETE = NO
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md section 38
+NEXT_SURFACE = SCR-CAM-DETAIL-001 after Inventory approval, by Screen Census order
+
+Four new top-of-page default captures use 100% zoom and device scale factor 1.
+They are stored in docs/prototype/ui-v2/evidence/screenshots/p3-a/review-2026-09-29/.
+The prior mobile capture was preserved. Request guard allowed only local GET;
+there were no console/page errors or denied requests. Existing P3-A coverage for
+Inventory states and row heights (127px default / 217px long) remains in the
+preceding family QA record.
+
+
+## Registro técnico pré-aprovação humana — SCR-DASH-001 F03/F04 (2026-09-29)
 
 DESIGN_SYSTEM_VERSION = 2.0.2 / unchanged
 PERSISTED_SCREENSHOTS = 36 / 16 viewport defaults + 12 mobile state captures + 8 Dashboard refinements

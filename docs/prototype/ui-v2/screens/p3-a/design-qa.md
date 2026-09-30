@@ -1,6 +1,72 @@
 # P3-A — Product Design / Design QA final (2026-09-29)
 
-## Adjudicação visual mais recente — SCR-DASH-001 F03/F04 (2026-09-29)
+## Adjudicação humana e freeze — SCR-DASH-001 (2026-09-29)
+
+SCR-DASH-001_VISUAL_REVIEW = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+SCR-DASH-001_STATUS = USER_APPROVED
+F03 = CLOSED
+F04 = CLOSED
+TECHNICAL_READY_FOR_REVIEW = YES
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES / atividade restrita a SCR-DASH-001
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md, seção 37
+DASHBOARD_FREEZE = ACTIVE
+KPI_PATTERN = APPROVED / FREEZE
+PAGE_HEADER = APPROVED / desktop e ação mobile
+VIEWPORTS = 1920x1080 PASS; 1440x900 PASS; 1366x768 PASS; 390x844 PASS
+MOBILE_READING_ORDER = Situação → Monitoramento → Atividade → Câmera / aceita
+MOBILE_NAVIGATION = todos os itens visíveis em 390x844; scroll em 320px aceito por teclado/toque
+OBSERVATION = timestamp de Atividade pode separar data e hora em 1366x768
+OBSERVATION_SEVERITY = NON_BLOCKING
+OBSERVATION_FOLLOW_UP = avaliar pattern Activity/List com dataset representativo; sem patch em SCR-DASH-001
+FINAL_VERDICT = PASS
+
+A aprovação congela o Dashboard. Novas mudanças dependem de novo requisito
+funcional, mudança aprovada de Design System, finding de regressão ou integração
+produtiva. O conteúdo demonstrativo e o indicador de perfil planejado continuam
+restritos ao protótipo.
+
+NEXT_SURFACE = SCR-INV-001 / Inventário de câmeras
+NEXT_SURFACE_BASIS = próxima entrada do Screen Census após Dashboard
+NEXT_SURFACE_VISUAL_APPROVAL = PENDING
+
+
+## SCR-INV-001 — próxima revisão de superfície (2026-09-29)
+
+PRODUCT_DESIGN_DESIGN_QA = PASS / targeted navigation correction and four-viewport evidence
+SCR-INV-001_STATUS = TECHNICAL_READY_FOR_REVIEW
+USER_VISUAL_APPROVAL = PENDING
+VIEWPORTS = 1920x1080, 1440x900, 1366x768, 390x844
+ZOOM = 100% / DEVICE_SCALE_FACTOR = 1
+FINDING = Eventos label was clipped by the mobile nav edge at 390x844
+CAUSE = link padding plus gaps exceeded the available visible nav width
+RESOLUTION = screen-local responsive padding, trailing scroll room, conditional instruction, focus reveal
+390x844 = five nav items fully visible; page width equals viewport
+320px = horizontal scroll remains usable; hint, keyboard focus, and touch gesture pass
+GLOBAL_OVERFLOW = NONE
+CONSOLE_ERRORS = 0 / PAGE_ERRORS = 0 / DENIED_REQUESTS = 0
+SHARED_DESIGN_SYSTEM_CHANGED = NO
+DASHBOARD_CHANGED = NO / frozen
+PERSISTED_EVIDENCE = 4 fresh Inventory captures, old evidence preserved
+HUMAN_VISUAL_APPROVAL = PENDING / does not inherit Dashboard approval
+ACTIVITY_COMPLETION_PERCENT = 85%
+ACTIVITY_COMPLETE = NO
+
+The mobile table remains in its existing local horizontal scroller: 921px table
+inside 360px at 390x844, with no document overflow. The default mobile evidence
+was recaptured from scroll position zero. The previous off-position capture
+remains preserved and is not treated as the current top-of-page review image.
+
+Review captures:
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/review-2026-09-29/SCR-INV-001__1920x1080__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/review-2026-09-29/SCR-INV-001__1440x900__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/review-2026-09-29/SCR-INV-001__1366x768__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/review-2026-09-29/SCR-INV-001__390x844__default__default.png
+
+NEXT_SURFACE = SCR-CAM-DETAIL-001 after Inventory approval, following Screen Census roster order
+
+## Registro técnico pré-aprovação humana — SCR-DASH-001 F03/F04 (2026-09-29)
 
 **final result: passed with findings resolved**
 

@@ -26,6 +26,8 @@
     initializeDashboardNavigation();
   }
 
+  if (screenId === "SCR-INV-001") initializeInventoryNavigation();
+
   function initializeDashboardPanelFlow() {
     const flow = document.querySelector("[data-dashboard-panels]");
     if (!flow) return;
@@ -72,6 +74,31 @@
   function initializeDashboardNavigation() {
     const nav = document.querySelector("[data-dashboard-primary-nav]");
     const hint = document.querySelector("[data-dashboard-nav-hint]");
+    if (!nav || !hint) return;
+
+    function updateScrollHint() {
+      const canScroll = nav.scrollWidth > nav.clientWidth + 1;
+      hint.hidden = !canScroll;
+      if (canScroll) nav.setAttribute("aria-describedby", hint.id);
+      else nav.removeAttribute("aria-describedby");
+    }
+
+    nav.addEventListener("focusin", (event) => {
+      const link = event.target.closest("a[href]");
+      if (!link || !nav.contains(link)) return;
+      const navRect = nav.getBoundingClientRect();
+      const linkRect = link.getBoundingClientRect();
+      if (linkRect.left < navRect.left || linkRect.right > navRect.right) {
+        link.scrollIntoView({ block: "nearest", inline: "nearest" });
+      }
+    });
+    window.addEventListener("resize", updateScrollHint, { passive: true });
+    updateScrollHint();
+  }
+
+  function initializeInventoryNavigation() {
+    const nav = document.querySelector("[data-inventory-primary-nav]");
+    const hint = document.querySelector("[data-inventory-nav-hint]");
     if (!nav || !hint) return;
 
     function updateScrollHint() {

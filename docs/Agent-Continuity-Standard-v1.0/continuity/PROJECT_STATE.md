@@ -1925,3 +1925,74 @@ WORKTREE_FINAL = CLEAN
 ```
 
 A documentação P3-0 registra a matriz e os gates. Roadmap e sprint mantêm snapshots anteriores que apontam P1 como próximo; o Card B atual autoriza especificamente P3-0 e não inicia as famílias nem altera a ordem global. A integração canônica e a liberação do fan-out continuam separadas e pendentes.
+
+## 37. UI-V2-P3-A — SCR-DASH-001 visual adjudication closed (2026-09-29)
+
+This checkpoint closes the Dashboard refinement and its screen-level visual
+review only. The P3-A family remains in progress; approval does not transfer to
+Inventory or other screens, authorize a merge, or move prototype content into
+production.
+
+CURRENT_ACTIVITY = UI-V2-P3-A / SCR-DASH-001 targeted refinement and visual adjudication
+ACTIVITY_STATUS = COMPLETE / PASS / USER_APPROVED
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES / scoped to SCR-DASH-001
+PROJECT_STATE_UPDATE = PASS / this entry records approval before completion
+BRANCH = codex/ui-v2-p3-a-core-inventory
+HEAD_AT_USER_APPROVAL = ed1329d55ea039e89a7d99f68150ffbcd9059d6a
+DESIGN_SYSTEM_VERSION = 2.0.2 / unchanged
+SCR_DASH_001_STATUS = USER_APPROVED / FROZEN
+HUMAN_VISUAL_APPROVAL = PASS
+TECHNICAL_READY_FOR_REVIEW = YES
+F03 = CLOSED / independent desktop stacks and natural height asymmetry approved
+F04 = CLOSED / navigation approved at 390x844; 320px scroll accepted by keyboard and touch
+KPI_PATTERN = APPROVED / FREEZE
+PAGE_HEADER = APPROVED / mobile action adaptation included
+VIEWPORTS = 1920x1080 PASS; 1440x900 PASS; 1366x768 PASS; 390x844 PASS
+MOBILE_READING_ORDER = Situação → Monitoramento → Atividade → Câmera / accepted
+NON_BLOCKING_OBSERVATION = recent-activity timestamp may wrap at 1366x768
+OBSERVATION_FOLLOW_UP = evaluate Activity/List with representative data; no Dashboard patch
+DASHBOARD_FREEZE = ACTIVE
+PROTOTYPE_CONTENT_REMAINS_PROTOTYPE = YES
+SHARED_DESIGN_SYSTEM_CHANGED = NO
+PRODUCTION_CHANGED = NO
+P3_FAMILY_IMPLEMENTATION_STARTED = YES / P3-A branch scope only
+P3_A_FAMILY_STATUS = IN_PROGRESS / remaining screens retain independent review gates
+NEXT_ACTIVITY = UI-V2-P3-A / SCR-INV-001 visual evidence review
+NEXT_ACTIVITY_BASIS = next P3-A row in Screen Census after Dashboard; master plan specifies no finer family order
+NEXT_ACTIVITY_IMPLEMENTATION = prototype and technical evidence already exist; visual approval does not transfer
+MERGE_AUTHORIZED = NO
+
+The Dashboard remains frozen. Its timestamp observation is non-blocking and
+belongs to a future Activity/List pattern review.
+
+## 38. UI-V2-P3-A — SCR-INV-001 technical-ready checkpoint (2026-09-29)
+
+This checkpoint records the next surface after the user-approved Dashboard.
+It is technical-ready only; Inventory has a separate human visual approval gate.
+
+CURRENT_ACTIVITY = UI-V2-P3-A / SCR-INV-001 targeted mobile navigation correction and visual review preparation
+ACTIVITY_STATUS = TECHNICAL_READY_FOR_REVIEW / USER_VISUAL_APPROVAL_PENDING
+ACTIVITY_COMPLETION_PERCENT = 85%
+ACTIVITY_COMPLETE = NO / waiting for Inventory visual adjudication
+PROJECT_STATE_UPDATE = PASS / current next-surface state recorded
+BRANCH = codex/ui-v2-p3-a-core-inventory
+HEAD_BEFORE_THIS_RECORD = ed1329d55ea039e89a7d99f68150ffbcd9059d6a
+SCR_INV_001_STATUS = TECHNICAL_READY_FOR_REVIEW
+FINDING = Eventos label clipped at 390x844 in Inventory
+RESOLUTION = screen-local padding, scroll hint, and focus-to-visible behavior
+VIEWPORTS = 1920x1080 PASS; 1440x900 PASS; 1366x768 PASS; 390x844 PASS
+NARROW_NAV = 320px scroll cue, keyboard and touch access PASS
+GLOBAL_DOCUMENT_OVERFLOW = NONE
+CONSOLE_ERRORS = 0 / PAGE_ERRORS = 0 / DENIED_REQUESTS = 0
+PERSISTED_SCREENSHOTS = 4 new Inventory captures / 40 total in P3-A
+SCR_DASH_001_STATUS = USER_APPROVED / FROZEN / unchanged
+SHARED_DESIGN_SYSTEM_CHANGED = NO
+PRODUCTION_CHANGED = NO
+HUMAN_VISUAL_APPROVAL = PENDING / SCR-INV-001
+NEXT_SURFACE = SCR-CAM-DETAIL-001 after Inventory approval, by Screen Census roster order
+MERGE_AUTHORIZED = NO
+
+The 390x844 Inventory table remains horizontally contained in its 360px local
+scroller; the page itself has no horizontal overflow. Existing state and
+interaction coverage remains in the P3-A family reports.

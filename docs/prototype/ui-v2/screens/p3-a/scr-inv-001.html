@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="../../../../../static/css/ui-v2/base.css">
   <link rel="stylesheet" href="../../../../../static/css/ui-v2/components.css">
   <link rel="stylesheet" href="../../../../../static/css/ui-v2/patterns.css">
+  <link rel="stylesheet" href="scr-inv-001.css">
   <script src="../harness.js" defer></script>
   <script src="p3-a-interactions.js" defer></script>
 </head>
@@ -25,14 +26,17 @@
         <img src="../../style-lab/argos-icon.svg" alt="" width="34" height="34">
         <span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">UI V2 · protótipos</span></span>
       </a>
-      <nav class="argos-docs-nav" aria-label="Navegação principal">
-        <span class="argos-docs-nav__group">Central operacional</span>
-        <a href="scr-portal-001.html" data-conceptual-route="/">Início</a>
-        <a href="scr-dash-001.html" data-conceptual-route="/dashboard/">Dashboard</a>
-        <a href="scr-inv-001.html" aria-current="page" data-conceptual-route="/cameras/">Inventário</a>
-        <a href="../index.html#screen-scr-sub-list-001" data-conceptual-route="/cameras/substituicoes/">Governança</a>
-        <a href="../index.html#screen-scr-event-list-001" data-conceptual-route="/eventos/">Eventos</a>
-      </nav>
+      <div class="p3-a-inventory-nav-frame">
+        <nav class="argos-docs-nav" aria-label="Navegação principal" data-inventory-primary-nav>
+          <span class="argos-docs-nav__group">Central operacional</span>
+          <a href="scr-portal-001.html" data-conceptual-route="/">Início</a>
+          <a href="scr-dash-001.html" data-conceptual-route="/dashboard/">Dashboard</a>
+          <a href="scr-inv-001.html" aria-current="page" data-conceptual-route="/cameras/">Inventário</a>
+          <a href="../index.html#screen-scr-sub-list-001" data-conceptual-route="/cameras/substituicoes/">Governança</a>
+          <a href="../index.html#screen-scr-event-list-001" data-conceptual-route="/eventos/">Eventos</a>
+        </nav>
+        <p class="p3-a-inventory-nav-hint" id="inventory-mobile-nav-hint" data-inventory-nav-hint hidden>Deslize horizontalmente para ver todos os itens.</p>
+      </div>
       <p class="argos-docs-sidebar__foot">P3-A · protótipo · DS 2.0.2</p>
     </aside>
     <div class="argos-docs-main">

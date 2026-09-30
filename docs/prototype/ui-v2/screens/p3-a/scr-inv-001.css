@@ -1,0 +1,28 @@
+@layer pages {
+  .p3-a-inventory-nav-frame {
+    min-width: 0;
+  }
+
+  @media (max-width: 680px) {
+    .p3-a-inventory-nav-frame {
+      display: grid;
+      gap: var(--argos-space-1);
+    }
+
+    .p3-a-inventory-nav-frame .argos-docs-nav {
+      padding-inline-end: var(--argos-space-2);
+      scroll-padding-inline-end: var(--argos-space-2);
+      overscroll-behavior-inline: contain;
+    }
+
+    .p3-a-inventory-nav-frame .argos-docs-nav a {
+      padding-inline: var(--argos-space-2);
+    }
+
+    .p3-a-inventory-nav-hint {
+      margin: 0;
+      color: var(--argos-color-ink-inverse-muted);
+      font-size: var(--argos-text-caption);
+    }
+  }
+}
