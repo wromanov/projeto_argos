@@ -81,3 +81,45 @@ No browser console não foram observados erros; recursos vieram apenas do previe
 `EVIDENCE_REFRESH = DEFERRED_BY_WORKSTATION_CAPABILITY`
 `USER_VISUAL_APPROVAL = PENDING`
 `PROJECT_STATE_UPDATE = DEFERRED_NO_AUTHORITY`
+
+## Adjudicação final da revisão humana — DS 2.0.2 — 2026-09-30
+
+Os status abaixo supersedem os resultados `PENDING` e `PASS_WITH_FINDINGS` dos checkpoints anteriores, que descreviam o estado anterior à resolução dos metadados e à decisão visual humana. Esses registros permanecem como histórico.
+
+```text
+DESIGN_SYSTEM_VERSION = 2.0.2
+PRODUCT_DESIGN_TARGETED_QA = PASS
+P3_C_DS_2_0_2_REGRESSION = PASS
+STALE_DS_2_0_1_CURRENT_METADATA = RESOLVED
+STALE_METADATA_STATUS = RESOLVED
+HUMAN_VISUAL_APPROVAL = PASS
+USER_VISUAL_APPROVAL = PASS
+P3_C_VISUAL_REVIEW = PASS_WITH_NONBLOCKING_LIMITATIONS
+P3_C_OWNED_SCREENS = USER_APPROVED / FROZEN
+BLOCKING_FINDINGS = NONE
+P3_C_SPECIFIC_BLOCKING_FINDINGS = NONE
+SURFACE_REFINEMENT_REQUIRED = NO
+DESIGN_SYSTEM_CHANGE_REQUIRED = NO
+```
+
+A decisão humana foi baseada em seis capturas atuais DS 2.0.2, cobrindo Activities lista/formulário, Governance estado/ação, Events lista/detalhe e Events lista mobile. Elas estão em `docs/prototype/ui-v2/evidence/screenshots/p3-c/review-2026-09-30/`. Esta rodada não gerou captura nova de cada um dos dez IDs. O aceite dos demais estados da família é apoiado pela QA técnica familiar já registrada e pelo contrato de herança de `SCR-ACT-EDIT-001`.
+
+A checagem direcionada confirmou ARGOS Hybrid, legibilidade e scroll local de tabela, composição de formulário, ações de governança, hierarquia do detalhe de evento e comportamento mobile. O relatório técnico continua sendo a fonte para a regressão completa dos três consumidores de tabela: overflow global ausente, scroll local mobile funcional, nenhuma fragmentação destrutiva e acesso a ações por teclado.
+
+Limitações sem bloqueio:
+
+```text
+MOBILE_DS_BADGE_NOT_IN_FRAME = EXPECTED / NONBLOCKING
+MOBILE_FULL_PAGE_COMPOSITION = NOT_REVALIDATED_BY_THIS_SPECIFIC_SCREENSHOT
+```
+
+A tabela foi o alvo deliberado do enquadramento mobile, deixando o selo fora do frame. A composição mobile integral não foi revalidada por essa captura específica; a versão DS 2.0.2 foi validada antes dela. O shell P3 conserva as diferenças canônicas de sidebar, breadcrumbs e conteúdo frente à referência sistêmica Style Lab C. Não há finding visual acionável nem solicitação de alteração no DS.
+
+```text
+P3_C_COMPLETE = YES
+P3_C_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
+REMAINING_P3_C_GATES = USER AUTHORIZATION FOR P3-C CLOSURE CHECKPOINT + PUSH
+PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+```
+
+A aprovação é representativa e não afirma nova captura screen-by-screen. Não foi reaberta a suíte histórica.

@@ -96,3 +96,43 @@ Spot checks sem overflow global: form Activities, ação Governance e detalhe Ev
 A validação ROOT do mesmo DCR registra `CROSS_FAMILY_REGRESSION = PASS / 7 of 7`; P3-C não alterou arquivos de P3-A/B/D. Evidência 2.0.2 persistente = DEFERRED_BY_WORKSTATION_CAPABILITY. As 107 capturas/comparativos anteriores seguem preservados. Aprovação visual humana = PENDING.
 
 Finding não funcional: metadados e selos visíveis das nove páginas P3-C ainda anunciam Design System 2.0.1, embora a implementação compartilhada seja 2.0.2. PROJECT_STATE_UPDATE permanece `DEFERRED_NO_AUTHORITY`; ACTIVITY_COMPLETE = NO.
+
+## Aprovação humana e status final da família — 2026-09-30
+
+Este bloco é o status corrente e supersede os registros anteriores de aprovação pendente e de metadata 2.0.1. As linhas originais permanecem para rastreabilidade da QA histórica.
+
+```text
+DESIGN_SYSTEM_VERSION = 2.0.2
+STALE_DS_2_0_1_CURRENT_METADATA = RESOLVED
+STALE_METADATA_STATUS = RESOLVED
+P3_C_DS_2_0_2_REGRESSION = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+USER_VISUAL_APPROVAL = PASS
+P3_C_VISUAL_REVIEW = PASS_WITH_NONBLOCKING_LIMITATIONS
+P3_C_OWNED_SCREENS = USER_APPROVED / FROZEN
+BLOCKING_FINDINGS = NONE
+P3_C_SPECIFIC_BLOCKING_FINDINGS = NONE
+SURFACE_REFINEMENT_REQUIRED = NO
+DESIGN_SYSTEM_CHANGE_REQUIRED = NO
+P3_C_COMPLETE = YES
+P3_C_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
+REMAINING_P3_C_GATES = USER AUTHORIZATION FOR P3-C CLOSURE CHECKPOINT + PUSH
+PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+```
+
+Os dez IDs pertencem à família e estão tecnicamente prontos: `SCR-ACT-LIST-001`, `SCR-ACT-CREATE-001`, `SCR-ACT-EDIT-001` (modo herdado/prefilled), `SCR-GOV-STATE-001`, `SCR-GOV-DISABLE-001`, `SCR-GOV-REACTIVATE-001`, `SCR-GOV-SUBSTITUTE-001`, `SCR-EVENT-LIST-001`, `SCR-EVENT-DETAIL-001` e `SCR-EVENT-CAMERA-001`.
+
+A aprovação humana foi baseada no pacote atual de seis PNGs DS 2.0.2, com os arquétipos listados em `HUMAN_REVIEW_PACKAGE.md`, e na QA técnica já concluída para a família. Não se afirma uma captura nova para cada tela nesta aprovação.
+
+```text
+GLOBAL_HORIZONTAL_OVERFLOW = NONE
+MOBILE_TABLE_LOCAL_SCROLL = FUNCTIONAL
+DESTRUCTIVE_WORD_FRAGMENTATION = NONE
+TABLE_ACTIONS_KEYBOARD_REACHABLE = PASS
+MOBILE_DS_BADGE_NOT_IN_FRAME = EXPECTED / NONBLOCKING
+MOBILE_FULL_PAGE_COMPOSITION = NOT_REVALIDATED_BY_THIS_SPECIFIC_SCREENSHOT
+```
+
+A imagem mobile foi posicionada na tabela e não revalida a composição integral da página; o metadata DS 2.0.2 foi validado antes da captura. Essa limitação não cria blocker. As capturas históricas DS 2.0.1 permanecem inalteradas.
+
+A adjudicação `P3_C_COMPLETE = YES` é local à família e elegível para checkpoint. A reconciliação de `PROJECT_STATE.md` segue ROOT-owned e foi deferida; nenhum estado global de projeto é declarado concluído.

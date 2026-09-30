@@ -137,3 +137,53 @@ Finding resolvido apenas nas nove páginas atuais P3-C, em meta tags e selos vis
 Pacote conciso e seleção das referências: [`HUMAN_REVIEW_PACKAGE.md`](HUMAN_REVIEW_PACKAGE.md). Os PNGs persistidos sob `post-ds-2.0.1/` permanecem históricos: o selo antigo aparece neles, então a pré-visualização HTML corrente é a referência para conferir `2.0.2`. A pré-visualização local foi deixada aberta no browser na região da tabela mobile; nenhuma captura PNG nova foi persistida.
 
 `SHARED_DS_CHANGED = NO`; `CSS_CHANGED = NO`; `JS_CHANGED = NO`; `COMPOSITION_CHANGED = NO`; `PROJECT_STATE_CHANGED = NO`; `SCREEN_COVERAGE_CHANGED = NO`.
+
+## Aprovação humana e adjudicação de fechamento — 2026-09-30
+
+Este é o estado autoritativo mais recente da família P3-C; os checkpoints anteriores que registram aprovação pendente são históricos e foram supersedidos por esta decisão explícita do usuário.
+
+```text
+DESIGN_SYSTEM_VERSION = 2.0.2
+HUMAN_VISUAL_APPROVAL = PASS
+USER_VISUAL_APPROVAL = PASS
+P3_C_VISUAL_REVIEW = PASS_WITH_NONBLOCKING_LIMITATIONS
+P3_C_OWNED_SCREENS = USER_APPROVED / FROZEN
+BLOCKING_FINDINGS = NONE
+P3_C_SPECIFIC_BLOCKING_FINDINGS = NONE
+SURFACE_REFINEMENT_REQUIRED = NO
+DESIGN_SYSTEM_CHANGE_REQUIRED = NO
+P3_C_DS_2_0_2_REGRESSION = PASS
+STALE_DS_2_0_1_CURRENT_METADATA = RESOLVED
+STALE_METADATA_STATUS = RESOLVED
+P3_C_COMPLETE = YES
+P3_C_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
+REMAINING_P3_C_GATES = USER AUTHORIZATION FOR P3-C CLOSURE CHECKPOINT + PUSH
+PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+COMMIT_PERFORMED = NO
+PUSH_PERFORMED = NO
+```
+
+### Surfaces e readiness
+
+Os dez IDs owned por P3-C estão aprovados/congelados. O contrato de herança permanece válido: `SCR-ACT-EDIT-001` usa a composição de `SCR-ACT-CREATE-001` em modo prefilled. A QA técnica por estado, responsividade e acessibilidade baseline está registrada acima e em `coverage.md` / `design-qa.md`.
+
+### Base representativa da aprovação
+
+A aprovação visual usou as seis capturas atuais DS 2.0.2 em `docs/prototype/ui-v2/evidence/screenshots/p3-c/review-2026-09-30/`: Activities lista e formulário, Governance estado/ação, Events lista e detalhe, e Events lista mobile. Não se afirma que cada um dos dez IDs recebeu uma nova captura nesta rodada; a revisão representativa é apoiada pela readiness técnica de toda a família e pelos contratos existentes.
+
+### Limitações preservadas
+
+```text
+MOBILE_DS_BADGE_NOT_IN_FRAME = EXPECTED / NONBLOCKING
+MOBILE_FULL_PAGE_COMPOSITION = NOT_REVALIDATED_BY_THIS_SPECIFIC_SCREENSHOT
+```
+
+A captura mobile foi enquadrada intencionalmente na tabela; o selo DS fica fora do frame. Essa imagem específica não revalida a composição mobile integral. O metadata corrente foi validado antes da captura. As diferenças documentadas de sidebar, breadcrumbs e conteúdo entre o shell P3 e a referência de sistema Style Lab C são intencionais; nenhum finding de shell bloqueante ou acionável permanece.
+
+### Ownership global e próximo gate
+
+`PROJECT_STATE.md` e a reconciliação global permanecem ROOT-owned e não foram alterados. Isso não bloqueia a adjudicação local `P3_C_COMPLETE = YES`, mas nenhuma declaração de conclusão global é feita aqui.
+
+`NEXT_GATE = USER AUTHORIZATION FOR P3-C CLOSURE CHECKPOINT + PUSH`
+
+Nenhum stage, commit, push, merge ou alteração de master foi realizado.
