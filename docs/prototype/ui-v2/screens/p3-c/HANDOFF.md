@@ -107,3 +107,33 @@ The receiving workstation fetched the expected branch at ed7e2e5567b312b52c19048
 - `FINDING =` os metadados e selos visíveis das nove páginas P3-C ainda dizem `2.0.1`, embora o CSS/harness compartilhado esteja em `2.0.2`. Isso não altera a regressão da tabela; manter registrado para adjudicação antes de aprovar a evidência visual.
 - `IMPLEMENTATION_REGRESSION = PASS`; `FAMILY_TECHNICAL_LOGIC = PASS`; `USER_VISUAL_APPROVAL = PENDING`; `PROJECT_STATE_UPDATE = DEFERRED_NO_AUTHORITY`; `ACTIVITY_COMPLETE = NO`.
 - Próximo gate: revisão visual humana P3-C e atualização de evidência se requerida; não repetir implementação completa.
+
+## Finalização residual DS 2.0.2 e preparação da revisão humana — 2026-09-30
+
+```text
+DESIGN_SYSTEM_VERSION = 2.0.2
+STALE_METADATA = RESOLVED
+P3_C_DS_2_0_2_REGRESSION = PASS
+PRODUCT_DESIGN_TARGETED_QA = PASS
+HUMAN_VISUAL_APPROVAL = PENDING
+NEXT_GATE = P3-C HUMAN VISUAL REVIEW
+PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+```
+
+Finding resolvido apenas nas nove páginas atuais P3-C, em meta tags e selos visíveis:
+
+- `docs/prototype/ui-v2/screens/p3-c/scr-act-create-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-act-list-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-event-camera-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-event-detail-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-event-list-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-gov-disable-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-gov-reactivate-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-gov-state-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-gov-substitute-001.html`
+
+`PRODUCT_DESIGN_TARGETED_QA = PASS`: preview corrente verificado nos arquétipos Activities lista/formulário, Governance estado/ação, Events lista/detalhe e tabela Events mobile (390×844). Sem finding visual acionável no escopo. O relatório pós-2.0.2 mantém a regressão técnica e os critérios de tabela previamente aprovados; nenhuma suíte histórica foi repetida.
+
+Pacote conciso e seleção das referências: [`HUMAN_REVIEW_PACKAGE.md`](HUMAN_REVIEW_PACKAGE.md). Os PNGs persistidos sob `post-ds-2.0.1/` permanecem históricos: o selo antigo aparece neles, então a pré-visualização HTML corrente é a referência para conferir `2.0.2`. A pré-visualização local foi deixada aberta no browser na região da tabela mobile; nenhuma captura PNG nova foi persistida.
+
+`SHARED_DS_CHANGED = NO`; `CSS_CHANGED = NO`; `JS_CHANGED = NO`; `COMPOSITION_CHANGED = NO`; `PROJECT_STATE_CHANGED = NO`; `SCREEN_COVERAGE_CHANGED = NO`.
