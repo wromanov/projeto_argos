@@ -622,3 +622,83 @@ NEXT_SURFACE_STARTED = NO
 ~~~
 
 “Eventos” pode aparecer parcialmente cortado em 390×844 na navegação compartilhada; isso não bloqueia SCR-CAM-DETAIL-001. O espaço em branco do cartão de imagem sem captura é observacional. Nenhum desses pontos solicita alteração nesta atividade.
+
+## Revisão visual e aprovação humana — SCR-PORTAL-001 (2026-09-30)
+
+Revisão das seis capturas persistidas de Portal. O usuário aprovou a superfície
+e a congelou. Não foi identificado bloqueio nem finding específico de Portal.
+O único apontamento é compartilhado com a navegação mobile e permanece
+não bloqueante.
+
+~~~text
+SCR_PORTAL_001_VISUAL_REVIEW = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+USER_VISUAL_APPROVAL = PASS
+SCR_PORTAL_001 = USER_APPROVED / FROZEN
+DESIGN_SYSTEM_VERSION = 2.0.2
+1366x768_DEFAULT_REVIEW = PASS
+1440x900_DEFAULT_REVIEW = PASS
+1920x1080_DEFAULT_REVIEW = PASS
+390x844_DEFAULT_REVIEW = PASS
+390x844_LONG_REVIEW = PASS
+390x844_EMPTY_REVIEW = PASS
+GLOBAL_HORIZONTAL_OVERFLOW = NONE
+WIDE_DESKTOP_OVERSTRETCH = PASS
+LONG_CONTENT = PASS
+EMPTY_STATE = PASS
+MOBILE_COMPOSITION = PASS
+ACCESSIBILITY_VISUAL_BASELINE = PASS_WITH_LIMITS
+WCAG_FULL_COMPLIANCE_CLAIMED = NO
+BLOCKING_FINDINGS = NONE
+PORTAL_SPECIFIC_FINDINGS = NONE
+KNOWN_SHARED_FINDING = MOBILE_NAV_PARTIAL_LAST_ITEM / NONBLOCKING
+SURFACE_REFINEMENT_REQUIRED = NO
+DESIGN_SYSTEM_CHANGE_REQUIRED = NO
+EVIDENCE_REVIEWED = 6
+SCR_DASH_001 = USER_APPROVED / FROZEN
+SCR_INV_001 = USER_APPROVED / FROZEN / PUBLISHED
+SCR_CAM_DETAIL_001 = USER_APPROVED / FROZEN / PUBLISHED
+SCR_CAM_QUICK_001 = INHERITED / PROTECTED
+QUICK_DETAIL_REDESIGN_AUTHORIZED = NO
+QUICK_DETAIL_FAMILY_GATE = SATISFIED
+P3_A_COMPLETE = YES
+P3_A_STATUS = USER_APPROVED / READY_FOR_FAMILY_CLOSURE_CHECKPOINT
+REMAINING_P3_A_GATES = NONE
+~~~
+
+Evidências revisadas:
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__1366x768__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__1440x900__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__1920x1080__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__390x844__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__390x844__default__long.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__390x844__empty__default.png
+
+A linha final da navegação mobile pode aparecer parcialmente cortada em
+390×844; é um finding do shell compartilhado, fora do escopo de Portal e sem
+bloqueio. Esta revisão não reivindica conformidade WCAG completa. Nenhuma
+mudança de implementação ou Design System é necessária.
+
+## Checkpoint de fechamento local da família P3-A (2026-09-30)
+
+Os gates visuais de todas as superfícies estão fechados. Quick Detail foi
+mantido como superfície herdada e protegida; não houve redesign autorizado.
+A publicação remota ainda depende da verificação pós-commit.
+
+~~~text
+P3_A_COMPLETE = YES
+P3_A_STATUS = USER_APPROVED / CLOSED_LOCALLY / PUBLICATION_PENDING
+REMAINING_P3_A_SURFACE_GATES = NONE
+SCR_DASH_001 = USER_APPROVED / FROZEN
+SCR_INV_001 = USER_APPROVED / FROZEN / PUBLISHED
+SCR_CAM_DETAIL_001 = USER_APPROVED / FROZEN / PUBLISHED
+SCR_CAM_QUICK_001 = INHERITED / PROTECTED
+REDESIGN_AUTHORIZED = NO
+SCR_PORTAL_001 = USER_APPROVED / FROZEN
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md seção 44
+P3_A_PUBLISHED = PENDING / avaliação após push e verificação remota
+MASTER_CHANGED = NO
+PRODUCTION_CHANGED = NO
+MERGE_PERFORMED = NO
+NEXT_GATE = REMOTE PUBLICATION + SYNC VERIFICATION; THEN ROOT RECONCILIATION / REMAINING P3 FAMILIES
+~~~

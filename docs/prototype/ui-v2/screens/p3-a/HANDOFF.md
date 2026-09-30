@@ -567,3 +567,99 @@ MERGE_PERFORMED = NO
 ~~~
 
 A observação da navegação compartilhada não altera o shell nesta atividade. O próximo passo é a revisão própria de SCR-PORTAL-001 quando autorizada; não há início de trabalho em Portal neste fechamento.
+
+## Handoff após aprovação — SCR-PORTAL-001 e adjudicação final P3-A (2026-09-30)
+
+O usuário aprovou a revisão visual de SCR-PORTAL-001. Este registro supersede
+os apontamentos históricos de Portal pendente e encerra somente os gates de
+superfície da família. P3-A fica pronta para o checkpoint separado de
+fechamento, cuja autorização do usuário ainda é o próximo gate.
+
+~~~text
+SCR_PORTAL_001_VISUAL_REVIEW = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+USER_VISUAL_APPROVAL = PASS
+SCR_PORTAL_001 = USER_APPROVED / FROZEN
+BLOCKING_FINDINGS = NONE
+PORTAL_SPECIFIC_FINDINGS = NONE
+KNOWN_SHARED_FINDING = MOBILE_NAV_PARTIAL_LAST_ITEM / NONBLOCKING
+SURFACE_REFINEMENT_REQUIRED = NO
+DESIGN_SYSTEM_CHANGE_REQUIRED = NO
+DESIGN_SYSTEM_VERSION = 2.0.2
+1366x768_DEFAULT_REVIEW = PASS
+1440x900_DEFAULT_REVIEW = PASS
+1920x1080_DEFAULT_REVIEW = PASS
+390x844_DEFAULT_REVIEW = PASS
+390x844_LONG_REVIEW = PASS
+390x844_EMPTY_REVIEW = PASS
+GLOBAL_HORIZONTAL_OVERFLOW = NONE
+WIDE_DESKTOP_OVERSTRETCH = PASS
+LONG_CONTENT = PASS
+EMPTY_STATE = PASS
+MOBILE_COMPOSITION = PASS
+ACCESSIBILITY_VISUAL_BASELINE = PASS_WITH_LIMITS
+WCAG_FULL_COMPLIANCE_CLAIMED = NO
+DASHBOARD = USER_APPROVED / FROZEN / unchanged
+INVENTORY = USER_APPROVED / FROZEN / PUBLISHED
+CAMERA_DETAIL = USER_APPROVED / FROZEN / PUBLISHED
+QUICK_DETAIL = INHERITED / PROTECTED / unchanged
+QUICK_DETAIL_REDESIGN_AUTHORIZED = NO
+QUICK_DETAIL_FAMILY_GATE = SATISFIED
+P3_A_COMPLETE = YES
+P3_A_STATUS = USER_APPROVED / READY_FOR_FAMILY_CLOSURE_CHECKPOINT
+REMAINING_P3_A_GATES = NONE
+BRANCH = codex/ui-v2-p3-a-core-inventory
+HEAD = 6b3b0e776d360f76fcb4083c35748b023c720e9d
+WORKTREE_BEFORE = CLEAN
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md seção 43
+COMMIT_PERFORMED = NO
+PUSH_PERFORMED = NO / nesta atividade
+MERGE_PERFORMED = NO
+MASTER_CHANGED = NO
+PRODUCTION_CHANGED = NO
+NEXT_GATE = USER AUTHORIZATION FOR P3-A CLOSURE CHECKPOINT + PUSH
+~~~
+
+Evidências de Portal revisadas (seis PNGs persistidos):
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__1366x768__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__1440x900__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__1920x1080__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__390x844__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__390x844__default__long.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__390x844__empty__default.png
+
+A referência local origin do branch corresponde ao HEAD esperado. A leitura
+direta do estado remoto não foi possível porque a conexão de rede está
+bloqueada; nenhum push foi executado. Esta atualização não altera implementação,
+capturas, Design System ou superfícies já congeladas.
+
+## Checkpoint de fechamento local da família P3-A (2026-09-30)
+
+Todas as superfícies previstas estão fechadas. Quick Detail permanece
+INHERITED / PROTECTED, estado válido para o gate da família. A aprovação
+autoriza este commit documental e a tentativa normal de publicação somente
+do branch P3-A. O resultado remoto será registrado no relatório após
+verificação; este checkpoint não o antecipa.
+
+~~~text
+P3_A_COMPLETE = YES
+P3_A_STATUS = USER_APPROVED / CLOSED_LOCALLY / PUBLICATION_PENDING
+REMAINING_P3_A_SURFACE_GATES = NONE
+SCR_DASH_001 = USER_APPROVED / FROZEN
+SCR_INV_001 = USER_APPROVED / FROZEN / PUBLISHED
+SCR_CAM_DETAIL_001 = USER_APPROVED / FROZEN / PUBLISHED
+SCR_CAM_QUICK_001 = INHERITED / PROTECTED
+REDESIGN_AUTHORIZED = NO
+SCR_PORTAL_001 = USER_APPROVED / FROZEN
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md seção 44
+COMMIT_AUTHORIZED = YES
+PUSH_AUTHORIZED = YES / somente codex/ui-v2-p3-a-core-inventory
+P3_A_PUBLISHED = PENDING / aguarda push e readback remoto
+MASTER_CHANGED = NO
+PRODUCTION_CHANGED = NO
+MERGE_PERFORMED = NO
+NEXT_GATE = REMOTE PUBLICATION + SYNC VERIFICATION; THEN ROOT RECONCILIATION / REMAINING P3 FAMILIES
+~~~
+
+O checkpoint documental cobre apenas P3-A. Não autoriza merge em master nem
+início de P3-B, P3-C ou P3-D.

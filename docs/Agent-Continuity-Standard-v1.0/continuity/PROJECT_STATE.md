@@ -2210,3 +2210,104 @@ MERGE_PERFORMED = NO
 ~~~
 
 Em 390×844, “Eventos” pode aparecer parcialmente cortado na navegação compartilhada; permanece finding não bloqueante e o shell não foi alterado. O espaço em branco no cartão de imagem sem imagem permanece observação sem ação. SCR-PORTAL-001 é a superfície restante sem aprovação; esta atividade não a inicia.
+
+## 43. UI-V2-P3-A — SCR-PORTAL-001 approval and family completion adjudication (2026-09-30)
+
+O usuário aprovou explicitamente a revisão visual de SCR-PORTAL-001. Este
+registro fecha e congela Portal e verifica os gates da família P3-A, sem
+iniciar o checkpoint separado de fechamento/publicação da família.
+
+~~~text
+CURRENT_ACTIVITY = UI-V2-P3-A / SCR-PORTAL-001 formal visual closure + P3-A family completion adjudication
+ACTIVITY_STATUS = COMPLETE / PASS / USER_APPROVED
+ACTIVITY_COMPLETION_PERCENT = 100% / escopo desta adjudicação e atualização documental
+BRANCH = codex/ui-v2-p3-a-core-inventory
+HEAD = 6b3b0e776d360f76fcb4083c35748b023c720e9d
+WORKTREE_BEFORE = CLEAN
+WORKTREE_AFTER = MODIFIED / somente quatro documentos de continuidade P3-A
+DESIGN_SYSTEM_VERSION = 2.0.2
+SCR_PORTAL_001_VISUAL_REVIEW = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+USER_VISUAL_APPROVAL = PASS
+SCR_PORTAL_001 = USER_APPROVED / FROZEN
+BLOCKING_FINDINGS = NONE
+PORTAL_SPECIFIC_FINDINGS = NONE
+KNOWN_SHARED_FINDING = MOBILE_NAV_PARTIAL_LAST_ITEM / NONBLOCKING
+SURFACE_REFINEMENT_REQUIRED = NO
+DESIGN_SYSTEM_CHANGE_REQUIRED = NO
+PORTAL_EVIDENCE_REVIEWED = 6 / capturas PNG rastreadas de SCR-PORTAL-001
+1366x768_DEFAULT_REVIEW = PASS
+1440x900_DEFAULT_REVIEW = PASS
+1920x1080_DEFAULT_REVIEW = PASS
+390x844_DEFAULT_REVIEW = PASS
+390x844_LONG_REVIEW = PASS
+390x844_EMPTY_REVIEW = PASS
+GLOBAL_HORIZONTAL_OVERFLOW = NONE
+WIDE_DESKTOP_OVERSTRETCH = PASS
+LONG_CONTENT = PASS
+EMPTY_STATE = PASS
+MOBILE_COMPOSITION = PASS
+ACCESSIBILITY_VISUAL_BASELINE = PASS_WITH_LIMITS
+WCAG_FULL_COMPLIANCE_CLAIMED = NO
+SCR_DASH_001 = USER_APPROVED / FROZEN
+SCR_INV_001 = USER_APPROVED / FROZEN / PUBLISHED
+SCR_INV_001_PUBLICATION_BASIS = local origin tracking ref matches HEAD; live remote readback unavailable due network restriction
+SCR_CAM_DETAIL_001 = USER_APPROVED / FROZEN / PUBLISHED
+SCR_CAM_QUICK_001 = INHERITED / PROTECTED
+QUICK_DETAIL_REDESIGN_AUTHORIZED = NO
+QUICK_DETAIL_FAMILY_GATE = SATISFIED
+P3_A_COMPLETE = YES
+P3_A_STATUS = USER_APPROVED / READY_FOR_FAMILY_CLOSURE_CHECKPOINT
+REMAINING_P3_A_GATES = NONE
+PROJECT_STATE_UPDATE = PASS / este registro documenta aprovação e decisão da família antes do encerramento da atividade
+ACTIVITY_COMPLETE = YES / escopo limitado à adjudicação de SCR-PORTAL-001 e verificação documental dos gates P3-A
+DESIGN_SYSTEM_CHANGED = NO
+PRODUCTION_CHANGED = NO
+MASTER_CHANGED = NO
+MERGE_PERFORMED = NO
+COMMIT_PERFORMED = NO
+PUSH_PERFORMED = NO / nesta atividade
+NEXT_GATE = USER AUTHORIZATION FOR P3-A CLOSURE CHECKPOINT + PUSH
+~~~
+
+O finding conhecido da navegação é compartilhado e não bloqueia Portal; não
+houve finding específico da tela. Quick Detail permanece herdado e protegido,
+estado que satisfaz o gate P3-A. A família está aprovada e pronta para o
+checkpoint separado de fechamento; esta atividade não autoriza commit, push,
+merge ou integração em master.
+
+## 44. UI-V2-P3-A — checkpoint de fechamento da família (2026-09-30)
+
+Este checkpoint registra o fechamento local da família após a aprovação de
+todas as superfícies. A publicação remota é verificada depois da criação do
+commit; este registro não antecipa o resultado dessa verificação.
+
+~~~text
+CURRENT_ACTIVITY = UI-V2-P3-A / P3-A family closure checkpoint
+ACTIVITY_STATUS = LOCAL_CLOSURE_CHECKPOINT / PASS / USER_APPROVED
+ACTIVITY_COMPLETION_PERCENT = 100% / todos os gates de superfície fechados; publicação verificada em etapa separada
+BRANCH = codex/ui-v2-p3-a-core-inventory
+HEAD_BEFORE_CLOSURE = 6b3b0e776d360f76fcb4083c35748b023c720e9d
+P3_A_COMPLETE = YES
+P3_A_STATUS = USER_APPROVED / CLOSED_LOCALLY / PUBLICATION_PENDING
+REMAINING_P3_A_SURFACE_GATES = NONE
+SCR_DASH_001 = USER_APPROVED / FROZEN
+SCR_INV_001 = USER_APPROVED / FROZEN / PUBLISHED
+SCR_CAM_DETAIL_001 = USER_APPROVED / FROZEN / PUBLISHED
+SCR_CAM_QUICK_001 = INHERITED / PROTECTED
+REDESIGN_AUTHORIZED = NO
+SCR_PORTAL_001 = USER_APPROVED / FROZEN
+PROJECT_STATE_UPDATE = PASS / este checkpoint documenta fechamento local antes da conclusão da atividade
+ACTIVITY_COMPLETE = YES / escopo do checkpoint local; publicação depende de push e readback remoto
+COMMIT_AUTHORIZED = YES / Card B atual
+PUSH_AUTHORIZED = YES / somente branch codex/ui-v2-p3-a-core-inventory
+P3_A_PUBLISHED = PENDING / será definido após tentativa de push e verificação remota
+MASTER_CHANGED = NO
+PRODUCTION_CHANGED = NO
+MERGE_PERFORMED = NO
+NEXT_GATE = REMOTE PUBLICATION + SYNC VERIFICATION; THEN ROOT RECONCILIATION / REMAINING P3 FAMILIES
+~~~
+
+O SHA deste commit de fechamento é retornado no relatório desta atividade.
+Se a rede impedir fetch ou push, a família permanece fechada localmente, com
+publicação pendente; não haverá reescrita de histórico nem push forçado.
