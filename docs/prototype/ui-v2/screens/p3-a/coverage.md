@@ -1,6 +1,62 @@
+# P3-A — Cobertura final e evidência (2026-09-29)
+
+DESIGN_SYSTEM_VERSION = 2.0.2
+PERSISTED_SCREENSHOTS = 28 / 16 viewport defaults + 12 mobile state captures
+VIEWPORTS = 390x844, 1366x768, 1440x900, 1920x1080
+GLOBAL_HORIZONTAL_OVERFLOW = NONE / 16 of 16 combinations
+STATE_FIXTURE_MISMATCH = NONE
+INVALID_PNG_OR_DIMENSION_MISMATCH = NONE
+CONSOLE_ERRORS = 0
+EXTERNAL_REQUESTS = 0
+NON_GET_REQUESTS = 0
+PERSISTENCE_WRITES = NONE
+ACCESSIBILITY_BASELINE = PASS_WITH_LIMITS / no WCAG conformance claim
+TECHNICAL_READY_FOR_REVIEW = YES
+USER_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = NOT PERFORMED / excluded by the user card
+ACTIVITY_COMPLETE = NO / awaiting human visual review
+
+Captures live at docs/prototype/ui-v2/evidence/screenshots/p3-a/. All 28 files
+were checked for PNG signature, expected pixel dimensions, file presence, and
+agreement between filename and capture metadata. Browser used Playwright with
+Chrome, device scale factor 1, 100% zoom, and a request guard allowing only local
+GET requests. No external request, non-GET request, or browser persistence was
+observed.
+
+| Tela | Viewports padrão | Estados móveis adicionais | Resultado |
+|---|---:|---|---|
+| Portal | 4/4 | empty, long | Sem overflow global; evidência persistida |
+| Dashboard | 4/4 | empty, long | Sem overflow global; evidência persistida |
+| Inventário | 4/4 | empty, loading, error, long, selected | Sem overflow global; tabela com scroll local; evidência persistida |
+| Detalhe de Câmera | 4/4 | empty (history), error, long | Sem overflow global; evidência persistida |
+
+## Inventário móvel e interação
+
+- Em 390×844, o scroller local tem 360px e contém a tabela de 921px com oito
+  colunas; o documento não ganha overflow horizontal.
+- A linha padrão mede 127px; na fixture longa, página 2, a linha longa mede 217px.
+- Filtro sem resultados apresenta estado vazio; limpar filtros restaura resultados;
+  paginação alcança a página 2.
+- Enter seleciona uma linha e atualiza o anúncio de status. Tab alcança a ação
+  nomeada; a ação fica visível após rolagem horizontal. A captura selected registra
+  esse estado.
+- Quick Detail segue o baseline protegido; não houve alteração de design.
+
+## Acessibilidade e escopo
+
+Baseline observado: idioma pt-BR, título da página, um H1, landmarks principais
+nomeados, controles rotulados, imagens com texto alternativo e seleção por teclado.
+Isso não é uma declaração de conformidade WCAG. A cobertura de console terminou com
+zero erros.
+
+PROJECT_STATE.md, SCREEN_COVERAGE global, demais famílias e produção não foram
+alterados. A aprovação visual humana está pendente e é o próximo gate.
+ACTIVITY_COMPLETE permanece NO até esse gate; esta atividade não atualiza o snapshot global.
+
+---
 # P3-A — Coverage local
 
-## Checkpoint pós-propagação DS 2.0.2 (2026-09-29)
+## Checkpoint histórico pós-propagação DS 2.0.2 — captura ainda pendente (superado em 2026-09-29)
 
 ```text
 REMOTE_HEAD_BEFORE_PROPAGATION = 1f833aed523420db47ba06faa5d5cf5cc114de0b

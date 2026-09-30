@@ -1,6 +1,85 @@
+# P3-A — Product Design / Design QA final (2026-09-29)
+
+**final result: passed**
+
+DESIGN_SYSTEM_VERSION = 2.0.2
+PRODUCT_DESIGN_DESIGN_QA = PASS
+PERSISTED_EVIDENCE = PASS / 28 named PNGs, 16 defaults + 12 mobile states
+STATE_AND_RESPONSIVE_QA = PASS / four screens × four viewports
+GLOBAL_HORIZONTAL_OVERFLOW = NONE
+CONSOLE_ERRORS = 0
+EXTERNAL_REQUESTS = 0
+NON_GET_REQUESTS = 0
+PERSISTENCE_WRITES = NONE
+ACCESSIBILITY_BASELINE = PASS_WITH_LIMITS / no WCAG conformance claim
+TECHNICAL_READY_FOR_REVIEW = YES
+USER_VISUAL_APPROVAL = PENDING
+ACTIVITY_COMPLETE = NO / human visual review is the next gate
+
+## Base visual, implementação e comparação
+
+- Direção visual: docs/prototype/ui-v2/style-lab/screenshots/argos-style-c.png
+  (1425×1388 px; JPEG-encoded despite the .png extension; source viewport unknown).
+  A imagem é referência direcional, não mock individual para comparação pixel a pixel.
+- Shell compartilhado DS 2.0.0: docs/prototype/ui-v2/evidence/screenshots/shell/shell__1440x900__default__default.png
+  (1440×900) e shell__390x844__default__default.png (390×844), pareados com as
+  implementações nos mesmos viewports para avaliar o shell compartilhado.
+- Referência focal de legibilidade: docs/prototype/ui-v2/foundation/screenshots/data-display-390x844.png
+  (390×1303; full page), comparada ao crop da tabela móvel de Inventário. A comparação
+  considera leitura e quebra de conteúdo; o crop não tem as mesmas dimensões e não é
+  tratado como pixel match.
+- Capturas da implementação: docs/prototype/ui-v2/evidence/screenshots/p3-a/;
+  dimensões CSS de 390×844, 1366×768, 1440×900 e 1920×1080; pixels de saída
+  correspondentes, device scale factor 1 e zoom 100%.
+- Não há mocks individuais por tela. Composição e fidelidade foram avaliadas contra
+  o contrato visual da família, os contratos das telas e a consistência do shell;
+  não se declara comparação pixel a pixel com um mock de cada tela.
+
+Foram inspecionadas visualmente comparações lado a lado em dimensões equivalentes,
+incluindo shell desktop e móvel, além de comparações focadas de tabela. Cor, shell,
+tipografia, espaçamento, superfícies e hierarquia permanecem coerentes com as
+referências disponíveis. Nenhum achado P0/P1/P2 foi identificado; não foi necessário
+abrir achado cosmético opcional.
+
+## Checklist de fechamento
+
+- As quatro telas foram capturadas nos quatro viewports sem overflow horizontal em
+  html ou body.
+- As 12 capturas móveis adicionais cobrem Portal empty/long, Dashboard empty/long,
+  Inventário empty/loading/error/long/selected e Detalhe empty (history)/error/long.
+  Metadados e estado visível correspondem ao nome e à fixture da captura.
+- Inventário móvel mantém oito colunas em scroll contido: 921px de tabela num
+  scroller de 360px; linha padrão de 127px e linha longa de 217px. Busca, limpar
+  filtros, paginação, seleção por Enter, anúncio de status e alcance da ação por
+  teclado foram observados.
+- Console sem erros; nenhuma requisição externa ou escrita não-GET; sem gravação em
+  storage, cookies ou IndexedDB.
+- Baseline semântico e de teclado passou com limites; não implica certificação WCAG.
+- Quick Detail permanece protegido e inalterado. Produção e escopo de outras famílias
+  não foram alterados.
+
+O relatório técnico Product Design está aprovado para a próxima etapa. A aprovação
+visual humana ainda está pendente; ACTIVITY_COMPLETE = NO até a revisão do pacote de
+capturas. PROJECT_STATE.md e a matriz global não foram atualizados por estarem fora
+do escopo deste cartão.
+
+## Pacote curto para revisão humana
+
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__1440x900__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__1440x900__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-INV-001__1440x900__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-CAM-DETAIL-001__1440x900__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__390x844__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__390x844__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-INV-001__390x844__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-CAM-DETAIL-001__390x844__default__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-INV-001__390x844__default__long.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-INV-001__390x844__selected__default.png
+
+---
 # P3-A — Product Design / design QA
 
-## Regressão final após propagação DS 2.0.2 (2026-09-29)
+## Checkpoint histórico de regressão DS 2.0.2 — evidência não persistida (superado em 2026-09-29)
 
 **final result: blocked**
 

@@ -1,6 +1,61 @@
+# Fechamento técnico final — evidência persistida e pronto para revisão (2026-09-29)
+
+P3_A_BRANCH = codex/ui-v2-p3-a-core-inventory
+P3_A_HEAD_BEFORE_CLOSURE = 04224150a90468121e0da84e82c007dcde080896
+DESIGN_SYSTEM_VERSION = 2.0.2
+PERSISTED_SCREENSHOTS = 28 / 16 defaults + 12 estados móveis materiais
+SCREEN_CAPTURE_VIEWPORTS = 390x844, 1366x768, 1440x900, 1920x1080
+GLOBAL_HORIZONTAL_OVERFLOW = NONE / all 16 screen-viewport combinations
+CONSOLE_ERRORS = 0
+EXTERNAL_REQUESTS = 0
+NON_GET_REQUESTS = 0
+PERSISTENCE_WRITES = NONE
+ACCESSIBILITY_BASELINE = PASS_WITH_LIMITS / not a WCAG conformance claim
+TECHNICAL_READY_FOR_REVIEW = YES
+PRODUCT_DESIGN_DESIGN_QA = PASS
+USER_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = NOT PERFORMED / explicitly outside this card
+ACTIVITY_COMPLETE = NO / human visual review is the next gate
+CANONICAL_MASTER_CHANGED = NO
+QUICK_DETAIL_DESIGN_CHANGED = NO
+
+As 28 capturas PNG determinísticas estão persistidas em
+docs/prototype/ui-v2/evidence/screenshots/p3-a/. Foram verificadas assinatura PNG,
+dimensões esperadas pelo viewport e correspondência entre nome, tela, estado e fixture.
+A captura foi feita com Playwright e Chrome, escala de dispositivo 1 e zoom 100%.
+O guardião de rede permitiu apenas GET para o servidor local do preview. Não houve
+requisição externa, escrita não-GET ou persistência em storage/cookies.
+
+A matriz técnica cobre Portal, Dashboard, Inventário e Detalhe de Câmera nos quatro
+viewports. As 12 capturas móveis adicionais cobrem Portal empty/long; Dashboard
+empty/long; Inventário empty/loading/error/long/selected; e Detalhe empty (history)/
+error/long. Inventário conserva oito colunas em tabela de 921px dentro de scroller
+móvel de 360px, sem overflow no documento. Em 390×844, a linha padrão mede 127px e
+a linha longa 217px na página 2. Enter seleciona a linha, o status é anunciado, Tab
+alcança a ação nomeada e o estado selecionado foi capturado. Quick Detail permanece
+no baseline protegido.
+
+## Pacote de revisão visual
+
+- Portal desktop, 1440×900: docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__1440x900__default__default.png
+- Dashboard desktop, 1440×900: docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__1440x900__default__default.png
+- Inventário desktop, 1440×900: docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-INV-001__1440x900__default__default.png
+- Detalhe desktop, 1440×900: docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-CAM-DETAIL-001__1440x900__default__default.png
+- Portal móvel, 390×844: docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__390x844__default__default.png
+- Dashboard móvel, 390×844: docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__390x844__default__default.png
+- Inventário móvel, 390×844: docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-INV-001__390x844__default__default.png
+- Detalhe móvel, 390×844: docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-CAM-DETAIL-001__390x844__default__default.png
+- Inventário long, 390×844: docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-INV-001__390x844__default__long.png
+- Inventário selected, 390×844: docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-INV-001__390x844__selected__default.png
+
+A revisão visual humana continua pendente. Este fechamento não altera
+PROJECT_STATE.md, SCREEN_COVERAGE global, outras famílias ou produção. O próximo
+gate é a revisão humana do pacote acima.
+
+---
 # P3-A — Workstation handoff
 
-## Retomada final após DS 2.0.2 (2026-09-29)
+## Checkpoint histórico — captura ainda não persistida (superado em 2026-09-29)
 
 ```text
 CHECKOUT_ERROR_CORRECTED = YES
