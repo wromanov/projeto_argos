@@ -585,3 +585,40 @@ Não reduzir fonte, truncar, abreviar informação de domínio ou fixar alturas.
 A apresentação de registros é um pattern data-display para conteúdo denso,
 não um primitive genérico de Card. A superfície fica congelada após esta
 adjudicação; não executar polishing adicional.
+## QA visual aprovado — SCR-CAM-DETAIL-001 (2026-09-30)
+
+A revisão visual humana foi aprovada com base nas sete evidências nomeadas no cartão do usuário. Esta entrada registra o resultado aceito para a tela; não declara conformidade WCAG completa nem reabre o shell compartilhado.
+
+~~~text
+SCR_CAM_DETAIL_001_VISUAL_REVIEW = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+USER_VISUAL_APPROVAL = PASS
+DESIGN_SYSTEM_VERSION = 2.0.2
+1366x768_DEFAULT_REVIEW = PASS
+1440x900_DEFAULT_REVIEW = PASS
+1920x1080_DEFAULT_REVIEW = PASS
+390x844_DEFAULT_REVIEW = PASS
+390x844_LONG_REVIEW = PASS
+390x844_EMPTY_REVIEW = PASS
+390x844_ERROR_REVIEW = PASS
+GLOBAL_HORIZONTAL_OVERFLOW = NONE
+WIDE_DESKTOP_OVERSTRETCH = PASS
+LONG_CONTENT = PASS
+EMPTY_STATE = PASS
+ERROR_STATE = PASS
+MOBILE_COMPOSITION = PASS
+ACCESSIBILITY_VISUAL_BASELINE = PASS_WITH_LIMITS
+WCAG_FULL_COMPLIANCE_CLAIMED = NO
+BLOCKING_FINDINGS = NONE
+KNOWN_SHARED_FINDING = MOBILE_NAV_PARTIAL_LAST_ITEM / NONBLOCKING
+CAMERA_IMAGE_EMPTY_WHITESPACE = OBSERVATION_ONLY
+CAMERA_IMAGE_EMPTY_WHITESPACE_ACTION_REQUIRED = NO
+SCR_CAM_DETAIL_001 = USER_APPROVED / FROZEN
+SURFACE_REFINEMENT_REQUIRED = NO
+DS_CHANGE_REQUEST_REQUIRED = NO
+P3_A_COMPLETE = NO
+NEXT_SURFACE = SCR-PORTAL-001 / única tela P3-A ainda sem aprovação registrada
+NEXT_SURFACE_STARTED = NO
+~~~
+
+“Eventos” pode aparecer parcialmente cortado em 390×844 na navegação compartilhada; isso não bloqueia SCR-CAM-DETAIL-001. O espaço em branco do cartão de imagem sem captura é observacional. Nenhum desses pontos solicita alteração nesta atividade.

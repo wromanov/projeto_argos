@@ -579,3 +579,49 @@ data-heavy em largura estreita; não é um Card genérico. Não fazer polishing
 adicional nesta tela. Mudanças futuras dependem de novo requisito, finding
 factual, mudança aprovada do Design System ou integração produtiva. O próximo
 surface previsto é SCR-CAM-DETAIL-001.
+## Fechamento visual aprovado — SCR-CAM-DETAIL-001 (2026-09-30)
+
+O usuário aprovou explicitamente o resultado visual atual. Este fechamento cobre somente SCR-CAM-DETAIL-001; Dashboard e Inventário permanecem aprovados e congelados, sem alterações. O registro usa a base de QA aprovada no cartão do usuário; nenhuma implementação ou nova rodada visual foi feita nesta atividade.
+
+~~~text
+CURRENT_ACTIVITY = UI-V2-P3-A / SCR-CAM-DETAIL-001 human approval closure
+ACTIVITY_STATUS = COMPLETE / PASS / USER_APPROVED
+ACTIVITY_COMPLETION_PERCENT = 100% / scoped to SCR-CAM-DETAIL-001
+SURFACE_COMPLETE = YES
+ACTIVITY_COMPLETE = YES / scoped to SCR-CAM-DETAIL-001
+SCR_CAM_DETAIL_001_VISUAL_REVIEW = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+USER_VISUAL_APPROVAL = PASS
+SCR_CAM_DETAIL_001 = USER_APPROVED / FROZEN / PUBLISHED
+BLOCKING_FINDINGS = NONE
+SURFACE_REFINEMENT_REQUIRED = NO
+DS_CHANGE_REQUEST_REQUIRED = NO
+DESIGN_SYSTEM_VERSION = 2.0.2
+1366x768_DEFAULT_REVIEW = PASS
+1440x900_DEFAULT_REVIEW = PASS
+1920x1080_DEFAULT_REVIEW = PASS
+390x844_DEFAULT_REVIEW = PASS
+390x844_LONG_REVIEW = PASS
+390x844_EMPTY_REVIEW = PASS
+390x844_ERROR_REVIEW = PASS
+GLOBAL_HORIZONTAL_OVERFLOW = NONE
+WIDE_DESKTOP_OVERSTRETCH = PASS
+LONG_CONTENT = PASS
+EMPTY_STATE = PASS
+ERROR_STATE = PASS
+MOBILE_COMPOSITION = PASS
+ACCESSIBILITY_VISUAL_BASELINE = PASS_WITH_LIMITS
+WCAG_FULL_COMPLIANCE_CLAIMED = NO
+KNOWN_SHARED_FINDING = MOBILE_NAV_PARTIAL_LAST_ITEM / NONBLOCKING
+BLOCKING_FOR_CAM_DETAIL = NO
+CAMERA_IMAGE_EMPTY_WHITESPACE = OBSERVATION_ONLY
+CAMERA_IMAGE_EMPTY_WHITESPACE_ACTION_REQUIRED = NO
+P3_A_COMPLETE = NO
+NEXT_SURFACE = SCR-PORTAL-001 / remaining unapproved P3-A surface by Screen Census and handoff
+NEXT_SURFACE_STARTED = NO
+DESIGN_SYSTEM_CHANGED = NO
+PRODUCTION_CHANGED = NO
+MERGE_PERFORMED = NO
+~~~
+
+Em 390×844, “Eventos” pode aparecer parcialmente cortado na navegação compartilhada. O finding não bloqueia esta tela e não foi alterado. O espaço em branco no cartão de imagem com fixture sem imagem permanece uma observação, sem ação de redesign.

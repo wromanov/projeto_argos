@@ -536,3 +536,34 @@ densos em largura estreita, não um Card genérico. A quebra natural de títulos
 em 320px foi aceita. O pacote com as oito evidências permanece no caminho
 registrado na seção 41 de coverage.md. A adjudicação visual não autoriza
 publicação remota nem merge.
+## Handoff após aprovação — SCR-CAM-DETAIL-001 (2026-09-30)
+
+O aceite visual fecha e congela somente SCR-CAM-DETAIL-001. P3-A continua aberto porque SCR-PORTAL-001 permanece sem aprovação. A sequência usa os estados registrados e o Screen Census; Portal não foi iniciado nesta atividade.
+
+~~~text
+SCR_CAM_DETAIL_001 = USER_APPROVED / FROZEN / PUBLISHED
+SCR_CAM_DETAIL_001_VISUAL_REVIEW = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+USER_VISUAL_APPROVAL = PASS
+BLOCKING_FINDINGS = NONE
+SURFACE_REFINEMENT_REQUIRED = NO
+DS_CHANGE_REQUEST_REQUIRED = NO
+DESIGN_SYSTEM_VERSION = 2.0.2
+KNOWN_SHARED_FINDING = MOBILE_NAV_PARTIAL_LAST_ITEM / NONBLOCKING
+CAMERA_IMAGE_EMPTY_WHITESPACE = OBSERVATION_ONLY / NO ACTION
+SURFACE_COMPLETE = YES
+ACTIVITY_COMPLETE = YES / scoped to SCR-CAM-DETAIL-001
+P3_A_COMPLETE = NO
+REMAINING_UNAPPROVED_P3_A_SURFACES = SCR-PORTAL-001
+NEXT_SURFACE = SCR-PORTAL-001
+NEXT_SURFACE_BASIS = Screen Census roster and current P3-A approvals; Portal has no approval record
+NEXT_SURFACE_STARTED = NO
+DASHBOARD = USER_APPROVED / FROZEN / unchanged
+INVENTORY = USER_APPROVED / FROZEN / unchanged
+QUICK_DETAIL = PROTECTED / INHERITED / unchanged
+DESIGN_SYSTEM_CHANGED = NO
+PRODUCTION_CHANGED = NO
+MERGE_PERFORMED = NO
+~~~
+
+A observação da navegação compartilhada não altera o shell nesta atividade. O próximo passo é a revisão própria de SCR-PORTAL-001 quando autorizada; não há início de trabalho em Portal neste fechamento.
