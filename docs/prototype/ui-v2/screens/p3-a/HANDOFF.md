@@ -464,3 +464,75 @@ the scrolled capture shows later headers and both actions. The table, its
 columns, badge colors, Design System, Dashboard, backend and production were
 not changed. F06 asks the user to decide whether the horizontal-scroll pattern
 and its current discoverability are acceptable before any table-pattern edit.
+
+
+## Checkpoint atual — SCR-INV-001 F06 responsivo (2026-09-30)
+
+~~~text
+CURRENT_ACTIVITY = UI-V2-P3-A / SCR-INV-001
+STATUS = TECHNICAL_READY_FOR_REVIEW / PASS
+COMPLETION = 95% / aguarda revisão visual humana
+F06 = RESOLVED_TECHNICALLY / cartões responsivos no mobile
+BRANCH = codex/ui-v2-p3-a-core-inventory
+HEAD_AT_CHECKPOINT = 15b9f0fada58cf893a4323df2769fb166657651a
+WORKTREE = MODIFIED / implementação, relatórios e novas capturas
+USER_VISUAL_APPROVAL = PENDING
+READY_FOR_USER_REVIEW = YES
+ACTIVITY_COMPLETE = NO
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md seção 40
+~~~
+
+A solução mostra os mesmos registros da fixture em lista semântica quando o
+container de resultados fica abaixo de 940px; acima desse limite, mantém a
+tabela desktop original. F05, F07 e F08 permanecem inalterados. static/css/ui-v2/*,
+Dashboard, Quick Detail, backend e produção permanecem sem mudanças.
+
+O pacote contém a entrada mobile, resultados, seleção, fixture longa, smoke em
+320px e regressões desktop em 1366×768, 1440×900 e 1920×1080:
+C:\Users\walac\.codex\visualizations\2026\09\29\01a0ef80-3465-7ca2-95e1-32af86c61e97\ARGOS_P3-A_SCR-INV-001_F06-responsive-records_2026-09-30.zip.
+As capturas individuais estão em
+docs/prototype/ui-v2/evidence/screenshots/p3-a/review-2026-09-30/.
+
+**Próxima ação:** revisão visual humana das novas evidências de SCR-INV-001.
+Registrar a decisão do usuário antes de declarar ACTIVITY_COMPLETE=YES. Após
+a aprovação desta tela, a próxima superfície P3-A prevista pelo Screen Census
+é SCR-CAM-DETAIL-001. Dashboard permanece aprovado e congelado.
+
+~~~text
+COMMIT_PERFORMED = NO
+PUSH_PERFORMED = NO
+MERGE_PERFORMED = NO
+PRODUCTION_CHANGED = NO
+~~~
+
+
+## Fechamento de SCR-INV-001 e próxima superfície (2026-09-30)
+
+~~~text
+SCR_INV_001_STATUS = USER_APPROVED / FROZEN
+VISUAL_REVIEW = PASS / eight evidence captures reviewed
+F05 = CLOSED / FROZEN
+F06 = CLOSED / FROZEN
+F07 = CLOSED
+F08 = CLOSED
+DESKTOP_TABLE = APPROVED / PRESERVED / FROZEN
+MOBILE_RECORDS = APPROVED / FROZEN
+LONG_CONTENT = PASS
+SELECTED_STATE = PASS
+320x844 = PASS_WITH_ACCEPTED_NON_BLOCKING_NATURAL_WRAP
+ACTIVITY_COMPLETION_PERCENT = 100%
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md seção 41
+ACTIVITY_COMPLETE = YES / scoped to SCR-INV-001
+NEXT_SURFACE = SCR-CAM-DETAIL-001 / Screen Census order
+GIT_ADJUDICATION = VISUAL_APPROVAL_ONLY
+PUSH_PERFORMED = NO
+MERGE_PERFORMED = NO
+~~~
+
+O Dashboard permanece aprovado e congelado. Não fazer novas alterações visuais
+em Inventory; preservá-lo congelado durante a passagem ao próximo surface.
+Responsive Record é um padrão de apresentação data-display para registros
+densos em largura estreita, não um Card genérico. A quebra natural de títulos
+em 320px foi aceita. O pacote com as oito evidências permanece no caminho
+registrado na seção 41 de coverage.md. A adjudicação visual não autoriza
+publicação remota nem merge.

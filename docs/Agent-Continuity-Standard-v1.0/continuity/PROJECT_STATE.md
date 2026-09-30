@@ -2052,3 +2052,114 @@ The current instruction to swipe sits after the table and is not visible in the
 initial table viewport; that discoverability finding is recorded without
 changing the table pattern. Search remains visible above “Filtros” and “Limpar”;
 keyboard and touch both open the advanced controls, and Clear resets the fields.
+
+
+## 40. UI-V2-P3-A — SCR-INV-001 F06 em registros responsivos (2026-09-30)
+
+Este checkpoint registra a implementação técnica da apresentação mobile
+adjudicada para Inventário. A família P3-A permanece em andamento; aprovação
+humana desta tela ainda é necessária e não se transfere às demais superfícies.
+
+~~~text
+CURRENT_ACTIVITY = UI-V2-P3-A / SCR-INV-001 F06 responsive-records refinement
+ACTIVITY_STATUS = TECHNICAL_READY_FOR_REVIEW / PASS
+ACTIVITY_COMPLETION_PERCENT = 95% / QA e evidências prontos; revisão visual humana pendente
+ACTIVITY_COMPLETE = NO / aguarda revisão visual humana
+PROJECT_STATE_UPDATE = PASS / checkpoint atualizado antes de eventual encerramento
+BRANCH = codex/ui-v2-p3-a-core-inventory
+HEAD_AT_CHECKPOINT = 15b9f0fada58cf893a4323df2769fb166657651a
+DESIGN_SYSTEM_VERSION = 2.0.2 / unchanged
+F06 = RESOLVED_TECHNICALLY / ordered mobile record list; human approval pending
+PREVIOUS_MOBILE_PRESENTATION = horizontal table scroller
+NEW_MOBILE_PRESENTATION = semantic responsive records / ordered list of articles
+MOBILE_BREAKPOINT = 940px available results-container width
+BREAKPOINT_BASIS = max measured natural table width ~931px plus small buffer
+SAME_FIXTURE_DATA_SOURCE = YES
+INFORMATION_REMOVED = NO
+DESKTOP_TABLE_CHANGED = NO / native 8-column table retained
+F05 = RESOLVED / unchanged
+F07 = RESOLVED / unchanged
+F08 = RESOLVED / unchanged
+VIEWPORTS = 1920x1080 PASS; 1440x900 PASS; 1366x768 PASS; 390x844 PASS; 320x844 PASS / smoke
+GLOBAL_HORIZONTAL_OVERFLOW = NONE
+LONG_CONTENT = PASS / no clipping
+SELECTED_RECORD_AND_KEYBOARD = PASS
+FOCUS_PRESERVED_ACROSS_PRESENTATION_CHANGE = YES
+TOUCH_TARGETS = 44px minimum
+ACCESSIBILITY_BASELINE = PASS_WITH_LIMITS / semantic table desktop and list mobile; no WCAG conformance claim
+CONSOLE_ERRORS = 0
+PAGE_ERRORS = 0
+FAILED_OR_EXTERNAL_REQUESTS = 0
+PERSISTED_F06_SCREENSHOTS = 8 / review-2026-09-30
+SCREENSHOT_ZIP = C:\Users\walac\.codex\visualizations\2026\09\29\01a0ef80-3465-7ca2-95e1-32af86c61e97\ARGOS_P3-A_SCR-INV-001_F06-responsive-records_2026-09-30.zip
+SCR_DASH_001_STATUS = USER_APPROVED / FROZEN / unchanged
+SHARED_DESIGN_SYSTEM_CHANGED = NO
+PRODUCTION_CHANGED = NO
+HUMAN_VISUAL_APPROVAL = PENDING / SCR-INV-001
+READY_FOR_USER_REVIEW = YES
+NEXT_SURFACE = SCR-CAM-DETAIL-001 after SCR-INV-001 approval / Screen Census order
+COMMIT_PERFORMED = NO
+PUSH_PERFORMED = NO
+MERGE_PERFORMED = NO
+~~~
+
+A apresentação mobile usa uma lista semântica separada; o probe de converter a
+tabela por CSS removeu papéis de cabeçalho de coluna e um rowgroup no accessibility
+tree. O limite usa o espaço real do container, e os mesmos objetos da fixture
+alimentam tabela e cartões. As oito capturas nomeadas e o ZIP foram persistidos
+para revisão. As demais superfícies, o Design System compartilhado e produção
+não foram alterados.
+
+O snapshot de continuidade registra o technical-ready desta tela; não concede
+authority de merge/publicação nem declara a atividade completa antes da decisão
+visual do usuário.
+
+
+## 41. UI-V2-P3-A — SCR-INV-001 visual approval and closure (2026-09-30)
+
+The user completed visual adjudication of the eight F06 evidence captures.
+This closes SCR-INV-001 only; the P3-A family continues with the next Screen
+Census surface. Dashboard remains approved and frozen.
+
+~~~text
+CURRENT_ACTIVITY = UI-V2-P3-A / SCR-INV-001 F06 responsive-record refinement
+ACTIVITY_STATUS = COMPLETE / PASS / USER_APPROVED
+ACTIVITY_COMPLETION_PERCENT = 100%
+PROJECT_STATE_UPDATE = PASS / this checkpoint records approval before completion
+ACTIVITY_COMPLETE = YES / scoped to SCR-INV-001
+BRANCH = codex/ui-v2-p3-a-core-inventory
+HEAD_AT_VISUAL_APPROVAL = 15b9f0fada58cf893a4323df2769fb166657651a
+WORKTREE = MODIFIED / local implementation, reports and evidence
+SCR_INV_001_STATUS = USER_APPROVED / FROZEN
+VISUAL_REVIEW = PASS / eight evidence captures reviewed
+HUMAN_VISUAL_APPROVAL = PASS
+F05_MOBILE_FILTERS = PASS / CLOSED / FROZEN
+F06_RESPONSIVE_RECORDS = PASS / CLOSED / FROZEN
+F07_RESULTS_INSTRUCTION = PASS / CLOSED
+F08_TERMINOLOGY = PASS / CLOSED / “Visão rápida”, “Ver detalhes”
+DESKTOP_TABLE = PASS / PRESERVED / FROZEN
+MOBILE_RECORDS = PASS / FROZEN
+LONG_CONTENT = PASS / content-driven height; no clipping or unintended horizontal scroll
+SELECTED_STATE = PASS
+VIEWPORT_320x844 = PASS_WITH_ACCEPTED_NON_BLOCKING_NATURAL_WRAP
+VIEWPORTS_DESKTOP = 1920x1080 PASS; 1440x900 PASS; 1366x768 PASS
+EVIDENCE_REVIEWED = 8 / review-2026-09-30
+EVIDENCE_ZIP = C:\Users\walac\.codex\visualizations\2026\09\29\01a0ef80-3465-7ca2-95e1-32af86c61e97\ARGOS_P3-A_SCR-INV-001_F06-responsive-records_2026-09-30.zip
+RESPONSIVE_RECORD_OWNERSHIP = DATA_DISPLAY_RESPONSIVE_PATTERN / not a generic Card primitive
+DESIGN_SYSTEM_CHANGED = NO
+PRODUCTION_CHANGED = NO
+SCR_DASH_001_STATUS = USER_APPROVED / FROZEN / unchanged
+NEXT_SURFACE = SCR-CAM-DETAIL-001 / Screen Census order
+SCR_INV_001_FROZEN = YES / future changes require a new factual finding, requirement, approved DS change, production integration, or material human gate
+GIT_ADJUDICATION = VISUAL_APPROVAL_ONLY
+COMMIT_PERFORMED = NO
+PUSH_PERFORMED = NO
+MERGE_PERFORMED = NO
+~~~
+
+The user's 320px observation is accepted as a non-blocking natural line wrap.
+The responsive-record presentation is owned as a data-display responsive
+pattern for narrow, data-heavy records; it is not promoted to a generic Card
+primitive. The user explicitly froze Inventory after this approval. Next
+surface is SCR-CAM-DETAIL-001 in Screen Census order. This visual adjudication
+does not grant remote publication or merge authority.

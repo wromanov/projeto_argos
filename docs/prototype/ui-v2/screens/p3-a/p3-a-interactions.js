@@ -239,6 +239,8 @@
     const filters = [...document.querySelectorAll("[data-filter]")];
     const optionSource = fixtureName === "long" ? [...data.cameras, data.long_camera] : data.cameras;
     const rowsBody = document.querySelector("[data-inventory-rows]");
+    const recordsList = document.querySelector("[data-inventory-records]");
+    const responsivePresentation = document.querySelector("[data-inventory-responsive-results]");
     const summary = document.querySelector("[data-results-summary]");
     const pagination = document.querySelector("[data-pagination]");
     const tableRegion = document.querySelector('[data-argos-state-variant="default"].argos-table-region');
@@ -250,6 +252,7 @@
     const pageSize = 3;
     let currentPage = 1;
     let cameras = optionSource;
+    let selectedCameraId = null;
 
     const dynamicOptions = {
       terminal: "Todos",
@@ -315,6 +318,84 @@
       return element("span", status ? badgeClass(kind) : `argos-badge argos-badge--${kind}`, text);
     }
 
+    function makeMobileRecord(camera) {
+      const item = element("li");
+      const record = element("article", "p3-a-inventory-record");
+      const titleId = `inventory-record-title-${camera.id}`;
+      record.dataset.recordCameraId = camera.id;
+      record.dataset.recordCameraIdentifier = camera.identifier;
+      record.dataset.selected = "false";
+      record.setAttribute("aria-labelledby", titleId);
+
+      const header = element("header", "p3-a-inventory-record__header");
+      const identity = element("div", "p3-a-inventory-record__identity");
+      const title = element("h3", "p3-a-inventory-record__title");
+      const detailLink = element("a", "", camera.name);
+      detailLink.href = `scr-cam-detail-001.html#${encodeURIComponent(camera.id)}`;
+      detailLink.setAttribute("aria-label", `Abrir detalhe da câmera ${camera.name}`);
+      detailLink.dataset.recordAction = "camera-name";
+      title.id = titleId;
+      title.append(detailLink);
+      identity.append(title, element("p", "p3-a-inventory-record__identifier", camera.identifier));
+
+      const selectButton = element("button", "argos-button argos-button--secondary p3-a-inventory-record__select", "Selecionar");
+      selectButton.type = "button";
+      selectButton.dataset.inventoryRecordSelect = "";
+      selectButton.setAttribute("aria-pressed", "false");
+      selectButton.setAttribute("aria-label", `Selecionar câmera ${camera.identifier}`);
+      header.append(identity, selectButton);
+
+      const statuses = element("ul", "p3-a-inventory-record__statuses");
+      statuses.setAttribute("aria-label", "Situação operacional, monitoramento e completude");
+      const statusItems = [
+        ["Situação operacional", camera.operational_label, "neutral"],
+        ["Monitoramento", camera.monitoring_label, monitoringKind(camera)],
+        ["Completude", completenessLabel(camera), camera.completeness === "COMPLETE" ? "success" : "warning"],
+      ];
+      statusItems.forEach(([label, value, kind]) => {
+        const statusItem = element("li");
+        statusItem.append(
+          element("span", "p3-a-inventory-record__sr-only", `${label}: `),
+          makeBadge(value, kind),
+        );
+        if (label === "Monitoramento" && camera.freshness === "STALE") {
+          statusItem.append(element("span", "p3-a-inventory-record__stale", "Dados desatualizados"));
+        }
+        statuses.append(statusItem);
+      });
+
+      const details = element("dl", "p3-a-inventory-record__details");
+      const detailFields = [
+        ["Fabricante", camera.manufacturer, ""],
+        ["Modelo", camera.model, ""],
+        ["Terminal", camera.terminal, ""],
+        ["Setor", camera.sector, ""],
+        ["Imagem", "Imagem não disponível", "p3-a-inventory-record__image"],
+      ];
+      detailFields.forEach(([label, value, className]) => {
+        const field = element("div", className);
+        field.append(element("dt", "", label), element("dd", "", value));
+        details.append(field);
+      });
+
+      const actions = element("div", "p3-a-inventory-record__actions");
+      actions.setAttribute("role", "group");
+      actions.setAttribute("aria-label", `Ações da câmera ${camera.identifier}`);
+      const quickLink = element("a", "argos-button argos-button--secondary", "Visão rápida");
+      quickLink.href = "../index.html#screen-scr-cam-quick-001";
+      quickLink.setAttribute("aria-label", `Visão rápida protegida da câmera ${camera.identifier}`);
+      quickLink.dataset.recordAction = "quick";
+      const fullLink = element("a", "argos-button argos-button--secondary", "Ver detalhes");
+      fullLink.href = `scr-cam-detail-001.html#${encodeURIComponent(camera.id)}`;
+      fullLink.setAttribute("aria-label", `Abrir detalhe completo da câmera ${camera.identifier}`);
+      fullLink.dataset.recordAction = "full";
+      actions.append(quickLink, fullLink);
+
+      record.append(header, statuses, details, actions);
+      item.append(record);
+      return item;
+    }
+
     function renderRows() {
       const matches = filteredCameras();
       const pageCount = Math.max(1, Math.ceil(matches.length / pageSize));
@@ -322,6 +403,8 @@
       const start = (currentPage - 1) * pageSize;
       const visible = matches.slice(start, start + pageSize);
       refreshActiveFilters(currentValues());
+      selectedCameraId = null;
+      if (selectionStatus) selectionStatus.textContent = "Nenhuma câmera selecionada · Clique em uma linha ou use Enter/Espaço para selecionar.";
       rowsBody.replaceChildren(...visible.map((camera) => {
         const row = element("tr");
         row.dataset.rowCameraId = camera.id;
@@ -332,6 +415,7 @@
         const detailLink = element("a", "", camera.name);
         detailLink.href = `scr-cam-detail-001.html#${encodeURIComponent(camera.id)}`;
         detailLink.setAttribute("aria-label", `Abrir detalhe da câmera ${camera.name}`);
+        detailLink.dataset.inventoryAction = "camera-name";
         nameCell.append(detailLink, element("div", "", camera.identifier));
 
         const imageCell = element("td");
@@ -358,16 +442,18 @@
         const quickLink = element("a", "argos-button argos-button--secondary argos-button--compact", "Visão rápida");
         quickLink.href = "../index.html#screen-scr-cam-quick-001";
         quickLink.setAttribute("aria-label", `Visão rápida protegida da câmera ${camera.identifier}`);
+        quickLink.dataset.inventoryAction = "quick";
         const fullLink = element("a", "argos-button argos-button--secondary argos-button--compact", "Ver detalhes");
         fullLink.href = `scr-cam-detail-001.html#${encodeURIComponent(camera.id)}`;
         fullLink.setAttribute("aria-label", `Abrir detalhe completo da câmera ${camera.identifier}`);
+        fullLink.dataset.inventoryAction = "full";
         actions.append(quickLink, fullLink);
         actionsCell.append(actions);
 
         row.append(nameCell, imageCell, operationCell, monitoringCell, completenessCell, modelCell, locationCell, actionsCell);
         return row;
       }));
-      if (selectionStatus) selectionStatus.textContent = "Nenhuma câmera selecionada · Clique em uma linha ou use Enter/Espaço para selecionar.";
+      if (recordsList) recordsList.replaceChildren(...visible.map(makeMobileRecord));
 
       if (summary) summary.textContent = state === "empty"
         ? "Nenhum resultado neste estado demonstrativo"
@@ -379,6 +465,7 @@
               ? `Exibindo ${start + 1}–${start + visible.length} de ${matches.length} câmeras demonstrativas`
               : "0 câmeras demonstrativas encontradas";
       if (tableRegion) tableRegion.hidden = state !== "default" || matches.length === 0;
+      if (recordsList) recordsList.hidden = state !== "default" || matches.length === 0;
       if (filterEmpty) filterEmpty.hidden = state !== "default" || matches.length !== 0;
       if (pagination) pagination.hidden = state !== "default" || matches.length <= pageSize;
       if (results) results.setAttribute("aria-busy", state === "loading" ? "true" : "false");
@@ -437,17 +524,111 @@
         selectRow(row);
       }
     });
+    recordsList.addEventListener("click", (event) => {
+      const record = event.target.closest("[data-record-camera-id]");
+      if (!record) return;
+      if (event.target.closest("[data-inventory-record-select]")) {
+        toggleCameraSelection(record.dataset.recordCameraId);
+        return;
+      }
+      if (event.target.closest("a, button, input, select")) return;
+      toggleCameraSelection(record.dataset.recordCameraId);
+    });
 
     function selectRow(row) {
-      const wasSelected = row.getAttribute("aria-selected") === "true";
-      rowsBody.querySelectorAll("tr[aria-selected='true']").forEach((selected) => selected.setAttribute("aria-selected", "false"));
-      row.setAttribute("aria-selected", wasSelected ? "false" : "true");
+      toggleCameraSelection(row.dataset.rowCameraId);
+    }
+
+    function toggleCameraSelection(cameraId) {
+      const wasSelected = selectedCameraId === cameraId;
+      selectedCameraId = wasSelected ? null : cameraId;
+      rowsBody.querySelectorAll("tr[data-row-camera-id]").forEach((row) => {
+        row.setAttribute("aria-selected", String(row.dataset.rowCameraId === selectedCameraId));
+      });
+      recordsList.querySelectorAll("[data-record-camera-id]").forEach((record) => {
+        const selected = record.dataset.recordCameraId === selectedCameraId;
+        const button = record.querySelector("[data-inventory-record-select]");
+        record.dataset.selected = String(selected);
+        button.setAttribute("aria-pressed", String(selected));
+        button.setAttribute("aria-label", `${selected ? "Desmarcar" : "Selecionar"} câmera ${record.dataset.recordCameraIdentifier}`);
+        button.textContent = selected ? "Selecionada" : "Selecionar";
+      });
       if (selectionStatus) selectionStatus.textContent = wasSelected
         ? "Seleção removida · Clique em uma linha ou use Enter/Espaço para selecionar."
-        : `Câmera ${row.dataset.rowCameraId} selecionada · Clique ou use Enter/Espaço para desmarcar.`;
+        : `Câmera ${cameraId} selecionada · Clique ou use Enter/Espaço para desmarcar.`;
+    }
+
+    function initializeResponsivePresentationFocus() {
+      if (!responsivePresentation) return;
+      const mobileBreakpoint = 940;
+      let mobilePresentation = responsivePresentation.clientWidth <= mobileBreakpoint;
+      let lastResponsiveFocus = null;
+
+      function captureResponsiveFocus(event) {
+        const record = event.target.closest("[data-record-camera-id]");
+        const row = event.target.closest("tr[data-row-camera-id]");
+        const owner = record || row;
+        if (!responsivePresentation.contains(owner)) {
+          if (event.target !== document.body) lastResponsiveFocus = null;
+          return;
+        }
+        const action = event.target.closest("[data-record-action], [data-inventory-action]");
+        lastResponsiveFocus = {
+          cameraId: record ? record.dataset.recordCameraId : row.dataset.rowCameraId,
+          sourceMobile: Boolean(record),
+          action: event.target.closest("[data-inventory-record-select]")
+            ? "select"
+            : action?.dataset.recordAction || action?.dataset.inventoryAction || "row",
+        };
+      }
+
+      function focusEquivalentControl(target) {
+        const records = [...recordsList.querySelectorAll("[data-record-camera-id]")];
+        const rows = [...rowsBody.querySelectorAll("tr[data-row-camera-id]")];
+        if (mobilePresentation) {
+          const record = records.find((item) => item.dataset.recordCameraId === target.cameraId);
+          if (!record) return null;
+          if (target.action === "quick" || target.action === "full" || target.action === "camera-name") {
+            return record.querySelector(`[data-record-action="${target.action}"]`);
+          }
+          return record.querySelector("[data-inventory-record-select]");
+        }
+        const row = rows.find((item) => item.dataset.rowCameraId === target.cameraId);
+        if (!row) return null;
+        if (target.action === "quick" || target.action === "full" || target.action === "camera-name") {
+          return row.querySelector(`[data-inventory-action="${target.action}"]`);
+        }
+        return row;
+      }
+
+      function handlePresentationResize() {
+        const nextMobilePresentation = responsivePresentation.clientWidth <= mobileBreakpoint;
+        if (nextMobilePresentation === mobilePresentation) return;
+        const previousMobilePresentation = mobilePresentation;
+        mobilePresentation = nextMobilePresentation;
+        const target = lastResponsiveFocus;
+        if (!target || target.sourceMobile !== previousMobilePresentation) return;
+
+        const activeElement = document.activeElement;
+        const activePresentation = activeElement.closest?.("[data-inventory-records], [data-inventory-desktop-table]");
+        const activeWasHidden = activeElement === document.body
+          || !activePresentation
+          || activePresentation.getClientRects().length === 0;
+        if (!activeWasHidden) return;
+
+        requestAnimationFrame(() => focusEquivalentControl(target)?.focus({ preventScroll: true }));
+      }
+
+      document.addEventListener("focusin", captureResponsiveFocus);
+      if ("ResizeObserver" in window) {
+        new ResizeObserver(handlePresentationResize).observe(responsivePresentation);
+      } else {
+        window.addEventListener("resize", handlePresentationResize, { passive: true });
+      }
     }
 
     renderRows();
+    initializeResponsivePresentationFocus();
   }
 
   function renderCameraDetail(data) {

@@ -87,14 +87,16 @@
             <div class="argos-section-header"><h2 id="inventory-results-title">Resultados</h2><p data-results-summary role="status" aria-live="polite">Carregando fixture…</p></div>
             <p id="inventory-selection-status" data-selection-status role="status" aria-live="polite">Nenhuma câmera selecionada · Clique em uma linha ou use Enter/Espaço para selecionar.</p>
             <div class="argos-stack" id="inventory-results" aria-busy="true">
-              <div class="argos-table-region" data-argos-state-variant="default" aria-describedby="inventory-scroll-help inventory-selection-status">
-                <table class="argos-table argos-table--compact">
-                  <caption class="p3-a-inventory-table-caption">Câmeras demonstrativas com situação, monitoramento, completude e acesso a detalhes.</caption>
-                  <thead><tr><th scope="col">Câmera / identificação</th><th scope="col">Imagem</th><th scope="col">Situação</th><th scope="col">Monitoramento</th><th scope="col">Completude</th><th scope="col">Fabricante / modelo</th><th scope="col">Terminal / setor</th><th scope="col">Ações</th></tr></thead>
-                  <tbody data-inventory-rows aria-live="polite"></tbody>
-                </table>
+              <div class="p3-a-inventory-responsive-results" data-inventory-responsive-results>
+                <div class="argos-table-region" data-argos-state-variant="default" data-inventory-desktop-table aria-describedby="inventory-selection-status">
+                  <table class="argos-table argos-table--compact">
+                    <caption class="p3-a-inventory-table-caption">Câmeras demonstrativas com situação, monitoramento, completude e acesso a detalhes.</caption>
+                    <thead><tr><th scope="col">Câmera / identificação</th><th scope="col">Imagem</th><th scope="col">Situação</th><th scope="col">Monitoramento</th><th scope="col">Completude</th><th scope="col">Fabricante / modelo</th><th scope="col">Terminal / setor</th><th scope="col">Ações</th></tr></thead>
+                    <tbody data-inventory-rows aria-live="polite"></tbody>
+                  </table>
+                </div>
+                <ol class="p3-a-inventory-record-list" data-inventory-records aria-labelledby="inventory-results-title" hidden></ol>
               </div>
-              <p id="inventory-scroll-help">Em telas estreitas, deslize horizontalmente na tabela para consultar todas as colunas; dados essenciais continuam disponíveis.</p>
               <nav class="argos-pagination" data-pagination aria-label="Paginação do inventário demonstrativo"></nav>
               <section class="argos-state" data-filter-empty hidden aria-labelledby="inventory-filter-empty-title">
                 <h3 class="argos-state__title" id="inventory-filter-empty-title">Nenhum resultado para esta busca</h3>

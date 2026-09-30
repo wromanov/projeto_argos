@@ -492,3 +492,96 @@ de console/page e zero requisições externas/falhas. Nenhum elemento de conteú
 fora da tabela/navegação foi cortado. O caption conserva seu texto semântico e
 foi reduzido visualmente para texto muted de 11 px. O Quick Detail protegido
 permanece apenas como destino do link “Visão rápida”.
+
+
+## SCR-INV-001 — QA direcionado F06: registros responsivos (2026-09-30)
+
+Escopo: validar a resposta mobile adjudicada pelo usuário e regressão da tabela
+desktop em SCR-INV-001. O QA é da tela e deste finding; não declara a família
+P3-A inteira aprovada nem faz declaração de conformidade WCAG.
+
+| Viewport | Apresentação | Resultado | Evidência |
+|---|---|---|---|
+| 1920×1080 | Tabela nativa, oito colunas | PASS | SCR-INV-001__1920x1080__default__desktop-table-regression.png |
+| 1440×900 | Tabela nativa, oito colunas | PASS | SCR-INV-001__1440x900__default__desktop-table-regression.png |
+| 1366×768 | Tabela nativa, oito colunas | PASS | SCR-INV-001__1366x768__default__desktop-table-regression.png |
+| 390×844 | Lista de registros, padrão, seleção e conteúdo longo | PASS | Capturas screen-entry, top-results-final, selected e long |
+| 320×844 | Lista de registros, metadados em uma coluna | PASS / smoke | SCR-INV-001__320x844__smoke__responsive-records.png |
+
+A mudança ocorre a 940px de largura disponível do container de resultados.
+A largura natural medida da tabela padrão é aproximadamente 924px e a fixture
+longa chega a aproximadamente 931px. Assim, a regra troca para cartões antes
+de exigir rolagem horizontal. A verificação em larguras próximas ao limite
+observou container de 928px com cartões e de 948px com tabela.
+
+A implementação reusa cada objeto da fixture para desenhar a linha da tabela
+desktop e o artigo da lista mobile. Ambos mantêm nome, identificador, badges
+operacionais, situação de monitoramento e freshness, completude, fabricante,
+modelo, terminal, setor, estado de imagem e ações. A fixture longa foi exercitada
+na segunda página; textos longos quebram linha sem clipping, as ações mantêm
+alvo mínimo de 44px e a paginação permanece depois dos registros.
+
+Na navegação por teclado, a seleção responde a Enter/Espaço e atualiza o estado
+aria-pressed; a seleção sincroniza com a linha desktop. Em mudança entre
+representações, o foco vai ao controle equivalente. Os filtros F05 conservam
+estado aberto e foco; o fluxo de F05 não foi alterado. O tree de acessibilidade
+mantém tabela/columnheaders no desktop e expõe ordered list, listitem, article,
+heading, definition list, botão e links no mobile. A conversão CSS direta da
+tabela foi rejeitada porque o probe removeu roles de cabeçalho e um rowgroup.
+
+Todas as capturas foram feitas em Chrome, zoom 100% e escala 1. Não houve
+overflow horizontal do documento, clipping de conteúdo, erros de console ou
+página, requests falhos ou externos. O desktop segue com a tabela e não recebeu
+mudança de geometria ou estilo nesta implementação. O touch target dos controles
+e ações visíveis mede pelo menos 44px.
+
+~~~text
+SCR_INV_001_F06_PRODUCT_DESIGN_QA = PASS / targeted technical evidence
+TECHNICAL_READY_FOR_REVIEW = YES
+HUMAN_VISUAL_APPROVAL = PENDING
+ACTIVITY_COMPLETION_PERCENT = 95%
+ACTIVITY_COMPLETE = NO
+ACCESSIBILITY_BASELINE = PASS_WITH_LIMITS / no WCAG conformance claim
+DESIGN_SYSTEM_CHANGED = NO
+PRODUCTION_CHANGED = NO
+~~~
+
+O pacote ZIP com as oito capturas está em
+C:\Users\walac\.codex\visualizations\2026\09\29\01a0ef80-3465-7ca2-95e1-32af86c61e97\ARGOS_P3-A_SCR-INV-001_F06-responsive-records_2026-09-30.zip.
+A aprovação visual humana continua sendo o próximo gate.
+
+
+## SCR-INV-001 — adjudicação visual aprovada e freeze (2026-09-30)
+
+O usuário revisou a entrada mobile, resultados, estado selecionado, conteúdo
+longo, smoke 320px e as três regressões desktop. Resultado visual final: PASS.
+
+~~~text
+SCR_INV_001_VISUAL_REVIEW = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+SCR_INV_001_STATUS = USER_APPROVED / FROZEN
+F05 = PASS / CLOSED / FREEZE
+F06 = PASS / CLOSED / FREEZE
+F07 = PASS / CLOSED
+F08 = PASS / CLOSED
+DESKTOP_TABLE = PASS / PRESERVED / FREEZE
+MOBILE_RECORDS = PASS / FREEZE
+LONG_CONTENT = PASS
+SELECTED_STATE = PASS
+VIEWPORT_320x844 = PASS_WITH_ACCEPTED_NON_BLOCKING_NATURAL_WRAP
+VIEWPORTS_DESKTOP = 1920x1080 PASS; 1440x900 PASS; 1366x768 PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md seção 41
+ACTIVITY_COMPLETE = YES / escopo limitado a SCR-INV-001
+DESIGN_SYSTEM_CHANGED = NO
+PRODUCTION_CHANGED = NO
+NEXT_SURFACE = SCR-CAM-DETAIL-001
+~~~
+
+A hierarquia aprovada nos registros móveis é identidade → status →
+equipamento/localização → informação da imagem → ações. Os registros mantêm
+altura orientada pelo conteúdo; títulos podem quebrar naturalmente em 320px.
+Não reduzir fonte, truncar, abreviar informação de domínio ou fixar alturas.
+A apresentação de registros é um pattern data-display para conteúdo denso,
+não um primitive genérico de Card. A superfície fica congelada após esta
+adjudicação; não executar polishing adicional.

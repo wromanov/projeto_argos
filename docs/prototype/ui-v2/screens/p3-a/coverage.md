@@ -448,3 +448,134 @@ mostra uma barra horizontal persistente e a orientação para deslizar fica depo
 do conteúdo; o recorte parcial da coluna seguinte é a única pista no primeiro
 estado. O padrão de tabela permanece intacto enquanto aguarda a decisão do
 usuário sobre essa descoberta visual.
+
+
+## 40. SCR-INV-001 — adjudicação F06 e registros móveis responsivos (2026-09-30)
+
+Este checkpoint supersede o finding F06 anterior de discoverability da tabela
+com rolagem horizontal. A solução foi implementada somente na tela Inventário,
+conforme a adjudicação do usuário: lista/cartões responsivos em larguras estreitas,
+com a tabela desktop e o conjunto completo de dados preservados.
+
+~~~text
+SCREEN_ID = SCR-INV-001
+ACTIVITY_STATUS = TECHNICAL_READY_FOR_REVIEW / PASS
+ACTIVITY_COMPLETION_PERCENT = 95% / implementação, QA e evidências concluídos; revisão visual humana pendente
+ACTIVITY_COMPLETE = NO / aguarda aprovação visual humana desta composição
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md seção 40
+F06 = RESOLVED_TECHNICALLY / apresentação móvel em registros responsivos
+PREVIOUS_MOBILE_PATTERN = tabela nativa em scroller horizontal
+NEW_MOBILE_PATTERN = lista ordenada de registros semânticos / article e definition list
+MOBILE_RECORD_BREAKPOINT = 940px de largura disponível no container de resultados
+BREAKPOINT_BASIS = largura intrínseca máxima medida da tabela com conteúdo longo (~931px) mais pequena reserva; cards aparecem antes de exigir rolagem horizontal
+SAME_DATA_SOURCE = YES / as mesmas fixture objects alimentam linhas desktop e registros móveis
+INFORMATION_REMOVED = NO / identidade, situação, monitoramento/freshness, completude, fabricante, modelo, terminal, setor, estado da imagem e as duas ações permanecem
+CAMERA_CONTEXT_PRESERVED = YES
+ACTIONS_IMMEDIATELY_REACHABLE = YES / “Visão rápida” e “Ver detalhes” em cada registro
+DESKTOP_TABLE_CHANGED = NO / tabela nativa e oito colunas preservadas
+MOBILE_HORIZONTAL_TABLE_SCROLL = NO
+F05 = RESOLVED / busca sempre visível e filtros avançados recolhidos por disclosure
+F07 = UNCHANGED / anúncio conciso da seleção
+F08 = UNCHANGED / rótulos “Visão rápida” e “Ver detalhes”
+QUICK_DETAIL = PROTECTED / unchanged
+DESIGN_SYSTEM_VERSION = 2.0.2 / unchanged
+DESIGN_SYSTEM_CHANGE_REQUIRED = NO / variante restrita à composição da tela; nenhum CSS compartilhado alterado
+DS_CHANGE_REQUEST = NONE_FOR_F06 / DSCR-UIV2-002 existente permanece resolvido na autoridade ROOT
+DIRECT_CSS_TABLE_TO_CARD = REJECTED / probe de acessibilidade removeu roles columnheader e um rowgroup; lista nativa paralela preserva semântica adequada por breakpoint
+VIEWPORT_1920x1080 = PASS / tabela nativa, oito cabeçalhos de coluna, sem overflow
+VIEWPORT_1440x900 = PASS / tabela nativa, oito cabeçalhos de coluna, sem overflow
+VIEWPORT_1366x768 = PASS / tabela nativa, oito cabeçalhos de coluna, sem overflow
+VIEWPORT_390x844 = PASS / cartões e ações completos, sem overflow horizontal
+VIEWPORT_320x844 = PASS / cartões, metadados em uma coluna, sem overflow horizontal
+BREAKPOINT_BEHAVIOR = VERIFIED / 1220px viewport gives 928px container and cards; 1240px gives 948px and table
+LONG_CONTENT = PASS / nomes e identificadores longos, fabricante/modelo, terminal/setor, badges, estado de imagem e ações sem clipping
+SELECTED_RECORD = PASS / estado e aria-pressed sincronizados; toggle por teclado
+PAGINATION = PASS / permanece fora dos cartões e alcançável
+FOCUS_ACROSS_PRESENTATION_CHANGE = PASS / foco transferido ao controle equivalente quando a representação muda
+TOUCH_TARGETS = PASS / controles e ações visíveis medem pelo menos 44px
+ACCESSIBILITY_BASELINE = PASS_WITH_LIMITS / tabela nativa no desktop; lista/article/dl/botões/links no mobile; sem declaração de conformidade WCAG
+GLOBAL_HORIZONTAL_OVERFLOW = NONE
+CONTENT_CLIPPED = NO
+CONSOLE_ERRORS = 0
+PAGE_ERRORS = 0
+FAILED_OR_EXTERNAL_REQUESTS = 0
+NODE_SYNTAX_CHECK = PASS
+GIT_DIFF_CHECK = PASS / somente avisos de conversão LF→CRLF do Git
+PERSISTED_F06_SCREENSHOTS = 8 / review-2026-09-30
+SCREENSHOT_ZIP = C:\Users\walac\.codex\visualizations\2026\09\29\01a0ef80-3465-7ca2-95e1-32af86c61e97\ARGOS_P3-A_SCR-INV-001_F06-responsive-records_2026-09-30.zip
+HUMAN_VISUAL_APPROVAL = PENDING
+READY_FOR_USER_REVIEW = YES
+SCR_DASH_001_STATUS = USER_APPROVED / FROZEN / unchanged
+PRODUCTION_CHANGED = NO
+BACKEND_CHANGED = NO
+FINAL_VERDICT = PASS / technical; visual review pending
+~~~
+
+Capturas nomeadas no pacote:
+
+- SCR-INV-001__390x844__default__screen-entry.png
+- SCR-INV-001__390x844__default__top-results-final.png
+- SCR-INV-001__390x844__selected__responsive-records.png
+- SCR-INV-001__390x844__long__responsive-records.png
+- SCR-INV-001__320x844__smoke__responsive-records.png
+- SCR-INV-001__1366x768__default__desktop-table-regression.png
+- SCR-INV-001__1440x900__default__desktop-table-regression.png
+- SCR-INV-001__1920x1080__default__desktop-table-regression.png
+
+O ponto de troca usa a largura efetiva do container, não uma etiqueta de
+dispositivo. A tabela medida ocupa até cerca de 931px com o conteúdo longo;
+o limite de 940px inclui pequena folga e troca para registros antes de a tabela
+precisar de rolagem horizontal. Em 320px, os metadados passam a uma coluna.
+A seleção, o resumo, os dados e a paginação continuam ligados à mesma fixture.
+
+A tentativa de converter diretamente a tabela nativa por CSS foi descartada
+depois que o accessibility tree perdeu os papéis de cabeçalho de coluna e um
+rowgroup. A apresentação mobile usa uma lista ordenada nativa, com articles,
+títulos, lista de definições, botão de seleção e links. Nenhum CSS compartilhado
+de static/css/ui-v2/* foi alterado. A revisão humana desta composição continua
+pendente; este registro não fecha as demais telas da família P3-A.
+
+
+## 41. SCR-INV-001 — adjudicação visual final e freeze (2026-09-30)
+
+O usuário revisou as oito evidências do refinamento F06 e aprovou a superfície.
+Este registro substitui os gates pendentes dos checkpoints anteriores de
+SCR-INV-001; não fecha nem aprova automaticamente as demais telas P3-A.
+
+~~~text
+SCR_INV_001_VISUAL_REVIEW = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+SCR_INV_001_STATUS = USER_APPROVED / FROZEN
+ACTIVITY_COMPLETION_PERCENT = 100%
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md seção 41
+ACTIVITY_COMPLETE = YES / escopo limitado a SCR-INV-001
+F05_MOBILE_FILTERS = PASS / CLOSED / FROZEN
+F06_RESPONSIVE_RECORDS = PASS / CLOSED / FROZEN
+F07_RESULTS_INSTRUCTION = PASS / CLOSED
+F08_TERMINOLOGY = PASS / CLOSED / “Visão rápida”, “Ver detalhes”
+DESKTOP_TABLE = PASS / PRESERVED / FROZEN
+MOBILE_RECORDS = PASS / FROZEN
+LONG_CONTENT = PASS / content-driven height; no clipping or unintended horizontal scroll
+SELECTED_STATE = PASS
+VIEWPORT_320x844 = PASS_WITH_ACCEPTED_NON_BLOCKING_NATURAL_WRAP
+VIEWPORTS_DESKTOP = 1920x1080 PASS; 1440x900 PASS; 1366x768 PASS
+EVIDENCE_REVIEWED = 8 / review-2026-09-30
+RESPONSIVE_RECORD_OWNERSHIP = DATA_DISPLAY_RESPONSIVE_PATTERN / not a generic Card primitive
+INVENTORY_FREEZE = ACTIVE
+DASHBOARD = USER_APPROVED / FROZEN / unchanged
+DESIGN_SYSTEM_CHANGED = NO
+PRODUCTION_CHANGED = NO
+NEXT_SURFACE = SCR-CAM-DETAIL-001 / Screen Census order
+GIT_ADJUDICATION = VISUAL_APPROVAL_ONLY
+PUSH_PERFORMED = NO
+MERGE_PERFORMED = NO
+FINAL_VERDICT = PASS / USER_APPROVED
+~~~
+
+A quebra natural de alguns títulos em 320px foi aceita como não bloqueante.
+Preservar a altura guiada pelo conteúdo, hierarquia mobile, seleção, filtros,
+tabela desktop e ações. O padrão responsivo é de apresentação de registros
+data-heavy em largura estreita; não é um Card genérico. Não fazer polishing
+adicional nesta tela. Mudanças futuras dependem de novo requisito, finding
+factual, mudança aprovada do Design System ou integração produtiva. O próximo
+surface previsto é SCR-CAM-DETAIL-001.
