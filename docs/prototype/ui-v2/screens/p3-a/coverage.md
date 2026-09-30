@@ -1,5 +1,58 @@
 # P3-A — Cobertura final e evidência (2026-09-29)
 
+## Adjudicação mais recente — SCR-DASH-001 F03/F04 (2026-09-29)
+
+DESIGN_SYSTEM_VERSION = 2.0.2 / unchanged
+PERSISTED_SCREENSHOTS = 36 / 16 viewport defaults + 12 mobile state captures + 8 Dashboard refinements
+NEW_CAPTURES = 4 / F03-F04
+F03 = PASS / independent desktop stacks; card heights remain content-sized
+F04 = PASS / 390px labels fully visible; narrow layout remains scrollable, signaled, keyboard/touch reachable
+TECHNICAL_READY_FOR_REVIEW = YES
+PRODUCT_DESIGN_DESIGN_QA = PASS
+FINAL_VERDICT = PASS_WITH_FINDINGS / findings resolved
+USER_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = NOT PERFORMED / outside this card
+ACTIVITY_COMPLETE = NO / awaiting human visual review
+GLOBAL_HORIZONTAL_OVERFLOW = NONE / all four Dashboard viewports
+CONSOLE_ERRORS = 0 / PAGE_ERRORS = 0 / DENIED_REQUESTS = 0
+KPI_HEADER_DS_PRODUCTION_REGRESSION = NONE
+
+| Viewport | Fluxo e medidas | Navegação | Resultado |
+|---|---|---|---|
+| 1920×1080 | Pilha esquerda: Situação → Atividade; direita: Monitoramento → Câmera. Cards com 209px/341px; gap vertical de 16px; sem stretch | desktop | PASS; sem overflow |
+| 1440×900 | Mesmo fluxo em colunas independentes; 136px de espaço morto removidos sob Situação | desktop | PASS; sem overflow |
+| 1366×768 | Mesmo fluxo; alturas naturais de 209px/341px | desktop | PASS; sem overflow |
+| 390×844 | Ordem móvel preservada: Situação → Monitoramento → Atividade → Câmera | 5/5 itens, inclusive Eventos, totalmente visíveis; alvos de 44px | PASS; sem overflow |
+| 320px (stress complementar) | Ordem móvel preservada | rolagem horizontal com aviso visível; Tab e toque alcançam Eventos e revelam o rótulo integral | PASS |
+
+A matriz mobile usa a ordem semântica que já existia na fonte. O contrato census
+não prescreve uma sequência mais detalhada para estes quatro cards. O reparenting
+responsivo em desktop cria as duas pilhas sem alterar a ordem de leitura móvel.
+A navegação continua horizontal e rolável conforme o contrato do harness; o
+indicador só aparece quando necessário, e foco por teclado desloca o item para
+a área visível.
+
+O espaço anterior entre o fim de Situação (y=586) e a próxima linha (y=738)
+era 152px. A pilha separada inicia Atividade após o gap intencional de 16px,
+removendo 136px de área vazia. Situação permanece com 209px e Monitoramento
+com 341px, sem equalização forçada.
+
+Os textos “Valores demonstrativos...” e “Meu Perfil · superfície planejada”
+estão identificados no protótipo como aviso demonstrativo e superfície planejada.
+KPI tiles 220×77px, cabeçalho/ação, tokens, primitives compartilhados, outras
+telas, Quick Detail, coverage global e produção não mudaram.
+
+Novas capturas: SCR-DASH-001__1920x1080__refined-f03-f04__default.png,
+SCR-DASH-001__1440x900__refined-f03-f04__default.png,
+SCR-DASH-001__1366x768__refined-f03-f04__default.png e
+SCR-DASH-001__390x844__refined-f03-f04__default.png. Total persistido da
+família P3-A: 36 PNGs, verificados por nome, presença, assinatura e dimensão.
+A rodada foi feita em Chrome/Playwright, zoom 100%, escala 1, com somente GET
+local; 0 erros de console/página, requisições negadas ou externas, requests
+não-GET, gravações de persistência ou overflow global.
+
+
+## Registro histórico anterior — cobertura F01/F02
 DESIGN_SYSTEM_VERSION = 2.0.2
 PERSISTED_SCREENSHOTS = 32 / 16 viewport defaults + 12 mobile state captures + 4 refined SCR-DASH-001 captures
 VIEWPORTS = 390x844, 1366x768, 1440x900, 1920x1080

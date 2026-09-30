@@ -21,6 +21,79 @@
   };
   const completenessLabel = (camera) => camera.completeness === "COMPLETE" ? "Completo" : "Incompleto";
 
+  if (screenId === "SCR-DASH-001") {
+    initializeDashboardPanelFlow();
+    initializeDashboardNavigation();
+  }
+
+  function initializeDashboardPanelFlow() {
+    const flow = document.querySelector("[data-dashboard-panels]");
+    if (!flow) return;
+
+    const panels = Object.fromEntries(
+      [...flow.querySelectorAll(":scope > [data-dashboard-panel]")]
+        .map((panel) => [panel.dataset.dashboardPanel, panel]),
+    );
+    if (Object.keys(panels).length !== 4) return;
+
+    const left = element("div", "p3-a-dashboard-panels__column");
+    const right = element("div", "p3-a-dashboard-panels__column");
+    const desktop = window.matchMedia("(min-width: 681px)");
+
+    function arrangePanels() {
+      const layout = desktop.matches ? "columns" : "mobile";
+      if (flow.dataset.layout === layout) return;
+
+      const focused = document.activeElement;
+      const preserveFocus = Object.values(panels).some((panel) => panel.contains(focused));
+
+      if (layout === "columns") {
+        left.replaceChildren(panels.operational, panels.activity);
+        right.replaceChildren(panels.monitoring, panels.featured);
+        flow.replaceChildren(left, right);
+      } else {
+        flow.replaceChildren(
+          panels.operational,
+          panels.monitoring,
+          panels.activity,
+          panels.featured,
+        );
+      }
+      flow.dataset.layout = layout;
+
+      if (preserveFocus && focused.isConnected) focused.focus({ preventScroll: true });
+    }
+
+    arrangePanels();
+    if (desktop.addEventListener) desktop.addEventListener("change", arrangePanels);
+    else desktop.addListener(arrangePanels);
+  }
+
+  function initializeDashboardNavigation() {
+    const nav = document.querySelector("[data-dashboard-primary-nav]");
+    const hint = document.querySelector("[data-dashboard-nav-hint]");
+    if (!nav || !hint) return;
+
+    function updateScrollHint() {
+      const canScroll = nav.scrollWidth > nav.clientWidth + 1;
+      hint.hidden = !canScroll;
+      if (canScroll) nav.setAttribute("aria-describedby", hint.id);
+      else nav.removeAttribute("aria-describedby");
+    }
+
+    nav.addEventListener("focusin", (event) => {
+      const link = event.target.closest("a[href]");
+      if (!link || !nav.contains(link)) return;
+      const navRect = nav.getBoundingClientRect();
+      const linkRect = link.getBoundingClientRect();
+      if (linkRect.left < navRect.left || linkRect.right > navRect.right) {
+        link.scrollIntoView({ block: "nearest", inline: "nearest" });
+      }
+    });
+    window.addEventListener("resize", updateScrollHint, { passive: true });
+    updateScrollHint();
+  }
+
   fetch(fixtureUrl, { headers: { Accept: "application/json" } })
     .then((response) => {
       if (!response.ok) throw new Error("Fixture indisponível");

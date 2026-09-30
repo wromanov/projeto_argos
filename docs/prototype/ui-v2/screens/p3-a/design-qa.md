@@ -1,5 +1,81 @@
 # P3-A — Product Design / Design QA final (2026-09-29)
 
+## Adjudicação visual mais recente — SCR-DASH-001 F03/F04 (2026-09-29)
+
+**final result: passed with findings resolved**
+
+BASELINE = commit fb3b2090ab48d164cd320c004e904109038a5674
+IMPLEMENTATION = SCR-DASH-001 / page-local responsive refinement
+VIEWPORTS = 1920×1080, 1440×900, 1366×768, 390×844
+ZOOM = 100% / DEVICE_SCALE_FACTOR = 1
+F03 = PASS / independent desktop columns remove the operational row's dead whitespace
+F04 = PASS / mobile navigation is fully readable at 390px and reachable at narrower widths
+DESKTOP_COLUMN_FLOW = Situação operacional → Atividade recente | Monitoramento e completude → Câmera em destaque
+MOBILE_READING_ORDER = Situação operacional → Monitoramento e completude → Atividade recente → Câmera em destaque
+MOBILE_ORDER_BASIS = existing semantic source order; no finer sequence is prescribed by the screen census
+NAVIGATION_PATTERN = horizontal scroll, visible cue on overflow, keyboard focus reveal, touch-scrollable
+GLOBAL_HORIZONTAL_OVERFLOW = NONE
+CONSOLE_ERRORS = 0 / PAGE_ERRORS = 0 / DENIED_REQUESTS = 0
+TECHNICAL_READY_FOR_REVIEW = YES
+USER_VISUAL_APPROVAL = PENDING
+ACTIVITY_COMPLETE = NO / human visual review is the next gate
+PROJECT_STATE_UPDATE = NOT PERFORMED / outside the current card
+PROTOTYPE_CONTENT = demonstration notice and planned profile surface explicitly classified
+
+### Evidência e resultado por viewport
+
+| Viewport | F03 — fluxo vertical | F04 — navegação e overflow |
+|---|---|---|
+| 1920×1080 | Independência das colunas; Situação 209px; Atividade após 16px; Monitoramento 341px; Câmera após 16px | Sem overflow global |
+| 1440×900 | Mesmo fluxo; sem equalização de altura | Sem overflow global |
+| 1366×768 | Mesmo fluxo; cards preservam alturas naturais | Sem overflow global |
+| 390×844 | Ordem móvel preservada: Situação, Monitoramento, Atividade, Câmera | Os cinco itens cabem e “Eventos” fica integralmente visível; alvo de 44px; sem overflow |
+| 320px complementar | Mesma ordem móvel | Rolagem horizontal e dica visível; Tab e gesto de toque alcançam e revelam o item “Eventos” integralmente |
+
+A causa de F03 era uma única linha de grid compartilhada: o painel de
+monitoramento, com 341px, controlava a altura do row em que Situação tinha
+209px. A linha seguinte começava em y=738, deixando 152px sob o card operacional
+depois de descontado o gap entre linhas. O fluxo responsivo agora cria pilhas
+independentes: Situação → Atividade e Monitoramento → Câmera. Atividade começa
+16px após Situação, reduzindo o vazio em 136px; nenhum card é esticado.
+
+A causa de F04 era a soma de padding/gap dos cinco links sem reserva de espaço
+no final do scroller. A 390px, “Eventos” ultrapassava em cerca de 25px a borda
+visível da navegação apesar de o documento não transbordar. O ajuste usa os
+tokens existentes para reduzir padding lateral, preserva tipografia, rótulos e
+alvos de 44px e acrescenta 8px de end-padding/scroll-padding. Em largura estreita,
+uma dica aparece somente com overflow; foco por teclado revela o link focado e
+a rolagem por toque alcança a extremidade. A navegação horizontal é o padrão
+canônico do harness para mobile.
+
+A ordem móvel é Situação → Monitoramento → Atividade → Câmera, preservada da
+ordem DOM semântica existente. O census organiza indicadores/painéis e atividade
+recente, mas não determina a sequência exata destes quatro cards. O fluxo não foi
+alterado acidentalmente pela disposição visual em colunas do desktop.
+
+A inspeção confirmou que os tiles KPI continuam em 220×77px e que o cabeçalho,
+ação, cópia, cores, tipografia, espaçamento aprovado, shell e direção ARGOS Hybrid
+não regrediram. Design System compartilhado, Button/Card primitives, outras
+telas, Quick Detail e produção permanecem sem alterações. O protótipo agora
+marca “Valores demonstrativos...” como conteúdo demonstrativo e “Meu Perfil ·
+superfície planejada” como superfície planejada.
+
+As quatro capturas F03/F04 estão persistidas no diretório canônico, além das
+32 anteriores. Chrome/Playwright rodou com zoom 100%, escala de dispositivo 1 e
+guarda que permitiu apenas GET local. Não houve erro de console/página, request
+negado/externo/não-GET, persistência ou overflow global. A comparação antes/depois
+dos quatro viewports foi inspecionada visualmente.
+
+### Gate
+
+TECHNICAL_READY_FOR_REVIEW = YES
+READY_FOR_USER_REVIEW = YES
+HUMAN_VISUAL_APPROVAL = PENDING
+ACTIVITY_COMPLETE = NO
+FINAL_VERDICT = PASS_WITH_FINDINGS / F03 e F04 resolvidos; revisão humana pendente
+
+
+## Registro histórico anterior — revisão F01/F02
 **final result: passed**
 
 DESIGN_SYSTEM_VERSION = 2.0.2
@@ -16,7 +92,7 @@ TECHNICAL_READY_FOR_REVIEW = YES
 USER_VISUAL_APPROVAL = PENDING
 ACTIVITY_COMPLETE = NO / human visual review is the next gate
 
-## Cartão atual — comparação focada do Dashboard (2026-09-29)
+## Registro anterior — comparação focada do Dashboard F01/F02 (2026-09-29)
 
 **final result: passed**
 

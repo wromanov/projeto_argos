@@ -26,20 +26,23 @@
         <img src="../../style-lab/argos-icon.svg" alt="" width="34" height="34">
         <span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">UI V2 · protótipos</span></span>
       </a>
-      <nav class="argos-docs-nav" aria-label="Navegação principal">
-        <span class="argos-docs-nav__group">Central operacional</span>
-        <a href="scr-portal-001.html" data-conceptual-route="/">Início</a>
-        <a href="scr-dash-001.html" aria-current="page" data-conceptual-route="/dashboard/">Dashboard</a>
-        <a href="scr-inv-001.html" data-conceptual-route="/cameras/">Inventário</a>
-        <a href="../index.html#screen-scr-sub-list-001" data-conceptual-route="/cameras/substituicoes/">Governança</a>
-        <a href="../index.html#screen-scr-event-list-001" data-conceptual-route="/eventos/">Eventos</a>
-      </nav>
+      <div class="p3-a-dashboard-nav-frame">
+        <nav class="argos-docs-nav" aria-label="Navegação principal" data-dashboard-primary-nav>
+          <span class="argos-docs-nav__group">Central operacional</span>
+          <a href="scr-portal-001.html" data-conceptual-route="/">Início</a>
+          <a href="scr-dash-001.html" aria-current="page" data-conceptual-route="/dashboard/">Dashboard</a>
+          <a href="scr-inv-001.html" data-conceptual-route="/cameras/">Inventário</a>
+          <a href="../index.html#screen-scr-sub-list-001" data-conceptual-route="/cameras/substituicoes/">Governança</a>
+          <a href="../index.html#screen-scr-event-list-001" data-conceptual-route="/eventos/">Eventos</a>
+        </nav>
+        <p class="p3-a-dashboard-nav-hint" id="dashboard-mobile-nav-hint" data-dashboard-nav-hint hidden>Deslize horizontalmente para ver todos os itens.</p>
+      </div>
       <p class="argos-docs-sidebar__foot">P3-A · protótipo · DS 2.0.2</p>
     </aside>
     <div class="argos-docs-main">
       <header class="argos-docs-topbar">
         <span>ARGOS / UI V2 / P3-A</span>
-        <a href="../index.html#screen-scr-account-profile-001">Meu Perfil · superfície planejada</a>
+        <a href="../index.html#screen-scr-account-profile-001" data-prototype-content="planned-surface">Meu Perfil · superfície planejada</a>
       </header>
       <main class="argos-docs-content p3-a-dashboard-content" id="main">
         <header class="argos-page-header p3-a-dashboard-header">
@@ -52,7 +55,7 @@
         </header>
 
         <div class="argos-stack">
-          <p>Valores demonstrativos carregados de fixture local; nenhum monitoramento em tempo real.</p>
+          <p data-prototype-content="demonstration">Valores demonstrativos carregados de fixture local; nenhum monitoramento em tempo real.</p>
           <section aria-labelledby="dashboard-overview-title" data-argos-state-variant="default">
             <div class="argos-section-header"><h2 id="dashboard-overview-title">Resumo do inventário</h2></div>
             <div class="argos-kpi-grid argos-kpi-grid--contained" aria-label="Indicadores de câmeras">
@@ -62,8 +65,8 @@
             </div>
           </section>
 
-          <section class="argos-two-column p3-a-dashboard-summary" aria-label="Situação operacional e técnica" data-argos-state-variant="default">
-            <article class="argos-card">
+          <section class="p3-a-dashboard-panels" aria-label="Resumo e atividade do dashboard" data-dashboard-panels data-layout="mobile" data-argos-state-variant="default">
+            <article class="argos-card p3-a-dashboard-panel" data-dashboard-panel="operational">
               <div class="argos-card__header"><h2 class="argos-card__title">Situação operacional</h2></div>
               <div class="argos-card__body argos-stack">
                 <dl>
@@ -74,7 +77,7 @@
                 </dl>
               </div>
             </article>
-            <article class="argos-card">
+            <article class="argos-card p3-a-dashboard-panel" data-dashboard-panel="monitoring">
               <div class="argos-card__header"><h2 class="argos-card__title">Monitoramento e completude</h2></div>
               <div class="argos-card__body argos-stack">
                 <dl>
@@ -89,17 +92,14 @@
                 <p>Frescor dos dados é um qualificador separado do estado técnico.</p>
               </div>
             </article>
-          </section>
-
-          <section class="argos-two-column" aria-label="Atividade e registros recentes" data-argos-state-variant="default">
-            <article class="argos-card">
+            <article class="argos-card p3-a-dashboard-panel" data-dashboard-panel="activity">
               <div class="argos-card__header"><h2 class="argos-card__title">Atividade recente</h2><span class="argos-badge argos-badge--neutral"><span data-metric="total_atividades">—</span> registros</span></div>
               <div class="argos-card__body">
                 <ul data-dashboard-activities aria-live="polite"></ul>
                 <p data-argos-fixture-variant="long">A fixture extensa contém um registro de câmera; os textos do nome e da localização são testados nas telas de Inventário e Detalhe.</p>
               </div>
             </article>
-            <article class="argos-card">
+            <article class="argos-card p3-a-dashboard-panel" data-dashboard-panel="featured">
               <div class="argos-card__header"><h2 class="argos-card__title">Câmera em destaque</h2></div>
               <div class="argos-card__body argos-stack" data-dashboard-featured-camera>
                 <p>Carregando fixture local…</p>

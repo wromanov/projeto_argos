@@ -1,5 +1,71 @@
 # Fechamento técnico final — evidência persistida e pronto para revisão (2026-09-29)
 
+## Atualização mais recente — adjudicação visual SCR-DASH-001 F03/F04 (2026-09-29)
+
+CARD = ADJUDICAÇÃO VISUAL — SCR-DASH-001 REFINED DEFAULT REVIEW
+BRANCH = codex/ui-v2-p3-a-core-inventory
+HEAD_BEFORE_THIS_CHECKPOINT = fb3b2090ab48d164cd320c004e904109038a5674
+DESIGN_SYSTEM_VERSION = 2.0.2 / unchanged
+F03 = PASS / resolved; independent desktop column stacks remove row-height dead space
+F04 = PASS / resolved; all navigation items reachable and fully legible
+DESKTOP_COLUMN_FLOW = Situação operacional → Atividade recente | Monitoramento e completude → Câmera em destaque
+MOBILE_READING_ORDER = Situação operacional → Monitoramento e completude → Atividade recente → Câmera em destaque
+MOBILE_ORDER_BASIS = existing semantic DOM order preserved; screen census specifies hierarchy but no finer card sequence
+NAVIGATION_PATTERN = horizontal scroll with a visible cue when overflow exists; keyboard focus reveals the focused item
+PERSISTED_SCREENSHOTS = 36 total / 4 new F03-F04 captures
+VIEWPORTS = 1920x1080, 1440x900, 1366x768, 390x844
+ZOOM = 100% / DEVICE_SCALE_FACTOR = 1
+GLOBAL_HORIZONTAL_OVERFLOW = NONE / all four Dashboard viewports
+CONSOLE_ERRORS = 0 / PAGE_ERRORS = 0 / DENIED_REQUESTS = 0
+EXTERNAL_REQUESTS = 0 / NON_GET_REQUESTS = 0 / PERSISTENCE_WRITES = NONE
+KPI_AND_HEADER_REGRESSION = NONE
+SHARED_DESIGN_SYSTEM_CHANGED = NO
+PRODUCTION_CHANGED = NO
+PROTOTYPE_CONTENT = clearly identified / demonstration notice and planned profile surface
+TECHNICAL_READY_FOR_REVIEW = YES
+READY_FOR_USER_REVIEW = YES
+USER_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = NOT PERFORMED / outside this card
+ACTIVITY_COMPLETE = NO / human visual approval remains the next gate
+ACTIVITY_COMPLETION_PERCENT = 95% / technical work and evidence complete; human gate pending
+FINAL_VERDICT = PASS_WITH_FINDINGS / F03 and F04 resolved
+
+At 1366×768, 1440×900, and 1920×1080, the operational card remains 209px
+high and monitoring remains 341px high. The previous shared row placed the next
+row at y=738, leaving 152px below the operational card after the row gap. The
+independent columns now place “Atividade recente” 16px after the 209px card,
+removing 136px of blank space without stretching either card. “Câmera em
+destaque” follows monitoring by the same intentional 16px gap.
+
+At 390×844, all five navigation labels, including “Eventos”, are fully visible
+inside the 362px navigation frame; all targets remain 44px high and the document
+has no horizontal overflow. At 320px, where the links need horizontal scrolling,
+a visible hint appears; keyboard focus and touch scrolling reach the last item,
+and the full focused label is revealed. No font-size reduction, label removal,
+or abbreviation was used.
+
+The mobile card order remains the existing semantic source order. The screen
+census groups indicators/panels and recent activity, but does not define an exact
+four-card sequence; this implementation preserves the pre-existing order rather
+than allowing desktop column wrappers to reorder the mobile reading flow.
+“Valores demonstrativos...” is classified as demonstration content, and
+“Meu Perfil · superfície planejada” is classified as a planned prototype surface.
+
+Four new full-view captures were saved at 100% zoom, device scale factor 1:
+
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__1920x1080__refined-f03-f04__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__1440x900__refined-f03-f04__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__1366x768__refined-f03-f04__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__390x844__refined-f03-f04__default.png
+
+The local browser run allowed only GET requests to the local preview. Console,
+page errors, denied requests, global document overflow, and external/non-GET
+requests were absent. The approved KPI tiles (220×77px), header/action, design
+tokens, shared primitives, ARGOS Hybrid direction, other screens, Quick Detail,
+global coverage, and production remain unchanged.
+
+
+## Registro histórico anterior — fechamento F01/F02
 P3_A_BRANCH = codex/ui-v2-p3-a-core-inventory
 P3_A_HEAD_BEFORE_CLOSURE = 04224150a90468121e0da84e82c007dcde080896
 DESIGN_SYSTEM_VERSION = 2.0.2

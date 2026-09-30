@@ -1,31 +1,56 @@
 @layer pages {
-  @media (min-width: 901px) {
-    .p3-a-dashboard-summary {
+  .p3-a-dashboard-panels {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--argos-space-4);
+  }
+
+  .p3-a-dashboard-panels__column {
+    display: grid;
+    align-content: start;
+    gap: var(--argos-space-4);
+    min-width: 0;
+  }
+
+  .p3-a-dashboard-nav-frame {
+    min-width: 0;
+  }
+
+  @media (min-width: 681px) {
+    .p3-a-dashboard-panels[data-layout="columns"] {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       align-items: start;
     }
+  }
 
-    .p3-a-dashboard-summary .argos-card__body {
+  @media (min-width: 901px) {
+    .p3-a-dashboard-panel[data-dashboard-panel="operational"] .argos-card__body,
+    .p3-a-dashboard-panel[data-dashboard-panel="monitoring"] .argos-card__body {
       gap: var(--argos-space-3);
     }
 
-    .p3-a-dashboard-summary dl {
+    .p3-a-dashboard-panel[data-dashboard-panel="operational"] dl,
+    .p3-a-dashboard-panel[data-dashboard-panel="monitoring"] dl {
       display: grid;
       gap: var(--argos-space-3);
       margin: 0;
     }
 
-    .p3-a-dashboard-summary dl > div {
+    .p3-a-dashboard-panel[data-dashboard-panel="operational"] dl > div,
+    .p3-a-dashboard-panel[data-dashboard-panel="monitoring"] dl > div {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: baseline;
       column-gap: var(--argos-space-3);
     }
 
-    .p3-a-dashboard-summary dt {
+    .p3-a-dashboard-panel[data-dashboard-panel="operational"] dt,
+    .p3-a-dashboard-panel[data-dashboard-panel="monitoring"] dt {
       min-width: 0;
     }
 
-    .p3-a-dashboard-summary dd {
+    .p3-a-dashboard-panel[data-dashboard-panel="operational"] dd,
+    .p3-a-dashboard-panel[data-dashboard-panel="monitoring"] dd {
       margin: 0;
       text-align: right;
     }
@@ -36,6 +61,29 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: end;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .p3-a-dashboard-nav-frame {
+      display: grid;
+      gap: var(--argos-space-1);
+    }
+
+    .p3-a-dashboard-nav-frame .argos-docs-nav {
+      padding-inline-end: var(--argos-space-2);
+      scroll-padding-inline-end: var(--argos-space-2);
+      overscroll-behavior-inline: contain;
+    }
+
+    .p3-a-dashboard-nav-frame .argos-docs-nav a {
+      padding-inline: var(--argos-space-2);
+    }
+
+    .p3-a-dashboard-nav-hint {
+      margin: 0;
+      color: var(--argos-color-ink-inverse-muted);
+      font-size: var(--argos-text-caption);
     }
   }
 
