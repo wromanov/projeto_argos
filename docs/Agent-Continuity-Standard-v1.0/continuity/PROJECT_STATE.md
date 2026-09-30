@@ -2007,7 +2007,7 @@ Inventory: human review remains pending and F06 is reported for adjudication.
 ```text
 CURRENT_ACTIVITY = UI-V2-P3-A / SCR-INV-001 targeted refinement
 ACTIVITY_STATUS = TECHNICAL_READY_FOR_REVIEW / PASS_WITH_FINDING
-ACTIVITY_COMPLETION_PERCENT = 90%
+ACTIVITY_COMPLETION_PERCENT = 95% / technical review package ready; human F06 adjudication pending
 ACTIVITY_COMPLETE = NO / human visual approval and F06 adjudication pending
 PROJECT_STATE_UPDATE = PASS / current Inventory state recorded before completion
 BRANCH = codex/ui-v2-p3-a-core-inventory

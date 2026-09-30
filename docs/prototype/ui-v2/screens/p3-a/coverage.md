@@ -396,7 +396,7 @@ feita.
 ```text
 SCREEN_ID = SCR-INV-001
 STATUS = TECHNICAL_READY_FOR_REVIEW / PASS_WITH_FINDING
-ACTIVITY_COMPLETION_PERCENT = 90%
+ACTIVITY_COMPLETION_PERCENT = 95% / technical review package ready; human F06 adjudication pending
 F05 = RESOLVED / mobile advanced filters use an accessible button disclosure
 SEARCH_ALWAYS_VISIBLE_MOBILE = YES
 ADVANCED_FILTERS_PROGRESSIVE_DISCLOSURE = YES / all 8 controls retained

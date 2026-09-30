@@ -425,7 +425,7 @@ frozen; this checkpoint does not change it.
 ```text
 CURRENT_ACTIVITY = UI-V2-P3-A / SCR-INV-001 targeted refinement
 ACTIVITY_STATUS = TECHNICAL_READY_FOR_REVIEW / PASS_WITH_FINDING
-ACTIVITY_COMPLETION_PERCENT = 90%
+ACTIVITY_COMPLETION_PERCENT = 95% / technical review package ready; human F06 adjudication pending
 ACTIVITY_COMPLETE = NO / human visual approval pending; F06 adjudication open
 PROJECT_STATE_UPDATE = PASS / this entry records current Inventory state before completion
 BRANCH = codex/ui-v2-p3-a-core-inventory

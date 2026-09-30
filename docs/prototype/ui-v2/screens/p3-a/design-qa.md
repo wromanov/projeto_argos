@@ -455,7 +455,7 @@ VIEWPORT_390x844 = PASS
 HUMAN_VISUAL_APPROVAL = PENDING
 READY_FOR_USER_REVIEW = YES
 FINAL_VERDICT = PASS_WITH_FINDING / F06 requires user adjudication before table-pattern changes
-ACTIVITY_COMPLETION_PERCENT = 90%
+ACTIVITY_COMPLETION_PERCENT = 95% / technical review package ready; human F06 adjudication pending
 RESPONSIVE_FOCUS_PRESERVED = YES / focused advanced filter remains visible and active in both resize directions
 ```
 
