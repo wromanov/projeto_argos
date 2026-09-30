@@ -4,7 +4,7 @@
 
 DESIGN_SYSTEM_VERSION = 2.0.2
 PRODUCT_DESIGN_DESIGN_QA = PASS
-PERSISTED_EVIDENCE = PASS / 28 named PNGs, 16 defaults + 12 mobile states
+PERSISTED_EVIDENCE = PASS / 32 named PNGs: 16 baseline defaults + 12 mobile states + 4 refined Dashboard captures
 STATE_AND_RESPONSIVE_QA = PASS / four screens × four viewports
 GLOBAL_HORIZONTAL_OVERFLOW = NONE
 CONSOLE_ERRORS = 0
@@ -16,6 +16,41 @@ TECHNICAL_READY_FOR_REVIEW = YES
 USER_VISUAL_APPROVAL = PENDING
 ACTIVITY_COMPLETE = NO / human visual review is the next gate
 
+## Cartão atual — comparação focada do Dashboard (2026-09-29)
+
+**final result: passed**
+
+BASELINE = commit d8600021a8aa9ab809a03b416b0a6acfd5702179
+IMPLEMENTATION = SCR-DASH-001 with page-local refinement
+VIEWPORTS = 1366×768, 1440×900, 1920×1080, 390×844
+ZOOM = 100% / DEVICE_SCALE_FACTOR = 1
+PAIRING = same-size baseline and refined full views; focused 1920px summary and header comparisons
+F01 = PASS / summary card height follows content rather than equal-height stretching
+F02 = PASS / action remains visually attached to the page title and description, including 1920px
+MOBILE_SMOKE = PASS / existing stacked composition preserved at 390×844
+GLOBAL_HORIZONTAL_OVERFLOW = NONE
+CONSOLE_ERRORS = 0 / PAGE_ERRORS = 0 / DENIED_REQUESTS = 0
+P0_P1_P2_FINDINGS = NONE
+USER_VISUAL_APPROVAL = PENDING
+
+The review used the P3-A Dashboard baseline screenshots from BASELINE and the
+four refined screenshots below as same-dimension before-and-after inputs.
+The original copy, metrics, shared shell, and 220×77px metric tiles remain
+visually unchanged. The summary cards measure 209px and 341px on desktop, so
+their different content no longer creates an oversized blank card. At
+1920×1080, the page content width is 1280px and the title/action tracks have
+a 32px gap. On mobile, the new desktop rules do not apply.
+
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__1366x768__refined__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__1440x900__refined__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__1920x1080__refined__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__390x844__refined__default.png
+
+The refinement is limited to SCR-DASH-001. No shared Design System files,
+other P3-A screens, Quick Detail, global coverage, production, or project
+state were changed. Human visual acceptance remains the next gate.
+
+---
 ## Base visual, implementação e comparação
 
 - Direção visual: docs/prototype/ui-v2/style-lab/screenshots/argos-style-c.png

@@ -1,0 +1,51 @@
+@layer pages {
+  @media (min-width: 901px) {
+    .p3-a-dashboard-summary {
+      align-items: start;
+    }
+
+    .p3-a-dashboard-summary .argos-card__body {
+      gap: var(--argos-space-3);
+    }
+
+    .p3-a-dashboard-summary dl {
+      display: grid;
+      gap: var(--argos-space-3);
+      margin: 0;
+    }
+
+    .p3-a-dashboard-summary dl > div {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: baseline;
+      column-gap: var(--argos-space-3);
+    }
+
+    .p3-a-dashboard-summary dt {
+      min-width: 0;
+    }
+
+    .p3-a-dashboard-summary dd {
+      margin: 0;
+      text-align: right;
+    }
+  }
+
+  @media (min-width: 681px) {
+    .p3-a-dashboard-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
+  }
+
+  @media (min-width: 1600px) {
+    .p3-a-dashboard-content {
+      max-width: 1280px;
+    }
+
+    .p3-a-dashboard-header {
+      column-gap: var(--argos-space-8);
+    }
+  }
+}

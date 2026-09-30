@@ -1,7 +1,7 @@
 # P3-A — Cobertura final e evidência (2026-09-29)
 
 DESIGN_SYSTEM_VERSION = 2.0.2
-PERSISTED_SCREENSHOTS = 28 / 16 viewport defaults + 12 mobile state captures
+PERSISTED_SCREENSHOTS = 32 / 16 viewport defaults + 12 mobile state captures + 4 refined SCR-DASH-001 captures
 VIEWPORTS = 390x844, 1366x768, 1440x900, 1920x1080
 GLOBAL_HORIZONTAL_OVERFLOW = NONE / 16 of 16 combinations
 STATE_FIXTURE_MISMATCH = NONE
@@ -16,7 +16,7 @@ USER_VISUAL_APPROVAL = PENDING
 PROJECT_STATE_UPDATE = NOT PERFORMED / excluded by the user card
 ACTIVITY_COMPLETE = NO / awaiting human visual review
 
-Captures live at docs/prototype/ui-v2/evidence/screenshots/p3-a/. All 28 files
+Captures live at docs/prototype/ui-v2/evidence/screenshots/p3-a/. All 32 files
 were checked for PNG signature, expected pixel dimensions, file presence, and
 agreement between filename and capture metadata. Browser used Playwright with
 Chrome, device scale factor 1, 100% zoom, and a request guard allowing only local
@@ -26,10 +26,35 @@ observed.
 | Tela | Viewports padrão | Estados móveis adicionais | Resultado |
 |---|---:|---|---|
 | Portal | 4/4 | empty, long | Sem overflow global; evidência persistida |
-| Dashboard | 4/4 | empty, long | Sem overflow global; evidência persistida |
+| Dashboard | 4/4 + 4 refinadas | empty, long | Sem overflow global; evidência persistida |
 | Inventário | 4/4 | empty, loading, error, long, selected | Sem overflow global; tabela com scroll local; evidência persistida |
 | Detalhe de Câmera | 4/4 | empty (history), error, long | Sem overflow global; evidência persistida |
 
+## Cartão atual — refinamento desktop do Dashboard (2026-09-29)
+
+STARTING_HEAD = d8600021a8aa9ab809a03b416b0a6acfd5702179
+F01 = RESOLVED / painéis de resumo dimensionados pelo conteúdo
+F02 = RESOLVED / ação Abrir Inventário integrada ao cabeçalho
+TARGETED_DESIGN_QA = PASS / comparação visual pareada com o baseline
+NEW_CAPTURES = 4 / total da pasta P3-A = 32
+GLOBAL_HORIZONTAL_OVERFLOW = NONE / 4 viewports do Dashboard
+CONSOLE_ERRORS = 0 / page errors = 0 / denied requests = 0
+USER_VISUAL_APPROVAL = PENDING
+ACTIVITY_COMPLETE = NO
+
+| Viewport | Sumário operacional | Sumário monitoramento | Início da próxima linha |
+|---|---:|---:|---:|
+| 1366×768 | 209px | 341px | y=738 |
+| 1440×900 | 209px | 341px | y=738 |
+| 1920×1080 | 209px | 341px | y=738 |
+| 390×844 | fluxo móvel original | fluxo móvel original | sem overflow horizontal |
+
+As capturas refined/default preservam os screenshots baseline e registram
+somente a nova execução. O cap de 1280px e o gap de 32px no cabeçalho são
+aplicados apenas a partir de 1600px; a tile métrica permanece em 220×77px.
+Não houve mudança no conteúdo, na navegação, nos tokens ou no Design System.
+
+---
 ## Inventário móvel e interação
 
 - Em 390×844, o scroller local tem 360px e contém a tabela de 921px com oito

@@ -3,7 +3,7 @@
 P3_A_BRANCH = codex/ui-v2-p3-a-core-inventory
 P3_A_HEAD_BEFORE_CLOSURE = 04224150a90468121e0da84e82c007dcde080896
 DESIGN_SYSTEM_VERSION = 2.0.2
-PERSISTED_SCREENSHOTS = 28 / 16 defaults + 12 estados móveis materiais
+PERSISTED_SCREENSHOTS = 32 / 16 baseline defaults + 12 estados móveis materiais + 4 capturas refinadas de SCR-DASH-001
 SCREEN_CAPTURE_VIEWPORTS = 390x844, 1366x768, 1440x900, 1920x1080
 GLOBAL_HORIZONTAL_OVERFLOW = NONE / all 16 screen-viewport combinations
 CONSOLE_ERRORS = 0
@@ -19,7 +19,7 @@ ACTIVITY_COMPLETE = NO / human visual review is the next gate
 CANONICAL_MASTER_CHANGED = NO
 QUICK_DETAIL_DESIGN_CHANGED = NO
 
-As 28 capturas PNG determinísticas estão persistidas em
+As 32 capturas PNG determinísticas estão persistidas em
 docs/prototype/ui-v2/evidence/screenshots/p3-a/. Foram verificadas assinatura PNG,
 dimensões esperadas pelo viewport e correspondência entre nome, tela, estado e fixture.
 A captura foi feita com Playwright e Chrome, escala de dispositivo 1 e zoom 100%.
@@ -35,6 +35,47 @@ a linha longa 217px na página 2. Enter seleciona a linha, o status é anunciado
 alcança a ação nomeada e o estado selecionado foi capturado. Quick Detail permanece
 no baseline protegido.
 
+## Atualização do cartão — refinamento de SCR-DASH-001 (2026-09-29)
+
+CARD = ARGOS UI-V2-P3-A SCR-DASH-001 TARGETED DESKTOP COMPOSITION REFINEMENT
+BRANCH = codex/ui-v2-p3-a-core-inventory
+STARTING_HEAD = d8600021a8aa9ab809a03b416b0a6acfd5702179
+SCREEN = SCR-DASH-001 / P3-A
+DESIGN_SYSTEM_VERSION = 2.0.2 / unchanged
+F01 = RESOLVED / compact, content-sized operational summary panels
+F02 = RESOLVED / title, description, and Abrir Inventário action composed as one header
+IMPLEMENTATION_SCOPE = page-local HTML hooks and scr-dash-001.css only
+PERSISTED_SCREENSHOTS = 4 new / 32 total in the P3-A evidence directory
+PRODUCT_DESIGN_DESIGN_QA = PASS / targeted before-and-after review against STARTING_HEAD
+USER_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = NOT PERFORMED / excluded by this card
+ACTIVITY_COMPLETE = NO / human visual approval remains the next gate
+CANONICAL_MASTER_CHANGED = NO
+SHARED_DESIGN_SYSTEM_CHANGED = NO
+QUICK_DETAIL_DESIGN_CHANGED = NO
+
+The paired review confirmed that both summary cards now follow their content
+instead of retaining the previous 452px equal height. Their rendered heights
+are 209px and 341px at the desktop viewports; the next two-column row begins
+at y=738. At 1920×1080 the content is capped at 1280px and the page header
+keeps a 32px track gap around the action. The 220×77px metric tiles remain
+unchanged. Mobile 390×844 retains the stacked header and summary layout, with
+no horizontal overflow.
+
+New implementation captures, all default/default at 100% zoom and device scale
+factor 1:
+
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__1366x768__refined__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__1440x900__refined__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__1920x1080__refined__default.png
+- docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-DASH-001__390x844__refined__default.png
+
+No P0/P1/P2 finding was observed. The local browser run reported zero console
+errors, page errors, denied requests, or global horizontal overflow. The card's
+human visual acceptance is still pending; no activity-wide completion or
+PROJECT_STATE update is claimed.
+
+---
 ## Pacote de revisão visual
 
 - Portal desktop, 1440×900: docs/prototype/ui-v2/evidence/screenshots/p3-a/SCR-PORTAL-001__1440x900__default__default.png
