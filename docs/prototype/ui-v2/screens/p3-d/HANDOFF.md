@@ -3,45 +3,63 @@
 ```text
 PROJECT = ARGOS
 ACTIVITY = UI-V2-P3-D
-DATE = 2026-09-28
+TECHNICAL_CHECKPOINT_DATE = 2026-09-28
+HUMAN_APPROVAL_DATE = 2026-09-30
 BRANCH = codex/ui-v2-p3-d-forms-account-secondary
+EXPECTED_HEAD = b4b4d7ed99eea4467d4ae111dcddf77c09ed9bbf
 HANDOFF_COMMIT = ce13ff299d5c5419994aab0dc574a914a56760aa
 DS_PATCH_WORK_COMMIT = 8121ed38cc15e1ff6e72cb46bbb2ca865100bce0
 DS_PATCH_INTEGRATION_COMMIT = 70e996f5e25d9c9b5d0f4ec0a256c44efcec6274
-DESIGN_SYSTEM_VERSION = 2.0.1
+P3_D_VALIDATED_BRANCH_DS = 2.0.1
+ROOT_CANONICAL_DS = 2.0.2
+OBSERVED_IMPLEMENTATION_VERSION = 2.0.1 / P3-D HTML metadata and shared CSS at EXPECTED_HEAD
+DS_VERSION_RECONCILIATION = DEFERRED_ROOT_OWNERSHIP
+DS_VERSION_RECONCILIATION_REASON = P3-D validated on existing branch baseline; no factual P3-D consumer requiring the DS 2.0.2 mobile-table patch was identified
+DS_VERSION_INTEGRATION_OWNER = ROOT
 P3_D_LOCAL_HIDDEN_WORKAROUND = REMOVED
 STATE_QA = PASS
 RESPONSIVE_QA = PASS / 1920x1080, 1440x900, 1366x768, 390x844
-ACCESSIBILITY_BASELINE = PASS / nota de 36px no link de marca compartilhado; sem alegação WCAG
+ACCESSIBILITY_VISUAL_BASELINE = PASS_WITH_LIMITS
+WCAG_FULL_COMPLIANCE_CLAIMED = NO
 PRODUCT_DESIGN_DESIGN_QA = PASS_WITH_NON_BLOCKING_SHARED_SHELL_NOTES
 DESIGN_QA_COMPLETE = YES
-EVIDENCE_SCREENSHOTS = 53 / 2 existentes preservadas + 51 novas
-OWN_SCREENS = 7 / TECHNICAL_READY_FOR_REVIEW
+HUMAN_VISUAL_APPROVAL = PASS
+USER_VISUAL_APPROVAL = PASS
+P3_D_VISUAL_REVIEW = PASS_WITH_NONBLOCKING_SHARED_FINDINGS
+BLOCKING_FINDINGS = NONE
+P3_D_SPECIFIC_FINDINGS = NONE
+OWN_SCREENS = 7 / USER_APPROVED / FROZEN
 ADMIN_SCREENS = 8 / INHERITED
 ADMIN_CUSTOM_REDESIGN = NO
-PRODUCTION_CHANGED = NO
-ADMIN_RUNTIME_CHANGED = NO
-USER_VISUAL_APPROVAL = PENDING
-PROJECT_STATE_UPDATE = DEFERRED_ROOT_INTEGRATOR_OWNERSHIP
-ACTIVITY_COMPLETE = NO / aguarda atualização do snapshot root e revisão visual humana
-NEXT_GATE = P3-D HUMAN VISUAL REVIEW
+MOBILE_NAV_PARTIAL_LAST_ITEM = KNOWN_SHARED / NONBLOCKING
+BRAND_LINK_36PX = KNOWN_SHARED / NONBLOCKING
+EVIDENCE_SCREENSHOTS = 53 / 2 existentes preservadas + 51 novas
+P3_D_COMPLETE = YES
+P3_D_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
+REMAINING_P3_D_GATES = NONE
+PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+ROOT_OWNED_SCREEN_INDEX_RECONCILIATION = DEFERRED_ROOT_OWNERSHIP
+ACTIVITY_COMPLETE = NO / formal root checkpoint and PROJECT_STATE update remain root-owned
+COMMIT_AUTHORIZED = YES
+PUSH_AUTHORIZED = YES
+NEXT_GATE = ROOT RECONCILIATION OF P3 FAMILY STATE + DS VERSION
 ```
 
 > Este checkpoint prevalece sobre a fotografia de pausa abaixo. O texto original foi preservado como histórico de retomada; os status QA antigos nele estão superados.
 
-## Estado técnico por tela
+## Estado técnico e aprovação humana por tela
 
-| SCREEN_ID | Status | Estados exercitados |
-|---|---|---|
-| `SCR-CAM-CREATE-001` | `TECHNICAL_READY_FOR_REVIEW` | default, focus por teclado, selected, error, success, long |
-| `SCR-CAM-EDIT-001` | `TECHNICAL_READY_FOR_REVIEW` | default, focus por teclado, selected, error, success, long; valores existentes preservados |
-| `SCR-ACCOUNT-PROFILE-001` | `TECHNICAL_READY_FOR_REVIEW` | default, empty, long e foco por teclado |
-| `SCR-ACCOUNT-EDIT-001` | `TECHNICAL_READY_FOR_REVIEW` | default, focus por teclado, error, success, long; username, cargo e setor somente leitura |
-| `SCR-ACCOUNT-PASSWORD-001` | `TECHNICAL_READY_FOR_REVIEW` | default, focus por teclado, error, success, long; campos sempre vazios |
-| `SCR-AUTH-LOGIN-001` | `TECHNICAL_READY_FOR_REVIEW` | default, focus por teclado, error, long; sem recursos de autenticação inventados |
-| `SCR-ERROR-403-001` | `TECHNICAL_READY_FOR_REVIEW` | default e foco por teclado; mensagem 403 e retorno seguro |
+| SCREEN_ID | TECHNICAL_READY | HUMAN_VISUAL_APPROVAL | FINAL_P3_D_SCREEN_STATE | Estados exercitados |
+|---|---|---|---|---|
+| `SCR-CAM-CREATE-001` | YES | PASS | `USER_APPROVED / FROZEN` | default, foco por teclado, selected, error, success, long |
+| `SCR-CAM-EDIT-001` | YES | PASS | `USER_APPROVED / FROZEN` | default, foco por teclado, selected, error, success, long; valores existentes preservados |
+| `SCR-ACCOUNT-PROFILE-001` | YES | PASS | `USER_APPROVED / FROZEN` | default, empty, long e foco por teclado |
+| `SCR-ACCOUNT-EDIT-001` | YES | PASS | `USER_APPROVED / FROZEN` | default, foco por teclado, error, success, long; username, cargo e setor somente leitura |
+| `SCR-ACCOUNT-PASSWORD-001` | YES | PASS | `USER_APPROVED / FROZEN` | default, foco por teclado, error, success, long; campos sempre vazios |
+| `SCR-AUTH-LOGIN-001` | YES | PASS | `USER_APPROVED / FROZEN` | default, foco por teclado, error, long; sem recursos de autenticação inventados |
+| `SCR-ERROR-403-001` | YES | PASS | `USER_APPROVED / FROZEN` | default e foco por teclado; mensagem 403 e retorno seguro |
 
-Estados de carregamento ou vazio não aplicáveis foram mantidos como não aplicáveis quando não fazem parte do contrato da tela. `SCR-ERROR-403-001` não tem fixture longa.
+Os estados de carregamento ou vazio não aplicáveis permanecem `NOT_APPLICABLE`; `SCR-ERROR-403-001` não tem fixture longa. A aprovação visual foi fornecida explicitamente pelo usuário em 2026-09-30 e congela as sete telas próprias. O índice de telas compartilhado é root-owned e será reconciliado no checkpoint global; ele não é um gate familiar P3-D.
 
 ## Adjudicação de `[hidden]`
 

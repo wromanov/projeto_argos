@@ -5,9 +5,38 @@ ACTIVITY = UI-V2-P3-D
 DATE = 2026-09-28
 RESULT = PASS_WITH_NON_BLOCKING_SHARED_SHELL_NOTES
 DESIGN_QA_COMPLETE = YES
-USER_VISUAL_APPROVAL = PENDING
+USER_VISUAL_APPROVAL = PASS
 WCAG_CONFORMANCE = NOT_ASSESSED
 ```
+
+## Adjudicação da aprovação humana P3-D — 2026-09-30
+
+```text
+HUMAN_VISUAL_APPROVAL = PASS
+USER_VISUAL_APPROVAL = PASS
+P3_D_VISUAL_REVIEW = PASS_WITH_NONBLOCKING_SHARED_FINDINGS
+P3_D_OWNED_SCREENS = USER_APPROVED / FROZEN
+P3_D_VALIDATED_BRANCH_DS = 2.0.1
+ROOT_CANONICAL_DS = 2.0.2
+OBSERVED_IMPLEMENTATION_VERSION = 2.0.1 / HTML P3-D e CSS compartilhado no HEAD validado
+DS_VERSION_RECONCILIATION = DEFERRED_ROOT_OWNERSHIP
+ACCESSIBILITY_VISUAL_BASELINE = PASS_WITH_LIMITS
+WCAG_FULL_COMPLIANCE_CLAIMED = NO
+BLOCKING_FINDINGS = NONE
+P3_D_SPECIFIC_FINDINGS = NONE
+MOBILE_NAV_PARTIAL_LAST_ITEM = KNOWN_SHARED / NONBLOCKING
+BRAND_LINK_36PX = KNOWN_SHARED / NONBLOCKING
+P3_D_ADMIN = INHERITED / NO REDESIGN
+P3_D_COMPLETE = YES
+P3_D_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
+REMAINING_P3_D_GATES = NONE
+PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+ROOT_OWNED_SCREEN_INDEX_RECONCILIATION = DEFERRED_ROOT_OWNERSHIP
+ACTIVITY_COMPLETE = NO / closure checkpoint and PROJECT_STATE update remain root-owned
+NEXT_GATE = ROOT RECONCILIATION OF P3 FAMILY STATE + DS VERSION
+```
+
+A aprovação confirma o pacote visual P3-D atual. O branch P3-D foi validado com Design System 2.0.1; a baseline canônica atual do ROOT em outro ponto é 2.0.2. Não foi identificado consumidor factual P3-D que exija o patch mobile-table de 2.0.2. O ROOT fará a reconciliação durante a integração, sem alterar implementação, CSS compartilhado, tokens ou metadados nesta atividade. A reconciliação de versão e do índice compartilhado permanece sob responsabilidade do ROOT. A conclusão familiar segue os gates específicos P3-D: sete telas prontas e aprovadas, oito arquétipos Admin herdados.
 
 ## Escopo e referências
 
@@ -46,7 +75,7 @@ As duas capturas existentes de `SCR-CAM-CREATE-001` foram preservadas sem sobres
 1. A navegação comum é horizontalmente rolável em 390 px; no início do trilho, o item final aparece parcialmente junto à borda até o usuário rolar. O documento continua sem overflow. É comportamento do shell compartilhado e não foi alterado nesta branch familiar.
 2. O link de marca comum mede 36 px de altura em 390 px. As ações principais do conteúdo passam a verificação de 44 px. O link de marca pertence à camada compartilhada; fica como observação para o integrador/root, sem bloquear a prontidão técnica P3-D.
 
-Não foram encontrados bloqueadores visuais específicos das sete telas. A revisão humana visual continua pendente; `TECHNICAL_READY_FOR_REVIEW` não equivale a `USER_APPROVED`.
+Não foram encontrados bloqueadores visuais específicos das sete telas. A aprovação humana explícita foi registrada nesta atividade; o estado `USER_APPROVED / FROZEN` agora consta nos registros familiares P3-D.
 
 ## Verificações reproduzidas
 
@@ -63,5 +92,9 @@ PRODUCTION_CHANGED = NO
 ADMIN_RUNTIME_CHANGED = NO
 P3_D_LOCAL_HIDDEN_WORKAROUND = REMOVED
 OPEN_BLOCKERS = NONE
-NEXT_GATE = P3-D HUMAN VISUAL REVIEW
+P3_D_COMPLETE = YES
+P3_D_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
+REMAINING_P3_D_GATES = NONE
+PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+NEXT_GATE = ROOT RECONCILIATION OF P3 FAMILY STATE + DS VERSION
 ```
