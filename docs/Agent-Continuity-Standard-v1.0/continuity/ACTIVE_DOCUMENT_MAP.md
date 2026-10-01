@@ -407,3 +407,19 @@ NEXT_GATE = aplicar controladamente DS_PATCH_WORK_COMMIT às famílias, mantendo
 NEXT_GATE_STATUS = PLANNED / NOT AUTHORIZED
 
 Os registros históricos de P2/P3-0 permanecem inalterados na versão 2.0.0. Esta seção 16 substitui o status de prontidão registrado na seção 15: P3-0 foi concluída e publicada antes deste patch. A atividade ROOT não autoriza implementação ou integração das famílias, atualização da cobertura global nem integração da UI de produção.
+
+## 17. BC-00 — contratos do backend ARGOS (2026-10-01)
+
+| Path | Papel | Escopo | Vigência |
+|---|---|---|---|
+| `docs/projeto/contracts/backend/00_BACKEND_CONTRACT_REGISTRY.md` | Registro de contratos | Índice, precedência, status de implementação e limites de autoridade | CURRENT / BC-00 |
+| `docs/projeto/contracts/backend/01_ACCESS_ROLES_AUTHORIZATION_CONTRACT.md` | Contrato de acesso | Grupos, permissões e fronteira web/worker | CURRENT / BC-00 |
+| `docs/projeto/contracts/backend/camera/` | Contratos CAM-INT-01..07 e diagnóstico de saúde | Capability, segredo, RTSP/HTTP, diagnósticos, compatibilidade e hardening | CURRENT / baseline; adapters reais não homologados |
+| `docs/projeto/contracts/backend/monitoring/` | Contratos MON-AV/PROBE/WORKER/REC/OWN/OBS/HIST | Estado, execução, recuperação, ownership, observabilidade e histórico | CURRENT / core local; runtime de produção não homologado |
+| `docs/projeto/contracts/backend/images/IMAGE_CAPTURE_INTEGRATION_CONTRACT.md` | Integração de captura | Integração com o domínio de imagem canônico, sem duplicá-lo | CURRENT / complemento |
+| `docs/projeto/contracts/backend/production/` | Contratos PROD-PERSIST/TOPO/CAP | Persistência, topologia e capacidade | CURRENT / decisões abertas explícitas |
+| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | Proveniência, seleção, leitura, preview, lifecycle e consumidor | CANONICAL / mantido como authority |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 40 | Estado de BC-00 | Baseline, status, autorização e próxima atividade | CURRENT / local worktree |
+
+BC-00 cria baseline documental, não implementação nem autorização de acesso a
+câmera. Estado e fronteiras não homologadas estão no registro do backend.

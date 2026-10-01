@@ -2137,3 +2137,46 @@ ACTIVITY_COMPLETE = YES / implementation, cross-family regression, ROOT patch, i
 WORKTREE_FINAL = CLEAN expected after final checkpoint push
 NEXT_GATE = propagate only DS_2_0_2_PATCH_COMMIT to affected P3 family branches under separate activity authorization
 ```
+
+## 40. BC-00 — baseline de contratos do backend (2026-10-01)
+
+```text
+ACTIVITY = BC-00 — COMPLETE BACKEND CONTRACT BASELINE
+ACTIVITY_STATUS = COMPLETE / DOCUMENTARY BASELINE
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES / contracts created, continuity updated and document paths checked
+REPOSITORY_SYNC_GATE = PASS_ALREADY_CURRENT
+BASELINE_HEAD = 38db46b2335ac8c1ce47207b3ae015388d839d5f
+BRANCH = master
+UPSTREAM = origin/master
+BASELINE_DIVERGENCE = 0 / 0
+WORKTREE_AT_ACTIVITY_START = CLEAN / STAGING EMPTY
+CONTRACT_DOCUMENTS_CREATED = 21
+CANONICAL_IMAGE_DOMAIN_CONTRACT = REUSED / NOT DUPLICATED
+PROJECT_STATE_UPDATE = PASS / checkpoint records baseline and next gate
+CONTINUITY_RECONCILIATION = PASS / registry and authorities cross-linked
+DOCUMENT_QUALITY_GATE = PASS / paths, scope, implementation status, decisions and authority discoverable
+AGENT_HANDOFF_GATE = PASS / local worktree records its uncommitted state
+IMPLEMENTATION_AUTHORIZED = NO
+REAL_CAMERA_ACCESS_AUTHORIZED = NO
+HOMOLOGATION_AUTHORIZED = NO
+LIVE_AUTHORIZED = NO
+COMMIT = NOT AUTHORIZED / NOT PERFORMED
+PUSH = NOT AUTHORIZED / NOT PERFORMED
+NEXT_ACTIVITY = human review/adjudication of BC-00 baseline before implementation
+BLOCKERS = none to documentary baseline; production/runtime boundaries remain unvalidated
+```
+
+O índice e os contratos estão em `docs/projeto/contracts/backend/`. O baseline
+reusa `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` para o domínio de imagens
+e cria somente o contrato de integração com captura. O checkout contém core
+local de monitoramento e serviços Django de imagem; a configuração de produção
+não seleciona engine PostgreSQL. Não há catálogo/custódia de credenciais de
+câmera, adapters RTSP/HTTP reais ou worker de produção. Testes locais/sintéticos
+não comprovam homologação de rede, equipamentos ou produção. Gates e decisões
+abertas constam no registro dos contratos.
+
+O trabalho não alterou backend, schema, migrations, infraestrutura ou UI. O
+commit/push não foi autorizado nem executado. Após as edições, o estado Git deve
+ser revalidado diretamente e permanece local até eventual autorização separada
+de publicação.

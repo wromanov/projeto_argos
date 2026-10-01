@@ -472,3 +472,25 @@ e a recomendação MON-AVAIL-02 foram fornecidas na instrução atual do usuári
 não foram encontradas referências locais a esses identificadores no checkout.
 A sequência entre IMG-04 e MON-AVAIL-02 permanece em aberto, sem fabricação
 de métricas de availability ou coverage.
+
+## 17. BC-00 — Complete Backend Contract Baseline (2026-10-01)
+
+```text
+STATUS = COMPLETE / DOCUMENTARY BASELINE
+REPOSITORY_SYNC = PASS_ALREADY_CURRENT / master == origin/master at 38db46b
+SCOPE = registry + access, camera integration, monitoring, image integration and production contracts
+IMPLEMENTATION = NO
+REAL_CAMERA_ACCESS = NO
+HOMOLOGATION = NO
+LIVE = NO
+COMMIT = NOT AUTHORIZED / NOT PERFORMED
+PUSH = NOT AUTHORIZED / NOT PERFORMED
+```
+
+O detalhe normativo e a matriz de decisões abertas estão em
+`docs/projeto/contracts/backend/00_BACKEND_CONTRACT_REGISTRY.md` e nos
+contratos indexados. `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` permanece a authority
+canônica do domínio de imagens. Esta atividade documenta capacidades observadas
+e fronteiras; não reordena silenciosamente IMG-04/MON-AVAIL-02, não autoriza
+implementação posterior e não substitui validação de produção. Próxima atividade
+de backend: adjudicação humana deste baseline antes de escolher implementação.

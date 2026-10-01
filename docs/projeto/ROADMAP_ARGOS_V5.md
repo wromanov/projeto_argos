@@ -1575,3 +1575,26 @@ permanece separada; a sequência entre as duas candidatas não está definida. O
 registro de MON-AVAIL-01 como bloqueado por lacuna histórica foi fornecido na
 instrução do usuário e não foi localizado em documentos do checkout durante
 esta reconciliação; nenhum dado de availability ou coverage foi inferido.
+
+## 20. Baseline de contratos backend — BC-00 (2026-10-01)
+
+BC-00 canonicaliza em `docs/projeto/contracts/backend/` os limites documentais
+de autorização, integração de câmeras, monitoramento, captura, persistência,
+topologia e capacidade. Reutiliza `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`, que
+continua como authority do domínio de imagens. O baseline registra como
+implementação local serviços de inventário, leitura/upload/preview de imagem e
+core de monitoramento; não registra worker de produção, adapter real
+RTSP/HTTP, PostgreSQL selecionado ou homologação de câmera/rede.
+
+```text
+BC_00 = COMPLETE / DOCUMENTARY BASELINE
+IMPLEMENTATION_AUTHORIZED = NO
+HOMOLOGATION_AUTHORIZED = NO
+LIVE_AUTHORIZED = NO
+NEXT_BACKEND_ACTIVITY = human adjudication of BC-00 before implementation
+IMG04_MON_AVAIL_SEQUENCE = UNCHANGED / UNRESOLVED
+```
+
+Detalhes de capabilities, decisões abertas e gates pertencem ao registro e aos
+contratos especializados. A criação documental não escolhe tecnologia de
+worker, storage, banco ou protocolo universal.

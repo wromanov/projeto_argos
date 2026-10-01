@@ -882,3 +882,24 @@ PROJECT_STATE_UPDATE = PASS / see PROJECT_STATE.md section 37
 CONTINUITY_RECONCILIATION = PASS
 AGENT_HANDOFF_GATE = PASS
 ACTIVITY_COMPLETE = YES / final state checkpoint published and synchronization verified at activity close
+
+### 20.8. BC-00 — baseline documental do backend (2026-10-01)
+
+O usuário reiniciou BC-00 após o gate de sincronização passar. Baseline de
+trabalho: `master`, `HEAD = 38db46b2335ac8c1ce47207b3ae015388d839d5f`, inicialmente
+igual a `origin/master`, worktree limpa e staging vazio. Índice e authorities:
+`docs/projeto/contracts/backend/00_BACKEND_CONTRACT_REGISTRY.md`; estado formal
+na seção 40 de `PROJECT_STATE.md`.
+
+O domínio canônico de imagens permanece em
+`docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`; não criar autoridade paralela.
+O checkout tem núcleo local/sintético de scheduler/repository e estado de
+monitoramento, além de serviços Django de upload/leitura/preview. Não há
+evidência de catálogo/custódia de credenciais de câmera, adapters RTSP/HTTP
+reais, worker de produção, engine PostgreSQL selecionada ou homologação de
+rede/câmeras. Contratos registram limites e pendências sem convertê-los em
+autorização de implementação, conexão, homologação ou LIVE.
+
+Próximo passo: adjudicação humana do baseline e de qualquer atividade
+posterior. As edições são locais e não commitadas/publicadas; revalidar Git
+antes de operação consequencial.
