@@ -13,7 +13,7 @@ PRODUCT_DESIGN_QA = PASS
 BLOCKING = NONE
 NON_BLOCKING = NONE
 KNOWN_SHARED = NONE
-USER_VISUAL_APPROVAL = PENDING
+USER_VISUAL_APPROVAL = PASS
 
 A hierarquia de página, cartões, estados, navegação e tabelas permanecem coerentes com ARGOS HYBRID. Os vazios mostram zero registros; o stale preserva o último estado estável e comunica “Desconhecido” como estado efetivo. No mobile, o documento permanece na largura da viewport e tabelas largas mantêm rolagem horizontal própria. Identificadores longos quebram em separadores sem fragmentar palavras comuns. O detalhe histórico permanece claramente somente para consulta.
 
@@ -64,7 +64,7 @@ P3B_REV_01 = RESOLVED
 STALE_VISIBLE_DS_METADATA = RESOLVED
 BROWSER_REGRESSION_AFTER_FIX = PASS / 4 desktop surfaces; no overflow or console/page errors
 DESIGN_QA_COMPLETE = YES / PASS
-FAMILY_TECHNICAL_STATUS = PASS / READY_FOR_USER_VISUAL_REVIEW
-USER_VISUAL_APPROVAL = PENDING
+FAMILY_TECHNICAL_STATUS = PASS / USER_APPROVED / FROZEN / CLOSED / PUBLISHED
+USER_VISUAL_APPROVAL = PASS
 PROJECT_STATE_UPDATE = PASS / família registrada nos relatórios P3-B; PROJECT_STATE.md root-owned não alterado
-NEXT_GATE = P3-B FINAL HUMAN VISUAL REVIEW
+NEXT_GATE = P3 ROOT INTEGRATED VALIDATION

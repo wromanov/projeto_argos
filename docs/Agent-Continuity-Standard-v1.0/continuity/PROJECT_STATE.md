@@ -2137,3 +2137,56 @@ ACTIVITY_COMPLETE = YES / implementation, cross-family regression, ROOT patch, i
 WORKTREE_FINAL = CLEAN expected after final checkpoint push
 NEXT_GATE = propagate only DS_2_0_2_PATCH_COMMIT to affected P3 family branches under separate activity authorization
 ```
+
+## 40. UI-V2 P3 ROOT Integration Phase 1 — merge and semantic reconciliation (2026-09-30)
+
+Este checkpoint registra a integração ROOT autorizada das quatro famílias P3 e sua reconciliação documental/semântica. Ele fecha somente o escopo Phase 1; a validação integrada permanece como gate global seguinte.
+
+```text
+ACTIVITY = CARD B — ARGOS UI-V2 P3 ROOT INTEGRATION PHASE 1 MERGE + SEMANTIC RECONCILIATION
+ACTIVITY_STATUS = PHASE 1 COMPLETE / STATIC RECONCILIATION PASS / INTEGRATED VALIDATION PENDING
+ROOT_BASE = 38db46b2335ac8c1ce47207b3ae015388d839d5f
+BRANCH = codex/ui-v2-p3-root-reconciliation
+WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_ui_v2_p3_root
+SOURCE_HEAD_P3_A = adc62fefd20aa9390107a10a7174e88d62384ad8
+SOURCE_HEAD_P3_B = 8006dad537d13b8b0000721424088fb67054e2de
+SOURCE_HEAD_P3_C = e96836c25c97465a74ea4b8b3059cc53d7ae7615
+SOURCE_HEAD_P3_D = f5dd0308f46705e03c79609077ed1ec7a12bc766
+MERGE_P3_A = fbd524af29b58cdde4963fdb7fbe68d3985274a7 / NO_FF / PROJECT_STATE conflict resolved by retaining ROOT baseline for this reconciliation
+MERGE_P3_B = fe0835ab7edaf9c50fe5c82238dc9eb24640f117 / NO_FF
+MERGE_P3_C = daed67e9130b089132c298beaefec30fd86dac41 / NO_FF
+MERGE_P3_D = 9df5c49544f94f6d44b36a2d6d5cc359ec17c3c0 / NO_FF
+EXPECTED_SOURCE_ANCESTRY = PASS / all four source heads are ancestors of integrated HEAD
+EXPECTED_FIRST_PARENT_ORDER = PASS / P3-A, P3-B, P3-C, P3-D
+MERGE_CONFLICTS = 7 paths / P3-A PROJECT_STATE.md; P3-D harness.js, index.html and four shared CSS files
+CONFLICT_RESOLUTION = PASS / retain ROOT 2.0.2 shared CSS exactly; preserve P3-D index/harness additions; reconcile current status and evidence references
+DESIGN_SYSTEM_VERSION = 2.0.2 / shared CSS byte-identical to ROOT_BASE
+DSCR_UIV2_001_HIDDEN_SEMANTICS = PRESERVED / [hidden] and [hidden="until-found"] selectors retained
+DSCR_UIV2_002_MOBILE_TABLE_READABILITY = PRESERVED / 760px table minimum width and overflow-wrap:break-word retained
+SCREEN_INDEX = RECONCILED / 34 P3-A/B/C/D family IDs; historical P3-0 baseline identified; next gate states integrated validation pending
+ACTIVE_SCREEN_METADATA = PASS / 24 of 24 P3-A/B/C/D pages declare DS 2.0.2; no active page declares 2.0.1
+P3_A = USER_APPROVED / CLOSED / PUBLISHED / source head adc62fefd20aa9390107a10a7174e88d62384ad8 verified
+P3_B = USER_APPROVED / FROZEN / CLOSED / PUBLISHED / source head 8006dad537d13b8b0000721424088fb67054e2de verified
+P3B_REV_01 = RESOLVED
+P3_C = USER_APPROVED / FROZEN / CLOSED / PUBLISHED / source head e96836c25c97465a74ea4b8b3059cc53d7ae7615 verified
+P3_D = USER_APPROVED / FROZEN / CHECKPOINT_PUBLISHED / ROOT_DS_RECONCILED / INTEGRATED_VALIDATION_PENDING
+P3_D_SOURCE_HEAD = f5dd0308f46705e03c79609077ed1ec7a12bc766 / verified
+P3_D_CURRENT_IMPLEMENTATION_VERSION = 2.0.2
+P3_D_HISTORICAL_VALIDATION_VERSION = 2.0.1 / retained as historical evidence, not active metadata
+P3_D_USER_REAPPROVAL = NOT_YET / EXPECTED_NO; final decision at integrated validation
+P3_D_FAMILY_GATES_COMPLETE = YES
+P3_FAMILY_GATES_COMPLETE = YES
+P3_ROOT_INTEGRATION = MERGED / RECONCILED / VALIDATION_PENDING
+P3_INTEGRATED_VALIDATION = PENDING / browser and runtime final validation not performed in Phase 1
+P3_COMPLETE = NO
+NEXT_GATE = P3 ROOT INTEGRATED VALIDATION
+ROOT_RECONCILIATION_COMMIT = created after this state update; local commit only
+MASTER_CHANGED = NO
+PUSH_PERFORMED = NO
+PRODUCTION_CHANGED = NO
+POST_MERGE_STATIC_CHECKS = PASS / diff check, conflict-marker scan, clean merge state, source ancestry, active metadata and exact shared-CSS baseline
+PROJECT_STATE_UPDATE = PASS / this section records the integrated family adjudications and remaining global gate
+ACTIVITY_COMPLETION_PERCENT = 100% / Phase 1 scope only
+ACTIVITY_COMPLETE = YES / Phase 1 merge and semantic reconciliation only; P3 global completion remains pending
+WORKTREE_FINAL = CLEAN / verified immediately after local reconciliation commit
+```

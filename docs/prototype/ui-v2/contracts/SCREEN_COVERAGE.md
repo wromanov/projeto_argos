@@ -1,12 +1,12 @@
 # ARGOS UI V2 — Screen Coverage
 
-Matriz de planejamento derivada do Screen Census. O harness comum P3-0 está criado e validado; as telas das famílias P3-A/B/C/D continuam planejadas e ainda não foram implementadas. Estado: Design System 2.0.0 aprovado e pinado. Aprovação visual e QA de runtime por tela permanecem futuros.
+Matriz derivada do Screen Census. As linhas abaixo preservam o snapshot histórico de planejamento do P3-0; seus campos de implementação/aprovação não representam o estado corrente após a integração das famílias. O checkpoint ROOT vigente está registrado ao fim deste arquivo.
 
 - Fonte: docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md, seção 10.
 - Prototype e responsive relevance vêm do census.
 - YES em estado indica que o censo nomeia o estado; NOT_DECLARED não conclui que o runtime não o suporte.
 - LONG_CONTENT permanece PLANNED até validação visual do protótipo da tela.
-- USER_APPROVED=NO; IMPLEMENTED=NO; RUNTIME_VISUAL_QA=PENDING em todas as linhas.
+- USER_APPROVED, IMPLEMENTED e RUNTIME_VISUAL_QA nas linhas continuam sendo valores do snapshot histórico P3-0; veja o checkpoint ROOT atual abaixo.
 
 | SCREEN | FAMILY | PROTOTYPE | RESPONSIVE | EMPTY_STATE | LOADING_STATE | ERROR_STATE | LONG_CONTENT | USER_APPROVED | DESIGN_SYSTEM_VERSION | IMPLEMENTED | RUNTIME_VISUAL_QA |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -53,3 +53,18 @@ Este master continua owned por ROOT/Integrator. O índice atual do Census manté
 Status após a revisão humana: `SCR-SHELL-001 = USER_APPROVED` (harness aprovado; runtime visual da tela permanece `PENDING` porque `IMPLEMENTED = NO`); `SCR-CAM-QUICK-001 = PROTECTED`; `SCR-ACT-EDIT-001` e oito screens ADMIN = `INHERITED`; as 24 screens elegíveis = `PLANNED`. Nenhuma screen de família foi implementada ou aprovada. A cobertura de estados e runtime visual por tela permanece pendente até as páginas de cada família serem produzidas e validadas.
 
 Durante o fan-out, famílias registram coverage/evidence localmente. ROOT consolida o master somente após revisar e integrar uma família por vez. Cada relatório deve declarar owner e `SCREEN_ID`; `STATE_COVERAGE` por estado usa `SUPPORTED`, `TESTED` ou `NOT_APPLICABLE`, e responsive status registra o resultado por viewport. `USER_APPROVED` exige aprovação humana explícita. `DESIGN_SYSTEM_VERSION = 2.0.0` é herdado por toda linha.
+
+## P3 ROOT Integration Phase 1 — estado atual (2026-09-30)
+
+DESIGN_SYSTEM_VERSION = 2.0.2
+P3_A = USER_APPROVED / CLOSED / PUBLISHED
+P3_B = USER_APPROVED / FROZEN / CLOSED / PUBLISHED
+P3_C = USER_APPROVED / FROZEN / CLOSED / PUBLISHED
+P3_D = USER_APPROVED / FROZEN / ROOT_DS_RECONCILED / INTEGRATED_VALIDATION_PENDING
+P3_FAMILY_GATES_COMPLETE = YES
+P3_ROOT_INTEGRATION = MERGED / RECONCILED / VALIDATION_PENDING
+P3_INTEGRATED_VALIDATION = PENDING
+P3_COMPLETE = NO
+NEXT_GATE = P3 ROOT INTEGRATED VALIDATION
+
+Este checkpoint não declara conclusão global de P3 nem conclui a validação de runtime/browser integrada.

@@ -638,12 +638,11 @@ capturas, Design System ou superfícies já congeladas.
 Todas as superfícies previstas estão fechadas. Quick Detail permanece
 INHERITED / PROTECTED, estado válido para o gate da família. A aprovação
 autoriza este commit documental e a tentativa normal de publicação somente
-do branch P3-A. O resultado remoto será registrado no relatório após
-verificação; este checkpoint não o antecipa.
+do branch P3-A. A leitura remota do source head adc62fefd20aa9390107a10a7174e88d62384ad8 confirmou a publicação.
 
 ~~~text
 P3_A_COMPLETE = YES
-P3_A_STATUS = USER_APPROVED / CLOSED_LOCALLY / PUBLICATION_PENDING
+P3_A_STATUS = USER_APPROVED / CLOSED / PUBLISHED
 REMAINING_P3_A_SURFACE_GATES = NONE
 SCR_DASH_001 = USER_APPROVED / FROZEN
 SCR_INV_001 = USER_APPROVED / FROZEN / PUBLISHED
@@ -651,14 +650,14 @@ SCR_CAM_DETAIL_001 = USER_APPROVED / FROZEN / PUBLISHED
 SCR_CAM_QUICK_001 = INHERITED / PROTECTED
 REDESIGN_AUTHORIZED = NO
 SCR_PORTAL_001 = USER_APPROVED / FROZEN
-PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md seção 44
+PROJECT_STATE_UPDATE = PASS / ROOT integration recorded in PROJECT_STATE.md section 40
 COMMIT_AUTHORIZED = YES
 PUSH_AUTHORIZED = YES / somente codex/ui-v2-p3-a-core-inventory
-P3_A_PUBLISHED = PENDING / aguarda push e readback remoto
+P3_A_PUBLISHED = YES / origin source head adc62fefd20aa9390107a10a7174e88d62384ad8 verified
 MASTER_CHANGED = NO
 PRODUCTION_CHANGED = NO
 MERGE_PERFORMED = NO
-NEXT_GATE = REMOTE PUBLICATION + SYNC VERIFICATION; THEN ROOT RECONCILIATION / REMAINING P3 FAMILIES
+NEXT_GATE = P3 ROOT INTEGRATED VALIDATION
 ~~~
 
 O checkpoint documental cobre apenas P3-A. Não autoriza merge em master nem

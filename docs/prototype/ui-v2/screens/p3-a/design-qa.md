@@ -683,11 +683,11 @@ mudança de implementação ou Design System é necessária.
 
 Os gates visuais de todas as superfícies estão fechados. Quick Detail foi
 mantido como superfície herdada e protegida; não houve redesign autorizado.
-A publicação remota ainda depende da verificação pós-commit.
+A publicação remota foi confirmada pela verificação do origin source head adc62fefd20aa9390107a10a7174e88d62384ad8.
 
 ~~~text
 P3_A_COMPLETE = YES
-P3_A_STATUS = USER_APPROVED / CLOSED_LOCALLY / PUBLICATION_PENDING
+P3_A_STATUS = USER_APPROVED / CLOSED / PUBLISHED
 REMAINING_P3_A_SURFACE_GATES = NONE
 SCR_DASH_001 = USER_APPROVED / FROZEN
 SCR_INV_001 = USER_APPROVED / FROZEN / PUBLISHED
@@ -695,10 +695,10 @@ SCR_CAM_DETAIL_001 = USER_APPROVED / FROZEN / PUBLISHED
 SCR_CAM_QUICK_001 = INHERITED / PROTECTED
 REDESIGN_AUTHORIZED = NO
 SCR_PORTAL_001 = USER_APPROVED / FROZEN
-PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md seção 44
-P3_A_PUBLISHED = PENDING / avaliação após push e verificação remota
+PROJECT_STATE_UPDATE = PASS / ROOT integration recorded in PROJECT_STATE.md section 40
+P3_A_PUBLISHED = YES / origin source head adc62fefd20aa9390107a10a7174e88d62384ad8 verified
 MASTER_CHANGED = NO
 PRODUCTION_CHANGED = NO
 MERGE_PERFORMED = NO
-NEXT_GATE = REMOTE PUBLICATION + SYNC VERIFICATION; THEN ROOT RECONCILIATION / REMAINING P3 FAMILIES
+NEXT_GATE = P3 ROOT INTEGRATED VALIDATION
 ~~~

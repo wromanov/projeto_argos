@@ -18,8 +18,8 @@ P3_D_VISUAL_REVIEW = PASS_WITH_NONBLOCKING_SHARED_FINDINGS
 P3_D_OWNED_SCREENS = USER_APPROVED / FROZEN
 P3_D_VALIDATED_BRANCH_DS = 2.0.1
 ROOT_CANONICAL_DS = 2.0.2
-OBSERVED_IMPLEMENTATION_VERSION = 2.0.1 / HTML P3-D e CSS compartilhado no HEAD validado
-DS_VERSION_RECONCILIATION = DEFERRED_ROOT_OWNERSHIP
+OBSERVED_IMPLEMENTATION_VERSION = 2.0.1 / historical P3-D source HEAD before ROOT integration
+DS_VERSION_RECONCILIATION = COMPLETE / active P3-D pages and ROOT shared CSS are 2.0.2; 2.0.1 source validation remains historical
 ACCESSIBILITY_VISUAL_BASELINE = PASS_WITH_LIMITS
 WCAG_FULL_COMPLIANCE_CLAIMED = NO
 BLOCKING_FINDINGS = NONE
@@ -27,16 +27,16 @@ P3_D_SPECIFIC_FINDINGS = NONE
 MOBILE_NAV_PARTIAL_LAST_ITEM = KNOWN_SHARED / NONBLOCKING
 BRAND_LINK_36PX = KNOWN_SHARED / NONBLOCKING
 P3_D_ADMIN = INHERITED / NO REDESIGN
-P3_D_COMPLETE = YES
-P3_D_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
+P3_D_COMPLETE = NO / final ROOT closure awaits integrated validation
+P3_D_STATUS = USER_APPROVED / FROZEN / CHECKPOINT_PUBLISHED / ROOT_DS_RECONCILED / INTEGRATED_VALIDATION_PENDING
 REMAINING_P3_D_GATES = NONE
-PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
-ROOT_OWNED_SCREEN_INDEX_RECONCILIATION = DEFERRED_ROOT_OWNERSHIP
-ACTIVITY_COMPLETE = NO / closure checkpoint and PROJECT_STATE update remain root-owned
-NEXT_GATE = ROOT RECONCILIATION OF P3 FAMILY STATE + DS VERSION
+PROJECT_STATE_UPDATE = PASS / ROOT Phase 1 state recorded
+ROOT_OWNED_SCREEN_INDEX_RECONCILIATION = COMPLETE / P3-D family IDs reconciled in the ROOT index
+ACTIVITY_COMPLETE = NO / P3-D global closure awaits integrated validation
+NEXT_GATE = P3 ROOT INTEGRATED VALIDATION
 ```
 
-A aprovação confirma o pacote visual P3-D atual. O branch P3-D foi validado com Design System 2.0.1; a baseline canônica atual do ROOT em outro ponto é 2.0.2. Não foi identificado consumidor factual P3-D que exija o patch mobile-table de 2.0.2. O ROOT fará a reconciliação durante a integração, sem alterar implementação, CSS compartilhado, tokens ou metadados nesta atividade. A reconciliação de versão e do índice compartilhado permanece sob responsabilidade do ROOT. A conclusão familiar segue os gates específicos P3-D: sete telas prontas e aprovadas, oito arquétipos Admin herdados.
+Registro histórico do escopo visual no HEAD da família antes da integração ROOT: a branch P3-D foi validada em Design System 2.0.1, enquanto o ROOT já tinha baseline 2.0.2. O consumidor P3-D não exigiu alteração visual do patch mobile-table. A seção “Estado atual após integração ROOT” abaixo registra a reconciliação posterior de versão e índice; a validação 2.0.1 permanece evidência histórica da branch fonte. A conclusão familiar segue sete telas aprovadas e oito arquétipos Admin herdados.
 
 ## Escopo e referências
 
@@ -92,9 +92,18 @@ PRODUCTION_CHANGED = NO
 ADMIN_RUNTIME_CHANGED = NO
 P3_D_LOCAL_HIDDEN_WORKAROUND = REMOVED
 OPEN_BLOCKERS = NONE
-P3_D_COMPLETE = YES
-P3_D_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
+P3_D_COMPLETE = NO / final ROOT closure awaits integrated validation
+P3_D_STATUS = USER_APPROVED / FROZEN / CHECKPOINT_PUBLISHED / ROOT_DS_RECONCILED / INTEGRATED_VALIDATION_PENDING
 REMAINING_P3_D_GATES = NONE
-PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
-NEXT_GATE = ROOT RECONCILIATION OF P3 FAMILY STATE + DS VERSION
+PROJECT_STATE_UPDATE = PASS / ROOT Phase 1 state recorded
+NEXT_GATE = P3 ROOT INTEGRATED VALIDATION
 ```
+## Estado atual após integração ROOT — 2026-09-30
+
+P3_D_FAMILY_GATES_COMPLETE = YES
+P3_D_COMPLETE = NO / final ROOT closure awaits integrated validation
+ROOT_DS_RECONCILIATION = COMPLETE
+CURRENT_IMPLEMENTATION_VERSION = 2.0.2
+INTEGRATED_VALIDATION = PENDING
+P3_D_GLOBAL_CLOSURE = NO
+NEXT_GATE = P3 ROOT INTEGRATED VALIDATION

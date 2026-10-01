@@ -13,9 +13,9 @@ BLOCKING_FINDINGS = NONE
 SURFACE_REFINEMENT_REQUIRED = NO
 DESIGN_SYSTEM_CHANGE_REQUIRED = NO
 P3_C_COMPLETE = YES
-P3_C_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
-REMAINING_P3_C_GATES = USER AUTHORIZATION FOR P3-C CLOSURE CHECKPOINT + PUSH
-PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+P3_C_STATUS = USER_APPROVED / FROZEN / CLOSED / PUBLISHED
+REMAINING_P3_C_GATES = NONE / integrated validation remains the next global gate
+PROJECT_STATE_UPDATE = PASS / ROOT integration recorded in PROJECT_STATE.md section 40
 ```
 
 ## Decisão e escopo do aceite
@@ -60,11 +60,11 @@ A captura mobile foi posicionada intencionalmente na tabela; por isso, o selo DS
 
 ```text
 P3_C_COMPLETE = YES
-P3_C_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
-REMAINING_P3_C_GATES = USER AUTHORIZATION FOR P3-C CLOSURE CHECKPOINT + PUSH
-PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+P3_C_STATUS = USER_APPROVED / FROZEN / CLOSED / PUBLISHED
+REMAINING_P3_C_GATES = NONE / integrated validation remains the next global gate
+PROJECT_STATE_UPDATE = PASS / ROOT integration recorded in PROJECT_STATE.md section 40
 COMMIT_PERFORMED = NO
 PUSH_PERFORMED = NO
 ```
 
-A conclusão acima é a adjudicação local da família. A consolidação global continua sob ownership ROOT; este pacote não declara atualização de `PROJECT_STATE.md` nem encerra essa etapa global.
+O estado global está registrado em `PROJECT_STATE.md`, seção 40. O P3 continua aguardando validação integrada, sem declaração de encerramento global.

@@ -117,9 +117,9 @@ A tabela foi o alvo deliberado do enquadramento mobile, deixando o selo fora do 
 
 ```text
 P3_C_COMPLETE = YES
-P3_C_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
-REMAINING_P3_C_GATES = USER AUTHORIZATION FOR P3-C CLOSURE CHECKPOINT + PUSH
-PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+P3_C_STATUS = USER_APPROVED / FROZEN / CLOSED / PUBLISHED
+REMAINING_P3_C_GATES = NONE / integrated validation remains the next global gate
+PROJECT_STATE_UPDATE = PASS / ROOT integration recorded in PROJECT_STATE.md section 40
 ```
 
 A aprovação é representativa e não afirma nova captura screen-by-screen. Não foi reaberta a suíte histórica.

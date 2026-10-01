@@ -115,9 +115,9 @@ P3_C_SPECIFIC_BLOCKING_FINDINGS = NONE
 SURFACE_REFINEMENT_REQUIRED = NO
 DESIGN_SYSTEM_CHANGE_REQUIRED = NO
 P3_C_COMPLETE = YES
-P3_C_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
-REMAINING_P3_C_GATES = USER AUTHORIZATION FOR P3-C CLOSURE CHECKPOINT + PUSH
-PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+P3_C_STATUS = USER_APPROVED / FROZEN / CLOSED / PUBLISHED
+REMAINING_P3_C_GATES = NONE / integrated validation remains the next global gate
+PROJECT_STATE_UPDATE = PASS / ROOT integration recorded in PROJECT_STATE.md section 40
 ```
 
 Os dez IDs pertencem à família e estão tecnicamente prontos: `SCR-ACT-LIST-001`, `SCR-ACT-CREATE-001`, `SCR-ACT-EDIT-001` (modo herdado/prefilled), `SCR-GOV-STATE-001`, `SCR-GOV-DISABLE-001`, `SCR-GOV-REACTIVATE-001`, `SCR-GOV-SUBSTITUTE-001`, `SCR-EVENT-LIST-001`, `SCR-EVENT-DETAIL-001` e `SCR-EVENT-CAMERA-001`.
@@ -135,4 +135,4 @@ MOBILE_FULL_PAGE_COMPOSITION = NOT_REVALIDATED_BY_THIS_SPECIFIC_SCREENSHOT
 
 A imagem mobile foi posicionada na tabela e não revalida a composição integral da página; o metadata DS 2.0.2 foi validado antes da captura. Essa limitação não cria blocker. As capturas históricas DS 2.0.1 permanecem inalteradas.
 
-A adjudicação `P3_C_COMPLETE = YES` é local à família e elegível para checkpoint. A reconciliação de `PROJECT_STATE.md` segue ROOT-owned e foi deferida; nenhum estado global de projeto é declarado concluído.
+A adjudicação `P3_C_COMPLETE = YES` é local à família. O estado global foi consolidado em `PROJECT_STATE.md`, seção 40; a validação integrada continua pendente.

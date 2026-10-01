@@ -156,9 +156,9 @@ P3_C_DS_2_0_2_REGRESSION = PASS
 STALE_DS_2_0_1_CURRENT_METADATA = RESOLVED
 STALE_METADATA_STATUS = RESOLVED
 P3_C_COMPLETE = YES
-P3_C_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
-REMAINING_P3_C_GATES = USER AUTHORIZATION FOR P3-C CLOSURE CHECKPOINT + PUSH
-PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+P3_C_STATUS = USER_APPROVED / FROZEN / CLOSED / PUBLISHED
+REMAINING_P3_C_GATES = NONE / integrated validation remains the next global gate
+PROJECT_STATE_UPDATE = PASS / ROOT integration recorded in PROJECT_STATE.md section 40
 COMMIT_PERFORMED = NO
 PUSH_PERFORMED = NO
 ```
@@ -182,8 +182,17 @@ A captura mobile foi enquadrada intencionalmente na tabela; o selo DS fica fora 
 
 ### Ownership global e próximo gate
 
-`PROJECT_STATE.md` e a reconciliação global permanecem ROOT-owned e não foram alterados. Isso não bloqueia a adjudicação local `P3_C_COMPLETE = YES`, mas nenhuma declaração de conclusão global é feita aqui.
+`PROJECT_STATE.md`, seção 40, registra a reconciliação ROOT Phase 1. A adjudicação local `P3_C_COMPLETE = YES` está concluída; a validação integrada permanece pendente e não há declaração de conclusão global do P3.
 
-`NEXT_GATE = USER AUTHORIZATION FOR P3-C CLOSURE CHECKPOINT + PUSH`
+`NEXT_GATE = P3 ROOT INTEGRATED VALIDATION`
 
 Nenhum stage, commit, push, merge ou alteração de master foi realizado.
+
+## Estado atual após integração ROOT — 2026-09-30
+
+P3_C = USER_APPROVED / FROZEN / CLOSED / PUBLISHED
+P3_C_PUBLISHED = YES / source head e96836c25c97465a74ea4b8b3059cc53d7ae7615 verificado no origin
+P3_C_COMPLETE = YES
+PROJECT_STATE_UPDATE = PASS / ROOT Phase 1 recorded at PROJECT_STATE.md section 40
+P3_INTEGRATED_VALIDATION = PENDING
+NEXT_GATE = P3 ROOT INTEGRATED VALIDATION
