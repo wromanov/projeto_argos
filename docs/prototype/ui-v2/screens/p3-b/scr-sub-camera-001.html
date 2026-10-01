@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="argos-ui-version" content="2.0.2">
+  <meta name="argos-screen-id" content="SCR-SUB-CAMERA-001">
+  <meta name="argos-screen-family" content="SUBSTITUTIONS">
+  <meta name="argos-prototype-status" content="IN_PROGRESS">
+  <title>Substituições da câmera · ARGOS UI V2</title>
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/tokens.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/base.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/components.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/patterns.css">
+  <script src="../harness.js" defer></script>
+  <script src="p3-b.js" defer></script>
+</head>
+<body>
+  <a class="argos-skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="argos-docs-layout">
+    <aside class="argos-docs-sidebar">
+      <a class="argos-brand" href="../index.html" aria-label="ARGOS — início do protótipo">
+        <img src="../../style-lab/argos-icon.svg" alt="" width="34" height="34">
+        <span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">UI V2 · protótipos</span></span>
+      </a>
+      <nav class="argos-docs-nav" aria-label="Navegação principal demonstrativa">
+        <span class="argos-docs-nav__group">Central operacional</span>
+        <a href="../index.html">Início</a>
+          <a href="../index.html#screen-scr-inv-001">Inventário</a>
+          <a href="scr-mon-history-001.html">Monitoramento</a>
+          <a href="scr-sub-list-001.html" aria-current="page">Substituições</a>
+          <a href="../index.html#screen-scr-event-list-001">Eventos</a>
+      </nav>
+      <p class="argos-docs-sidebar__foot">P3-B · DS 2.0.2 · protótipo</p>
+    </aside>
+    <div class="argos-docs-main">
+      <header class="argos-docs-topbar">
+        <span>ARGOS / UI V2 / P3-B</span>
+        <span class="argos-badge argos-badge--info">Design System 2.0.2</span>
+      </header>
+      <main class="argos-docs-content" id="main">
+        <header class="argos-page-header">
+          <div class="argos-page-header__copy">
+            <p class="argos-eyebrow">Substituições · consulta por câmera</p>
+            <h1 class="argos-page-title">Substituições da câmera</h1>
+            <p class="argos-lead">Registros históricos em que esta câmera aparece como anterior ou substituta.</p>
+          </div>
+          <div class="argos-page-header__actions">
+            <a class="argos-button argos-button--secondary" href="scr-sub-list-001.html">Histórico global</a>
+            <a class="argos-button argos-button--secondary" href="../index.html#screen-scr-cam-detail-001">Detalhe da câmera</a>
+          </div>
+        </header>
+
+        <div class="argos-stack">
+          <section class="argos-card" aria-labelledby="scoped-camera-heading">
+            <div class="argos-card__header"><h2 class="argos-card__title" id="scoped-camera-heading">Câmera consultada</h2><span class="argos-badge argos-badge--info">Escopo por câmera</span></div>
+            <div class="argos-card__body argos-two-column">
+              <div><p class="argos-eyebrow">Identificação</p><p><strong data-bind="scoped-camera-id"></strong></p></div>
+              <div><p class="argos-eyebrow">Nome</p><p data-bind="scoped-camera-name"></p></div>
+            </div>
+          </section>
+          <section class="argos-card" aria-labelledby="scoped-results-heading">
+            <div class="argos-card__header"><h2 class="argos-card__title" id="scoped-results-heading">Substituições relacionadas</h2><span class="argos-badge argos-badge--neutral" data-bind="scoped-count"></span></div>
+            <div class="argos-card__body argos-stack">
+              <p id="scoped-role-explainer">O papel da câmera é indicado em cada registro histórico.</p>
+              <div class="argos-table-region" role="region" aria-label="Tabela de substituições relacionadas à câmera" tabindex="0" data-bind="scoped-table-region">
+                <table class="argos-table argos-table--compact">
+                  <caption>Registros históricos relacionados à câmera consultada</caption>
+                  <thead><tr><th scope="col">Data</th><th scope="col">Papel desta câmera</th><th scope="col">Câmera relacionada</th><th scope="col">Nome operacional</th><th scope="col">Motivo</th><th scope="col">Registro</th></tr></thead>
+                  <tbody data-bind="scoped-rows"></tbody>
+                </table>
+              </div>
+              <div hidden data-bind="scoped-empty" role="status"><div class="argos-state"><strong class="argos-state__title">Nenhuma substituição relacionada</strong><p class="argos-state__copy">O histórico desta câmera não contém registros de substituição.</p></div></div>
+              <div hidden data-bind="scoped-pagination"><nav class="argos-pagination" aria-label="Paginação das substituições da câmera"></nav></div>
+            </div>
+          </section>
+        </div>
+        <p class="argos-caption">Dados de demonstração determinísticos. Esta superfície é somente visual e não persiste alterações.</p>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

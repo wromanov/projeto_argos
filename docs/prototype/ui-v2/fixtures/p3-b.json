@@ -1,0 +1,432 @@
+{
+  "monitoring": {
+    "default": {
+      "camera": {
+        "id": "CAM-1204",
+        "name": "Praça da Estação · acesso leste",
+        "location": "Praça da Estação · entrada pela avenida"
+      },
+      "evidenceAt": "2026-09-28T09:42",
+      "stableState": "Offline",
+      "outages": [
+        {
+          "id": "MON-0814",
+          "startedAt": "2026-09-28T08:14",
+          "closedAt": "",
+          "origin": "ONLINE_TO_OFFLINE",
+          "originLabel": "Online para offline",
+          "closeReason": "",
+          "duration": "Em aberto"
+        },
+        {
+          "id": "MON-0798",
+          "startedAt": "2026-09-25T18:06",
+          "closedAt": "2026-09-25T19:21",
+          "origin": "INITIAL_OFFLINE",
+          "originLabel": "Offline inicial",
+          "closeReason": "RECUPERADA",
+          "closeReasonLabel": "Recuperada",
+          "duration": "1 h 15 min"
+        },
+        {
+          "id": "MON-0772",
+          "startedAt": "2026-09-19T10:33",
+          "closedAt": "2026-09-19T11:02",
+          "origin": "ONLINE_TO_OFFLINE",
+          "originLabel": "Online para offline",
+          "closeReason": "SAIU_DO_ESCOPO",
+          "closeReasonLabel": "Saiu do escopo",
+          "duration": "29 min"
+        },
+        {
+          "id": "MON-0734",
+          "startedAt": "2026-09-12T21:48",
+          "closedAt": "2026-09-13T00:17",
+          "origin": "INITIAL_OFFLINE",
+          "originLabel": "Offline inicial",
+          "closeReason": "RECUPERADA",
+          "closeReasonLabel": "Recuperada",
+          "duration": "2 h 29 min"
+        },
+        {
+          "id": "MON-0711",
+          "startedAt": "2026-09-04T07:16",
+          "closedAt": "2026-09-04T08:01",
+          "origin": "ONLINE_TO_OFFLINE",
+          "originLabel": "Online para offline",
+          "closeReason": "RECUPERADA",
+          "closeReasonLabel": "Recuperada",
+          "duration": "45 min"
+        },
+        {
+          "id": "MON-0680",
+          "startedAt": "2026-08-26T14:05",
+          "closedAt": "2026-08-26T15:40",
+          "origin": "INITIAL_OFFLINE",
+          "originLabel": "Offline inicial",
+          "closeReason": "SAIU_DO_ESCOPO",
+          "closeReasonLabel": "Saiu do escopo",
+          "duration": "1 h 35 min"
+        }
+      ]
+    },
+    "long": {
+      "camera": {
+        "id": "CAM-1204-TERMINAL-METROPOLITANO-ACESSO-LESTE-PLATAFORMA-INTERMUNICIPAL-01",
+        "name": "Terminal Rodoviário Metropolitano — acesso leste da plataforma intermunicipal coberta",
+        "location": "Terminal metropolitano · corredor técnico da plataforma leste"
+      },
+      "evidenceAt": "2026-09-28T09:42",
+      "stableState": "Offline",
+      "outages": [
+        {
+          "id": "MON-10814",
+          "startedAt": "2026-09-28T08:14",
+          "closedAt": "",
+          "origin": "ONLINE_TO_OFFLINE",
+          "originLabel": "Online para offline",
+          "closeReason": "",
+          "duration": "Em aberto"
+        },
+        {
+          "id": "MON-10798",
+          "startedAt": "2026-09-25T18:06",
+          "closedAt": "2026-09-25T19:21",
+          "origin": "INITIAL_OFFLINE",
+          "originLabel": "Offline inicial",
+          "closeReason": "RECUPERADA",
+          "closeReasonLabel": "Recuperada",
+          "duration": "1 h 15 min"
+        },
+        {
+          "id": "MON-10772",
+          "startedAt": "2026-09-19T10:33",
+          "closedAt": "2026-09-19T11:02",
+          "origin": "ONLINE_TO_OFFLINE",
+          "originLabel": "Online para offline",
+          "closeReason": "SAIU_DO_ESCOPO",
+          "closeReasonLabel": "Saiu do escopo",
+          "duration": "29 min"
+        },
+        {
+          "id": "MON-10734",
+          "startedAt": "2026-09-12T21:48",
+          "closedAt": "2026-09-13T00:17",
+          "origin": "INITIAL_OFFLINE",
+          "originLabel": "Offline inicial",
+          "closeReason": "RECUPERADA",
+          "closeReasonLabel": "Recuperada",
+          "duration": "2 h 29 min"
+        },
+        {
+          "id": "MON-10711",
+          "startedAt": "2026-09-04T07:16",
+          "closedAt": "2026-09-04T08:01",
+          "origin": "ONLINE_TO_OFFLINE",
+          "originLabel": "Online para offline",
+          "closeReason": "RECUPERADA",
+          "closeReasonLabel": "Recuperada",
+          "duration": "45 min"
+        },
+        {
+          "id": "MON-10680",
+          "startedAt": "2026-08-26T14:05",
+          "closedAt": "2026-08-26T15:40",
+          "origin": "INITIAL_OFFLINE",
+          "originLabel": "Offline inicial",
+          "closeReason": "SAIU_DO_ESCOPO",
+          "closeReasonLabel": "Saiu do escopo",
+          "duration": "1 h 35 min"
+        }
+      ]
+    }
+  },
+  "substitutions": {
+    "default": [
+      {
+        "id": "SUB-025",
+        "occurredAt": "2026-09-22T14:10",
+        "previous": {
+          "id": "CAM-1204",
+          "name": "Praça da Estação · acesso leste",
+          "location": "Praça da Estação"
+        },
+        "replacement": {
+          "id": "CAM-2310",
+          "name": "Praça da Estação · acesso leste",
+          "location": "Praça da Estação"
+        },
+        "operationalName": "Entrada leste",
+        "motive": "Falha no conjunto óptico",
+        "observations": "Registro histórico de substituição.",
+        "registeredBy": "operador-demo-07",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-09-22T14:16"
+      },
+      {
+        "id": "SUB-024",
+        "occurredAt": "2026-09-17T09:35",
+        "previous": {
+          "id": "CAM-1188",
+          "name": "Terminal urbano · plataforma 3",
+          "location": "Terminal urbano"
+        },
+        "replacement": {
+          "id": "CAM-2286",
+          "name": "Terminal urbano · plataforma 3",
+          "location": "Terminal urbano"
+        },
+        "operationalName": "Plataforma 3",
+        "motive": "Atualização do equipamento",
+        "observations": "Substituição registrada durante manutenção programada.",
+        "registeredBy": "operador-demo-12",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-09-17T09:44"
+      },
+      {
+        "id": "SUB-023",
+        "occurredAt": "2026-09-09T16:20",
+        "previous": {
+          "id": "CAM-1142",
+          "name": "Centro cultural · hall principal",
+          "location": "Centro cultural"
+        },
+        "replacement": {
+          "id": "CAM-2241",
+          "name": "Centro cultural · hall principal",
+          "location": "Centro cultural"
+        },
+        "operationalName": "Hall principal",
+        "motive": "Substituição de unidade",
+        "observations": "Dados mantidos no histórico.",
+        "registeredBy": "operador-demo-07",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-09-09T16:29"
+      },
+      {
+        "id": "SUB-022",
+        "occurredAt": "2026-08-30T11:05",
+        "previous": {
+          "id": "CAM-1204",
+          "name": "Praça da Estação · acesso leste",
+          "location": "Praça da Estação"
+        },
+        "replacement": {
+          "id": "CAM-2190",
+          "name": "Praça da Estação · acesso leste",
+          "location": "Praça da Estação"
+        },
+        "operationalName": "Entrada leste",
+        "motive": "Dano físico identificado",
+        "observations": "Relação anterior mantida como dado histórico.",
+        "registeredBy": "operador-demo-03",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-08-30T11:12"
+      },
+      {
+        "id": "SUB-021",
+        "occurredAt": "2026-08-18T08:42",
+        "previous": {
+          "id": "CAM-1085",
+          "name": "Parque municipal · portão sul",
+          "location": "Parque municipal"
+        },
+        "replacement": {
+          "id": "CAM-2132",
+          "name": "Parque municipal · portão sul",
+          "location": "Parque municipal"
+        },
+        "operationalName": "Portão sul",
+        "motive": "Fim de vida útil",
+        "observations": "Registro sem alteração posterior.",
+        "registeredBy": "operador-demo-12",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-08-18T08:50"
+      },
+      {
+        "id": "SUB-020",
+        "occurredAt": "2026-08-03T13:55",
+        "previous": {
+          "id": "CAM-1204",
+          "name": "Praça da Estação · acesso leste",
+          "location": "Praça da Estação"
+        },
+        "replacement": {
+          "id": "CAM-2075",
+          "name": "Praça da Estação · acesso leste",
+          "location": "Praça da Estação"
+        },
+        "operationalName": "Entrada leste",
+        "motive": "Troca de unidade",
+        "observations": "Histórico imutável para consulta.",
+        "registeredBy": "operador-demo-03",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-08-03T14:03"
+      },
+      {
+        "id": "SUB-019",
+        "occurredAt": "2026-07-21T09:12",
+        "previous": {
+          "id": "CAM-1158",
+          "name": "Estação de integração · acesso principal",
+          "location": "Estação de integração"
+        },
+        "replacement": {
+          "id": "CAM-1204",
+          "name": "Praça da Estação · acesso leste",
+          "location": "Praça da Estação"
+        },
+        "operationalName": "Acesso principal",
+        "motive": "Substituição de unidade",
+        "observations": "Registro fictício para demonstrar a câmera no papel de substituta.",
+        "registeredBy": "operador-demo-07",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-07-21T09:19"
+      }
+    ],
+    "long": [
+      {
+        "id": "SUB-1025",
+        "occurredAt": "2026-09-22T14:10",
+        "previous": {
+          "id": "CAM-1204-TERMINAL-METROPOLITANO-ACESSO-LESTE-PLATAFORMA-INTERMUNICIPAL-01",
+          "name": "Terminal Rodoviário Metropolitano — acesso leste da plataforma intermunicipal coberta",
+          "location": "Terminal metropolitano · corredor técnico da plataforma leste"
+        },
+        "replacement": {
+          "id": "CAM-2310-TERMINAL-METROPOLITANO-ACESSO-LESTE-PLATAFORMA-INTERMUNICIPAL-02",
+          "name": "Terminal Rodoviário Metropolitano — acesso leste da plataforma intermunicipal coberta",
+          "location": "Terminal metropolitano · corredor técnico da plataforma leste"
+        },
+        "operationalName": "Entrada leste da plataforma intermunicipal coberta, junto ao corredor de embarque",
+        "motive": "Falha identificada no conjunto óptico após inspeção técnica programada do equipamento",
+        "observations": "Registro fictício para validação de textos longos e leitura em tabela.",
+        "registeredBy": "operador-demo-07",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-09-22T14:16"
+      },
+      {
+        "id": "SUB-1024",
+        "occurredAt": "2026-09-17T09:35",
+        "previous": {
+          "id": "CAM-1188-TERMINAL-URBANO-PLATAFORMA-INTERNA-03",
+          "name": "Terminal urbano — plataforma interna de embarque e desembarque",
+          "location": "Terminal urbano · plataforma interna"
+        },
+        "replacement": {
+          "id": "CAM-2286-TERMINAL-URBANO-PLATAFORMA-INTERNA-03",
+          "name": "Terminal urbano — plataforma interna de embarque e desembarque",
+          "location": "Terminal urbano · plataforma interna"
+        },
+        "operationalName": "Plataforma interna de embarque e desembarque, setor norte",
+        "motive": "Atualização do equipamento para manter a cobertura operacional definida",
+        "observations": "Nota histórica fictícia com descrição extensa para observar quebra e densidade.",
+        "registeredBy": "operador-demo-12",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-09-17T09:44"
+      },
+      {
+        "id": "SUB-1023",
+        "occurredAt": "2026-09-09T16:20",
+        "previous": {
+          "id": "CAM-1142-CENTRO-CULTURAL-HALL-PRINCIPAL-ACESSO-ANEXO-02",
+          "name": "Centro cultural — hall principal e acesso coberto ao anexo de exposições",
+          "location": "Centro cultural · hall principal"
+        },
+        "replacement": {
+          "id": "CAM-2241-CENTRO-CULTURAL-HALL-PRINCIPAL-ACESSO-ANEXO-02",
+          "name": "Centro cultural — hall principal e acesso coberto ao anexo de exposições",
+          "location": "Centro cultural · hall principal"
+        },
+        "operationalName": "Hall principal e acesso coberto ao anexo de exposições temporárias",
+        "motive": "Substituição de unidade após avaliação de integridade do conjunto",
+        "observations": "Histórico fictício; a descrição não representa um registro operacional real.",
+        "registeredBy": "operador-demo-07",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-09-09T16:29"
+      },
+      {
+        "id": "SUB-1022",
+        "occurredAt": "2026-08-30T11:05",
+        "previous": {
+          "id": "CAM-1204-TERMINAL-METROPOLITANO-ACESSO-LESTE-PLATAFORMA-INTERMUNICIPAL-01",
+          "name": "Terminal Rodoviário Metropolitano — acesso leste da plataforma intermunicipal coberta",
+          "location": "Terminal metropolitano · corredor técnico da plataforma leste"
+        },
+        "replacement": {
+          "id": "CAM-2190-TERMINAL-METROPOLITANO-ACESSO-LESTE-PLATAFORMA-INTERMUNICIPAL-03",
+          "name": "Terminal Rodoviário Metropolitano — acesso leste da plataforma intermunicipal coberta",
+          "location": "Terminal metropolitano · corredor técnico da plataforma leste"
+        },
+        "operationalName": "Entrada leste da plataforma intermunicipal coberta, junto ao corredor de embarque",
+        "motive": "Dano físico identificado durante inspeção preventiva no equipamento",
+        "observations": "Registro fictício para a variante de conteúdo longo.",
+        "registeredBy": "operador-demo-03",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-08-30T11:12"
+      },
+      {
+        "id": "SUB-1021",
+        "occurredAt": "2026-08-18T08:42",
+        "previous": {
+          "id": "CAM-1085-PARQUE-MUNICIPAL-PORTAO-SUL-CORREDOR-PEDESTRES-01",
+          "name": "Parque municipal — portão sul e corredor principal de pedestres",
+          "location": "Parque municipal · portão sul"
+        },
+        "replacement": {
+          "id": "CAM-2132-PARQUE-MUNICIPAL-PORTAO-SUL-CORREDOR-PEDESTRES-01",
+          "name": "Parque municipal — portão sul e corredor principal de pedestres",
+          "location": "Parque municipal · portão sul"
+        },
+        "operationalName": "Portão sul e corredor principal de pedestres",
+        "motive": "Fim de vida útil confirmado em avaliação fictícia de equipamento",
+        "observations": "Conteúdo determinístico de demonstração.",
+        "registeredBy": "operador-demo-12",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-08-18T08:50"
+      },
+      {
+        "id": "SUB-1020",
+        "occurredAt": "2026-08-03T13:55",
+        "previous": {
+          "id": "CAM-1204-TERMINAL-METROPOLITANO-ACESSO-LESTE-PLATAFORMA-INTERMUNICIPAL-01",
+          "name": "Terminal Rodoviário Metropolitano — acesso leste da plataforma intermunicipal coberta",
+          "location": "Terminal metropolitano · corredor técnico da plataforma leste"
+        },
+        "replacement": {
+          "id": "CAM-2075-TERMINAL-METROPOLITANO-ACESSO-LESTE-PLATAFORMA-INTERMUNICIPAL-04",
+          "name": "Terminal Rodoviário Metropolitano — acesso leste da plataforma intermunicipal coberta",
+          "location": "Terminal metropolitano · corredor técnico da plataforma leste"
+        },
+        "operationalName": "Entrada leste da plataforma intermunicipal coberta, junto ao corredor de embarque",
+        "motive": "Troca de unidade documentada no histórico para consulta",
+        "observations": "Conteúdo de fixture sem efeito fora deste protótipo.",
+        "registeredBy": "operador-demo-03",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-08-03T14:03"
+      },
+      {
+        "id": "SUB-1019",
+        "occurredAt": "2026-07-21T09:12",
+        "previous": {
+          "id": "CAM-1158-ESTACAO-INTEGRACAO-ACESSO-PRINCIPAL",
+          "name": "Estação de integração — acesso principal e corredor coberto",
+          "location": "Estação de integração"
+        },
+        "replacement": {
+          "id": "CAM-1204-TERMINAL-METROPOLITANO-ACESSO-LESTE-PLATAFORMA-INTERMUNICIPAL-05",
+          "name": "Terminal Rodoviário Metropolitano — acesso leste da plataforma intermunicipal coberta",
+          "location": "Praça da Estação"
+        },
+        "operationalName": "Acesso principal",
+        "motive": "Substituição de unidade",
+        "observations": "Registro fictício para demonstrar a câmera no papel de substituta.",
+        "registeredBy": "operador-demo-07",
+        "registeredName": "Equipe de demonstração",
+        "createdAt": "2026-07-21T09:19"
+      }
+    ],
+    "selectedDetailId": "SUB-025",
+    "scopedCameraId": "CAM-1204"
+  }
+}

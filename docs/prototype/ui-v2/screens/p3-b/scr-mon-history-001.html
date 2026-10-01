@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="argos-ui-version" content="2.0.2">
+  <meta name="argos-screen-id" content="SCR-MON-HISTORY-001">
+  <meta name="argos-screen-family" content="MONITORING">
+  <meta name="argos-prototype-status" content="IN_PROGRESS">
+  <title>Histórico de monitoramento · ARGOS UI V2</title>
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/tokens.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/base.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/components.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/patterns.css">
+  <script src="../harness.js" defer></script>
+  <script src="p3-b.js" defer></script>
+</head>
+<body>
+  <a class="argos-skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="argos-docs-layout">
+    <aside class="argos-docs-sidebar">
+      <a class="argos-brand" href="../index.html" aria-label="ARGOS — início do protótipo">
+        <img src="../../style-lab/argos-icon.svg" alt="" width="34" height="34">
+        <span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">UI V2 · protótipos</span></span>
+      </a>
+      <nav class="argos-docs-nav" aria-label="Navegação principal demonstrativa">
+        <span class="argos-docs-nav__group">Central operacional</span>
+        <a href="../index.html">Início</a>
+          <a href="../index.html#screen-scr-inv-001">Inventário</a>
+          <a href="scr-mon-history-001.html" aria-current="page">Monitoramento</a>
+          <a href="scr-sub-list-001.html">Substituições</a>
+          <a href="../index.html#screen-scr-event-list-001">Eventos</a>
+      </nav>
+      <p class="argos-docs-sidebar__foot">P3-B · DS 2.0.2 · protótipo</p>
+    </aside>
+    <div class="argos-docs-main">
+      <header class="argos-docs-topbar">
+        <span>ARGOS / UI V2 / P3-B</span>
+        <span class="argos-badge argos-badge--info">Design System 2.0.2</span>
+      </header>
+      <main class="argos-docs-content" id="main">
+        <header class="argos-page-header">
+          <div class="argos-page-header__copy">
+            <p class="argos-eyebrow">Monitoramento · histórico técnico</p>
+            <h1 class="argos-page-title">Histórico de monitoramento</h1>
+            <p class="argos-lead">Indisponibilidades registradas para esta câmera.</p>
+          </div>
+          <div class="argos-page-header__actions">
+            <a class="argos-button argos-button--secondary" href="../index.html#screen-scr-cam-detail-001">Voltar ao detalhe da câmera</a>
+          </div>
+        </header>
+
+        <div class="argos-stack">
+          <section class="argos-card" aria-labelledby="camera-heading">
+            <div class="argos-card__header"><h2 class="argos-card__title" id="camera-heading">Contexto da câmera</h2><a class="argos-button argos-button--secondary" data-bind="monitor-substitutions-link" href="scr-sub-camera-001.html?camera=CAM-1204">Ver substitui&ccedil;&otilde;es relacionadas</a></div>
+            <div class="argos-card__body">
+              <div class="argos-two-column">
+                <div><p class="argos-eyebrow">Identificação</p><p><strong data-bind="monitor-camera-id"></strong></p><p data-bind="monitor-camera-name"></p></div>
+                <div><p class="argos-eyebrow">Local</p><p data-bind="monitor-camera-location"></p><p class="argos-inline"><span class="argos-status-badge argos-status-badge--danger" data-bind="monitor-status">Offline</span><span hidden data-bind="monitor-stable-status"><span class="argos-badge argos-badge--neutral">Último estado estável: Offline</span></span></p></div>
+              </div>
+            </div>
+          </section>
+
+          <div hidden data-bind="monitor-stale"><aside class="argos-alert argos-alert--warning" role="status">
+            <div><strong>Atualização de monitoramento desatualizada</strong><p>O estado efetivo aparece como desconhecido. Última evidência disponível: <time data-bind="monitor-evidence"></time>. O último estado estável conhecido era <strong data-bind="monitor-stable-inline">Offline</strong>.</p></div>
+          </aside></div>
+
+          <section class="argos-card" aria-labelledby="history-heading">
+            <div class="argos-card__header"><h2 class="argos-card__title" id="history-heading">Indisponibilidades</h2><span class="argos-badge argos-badge--neutral" data-bind="monitor-count"></span></div>
+            <div class="argos-card__body argos-stack">
+              <p id="monitor-summary">Início, término, duração, origem e encerramento de cada registro.</p>
+              <div class="argos-table-region" role="region" aria-label="Tabela de histórico de indisponibilidades" tabindex="0" data-bind="monitor-table-region">
+                <table class="argos-table argos-table--compact">
+                  <caption>Histórico técnico de indisponibilidades</caption>
+                  <thead><tr><th scope="col">Início</th><th scope="col">Fim</th><th scope="col">Duração</th><th scope="col">Origem</th><th scope="col">Estado</th><th scope="col">Motivo de fechamento</th></tr></thead>
+                  <tbody data-bind="monitor-rows"></tbody>
+                </table>
+              </div>
+              <div hidden data-bind="monitor-empty" role="status"><div class="argos-state">
+                <strong class="argos-state__title">Nenhuma indisponibilidade registrada</strong>
+                <p class="argos-state__copy">O histórico desta câmera não contém registros para o período consultado.</p>
+              </div></div>
+              <div hidden data-bind="monitor-pagination"><nav class="argos-pagination" aria-label="Paginação do histórico de monitoramento"></nav></div>
+            </div>
+          </section>
+        </div>
+        <p class="argos-caption">Dados de demonstração determinísticos. Esta superfície é somente visual e não persiste alterações.</p>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

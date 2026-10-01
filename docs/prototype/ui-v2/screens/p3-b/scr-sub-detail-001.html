@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="argos-ui-version" content="2.0.2">
+  <meta name="argos-screen-id" content="SCR-SUB-DETAIL-001">
+  <meta name="argos-screen-family" content="SUBSTITUTIONS">
+  <meta name="argos-prototype-status" content="IN_PROGRESS">
+  <title>Detalhe do registro de substituição · ARGOS UI V2</title>
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/tokens.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/base.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/components.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/patterns.css">
+  <script src="../harness.js" defer></script>
+  <script src="p3-b.js" defer></script>
+</head>
+<body>
+  <a class="argos-skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="argos-docs-layout">
+    <aside class="argos-docs-sidebar">
+      <a class="argos-brand" href="../index.html" aria-label="ARGOS — início do protótipo">
+        <img src="../../style-lab/argos-icon.svg" alt="" width="34" height="34">
+        <span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">UI V2 · protótipos</span></span>
+      </a>
+      <nav class="argos-docs-nav" aria-label="Navegação principal demonstrativa">
+        <span class="argos-docs-nav__group">Central operacional</span>
+        <a href="../index.html">Início</a>
+          <a href="../index.html#screen-scr-inv-001">Inventário</a>
+          <a href="scr-mon-history-001.html">Monitoramento</a>
+          <a href="scr-sub-list-001.html" aria-current="page">Substituições</a>
+          <a href="../index.html#screen-scr-event-list-001">Eventos</a>
+      </nav>
+      <p class="argos-docs-sidebar__foot">P3-B · DS 2.0.2 · protótipo</p>
+    </aside>
+    <div class="argos-docs-main">
+      <header class="argos-docs-topbar">
+        <span>ARGOS / UI V2 / P3-B</span>
+        <span class="argos-badge argos-badge--info">Design System 2.0.2</span>
+      </header>
+      <main class="argos-docs-content" id="main">
+        <header class="argos-page-header">
+          <div class="argos-page-header__copy">
+            <p class="argos-eyebrow">Substituições · registro imutável</p>
+            <h1 class="argos-page-title">Detalhe da substituição <span data-bind="detail-id"></span></h1>
+            <p class="argos-lead">Consulta dos dados históricos preservados no registro.</p>
+          </div>
+          <div class="argos-page-header__actions"><a class="argos-button argos-button--secondary" href="scr-sub-list-001.html">Voltar ao histórico global</a></div>
+        </header>
+
+        <div class="argos-stack">
+          <aside class="argos-alert argos-alert--info" role="note"><div><strong>Registro histórico somente para consulta</strong><p>Este registro é imutável. A tela não oferece edição nem exclusão.</p></div></aside>
+          <section class="argos-card" aria-labelledby="record-context-heading">
+            <div class="argos-card__header"><h2 class="argos-card__title" id="record-context-heading">Identificação e período</h2><span class="argos-badge argos-badge--neutral">Histórico</span></div>
+            <div class="argos-card__body argos-two-column">
+              <div><p class="argos-eyebrow">Identificador do registro</p><p><strong data-bind="detail-id-copy"></strong></p></div>
+              <div><p class="argos-eyebrow">Data da substituição</p><p><time data-bind="detail-occurred"></time></p></div>
+              <div><p class="argos-eyebrow">Criado em</p><p><time data-bind="detail-created"></time></p></div>
+              <div><p class="argos-eyebrow">Registrado por</p><p><strong data-bind="detail-registered-name"></strong></p><p data-bind="detail-registered-user"></p></div>
+            </div>
+          </section>
+
+          <div class="argos-two-column">
+            <section class="argos-card" aria-labelledby="previous-camera-heading">
+              <div class="argos-card__header"><h2 class="argos-card__title" id="previous-camera-heading">Câmera anterior</h2></div>
+              <div class="argos-card__body argos-stack">
+                <div><p class="argos-eyebrow">Identificação</p><p><strong data-bind="previous-id"></strong></p></div>
+                <div><p class="argos-eyebrow">Nome histórico</p><p data-bind="previous-name"></p></div>
+                <div><p class="argos-eyebrow">Local</p><p data-bind="previous-location"></p></div>
+                <a class="argos-button argos-button--secondary" href="../index.html#screen-scr-cam-detail-001">Abrir detalhe conceitual da câmera</a>
+              </div>
+            </section>
+            <section class="argos-card" aria-labelledby="replacement-camera-heading">
+              <div class="argos-card__header"><h2 class="argos-card__title" id="replacement-camera-heading">Câmera substituta</h2></div>
+              <div class="argos-card__body argos-stack">
+                <div><p class="argos-eyebrow">Identificação</p><p><strong data-bind="replacement-id"></strong></p></div>
+                <div><p class="argos-eyebrow">Nome histórico</p><p data-bind="replacement-name"></p></div>
+                <div><p class="argos-eyebrow">Local</p><p data-bind="replacement-location"></p></div>
+                <a class="argos-button argos-button--secondary" href="../index.html#screen-scr-cam-detail-001">Abrir detalhe conceitual da câmera</a>
+              </div>
+            </section>
+          </div>
+
+          <section class="argos-card" aria-labelledby="relationship-heading">
+            <div class="argos-card__header"><h2 class="argos-card__title" id="relationship-heading">Relação e informações históricas</h2></div>
+            <div class="argos-card__body argos-two-column">
+              <div><p class="argos-eyebrow">Nome operacional</p><p data-bind="detail-operational-name"></p></div>
+              <div><p class="argos-eyebrow">Motivo</p><p data-bind="detail-motive"></p></div>
+              <div><p class="argos-eyebrow">Observações</p><p data-bind="detail-observations"></p></div>
+              <div><p class="argos-eyebrow">Relação</p><p>Câmera anterior → câmera substituta</p></div>
+            </div>
+          </section>
+        </div>
+        <p class="argos-caption">Dados de demonstração determinísticos. Esta superfície é somente visual e não persiste alterações.</p>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
