@@ -68,3 +68,29 @@ P3_COMPLETE = NO
 NEXT_GATE = P3 ROOT INTEGRATED VALIDATION
 
 Este checkpoint não declara conclusão global de P3 nem conclui a validação de runtime/browser integrada.
+
+## P3 ROOT Integrated Validation + Global Closure — estado atual (2026-10-01)
+
+Este checkpoint supersede o estado pendente da Phase 1 abaixo; as linhas de planejamento e os resultados aprovados por família continuam preservados como histórico.
+
+```text
+DESIGN_SYSTEM_VERSION = 2.0.2
+P3_A = USER_APPROVED / CLOSED / PUBLISHED / INTEGRATED
+P3_B = USER_APPROVED / FROZEN / CLOSED / PUBLISHED / INTEGRATED
+P3_C = USER_APPROVED / FROZEN / CLOSED / PUBLISHED / INTEGRATED
+P3_D = USER_APPROVED / FROZEN / ROOT_DS_RECONCILED / INTEGRATED_VALIDATION_PASS
+P3_FAMILY_GATES_COMPLETE = YES
+CURRENT_DS_METADATA = PASS / 24 of 24; stale current 2.0.1 = 0
+P3_ROOT_INTEGRATION = PASS
+P3_INTEGRATED_VALIDATION = PASS
+P3_D_MATERIAL_VISUAL_DELTA = NONE / zero changed pixels across seven same-browser desktop/mobile pairs
+SHARED_INDEX_AND_HARNESS = PASS
+DJANGO_CHECK = PASS
+BLOCKING_FINDINGS = NONE
+USER_REAPPROVAL_REQUIRED = NO
+P3_COMPLETE = YES / prototype phase only
+P5_PRODUCTION_IMPLEMENTATION = NOT_STARTED
+P6_PRODUCTION_RUNTIME_VISUAL_VALIDATION = NOT_STARTED
+NEXT_GATE = P4/P5 TRANSITION ADJUDICATION
+PROJECT_STATE = docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md, section 41
+```

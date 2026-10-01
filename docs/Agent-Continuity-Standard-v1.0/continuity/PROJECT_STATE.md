@@ -2190,3 +2190,71 @@ ACTIVITY_COMPLETION_PERCENT = 100% / Phase 1 scope only
 ACTIVITY_COMPLETE = YES / Phase 1 merge and semantic reconciliation only; P3 global completion remains pending
 WORKTREE_FINAL = CLEAN / verified immediately after local reconciliation commit
 ```
+
+## 41. CARD B — P3 ROOT integrated validation and global closure (2026-10-01)
+
+Este checkpoint conclui a validação integrada das quatro famílias de protótipo no ROOT. P3 está completo como fase de protótipos e integração; implementação de produção e validação visual do runtime continuam fora deste fechamento.
+
+```text
+ACTIVITY = CARD B — ARGOS UI-V2 P3 ROOT INTEGRATED VALIDATION + GLOBAL CLOSURE
+ACTIVITY_STATUS = PASS / P3 PROTOTYPE PHASE CLOSED
+WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_ui_v2_p3_root
+BRANCH = codex/ui-v2-p3-root-reconciliation
+ROOT_HEAD_BEFORE = 9ce90bafdd67cb2b878edcdd2c4ecb1b4e849522
+ROOT_BASE = 38db46b2335ac8c1ce47207b3ae015388d839d5f
+MASTER = 38db46b2335ac8c1ce47207b3ae015388d839d5f / unchanged and clean
+ANCESTRY_A = PASS / adc62fefd20aa9390107a10a7174e88d62384ad8
+ANCESTRY_B = PASS / 8006dad537d13b8b0000721424088fb67054e2de
+ANCESTRY_C = PASS / e96836c25c97465a74ea4b8b3059cc53d7ae7615
+ANCESTRY_D = PASS / f5dd0308f46705e03c79609077ed1ec7a12bc766
+STATIC_INTEGRATION = PASS / diff check, no unresolved merge state or conflict markers
+ROOT_CANONICAL_DS = 2.0.2 / shared CSS identical to ROOT_BASE
+CURRENT_SURFACES_CHECKED = 24
+CURRENT_DS_METADATA = PASS / 24 of 24 declare 2.0.2
+STALE_CURRENT_DS_2_0_1 = 0
+HIDDEN_SEMANTICS = PASS / canonical rule and runtime hidden variants
+MOBILE_TABLE_PATCH = PASS / 760px minimum width, local overflow scroll, keyboard-reachable region
+SHARED_INDEX = PASS / four family groups, all 24 owned pages represented, 34 unique family/inherited rows; shell makes 35 tracked IDs
+QUICK_DETAIL = PROTECTED / preserved
+SHARED_HARNESS = PASS / state and fixture routing exercised
+P3_A_BROWSER_SMOKE = PASS / four owned pages loaded; dashboard, inventory mobile, filter empty/reset
+P3_B_BROWSER_SMOKE = PASS / four owned pages loaded; history, stale state, empty state, local table scroll
+P3_C_BROWSER_SMOKE = PASS / nine owned pages loaded; event filters and local activity confirmation
+P3_D_BROWSER_SMOKE = PASS / seven owned pages loaded at 1440x900 and 390x844; conditional field and local confirmation
+P3_D_MATERIAL_VISUAL_DELTA = NONE / same-browser comparison of P3-D source HEAD and ROOT: zero changed pixels in 14 comparisons (seven screens × desktop/mobile)
+HISTORICAL_CAPTURE_COMPARISON = NON-MATERIAL CAPTURE ENVIRONMENT DIFFERENCE / historical PNGs show native scrollbar gutters; same-browser source-to-ROOT render is pixel-identical
+GLOBAL_HORIZONTAL_OVERFLOW = NO
+WORD_FRAGMENTATION = NO DESTRUCTIVE FRAGMENTATION / only long or hyphenated identifiers wrap at safe separators or fallback break
+LOCAL_TABLE_SCROLL = PASS / applicable mobile consumers remain within their focusable 760px table regions
+ACTIONS_REACHABLE = YES
+KEYBOARD_NAVIGATION = PASS / Tab reaches skip link; visible solid 3px focus outline
+CONSOLE_ERRORS = 0 relevant
+PAGE_ERRORS = 0
+EXTERNAL_REQUESTS = 0
+NON_GET_REQUESTS = 0
+PERSISTENT_MUTATIONS = 0
+DJANGO_CHECK = PASS / existing project environment; no issues
+INTEGRATED_EVIDENCE_COUNT = 8 / docs/prototype/ui-v2/evidence/root-integrated-p3-2026-10-01/
+BLOCKING_FINDINGS = NONE
+NON_BLOCKING_FINDINGS = NONE introduced by ROOT integration
+KNOWN_SHARED_FINDINGS = existing approved P3-D notes: mobile navigation may show its final item partially; brand link is 36px on mobile
+USER_REAPPROVAL_REQUIRED = NO
+P3_A = USER_APPROVED / CLOSED / PUBLISHED / INTEGRATED
+P3_B = USER_APPROVED / FROZEN / CLOSED / PUBLISHED / INTEGRATED
+P3_C = USER_APPROVED / FROZEN / CLOSED / PUBLISHED / INTEGRATED
+P3_D = USER_APPROVED / FROZEN / ROOT_DS_RECONCILED / INTEGRATED_VALIDATION_PASS
+P3_FAMILY_GATES_COMPLETE = YES
+P3_ROOT_INTEGRATION = PASS
+P3_INTEGRATED_VALIDATION = PASS
+P3_COMPLETE = YES / prototype and integration phase only
+P5_PRODUCTION_IMPLEMENTATION = NOT_STARTED
+P6_PRODUCTION_RUNTIME_VISUAL_VALIDATION = NOT_STARTED
+NEXT_GATE = P4/P5 TRANSITION ADJUDICATION
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES / integrated validation and global prototype closure only
+PUSH_PERFORMED = NO
+MASTER_CHANGED = NO
+```
+
+As oito capturas ROOT são novas e ficam fora dos conjuntos históricos das famílias. A comparação P3-D direta com os PNGs históricos foi interpretada junto ao baseline de fonte no mesmo navegador, pois a captura histórica preserva barras de rolagem nativas que o Chromium headless não desenha; os 14 renders controlados entre a fonte P3-D aprovada e o ROOT tiveram diferença de zero pixels. Nenhuma alteração de composição, interação ou layout foi observada.

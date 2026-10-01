@@ -461,3 +461,23 @@ PRODUCTION_RUNTIME_BEHAVIOR_CHANGED = NO
 PRODUCTION_TEMPLATES_CHANGED = NO
 
 P3 permanece uma atividade separada, não iniciada e sem autorização implícita.
+
+### 12.6. UI-V2-P3 — protótipos integrados e fase encerrada (2026-10-01)
+
+O gate ROOT integrado fechou P3-A/B/C/D após validar o catálogo, o harness, os metadados DS 2.0.2, o navegador local e a integridade estrutural do Django. As aprovações humanas por família continuam válidas; nenhuma mudança material visual, de composição ou de interação exigiu nova aprovação.
+
+```text
+P3_STATUS = COMPLETE / PROTOTYPE AND INTEGRATION PHASE
+P3_A/B/C/D = USER_APPROVED / INTEGRATED
+ROOT_CANONICAL_DS = 2.0.2
+CURRENT_PROTOTYPE_SURFACES = 24 / 24 PASS
+P3_D_VISUAL_DELTA = NONE / seven screens × desktop/mobile; same-browser comparison had zero changed pixels
+DJANGO_CHECK = PASS
+PRODUCTION_CHANGED = NO
+P5_PRODUCTION_IMPLEMENTATION = NOT_STARTED
+P6_PRODUCTION_RUNTIME_VISUAL_VALIDATION = NOT_STARTED
+NEXT_GATE = P4/P5 TRANSITION ADJUDICATION
+PROJECT_STATE = docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md, section 41
+```
+
+Esta conclusão não aprova nem inicia a integração da UI V2 ao runtime de produção. A continuidade de produção segue pendente de adjudicação própria entre P4 e P5.

@@ -407,3 +407,27 @@ NEXT_GATE = aplicar controladamente DS_PATCH_WORK_COMMIT às famílias, mantendo
 NEXT_GATE_STATUS = PLANNED / NOT AUTHORIZED
 
 Os registros históricos de P2/P3-0 permanecem inalterados na versão 2.0.0. Esta seção 16 substitui o status de prontidão registrado na seção 15: P3-0 foi concluída e publicada antes deste patch. A atividade ROOT não autoriza implementação ou integração das famílias, atualização da cobertura global nem integração da UI de produção.
+
+## 17. UI-V2 P3 ROOT — validação integrada e fechamento global (2026-10-01)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.8 | Handoff operacional vigente para a fase seguinte | CURRENT / P3 COMPLETE / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 41 | Snapshot operacional, evidência dos gates, fechamento global de P3 e próxima adjudicação | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md`, seção 12.6 | Estado corrente do roadmap de protótipos e limites para produção | CANONICAL / P3 COMPLETE; P5 and P6 NOT_STARTED |
+| `docs/prototype/ui-v2/contracts/SCREEN_COVERAGE.md`, checkpoint final | Cobertura ROOT consolidada após a integração das quatro famílias | CURRENT / 24 OWNED SCREENS VALIDATED |
+| `docs/prototype/ui-v2/evidence/root-integrated-p3-2026-10-01/` | Oito capturas ROOT integradas, separadas dos pacotes históricos familiares | EVIDENCE / 8 PNG |
+
+```text
+CURRENT_DESIGN_SYSTEM_VERSION = 2.0.2
+P3_A/B/C/D = USER_APPROVED / INTEGRATED
+P3_ROOT_INTEGRATION = PASS
+P3_INTEGRATED_VALIDATION = PASS
+P3_COMPLETE = YES / prototype phase only
+USER_REAPPROVAL_REQUIRED = NO
+P5_PRODUCTION_IMPLEMENTATION = NOT_STARTED
+P6_PRODUCTION_RUNTIME_VISUAL_VALIDATION = NOT_STARTED
+NEXT_GATE = P4/P5 TRANSITION ADJUDICATION
+```
+
+Esta seção atual substitui os status operacionais pendentes das seções 15 e 16. Os snapshots anteriores de P3-0 e DS 2.0.1 permanecem como histórico, não como estado corrente.

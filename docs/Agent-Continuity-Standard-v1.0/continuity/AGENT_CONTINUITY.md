@@ -882,3 +882,28 @@ PROJECT_STATE_UPDATE = PASS / see PROJECT_STATE.md section 37
 CONTINUITY_RECONCILIATION = PASS
 AGENT_HANDOFF_GATE = PASS
 ACTIVITY_COMPLETE = YES / final state checkpoint published and synchronization verified at activity close
+
+### 20.8. UI-V2-P3 ROOT — validação integrada e fechamento global (2026-10-01)
+
+CURRENT_ACTIVITY = CARD B — ARGOS UI-V2 P3 ROOT INTEGRATED VALIDATION + GLOBAL CLOSURE
+CURRENT_STATUS = COMPLETE / ALL MANDATORY ROOT AND FAMILY GATES PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_ui_v2_p3_root
+BRANCH = codex/ui-v2-p3-root-reconciliation
+ROOT_HEAD_BEFORE = 9ce90bafdd67cb2b878edcdd2c4ecb1b4e849522
+DESIGN_SYSTEM_VERSION = 2.0.2
+P3_A/B/C/D = USER_APPROVED / INTEGRATED
+P3_D_MATERIAL_VISUAL_DELTA = NONE / 14 same-browser desktop/mobile comparisons had zero changed pixels
+P3_ROOT_INTEGRATION = PASS
+P3_INTEGRATED_VALIDATION = PASS
+P3_COMPLETE = YES / prototype phase only
+USER_REAPPROVAL_REQUIRED = NO
+P5_PRODUCTION_IMPLEMENTATION = NOT_STARTED
+P6_PRODUCTION_RUNTIME_VISUAL_VALIDATION = NOT_STARTED
+NEXT_GATE = P4/P5 TRANSITION ADJUDICATION
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md section 41
+ACTIVITY_COMPLETE = YES / local ROOT prototype closure; no production implementation
+PUSH_PERFORMED = NO
+MASTER_CHANGED = NO
+
+The detailed gate results and ROOT evidence are recorded in `PROJECT_STATE.md`, section 41. Sections 15–16 of ACTIVE_DOCUMENT_MAP and section 20.7 above remain historical snapshots; this section is the current continuity checkpoint.
