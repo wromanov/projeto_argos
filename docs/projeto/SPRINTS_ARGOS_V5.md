@@ -483,14 +483,15 @@ IMPLEMENTATION = NO
 REAL_CAMERA_ACCESS = NO
 HOMOLOGATION = NO
 LIVE = NO
-COMMIT = NOT AUTHORIZED / NOT PERFORMED
-PUSH = NOT AUTHORIZED / NOT PERFORMED
+COMMIT = 7b0135f0e9911e6a03f1a297e606d848eaa44533 / docs(backend): add BC-00 contract baseline
+PUSH = YES / origin/master
 ```
 
 O detalhe normativo e a matriz de decisões abertas estão em
 `docs/projeto/contracts/backend/00_BACKEND_CONTRACT_REGISTRY.md` e nos
 contratos indexados. `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` permanece a authority
-canônica do domínio de imagens. Esta atividade documenta capacidades observadas
+canônica do domínio de imagens. O baseline foi commitado e publicado após
+autorização explícita do usuário. Esta atividade documenta capacidades observadas
 e fronteiras; não reordena silenciosamente IMG-04/MON-AVAIL-02, não autoriza
 implementação posterior e não substitui validação de produção. Próxima atividade
 de backend: adjudicação humana deste baseline antes de escolher implementação.

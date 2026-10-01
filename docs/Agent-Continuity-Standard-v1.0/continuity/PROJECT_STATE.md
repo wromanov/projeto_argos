@@ -2156,13 +2156,18 @@ CANONICAL_IMAGE_DOMAIN_CONTRACT = REUSED / NOT DUPLICATED
 PROJECT_STATE_UPDATE = PASS / checkpoint records baseline and next gate
 CONTINUITY_RECONCILIATION = PASS / registry and authorities cross-linked
 DOCUMENT_QUALITY_GATE = PASS / paths, scope, implementation status, decisions and authority discoverable
-AGENT_HANDOFF_GATE = PASS / local worktree records its uncommitted state
+AGENT_HANDOFF_GATE = PASS / BC-00 baseline and publication state are recorded
 IMPLEMENTATION_AUTHORIZED = NO
 REAL_CAMERA_ACCESS_AUTHORIZED = NO
 HOMOLOGATION_AUTHORIZED = NO
 LIVE_AUTHORIZED = NO
-COMMIT = NOT AUTHORIZED / NOT PERFORMED
-PUSH = NOT AUTHORIZED / NOT PERFORMED
+CONTRACT_COMMIT = 7b0135f0e9911e6a03f1a297e606d848eaa44533 / docs(backend): add BC-00 contract baseline
+COMMIT_AUTHORIZATION = USER_APPROVED
+PUSH = YES / origin/master
+POST_PUSH_HEAD = 7b0135f0e9911e6a03f1a297e606d848eaa44533
+POST_PUSH_SYNC = PASS / HEAD == origin/master; ahead 0 / behind 0
+WORKTREE_AFTER_CONTRACT_PUSH = CLEAN
+STATE_RECONCILIATION_COMMIT = FOLLOW-UP DOCUMENTARY CHECKPOINT / this update
 NEXT_ACTIVITY = human review/adjudication of BC-00 baseline before implementation
 BLOCKERS = none to documentary baseline; production/runtime boundaries remain unvalidated
 ```
@@ -2177,6 +2182,6 @@ não comprovam homologação de rede, equipamentos ou produção. Gates e decis�
 abertas constam no registro dos contratos.
 
 O trabalho não alterou backend, schema, migrations, infraestrutura ou UI. O
-commit/push não foi autorizado nem executado. Após as edições, o estado Git deve
-ser revalidado diretamente e permanece local até eventual autorização separada
-de publicação.
+commit `7b0135f0e9911e6a03f1a297e606d848eaa44533` foi enviado a `origin/master`.
+Este checkpoint reconcilia o estado anterior à autorização; o HEAD final e a
+limpeza do worktree são verificados diretamente no Git após sua publicação.

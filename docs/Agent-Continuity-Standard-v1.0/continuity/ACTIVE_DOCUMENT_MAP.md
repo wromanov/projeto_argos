@@ -419,7 +419,7 @@ Os registros históricos de P2/P3-0 permanecem inalterados na versão 2.0.0. Est
 | `docs/projeto/contracts/backend/images/IMAGE_CAPTURE_INTEGRATION_CONTRACT.md` | Integração de captura | Integração com o domínio de imagem canônico, sem duplicá-lo | CURRENT / complemento |
 | `docs/projeto/contracts/backend/production/` | Contratos PROD-PERSIST/TOPO/CAP | Persistência, topologia e capacidade | CURRENT / decisões abertas explícitas |
 | `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | Proveniência, seleção, leitura, preview, lifecycle e consumidor | CANONICAL / mantido como authority |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 40 | Estado de BC-00 | Baseline, status, autorização e próxima atividade | CURRENT / local worktree |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 40 | Estado de BC-00 | Baseline, status, autorização e próxima atividade | CURRENT / publicação BC-00 registrada; verificar HEAD diretamente |
 
 BC-00 cria baseline documental, não implementação nem autorização de acesso a
 câmera. Estado e fronteiras não homologadas estão no registro do backend.
