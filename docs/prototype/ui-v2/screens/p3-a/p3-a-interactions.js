@@ -1,0 +1,688 @@
+// P3-A only: deterministic fixture rendering and local prototype interactions.
+(() => {
+  const screenId = document.querySelector('meta[name="argos-screen-id"]')?.content;
+  const state = document.documentElement.dataset.argosPrototypeState || "default";
+  const fixtureName = document.documentElement.dataset.argosPrototypeFixture || "default";
+  if (!screenId || screenId === "SCR-PORTAL-001") return;
+
+  const fixtureUrl = new URL("../../fixtures/p3-a-camera-inventory.json", document.baseURI);
+  const escapeText = (value) => String(value ?? "");
+  const element = (tag, className, value) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (value !== undefined) node.textContent = escapeText(value);
+    return node;
+  };
+  const badgeClass = (kind) => `argos-status-badge argos-status-badge--${kind}`;
+  const monitoringKind = (camera) => {
+    if (camera.monitoring_state === "ONLINE") return "success";
+    if (camera.monitoring_state === "OFFLINE") return "danger";
+    return "neutral";
+  };
+  const completenessLabel = (camera) => camera.completeness === "COMPLETE" ? "Completo" : "Incompleto";
+
+  if (screenId === "SCR-DASH-001") {
+    initializeDashboardPanelFlow();
+    initializeDashboardNavigation();
+  }
+
+  if (screenId === "SCR-INV-001") {
+    initializeInventoryNavigation();
+    initializeInventoryProgressiveFilters();
+  }
+
+  function initializeDashboardPanelFlow() {
+    const flow = document.querySelector("[data-dashboard-panels]");
+    if (!flow) return;
+
+    const panels = Object.fromEntries(
+      [...flow.querySelectorAll(":scope > [data-dashboard-panel]")]
+        .map((panel) => [panel.dataset.dashboardPanel, panel]),
+    );
+    if (Object.keys(panels).length !== 4) return;
+
+    const left = element("div", "p3-a-dashboard-panels__column");
+    const right = element("div", "p3-a-dashboard-panels__column");
+    const desktop = window.matchMedia("(min-width: 681px)");
+
+    function arrangePanels() {
+      const layout = desktop.matches ? "columns" : "mobile";
+      if (flow.dataset.layout === layout) return;
+
+      const focused = document.activeElement;
+      const preserveFocus = Object.values(panels).some((panel) => panel.contains(focused));
+
+      if (layout === "columns") {
+        left.replaceChildren(panels.operational, panels.activity);
+        right.replaceChildren(panels.monitoring, panels.featured);
+        flow.replaceChildren(left, right);
+      } else {
+        flow.replaceChildren(
+          panels.operational,
+          panels.monitoring,
+          panels.activity,
+          panels.featured,
+        );
+      }
+      flow.dataset.layout = layout;
+
+      if (preserveFocus && focused.isConnected) focused.focus({ preventScroll: true });
+    }
+
+    arrangePanels();
+    if (desktop.addEventListener) desktop.addEventListener("change", arrangePanels);
+    else desktop.addListener(arrangePanels);
+  }
+
+  function initializeDashboardNavigation() {
+    const nav = document.querySelector("[data-dashboard-primary-nav]");
+    const hint = document.querySelector("[data-dashboard-nav-hint]");
+    if (!nav || !hint) return;
+
+    function updateScrollHint() {
+      const canScroll = nav.scrollWidth > nav.clientWidth + 1;
+      hint.hidden = !canScroll;
+      if (canScroll) nav.setAttribute("aria-describedby", hint.id);
+      else nav.removeAttribute("aria-describedby");
+    }
+
+    nav.addEventListener("focusin", (event) => {
+      const link = event.target.closest("a[href]");
+      if (!link || !nav.contains(link)) return;
+      const navRect = nav.getBoundingClientRect();
+      const linkRect = link.getBoundingClientRect();
+      if (linkRect.left < navRect.left || linkRect.right > navRect.right) {
+        link.scrollIntoView({ block: "nearest", inline: "nearest" });
+      }
+    });
+    window.addEventListener("resize", updateScrollHint, { passive: true });
+    updateScrollHint();
+  }
+
+  function initializeInventoryNavigation() {
+    const nav = document.querySelector("[data-inventory-primary-nav]");
+    const hint = document.querySelector("[data-inventory-nav-hint]");
+    if (!nav || !hint) return;
+
+    function updateScrollHint() {
+      const canScroll = nav.scrollWidth > nav.clientWidth + 1;
+      hint.hidden = !canScroll;
+      if (canScroll) nav.setAttribute("aria-describedby", hint.id);
+      else nav.removeAttribute("aria-describedby");
+    }
+
+    nav.addEventListener("focusin", (event) => {
+      const link = event.target.closest("a[href]");
+      if (!link || !nav.contains(link)) return;
+      const navRect = nav.getBoundingClientRect();
+      const linkRect = link.getBoundingClientRect();
+      if (linkRect.left < navRect.left || linkRect.right > navRect.right) {
+        link.scrollIntoView({ block: "nearest", inline: "nearest" });
+      }
+    });
+    window.addEventListener("resize", updateScrollHint, { passive: true });
+    updateScrollHint();
+  }
+
+  function initializeInventoryProgressiveFilters() {
+    const filterRow = document.querySelector(".p3-a-inventory-filter-bar");
+    const mobileControls = filterRow?.querySelector("[data-inventory-mobile-controls]");
+    const toggle = filterRow?.querySelector("[data-inventory-filter-toggle]");
+    const panel = filterRow?.querySelector("#inventory-advanced-filter-panel");
+    const primary = panel?.querySelector(".p3-a-inventory-filter-group--primary");
+    const secondary = panel?.querySelector(".p3-a-inventory-filter-group--secondary");
+    const actions = mobileControls?.querySelector(".p3-a-inventory-filter-actions");
+    const layout = filterRow?.parentElement;
+    const chips = layout?.querySelector("[data-active-filters]");
+    if (!filterRow || !mobileControls || !toggle || !panel || !primary || !secondary || !actions || !layout || !chips) return;
+
+    const primaryFields = [...primary.querySelectorAll(":scope > .argos-field")];
+    const mobile = window.matchMedia("(max-width: 680px)");
+    function arrange(event) {
+      const focusedElement = document.activeElement;
+      const focusedAdvancedControl = primaryFields.some((field) => field.contains(focusedElement))
+        || secondary.contains(focusedElement);
+
+      if (event.matches) {
+        primary.append(...primaryFields);
+        if (secondary.parentElement !== panel) panel.append(secondary);
+        if (actions.parentElement !== mobileControls) mobileControls.append(actions);
+        panel.hidden = !focusedAdvancedControl;
+        toggle.setAttribute("aria-expanded", String(focusedAdvancedControl));
+        if (focusedAdvancedControl) focusedElement.focus({ preventScroll: true });
+        return;
+      }
+
+      const focusWasOnToggle = focusedElement === toggle;
+      const focusWasInActions = actions.contains(focusedElement);
+      primaryFields.forEach((field) => filterRow.insertBefore(field, mobileControls));
+      if (secondary.parentElement !== layout) layout.insertBefore(secondary, chips);
+      if (actions.parentElement !== layout) layout.insertBefore(actions, chips);
+      panel.hidden = true;
+      toggle.setAttribute("aria-expanded", "false");
+      if (focusWasOnToggle) filterRow.querySelector('[data-filter="search"]')?.focus({ preventScroll: true });
+      else if (focusedAdvancedControl || focusWasInActions) focusedElement.focus({ preventScroll: true });
+    }
+
+    toggle.addEventListener("click", () => {
+      const expanded = toggle.getAttribute("aria-expanded") !== "true";
+      toggle.setAttribute("aria-expanded", String(expanded));
+      panel.hidden = !expanded;
+    });
+
+    arrange(mobile);
+    if (mobile.addEventListener) mobile.addEventListener("change", arrange);
+    else mobile.addListener(arrange);
+  }
+
+  fetch(fixtureUrl, { headers: { Accept: "application/json" } })
+    .then((response) => {
+      if (!response.ok) throw new Error("Fixture indisponível");
+      return response.json();
+    })
+    .then((data) => {
+      if (screenId === "SCR-DASH-001") renderDashboard(data);
+      if (screenId === "SCR-INV-001") renderInventory(data);
+      if (screenId === "SCR-CAM-DETAIL-001") renderCameraDetail(data);
+    })
+    .catch(() => {
+      const feedback = document.querySelector("[data-filter-feedback]");
+      if (feedback) feedback.textContent = "Fixture local indisponível; filtros demonstrativos não foram carregados.";
+      const summary = document.querySelector("[data-results-summary]");
+      if (summary && state === "default") summary.textContent = "Não foi possível carregar a fixture local.";
+      const featured = document.querySelector("[data-dashboard-featured-camera]");
+      if (featured) featured.replaceChildren(element("p", "", "Não foi possível carregar os dados demonstrativos."));
+    });
+
+  function renderDashboard(data) {
+    const metrics = fixtureName === "long" ? data.dashboard_long : data.dashboard;
+    if (!metrics) return;
+    document.querySelectorAll("[data-metric]").forEach((node) => {
+      const value = metrics[node.dataset.metric];
+      if (value !== undefined) node.textContent = String(value);
+    });
+
+    const activities = document.querySelector("[data-dashboard-activities]");
+    if (activities) {
+      const activityItems = fixtureName === "long" ? [] : data.activities;
+      activities.replaceChildren(...activityItems.map((activity) => {
+        const item = element("li");
+        const link = element("a", "", activity.title);
+        link.href = `scr-cam-detail-001.html#${encodeURIComponent(activity.camera_id)}`;
+        link.setAttribute("aria-label", `${activity.title}; câmera ${activity.camera_id}`);
+        item.append(link, element("span", "", ` — ${activity.camera_id} · ${activity.occurred_at}`));
+        return item;
+      }));
+      if (!activityItems.length) activities.append(element("li", "", "Nenhuma atividade registrada nesta fixture."));
+    }
+
+    const camera = fixtureName === "long" ? data.long_camera : data.cameras.find((item) => item.id === "CAM-DEMO-0103");
+    const featured = document.querySelector("[data-dashboard-featured-camera]");
+    if (camera && featured) {
+      const link = element("a", "", camera.name);
+      link.href = `scr-cam-detail-001.html#${encodeURIComponent(camera.id)}`;
+      const detail = element("p", "", `${camera.manufacturer} · ${camera.model}`);
+      const location = element("p", "", `${camera.terminal} · ${camera.sector}`);
+      const monitoring = element("span", badgeClass(monitoringKind(camera)), camera.monitoring_label);
+      const operation = element("span", "argos-badge argos-badge--neutral", camera.operational_label);
+      const freshness = camera.freshness === "STALE"
+        ? element("span", "argos-status-badge argos-status-badge--warning", "Dados desatualizados")
+        : null;
+      featured.replaceChildren(link, detail, location, element("div", "argos-inline"));
+      const labels = featured.lastElementChild;
+      labels.append(operation, monitoring);
+      if (freshness) labels.append(freshness);
+    }
+  }
+
+  function renderInventory(data) {
+    const filters = [...document.querySelectorAll("[data-filter]")];
+    const optionSource = fixtureName === "long" ? [...data.cameras, data.long_camera] : data.cameras;
+    const rowsBody = document.querySelector("[data-inventory-rows]");
+    const recordsList = document.querySelector("[data-inventory-records]");
+    const responsivePresentation = document.querySelector("[data-inventory-responsive-results]");
+    const summary = document.querySelector("[data-results-summary]");
+    const pagination = document.querySelector("[data-pagination]");
+    const tableRegion = document.querySelector('[data-argos-state-variant="default"].argos-table-region');
+    const filterEmpty = document.querySelector("[data-filter-empty]");
+    const results = document.querySelector("#inventory-results");
+    const feedback = document.querySelector("[data-filter-feedback]");
+    const activeFilters = document.querySelector("[data-active-filters]");
+    const selectionStatus = document.querySelector("[data-selection-status]");
+    const pageSize = 3;
+    let currentPage = 1;
+    let cameras = optionSource;
+    let selectedCameraId = null;
+
+    const dynamicOptions = {
+      terminal: "Todos",
+      manufacturer: "Todos",
+      vlan: "Todas",
+      farm: "Todas",
+    };
+    Object.entries(dynamicOptions).forEach(([key, firstLabel]) => {
+      const select = filters.find((control) => control.dataset.filter === key);
+      if (!select) return;
+      const firstOption = select.options[0];
+      firstOption.textContent = firstLabel;
+      const uniqueValues = [...new Set(optionSource.map((camera) => camera[key]).filter(Boolean))]
+        .sort((a, b) => a.localeCompare(b, "pt-BR"));
+      uniqueValues.forEach((value) => {
+        const option = element("option", "", value);
+        option.value = value;
+        select.append(option);
+      });
+    });
+
+    function currentValues() {
+      return Object.fromEntries(filters.map((control) => [control.dataset.filter, control.value.trim()]));
+    }
+
+    function filteredCameras() {
+      const values = currentValues();
+      const searchable = (camera) => [
+        camera.name, camera.identifier, camera.model, camera.manufacturer, camera.terminal,
+        camera.floor, camera.sector, camera.environment, camera.description,
+        camera.reference_point, camera.type, camera.vlan, camera.farm,
+      ].join(" ").toLocaleLowerCase("pt-BR");
+      return cameras.filter((camera) => {
+        const searchMatch = !values.search || searchable(camera).includes(values.search.toLocaleLowerCase("pt-BR"));
+        const completenessMatch = !values.completeness || camera.completeness === values.completeness;
+        return searchMatch
+          && completenessMatch
+          && (!values.operational_label || camera.operational_label === values.operational_label)
+          && (!values.monitoring_label || camera.monitoring_label === values.monitoring_label)
+          && (!values.terminal || camera.terminal === values.terminal)
+          && (!values.type || camera.type === values.type)
+          && (!values.manufacturer || camera.manufacturer === values.manufacturer)
+          && (!values.vlan || camera.vlan === values.vlan)
+          && (!values.farm || camera.farm === values.farm);
+      });
+    }
+
+    function refreshActiveFilters(values) {
+      if (!activeFilters) return;
+      const labels = {
+        search: "Busca", operational_label: "Situação", monitoring_label: "Monitoramento",
+        completeness: "Completude", terminal: "Terminal", type: "Tipo", manufacturer: "Fabricante",
+        vlan: "VLAN", farm: "Fazenda",
+      };
+      const nodes = Object.entries(values).filter(([, value]) => value).map(([key, value]) =>
+        element("span", "argos-badge argos-badge--info", `${labels[key]}: ${value === "COMPLETE" ? "Completo" : value === "INCOMPLETE" ? "Incompleto" : value}`));
+      activeFilters.replaceChildren(...nodes);
+      if (!nodes.length) activeFilters.setAttribute("aria-label", "Nenhum filtro ativo");
+      else activeFilters.setAttribute("aria-label", "Filtros ativos");
+    }
+
+    function makeBadge(text, kind, status = true) {
+      return element("span", status ? badgeClass(kind) : `argos-badge argos-badge--${kind}`, text);
+    }
+
+    function makeMobileRecord(camera) {
+      const item = element("li");
+      const record = element("article", "p3-a-inventory-record");
+      const titleId = `inventory-record-title-${camera.id}`;
+      record.dataset.recordCameraId = camera.id;
+      record.dataset.recordCameraIdentifier = camera.identifier;
+      record.dataset.selected = "false";
+      record.setAttribute("aria-labelledby", titleId);
+
+      const header = element("header", "p3-a-inventory-record__header");
+      const identity = element("div", "p3-a-inventory-record__identity");
+      const title = element("h3", "p3-a-inventory-record__title");
+      const detailLink = element("a", "", camera.name);
+      detailLink.href = `scr-cam-detail-001.html#${encodeURIComponent(camera.id)}`;
+      detailLink.setAttribute("aria-label", `Abrir detalhe da câmera ${camera.name}`);
+      detailLink.dataset.recordAction = "camera-name";
+      title.id = titleId;
+      title.append(detailLink);
+      identity.append(title, element("p", "p3-a-inventory-record__identifier", camera.identifier));
+
+      const selectButton = element("button", "argos-button argos-button--secondary p3-a-inventory-record__select", "Selecionar");
+      selectButton.type = "button";
+      selectButton.dataset.inventoryRecordSelect = "";
+      selectButton.setAttribute("aria-pressed", "false");
+      selectButton.setAttribute("aria-label", `Selecionar câmera ${camera.identifier}`);
+      header.append(identity, selectButton);
+
+      const statuses = element("ul", "p3-a-inventory-record__statuses");
+      statuses.setAttribute("aria-label", "Situação operacional, monitoramento e completude");
+      const statusItems = [
+        ["Situação operacional", camera.operational_label, "neutral"],
+        ["Monitoramento", camera.monitoring_label, monitoringKind(camera)],
+        ["Completude", completenessLabel(camera), camera.completeness === "COMPLETE" ? "success" : "warning"],
+      ];
+      statusItems.forEach(([label, value, kind]) => {
+        const statusItem = element("li");
+        statusItem.append(
+          element("span", "p3-a-inventory-record__sr-only", `${label}: `),
+          makeBadge(value, kind),
+        );
+        if (label === "Monitoramento" && camera.freshness === "STALE") {
+          statusItem.append(element("span", "p3-a-inventory-record__stale", "Dados desatualizados"));
+        }
+        statuses.append(statusItem);
+      });
+
+      const details = element("dl", "p3-a-inventory-record__details");
+      const detailFields = [
+        ["Fabricante", camera.manufacturer, ""],
+        ["Modelo", camera.model, ""],
+        ["Terminal", camera.terminal, ""],
+        ["Setor", camera.sector, ""],
+        ["Imagem", "Imagem não disponível", "p3-a-inventory-record__image"],
+      ];
+      detailFields.forEach(([label, value, className]) => {
+        const field = element("div", className);
+        field.append(element("dt", "", label), element("dd", "", value));
+        details.append(field);
+      });
+
+      const actions = element("div", "p3-a-inventory-record__actions");
+      actions.setAttribute("role", "group");
+      actions.setAttribute("aria-label", `Ações da câmera ${camera.identifier}`);
+      const quickLink = element("a", "argos-button argos-button--secondary", "Visão rápida");
+      quickLink.href = "../index.html#screen-scr-cam-quick-001";
+      quickLink.setAttribute("aria-label", `Visão rápida protegida da câmera ${camera.identifier}`);
+      quickLink.dataset.recordAction = "quick";
+      const fullLink = element("a", "argos-button argos-button--secondary", "Ver detalhes");
+      fullLink.href = `scr-cam-detail-001.html#${encodeURIComponent(camera.id)}`;
+      fullLink.setAttribute("aria-label", `Abrir detalhe completo da câmera ${camera.identifier}`);
+      fullLink.dataset.recordAction = "full";
+      actions.append(quickLink, fullLink);
+
+      record.append(header, statuses, details, actions);
+      item.append(record);
+      return item;
+    }
+
+    function renderRows() {
+      const matches = filteredCameras();
+      const pageCount = Math.max(1, Math.ceil(matches.length / pageSize));
+      currentPage = Math.min(currentPage, pageCount);
+      const start = (currentPage - 1) * pageSize;
+      const visible = matches.slice(start, start + pageSize);
+      refreshActiveFilters(currentValues());
+      selectedCameraId = null;
+      if (selectionStatus) selectionStatus.textContent = "Nenhuma câmera selecionada · Clique em uma linha ou use Enter/Espaço para selecionar.";
+      rowsBody.replaceChildren(...visible.map((camera) => {
+        const row = element("tr");
+        row.dataset.rowCameraId = camera.id;
+        row.tabIndex = 0;
+        row.setAttribute("aria-selected", "false");
+
+        const nameCell = element("td");
+        const detailLink = element("a", "", camera.name);
+        detailLink.href = `scr-cam-detail-001.html#${encodeURIComponent(camera.id)}`;
+        detailLink.setAttribute("aria-label", `Abrir detalhe da câmera ${camera.name}`);
+        detailLink.dataset.inventoryAction = "camera-name";
+        nameCell.append(detailLink, element("div", "", camera.identifier));
+
+        const imageCell = element("td");
+        imageCell.append(makeBadge("Imagem não disponível", "neutral", false));
+
+        const operationCell = element("td");
+        operationCell.append(makeBadge(camera.operational_label, "neutral", true));
+
+        const monitoringCell = element("td");
+        monitoringCell.append(makeBadge(camera.monitoring_label, monitoringKind(camera), true));
+        if (camera.freshness === "STALE") monitoringCell.append(element("div", "", "Dados desatualizados"));
+
+        const completenessCell = element("td");
+        completenessCell.append(makeBadge(completenessLabel(camera), camera.completeness === "COMPLETE" ? "success" : "warning", true));
+
+        const modelCell = element("td");
+        modelCell.append(element("div", "", camera.manufacturer), element("div", "", camera.model));
+
+        const locationCell = element("td");
+        locationCell.append(element("div", "", camera.terminal), element("div", "", camera.sector));
+
+        const actionsCell = element("td");
+        const actions = element("div", "argos-stack");
+        const quickLink = element("a", "argos-button argos-button--secondary argos-button--compact", "Visão rápida");
+        quickLink.href = "../index.html#screen-scr-cam-quick-001";
+        quickLink.setAttribute("aria-label", `Visão rápida protegida da câmera ${camera.identifier}`);
+        quickLink.dataset.inventoryAction = "quick";
+        const fullLink = element("a", "argos-button argos-button--secondary argos-button--compact", "Ver detalhes");
+        fullLink.href = `scr-cam-detail-001.html#${encodeURIComponent(camera.id)}`;
+        fullLink.setAttribute("aria-label", `Abrir detalhe completo da câmera ${camera.identifier}`);
+        fullLink.dataset.inventoryAction = "full";
+        actions.append(quickLink, fullLink);
+        actionsCell.append(actions);
+
+        row.append(nameCell, imageCell, operationCell, monitoringCell, completenessCell, modelCell, locationCell, actionsCell);
+        return row;
+      }));
+      if (recordsList) recordsList.replaceChildren(...visible.map(makeMobileRecord));
+
+      if (summary) summary.textContent = state === "empty"
+        ? "Nenhum resultado neste estado demonstrativo"
+        : state === "loading"
+          ? "Carregando fixture demonstrativa"
+          : state === "error"
+            ? "Fixture não carregada neste estado demonstrativo"
+            : matches.length
+              ? `Exibindo ${start + 1}–${start + visible.length} de ${matches.length} câmeras demonstrativas`
+              : "0 câmeras demonstrativas encontradas";
+      if (tableRegion) tableRegion.hidden = state !== "default" || matches.length === 0;
+      if (recordsList) recordsList.hidden = state !== "default" || matches.length === 0;
+      if (filterEmpty) filterEmpty.hidden = state !== "default" || matches.length !== 0;
+      if (pagination) pagination.hidden = state !== "default" || matches.length <= pageSize;
+      if (results) results.setAttribute("aria-busy", state === "loading" ? "true" : "false");
+      renderPagination(pageCount);
+      if (feedback) feedback.textContent = `${matches.length} ${matches.length === 1 ? "resultado" : "resultados"} na fixture local.`;
+    }
+
+    function renderPagination(pageCount) {
+      if (!pagination) return;
+      const links = [];
+      if (currentPage > 1) links.push(pageLink("Anterior", currentPage - 1));
+      else links.push(element("span", "", "Anterior"));
+      for (let page = 1; page <= pageCount; page += 1) {
+        const link = pageLink(String(page), page);
+        if (page === currentPage) link.setAttribute("aria-current", "page");
+        link.setAttribute("aria-label", `Página ${page}`);
+        links.push(link);
+      }
+      if (currentPage < pageCount) links.push(pageLink("Próxima", currentPage + 1));
+      else links.push(element("span", "", "Próxima"));
+      pagination.replaceChildren(...links);
+    }
+
+    function pageLink(label, page) {
+      const link = element("a", "", label);
+      link.href = `#inventory-page-${page}`;
+      link.dataset.page = String(page);
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        currentPage = page;
+        renderRows();
+      });
+      return link;
+    }
+
+    filters.forEach((control) => control.addEventListener(control.type === "search" ? "input" : "change", () => {
+      currentPage = 1;
+      renderRows();
+    }));
+    document.querySelectorAll("[data-clear-filters]").forEach((button) => button.addEventListener("click", () => {
+      filters.forEach((control) => { control.value = ""; });
+      currentPage = 1;
+      renderRows();
+      filters.find((control) => control.dataset.filter === "search")?.focus();
+    }));
+    rowsBody.addEventListener("click", (event) => {
+      if (event.target.closest("a, button, input, select")) return;
+      const row = event.target.closest("tr[data-row-camera-id]");
+      if (row) selectRow(row);
+    });
+    rowsBody.addEventListener("keydown", (event) => {
+      const row = event.target.closest("tr[data-row-camera-id]");
+      if (!row || event.target.closest("a, button, input, select")) return;
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        selectRow(row);
+      }
+    });
+    recordsList.addEventListener("click", (event) => {
+      const record = event.target.closest("[data-record-camera-id]");
+      if (!record) return;
+      if (event.target.closest("[data-inventory-record-select]")) {
+        toggleCameraSelection(record.dataset.recordCameraId);
+        return;
+      }
+      if (event.target.closest("a, button, input, select")) return;
+      toggleCameraSelection(record.dataset.recordCameraId);
+    });
+
+    function selectRow(row) {
+      toggleCameraSelection(row.dataset.rowCameraId);
+    }
+
+    function toggleCameraSelection(cameraId) {
+      const wasSelected = selectedCameraId === cameraId;
+      selectedCameraId = wasSelected ? null : cameraId;
+      rowsBody.querySelectorAll("tr[data-row-camera-id]").forEach((row) => {
+        row.setAttribute("aria-selected", String(row.dataset.rowCameraId === selectedCameraId));
+      });
+      recordsList.querySelectorAll("[data-record-camera-id]").forEach((record) => {
+        const selected = record.dataset.recordCameraId === selectedCameraId;
+        const button = record.querySelector("[data-inventory-record-select]");
+        record.dataset.selected = String(selected);
+        button.setAttribute("aria-pressed", String(selected));
+        button.setAttribute("aria-label", `${selected ? "Desmarcar" : "Selecionar"} câmera ${record.dataset.recordCameraIdentifier}`);
+        button.textContent = selected ? "Selecionada" : "Selecionar";
+      });
+      if (selectionStatus) selectionStatus.textContent = wasSelected
+        ? "Seleção removida · Clique em uma linha ou use Enter/Espaço para selecionar."
+        : `Câmera ${cameraId} selecionada · Clique ou use Enter/Espaço para desmarcar.`;
+    }
+
+    function initializeResponsivePresentationFocus() {
+      if (!responsivePresentation) return;
+      const mobileBreakpoint = 940;
+      let mobilePresentation = responsivePresentation.clientWidth <= mobileBreakpoint;
+      let lastResponsiveFocus = null;
+
+      function captureResponsiveFocus(event) {
+        const record = event.target.closest("[data-record-camera-id]");
+        const row = event.target.closest("tr[data-row-camera-id]");
+        const owner = record || row;
+        if (!responsivePresentation.contains(owner)) {
+          if (event.target !== document.body) lastResponsiveFocus = null;
+          return;
+        }
+        const action = event.target.closest("[data-record-action], [data-inventory-action]");
+        lastResponsiveFocus = {
+          cameraId: record ? record.dataset.recordCameraId : row.dataset.rowCameraId,
+          sourceMobile: Boolean(record),
+          action: event.target.closest("[data-inventory-record-select]")
+            ? "select"
+            : action?.dataset.recordAction || action?.dataset.inventoryAction || "row",
+        };
+      }
+
+      function focusEquivalentControl(target) {
+        const records = [...recordsList.querySelectorAll("[data-record-camera-id]")];
+        const rows = [...rowsBody.querySelectorAll("tr[data-row-camera-id]")];
+        if (mobilePresentation) {
+          const record = records.find((item) => item.dataset.recordCameraId === target.cameraId);
+          if (!record) return null;
+          if (target.action === "quick" || target.action === "full" || target.action === "camera-name") {
+            return record.querySelector(`[data-record-action="${target.action}"]`);
+          }
+          return record.querySelector("[data-inventory-record-select]");
+        }
+        const row = rows.find((item) => item.dataset.rowCameraId === target.cameraId);
+        if (!row) return null;
+        if (target.action === "quick" || target.action === "full" || target.action === "camera-name") {
+          return row.querySelector(`[data-inventory-action="${target.action}"]`);
+        }
+        return row;
+      }
+
+      function handlePresentationResize() {
+        const nextMobilePresentation = responsivePresentation.clientWidth <= mobileBreakpoint;
+        if (nextMobilePresentation === mobilePresentation) return;
+        const previousMobilePresentation = mobilePresentation;
+        mobilePresentation = nextMobilePresentation;
+        const target = lastResponsiveFocus;
+        if (!target || target.sourceMobile !== previousMobilePresentation) return;
+
+        const activeElement = document.activeElement;
+        const activePresentation = activeElement.closest?.("[data-inventory-records], [data-inventory-desktop-table]");
+        const activeWasHidden = activeElement === document.body
+          || !activePresentation
+          || activePresentation.getClientRects().length === 0;
+        if (!activeWasHidden) return;
+
+        requestAnimationFrame(() => focusEquivalentControl(target)?.focus({ preventScroll: true }));
+      }
+
+      document.addEventListener("focusin", captureResponsiveFocus);
+      if ("ResizeObserver" in window) {
+        new ResizeObserver(handlePresentationResize).observe(responsivePresentation);
+      } else {
+        window.addEventListener("resize", handlePresentationResize, { passive: true });
+      }
+    }
+
+    renderRows();
+    initializeResponsivePresentationFocus();
+  }
+
+  function renderCameraDetail(data) {
+    const hashId = decodeURIComponent(window.location.hash.slice(1));
+    const camera = fixtureName === "long"
+      ? data.long_camera
+      : data.cameras.find((item) => item.id === hashId) || data.cameras.find((item) => item.id === "CAM-DEMO-0103");
+    if (!camera) return;
+
+    document.querySelectorAll("[data-camera-field]").forEach((node) => {
+      const value = camera[node.dataset.cameraField];
+      if (value !== undefined) node.textContent = escapeText(value);
+    });
+    document.querySelectorAll("[data-camera-network]").forEach((node) => {
+      const value = camera.network?.[node.dataset.cameraNetwork];
+      node.textContent = value || "Não informado na fixture";
+    });
+    const operational = document.querySelector("[data-camera-operational]");
+    const monitoring = document.querySelector("[data-camera-monitoring]");
+    const completeness = document.querySelector("[data-camera-completeness]");
+    const staleBadge = document.querySelector("[data-camera-stale]");
+    const staleAlert = document.querySelector("[data-camera-stale-alert]");
+    const imageState = document.querySelector("[data-camera-image-state]");
+    const historyContent = document.querySelector("[data-camera-history-content]");
+    if (historyContent) historyContent.hidden = state === "empty";
+    if (operational) operational.textContent = camera.operational_label;
+    if (monitoring) {
+      monitoring.textContent = camera.monitoring_label;
+      monitoring.className = badgeClass(monitoringKind(camera));
+    }
+    if (completeness) {
+      completeness.textContent = `Cadastro ${completenessLabel(camera).toLocaleLowerCase("pt-BR")}`;
+      completeness.className = badgeClass(camera.completeness === "COMPLETE" ? "success" : "warning");
+    }
+    const isStale = camera.freshness === "STALE";
+    if (staleBadge) staleBadge.hidden = !isStale;
+    if (staleAlert) staleAlert.hidden = !isStale;
+    if (imageState) imageState.textContent = camera.image_state === "NO_IMAGE_AVAILABLE"
+      ? "Imagem não disponível nesta fixture"
+      : camera.image_state;
+
+    Object.entries(camera.history || {}).forEach(([historyType, entries]) => {
+      const list = document.querySelector(`[data-history="${historyType}"]`);
+      if (!list) return;
+      const content = entries.map((entry) => {
+        const item = element("li");
+        const title = entry.title || (historyType === "outages" ? `Indisponibilidade ${entry.opened_at} · ${entry.duration}` : entry.id);
+        item.append(element("strong", "", title));
+        const details = [entry.occurred_at, entry.origin, entry.close_reason].filter(Boolean).join(" · ");
+        if (details) item.append(element("span", "", ` — ${details}`));
+        return item;
+      });
+      if (!content.length) content.push(element("li", "", "Nenhum registro relacionado nesta fixture."));
+      list.replaceChildren(...content);
+    });
+  }
+})();

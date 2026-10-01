@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="argos-ui-version" content="2.0.2">
+  <meta name="argos-screen-id" content="SCR-DASH-001">
+  <meta name="argos-screen-family" content="P3-A">
+  <meta name="argos-prototype-status" content="IN_PROGRESS">
+  <title>Dashboard — ARGOS</title>
+  <link rel="icon" href="../../style-lab/argos-icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/tokens.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/base.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/components.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/patterns.css">
+  <link rel="stylesheet" href="scr-dash-001.css">
+  <script src="../harness.js" defer></script>
+  <script src="p3-a-interactions.js" defer></script>
+</head>
+<body>
+  <a class="argos-skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="argos-docs-layout">
+    <aside class="argos-docs-sidebar">
+      <a class="argos-brand" href="scr-portal-001.html" aria-label="ARGOS — Início">
+        <img src="../../style-lab/argos-icon.svg" alt="" width="34" height="34">
+        <span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">UI V2 · protótipos</span></span>
+      </a>
+      <div class="p3-a-dashboard-nav-frame">
+        <nav class="argos-docs-nav" aria-label="Navegação principal" data-dashboard-primary-nav>
+          <span class="argos-docs-nav__group">Central operacional</span>
+          <a href="scr-portal-001.html" data-conceptual-route="/">Início</a>
+          <a href="scr-dash-001.html" aria-current="page" data-conceptual-route="/dashboard/">Dashboard</a>
+          <a href="scr-inv-001.html" data-conceptual-route="/cameras/">Inventário</a>
+          <a href="../index.html#screen-scr-sub-list-001" data-conceptual-route="/cameras/substituicoes/">Governança</a>
+          <a href="../index.html#screen-scr-event-list-001" data-conceptual-route="/eventos/">Eventos</a>
+        </nav>
+        <p class="p3-a-dashboard-nav-hint" id="dashboard-mobile-nav-hint" data-dashboard-nav-hint hidden>Deslize horizontalmente para ver todos os itens.</p>
+      </div>
+      <p class="argos-docs-sidebar__foot">P3-A · protótipo · DS 2.0.2</p>
+    </aside>
+    <div class="argos-docs-main">
+      <header class="argos-docs-topbar">
+        <span>ARGOS / UI V2 / P3-A</span>
+        <a href="../index.html#screen-scr-account-profile-001" data-prototype-content="planned-surface">Meu Perfil · superfície planejada</a>
+      </header>
+      <main class="argos-docs-content p3-a-dashboard-content" id="main">
+        <header class="argos-page-header p3-a-dashboard-header">
+          <div class="argos-page-header__copy">
+            <p class="argos-eyebrow">Visão operacional</p>
+            <h1 class="argos-page-title">Dashboard</h1>
+            <p class="argos-lead">Resumo do inventário, do monitoramento e da atividade recente.</p>
+          </div>
+          <div class="argos-page-header__actions"><a class="argos-button argos-button--secondary" href="scr-inv-001.html">Abrir Inventário</a></div>
+        </header>
+
+        <div class="argos-stack">
+          <p data-prototype-content="demonstration">Valores demonstrativos carregados de fixture local; nenhum monitoramento em tempo real.</p>
+          <section aria-labelledby="dashboard-overview-title" data-argos-state-variant="default">
+            <div class="argos-section-header"><h2 id="dashboard-overview-title">Resumo do inventário</h2></div>
+            <div class="argos-kpi-grid argos-kpi-grid--contained" aria-label="Indicadores de câmeras">
+              <article class="argos-kpi-card"><strong data-metric="total_cameras">—</strong><span>Total de câmeras</span></article>
+              <article class="argos-kpi-card"><strong data-metric="cameras_producao">—</strong><span>Em produção</span></article>
+              <article class="argos-kpi-card"><strong data-metric="cameras_estoque">—</strong><span>Em estoque</span></article>
+            </div>
+          </section>
+
+          <section class="p3-a-dashboard-panels" aria-label="Resumo e atividade do dashboard" data-dashboard-panels data-layout="mobile" data-argos-state-variant="default">
+            <article class="argos-card p3-a-dashboard-panel" data-dashboard-panel="operational">
+              <div class="argos-card__header"><h2 class="argos-card__title">Situação operacional</h2></div>
+              <div class="argos-card__body argos-stack">
+                <dl>
+                  <div><dt>Produção</dt><dd data-metric="cameras_producao">—</dd></div>
+                  <div><dt>Estoque</dt><dd data-metric="cameras_estoque">—</dd></div>
+                  <div><dt>Desativadas</dt><dd data-metric="cameras_desativadas">—</dd></div>
+                  <div><dt>Substituições registradas</dt><dd data-metric="total_substituicoes">—</dd></div>
+                </dl>
+              </div>
+            </article>
+            <article class="argos-card p3-a-dashboard-panel" data-dashboard-panel="monitoring">
+              <div class="argos-card__header"><h2 class="argos-card__title">Monitoramento e completude</h2></div>
+              <div class="argos-card__body argos-stack">
+                <dl>
+                  <div><dt>Online</dt><dd data-metric="online">—</dd></div>
+                  <div><dt>Offline</dt><dd data-metric="offline">—</dd></div>
+                  <div><dt>Desconhecido</dt><dd data-metric="unknown">—</dd></div>
+                  <div><dt>Fora do escopo</dt><dd data-metric="out_of_scope">—</dd></div>
+                  <div><dt>Dados desatualizados</dt><dd data-metric="stale">—</dd></div>
+                  <div><dt>Cadastro completo / incompleto</dt><dd><span data-metric="cameras_completas">—</span> / <span data-metric="cameras_incompletas">—</span></dd></div>
+                  <div><dt>Câmeras com IP duplicado</dt><dd data-metric="cameras_com_ip_duplicado">—</dd></div>
+                </dl>
+                <p>Frescor dos dados é um qualificador separado do estado técnico.</p>
+              </div>
+            </article>
+            <article class="argos-card p3-a-dashboard-panel" data-dashboard-panel="activity">
+              <div class="argos-card__header"><h2 class="argos-card__title">Atividade recente</h2><span class="argos-badge argos-badge--neutral"><span data-metric="total_atividades">—</span> registros</span></div>
+              <div class="argos-card__body">
+                <ul data-dashboard-activities aria-live="polite"></ul>
+                <p data-argos-fixture-variant="long">A fixture extensa contém um registro de câmera; os textos do nome e da localização são testados nas telas de Inventário e Detalhe.</p>
+              </div>
+            </article>
+            <article class="argos-card p3-a-dashboard-panel" data-dashboard-panel="featured">
+              <div class="argos-card__header"><h2 class="argos-card__title">Câmera em destaque</h2></div>
+              <div class="argos-card__body argos-stack" data-dashboard-featured-camera>
+                <p>Carregando fixture local…</p>
+              </div>
+            </article>
+          </section>
+
+          <section class="argos-state" data-argos-state-variant="empty" hidden aria-labelledby="dashboard-empty-title">
+            <h2 class="argos-state__title" id="dashboard-empty-title">Nenhum dado para apresentar</h2>
+            <p class="argos-state__copy">Não há câmeras ou atividade disponíveis neste estado demonstrativo.</p>
+            <a class="argos-button argos-button--primary" href="scr-inv-001.html">Ir para Inventário</a>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

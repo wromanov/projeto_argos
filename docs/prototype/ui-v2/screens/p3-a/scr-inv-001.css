@@ -1,0 +1,255 @@
+@layer pages {
+  .p3-a-inventory-responsive-results {
+    min-width: 0;
+    container: p3-a-inventory-results / inline-size;
+  }
+
+  .p3-a-inventory-record-list {
+    display: none;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .p3-a-inventory-record {
+    display: grid;
+    gap: var(--argos-space-3);
+    min-width: 0;
+    padding: var(--argos-space-3);
+    border: var(--argos-border-width) solid var(--argos-color-border);
+    border-radius: var(--argos-radius-control);
+    background: var(--argos-color-surface);
+    overflow-wrap: anywhere;
+  }
+
+  .p3-a-inventory-record[data-selected="true"] {
+    border-color: var(--argos-color-action);
+  }
+
+  .p3-a-inventory-record__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--argos-space-2);
+    min-width: 0;
+  }
+
+  .p3-a-inventory-record__identity {
+    display: grid;
+    gap: var(--argos-space-1);
+    min-width: 0;
+  }
+
+  .p3-a-inventory-record__title {
+    min-width: 0;
+    color: var(--argos-color-ink);
+    font-size: var(--argos-text-body);
+    font-weight: var(--argos-weight-semibold);
+    line-height: var(--argos-line-tight);
+    overflow-wrap: anywhere;
+  }
+
+  .p3-a-inventory-record__title a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .p3-a-inventory-record__identifier {
+    margin: 0;
+    color: var(--argos-color-ink-muted);
+    font-size: var(--argos-text-label);
+    overflow-wrap: anywhere;
+  }
+
+  .p3-a-inventory-record__select {
+    flex: 0 0 auto;
+    min-height: var(--argos-touch-target-min);
+    padding-inline: var(--argos-space-2);
+  }
+
+  .p3-a-inventory-record__statuses {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--argos-space-1);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .p3-a-inventory-record__statuses li {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .p3-a-inventory-record__statuses .argos-status-badge {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .p3-a-inventory-record__details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--argos-space-2) var(--argos-space-3);
+    min-width: 0;
+    margin: 0;
+  }
+
+  .p3-a-inventory-record__details > div {
+    min-width: 0;
+  }
+
+  .p3-a-inventory-record__details dt {
+    color: var(--argos-color-ink-muted);
+    font-size: var(--argos-text-caption);
+    font-weight: var(--argos-weight-semibold);
+  }
+
+  .p3-a-inventory-record__details dd {
+    min-width: 0;
+    margin: 0;
+    font-size: var(--argos-text-secondary);
+    overflow-wrap: anywhere;
+  }
+
+  .p3-a-inventory-record__details .p3-a-inventory-record__image {
+    grid-column: 1 / -1;
+  }
+
+  .p3-a-inventory-record__stale {
+    display: block;
+    margin-top: var(--argos-space-1);
+    color: var(--argos-color-ink-muted);
+    font-size: var(--argos-text-caption);
+  }
+
+  .p3-a-inventory-record__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--argos-space-2);
+    min-width: 0;
+  }
+
+  .p3-a-inventory-record__actions .argos-button {
+    flex: 1 1 128px;
+    min-width: 0;
+    min-height: var(--argos-touch-target-min);
+    padding-inline: var(--argos-space-2);
+    overflow-wrap: anywhere;
+  }
+
+  .p3-a-inventory-record__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @container p3-a-inventory-results (max-width: 940px) {
+    [data-inventory-desktop-table] { display: none; }
+    .p3-a-inventory-record-list:not([hidden]) {
+      display: grid;
+      gap: var(--argos-space-2);
+    }
+  }
+
+  @container p3-a-inventory-results (max-width: 340px) {
+    .p3-a-inventory-record__details { grid-template-columns: minmax(0, 1fr); }
+    .p3-a-inventory-record__details .p3-a-inventory-record__image { grid-column: auto; }
+  }
+
+  .p3-a-inventory-table-caption {
+    padding: var(--argos-space-2) var(--argos-space-3);
+    color: var(--argos-color-ink-muted);
+    font-size: var(--argos-text-label);
+    font-weight: var(--argos-weight-regular);
+    text-align: left;
+  }
+
+  .p3-a-inventory-filter-chevron {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .p3-a-inventory-filter-toggle[aria-expanded="true"] .p3-a-inventory-filter-chevron {
+    transform: rotate(180deg);
+  }
+
+  .p3-a-inventory-mobile-controls {
+    display: none;
+  }
+
+  @media (max-width: 680px) {
+    .p3-a-inventory-filter-bar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--argos-space-3);
+      align-items: stretch;
+    }
+
+    .p3-a-inventory-mobile-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--argos-space-3);
+    }
+
+    .p3-a-inventory-filter-toggle {
+      display: inline-flex;
+      min-height: var(--argos-touch-target-min);
+      align-items: center;
+      gap: var(--argos-space-2);
+    }
+
+    .p3-a-inventory-filter-group--primary,
+    .p3-a-inventory-filter-group--secondary {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--argos-space-3);
+      width: auto;
+    }
+
+    .p3-a-inventory-filter-actions {
+      justify-content: flex-end;
+    }
+
+    .p3-a-inventory-filter-actions [data-filter-feedback] {
+      display: none;
+    }
+  }
+
+  .p3-a-inventory-nav-frame {
+    min-width: 0;
+  }
+
+  @media (max-width: 680px) {
+    .p3-a-inventory-nav-frame {
+      display: grid;
+      gap: var(--argos-space-1);
+    }
+
+    .p3-a-inventory-nav-frame .argos-docs-nav {
+      padding-inline-end: var(--argos-space-2);
+      scroll-padding-inline-end: var(--argos-space-2);
+      overscroll-behavior-inline: contain;
+    }
+
+    .p3-a-inventory-nav-frame .argos-docs-nav a {
+      padding-inline: var(--argos-space-2);
+    }
+
+    .p3-a-inventory-nav-hint {
+      margin: 0;
+      color: var(--argos-color-ink-inverse-muted);
+      font-size: var(--argos-text-caption);
+    }
+  }
+}
