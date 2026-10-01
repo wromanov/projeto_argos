@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="argos-ui-version" content="2.0.1">
+  <meta name="argos-screen-id" content="SCR-AUTH-LOGIN-001">
+  <meta name="argos-screen-family" content="AUTH">
+  <meta name="argos-prototype-status" content="TECHNICAL_READY_FOR_REVIEW">
+  <title>Acessar o sistema — ARGOS</title>
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/tokens.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/base.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/components.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/patterns.css">
+  <script src="../harness.js" defer></script>
+  <script src="p3-d.js" defer></script>
+</head>
+<body>
+  <a class="argos-skip-link" href="#main">Pular para o conteúdo</a>
+  <header class="argos-docs-topbar"><a class="argos-brand" href="../index.html" aria-label="ARGOS — início da prévia"><img src="../../style-lab/argos-icon.svg" alt="" width="34" height="34"><span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">Controle CFTV</span></span></a><span class="argos-badge argos-badge--info">Acesso institucional</span></header>
+  <main class="argos-docs-content" id="main">
+    <div class="argos-two-column">
+      <section aria-labelledby="welcome-title"><p class="argos-eyebrow">ARGOS · Controle CFTV</p><h1 class="argos-page-title" id="welcome-title">Acesso ao sistema</h1><p class="argos-lead">Use suas credenciais institucionais para continuar.</p><p class="argos-alert argos-alert--warning">Ambiente de protótipo. Não informe credenciais reais.</p></section>
+      <section class="argos-card" aria-labelledby="login-title"><header class="argos-card__header"><div><h2 class="argos-card__title" id="login-title">Acessar o sistema</h2><p>Entre com seu usuário e senha.</p></div></header><div class="argos-card__body argos-stack">
+        <section class="argos-alert argos-alert--danger" data-argos-state-variant="error" role="alert" aria-labelledby="login-error-title"><div><h3 id="login-error-title">Não foi possível autenticar</h3><p>Usuário ou senha inválidos.</p></div></section>
+        <p id="login-feedback" class="argos-alert argos-alert--success" role="status" tabindex="-1" hidden></p>
+        <form aria-label="Prévia do login ARGOS" novalidate><div class="argos-stack">
+          <div class="argos-field"><label class="argos-field__label" for="login-username">Usuário</label><input class="argos-input" id="login-username" name="username" required autocomplete="username" placeholder="Usuário" data-focus-target data-fixture-default="" data-fixture-long="usuario.demo.terminal.internacional.operacoes"><span>Use suas credenciais institucionais.</span></div>
+          <div class="argos-field"><label class="argos-field__label" for="login-password">Senha</label><input class="argos-input" id="login-password" name="password" type="password" required autocomplete="current-password" placeholder="Senha"><span>A senha é exibida como campo protegido.</span></div>
+          <button class="argos-button argos-button--primary" type="button" data-demo-submit="login-feedback" data-demo-message="A autenticação não está conectada neste protótipo; nenhuma credencial foi enviada.">Entrar</button>
+        </div></form>
+      </div><footer class="argos-card__footer"><span>ARGOS · acesso restrito a usuários autorizados</span></footer></section>
+    </div>
+  </main>
+</body>
+</html>

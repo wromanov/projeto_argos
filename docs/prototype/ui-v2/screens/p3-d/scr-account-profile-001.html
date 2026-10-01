@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="argos-ui-version" content="2.0.1">
+  <meta name="argos-screen-id" content="SCR-ACCOUNT-PROFILE-001">
+  <meta name="argos-screen-family" content="PROFILE_ACCOUNT">
+  <meta name="argos-prototype-status" content="TECHNICAL_READY_FOR_REVIEW">
+  <title>Meu perfil — ARGOS</title>
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/tokens.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/base.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/components.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/patterns.css">
+  <script src="../harness.js" defer></script>
+  <script src="p3-d.js" defer></script>
+</head>
+<body>
+  <a class="argos-skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="argos-docs-layout">
+    <aside class="argos-docs-sidebar">
+      <a class="argos-brand" href="../index.html" aria-label="ARGOS — início do protótipo"><img src="../../style-lab/argos-icon.svg" alt="" width="34" height="34"><span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">Controle CFTV</span></span></a>
+      <nav class="argos-docs-nav" aria-label="Navegação principal"><span class="argos-docs-nav__group">Central operacional</span><a href="../index.html#screen-scr-portal-001">Início</a><a href="../index.html#screen-scr-dash-001">Dashboard</a><a href="../index.html#screen-scr-inv-001">Inventário</a><a href="../index.html#screen-scr-sub-list-001">Governança</a><a href="../index.html#screen-scr-event-list-001">Eventos</a><span class="argos-docs-nav__group">Conta</span><a href="scr-account-profile-001.html" aria-current="page">Meu perfil</a></nav>
+      <p class="argos-docs-sidebar__foot">Conta demonstrativa · dados fictícios</p>
+    </aside>
+    <div class="argos-docs-main">
+      <header class="argos-docs-topbar"><span>ARGOS / Conta / Perfil</span><span class="argos-badge argos-badge--info">Prévia UI V2</span></header>
+      <main class="argos-docs-content" id="main">
+        <header class="argos-page-header"><div class="argos-page-header__copy"><p class="argos-eyebrow">Conta e acesso</p><h1 class="argos-page-title">Meu perfil</h1><p class="argos-lead">Consulte seus dados de conta, grupos e permissões efetivas.</p></div><div class="argos-page-header__actions"><a class="argos-button argos-button--secondary" href="scr-account-password-001.html">Alterar senha</a><a class="argos-button argos-button--primary" href="scr-account-edit-001.html">Editar perfil</a></div></header>
+        <div class="argos-stack">
+          <p class="argos-alert argos-alert--info">Perfil fictício para revisão visual. Grupos e permissões variam conforme os vínculos reais da conta.</p>
+          <section class="argos-card" aria-labelledby="identity-title"><header class="argos-card__header"><div><p class="argos-eyebrow">Conta de demonstração</p><h2 class="argos-card__title" id="identity-title" data-fixture-default="Alex Duarte Santos" data-fixture-long="Alexandre Duarte de Albuquerque Santos — perfil fictício de demonstração do Controle CFTV"></h2><p>@<span data-fixture-default="alex.santos" data-fixture-long="alexandre.duarte.de.albuquerque.santos.demo"></span></p></div><span class="argos-badge argos-badge--success">Ativa</span></header>
+            <div class="argos-card__body argos-stack"><div class="argos-two-column">
+              <section aria-labelledby="personal-title"><div class="argos-section-header"><h3 id="personal-title">Dados pessoais</h3></div><dl><dt>Nome</dt><dd data-fixture-default="Alex Duarte Santos" data-fixture-long="Alexandre Duarte de Albuquerque Santos — perfil fictício de demonstração"></dd><dt>E-mail</dt><dd data-fixture-default="alex.santos@example.invalid" data-fixture-long="alexandre.duarte.de.albuquerque.santos.operacoes@example.invalid"></dd><dt>Telefone</dt><dd data-fixture-default="+55 (21) 5555-0142" data-fixture-long="+55 (21) 5555-0142 · contato fictício para demonstração de texto extenso"></dd><dt>Ramal</dt><dd data-fixture-default="0142" data-fixture-long="0142 — ramal demonstrativo do setor de monitoramento central"></dd><dt>Cargo</dt><dd data-fixture-default="Analista de operações" data-fixture-long="Analista de operações de videomonitoramento e governança de equipamentos"></dd><dt>Setor</dt><dd data-fixture-default="Monitoramento central" data-fixture-long="Monitoramento central — operações do Terminal Internacional, desembarque e áreas de conexão"></dd></dl></section>
+              <section aria-labelledby="account-title"><div class="argos-section-header"><h3 id="account-title">Dados da conta</h3></div><dl><dt>Usuário</dt><dd data-fixture-default="alex.santos" data-fixture-long="alexandre.duarte.de.albuquerque.santos.demo"></dd><dt>Criada em</dt><dd>14/02/2024</dd><dt>Último acesso</dt><dd>28/09/2026 às 08:42</dd><dt>Situação</dt><dd><span class="argos-badge argos-badge--success">Ativa</span></dd><dt>Acesso ao Admin</dt><dd>Conta de staff fictícia · acesso conceitual herdado do Django Admin</dd></dl></section>
+            </div></div>
+          </section>
+          <div class="argos-two-column">
+            <section class="argos-card" aria-labelledby="groups-title"><header class="argos-card__header"><div><h2 class="argos-card__title" id="groups-title">Grupos</h2><p>Vínculos de acesso da conta.</p></div></header><div class="argos-card__body">
+              <div class="argos-chip-group" data-argos-state-variant="default"><span class="argos-badge argos-badge--neutral" data-fixture-default="Administrador ARGOS" data-fixture-long="Administrador ARGOS — grupo fictício de demonstração para administração operacional e gestão de contas"></span></div>
+              <div class="argos-state" data-argos-state-variant="empty"><h3 class="argos-state__title">Nenhum grupo associado</h3><p class="argos-state__copy">Esta conta não possui grupos vinculados.</p></div>
+            </div></section>
+            <section class="argos-card" aria-labelledby="permissions-title"><header class="argos-card__header"><div><h2 class="argos-card__title" id="permissions-title">Permissões efetivas</h2><p>Prévia fictícia; os vínculos da conta determinam o acesso.</p></div></header><div class="argos-card__body">
+              <div class="argos-chip-group" data-argos-state-variant="default"><span class="argos-badge argos-badge--info" data-fixture-default="Visualizar câmeras" data-fixture-long="Visualizar câmeras — permissão de consulta concedida pelo grupo Administrador ARGOS no escopo operacional"></span><span class="argos-badge argos-badge--info" data-fixture-default="Cadastrar câmeras" data-fixture-long="Cadastrar câmeras — permissão de inclusão concedida pelo grupo Administrador ARGOS no escopo operacional"></span><span class="argos-badge argos-badge--info" data-fixture-default="Alterar câmeras" data-fixture-long="Alterar câmeras — permissão de edição cadastral concedida pelo grupo Administrador ARGOS no escopo operacional"></span><span class="argos-badge argos-badge--info" data-fixture-default="Pode desativar câmera" data-fixture-long="Pode desativar câmera — permissão operacional configurada no grupo Administrador ARGOS"></span><span class="argos-badge argos-badge--info" data-fixture-default="Pode alterar situação operacional da câmera" data-fixture-long="Pode alterar situação operacional da câmera — permissão operacional configurada no grupo Administrador ARGOS"></span><span class="argos-badge argos-badge--info" data-fixture-default="Pode consultar eventos de auditoria" data-fixture-long="Pode consultar eventos de auditoria — permissão de consulta configurada no grupo Administrador ARGOS"></span><span class="argos-badge argos-badge--info" data-fixture-default="Pode consultar substituições de câmeras" data-fixture-long="Pode consultar substituições de câmeras — permissão de consulta configurada no grupo Administrador ARGOS"></span><span class="argos-badge argos-badge--info" data-fixture-default="Consultar perfis de usuário" data-fixture-long="Consultar perfis de usuário — permissão de gestão de contas configurada no grupo Administrador ARGOS"></span></div>
+              <div class="argos-state" data-argos-state-variant="empty"><h3 class="argos-state__title">Nenhuma permissão efetiva</h3><p class="argos-state__copy">As permissões são concedidas diretamente ou herdadas dos grupos da conta.</p></div>
+            </div></section>
+          </div>
+          <footer class="argos-page-header__actions"><a class="argos-button argos-button--secondary" href="../index.html#screen-scr-portal-001">Voltar ao início</a><a class="argos-button argos-button--secondary" href="../index.html#screen-scr-admin-index-001">Admin Django (herdado)</a><span class="argos-badge argos-badge--neutral">Acesso de staff demonstrativo</span></footer>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

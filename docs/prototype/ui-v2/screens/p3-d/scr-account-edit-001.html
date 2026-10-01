@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="argos-ui-version" content="2.0.1">
+  <meta name="argos-screen-id" content="SCR-ACCOUNT-EDIT-001">
+  <meta name="argos-screen-family" content="PROFILE_ACCOUNT">
+  <meta name="argos-prototype-status" content="TECHNICAL_READY_FOR_REVIEW">
+  <title>Editar perfil — ARGOS</title>
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/tokens.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/base.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/components.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/patterns.css">
+  <script src="../harness.js" defer></script>
+  <script src="p3-d.js" defer></script>
+</head>
+<body>
+  <a class="argos-skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="argos-docs-layout">
+    <aside class="argos-docs-sidebar">
+      <a class="argos-brand" href="../index.html" aria-label="ARGOS — início do protótipo"><img src="../../style-lab/argos-icon.svg" alt="" width="34" height="34"><span><span class="argos-brand__name">ARGOS</span><span class="argos-brand__meta">Controle CFTV</span></span></a>
+      <nav class="argos-docs-nav" aria-label="Navegação principal"><span class="argos-docs-nav__group">Central operacional</span><a href="../index.html#screen-scr-portal-001">Início</a><a href="../index.html#screen-scr-dash-001">Dashboard</a><a href="../index.html#screen-scr-inv-001">Inventário</a><a href="../index.html#screen-scr-sub-list-001">Governança</a><a href="../index.html#screen-scr-event-list-001">Eventos</a><span class="argos-docs-nav__group">Conta</span><a href="scr-account-profile-001.html" aria-current="page">Meu perfil</a></nav>
+      <p class="argos-docs-sidebar__foot">Conta demonstrativa · dados fictícios</p>
+    </aside>
+    <div class="argos-docs-main">
+      <header class="argos-docs-topbar"><span>ARGOS / Conta / Editar perfil</span><span class="argos-badge argos-badge--info">Prévia UI V2</span></header>
+      <main class="argos-docs-content" id="main">
+        <header class="argos-page-header"><div class="argos-page-header__copy"><p class="argos-eyebrow">Conta e acesso</p><h1 class="argos-page-title">Editar perfil</h1><p class="argos-lead">Atualize seus dados pessoais e informações de contato.</p></div><div class="argos-page-header__actions"><a class="argos-button argos-button--secondary" href="scr-account-profile-001.html">Voltar ao perfil</a></div></header>
+        <div class="argos-stack">
+          <p class="argos-alert argos-alert--info">Protótipo de interface: os dados são fictícios e não serão enviados ou salvos.</p>
+          <section class="argos-alert argos-alert--danger" data-argos-state-variant="error" role="alert" aria-labelledby="profile-error-title" tabindex="-1"><div><h2 id="profile-error-title">Revise seus dados</h2><p>Alguns campos obrigatórios precisam de atenção.</p><ul><li><a href="#first-name">Informe o nome.</a></li><li><a href="#last-name">Informe o sobrenome.</a></li><li><a href="#email">Informe um endereço de e-mail válido.</a></li></ul></div></section>
+          <p class="argos-alert argos-alert--success" data-argos-state-variant="success" role="status">Prévia de sucesso: os dados do perfil foram atualizados apenas nesta demonstração; nada foi persistido.</p>
+          <form aria-label="Edição demonstrativa de perfil" novalidate><div class="argos-stack">
+            <section class="argos-card" aria-labelledby="personal-title"><header class="argos-card__header"><div><h2 class="argos-card__title" id="personal-title">Dados pessoais</h2><p>Nome e e-mail da conta.</p></div><span class="argos-badge argos-badge--neutral">Obrigatórios</span></header><div class="argos-card__body argos-stack">
+              <div class="argos-two-column">
+                <div class="argos-field"><label class="argos-field__label" for="first-name">Nome <span aria-hidden="true">*</span></label><input class="argos-input" id="first-name" name="first_name" required autocomplete="given-name" aria-describedby="first-name-help first-name-error" data-invalid-in-error data-focus-target data-fixture-default="Alex Duarte" data-fixture-long="Alexandre Duarte de Albuquerque"><span id="first-name-help">Informe seu nome.</span><span id="first-name-error" data-argos-state-variant="error" data-fixture-default="Informe o nome." data-fixture-long="Informe o nome completo. O valor precisa conter caracteres não vazios e será validado antes de qualquer alteração de conta."></span></div>
+                <div class="argos-field"><label class="argos-field__label" for="last-name">Sobrenome <span aria-hidden="true">*</span></label><input class="argos-input" id="last-name" name="last_name" required autocomplete="family-name" aria-describedby="last-name-help last-name-error" data-invalid-in-error data-fixture-default="Santos" data-fixture-long="Santos — nome fictício longo para conferir leitura e quebras na interface responsiva"><span id="last-name-help">Informe seu sobrenome.</span><span id="last-name-error" data-argos-state-variant="error" data-fixture-default="Informe o sobrenome." data-fixture-long="Informe o sobrenome. A validação desta mensagem é ilustrativa e não altera dados da conta."></span></div>
+                <div class="argos-field"><label class="argos-field__label" for="email">E-mail <span aria-hidden="true">*</span></label><input class="argos-input" id="email" name="email" type="email" required autocomplete="email" inputmode="email" aria-describedby="email-help email-error" data-invalid-in-error data-fixture-default="alex.santos@example.invalid" data-fixture-long="alexandre.duarte.de.albuquerque.santos.operacoes@example.invalid"><span id="email-help">Informe um endereço de e-mail de contato.</span><span id="email-error" data-argos-state-variant="error" data-fixture-default="Informe um endereço de e-mail válido." data-fixture-long="Informe um endereço de e-mail válido. Confirme também se o contato informado está completo e sem espaços extras."></span></div>
+              </div>
+              <section aria-labelledby="readonly-title"><div class="argos-section-header"><h3 id="readonly-title">Dados mantidos somente para consulta</h3></div><div class="argos-two-column">
+                <div class="argos-field"><label class="argos-field__label" for="username">Usuário</label><input class="argos-input" id="username" value="alex.santos" readonly aria-readonly="true"><span>O nome de usuário não pode ser alterado nesta tela.</span></div>
+                <div class="argos-field"><label class="argos-field__label" for="job-title">Cargo</label><input class="argos-input" id="job-title" value="Analista de operações" readonly aria-readonly="true" data-fixture-default="Analista de operações" data-fixture-long="Analista de operações de videomonitoramento e governança de equipamentos"><span>Informação de perfil somente leitura.</span></div>
+                <div class="argos-field"><label class="argos-field__label" for="sector">Setor</label><input class="argos-input" id="sector" value="Monitoramento central" readonly aria-readonly="true" data-fixture-default="Monitoramento central" data-fixture-long="Monitoramento central — operações do Terminal Internacional, desembarque e áreas de conexão"><span>Informação de perfil somente leitura.</span></div>
+              </div></section>
+            </div></section>
+            <section class="argos-card" aria-labelledby="contact-title"><header class="argos-card__header"><div><h2 class="argos-card__title" id="contact-title">Contato</h2><p>Informações opcionais para contato interno.</p></div><span class="argos-badge argos-badge--neutral">Opcionais</span></header><div class="argos-card__body"><div class="argos-two-column">
+              <div class="argos-field"><label class="argos-field__label" for="phone">Telefone</label><input class="argos-input" id="phone" name="telefone" type="tel" autocomplete="tel" inputmode="tel" placeholder="Telefone para contato" data-fixture-default="+55 (21) 5555-0142" data-fixture-long="+55 (21) 5555-0142 — contato fictício para demonstração de conteúdo extenso"></div>
+              <div class="argos-field"><label class="argos-field__label" for="extension">Ramal</label><input class="argos-input" id="extension" name="ramal" autocomplete="off" data-fixture-default="0142" data-fixture-long="0142 — ramal demonstrativo do setor de monitoramento central"></div>
+            </div></div><footer class="argos-card__footer"><a class="argos-button argos-button--secondary" href="scr-account-profile-001.html">Cancelar</a><div class="argos-inline"><span id="profile-save-feedback" class="argos-alert argos-alert--success" role="status" tabindex="-1" hidden></span><button class="argos-button argos-button--primary" type="button" data-demo-submit="profile-save-feedback" data-demo-message="Prévia de perfil salva. Nenhum dado foi enviado ou persistido.">Salvar alterações</button></div></footer></section>
+          </div></form>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
