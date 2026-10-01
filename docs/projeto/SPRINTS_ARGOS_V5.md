@@ -495,3 +495,21 @@ autorização explícita do usuário. Esta atividade documenta capacidades obser
 e fronteiras; não reordena silenciosamente IMG-04/MON-AVAIL-02, não autoriza
 implementação posterior e não substitui validação de produção. Próxima atividade
 de backend: adjudicação humana deste baseline antes de escolher implementação.
+
+## 18. BC-02 — fechamento de readiness contratual backend (2026-10-01)
+
+O [registro BC-02](contracts/backend/00_BACKEND_CONTRACT_REGISTRY.md) classifica
+20 contratos. O [DAG](contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md) define
+BC-AUTH como primeira slice Luna; waves 2–6 incluem fundamentos, adapters,
+diagnóstico, captura e worker com ownership sem colisão. A validação local
+integrada vem depois, e os contratos PROD-* permanecem em gate de ambiente.
+BC-02 é documental: nenhum código, migration, câmera, rede, UI, commit ou push
+é executado por este checkpoint. Cada slice requer autorização própria.
+
+```text
+BC_02_STATUS = CONTRACT READINESS CLOSED / DOCUMENTARY
+FIRST_LUNA_SLICE = BC-AUTH
+IMPLEMENTATION_AUTHORIZED_BY_SPRINT_MAP = NO
+PRODUCTION_VALIDATION = PENDING
+UI_P5 = PARALLEL / OWN GATES
+```

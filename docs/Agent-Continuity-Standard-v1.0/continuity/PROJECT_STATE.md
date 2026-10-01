@@ -2185,3 +2185,54 @@ O trabalho não alterou backend, schema, migrations, infraestrutura ou UI. O
 commit `7b0135f0e9911e6a03f1a297e606d848eaa44533` foi enviado a `origin/master`.
 Este checkpoint reconcilia o estado anterior à autorização; o HEAD final e a
 limpeza do worktree são verificados diretamente no Git após sua publicação.
+
+## 41. BC-02 — fechamento de readiness contratual backend (2026-10-01)
+
+```text
+ACTIVITY = BC-02 — CONTRACT READINESS CLOSURE
+BC-02_STATUS = DOCUMENTARY CONTRACT CLOSURE / LOCAL QUEUE DEFINED
+ACTIVITY_COMPLETION_PERCENT = 100% / documentary scope
+ACTIVITY_COMPLETE = YES / BC-02 contracts, DAG, acceptance, ownership and continuity
+BASELINE_AT_ACTIVITY_START = 2ab1c8a05bdc3e541c34e15a7c2931eb1137459f
+BRANCH_AT_ACTIVITY_START = master
+UPSTREAM_AT_ACTIVITY_START = origin/master
+DIVERGENCE_AT_ACTIVITY_START = 0 / 0
+WORKTREE_AT_ACTIVITY_START = CLEAN
+CONTRACT_READINESS = LOCAL CONTRACTS CLOSED; ENVIRONMENT VALIDATION SEPARATE
+IMPLEMENTATION_READY_CONTRACTS = BC-AUTH; CAM-INT-01; CAM-INT-02; MON-OBS
+IMPLEMENTATION_READY_ENV_VALIDATION_PENDING = CAM-INT-03; CAM-INT-04;
+    CAM-INT-05; CAM-INT-06; CAM-INT-07; CAM-HEALTH; MON-WORKER; IMG-CAP
+ALREADY_IMPLEMENTED_LOCAL_CORE = MON-AV; MON-PROBE; MON-REC; MON-OWN; MON-HIST
+PRODUCTION_ONLY_CONTRACTS = PROD-PERSIST; PROD-TOPO; PROD-CAP
+BLOCKED_HUMAN_DECISION = NONE for local implementation contract
+BACKEND_IMPLEMENTATION_ORDER = docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md
+FIRST_LUNA_SLICE = BC-AUTH
+WAVES = 1 BC-AUTH; 2 CAM-INT-01/CAM-INT-07/MON-OBS; 3 CAM-INT-02 then
+        CAM-INT-06; 4 CAM-INT-03/CAM-INT-04; 5 CAM-INT-05/CAM-HEALTH;
+        6 IMG-CAP/MON-WORKER; 7 integrated local validation; 8 production gate
+DEFAULT_IMPLEMENTER = LUNA
+SOL_ESCALATION_POLICY = only material contract/ADR contradiction, missing
+                        state/schema, impossible acceptance or scope expansion
+RUNTIME_IMPLEMENTATION = NO
+UI_IMPLEMENTATION = NO
+MIGRATIONS_CREATED = NO
+REAL_CAMERA_ACCESS = NO
+NETWORK_HOMOLOGATION = NO
+SECURITY_REMEDIATION = DEFERRED_TO_FINAL_SECURITY_GATE
+IMPLEMENTATION_AUTHORIZED_BY_BC02_DOCUMENTS = NO
+COMMIT = NO
+PUSH = NO
+PROJECT_STATE_UPDATE = PASS / BC-02 snapshot recorded and links checked
+DOCUMENT_QUALITY_GATE = PASS / 20 classifications; ready acceptance; migrations;
+                        ownership; dependency graph; git diff --check
+```
+
+BC-02 fecha quatro perfis vinculantes e o fluxo técnico RTSP/credencial,
+health A/B/C/D, teste manual isolado, adapter HTTP, policy de destino,
+worker local, observabilidade e captura desacoplada. O readiness local não
+prova câmera/rede reais, GStreamer/codecs disponíveis, PostgreSQL, storage
+produtivo, multi-worker ou capacidade. A ordem e o ownership estão no novo
+documento de execução; o registro BC-REG contém a classificação de todos os
+20 contratos. A publicação Git e a autorização de cada slice são atividades
+posteriores. `PROJECT_STATE_UPDATE = PASS` para o snapshot documental BC-02;
+isso não declara readiness de produção nem fechamento de segurança.

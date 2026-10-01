@@ -423,3 +423,22 @@ Os registros históricos de P2/P3-0 permanecem inalterados na versão 2.0.0. Est
 
 BC-00 cria baseline documental, não implementação nem autorização de acesso a
 câmera. Estado e fronteiras não homologadas estão no registro do backend.
+
+## 18. BC-02 — readiness de implementação local backend (2026-10-01)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/contracts/backend/00_BACKEND_CONTRACT_REGISTRY.md` | Índice e classificação final dos 20 contratos | CURRENT / BC-02 overlay sobre BC-00 |
+| `docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md` | DAG, waves, ownership, migrations e primeira slice Luna | CURRENT / BC-02 |
+| `docs/projeto/contracts/backend/01_ACCESS_ROLES_AUTHORIZATION_CONTRACT.md` | Quatro grupos vinculantes e matriz de permissões | CURRENT / BC-02; substitui matriz de três grupos BC-00 |
+| `docs/governanca/GOVERNANCA_CAMERAS.md` | Governança operacional das câmeras e quatro perfis | CURRENT / BC-02 alinhado ao contrato BC-AUTH |
+| `docs/projeto/contracts/backend/camera/` | Profile, credencial, RTSP/HTTP, A-D, vendor e policy | CURRENT / BC-02 local; validação real pendente |
+| `docs/projeto/contracts/backend/monitoring/` | Core local e runtime/observabilidade novos | CURRENT / BC-02; produção pendente |
+| `docs/projeto/contracts/backend/images/IMAGE_CAPTURE_INTEGRATION_CONTRACT.md` | Job de captura separado e domínio de imagem canônico | CURRENT / BC-02; captura real pendente |
+| `docs/projeto/contracts/backend/production/` | Persistência, topologia e capacidade | CURRENT / PRODUCTION_ONLY |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 41 | Snapshot BC-02 | CURRENT / checkpoint documental não publicado |
+
+BC-02 não implementa runtime nem autoriza câmera, homologação, LIVE, commit
+ou push. O domínio de imagem completo continua em
+`docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`. A track UI P5 mantém gates
+próprios; apenas os pontos de integração backend constam na ordem BC-02.

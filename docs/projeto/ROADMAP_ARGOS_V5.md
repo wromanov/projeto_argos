@@ -1598,3 +1598,30 @@ IMG04_MON_AVAIL_SEQUENCE = UNCHANGED / UNRESOLVED
 Detalhes de capabilities, decisões abertas e gates pertencem ao registro e aos
 contratos especializados. A criação documental não escolhe tecnologia de
 worker, storage, banco ou protocolo universal.
+
+## 21. Readiness contratual do backend — BC-02 (2026-10-01)
+
+BC-02 adjudica a arquitetura **local** necessária para implementar os
+contratos BC-00 por slices Luna. Quatro grupos, RTSP informado por
+Técnico/Admin sem segredo na URI, health A/B/C/D com ONLINE somente após D
+PASS confirmado, teste manual isolado, policy de destino, credenciais,
+adapters, worker e captura têm critérios objetivos nos contratos. A ordem,
+ownership, migrations esperadas e waves constam em
+`docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md`; primeira
+slice candidata é BC-AUTH. O registro BC-REG traz a classificação final.
+
+```text
+BC_02 = DOCUMENTARY CONTRACT READINESS CLOSURE
+LOCAL_IMPLEMENTATION_READY = YES / per contract and dependency wave
+BACKEND_IMPLEMENTATION_AUTHORIZED_BY_THIS_DOCUMENT = NO
+REAL_CAMERA_AND_NETWORK_VALIDATION = PENDING
+POSTGRESQL_AND_PRODUCTION_VALIDATION = PENDING
+SECURITY_REMEDIATION = DEFERRED_TO_FINAL_SECURITY_GATE
+UI_TRACK = P5 parallel under its own gates
+```
+
+Este checkpoint substitui `NEXT_BACKEND_ACTIVITY = human adjudication of
+BC-00` como próximo passo operacional do trecho BC-00; implementação,
+integração e publicação exigem suas autorizações próprias. A sequência entre
+IMG-04 e MON-AVAIL-02 registrada antes de BC-02 não é reescrita como fato
+histórico; a fila técnica BC-02 governa as novas slices contratuais locais.
