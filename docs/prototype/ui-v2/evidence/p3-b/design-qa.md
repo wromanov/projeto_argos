@@ -1,28 +1,70 @@
-# P3-B — design-qa
+# P3-B — Design QA final
 
-**Fonte visual:** `docs/prototype/ui-v2/style-lab/screenshots/argos-style-c.png` (ARGOS Hybrid; 1425×1395 px).
-**Implementações:** `SCR-MON-HISTORY-001`, `SCR-SUB-LIST-001`, `SCR-SUB-DETAIL-001`, `SCR-SUB-CAMERA-001`.
-**Viewports inspecionadas:** 1440×900 e 390×844 CSS px; capturas atuais ainda não persistidas no diretório canônico.
+**Atividade:** UI-V2-P3-B — Monitoring / Substitutions
+**Fonte visual:** direção C — ARGOS HYBRID; a composição aprovada das telas foi preservada.
+**Telas:** SCR-MON-HISTORY-001, SCR-SUB-LIST-001, SCR-SUB-DETAIL-001, SCR-SUB-CAMERA-001.
+**Design System:** 2.0.2.
+**Viewports:** 1440×900 e 390×844 CSS px, DPR 1.
+**Evidência:** 14 PNGs atuais em docs/prototype/ui-v2/evidence/screenshots/p3-b/; os quatro desktops 1440×900 default foram recapturados após a correção, e os dez mobiles validados foram reutilizados.
 
 ## Resultado
 
-**DESIGN_QA_COMPLETE = NO**
-**final result: blocked**
+PRODUCT_DESIGN_QA = PASS
+BLOCKING = NONE
+NON_BLOCKING = NONE
+KNOWN_SHARED = NONE
+USER_VISUAL_APPROVAL = PENDING
 
-A revisão visual no Browser do Codex mostrou linguagem visual coerente com a referência: sidebar azul-marinho, azul de seleção, canvas claro, cartões, tabelas, tipografia e chips. A Style Lab C fornece direção visual; não é um mock aprovado da composição P3-B. Os quatro defaults foram vistos em desktop e mobile. Estados funcionais e comportamento responsivo foram revalidados no DOM.
+A hierarquia de página, cartões, estados, navegação e tabelas permanecem coerentes com ARGOS HYBRID. Os vazios mostram zero registros; o stale preserva o último estado estável e comunica “Desconhecido” como estado efetivo. No mobile, o documento permanece na largura da viewport e tabelas largas mantêm rolagem horizontal própria. Identificadores longos quebram em separadores sem fragmentar palavras comuns. O detalhe histórico permanece claramente somente para consulta.
 
-O gate formal está bloqueado porque as capturas do Browser do Codex ficam em memória e não podem ser salvas como PNGs nos caminhos de evidência. A autorização para usar Playwright local foi concedida neste checkpoint. As capturas continuam pendentes porque a instrução de hoje é não iniciar nova QA. As imagens históricas do checkpoint são DS 2.0.0 e não são evidência válida do estado após a propagação.
+## Passos e saúde das telas
 
-## Comparação e findings
+1. **Histórico de monitoramento — saudável.** Default desktop/mobile, empty e stale foram capturados. No stale, “Desconhecido”, a evidência temporal e o último estado estável aparecem sem overflow global.
+2. **Histórico global de substituições — saudável.** Default desktop/mobile, empty e long foram capturados. Filtros permanecem rotulados; tabela conserva rolagem local e ações acessíveis.
+3. **Detalhe da substituição — saudável.** Default desktop/mobile e long foram capturados. O aviso de somente leitura é evidente e não há ações de edição ou exclusão.
+4. **Substituições por câmera — saudável.** Default desktop/mobile e empty foram capturados. O papel da câmera fica legível no registro; a página 2 também foi verificada funcionalmente.
 
-- **P0/P1:** nenhum observado nas vistas examinadas.
-- **P2:** nenhum desvio visual material observado nos defaults; a navegação do shell rola horizontalmente em mobile sem overflow do documento, e as tabelas usam sua própria rolagem horizontal.
-- **Correções concluídas durante QA:** contagem dos vazios de monitoramento e consulta por câmera ajustada para `0 registros`; nomes de paginação traduzidos e específicos em estados com e sem resultados.
-- **Acessibilidade relacionada ao visual:** foco de teclado visível (contorno de 3 px); campos e controles principais com pelo menos 44×44 CSS px; detalhes imutáveis sem ações de edição/exclusão.
+A cobertura completa por arquivo está em docs/prototype/ui-v2/evidence/p3-b/coverage.md.
 
-## Para fechar o gate
+## Findings
 
-1. Gerar e persistir as capturas atuais com os nomes e viewports definidos na cobertura P3-B; cobrir os estados aplicáveis e variantes longas.
-2. Confirmar zoom/escala e registrar dimensões CSS e pixels das capturas.
-3. Fazer a comparação lado a lado por tela/estado, registrar findings por prioridade e atualizar `final result` para `passed` ou manter `blocked` com razão objetiva.
-4. Só depois promover as quatro telas a `TECHNICAL_READY_FOR_REVIEW`; manter `USER_VISUAL_APPROVAL = PENDING` para a revisão humana.
+### BLOCKING
+
+Nenhum.
+
+### NON_BLOCKING
+
+P3B_REV_01 = RESOLVED. STALE_VISIBLE_DS_METADATA = RESOLVED: os quatro rodapés HTML agora exibem DS 2.0.2, consistente com os metadados e badges superiores. Nenhum finding não bloqueante permanece.
+
+### KNOWN_SHARED
+
+Nenhum finding compartilhado novo foi identificado.
+
+## Interação, teclado e evidências
+
+- Todas as ações de tabela disponíveis foram alcançadas por Tab; foco visível foi conferido.
+- Ao focar ações que começam fora da área visível, o scroll horizontal local revela a coluna correspondente.
+- Campos e ações da lista são alcançáveis; intervalo inválido marca ambos os campos e apresenta o erro.
+- O link “Ver registro” abre o detalhe correspondente; o detalhe continua sem mutações.
+- As imagens de estado long foram posicionadas sobre o conteúdo longo; as demais mostram o topo do respectivo estado. Todos os PNGs têm dimensões compatíveis com seus nomes.
+- Os quatro screenshots desktop foram recapturados a 1440×900; os dez mobile foram preservados e reutilizados.
+- No frame default, o footer está dentro do viewport apenas na captura SUB-CAMERA; nos outros três está abaixo da viewport e as capturas são pixel idênticas às versões anteriores. A versão 2.0.2 do rodapé foi confirmada no browser nas quatro superfícies.
+- PRIVACY_SANITY_CHECK = PASS: os 14 PNGs mostram somente conteúdo de demonstração; nenhum segredo ou dado pessoal real foi observado.
+- O detalhe não tem estado empty/error definido pelo fixture/harness; esse estado ficou fora da matriz.
+
+A avaliação é limitada ao protótipo estático local e às interações exercitadas. Não representa validação de backend, persistência ou conformidade WCAG completa. Não foram vistos erros de console/página, requests externos, métodos diferentes de GET ou escrita de persistência no navegador.
+
+## Prontidão
+
+DESIGN_SYSTEM_VERSION = 2.0.2
+TOP_BADGE = Design System 2.0.2
+FOOTER = DS 2.0.2
+VISIBLE_DS_METADATA_CONSISTENT = YES
+P3B_REV_01 = RESOLVED
+STALE_VISIBLE_DS_METADATA = RESOLVED
+BROWSER_REGRESSION_AFTER_FIX = PASS / 4 desktop surfaces; no overflow or console/page errors
+DESIGN_QA_COMPLETE = YES / PASS
+FAMILY_TECHNICAL_STATUS = PASS / READY_FOR_USER_VISUAL_REVIEW
+USER_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = PASS / família registrada nos relatórios P3-B; PROJECT_STATE.md root-owned não alterado
+NEXT_GATE = P3-B FINAL HUMAN VISUAL REVIEW
