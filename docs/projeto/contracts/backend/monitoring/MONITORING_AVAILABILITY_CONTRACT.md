@@ -4,6 +4,9 @@
 ID = MON-AV
 STATUS = ACTIVE / DOMAIN BASELINE
 SOURCE_AUTHORITY = ADR-020; ADR-019
+BC02_STATUS = ALREADY_IMPLEMENTED / LOCAL CORE
+IMPLEMENTATION_READY = NOT_APPLICABLE / no new standalone slice
+IMPLEMENTER_TARGET = LUNA for future integration
 ```
 
 ## Estado e escopo
@@ -21,3 +24,17 @@ Somente confirmação de evidência segundo política anti-flapping pode mudar o
 `EstadoMonitoramento` implementa estado, evidência útil, prazo, geração de configuração, streaks, versão de política, elegibilidade e ownership. Campos antigos `Camera.status`, `status_em` e `ultima_verificacao` coexistem no cadastro; não devem ser confundidos com produtor canônico do subsistema novo. Leitura canônica está em `MonitoringReadService`; browser consome estado conhecido e nunca executa probe.
 
 Captura de imagens não ocorre em primeira detecção, retorno a ONLINE ou evento de disponibilidade. Fonte: ADR-019/020; `cameras/models.py`, `cameras/monitoramento/read_service.py`.
+
+## BC-02 — limite da integração A-D
+
+O reducer/modelo local permanece. O adapter automático só entrega SUCCESS
+quando D MEDIA_DELIVERY PASS; uma falha manual A-D não passa pelo reducer.
+`MODEL_CHANGE = NONE`; `MIGRATION_REQUIRED = NO`; `EXPECTED_MODELS =
+EstadoMonitoramento existing`; `RELATIONSHIPS/CONSTRAINTS/INDEXES = existing`;
+`DATA_MIGRATION = NO`; `ROLLBACK_CONSIDERATION = preserve last stable state`.
+Ownership futuro: `cameras/monitoramento/confirmation.py` e
+`read_service.py`; testes `cameras/test_monitoramento_confirmation.py` e
+`test_monitoramento_read_service.py`; shared files somente na integração
+sequencial CAM-INT-05. Critério: D não confirmado não promove ONLINE; stale
+projeta UNKNOWN sem transição/indisponibilidade nova. Escalar a Sol se a
+nova integração exigir alterar estados estáveis de ADR-020.

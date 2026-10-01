@@ -3,6 +3,9 @@
 ```text
 ID = MON-HIST
 STATUS = ACTIVE / DOMAIN AND READ CONTRACT
+BC02_STATUS = ALREADY_IMPLEMENTED / LOCAL CORE
+IMPLEMENTATION_READY = NOT_APPLICABLE / no new standalone slice
+IMPLEMENTER_TARGET = LUNA for future integration
 ```
 
 ## Modelo histórico
@@ -18,3 +21,16 @@ Read service devolve projeção allowlisted, status/freshness/escopo e resumo de
 ## Retenção
 
 O contrato não fixa retenção/expurgo do histórico. Não excluir intervalo/transição automaticamente sem decisão de retenção, legal/operacional e governança. Fonte: ADR-020 §§8–9, 13; models `EstadoMonitoramento`, `TransicaoEstadoMonitoramento`, `Indisponibilidade`; migration 0011; `MonitoringReadService`.
+
+## BC-02 — semântica preservada
+
+`MODEL_CHANGE = NONE`; `MIGRATION_REQUIRED = NO`; `EXPECTED_MODELS =
+TransicaoEstadoMonitoramento/Indisponibilidade existing`; `RELATIONSHIPS/
+CONSTRAINTS/INDEXES = migration 0011`; `DATA_MIGRATION = NO`;
+`ROLLBACK_CONSIDERATION = preserve historical rows`. Ownership:
+`cameras/monitoramento/read_service.py`, `repository.py`; testes
+`cameras/test_monitoramento_indisponibilidade.py` e
+`test_monitoramento_read_service.py`; shared files com MON-WORKER integração
+sequencial. Critério: teste manual A-D não cria transição/intervalo; OFFLINE
+confirmado abre no máximo um intervalo e recuperação o fecha uma vez.
+Escalar a Sol se surgir política de retenção/expurgo fora do escopo.

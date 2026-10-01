@@ -4,6 +4,9 @@
 ID = MON-REC
 STATUS = ACTIVE / LOCAL FAILURE SEMANTICS
 MULTI_INSTANCE PRODUCTION = NOT VALIDATED
+BC02_STATUS = ALREADY_IMPLEMENTED / LOCAL CORE
+IMPLEMENTATION_READY = NOT_APPLICABLE / production validation later
+IMPLEMENTER_TARGET = LUNA for future integration
 ```
 
 ## Falha de tentativa e do processo
@@ -21,3 +24,16 @@ No restart, confirmação persistida inclui estado estável, streaks, última ob
 Idempotência, stale-generation CAS, fencing e cenários de restart foram exercitados localmente com SQLite/simulação, inclusive escala sintética de cerca de 2.300 ativos. Isso não comprova PostgreSQL, múltiplos processos, particionamento de rede ou falhas reais. Recovery distribuído precisa de validação específica no banco/topologia alvo.
 
 Referências: migrations `0010_estado_monitoramento.py`–`0012_monitoring_ownership_lease.py`; `repository.py`; evidência MON-08C/09 em `PROJECT_STATE.md`.
+
+## BC-02 — ownership e aceite preservados
+
+`MODEL_CHANGE = NONE`; `MIGRATION_REQUIRED = NO`; `EXPECTED_MODELS =
+EstadoMonitoramento/TransicaoEstadoMonitoramento/Indisponibilidade existing`;
+`RELATIONSHIPS/CONSTRAINTS/INDEXES = migrations 0010–0012`; `DATA_MIGRATION =
+NO`; `ROLLBACK_CONSIDERATION = preserve history and owner epoch`. Ownership:
+`cameras/monitoramento/repository.py`, `scheduler.py`; testes
+`cameras/test_monitoramento_mon08c.py`, `test_monitoramento_mon09c.py`;
+shared files com MON-WORKER, portanto integração sequencial. Critério:
+generation/owner antigo não escreve nem fecha intervalo de novo owner;
+restart não duplica transição. PostgreSQL/multi-worker exige validação futura.
+Escalar a Sol se o banco alvo invalidar atomic completion/fencing.

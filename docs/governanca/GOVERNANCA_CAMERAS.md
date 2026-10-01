@@ -24,11 +24,11 @@ O MAC é normalizado para `AA:BB:CC:DD:EE:FF` e é único quando informado. O no
 
 ## Permissões
 
-Monitoramento consulta inventário, atividades, eventos e substituições. Operação também cadastra/edita câmeras e atividades e executa transições/substituições. Administração recebe essas capacidades e a gestão de usuários, sem permissões de exclusão dos registros governados.
+Monitoramento consulta inventário, atividades, eventos, substituições e health resumido. Operador também cadastra/edita campos cadastrais permitidos, notas e atividades e executa transições/substituições; pode consultar URI RTSP sanitizada, sem alterá-la e sem ver username/password. Técnico recebe a operação técnica de câmera, incluindo RTSP, credenciais, reveal, diagnóstico, teste de conexão e monitoramento, sem administrar usuários, política global de rede ou sistema. Administrador recebe essas capacidades mais gestão de usuários/perfis/sistema, sem permissão de exclusão dos registros governados. A matriz Django detalhada e o status de implementação pertencem ao contrato `docs/projeto/contracts/backend/01_ACCESS_ROLES_AUTHORIZATION_CONTRACT.md`.
 
 ## Limitações atuais
 
-Esta sprint não armazena credenciais, configuração web ou RTSP; não testa streams, não cria alertas externos e não exclui fisicamente câmeras ou substituições. Localizações, fabricantes e modelos permanecem nos campos atuais do inventário.
+No checkout BC-02, ainda não há credenciais, configuração RTSP ou teste de streams implementados; BC-02 fechou apenas contratos para implementação posterior. Alertas externos e exclusão física de câmeras/substituições continuam fora deste checkpoint. Localizações, fabricantes e modelos permanecem nos campos atuais do inventário; firmware técnico será adicionado na slice CAM-INT-06.
 
 ## Auditoria
 

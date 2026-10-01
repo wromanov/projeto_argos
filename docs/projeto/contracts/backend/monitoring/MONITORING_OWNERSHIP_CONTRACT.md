@@ -4,6 +4,9 @@
 ID = MON-OWN
 STATUS = ACTIVE / LOCAL DATABASE CONTRACT
 PRODUCTION DISTRIBUTED OWNERSHIP = NOT VALIDATED
+BC02_STATUS = ALREADY_IMPLEMENTED / LOCAL CORE
+IMPLEMENTATION_READY = NOT_APPLICABLE / PostgreSQL validation later
+IMPLEMENTER_TARGET = LUNA for future integration
 ```
 
 ## Invariantes
@@ -19,3 +22,14 @@ Cada instância recebe service instance ID não secreto, claim por alvo, heartbe
 ## Limites
 
 O modelo e repository implementam lease/fencing em SQLite local; não há deployment multi-worker/multi-host homologado. Sem PostgreSQL, contenção concorrente real e processo operacional, não afirmar lock distribuído de produção. Fonte: migration 0012; `DjangoMonitoringRepository` e `DueScheduler`; ADR-021 §§5–6.
+
+## BC-02 — contrato de integração
+
+`MODEL_CHANGE = NONE`; `MIGRATION_REQUIRED = NO`; `EXPECTED_MODELS =
+EstadoMonitoramento existing`; `RELATIONSHIPS/CONSTRAINTS/INDEXES = migration
+0012`; `DATA_MIGRATION = NO`; `ROLLBACK_CONSIDERATION = never regress epoch`.
+Ownership: `cameras/monitoramento/repository.py`, `scheduler.py`; testes
+`cameras/test_monitoramento_mon09b.py`, `test_monitoramento_mon09c.py`;
+shared files com MON-WORKER. Critério: claim/release/completion sempre com
+owner+epoch; worker obsoleto não altera domínio. PostgreSQL real permanece
+validação externa. Escalar a Sol se concorrência real exigir alterar fencing.

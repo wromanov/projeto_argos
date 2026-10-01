@@ -7,6 +7,8 @@ REPOSITORY_BASELINE = 38db46b2335ac8c1ce47207b3ae015388d839d5f
 SCOPE = backend contracts; documentation only
 IMPLEMENTATION_AUTHORIZED = NO
 LIVE_AUTHORIZED = NO
+BC02_STATUS = CONTRACT READINESS CLOSED / LOCAL IMPLEMENTATION QUEUE
+BC02_ORDER = docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md
 ```
 
 ## Propósito e precedência
@@ -50,3 +52,57 @@ Este registro localiza os contratos do backend e define suas fronteiras. Ele nã
 ## Limite de autoridade
 
 Este baseline documental não autoriza migrations, mudança de schema, adapters reais, acesso a câmeras, provisionamento de segredos, deploy, homologação, LIVE, commit ou push. Cada decisão técnica que exceda invariantes já aprovados requer autoridade própria e validação no ambiente correspondente.
+
+## BC-02 — classificação final da fila local
+
+O pedido humano BC-02 adjudicou quatro perfis (`Monitoramento`, `Operador`,
+`Técnico`, `Administrador`), URI RTSP informada por Técnico/Admin sem
+credenciais, discovery-first, transport AUTO, health A/B/C/D, ONLINE somente
+após D PASS confirmado e teste manual sem mutação do monitoramento. As
+extensões BC-02 em cada contrato substituem trechos de baseline BC-00 que
+descrevem três grupos, decisões técnicas abertas ou estados anteriores.
+BC-02 fecha decisões de **arquitetura local**; readiness não autoriza execução,
+câmera real, rede, homologação, produção, commit ou push.
+
+| Contrato | Classificação BC-02 | Pré-requisito / validação pendente |
+|---|---|---|
+| BC-AUTH | IMPLEMENTATION_READY | primeira slice; nenhum predecessor local |
+| CAM-INT-01 | IMPLEMENTATION_READY | BC-AUTH para gestão de perfil |
+| CAM-INT-02 | IMPLEMENTATION_READY | BC-AUTH e CAM-INT-01 schema; chave externa real só para operação |
+| CAM-INT-03 | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING | CAM-INT-01/02/06/07; câmera, codec e transporte reais |
+| CAM-INT-04 | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING | CAM-INT-01/02/06/07; endpoint/vendor real |
+| CAM-INT-05 | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING | CAM-INT-03; A-D/fake local; mídia real depois |
+| CAM-INT-06 | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING | CAM-INT-01; dados reais fabricante/firmware externos |
+| CAM-INT-07 | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING | CIDR, egress e rede reais por ambiente |
+| CAM-HEALTH | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING | CAM-INT-05; validação real depois |
+| MON-AV | ALREADY_IMPLEMENTED | core local; integração D e limiares reais depois |
+| MON-PROBE | ALREADY_IMPLEMENTED | core local; adapter real depois |
+| MON-WORKER | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING | MON-OBS, CAM-INT-05, core existente; deploy depois |
+| MON-REC | ALREADY_IMPLEMENTED | SQLite local; PostgreSQL/multi-worker depois |
+| MON-OWN | ALREADY_IMPLEMENTED | SQLite local; PostgreSQL/multi-worker depois |
+| MON-OBS | IMPLEMENTATION_READY | sink/port local; backend operacional depois |
+| MON-HIST | ALREADY_IMPLEMENTED | histórico local; retenção futura |
+| IMG-CAP | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING | CAM-INT-03/04, BC-AUTH; câmera/storage real depois |
+| PROD-PERSIST | PRODUCTION_ONLY | PostgreSQL, provider, backup/restore e storage |
+| PROD-TOPO | PRODUCTION_ONLY | supervisor, identidade, egress, réplicas |
+| PROD-CAP | PRODUCTION_ONLY | medição real e budgets aprovados |
+
+```text
+TOTAL_SPECIALIZED_CONTRACTS = 20
+IMPLEMENTATION_READY = 4
+IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING = 8
+ALREADY_IMPLEMENTED = 5
+PRODUCTION_ONLY = 3
+DEFERRED = 0 entire contracts; internal production/retention decisions remain
+BLOCKED_HUMAN_DECISION = 0 for local queue
+FIRST_LUNA_SLICE = BC-AUTH
+DEFAULT_IMPLEMENTER = LUNA
+SECURITY_REMEDIATION = DEFERRED_TO_FINAL_SECURITY_GATE
+```
+
+O DAG, waves, ownership, conflitos de migration, primeira slice e limites de
+ambiente estão em [BACKEND_IMPLEMENTATION_ORDER.md](BACKEND_IMPLEMENTATION_ORDER.md).
+Permissões e trust boundaries são invariantes imediatos, independentemente
+do Security Gate final. P5 pode avançar em sua track própria; a integração de
+RTSP, credential/reveal, teste manual e health A-D depende dos contratos
+backend indicados, sem bloquear P5-0 por inferência.
