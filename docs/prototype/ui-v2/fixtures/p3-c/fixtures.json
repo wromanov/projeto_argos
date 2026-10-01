@@ -1,0 +1,560 @@
+{
+  "default": {
+    "camera": {
+      "id": "CAM-ARG-042",
+      "name": "CFTV Terminal Leste — Corredor 4",
+      "asset": "PAT-ARG-1042",
+      "location": "Terminal Leste · Piso 2",
+      "tech": "Online",
+      "ip": "192.0.2.44"
+    },
+    "types": [
+      [
+        "AVARIA",
+        "Avaria identificada"
+      ],
+      [
+        "RETIRADA",
+        "Retirada do local"
+      ],
+      [
+        "ENVIO_CONSERTO",
+        "Enviada para conserto"
+      ],
+      [
+        "RETORNO_CONSERTO",
+        "Retorno do conserto"
+      ],
+      [
+        "REINSTALACAO",
+        "Reinstalação"
+      ],
+      [
+        "MANUTENCAO",
+        "Manutenção"
+      ],
+      [
+        "LIMPEZA",
+        "Limpeza"
+      ],
+      [
+        "REPOSICIONAMENTO",
+        "Reposicionamento"
+      ],
+      [
+        "SUBSTITUICAO",
+        "Substituição"
+      ],
+      [
+        "INSPECAO",
+        "Inspeção"
+      ],
+      [
+        "OUTRO",
+        "Outro"
+      ]
+    ],
+    "activityForm": {
+      "tipo": "OUTRO",
+      "titulo": "Verificação programada do equipamento",
+      "descricao": "Inspeção visual e conferência dos conectores.",
+      "ocorrida_em": "2026-09-28T09:30",
+      "responsavel": "Equipe de CFTV — turno da manhã"
+    },
+    "activityEdit": {
+      "tipo": "MANUTENCAO",
+      "titulo": "Manutenção preventiva concluída",
+      "descricao": "Conferência da fixação e limpeza externa do equipamento.",
+      "ocorrida_em": "2026-09-27T15:20",
+      "responsavel": "Equipe de infraestrutura",
+      "id": "ACT-ARG-2026-0042"
+    },
+    "activities": [
+      {
+        "id": "ACT-ARG-2026-0042",
+        "type": "Manutenção",
+        "title": "Manutenção preventiva concluída",
+        "description": "Fixação conferida e lente limpa; imagem validada no monitor local.",
+        "occurred": "28/09/2026 09:30",
+        "responsible": "Equipe de infraestrutura",
+        "created": "28/09/2026 09:42",
+        "user": "operador.demo"
+      },
+      {
+        "id": "ACT-ARG-2026-0039",
+        "type": "Inspeção",
+        "title": "Inspeção visual do suporte",
+        "description": "Sem folgas aparentes no suporte da câmera.",
+        "occurred": "26/09/2026 14:15",
+        "responsible": "Equipe de CFTV",
+        "created": "26/09/2026 14:31",
+        "user": "operador.demo"
+      },
+      {
+        "id": "ACT-ARG-2026-0035",
+        "type": "Limpeza",
+        "title": "Limpeza programada",
+        "description": "Cúpula limpa durante a rotina de manutenção.",
+        "occurred": "23/09/2026 08:05",
+        "responsible": "Turno da manhã",
+        "created": "23/09/2026 08:22",
+        "user": "operador.demo"
+      },
+      {
+        "id": "ACT-ARG-2026-0031",
+        "type": "Avaria identificada",
+        "title": "Imagem com oscilação",
+        "description": "Oscilação observada durante a inspeção; encaminhada para análise.",
+        "occurred": "19/09/2026 11:48",
+        "responsible": "Equipe de CFTV",
+        "created": "19/09/2026 12:04",
+        "user": "operador.demo"
+      },
+      {
+        "id": "ACT-ARG-2026-0026",
+        "type": "Reposicionamento",
+        "title": "Ajuste de enquadramento",
+        "description": "Enquadramento ajustado para cobrir a passagem lateral.",
+        "occurred": "14/09/2026 16:10",
+        "responsible": "Equipe de infraestrutura",
+        "created": "14/09/2026 16:26",
+        "user": "operador.demo"
+      }
+    ],
+    "replacement": [
+      [
+        "CAM-ARG-061",
+        "CFTV Reserva Norte — Estoque 12 · AX-4100"
+      ],
+      [
+        "CAM-ARG-078",
+        "CFTV Reserva Sul — Estoque 07 · DV-220"
+      ]
+    ],
+    "governance": {
+      "change": "Ajuste do destino operacional após revisão do ponto de instalação.",
+      "disable": "Equipamento retirado temporariamente para avaliação técnica.",
+      "reactivate": "Completude conferida para retorno ao destino selecionado.",
+      "reason": "Substituição física aprovada após diagnóstico do equipamento instalado.",
+      "notes": "Conferir o enquadramento no local após a instalação.",
+      "completeness": "Cadastro completo para retorno à operação.",
+      "missing": []
+    },
+    "categories": [
+      [
+        "AUTENTICACAO",
+        "Autenticação"
+      ],
+      [
+        "CAMERA",
+        "Câmera"
+      ],
+      [
+        "ATIVIDADE",
+        "Atividade"
+      ],
+      [
+        "PERFIL",
+        "Perfil"
+      ],
+      [
+        "SISTEMA",
+        "Sistema"
+      ]
+    ],
+    "origins": [
+      [
+        "WEB",
+        "Web"
+      ],
+      [
+        "ADMIN",
+        "Admin"
+      ],
+      [
+        "COMANDO",
+        "Comando"
+      ],
+      [
+        "SISTEMA",
+        "Sistema"
+      ]
+    ],
+    "events": [
+      {
+        "id": "EVT-ARG-20260928-0042",
+        "time": "28/09/2026 09:42:18",
+        "code": "atividade.criada",
+        "summary": "Atividade registrada para a câmera.",
+        "category": "Atividade",
+        "origin": "Web",
+        "user": "operador.demo",
+        "entity": "Atividade ACT-ARG-2026-0042"
+      },
+      {
+        "id": "EVT-ARG-20260928-0037",
+        "time": "28/09/2026 08:12:04",
+        "code": "camera.movida_estoque",
+        "summary": "Situação operacional alterada para Estoque.",
+        "category": "Câmera",
+        "origin": "Admin",
+        "user": "gestor.demo",
+        "entity": "Câmera CAM-ARG-042"
+      },
+      {
+        "id": "EVT-ARG-20260927-0191",
+        "time": "27/09/2026 17:06:51",
+        "code": "camera.substituida",
+        "summary": "Substituição física registrada; histórico preservado.",
+        "category": "Câmera",
+        "origin": "Web",
+        "user": "tecnico.demo",
+        "entity": "Substituição SUB-ARG-2026-0018"
+      },
+      {
+        "id": "EVT-ARG-20260927-0178",
+        "time": "27/09/2026 15:20:37",
+        "code": "atividade.atualizada",
+        "summary": "Registro de manutenção atualizado.",
+        "category": "Atividade",
+        "origin": "Web",
+        "user": "operador.demo",
+        "entity": "Atividade ACT-ARG-2026-0042"
+      },
+      {
+        "id": "EVT-ARG-20260926-0114",
+        "time": "26/09/2026 14:31:09",
+        "code": "camera.reativada",
+        "summary": "Câmera retornou ao destino Produção.",
+        "category": "Câmera",
+        "origin": "Comando",
+        "user": "gestor.demo",
+        "entity": "Câmera CAM-ARG-042"
+      },
+      {
+        "id": "EVT-ARG-20260925-0097",
+        "time": "25/09/2026 10:04:22",
+        "code": "perfil.atualizado",
+        "summary": "Preferências do perfil atualizadas.",
+        "category": "Perfil",
+        "origin": "Web",
+        "user": "operador.demo",
+        "entity": "Perfil de usuário"
+      },
+      {
+        "id": "EVT-ARG-20260924-0076",
+        "time": "24/09/2026 19:28:10",
+        "code": "autenticacao.login",
+        "summary": "Sessão iniciada no ARGOS.",
+        "category": "Autenticação",
+        "origin": "Web",
+        "user": "consulta.demo",
+        "entity": "Sessão"
+      },
+      {
+        "id": "EVT-ARG-20260923-0021",
+        "time": "23/09/2026 07:11:02",
+        "code": "sistema.rotina_concluida",
+        "summary": "Rotina administrativa concluída.",
+        "category": "Sistema",
+        "origin": "Sistema",
+        "user": "—",
+        "entity": "Rotina administrativa"
+      }
+    ],
+    "detail": {
+      "id": "EVT-ARG-20260928-0037",
+      "code": "camera.movida_estoque",
+      "summary": "Situação operacional alterada para Estoque após revisão do ponto de instalação.",
+      "category": "Câmera",
+      "origin": "Admin",
+      "time": "28/09/2026 08:12:04",
+      "user": "gestor.demo",
+      "userName": "Gestor de demonstração",
+      "cameraId": "CAM-ARG-042",
+      "cameraName": "CFTV Terminal Leste — Corredor 4",
+      "entityType": "Camera",
+      "entityId": "CAM-ARG-042",
+      "entity": "CFTV Terminal Leste — Corredor 4",
+      "ip": "192.0.2.44",
+      "changes": "Situação operacional: Produção → Estoque. O estado técnico é separado.",
+      "metadata": "Justificativa registrada conforme contrato de governança."
+    }
+  },
+  "long": {
+    "camera": {
+      "id": "CAM-ARG-TERMINAL-LESTE-PLATAFORMA-CORREDOR-QUATRO-PONTO-DE-OBSERVACAO-042",
+      "name": "CFTV Terminal Leste — plataforma de embarque, corredor de acesso secundário e área de conferência",
+      "asset": "PATRIMONIO-ARGOS-TERMINAL-LESTE-0042",
+      "location": "Terminal Leste · piso de embarque superior · corredor secundário próximo à área de conferência",
+      "tech": "Online",
+      "ip": "192.0.2.44"
+    },
+    "types": [
+      [
+        "AVARIA",
+        "Avaria identificada"
+      ],
+      [
+        "RETIRADA",
+        "Retirada do local"
+      ],
+      [
+        "ENVIO_CONSERTO",
+        "Enviada para conserto"
+      ],
+      [
+        "RETORNO_CONSERTO",
+        "Retorno do conserto"
+      ],
+      [
+        "REINSTALACAO",
+        "Reinstalação"
+      ],
+      [
+        "MANUTENCAO",
+        "Manutenção"
+      ],
+      [
+        "LIMPEZA",
+        "Limpeza"
+      ],
+      [
+        "REPOSICIONAMENTO",
+        "Reposicionamento"
+      ],
+      [
+        "SUBSTITUICAO",
+        "Substituição"
+      ],
+      [
+        "INSPECAO",
+        "Inspeção"
+      ],
+      [
+        "OUTRO",
+        "Outro"
+      ]
+    ],
+    "activityForm": {
+      "tipo": "INSPECAO",
+      "titulo": "Inspeção conjunta do conjunto óptico, ponto de fixação e rota de cabeamento no corredor secundário",
+      "descricao": "Conferência visual do equipamento, revisão da fixação e registro do encaminhamento necessário para a equipe de infraestrutura. Fixture longo para validar quebra em campos.",
+      "ocorrida_em": "2026-09-28T09:30",
+      "responsavel": "Equipe de infraestrutura predial e CFTV — turno operacional da manhã"
+    },
+    "activityEdit": {
+      "tipo": "MANUTENCAO",
+      "titulo": "Manutenção preventiva concluída após revisão do conjunto óptico",
+      "descricao": "A fixação, a lente e os conectores foram revisados. Registro extenso para validar leitura sem encobrir data, responsável ou ações.",
+      "ocorrida_em": "2026-09-27T15:20",
+      "responsavel": "Equipe de infraestrutura predial e CFTV — turno operacional da tarde",
+      "id": "ACT-ARG-2026-0042-LONGO"
+    },
+    "activities": [
+      {
+        "id": "ACT-ARG-2026-0042-LONGO",
+        "type": "Manutenção",
+        "title": "Manutenção preventiva concluída após revisão do conjunto óptico",
+        "description": "A fixação, a lente e os conectores foram revisados. Texto extenso para validar quebra de linha mantendo data e ações acessíveis.",
+        "occurred": "28/09/2026 09:30",
+        "responsible": "Equipe de infraestrutura predial e CFTV — turno operacional da manhã",
+        "created": "28/09/2026 09:42",
+        "user": "operador.demonstracao"
+      },
+      {
+        "id": "ACT-ARG-2026-0039-LONGO",
+        "type": "Inspeção",
+        "title": "Inspeção conjunta do ponto de fixação e rota de cabeamento",
+        "description": "Descrição longa para avaliar leitura desktop e rolagem contida em viewport móvel.",
+        "occurred": "26/09/2026 14:15",
+        "responsible": "Equipe de CFTV e infraestrutura predial — escala de fim de semana",
+        "created": "26/09/2026 14:31",
+        "user": "operador.demonstracao"
+      },
+      {
+        "id": "ACT-ARG-2026-0035-LONGO",
+        "type": "Limpeza",
+        "title": "Limpeza programada do conjunto de proteção óptica",
+        "description": "Rotina concluída na área de embarque superior, com conferência de retorno da imagem ao monitor local.",
+        "occurred": "23/09/2026 08:05",
+        "responsible": "Equipe de manutenção eletroeletrônica",
+        "created": "23/09/2026 08:22",
+        "user": "operador.demonstracao"
+      },
+      {
+        "id": "ACT-ARG-2026-0031-LONGO",
+        "type": "Avaria identificada",
+        "title": "Oscilação observada durante a inspeção periódica",
+        "description": "Fixture de descrição extensa sem converter cada ocorrência em cartão gigante.",
+        "occurred": "19/09/2026 11:48",
+        "responsible": "Equipe de CFTV — terminal leste",
+        "created": "19/09/2026 12:04",
+        "user": "operador.demonstracao"
+      }
+    ],
+    "replacement": [
+      [
+        "CAM-ARG-RESERVA-TERMINAL-LESTE-012",
+        "CFTV de reserva do Terminal Leste — armário de equipamentos Estoque 12 · AX-4100"
+      ],
+      [
+        "CAM-ARG-RESERVA-TERMINAL-NORTE-007",
+        "CFTV de reserva do Terminal Norte — armário de equipamentos Estoque 07 · DV-220"
+      ]
+    ],
+    "governance": {
+      "change": "Revisão do destino operacional após conferência do cadastro e do local pela equipe de infraestrutura predial.",
+      "disable": "Retirada temporária para avaliação técnica programada do conjunto óptico e do ponto de fixação.",
+      "reactivate": "Completude analisada para o destino selecionado; pendências cadastrais são apresentadas conceitualmente.",
+      "reason": "Substituição física aprovada após diagnóstico documentado do equipamento instalado no corredor secundário do terminal.",
+      "notes": "Após a troca, conferir o enquadramento no ponto de observação e a cobertura do corredor secundário.",
+      "completeness": "Cadastro incompleto para Produção — demonstração conceitual.",
+      "missing": [
+        "Fabricante",
+        "Modelo",
+        "Número de série"
+      ]
+    },
+    "categories": [
+      [
+        "AUTENTICACAO",
+        "Autenticação"
+      ],
+      [
+        "CAMERA",
+        "Câmera"
+      ],
+      [
+        "ATIVIDADE",
+        "Atividade"
+      ],
+      [
+        "PERFIL",
+        "Perfil"
+      ],
+      [
+        "SISTEMA",
+        "Sistema"
+      ]
+    ],
+    "origins": [
+      [
+        "WEB",
+        "Web"
+      ],
+      [
+        "ADMIN",
+        "Admin"
+      ],
+      [
+        "COMANDO",
+        "Comando"
+      ],
+      [
+        "SISTEMA",
+        "Sistema"
+      ]
+    ],
+    "events": [
+      {
+        "id": "EVT-ARG-20260928-0042-LONGO",
+        "time": "28/09/2026 09:42:18",
+        "code": "atividade.criada",
+        "summary": "Atividade registrada após inspeção do conjunto óptico, ponto de fixação e rota de cabeamento.",
+        "category": "Atividade",
+        "origin": "Web",
+        "user": "operador.demonstracao",
+        "entity": "Atividade ACT-ARG-2026-0042-LONGO"
+      },
+      {
+        "id": "EVT-ARG-20260928-0037-LONGO",
+        "time": "28/09/2026 08:12:04",
+        "code": "camera.movida_estoque",
+        "summary": "Situação alterada para Estoque após revisão de cadastro e local de instalação.",
+        "category": "Câmera",
+        "origin": "Admin",
+        "user": "gestor.demonstracao",
+        "entity": "Câmera CAM-ARG-TERMINAL-LESTE-PLATAFORMA-CORREDOR-QUATRO"
+      },
+      {
+        "id": "EVT-ARG-20260927-0191-LONGO",
+        "time": "27/09/2026 17:06:51",
+        "code": "camera.substituida",
+        "summary": "Substituição física registrada; relação e histórico preservados.",
+        "category": "Câmera",
+        "origin": "Web",
+        "user": "tecnico.demonstracao",
+        "entity": "Substituição SUB-ARG-2026-0018-TERMINAL-LESTE"
+      },
+      {
+        "id": "EVT-ARG-20260927-0178-LONGO",
+        "time": "27/09/2026 15:20:37",
+        "code": "atividade.atualizada",
+        "summary": "Atividade atualizada após inspeção do corredor de acesso secundário.",
+        "category": "Atividade",
+        "origin": "Web",
+        "user": "operador.demonstracao",
+        "entity": "Atividade ACT-ARG-2026-0042-LONGO"
+      },
+      {
+        "id": "EVT-ARG-20260926-0114-LONGO",
+        "time": "26/09/2026 14:31:09",
+        "code": "camera.reativada",
+        "summary": "Câmera retornou ao destino Produção após conferência de completude.",
+        "category": "Câmera",
+        "origin": "Comando",
+        "user": "gestor.demonstracao",
+        "entity": "Câmera CAM-ARG-TERMINAL-LESTE-PLATAFORMA-CORREDOR-QUATRO"
+      },
+      {
+        "id": "EVT-ARG-20260925-0097-LONGO",
+        "time": "25/09/2026 10:04:22",
+        "code": "perfil.atualizado",
+        "summary": "Preferências do perfil fictício atualizadas.",
+        "category": "Perfil",
+        "origin": "Web",
+        "user": "operador.demonstracao",
+        "entity": "Perfil de usuário"
+      },
+      {
+        "id": "EVT-ARG-20260924-0076-LONGO",
+        "time": "24/09/2026 19:28:10",
+        "code": "autenticacao.login",
+        "summary": "Sessão iniciada para usuário de demonstração.",
+        "category": "Autenticação",
+        "origin": "Web",
+        "user": "consulta.demonstracao",
+        "entity": "Sessão"
+      },
+      {
+        "id": "EVT-ARG-20260923-0021-LONGO",
+        "time": "23/09/2026 07:11:02",
+        "code": "sistema.rotina_concluida",
+        "summary": "Rotina administrativa de demonstração concluída.",
+        "category": "Sistema",
+        "origin": "Sistema",
+        "user": "—",
+        "entity": "Rotina administrativa"
+      }
+    ],
+    "detail": {
+      "id": "EVT-ARG-20260928-0037-LONGO",
+      "code": "camera.movida_estoque",
+      "summary": "Situação operacional alterada para Estoque após revisão do cadastro, conferência do ponto e validação conceitual dos campos necessários.",
+      "category": "Câmera",
+      "origin": "Admin",
+      "time": "28/09/2026 08:12:04",
+      "user": "gestor.demonstracao",
+      "userName": "Gestor de demonstração — equipe de infraestrutura predial",
+      "cameraId": "CAM-ARG-TERMINAL-LESTE-PLATAFORMA-CORREDOR-QUATRO-PONTO-DE-OBSERVACAO-042",
+      "cameraName": "CFTV Terminal Leste — plataforma de embarque, corredor de acesso secundário e área de conferência",
+      "entityType": "Camera",
+      "entityId": "CAM-ARG-TERMINAL-LESTE-PLATAFORMA-CORREDOR-QUATRO",
+      "entity": "CFTV Terminal Leste — ponto de observação junto à área de conferência do corredor secundário",
+      "ip": "192.0.2.44",
+      "changes": "Situação operacional: Produção → Estoque. O estado técnico permanece separado e não é alterado por esta demonstração.",
+      "metadata": "Justificativa fictícia mantida no evento de auditoria; nenhum dado foi persistido."
+    }
+  }
+}

@@ -1,0 +1,189 @@
+# P3-C — workstation handoff
+
+PROJECT = ARGOS
+TRACK = UI-V2-P3
+FAMILY = P3-C — Activities / Governance / Events-Audit
+DATE = 2026-09-28
+FAN_OUT_BASE_COMMIT = `9943e20d9b1e04159e067c72aa4dd70eab2bdb36`
+BRANCH = `codex/ui-v2-p3-c-governance-audit`
+WORKTREE_AT_SOURCE_MACHINE = `C:\Users\walacedelgado\PycharmProjects\projeto_argos_ui_v2_p3_c`
+HEAD_BEFORE_HANDOFF = `9943e20d9b1e04159e067c72aa4dd70eab2bdb36`
+DESIGN_SYSTEM_VERSION_USED = `2.0.0`
+STATUS_AT_PAUSE = `WIP — checkpoint for workstation handoff; awaiting human visual review`
+ACTIVITY_COMPLETION_PERCENT = `93%`
+COMPLETION_BASIS = all ten canonical IDs have a rendered P3-C composition or inherited edit mode, the original 84 viewport/state evidence captures, local state/responsive/accessibility baseline, and Product Design design-qa. The activity is not declared complete: human approval and root-state consolidation remain pending.
+
+## Revalidation continuation — Design System 2.0.1
+
+- Current technical status: PASS, ready for human visual review; activity completion remains unclaimed.
+- Authorized root patch 8121ed38cc15e1ff6e72cb46bbb2ca865100bce0 was cherry-picked as ad7926bce2f099230d1d4857723018aceafc329d onto the familiar branch. Shared [hidden] semantics now follow DS 2.0.1; the P3-C inline-display workaround was removed.
+- Post-patch Design QA and regression: PASS; 75 measurements across ten IDs, state/fixture isolation, governance success and selected audit filters. Desktop/mobile were checked at 1440×900 and 390×844.
+- New targeted evidence: 20 post-patch screen captures, three visual comparisons and post-ds-regression.json in docs/prototype/ui-v2/evidence/screenshots/p3-c/post-ds-2.0.1/. All 84 prior captures remain unchanged.
+- No production integration or operation was executed. Human visual approval remains PENDING; PROJECT_STATE_UPDATE = DEFERRED_NO_AUTHORITY; ACTIVITY_COMPLETE = NO.
+
+## Canonical ownership
+
+P3-0 harness and `SCREEN_COVERAGE.md` were read as authority. Ownership validated with no drift/conflicts. These ten IDs are P3-C:
+
+- `SCR-ACT-LIST-001`
+- `SCR-ACT-CREATE-001`
+- `SCR-ACT-EDIT-001` — inherited
+- `SCR-GOV-STATE-001`
+- `SCR-GOV-DISABLE-001`
+- `SCR-GOV-REACTIVATE-001`
+- `SCR-GOV-SUBSTITUTE-001`
+- `SCR-EVENT-LIST-001`
+- `SCR-EVENT-DETAIL-001`
+- `SCR-EVENT-CAMERA-001`
+
+`SCR-SUB-LIST-001`, `SCR-SUB-DETAIL-001`, and `SCR-SUB-CAMERA-001` remain P3-B-owned and are not implemented in this branch.
+
+## Screen-by-screen status
+
+| SCREEN_ID | State at pause | Implementation / state coverage | Responsive QA | Accessibility QA | Design QA | Evidence | Findings / next step |
+|---|---|---|---|---|---|---|---|
+| `SCR-ACT-LIST-001` | `TECHNICAL_READY_FOR_REVIEW` | History list; default, empty, long | PASS: four defaults; long desktop/mobile | PASS baseline | PASS at system level | `evidence/screenshots/p3-c/C1-activities/scr-act-list-001__*` | Await human visual review |
+| `SCR-ACT-CREATE-001` | `TECHNICAL_READY_FOR_REVIEW` | Fact-based form; default, focus, error, success, long | PASS: four defaults; long desktop/mobile | PASS; labels/errors and visible keyboard focus | PASS at system level | `evidence/screenshots/p3-c/C1-activities/scr-act-create-001__*` | Await human visual review |
+| `SCR-ACT-EDIT-001` | `INHERITED / TECHNICALLY_VALIDATED` | Same create composition with prefilled edit mode; default, selected, error, success, long | PASS: four defaults; long desktop/mobile | PASS baseline | PASS as inherited composition | `evidence/screenshots/p3-c/C1-activities/scr-act-edit-001__*` | No separate page; await review of inherited mode |
+| `SCR-GOV-STATE-001` | `TECHNICAL_READY_FOR_REVIEW` | Situation action; default, focus, error, success, long | PASS: four defaults; long desktop/mobile | PASS; visible keyboard focus | PASS at system level | `evidence/screenshots/p3-c/C2-governance/scr-gov-state-001__*` | Await human visual review |
+| `SCR-GOV-DISABLE-001` | `TECHNICAL_READY_FOR_REVIEW` | Deactivation with history preservation; default, focus, error, success, long | PASS: four defaults; long desktop/mobile | PASS; visible keyboard focus | PASS at system level | `evidence/screenshots/p3-c/C2-governance/scr-gov-disable-001__*` | Await human visual review |
+| `SCR-GOV-REACTIVATE-001` | `TECHNICAL_READY_FOR_REVIEW` | Completeness/destination context; default, focus, error, success, long | PASS: four defaults; long desktop/mobile | PASS; visible keyboard focus | PASS at system level | `evidence/screenshots/p3-c/C2-governance/scr-gov-reactivate-001__*` | Await human visual review |
+| `SCR-GOV-SUBSTITUTE-001` | `TECHNICAL_READY_FOR_REVIEW` | Source/replacement relationship, transfer and preservation; default, focus, error, success, long | PASS: four defaults; long desktop/mobile; long error also captured at mobile | PASS; visible keyboard focus | PASS at system level | `evidence/screenshots/p3-c/C2-governance/scr-gov-substitute-001__*` | Highest-risk screen; await explicit human review |
+| `SCR-EVENT-LIST-001` | `TECHNICAL_READY_FOR_REVIEW` | Global audit filters/table; default, selected, empty, error, long | PASS: four defaults; long desktop/mobile; local table scrolling | PASS baseline | PASS at system level | `evidence/screenshots/p3-c/C3-events-audit/scr-event-list-001__*` | Await human visual review |
+| `SCR-EVENT-DETAIL-001` | `TECHNICAL_READY_FOR_REVIEW` | Read-only event detail; default, long | PASS: four defaults; long desktop/mobile | PASS baseline | PASS at system level | `evidence/screenshots/p3-c/C3-events-audit/scr-event-detail-001__*` | Await human visual review |
+| `SCR-EVENT-CAMERA-001` | `TECHNICAL_READY_FOR_REVIEW` | Camera-scoped audit; default, empty, long | PASS: four defaults; long desktop/mobile; local table scrolling | PASS baseline | PASS at system level | `evidence/screenshots/p3-c/C3-events-audit/scr-event-camera-001__*` | Await human visual review |
+
+Accessibility status means the requested baseline only; it is not a WCAG conformance claim. Design QA compared the approved Style Lab C visual system with rendered P3-C pages; there is no screen-specific source mock. See `design-qa.md` for dimensions, comparison paths and scope limits.
+
+## Completed work
+
+- Nine screen HTML files plus `p3-c.js`; edit is an inherited mode of the activity form, not a separate page.
+- Deterministic fictional fixture: `docs/prototype/ui-v2/fixtures/p3-c/fixtures.json`.
+- Demonstrative local interactions only; no POST, API, database, Django business logic or persistence.
+- 84 final screenshots in `docs/prototype/ui-v2/evidence/screenshots/p3-c/`: C1 Activities (25), C2 Governance (37), C3 Events/Audit (22). All ten IDs have default captures at 1920×1080, 1440×900, 1366×768 and 390×844; long fixture captured at desktop/mobile.
+- Browser QA metrics: 84/84 captures, no failures, no wrong PNG dimensions, no global overflow, no missing labels, no unassociated `aria-invalid` controls, and accessible table regions. Five focus captures show the shared `:focus-visible` ring after actual keyboard input.
+- Product Design `$get-context` performed; local ARGOS contracts, current UI facts and Style Lab C were the design context. `$design-qa` completed with `final result: passed`; its source-target limitations and comparison evidence are in `design-qa.md`.
+- Family-local reports: `coverage.md`, `design-qa.md`; visual comparison artifacts are in this directory.
+- At the original handoff pause no shared/root, production or cross-family file had changed. The later authorized root patch above is the explicit exception; no production integration or unrelated family work was made.
+
+## Remaining work / next steps
+
+1. Human reviews the updated evidence grouped C1/C2/C3 and records any visual findings; do not set USER_APPROVED without explicit user decision.
+2. Root owner consolidates PROJECT_STATE.md when authorized. Until then PROJECT_STATE_UPDATE = DEFERRED_NO_AUTHORITY and this handoff does not claim ACTIVITY_COMPLETE=YES.
+
+## Blockers and dependencies
+
+- BLOCKERS = NONE for technical readiness; human visual approval is the remaining activity gate.
+- DEPENDENCIES = human visual review; root-owner consolidation of PROJECT_STATE.md.
+- DS_CHANGE_REQUESTS = NONE (no missing component; shared semantics fix was propagated from the authorized root patch).
+- ROOT_CHANGE_REQUESTS = ROOT-REQ-P3-C-001 RESOLVED: shared DS 2.0.1 rules preserve native [hidden]; P3-C no longer has a JavaScript workaround.
+- `CROSS_FAMILY_DEPENDENCIES = NONE` (cross-family references are static conceptual links only).
+- `USER_DECISIONS_PENDING = P3-C human visual approval`.
+- `PROJECT_STATE_UPDATE = DEFERRED_NO_AUTHORITY` (root-owned file).
+
+## Local preview and artifacts
+
+- `PREVIEW_MODE = HTTP_LOCAL`
+- `PREVIEW_ENTRYPOINT = docs/prototype/ui-v2/screens/index.html`
+- `FAMILY_PROTOTYPE_PATH = docs/prototype/ui-v2/screens/p3-c/`
+- `EVIDENCE_PATH = docs/prototype/ui-v2/evidence/screenshots/p3-c/`
+- `FIXTURE_PATHS = docs/prototype/ui-v2/fixtures/p3-c/fixtures.json`
+- No host, port or Windows absolute path is embedded as a prototype requirement.
+
+## Git safety and checkpoint
+
+The receiving workstation fetched the expected branch at ed7e2e5567b312b52c190484e2c174b26912415c; the authorized root patch is the current committed parent. The remaining checkpoint is restricted to P3-C-owned pages, reports and targeted evidence. Stage explicit family paths; push only codex/ui-v2-p3-c-governance-audit. No merge, rebase, force push or master update is authorized.
+
+## Revalidação direcionada pós-DS 2.0.2 — 2026-09-29
+
+- Recuperação: fast-forward de `ed7e2e5` até o checkpoint remoto `c26840e8c9c21b9105b7c3bb42c96bc5186c9227`; árvore limpa após recuperação.
+- Propagação: somente o patch raiz puro `8a480a50a338ef3961a242e9dce0ccaf09cdf49b`, aplicado como `f8cd8cea0e1f0cbd1ff072aafa341cbcf5c8c732`. O único conflito foi o `modify/delete` do DCR ROOT; ficou ausente em P3-C conforme a política pré-autorizada. Nenhum outro caminho foi resolvido manualmente.
+- O patch promove os arquivos compartilhados para Design System 2.0.2 e ajusta o wrapping das células/badges da tabela. Nenhum arquivo de implementação P3-C, backend ou funcionalidade de produção entrou no commit de propagação.
+- `DSCR-UIV2-002 = CONSUMED / TARGETED REGRESSION PASS` para `SCR-ACT-LIST-001`, `SCR-EVENT-LIST-001` e `SCR-EVENT-CAMERA-001`. Métricas e limites estão em `evidence/screenshots/p3-c/post-ds-2.0.2/post-ds-regression.md`.
+- Resultado técnico: sem overflow global; rolagem local funcional no mobile; nenhuma palavra ou badge com fragmentação destrutiva; nomes de ações/links acessíveis e foco por Tab alcança conteúdo e ações. Regressão desktop das tabelas PASS; spot checks de formulário Activities, ação Governance e detalhe Event sem regressão evidente.
+- O contrato ROOT DSCR-UIV2-002 registra a regressão cruzada 2.0.2 como PASS em 7/7 consumidores, incluindo os três consumidores P3-C; não houve alteração em P3-A, P3-B ou P3-D.
+- Sem erros de console observados, requests externos ou não-GET; o preview serviu apenas arquivos locais e fixtures fictícias via GET. Sem persistência ou mutação de produção.
+- Sem Node/npm e sem Playwright local; nada foi instalado. A conexão de browser permitiu inspeção DOM/medição, mas não persistiu capturas. `EVIDENCE_2_0_2_CAPTURE = DEFERRED_BY_WORKSTATION_CAPABILITY`; as 84 capturas originais, 20 capturas pós-2.0.1 e 3 comparativos (107 PNGs) foram preservados.
+- `FINDING =` os metadados e selos visíveis das nove páginas P3-C ainda dizem `2.0.1`, embora o CSS/harness compartilhado esteja em `2.0.2`. Isso não altera a regressão da tabela; manter registrado para adjudicação antes de aprovar a evidência visual.
+- `IMPLEMENTATION_REGRESSION = PASS`; `FAMILY_TECHNICAL_LOGIC = PASS`; `USER_VISUAL_APPROVAL = PENDING`; `PROJECT_STATE_UPDATE = DEFERRED_NO_AUTHORITY`; `ACTIVITY_COMPLETE = NO`.
+- Próximo gate: revisão visual humana P3-C e atualização de evidência se requerida; não repetir implementação completa.
+
+## Finalização residual DS 2.0.2 e preparação da revisão humana — 2026-09-30
+
+```text
+DESIGN_SYSTEM_VERSION = 2.0.2
+STALE_METADATA = RESOLVED
+P3_C_DS_2_0_2_REGRESSION = PASS
+PRODUCT_DESIGN_TARGETED_QA = PASS
+HUMAN_VISUAL_APPROVAL = PENDING
+NEXT_GATE = P3-C HUMAN VISUAL REVIEW
+PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+```
+
+Finding resolvido apenas nas nove páginas atuais P3-C, em meta tags e selos visíveis:
+
+- `docs/prototype/ui-v2/screens/p3-c/scr-act-create-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-act-list-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-event-camera-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-event-detail-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-event-list-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-gov-disable-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-gov-reactivate-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-gov-state-001.html`
+- `docs/prototype/ui-v2/screens/p3-c/scr-gov-substitute-001.html`
+
+`PRODUCT_DESIGN_TARGETED_QA = PASS`: preview corrente verificado nos arquétipos Activities lista/formulário, Governance estado/ação, Events lista/detalhe e tabela Events mobile (390×844). Sem finding visual acionável no escopo. O relatório pós-2.0.2 mantém a regressão técnica e os critérios de tabela previamente aprovados; nenhuma suíte histórica foi repetida.
+
+Pacote conciso e seleção das referências: [`HUMAN_REVIEW_PACKAGE.md`](HUMAN_REVIEW_PACKAGE.md). Os PNGs persistidos sob `post-ds-2.0.1/` permanecem históricos: o selo antigo aparece neles, então a pré-visualização HTML corrente é a referência para conferir `2.0.2`. A pré-visualização local foi deixada aberta no browser na região da tabela mobile; nenhuma captura PNG nova foi persistida.
+
+`SHARED_DS_CHANGED = NO`; `CSS_CHANGED = NO`; `JS_CHANGED = NO`; `COMPOSITION_CHANGED = NO`; `PROJECT_STATE_CHANGED = NO`; `SCREEN_COVERAGE_CHANGED = NO`.
+
+## Aprovação humana e adjudicação de fechamento — 2026-09-30
+
+Este é o estado autoritativo mais recente da família P3-C; os checkpoints anteriores que registram aprovação pendente são históricos e foram supersedidos por esta decisão explícita do usuário.
+
+```text
+DESIGN_SYSTEM_VERSION = 2.0.2
+HUMAN_VISUAL_APPROVAL = PASS
+USER_VISUAL_APPROVAL = PASS
+P3_C_VISUAL_REVIEW = PASS_WITH_NONBLOCKING_LIMITATIONS
+P3_C_OWNED_SCREENS = USER_APPROVED / FROZEN
+BLOCKING_FINDINGS = NONE
+P3_C_SPECIFIC_BLOCKING_FINDINGS = NONE
+SURFACE_REFINEMENT_REQUIRED = NO
+DESIGN_SYSTEM_CHANGE_REQUIRED = NO
+P3_C_DS_2_0_2_REGRESSION = PASS
+STALE_DS_2_0_1_CURRENT_METADATA = RESOLVED
+STALE_METADATA_STATUS = RESOLVED
+P3_C_COMPLETE = YES
+P3_C_STATUS = USER_APPROVED / READY_FOR_CLOSURE_CHECKPOINT
+REMAINING_P3_C_GATES = USER AUTHORIZATION FOR P3-C CLOSURE CHECKPOINT + PUSH
+PROJECT_STATE_UPDATE = DEFERRED_ROOT_OWNERSHIP
+COMMIT_PERFORMED = NO
+PUSH_PERFORMED = NO
+```
+
+### Surfaces e readiness
+
+Os dez IDs owned por P3-C estão aprovados/congelados. O contrato de herança permanece válido: `SCR-ACT-EDIT-001` usa a composição de `SCR-ACT-CREATE-001` em modo prefilled. A QA técnica por estado, responsividade e acessibilidade baseline está registrada acima e em `coverage.md` / `design-qa.md`.
+
+### Base representativa da aprovação
+
+A aprovação visual usou as seis capturas atuais DS 2.0.2 em `docs/prototype/ui-v2/evidence/screenshots/p3-c/review-2026-09-30/`: Activities lista e formulário, Governance estado/ação, Events lista e detalhe, e Events lista mobile. Não se afirma que cada um dos dez IDs recebeu uma nova captura nesta rodada; a revisão representativa é apoiada pela readiness técnica de toda a família e pelos contratos existentes.
+
+### Limitações preservadas
+
+```text
+MOBILE_DS_BADGE_NOT_IN_FRAME = EXPECTED / NONBLOCKING
+MOBILE_FULL_PAGE_COMPOSITION = NOT_REVALIDATED_BY_THIS_SPECIFIC_SCREENSHOT
+```
+
+A captura mobile foi enquadrada intencionalmente na tabela; o selo DS fica fora do frame. Essa imagem específica não revalida a composição mobile integral. O metadata corrente foi validado antes da captura. As diferenças documentadas de sidebar, breadcrumbs e conteúdo entre o shell P3 e a referência de sistema Style Lab C são intencionais; nenhum finding de shell bloqueante ou acionável permanece.
+
+### Ownership global e próximo gate
+
+`PROJECT_STATE.md` e a reconciliação global permanecem ROOT-owned e não foram alterados. Isso não bloqueia a adjudicação local `P3_C_COMPLETE = YES`, mas nenhuma declaração de conclusão global é feita aqui.
+
+`NEXT_GATE = USER AUTHORIZATION FOR P3-C CLOSURE CHECKPOINT + PUSH`
+
+Nenhum stage, commit, push, merge ou alteração de master foi realizado.
