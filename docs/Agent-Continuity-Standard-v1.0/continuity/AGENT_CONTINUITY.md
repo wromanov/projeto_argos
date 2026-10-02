@@ -1049,3 +1049,30 @@ respeitou o gate, não falhou. CAM-INT-04 tem alterações locais observadas ape
 por Git status; seu worktree não foi alterado nem revisado nesta atividade.
 As antigas conclusões READY_NOW de 20.14/20.15 foram supersedidas; R1 exige
 implementação, integração, validação e publicação antes de liberar consumers.
+
+### 20.17. CAM-INT-02-R1-INT-R1 — checkpoint integrado e validado localmente (2026-10-02)
+
+O estado operacional está na seção 50 de `PROJECT_STATE.md`. O commit-fonte
+imutável `80739e5fa961ecbb27d1fa42a9fbcbe02bc82add` foi integrado à `master`
+por fast-forward a partir de `795dc565da40c8ff087da97c1e55bdda5e15ace4` após
+verificação remota direta. Somente
+`cameras/integracao/credentials.py` e
+`cameras/test_camera_credential_resolution.py` foram integrados. Compilação,
+diff check, Django check, migration check, 33 testes focais e 116 testes de
+regressão integrada passaram. HUMAN_REVEAL e autorização externa permanecem
+separados da resolução runtime; versões inativas/revogadas, ausência,
+cross-camera e erros de decrypt falham sem fallback.
+
+```text
+CAM_INT_02_R1 = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL
+SOURCE_COMMIT = 80739e5fa961ecbb27d1fa42a9fbcbe02bc82add
+PROJECT_STATE_UPDATE = PASS / section 50
+PUBLICATION = PENDING
+CAM_INT_03 = R1 dependency satisfied locally; resume existing lane after publication and authorization revalidation
+CAM_INT_04 = R1 dependency satisfied locally; dependency reconciliation required before continuation
+OTHER_LANES_TOUCHED = NO
+```
+
+Não foram iniciadas as lanes CAM-INT-03/04, nem executados testes globais,
+SCALE, rede real, câmeras ou produção. A publicação e a verificação remota
+pós-push continuam como gates da atividade.

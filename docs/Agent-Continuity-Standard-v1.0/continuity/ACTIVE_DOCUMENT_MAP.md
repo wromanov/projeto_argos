@@ -496,3 +496,19 @@ Próxima atividade: implementar CAM-INT-02-R1 com Luna/High, mediante autoridade
 própria. CAM-INT-03/04 aguardam R1 implementada, integrada, validada e publicada;
 a antiga conclusão de readiness imediato após CAM-INT-07 é histórica.
 A reconciliação foi publicada no commit 5efc3fdaecbb83845e891206255c7556146bc3fb; as worktrees dos consumers não foram alteradas.
+
+## 22. CAM-INT-02-R1-INT-R1 — integração e validação local (2026-10-02)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 50 | Evidência factual de recuperação, fast-forward, validação local e DAG | CURRENT / publication pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.17 | Handoff de R1 integrada, invariantes e dependências dos consumers | CURRENT / publication pending |
+| `docs/projeto/contracts/backend/camera/CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md` | Boundary, API, autorização e critérios de aceite | CANONICAL / unchanged |
+| `docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md` | Authority do DAG e ownership | CURRENT / reread after local integration |
+
+R1 está implementada, integrada e validada localmente pelo commit-fonte
+`80739e5fa961ecbb27d1fa42a9fbcbe02bc82add`. A publicação ainda é necessária
+antes da retomada de CAM-INT-03 e CAM-INT-04. CAM-INT-03 deve retomar sua lane
+existente com a nova dependência após revalidar a autorização; CAM-INT-04 exige
+reconciliação de suas alterações locais antes de continuação. Nenhuma lane foi
+iniciada ou alterada nesta atividade.
