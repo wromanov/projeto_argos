@@ -104,4 +104,3 @@ class Migration(migrations.Migration):
 
 
 
-\n
