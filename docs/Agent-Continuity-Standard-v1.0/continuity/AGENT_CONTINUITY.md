@@ -947,3 +947,20 @@ ACTIVE_LANES = CAM-INT-07; MON-OBS; P5
 GLOBAL_CONTINUITY_OWNER = INTEGRATION_GATE
 DO_NOT_WAIT_FOR_FULL_WAVE_COMPLETION = YES
 ```
+
+### 20.12. CAM-INT-02-INT — integração e validação (2026-10-02)
+
+O checkpoint factual atualizado está em `PROJECT_STATE.md`, seção 46. CAM-INT-02
+foi integrado por merge controlado em `971793ef94d806b4165378b05f2060fdd35cdca2`;
+compilação, `manage.py check`, migration check, 13 testes focais e 124 testes de
+regressão passaram. O estado das lanes CAM-INT-07, MON-OBS e P5 permanece
+RUNNING e não foi alterado. O security final gate continua diferido.
+
+```text
+CAM_INT_02_STATUS = INTEGRATED / VALIDATED
+NEWLY_READY_CONTRACTS = CAM-INT-06 / execução requer autorização específica
+CAM_INT_03_04_STATUS = NOT_READY / CAM-INT-07 RUNNING; CAM-INT-06 pendente
+STATE_COMMIT = PENDING
+PUSH_AND_POST_PUSH_VERIFY = PENDING
+NEXT_IMPLEMENTATION_ACTION = CAM-INT-06 / READY_NOW, not started in CAM-INT-02-INT
+```

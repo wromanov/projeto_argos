@@ -2484,3 +2484,80 @@ MINIMAL_HANDOFF_PAYLOAD_CREATED = YES
 PROJECT_STATE_UPDATE = PASS / paths and cross-authority links checked; factual snapshot tied to DOCUMENTATION_BASE_SHA
 ACTIVITY_COMPLETE = YES
 ```
+
+## 46. CAM-INT-02 — integração e validação local (2026-10-02)
+
+```text
+ACTIVITY = CAM-INT-02-INT — INTEGRATION / PUBLICATION GATE
+STATUS = INTEGRATED / VALIDATED / STATE PUBLICATION PENDING
+SOURCE_BRANCH = codex/cam-int-02-camera-credentials
+SOURCE_COMMIT = e4a216722911b8434c68ceb882f6f4cf8e4c8ecc
+SOURCE_BASE_SHA = e7d9644ec405c6619fba4b2084d360cdde588b92
+TARGET_PRE_INTEGRATION_HEAD = 52829ca4928fd68fd090f65c42accc4fa8839806
+ORIGIN_PRE_INTEGRATION_HEAD = 52829ca4928fd68fd090f65c42accc4fa8839806
+INTEGRATION_METHOD = CONTROLLED_MERGE / NO CONFLICTS
+INTEGRATION_COMMIT = 971793ef94d806b4165378b05f2060fdd35cdca2
+CONTRACT_MODIFIED = NO
+OTHER_LANES_TOUCHED = NO
+```
+
+Validação integrada em `master`, usando o venv canônico:
+
+```text
+CRYPTOGRAPHY = 46.0.7 / import PASS
+STATIC_COMPILE = PASS
+MANAGE_CHECK = PASS
+MAKEMIGRATIONS_CHECK_DRY_RUN = PASS / No changes detected
+FOCUSED = cameras.test_camera_credentials / 13 PASS
+REGRESSION = 124 PASS / camera connection config, capabilities, authorization, audit, users
+SECURITY_INVARIANTS = PASS / covered by focused tests and integrated source checks
+ACCEPTANCE_RECHECK = PASS
+TESTS_NOT_RUN = global/SCALE
+SECURITY_FINAL_GATE = DEFERRED / MANDATORY
+```
+
+O gate integrado revalidou persistência cifrada; uma versão ativa; substituição
+atômica preservando a credencial anterior diante de falha; decrypt pela versão
+de chave registrada; falha fechada para chave ausente/inválida/desconhecida e
+ciphertext adulterado; permissões Técnico/Admin; bloqueio de Operador e
+Monitoramento; reveal explícito POST+CSRF com reautenticação, auditoria e
+`no-store`; revogação sem fallback; requisito de credencial ativa na mesma
+câmera; e ausência de segredo em logs, auditoria e respostas normais.
+
+Releitura de `BACKEND_IMPLEMENTATION_ORDER.md` após a integração:
+
+| Contrato | Estado | Dependências / motivo |
+|---|---|---|
+| CAM-INT-06 | READY_NOW para início local, sujeito à autorização própria | CAM-INT-01 integrado; Wave 3 serializa CAM-INT-06 após CAM-INT-02 por colisão de models/migrations. Validação de fabricante/firmware reais permanece externa. |
+| CAM-INT-03 | Ainda não READY_NOW | CAM-INT-07 segue RUNNING; CAM-INT-06 também ainda não implementada. |
+| CAM-INT-04 | Ainda não READY_NOW | CAM-INT-07 segue RUNNING; CAM-INT-06 também ainda não implementada. |
+| CAM-INT-05 / CAM-HEALTH | Ainda não READY_NOW | Dependem de CAM-INT-03 e CAM-INT-05, respectivamente. |
+| MON-WORKER | Ainda não READY_NOW | Dependências CAM-INT-05 e CAM-HEALTH não concluídas; MON-OBS segue RUNNING. |
+| IMG-CAP | Ainda não READY_NOW | Depende de CAM-INT-03/04, ainda não prontas. |
+
+```text
+NEWLY_READY_CONTRACTS = CAM-INT-06
+CAM-INT-06_IMPLEMENTATION_STARTED = NO / fora do escopo desta atividade
+```
+
+Status das lanes consultadas sem leitura de conteúdo nem alteração:
+
+```text
+CAM-INT-07 = RUNNING / codex/cam-int-07-target-hardening / base 80c458581944401510b62d1ba35febf7ddadc0d5
+MON-OBS = RUNNING / codex/mon-obs-observability / base 80c458581944401510b62d1ba35febf7ddadc0d5
+P5 = RUNNING / codex/ui-v2-p5-production / base 80c458581944401510b62d1ba35febf7ddadc0d5
+```
+
+O próximo checkpoint documental DOC-EXEC-01 já foi concluído e publicado no
+commit `52829ca4928fd68fd090f65c42accc4fa8839806`. O push desta integração e
+deste registro ainda deve ser confirmado pelo gate pós-push antes de declarar
+a atividade completa.
+
+```text
+PROJECT_STATE_UPDATE = PASS / integração, validação e DAG registrados
+STATE_COMMIT = PENDING
+PUSH = PENDING
+ACTIVITY_COMPLETE = NO / aguarda push e verificação remota
+NEXT_IMPLEMENTATION_ACTION = CAM-INT-06 / READY_NOW, autorização própria necessária
+NEXT_DOCUMENTATION_ACTIVITY = DOC-EXEC-01 COMPLETE
+```
