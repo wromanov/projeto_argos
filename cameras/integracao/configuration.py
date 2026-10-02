@@ -9,10 +9,10 @@ from django.db.models import F
 from django.utils import timezone
 
 from cameras.authorization import require_camera_permission
-from cameras.models import Camera, CameraCapabilityProfile, CameraConnectionConfig, EstadoMonitoramento, EventoAuditoria
+from cameras.models import Camera, CameraCapabilityProfile, CameraConnectionConfig, CameraCredentialVersion, EstadoMonitoramento, EventoAuditoria
 from .capabilities import compatibility_status, require_automatic_compatibility
 
-_CONFIG_FIELDS = {"profile", "enabled", "rtsp_uri", "http_endpoint_override", "http_port_override", "transport"}
+_CONFIG_FIELDS = {"profile", "enabled", "rtsp_uri", "http_endpoint_override", "http_port_override", "transport", "credential_id"}
 
 
 def _normalized_ipv4(value):
@@ -86,7 +86,17 @@ def validate_connection_config(config, *, environment_allowed_ports):
     if not profile.active:
         raise ValidationError({"profile": "Perfil inativo impede novas configurações."})
     if config.enabled and profile.credential_required:
-        raise ValidationError({"enabled": "Configuração exige vínculo de credencial, disponível na slice CAM-INT-02."})
+        credential = config.credential
+        if (
+            credential is None
+            or credential.camera_id != config.camera_id
+            or credential.state != "ACTIVE"
+            or credential.active_version_id is None
+            or credential.active_version.state != CameraCredentialVersion.State.ACTIVE
+        ):
+            raise ValidationError({"credential_id": "Configuração exige credencial ativa vinculada à mesma câmera."})
+    if config.credential_id is not None and config.credential.camera_id != config.camera_id:
+        raise ValidationError({"credential_id": "Credencial deve pertencer à mesma câmera."})
     _validate_relative_path(profile.default_path)
     config.full_clean(exclude=["camera"])
     if config.rtsp_uri:
