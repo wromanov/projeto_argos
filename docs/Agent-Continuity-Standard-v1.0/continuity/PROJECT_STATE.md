@@ -2871,9 +2871,9 @@ O próximo baseline de implementação R1 será o HEAD publicado após este chec
 
 ```text
 ACTIVITY = CAM-INT-02-R1-INT-R1 — COMMIT-BASED RECOVERY INTEGRATION / PUBLICATION
-ACTIVITY_STATUS = INTEGRATED / VALIDATED_LOCAL / PUBLICATION_PENDING
-ACTIVITY_COMPLETION_PERCENT = 85%
-COMPLETION_BASIS = source commit validated; fast-forward integrated; local static, Django, migration, focused and integrated regression gates passed; continuity recorded; publication and post-push remote verification remain
+ACTIVITY_STATUS = COMPLETE / PASS / PUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 100%
+COMPLETION_BASIS = source commit validated; fast-forward integrated; local static, Django, migration, focused and integrated regression gates passed; continuity recorded; push and direct post-push remote verification passed
 PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
 BRANCH = master
 MASTER_PRE_INTEGRATION_HEAD = 795dc565da40c8ff087da97c1e55bdda5e15ace4
@@ -2897,9 +2897,10 @@ DIFF_CHECK = PASS
 DJANGO_CHECK = PASS / no issues
 MIGRATION_CHECK = PASS / No changes detected
 FOCUSED_TEST_RESULT = PASS
-FOCUSED_TEST_COUNT = 33 / resolution, credential lifecycle/reveal and authorization
+FOCUSED_TEST_COUNT = 25 / 12 resolution and 13 credential lifecycle/reveal tests
+FOCUSED_TEST_INVOCATION_COUNT = 33 / focused command also included 8 authorization tests
 BC_AUTH_REVEAL_RESULT = PASS
-BC_AUTH_REVEAL_COUNT = 33 / included in focused integrated run
+BC_AUTH_REVEAL_COUNT = 21 / credential lifecycle/reveal and authorization tests; overlaps focused resolution command
 INTEGRATED_REGRESSION_RESULT = PASS
 INTEGRATED_REGRESSION_COUNT = 116
 ACTIVE_ONLY_INVARIANT = PASS / configured pointer and same-camera ACTIVE only; retired, revoked, absent, cross-camera and invalid references rejected
@@ -2913,31 +2914,43 @@ AC_R1_03 = PASS
 AC_R1_04 = PASS / shared public API proven through HTTP/RTSP consumer fakes; adapters remain outside this slice
 TESTS_NOT_RUN = global suite; CAM-INT-03/04 lane tests; real network/cameras; SCALE; production
 CAM_INT_02_R1_STATUS = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL
-CAM_INT_03_DEPENDENCY_STATUS = R1 implementation, integration and local validation satisfied; publication pending
-CAM_INT_03_NEXT_MODE = RESUME_EXISTING_LANE_WITH_NEW_DEPENDENCY / only after publication and separate authorization revalidation
-CAM_INT_04_DEPENDENCY_STATUS = R1 implementation, integration and local validation satisfied; publication pending; existing local changes unreviewed
+CAM_INT_03_DEPENDENCIES = CAM-INT-01; CAM-INT-02; CAM-INT-02-R1; CAM-INT-06; CAM-INT-07
+CAM_INT_03_DEPENDENCIES_SATISFIED = YES / all published
+CAM_INT_03_DEPENDENCY_STATUS = SATISFIED
+CAM_INT_03_NEXT_MODE = RESUME_EXISTING_LANE_WITH_NEW_DEPENDENCY / revalidate its separate authorization
+CAM_INT_04_DEPENDENCIES = CAM-INT-01; CAM-INT-02; CAM-INT-02-R1; CAM-INT-06; CAM-INT-07
+CAM_INT_04_DEPENDENCIES_SATISFIED = YES / all published
+CAM_INT_04_DEPENDENCY_STATUS = SATISFIED / existing local changes remain unreviewed
 CAM_INT_04_NEXT_MODE = DEPENDENCY_RECONCILIATION_REQUIRED
-DAG_RECHECK = PASS / BACKEND_IMPLEMENTATION_ORDER reread; CAM-INT-05 waits for CAM-INT-03; CAM-HEALTH waits for CAM-INT-05; MON-WORKER waits for MON-OBS, CAM-INT-05 and CAM-HEALTH; IMG-CAP waits for CAM-INT-03/04
+DAG_RECHECK = PASS / BACKEND_IMPLEMENTATION_ORDER reread after publication
+CAM_INT_05 = DEPENDENCIES CAM-INT-03; DEPENDENCIES_SATISFIED NO; CURRENT_CLASSIFICATION WAITING_DEPENDENCIES; NEXT_MODE WAITING_DEPENDENCIES; WHY CAM-INT-03 is not complete
+CAM_HEALTH = DEPENDENCIES CAM-INT-05; DEPENDENCIES_SATISFIED NO; CURRENT_CLASSIFICATION WAITING_DEPENDENCIES; NEXT_MODE WAITING_DEPENDENCIES; WHY CAM-INT-05 is not complete
+MON_WORKER = DEPENDENCIES MON-OBS, CAM-INT-05, CAM-HEALTH; DEPENDENCIES_SATISFIED NO; CURRENT_CLASSIFICATION WAITING_DEPENDENCIES; NEXT_MODE WAITING_DEPENDENCIES; WHY MON-OBS remains RUNNING and CAM-INT-05/CAM-HEALTH are incomplete
+IMG_CAP = DEPENDENCIES BC-AUTH, CAM-INT-03, CAM-INT-04, CAM-INT-06; DEPENDENCIES_SATISFIED NO; CURRENT_CLASSIFICATION WAITING_DEPENDENCIES; NEXT_MODE WAITING_DEPENDENCIES; WHY CAM-INT-03/04 are not complete
+NEWLY_READY_ACTIONS = CAM-INT-03 existing lane may resume with new dependency after authorization revalidation; CAM-INT-04 requires dependency reconciliation
 PROJECT_STATE_UPDATE = PASS / local evidence and DAG recorded
-STATE_COMMIT = THIS_CHECKPOINT / hash is the commit containing this section
-PUSH_RESULT = PENDING
-REMOTE_MASTER_POST_PUSH = PENDING
-FINAL_LOCAL_HEAD = 80739e5fa961ecbb27d1fa42a9fbcbe02bc82add before state commit
-FINAL_WORKTREE = CLEAN before state commit
-FINAL_STAGING = EMPTY before state commit
+STATE_COMMIT = 57532018dc942876cdd2d383d011576717833e3a / docs(state): record CAM-INT-02-R1 integration
+PUSH_RESULT = PASS / fast-forward origin/master from 795dc565da40c8ff087da97c1e55bdda5e15ace4
+REMOTE_MASTER_PRE_PUSH = 795dc565da40c8ff087da97c1e55bdda5e15ace4
+REMOTE_MASTER_POST_PUSH = 57532018dc942876cdd2d383d011576717833e3a
+LOCAL_HEAD_AT_POST_PUSH_VERIFICATION = 57532018dc942876cdd2d383d011576717833e3a
+LOCAL_ORIGIN_MASTER_REF = 57532018dc942876cdd2d383d011576717833e3a
+FINAL_REMOTE_ALIGNMENT = PASS / ls-remote equals local HEAD
+FINAL_WORKTREE = CLEAN
+FINAL_STAGING = EMPTY
 CONTRACT_MODIFIED = NO
 OTHER_LANES_TOUCHED = NO
 SOL_ESCALATION_REQUIRED = NO
-BLOCKERS = publication and post-push remote verification
-NEXT_IMPLEMENTATION_ACTION = publish validated R1, then resume CAM-INT-03 after revalidating its authorization; reconcile CAM-INT-04 local work before any continuation
-ACTIVITY_COMPLETE = NO / publication and final remote verification pending
+BLOCKERS = NONE for CAM-INT-02-R1 local integration/publication; camera, network, real environment and production validations remain out of scope
+NEXT_IMPLEMENTATION_ACTION = resume CAM-INT-03 existing lane after separate authorization revalidation; reconcile CAM-INT-04 local work before continuation
+ACTIVITY_COMPLETE = YES
 ```
 
-O remoto foi consultado diretamente por `git ls-remote`; antes da integração
-retornou a baseline esperada. A primeira tentativa limitada pelo ambiente não
-conectou, e a consulta autorizada com acesso de rede confirmou o mesmo SHA.
-R1 integrou somente os dois arquivos previstos. O contrato, schema, migrations,
-dependências e demais lanes não foram modificados. As validações locais não
-incluem câmera, rede real, SCALE ou produção. CAM-INT-03 e CAM-INT-04 não foram
-iniciadas nem alteradas; a conclusão do DAG permanece condicionada à publicação
-de R1, e CAM-INT-04 ainda requer reconciliação própria.
+O remoto foi consultado diretamente por `git ls-remote` antes e depois do push.
+Antes da publicação confirmou a baseline `795dc56`; após o push, remoto e HEAD
+local coincidiram em `5753201`. R1 integrou somente os dois arquivos previstos.
+O contrato, schema, migrations, dependências e demais lanes não foram
+modificados. As validações locais não incluem câmera, rede real, SCALE ou
+produção. CAM-INT-03 e CAM-INT-04 não foram iniciadas nem alteradas; o DAG as
+classifica, respectivamente, como retomada da lane existente com nova
+dependência e reconciliação de dependências.

@@ -1058,8 +1058,9 @@ por fast-forward a partir de `795dc565da40c8ff087da97c1e55bdda5e15ace4` após
 verificação remota direta. Somente
 `cameras/integracao/credentials.py` e
 `cameras/test_camera_credential_resolution.py` foram integrados. Compilação,
-diff check, Django check, migration check, 33 testes focais e 116 testes de
-regressão integrada passaram. HUMAN_REVEAL e autorização externa permanecem
+diff check, Django check, migration check, 25 testes focais de R1, 21 testes
+de regressão BC-AUTH/reveal e 116 testes de regressão integrada passaram.
+HUMAN_REVEAL e autorização externa permanecem
 separados da resolução runtime; versões inativas/revogadas, ausência,
 cross-camera e erros de decrypt falham sem fallback.
 
@@ -1067,12 +1068,13 @@ cross-camera e erros de decrypt falham sem fallback.
 CAM_INT_02_R1 = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL
 SOURCE_COMMIT = 80739e5fa961ecbb27d1fa42a9fbcbe02bc82add
 PROJECT_STATE_UPDATE = PASS / section 50
-PUBLICATION = PENDING
-CAM_INT_03 = R1 dependency satisfied locally; resume existing lane after publication and authorization revalidation
-CAM_INT_04 = R1 dependency satisfied locally; dependency reconciliation required before continuation
+PUBLICATION = PASS / origin/master == 57532018dc942876cdd2d383d011576717833e3a
+CAM_INT_03 = RESUME_EXISTING_LANE_WITH_NEW_DEPENDENCY / revalidate separate authorization
+CAM_INT_04 = DEPENDENCY_RECONCILIATION_REQUIRED / existing local changes remain unreviewed
 OTHER_LANES_TOUCHED = NO
 ```
 
 Não foram iniciadas as lanes CAM-INT-03/04, nem executados testes globais,
-SCALE, rede real, câmeras ou produção. A publicação e a verificação remota
-pós-push continuam como gates da atividade.
+SCALE, rede real, câmeras ou produção. O push e a verificação pós-push por
+`git ls-remote` passaram; `master` local e remoto coincidem em `5753201`.
+CAM-INT-03/04 permanecem lanes separadas e não foram retomadas nesta atividade.
