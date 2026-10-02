@@ -212,8 +212,3 @@ def resolve_connection_config(*, camera_id, environment_allowed_ports, automatic
         "config_version": config.config_version,
         "compatibility": status,
     }
-
-
-
-
-\n
