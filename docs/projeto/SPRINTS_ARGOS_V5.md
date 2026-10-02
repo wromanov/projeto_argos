@@ -513,3 +513,26 @@ IMPLEMENTATION_AUTHORIZED_BY_SPRINT_MAP = NO
 PRODUCTION_VALIDATION = PENDING
 UI_P5 = PARALLEL / OWN GATES
 ```
+
+## 19. Pipeline por contrato, lanes isoladas e integração controlada (2026-10-02)
+
+### Máquina de estado da slice
+
+```text
+NOT_STARTED -> READY -> RUNNING -> PASS_LOCAL -> SOURCE_CHECKPOINTED
+             -> INTEGRATING -> INTEGRATED -> VALIDATED -> PUBLISHED
+Exceções/saídas: BLOCKED | DEFERRED
+DEPENDENCY_SATISFIED = INTEGRATED + VALIDATED + PUBLISHED
+```
+
+O contrato/DAG pode especificar estado de dependência diferente. `PASS_LOCAL` isolado não satisfaz por padrão predecessor. Ciclo padrão: contrato READY; worktree/branch isolada com SHA conhecido; implementação; validação estática, testes focais e regressão relevante; PASS_LOCAL; adjudicação; source checkpoint; integration gate; validação integrada (incluindo migration/static quando aplicável); continuidade no gate de integração; state checkpoint; publicação autorizada; confirmar igualdade HEAD/origin e divergência 0/0; reler DAG e iniciar imediatamente sucessor READY_NOW autorizado. `git diff --check` é obrigatório. Validar primeiro testes focais e regressão pertinente; testes globais/scale requerem justificativa. Não alegar câmera/rede/PostgreSQL/produção sem execução real.
+
+### Worktrees, baselines e ownership
+
+`master` é a branch canônica de integração; implementar em `master` é proibido. Cada lane declara `ISOLATED_BRANCH`, `ISOLATED_WORKTREE`, `KNOWN_BASE_SHA`, `PRIMARY_FILES`, `SHARED_FILES`, `MIGRATION_OWNERSHIP` e `TEST_SURFACES`. Usar `codex/<slice-description>` e registrar caminhos locais apenas no snapshot, nunca como regra universal. Duas lanes não alteram simultaneamente o mesmo arquivo material sem estratégia explícita. Colisões e migrations compartilhadas são reconciliadas no integration gate/owner único.
+
+Uma lane pode terminar sobre baseline X mesmo se master avançar para Y: não reiniciar automaticamente. No gate, confirmar master atual, ownership e colisões; integrar sem perda, preferir fast-forward quando possível e permitido; merge controlado requer authority; nunca rebase/reset/cherry-pick por conveniência. Revalidar no estado integrado. Nenhuma slice paralela edita `PROJECT_STATE.md`, `ACTIVE_DOCUMENT_MAP.md`, roadmap ou sprints. `GLOBAL_CONTINUITY_OWNER = INTEGRATION_GATE`.
+
+### Git e continuidade
+
+Lane de implementação faz validação local e não publica por padrão. Após PASS_LOCAL, source checkpoint/commit depende de adjudicação e authority; push não é automático. Integration gate integra, valida, atualiza continuidade e publica somente com autorização apropriada. `PASS_LOCAL` pode fechar o trabalho técnico de uma lane sem alterar PROJECT_STATE. Fechamento formal exige `PROJECT_STATE_UPDATE = PASS`; nenhuma activity formal é `ACTIVITY_COMPLETE = YES` antes disso. Cada publicação dispara DAG recheck; não esperar wave inteira. Implementação backend e frontend P5 são paralelas quando dependências/ownership permitem.

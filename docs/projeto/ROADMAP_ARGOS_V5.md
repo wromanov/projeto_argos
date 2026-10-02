@@ -1625,3 +1625,18 @@ BC-00` como próximo passo operacional do trecho BC-00; implementação,
 integração e publicação exigem suas autorizações próprias. A sequência entre
 IMG-04 e MON-AVAIL-02 registrada antes de BC-02 não é reescrita como fato
 histórico; a fila técnica BC-02 governa as novas slices contratuais locais.
+
+## 22. Modelo operacional — entrega paralela orientada por contratos (2026-10-02)
+
+O programa ARGOS usa `CONTRACT-FIRST + DEPENDENCY-DRIVEN PIPELINE + PARALLEL ISOLATED LANES + CONTROLLED INTEGRATION + CONTINUITY-AT-INTEGRATION`. Contratos e authorities de produto definem comportamento e critérios; implementação pronta não concede autorização de execução.
+
+- Sol é roteado para arquitetura material, criação/reconciliação de contratos, gaps contratuais materiais e exceções arquiteturais. Luna é implementador padrão quando `CONTRACT = IMPLEMENTATION_READY`, dependências foram satisfeitas, critérios de aceite são objetivos e ownership está definido. Luna implementa o contrato; não o redesenha. Gap arquitetural material exige `STOP_AND_ESCALATE_TO_SOL`.
+- Backend e frontend/P5 podem avançar simultaneamente com ownership sem colisão e suas dependências atendidas. Frontend pode compor/apresentar capabilities existentes aprovadas; não inventa backend, endpoint ou estado funcional. Classificação UI: `READY_NOW`, `READY_WITH_EXISTING_BACKEND`, `WAITING_BACKEND_CAPABILITY`, `WAITING_VISUAL_APPROVAL`. P3-B permanece `WAITING_VISUAL_APPROVAL / HOLD` até evidência de mudança da authority; outras superfícies P5 aprovadas prosseguem sob suas próprias authorities.
+- Não aguardar uma wave inteira: após cada slice publicada, reavaliar imediatamente `BACKEND_IMPLEMENTATION_ORDER.md`; iniciar sucessor `READY_NOW` em lane isolada, mesmo com outras lanes anteriores em curso, sujeito à autorização própria da atividade.
+- Segurança de engenharia normal permanece obrigatória durante implementação. `FINAL_SECURITY_AND_VULNERABILITY_GATE` ocorre após implementação e validação integrada principal; remediation sucede o gate e exige verificação independente posterior. Gate final continua deferred/mandatory; esta regra não reabre campanha agora.
+
+```text
+CONTRACT BASELINE -> DEPENDENCY DAG -> BACKEND A / BACKEND B / FRONTEND
+                  -> CONTROLLED INTEGRATION GATES -> DAG RE-EVALUATION
+                  -> NEXT READY SLICE
+```

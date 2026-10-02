@@ -2385,3 +2385,102 @@ defaults/overrides, fallback, compatibilidade `UNVERIFIED` e bloqueio de
 execução automática sem evidência. Nenhum adapter de rede ou fluxo de produto
 foi adicionado. O estado de publicação será completado após push e fetch de
 verificação; não declarar a Wave 2 completa.
+
+## 45. DOC-EXEC-01 — pipeline paralelo e continuidade canônica (2026-10-02)
+
+```text
+ACTIVITY = DOC-EXEC-01 — PARALLEL PIPELINE & CONTINUITY CANONICALIZATION
+STATUS = DOCUMENTARY CHECKPOINT / PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+DOCUMENTATION_BASE_SHA = e7d9644ec405c6619fba4b2084d360cdde588b92
+MASTER_HEAD = e7d9644ec405c6619fba4b2084d360cdde588b92
+ORIGIN_MASTER = e7d9644ec405c6619fba4b2084d360cdde588b92
+DIVERGENCE = 0 / 0
+MASTER_WORKTREE = CLEAN BEFORE THIS DOCUMENTARY ACTIVITY
+STAGING = EMPTY
+FETCH_ORIGIN_PRUNE = PASS
+PROJECT_STATE_UPDATE = PASS
+```
+
+Estado atual observado antes desta edição (2/10/2026):
+
+```text
+CURRENT_COMPLETED = BC-00; BC-02; BC-AUTH; CAM-INT-01
+CURRENT_RUNNING = CAM-INT-07; MON-OBS; P5
+CURRENT_PASS_LOCAL = CAM-INT-02 / source checkpointed at e4a2167; integration pending
+PRIMARY_NEXT_ACTION = CAM-INT-02 source checkpoint -> integration gate -> integrated validation -> continuity -> authorized publication -> DAG recheck
+CAM_INT_02_BRANCH = codex/cam-int-02-camera-credentials
+CAM_INT_02_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_cam_int_02
+CAM_INT_02_HEAD = e4a216722911b8434c68ceb882f6f4cf8e4c8ecc
+CAM_INT_02_STATUS = CLEAN / source commit present
+CAM_INT_07_BRANCH = codex/cam-int-07-target-hardening
+CAM_INT_07_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_cam_int_07
+CAM_INT_07_BASE_SHA = 80c458581944401510b62d1ba35febf7ddadc0d5
+CAM_INT_07_STATUS = RUNNING / untracked implementation and test files observed
+MON_OBS_BRANCH = codex/mon-obs-observability
+MON_OBS_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_mon_obs
+MON_OBS_BASE_SHA = 80c458581944401510b62d1ba35febf7ddadc0d5
+MON_OBS_STATUS = RUNNING / modified implementation and untracked implementation/test files observed
+P5_BRANCH = codex/ui-v2-p5-production
+P5_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_ui_p5
+P5_BASE_SHA = 80c458581944401510b62d1ba35febf7ddadc0d5
+P5_STATUS = RUNNING / modified templates and untracked production CSS observed
+P3_B = WAITING_VISUAL_APPROVAL / HOLD
+DO_NOT_WAIT_FOR_FULL_WAVE_COMPLETION = YES
+SECURITY_FINAL_GATE = DEFERRED / MANDATORY
+```
+
+CAM-INT-07, MON-OBS e P5 têm alterações não commitadas observadas; não foram inspecionadas além do status por arquivo e seus conteúdos não foram avaliados. CAM-INT-02 worktree estava limpa e continha commit de source checkpoint. CAM-INT-01 passou de “publicação pendente” no checkpoint anterior para COMPLETE/PUBLISHED porque o HEAD factual `e7d9644` contém seu registro de integração. SHA e igualdade remota foram atualizados após `git fetch origin --prune`. O repo principal estava limpo antes desta edição; staging permanece vazio.
+
+### Regra durável do pipeline
+
+```text
+EXECUTION_MODEL = CONTRACT_FIRST_PARALLEL_PIPELINE
+AFTER_EACH_PUBLICATION = READ BACKEND_IMPLEMENTATION_ORDER; START ANY AUTHORIZED READY_NOW SUCCESSOR
+BACKEND_FRONTEND_PARALLELISM = YES / subject to dependencies, contract and ownership
+DEFAULT_IMPLEMENTER = LUNA / contracted implementation only
+ARCHITECTURE_AND_MATERIAL_CONTRACT_GAP = SOL
+GLOBAL_CONTINUITY_OWNER = INTEGRATION_GATE
+```
+
+Não esperar conclusão de wave inteira. Ao publicar uma slice, reler `docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md`; se successor estiver `READY_NOW`, abrir imediatamente lane Luna isolada, desde que sua autorização específica exista. Backend e P5 podem operar em paralelo quando ownership/dependencies permitirem. Lane antiga pode completar no BASE_SHA original mesmo após avanço de master; integrar somente após verificação de colisão e gate controlado. Uma única autoridade de integração atualiza continuidade global.
+
+### SESSION RECOVERY / NEW CHAT BOOTSTRAP
+
+Sequência breve para retomada:
+
+1. `AGENTS.md`
+2. `PROJECT_STATE.md` — esta seção e snapshot vigente
+3. `ACTIVE_DOCUMENT_MAP.md`
+4. `ROADMAP_ARGOS_V5.md` — modelo de execução
+5. `SPRINTS_ARGOS_V5.md` — lifecycle de slices
+6. `BACKEND_IMPLEMENTATION_ORDER.md`
+7. contrato da slice identificada como `PRIMARY_NEXT_ACTION`
+8. `ARGOS_UI_V2_MASTER_PLAN.md` quando a lane P5 estiver ativa
+
+Regras de recuperação: revalidar `master`/`origin`, divergência, worktree e staging antes de agir; verificar worktrees ativas; não confiar em status de lane vindo de chats sem verificar; preservar baseline antiga de lanes em andamento; não permitir múltiplas lanes alterarem PROJECT_STATE; iniciar implementação somente com readiness contratual e autorização específica; preservar decisões vinculantes; não aguardar wave inteira; reavaliar DAG após publicação; manter backend/frontend paralelos quando ownership permitir; security final gate permanece no encerramento do programa.
+
+```text
+ARGOS_CONTINUATION_PAYLOAD
+CANONICAL_MASTER_HEAD = e7d9644ec405c6619fba4b2084d360cdde588b92
+EXECUTION_MODEL = CONTRACT_FIRST_PARALLEL_PIPELINE
+CURRENT_COMPLETED = BC-00; BC-02; BC-AUTH; CAM-INT-01
+CURRENT_RUNNING = CAM-INT-07; MON-OBS; P5
+CURRENT_PASS_LOCAL = CAM-INT-02 / e4a216722911b8434c68ceb882f6f4cf8e4c8ecc
+PRIMARY_NEXT_ACTION = CAM-INT-02 source checkpoint -> integration gate -> integrated validation -> continuity -> authorized publication -> DAG recheck
+BACKEND_DAG = docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md
+FRONTEND_AUTHORITY = docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md
+DEFAULT_IMPLEMENTER = LUNA
+ARCHITECTURE_ESCALATION = SOL
+GLOBAL_CONTINUITY_OWNER = INTEGRATION_GATE
+SECURITY_FINAL_GATE = DEFERRED / MANDATORY
+```
+
+O payload e os status acima são fotografias factuais em `DOCUMENTATION_BASE_SHA`; revalidar antes de retomar, pois branches e lanes podem ter avançado. A confirmação dos worktrees filhos falhou inicialmente devido a `safe.directory`; a leitura foi repetida por chamada Git com exceção local transitória, sem alterar configuração global. Nenhum conteúdo de implementação das lanes em andamento foi lido.
+
+```text
+NEW_CHAT_BOOTSTRAP_CREATED = YES / this section
+MINIMAL_HANDOFF_PAYLOAD_CREATED = YES
+PROJECT_STATE_UPDATE = PASS / paths and cross-authority links checked; factual snapshot tied to DOCUMENTATION_BASE_SHA
+ACTIVITY_COMPLETE = YES
+```

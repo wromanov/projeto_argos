@@ -932,3 +932,18 @@ No momento deste registro, o push ainda estava pendente. CAM-INT-02 tem
 predecessores técnicos satisfeitos no DAG, mas exige autorização própria e não
 foi iniciada. WAVE_2 permanece aberta: CAM-INT-07 e MON-OBS estão em execução;
 P5 permanece RUNNING. Atualizar este registro após verificar a publicação.
+
+### 20.11. DOC-EXEC-01 — pipeline e continuidade (2026-10-02)
+
+O snapshot corrente e o payload de retomada estão em `PROJECT_STATE.md`,
+seção 45; o mapa de authorities aponta para esse checkpoint. A seção 20.10
+registra o estado anterior de CAM-INT-01 e foi supersedida quanto ao estado
+operacional atual. Revalidar Git e status de worktrees antes de retomar.
+
+```text
+EXECUTION_MODEL = CONTRACT_FIRST_PARALLEL_PIPELINE
+PRIMARY_NEXT_ACTION = CAM-INT-02 integration gate, after source checkpoint
+ACTIVE_LANES = CAM-INT-07; MON-OBS; P5
+GLOBAL_CONTINUITY_OWNER = INTEGRATION_GATE
+DO_NOT_WAIT_FOR_FULL_WAVE_COMPLETION = YES
+```
