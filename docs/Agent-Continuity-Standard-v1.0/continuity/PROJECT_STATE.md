@@ -2578,7 +2578,85 @@ PROJECT_STATE_UPDATE = PASS
 ACTIVITY_COMPLETE = YES / closeout checkpoint is published and post-push verified
 ```
 
-O registro final acima fecha a fotografia pré-publicação desta seção. O commit
-de integração funcional e o primeiro commit de estado foram publicados juntos;
-o fetch subsequente confirmou igualdade local/remota. A atualização deste
-fechamento também é publicada e revalidada como parte desta atividade.
+O registro final acima fecha a fotografia pré-publicação da seção 46.1. O
+commit de integração funcional e o primeiro commit de estado foram publicados
+juntos; o fetch subsequente confirmou igualdade local/remota. A atualização
+deste fechamento também foi publicada e revalidada como parte da atividade.
+
+## 47. CAM-INT-06 — integração e validação local (2026-10-02)
+
+```text
+ACTIVITY = CAM-INT-06-INT — INTEGRATION / PUBLICATION GATE
+SOURCE_BRANCH = codex/cam-int-06-implementation
+SOURCE_COMMIT = 07c811401c7724f779fcbec85b393eab8cf0f94b
+SOURCE_WORKTREE = CLEAN
+TARGET_PRE_INTEGRATION_HEAD = 1e1b1c192f9c5eebaac6a1b45f6b987177c1fda2
+ORIGIN_PRE_INTEGRATION_HEAD = 1e1b1c192f9c5eebaac6a1b45f6b987177c1fda2
+MERGE_BASE = 1e1b1c192f9c5eebaac6a1b45f6b987177c1fda2
+FAST_FORWARD_AVAILABLE = YES
+INTEGRATION_METHOD = FAST-FORWARD ONLY
+TARGET_POST_INTEGRATION_HEAD = 07c811401c7724f779fcbec85b393eab8cf0f94b
+SOURCE_SCOPE = 5 expected CAM-INT-06 files only
+CONTRACT_MODIFIED = NO
+OTHER_LANES_TOUCHED = NO
+```
+
+Validação local no estado integrado, com o Python do `.venv` canônico:
+
+```text
+STATIC_COMPILE = PASS / 5 CAM-INT-06 Python files
+DIFF_CHECK = PASS
+DJANGO_CHECK = PASS
+MAKEMIGRATIONS_CHECK_DRY_RUN = PASS / No changes detected
+INTEGRATED_TESTS = PASS / 132 tests
+TEST_MODULES = cameras.test_camera_compatibility; cameras.test_camera_capabilities;
+  cameras.test_camera_connection_config; cameras.test_camera_credentials;
+  cameras.test_authorization; cameras.test_auditoria_integracao;
+  usuarios.test_perfil; usuarios.test_admin_sec_r01c;
+  usuarios.test_admin_sec_r02b; usuarios.test_admin_sec_r02c
+TESTS_NOT_RUN = global suite; SCALE; production; real camera; real network
+```
+
+Rechecagem de aceite: evidência ausente ou firmware diferente resulta em
+`UNVERIFIED`; matching exige perfil, fabricante, modelo e firmware exatos;
+evidência por unidade prevalece sobre evidência por modelo e conflitos são
+diagnosticados; `UNSUPPORTED` é selecionado com prioridade e bloqueia uso.
+O catálogo real permanece sem seed de evidência; o controle usa a permissão
+existente `manage_camera_capability`, sem nova permissão.
+
+```text
+IMPLEMENTATION_CLASS = IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING
+REAL_CAMERA_VALIDATION = PENDING
+REAL_NETWORK_VALIDATION = PENDING
+REAL_DATA_VALIDATION = PENDING
+PRODUCTION_VALIDATION = PENDING
+CAM-INT-06 = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / PUBLISHED_PENDING_PUSH
+CAM-INT-01 = COMPLETE / PUBLISHED
+CAM-INT-02 = COMPLETE / PUBLISHED
+CAM-INT-07 = RUNNING
+MON-OBS = RUNNING
+P5 = RUNNING
+```
+
+Releitura do DAG em `BACKEND_IMPLEMENTATION_ORDER.md` após a integração:
+
+| Contrato | Classificação | Dependências | Satisfeitas | Pode iniciar agora? | Motivo |
+|---|---|---|---|---|---|
+| CAM-INT-03 | Não pronto | CAM-INT-01, 02, 06, 07 | Não | Não | CAM-INT-07 segue RUNNING |
+| CAM-INT-04 | Não pronto | CAM-INT-01, 02, 06, 07 | Não | Não | CAM-INT-07 segue RUNNING |
+| CAM-INT-05 | Não pronto | CAM-INT-03 | Não | Não | CAM-INT-03 ainda não pronta |
+| CAM-HEALTH | Não pronto | CAM-INT-05 | Não | Não | CAM-INT-05 ainda não pronta |
+| MON-WORKER | Não pronto | MON-OBS, CAM-INT-05, CAM-HEALTH | Não | Não | CAM-INT-05/HEALTH não prontas; MON-OBS RUNNING |
+| IMG-CAP | Não pronto | BC-AUTH, CAM-INT-03, CAM-INT-04, CAM-INT-06 | Parcialmente | Não | CAM-INT-03/04 ainda não prontas |
+
+```text
+NEWLY_READY_CONTRACTS = []
+STATE_COMMIT = PENDING
+PUSH = PENDING
+PROJECT_STATE_UPDATE = PASS / integração local, aceite e DAG registrados
+ACTIVITY_COMPLETE = NO / aguarda publicação e verificação pós-push
+NEXT_IMPLEMENTATION_ACTION = CAM-INT-07 completion, then recheck CAM-INT-03/04 readiness
+```
+
+Validações externas permanecem pendentes e não são promovidas por esta
+integração. Worktrees CAM-INT-07, MON-OBS e P5 mantêm suas alterações locais.

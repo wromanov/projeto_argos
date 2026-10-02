@@ -969,3 +969,21 @@ O fetch após a publicação confirmou `HEAD == origin/master`, divergência `0/
 worktree limpa e staging vazio em `eac2db36560e46e5f254f4a4e536e36aebb4bee8`.
 O registro final de fechamento e a releitura pós-publicação do DAG constam na
 seção 46.1 de `PROJECT_STATE.md`.
+
+### 20.13. CAM-INT-06-INT — integração e validação local (2026-10-02)
+
+O registro factual corrente está na seção 47 de `PROJECT_STATE.md`. CAM-INT-06
+foi integrada por fast-forward em `07c811401c7724f779fcbec85b393eab8cf0f94b`;
+compilação, checks Django/migration e 132 testes focais/regressivos passaram.
+O gate local não valida câmera, rede, dados reais ou produção. O DAG foi relido:
+CAM-INT-03/04 aguardam CAM-INT-07; os contratos posteriores seguem bloqueados
+pelas dependências registradas na seção 47.
+
+```text
+CAM_INT_06_STATUS = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / PUBLISHED_PENDING_PUSH
+ENVIRONMENT_VALIDATION = PENDING
+NEWLY_READY_CONTRACTS = []
+STATE_COMMIT = PENDING
+PUSH_AND_POST_PUSH_VERIFY = PENDING
+NEXT_IMPLEMENTATION_ACTION = CAM-INT-07 completion, then recheck CAM-INT-03/04 readiness
+```
