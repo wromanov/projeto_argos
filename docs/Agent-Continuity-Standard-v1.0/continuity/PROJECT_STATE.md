@@ -2561,3 +2561,24 @@ ACTIVITY_COMPLETE = NO / aguarda push e verificação remota
 NEXT_IMPLEMENTATION_ACTION = CAM-INT-06 / READY_NOW, autorização própria necessária
 NEXT_DOCUMENTATION_ACTIVITY = DOC-EXEC-01 COMPLETE
 ```
+
+### 46.1. Publicação e fechamento de CAM-INT-02-INT
+
+```text
+INTEGRATION_AND_INITIAL_STATE_PUSH = PASS
+PUSHED_STATE_COMMIT = eac2db36560e46e5f254f4a4e536e36aebb4bee8
+POST_PUSH_FETCH = PASS
+POST_PUSH_HEAD = eac2db36560e46e5f254f4a4e536e36aebb4bee8
+POST_PUSH_ORIGIN_MASTER = eac2db36560e46e5f254f4a4e536e36aebb4bee8
+POST_PUSH_DIVERGENCE = 0 / 0
+POST_PUSH_WORKTREE = CLEAN
+POST_PUSH_STAGING = EMPTY
+FINAL_DAG_RECHECK = PASS / BACKEND_IMPLEMENTATION_ORDER reread after publication
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES / closeout checkpoint is published and post-push verified
+```
+
+O registro final acima fecha a fotografia pré-publicação desta seção. O commit
+de integração funcional e o primeiro commit de estado foram publicados juntos;
+o fetch subsequente confirmou igualdade local/remota. A atualização deste
+fechamento também é publicada e revalidada como parte desta atividade.

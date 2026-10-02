@@ -959,8 +959,13 @@ RUNNING e não foi alterado. O security final gate continua diferido.
 ```text
 CAM_INT_02_STATUS = INTEGRATED / VALIDATED
 NEWLY_READY_CONTRACTS = CAM-INT-06 / execução requer autorização específica
-CAM_INT_03_04_STATUS = NOT_READY / CAM-INT-07 RUNNING; CAM-INT-06 pendente
-STATE_COMMIT = PENDING
-PUSH_AND_POST_PUSH_VERIFY = PENDING
+CAM_INT_03_04_STATUS = NOT_READY / CAM-INT-07 RUNNING; CAM-INT-06 not implemented
+STATE_COMMIT = eac2db3 / PUBLISHED
+PUSH_AND_POST_PUSH_VERIFY = PASS / eac2db36560e46e5f254f4a4e536e36aebb4bee8
 NEXT_IMPLEMENTATION_ACTION = CAM-INT-06 / READY_NOW, not started in CAM-INT-02-INT
 ```
+
+O fetch após a publicação confirmou `HEAD == origin/master`, divergência `0/0`,
+worktree limpa e staging vazio em `eac2db36560e46e5f254f4a4e536e36aebb4bee8`.
+O registro final de fechamento e a releitura pós-publicação do DAG constam na
+seção 46.1 de `PROJECT_STATE.md`.
