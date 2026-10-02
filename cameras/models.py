@@ -7,7 +7,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 from django.db.models import F, Q
-from django.db.models.functions import Lower
+from django.db.models.functions import Coalesce, Lower
+from django.db.models import Value
 
 from .validadores import normalizar_mac, normalizar_texto_cadastral, validar_mac
 
@@ -43,6 +44,12 @@ class Camera(models.Model):
     nome = models.CharField(max_length=150)
     fabricante = models.CharField(max_length=100)
     modelo = models.CharField(max_length=100)
+    firmware_version = models.CharField(
+        max_length=100,
+        blank=True,
+        default="",
+        verbose_name="Versão do firmware",
+    )
     serial = models.CharField(
         max_length=100,
         unique=True,
@@ -937,6 +944,94 @@ class CameraCapabilityProfile(models.Model):
             }
             if previous.active and changed_fields - {"active"}:
                 raise ValidationError("Versões ativas de capability são imutáveis; somente a desativação é permitida.")
+        return super().save(*args, **kwargs)
+
+
+class CameraCapabilityEvidence(models.Model):
+    class Status(models.TextChoices):
+        SUPPORTED = "SUPPORTED", "Supported"
+        UNSUPPORTED = "UNSUPPORTED", "Unsupported"
+        UNVERIFIED = "UNVERIFIED", "Unverified"
+
+    class SourceType(models.TextChoices):
+        DATASHEET = "DATASHEET", "Datasheet"
+        LAB = "LAB", "Laboratory"
+        UNIT = "UNIT", "Unit"
+
+    profile = models.ForeignKey(
+        CameraCapabilityProfile,
+        on_delete=models.PROTECT,
+        related_name="evidence",
+    )
+    camera = models.ForeignKey(
+        Camera,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="capability_evidence",
+    )
+    vendor = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+    firmware_exact = models.CharField(max_length=100, blank=True, default="")
+    status = models.CharField(max_length=12, choices=Status.choices)
+    source_type = models.CharField(max_length=10, choices=SourceType.choices)
+    source_ref = models.CharField(max_length=255)
+    evidence_date = models.DateField()
+    environment = models.CharField(max_length=255, blank=True, default="")
+    limitations = models.TextField(blank=True, default="")
+    reviewer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="camera_capability_evidence_reviewed",
+    )
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        indexes = [
+            models.Index(
+                fields=["profile", "vendor", "model", "firmware_exact", "status"],
+                name="cam_evidence_match_idx",
+            ),
+            models.Index(fields=["camera", "profile"], name="cam_evidence_camera_idx"),
+        ]
+        constraints = [
+            models.CheckConstraint(
+                condition=Q(status__in=("SUPPORTED", "UNSUPPORTED", "UNVERIFIED")),
+                name="cam_evidence_status_valid",
+            ),
+            models.CheckConstraint(
+                condition=Q(source_type__in=("DATASHEET", "LAB", "UNIT")),
+                name="cam_evidence_source_valid",
+            ),
+            models.UniqueConstraint(
+                "profile",
+                "vendor",
+                "model",
+                "firmware_exact",
+                Coalesce("camera_id", Value(0)),
+                "source_ref",
+                condition=Q(active=True),
+                name="uniq_active_cam_cap_evidence",
+            ),
+        ]
+
+    def clean(self):
+        super().clean()
+        self.vendor = " ".join((self.vendor or "").split()).casefold()
+        self.model = " ".join((self.model or "").split()).casefold()
+        self.firmware_exact = " ".join((self.firmware_exact or "").split()).casefold()
+        if not self.vendor:
+            raise ValidationError({"vendor": "Fabricante é obrigatório."})
+        if not self.model:
+            raise ValidationError({"model": "Modelo é obrigatório."})
+        if not self.source_ref.strip():
+            raise ValidationError({"source_ref": "Referência de origem é obrigatória."})
+
+    def save(self, *args, **kwargs):
+        self.vendor = " ".join((self.vendor or "").split()).casefold()
+        self.model = " ".join((self.model or "").split()).casefold()
+        self.firmware_exact = " ".join((self.firmware_exact or "").split()).casefold()
+        self.source_ref = (self.source_ref or "").strip()
         return super().save(*args, **kwargs)
 
 

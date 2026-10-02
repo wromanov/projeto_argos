@@ -93,14 +93,16 @@ def set_capability_profile_active(*, actor, profile_id, active):
 
 
 def compatibility_status(camera, profile):
-    """Sem evidência CAM-INT-06, cadastro livre não comprova suporte."""
-    return COMPATIBILITY_UNVERIFIED
+    """Resolve evidência CAM-INT-06 sem inferir suporte do cadastro livre."""
+    from cameras.integracao.compatibility import resolve_compatibility
+
+    return resolve_compatibility(camera=camera, profile=profile).status
 
 
 def require_automatic_compatibility(camera, profile):
     status = compatibility_status(camera, profile)
     if status != COMPATIBILITY_SUPPORTED:
-        raise ValidationError("Capability sem evidência SUPPORTED não pode executar automaticamente.")
+        raise ValidationError("Capability sem evidência SUPPORTED exata não pode executar automaticamente.")
     return status
 
 
