@@ -1,9 +1,14 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
 from django.core.exceptions import ValidationError
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 from unittest.mock import patch
 
-from cameras.integracao.configuration import save_connection_config, resolve_connection_config
+from cameras.integracao.configuration import (
+    invalidate_target_config_generation_if_ip_changed,
+    save_connection_config,
+    resolve_connection_config,
+)
 from cameras.models import Camera, CameraCapabilityProfile, CameraConnectionConfig, EstadoMonitoramento, EventoAuditoria
 from cameras.monitoramento.repository import DjangoMonitoringRepository
 
@@ -57,6 +62,60 @@ class CameraConnectionConfigurationTests(TestCase):
         self.assertEqual(CameraConnectionConfig.objects.get(camera=self.camera).config_version, version)
         self.assertEqual(EstadoMonitoramento.objects.get(camera=self.camera).ultima_geracao_configuracao, generation)
         self.assertEqual(EventoAuditoria.objects.filter(camera=self.camera).count(), 1)
+
+    def test_ip_change_invalidates_target_generation_without_changing_config_version(self):
+        config = save_connection_config(
+            actor=self.user, camera_id=self.camera.pk,
+            values={"profile": self.profile, "rtsp_uri": "rtsp://192.0.2.10/path"},
+            environment_allowed_ports=self.policy_ports,
+        )
+        previous_generation = EstadoMonitoramento.objects.get(camera=self.camera).ultima_geracao_configuracao
+        previous_version = config.config_version
+
+        invalidate_target_config_generation_if_ip_changed(
+            camera_id=self.camera.pk,
+            previous_ip="192.0.2.10",
+            current_ip="192.0.2.11",
+        )
+        state = EstadoMonitoramento.objects.get(camera=self.camera)
+        config.refresh_from_db()
+        self.assertEqual(state.ultima_geracao_configuracao, previous_generation + 1)
+        self.assertEqual(config.config_version, previous_version)
+
+        invalidate_target_config_generation_if_ip_changed(
+            camera_id=self.camera.pk,
+            previous_ip="192.0.2.11",
+            current_ip="192.0.2.11",
+        )
+        state.refresh_from_db()
+        self.assertEqual(state.ultima_geracao_configuracao, previous_generation + 1)
+
+    def test_camera_edit_view_invalidates_generation_when_persisted_ip_changes(self):
+        self.user.user_permissions.add(Permission.objects.get(codename="change_camera"))
+        state = EstadoMonitoramento.objects.create(camera=self.camera, ultima_geracao_configuracao=7)
+        request = RequestFactory().post(f"/cameras/{self.camera.pk}/editar/")
+        request.user = self.user
+
+        def save_camera(*, commit):
+            self.camera.ip = "192.0.2.11"
+            return self.camera
+
+        with (
+            patch("cameras.views.CameraEdicaoForm") as form_class,
+            patch("cameras.views.registrar_evento"),
+            patch("cameras.views.messages.success"),
+        ):
+            form_class.return_value.is_valid.return_value = True
+            form_class.return_value.save.side_effect = save_camera
+            from cameras.views import editar_camera
+
+            response = editar_camera(request, self.camera.pk)
+
+        self.assertEqual(response.status_code, 302)
+        self.camera.refresh_from_db()
+        state.refresh_from_db()
+        self.assertEqual(self.camera.ip, "192.0.2.11")
+        self.assertEqual(state.ultima_geracao_configuracao, 8)
 
     def test_rejects_credentials_query_fragments_hosts_schemes_and_unapproved_ports(self):
         invalid_uris = [

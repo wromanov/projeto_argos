@@ -125,6 +125,13 @@ def _increment_config_generation(camera_id):
     return state.ultima_geracao_configuracao
 
 
+def invalidate_target_config_generation_if_ip_changed(*, camera_id, previous_ip, current_ip):
+    """Fence prior target resolutions when the persisted camera IPv4 changes."""
+    if previous_ip == current_ip:
+        return None
+    return _increment_config_generation(camera_id)
+
+
 @transaction.atomic
 def save_connection_config(*, actor, camera_id, values, environment_allowed_ports, request=None):
     """Valida, salva, atualiza fencing de geração e audita atomicamente."""

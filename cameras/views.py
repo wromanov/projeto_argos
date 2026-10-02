@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_not_required, permission_required
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
+from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse, QueryDict
 from django.shortcuts import get_object_or_404, redirect, render
@@ -13,6 +14,7 @@ from .forms import (
     AlterarSituacaoCameraForm, AtividadeCameraForm, CameraCriacaoForm,
     CameraEdicaoForm, DesativarCameraForm, ReativarCameraForm, SubstituirCameraForm,
 )
+from .integracao.configuration import invalidate_target_config_generation_if_ip_changed
 from .governanca import (
     ErroGovernancaCamera, alterar_situacao_camera, desativar_camera,
     q_camera_completa, q_camera_incompleta, reativar_camera, substituir_camera,
@@ -383,6 +385,7 @@ def criar_camera(request):
 
 
 @permission_required("cameras.change_camera", raise_exception=True)
+@transaction.atomic
 def editar_camera(request, pk):
     camera = get_object_or_404(Camera, pk=pk); anterior = Camera.objects.get(pk=pk)
     form = CameraEdicaoForm(request.POST or None, instance=camera)
@@ -390,6 +393,11 @@ def editar_camera(request, pk):
         camera = form.save(commit=False); alteracoes = calcular_alteracoes(anterior, camera, CAMPOS_CAMERA_AUDITAVEIS)
         if request.user.is_authenticated: camera.atualizado_por = request.user
         camera.save()
+        invalidate_target_config_generation_if_ip_changed(
+            camera_id=camera.pk,
+            previous_ip=anterior.ip,
+            current_ip=camera.ip,
+        )
         if alteracoes: registrar_evento(codigo="camera.atualizada", resumo="Câmera atualizada", categoria=EventoAuditoria.Categoria.CAMERA, request=request, camera=camera, entidade=camera, alteracoes=alteracoes)
         messages.success(request, "Câmera atualizada com sucesso.")
         return redirect("cameras:detalhe", pk=camera.pk)
