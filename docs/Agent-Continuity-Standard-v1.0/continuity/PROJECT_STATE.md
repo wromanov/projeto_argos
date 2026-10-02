@@ -2661,3 +2661,80 @@ NEXT_IMPLEMENTATION_ACTION = CAM-INT-07 completion, then recheck CAM-INT-03/04 r
 
 Validações externas permanecem pendentes e não são promovidas por esta
 integração. Worktrees CAM-INT-07, MON-OBS e P5 mantêm suas alterações locais.
+
+## 48. CAM-INT-07 — integração controlada e validação local (2026-10-02)
+
+Checkpoint factual após integrar a lane antiga na baseline moderna, reconciliar
+a geração para mudanças do IP cadastrado e executar a regressão integrada. A
+publicação dos commits e a verificação pós-push ainda estão pendentes neste
+checkpoint.
+
+```text
+ACTIVITY = CAM-INT-07-INT — CONTROLLED INTEGRATION / MODERN BOUNDARY RECONCILIATION
+ACTIVITY_STATUS = MERGED / RECONCILIATION_COMMITTED / VALIDATED_LOCAL / PUSH_PENDING
+ACTIVITY_COMPLETION_PERCENT = 90%
+SOURCE_BRANCH = codex/cam-int-07-target-hardening
+SOURCE_COMMIT = 4db5536d4b15b14a91356ec7b0b13ed1d4c32a32
+SOURCE_WORKTREE = CLEAN / STAGING EMPTY / EXPECTED TWO FILES ONLY
+MASTER_PRE_INTEGRATION_HEAD = 9a20b13ddd2d96c52d880c09a745487149f1a006
+ORIGIN_PRE_INTEGRATION_HEAD = 9a20b13ddd2d96c52d880c09a745487149f1a006
+TARGET_PRE_INTEGRATION_WORKTREE = CLEAN / STAGING EMPTY
+MERGE_BASE = 80c458581944401510b62d1ba35febf7ddadc0d5
+FAST_FORWARD_AVAILABLE = NO
+MATERIAL_CONTRACT_DRIFT = NO / blob 6187f08c59b6902d5cd1638bf030595e6d2a1142
+SOURCE_CHANGED_FILES = cameras/integracao/target_policy.py; cameras/test_camera_target_policy.py
+MASTER_CHANGED_FILES_RELEVANT = modern configuration/capabilities/compatibility/credentials services; camera models/migrations; authorization and audit surfaces
+DIRECT_FILE_OVERLAP = NO
+INTEGRATION_METHOD = OLD_BASELINE_CONTROLLED_MERGE / --no-ff
+MERGE_COMMIT = 7b67b10d6053e1569838e671d7127eb4fcd109d2
+MERGE_CONFLICTS = NO
+IS_CONFIGURATION_GENERATION_INVALIDATION_REQUIRED_BY_CONTRACT = YES
+CONFIGURATION_RECONCILIATION_PERFORMED = YES / persisted Camera.ip change increments existing ultima_geracao_configuracao; config_version unchanged
+RECONCILIATION_FILES = cameras/integracao/configuration.py; cameras/views.py; cameras/test_camera_connection_config.py
+RECONCILIATION_COMMIT = 386b7271993c6304b863165b72f17bda52cab1cc
+REDIRECT_POLICY_STATUS = PRESERVED / following not implemented
+PROXY_POLICY_STATUS = PRESERVED / proxy use not implemented
+DNS_POLICY_STATUS = HOSTNAME DENIED / resolution absent
+STATIC_COMPILE = PASS / all 5 integration and reconciliation Python files
+DIFF_CHECK = PASS
+DJANGO_CHECK = PASS
+MIGRATION_CHECK = PASS / No changes detected
+INTEGRATED_FOCUSED_RESULT = PASS
+INTEGRATED_FOCUSED_COUNT = 26 / 18 original CAM-INT-07 policy tests plus 8 configuration/reconciliation tests
+INTEGRATED_REGRESSION_RESULT = PASS
+INTEGRATED_REGRESSION_COUNT = 234
+TESTS_NOT_RUN = global suite; SCALE; real camera; real network; real environment; production
+SECURITY_INVARIANTS = unauthorized target denied; secret/userinfo absent from errors; DNS/network absent; redirects/proxy not implemented; fail-closed PASS; sanitization PASS
+CONTRACT_STATUS = IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING
+REAL_CAMERA_VALIDATION = PENDING
+REAL_NETWORK_VALIDATION = PENDING
+REAL_ENVIRONMENT_VALIDATION = PENDING
+PRODUCTION_VALIDATION = PENDING
+CONTRACT_MODIFIED = NO
+OTHER_LANES_TOUCHED = NO / MON-OBS and P5 remain RUNNING
+CAM_INT_07_STATUS = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / PUSH_PENDING
+CAM_INT_01_STATUS = COMPLETE / PUBLISHED
+CAM_INT_02_STATUS = COMPLETE / PUBLISHED
+CAM_INT_06_STATUS = COMPLETE / PUBLISHED / ENVIRONMENT_VALIDATION_PENDING
+MON_OBS_STATUS = RUNNING
+P5_STATUS = RUNNING
+NEWLY_READY_CONTRACTS = CAM-INT-03; CAM-INT-04 / technical DAG ready; separate execution authorization required
+PROJECT_STATE_UPDATE = PASS / local validation and DAG recorded
+STATE_COMMIT = PENDING
+PUSH_RESULT = PENDING
+POST_PUSH_FETCH = PENDING
+SOL_ESCALATION_REQUIRED = NO
+SOL_ESCALATION_REASON = NONE
+BLOCKERS = publication and post-push verification pending
+NEXT_IMPLEMENTATION_ACTION = CAM-INT-03 and CAM-INT-04 are technically ready per DAG; obtain their separate authorization before starting
+ACTIVITY_COMPLETE = NO / publication and final remote verification pending
+```
+
+Releitura de `BACKEND_IMPLEMENTATION_ORDER.md` após a integração: CAM-INT-03 e
+CAM-INT-04 têm predecessores técnicos satisfeitos quando CAM-INT-07 é publicada;
+ambas continuam exigindo autorização própria. CAM-INT-05 aguarda CAM-INT-03;
+CAM-HEALTH aguarda CAM-INT-05; MON-WORKER aguarda MON-OBS, CAM-INT-05 e
+CAM-HEALTH; IMG-CAP aguarda CAM-INT-03 e CAM-INT-04. Nenhum sucessor foi
+iniciado. A policy não implementa cliente, resolução DNS, proxy ou seguimento
+de redirect; credenciais e compatibilidade permanecem nas boundaries CAM-INT-02
+e CAM-INT-06.

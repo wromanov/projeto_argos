@@ -970,6 +970,17 @@ worktree limpa e staging vazio em `eac2db36560e46e5f254f4a4e536e36aebb4bee8`.
 O registro final de fechamento e a releitura pós-publicação do DAG constam na
 seção 46.1 de `PROJECT_STATE.md`.
 
+### 20.14. CAM-INT-07-INT — integração controlada (2026-10-02)
+
+O checkpoint local validado está na seção 48 de `PROJECT_STATE.md`. CAM-INT-07
+foi integrada por merge controlado `7b67b10`; a reconciliação `386b727` usa o
+contador moderno `ultima_geracao_configuracao` quando o IPv4 cadastrado muda.
+Compilação, Django check, migration check, 26 testes focais e 234 regressivos
+passaram. A publicação e o fetch pós-push são o gate restante. O DAG relido após
+a integração identifica CAM-INT-03 e CAM-INT-04 como tecnicamente prontas, sob
+autorização própria; nenhum sucessor foi iniciado. Rede/câmeras/ambiente real e
+produção permanecem pendentes.
+
 ### 20.13. CAM-INT-06-INT — integração e validação local (2026-10-02)
 
 O registro factual corrente está na seção 47 de `PROJECT_STATE.md`. CAM-INT-06

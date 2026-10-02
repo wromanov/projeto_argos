@@ -460,3 +460,17 @@ CAM-INT-02 foi integrada, validada e publicada. CAM-INT-06 é READY_NOW sob a
 ordem serial de Wave 3; CAM-INT-03/04 ainda aguardam CAM-INT-07 e CAM-INT-06.
 Consulte a seção 46 de `PROJECT_STATE.md` para evidências, testes e limites, e
 a seção 46.1 para a verificação de publicação.
+
+## 20. CAM-INT-07 — integração controlada (2026-10-02)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 48 | Snapshot factual da integração, reconciliação, validação, DAG e publicação | CURRENT / publication pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.14 | Handoff CAM-INT-07 e limites ambientais | CURRENT / local validation passed |
+| `docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md` | Authority do DAG e ownership | CURRENT / relido após integração |
+| `docs/projeto/contracts/backend/camera/CAM-INT-07_INTEGRATION_HARDENING_CONTRACT.md` | Contrato da policy de destino | CURRENT / unchanged |
+
+CAM-INT-07 está integrada e validada localmente; a publicação ainda aguarda o
+push autorizado e a verificação pós-push. CAM-INT-03/04 ficam tecnicamente
+prontas após publicação, mas exigem autorização própria. Nenhuma sucessora,
+validação ambiental ou execução de rede foi iniciada.
