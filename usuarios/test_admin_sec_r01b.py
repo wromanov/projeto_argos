@@ -74,11 +74,13 @@ class SecR01BAdminTests(TestCase):
         self.assertContains(response, "is_active")
         self.assertContains(response, "Monitoramento ARGOS")
         self.assertContains(response, "Operador ARGOS")
+        self.assertContains(response, "Técnico ARGOS")
         self.assertNotContains(response, "Administrador ARGOS")
 
     def test_change_post_cannot_elevate_or_assign_direct_permissions(self):
         monitoramento = Group.objects.get(name="Monitoramento ARGOS")
         operador = Group.objects.get(name="Operador ARGOS")
+        tecnico = Group.objects.get(name="Técnico ARGOS")
         view_user = Permission.objects.get(codename="view_user")
         future_group = Group.objects.create(name="Auditor ARGOS")
 
@@ -106,7 +108,7 @@ class SecR01BAdminTests(TestCase):
                 "last_name": "Comum",
                 "email": "comum@example.test",
                 "is_active": "on",
-                "groups": [monitoramento.pk, operador.pk],
+                "groups": [monitoramento.pk, operador.pk, tecnico.pk],
                 "is_staff": "on",
                 "is_superuser": "on",
                 "user_permissions": [view_user.pk],
@@ -120,7 +122,7 @@ class SecR01BAdminTests(TestCase):
         self.assertFalse(self.common_user.user_permissions.exists())
         self.assertEqual(
             set(self.common_user.groups.values_list("name", flat=True)),
-            {"Monitoramento ARGOS", "Operador ARGOS"},
+            {"Monitoramento ARGOS", "Operador ARGOS", "Técnico ARGOS"},
         )
 
     def test_protected_accounts_are_blocked_on_change_and_password_endpoints(self):

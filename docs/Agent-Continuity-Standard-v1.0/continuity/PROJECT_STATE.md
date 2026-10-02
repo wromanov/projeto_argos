@@ -2236,3 +2236,47 @@ documento de execução; o registro BC-REG contém a classificação de todos os
 20 contratos. A publicação Git e a autorização de cada slice são atividades
 posteriores. `PROJECT_STATE_UPDATE = PASS` para o snapshot documental BC-02;
 isso não declara readiness de produção nem fechamento de segurança.
+
+## 42. BC-AUTH-01 — implementação local do contrato de autorização (2026-10-01)
+
+```text
+ACTIVITY = BC-AUTH-01 — AUTHORIZATION CONTRACT IMPLEMENTATION
+STATUS = PASS / LOCAL SLICE COMPLETE; INTEGRATION NOT PERFORMED
+ACTIVITY_COMPLETION_PERCENT = 100% / local implementation and validation scope
+ACTIVITY_COMPLETE = YES / local slice only; integration and publication remain separate
+BASE_SHA = 29242953d17988c0d4e14612dbb12fdc40b6f530
+BRANCH = codex/bc-auth-implementation
+WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_bc_auth
+HEAD = 29242953d17988c0d4e14612dbb12fdc40b6f530 / changes remain uncommitted
+MASTER_STATUS = unchanged at BASE_SHA; clean at activity start
+IMPLEMENTATION_AUTHORIZED = YES / explicit BC-AUTH-01 activity request; consumed
+CONTRACT = docs/projeto/contracts/backend/01_ACCESS_ROLES_AUTHORIZATION_CONTRACT.md
+CONTRACT_STATUS = IMPLEMENTATION_READY / BC-02
+GROUPS = Monitoramento ARGOS; Operador ARGOS; Técnico ARGOS; Administrador ARGOS
+MIGRATION = cameras.0014_camera_authorization_permissions / AlterModelOptions only
+TESTS = 58 focused + 63 camera/core regression + 48 user-profile regression;
+        9 authorization/matrix retests; all passed
+DJANGO_CHECK = PASS
+MAKEMIGRATIONS_CHECK = PASS / no changes detected
+DIFF_CHECK = PASS
+COMMIT = NO
+PUSH = NO
+MASTER_INTEGRATION = NO
+REAL_CAMERA_ACCESS = NO
+NETWORK_HOMOLOGATION = NO
+OUT_OF_SCOPE = CAM-INT-01..07; credential cryptography/reveal endpoint; RTSP;
+              connection probes; capture workflow; worker/runtime implementation
+UNAVAILABLE_CAPABILITIES = RTSP, credential, reveal, connection test, diagnostics
+                      and capture have no endpoint/domain service in this baseline;
+                      BC-AUTH permission hooks were validated only
+PROJECT_STATE_UPDATE = PASS / local branch checkpoint; master snapshot untouched
+NEXT_RECOMMENDED_ACTION = review and integrate this local slice only under a
+                          separately authorized integration activity
+```
+
+O guard `cameras.authorization.require_camera_permission` exige uma permission
+BC-AUTH conhecida e `camera_id`; ele usa permissões Django por modelo e não
+introduz escopo por objeto/tenant. O comando de perfis reconcilia defaults sem
+alterar associações de usuários. Nenhum endpoint, auditoria de operação futura,
+segredo ou acesso à rede foi criado. A implementação permanece não publicada e
+isolada na branch indicada; valide Git diretamente antes de qualquer integração.

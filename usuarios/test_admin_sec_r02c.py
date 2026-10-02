@@ -24,6 +24,7 @@ class SecR02CPerfilUsuarioAdminAdversarialTests(TestCase):
         self.admin_group = Group.objects.get(name=ARGOS_ADMIN_GROUP_NAME)
         self.monitoramento = Group.objects.get(name="Monitoramento ARGOS")
         self.operador = Group.objects.get(name="Operador ARGOS")
+        self.tecnico = Group.objects.get(name="Técnico ARGOS")
         self.actor = self.create_user("admin-argos", is_staff=True)
         self.actor.groups.add(self.admin_group)
         self.common = self.create_user("comum")
@@ -43,6 +44,8 @@ class SecR02CPerfilUsuarioAdminAdversarialTests(TestCase):
         self.monitor_user.groups.add(self.monitoramento)
         self.operator_user = self.create_user("operador")
         self.operator_user.groups.add(self.operador)
+        self.technician_user = self.create_user("tecnico")
+        self.technician_user.groups.add(self.tecnico)
         self.client.force_login(self.actor)
 
     def create_user(self, username, **kwargs):
@@ -71,7 +74,7 @@ class SecR02CPerfilUsuarioAdminAdversarialTests(TestCase):
     def test_changelist_uses_current_allowlist_and_hides_each_protected_target(self):
         response = self.client.get(reverse("admin:usuarios_perfilusuario_changelist"))
         self.assertEqual(response.status_code, 200)
-        for target in (self.common, self.monitor_user, self.operator_user):
+        for target in (self.common, self.monitor_user, self.operator_user, self.technician_user):
             self.assertContains(response, self.change_url(target))
         for target in (
             self.actor, self.superuser, self.staff, self.other_admin,

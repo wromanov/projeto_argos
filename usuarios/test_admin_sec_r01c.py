@@ -209,6 +209,8 @@ class SecR01CAdversarialTests(TestCase):
 
     def test_operational_group_permission_contracts_are_preserved(self):
         expected_monitoramento = {"consultar_eventos", "consultar_substituicoescamera", "view_atividadecamera", "view_camera", "view_eventoauditoria", "view_substituicaocamera"}
-        expected_operador = expected_monitoramento | {"add_atividadecamera", "add_camera", "alterar_situacao_camera", "change_atividadecamera", "change_camera", "desativar_camera", "reativar_camera", "registrar_substituicao_camera"}
+        expected_operador = expected_monitoramento | {"add_atividadecamera", "add_camera", "add_cameraimagerecord", "alterar_situacao_camera", "change_atividadecamera", "change_camera", "desativar_camera", "reativar_camera", "registrar_substituicao_camera", "view_camera_connection"}
+        expected_tecnico = expected_operador | {"change_camera_connection", "manage_camera_capability", "view_camera_credential", "change_camera_credential", "reveal_camera_credential", "run_camera_connection_test", "view_camera_diagnostic", "capture_camera_image"}
         self.assertEqual(set(self.monitoramento.permissions.values_list("codename", flat=True)), expected_monitoramento)
         self.assertEqual(set(self.operador.permissions.values_list("codename", flat=True)), expected_operador)
+        self.assertEqual(set(Group.objects.get(name="Técnico ARGOS").permissions.values_list("codename", flat=True)), expected_tecnico)

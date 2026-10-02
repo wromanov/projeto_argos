@@ -5,6 +5,7 @@ ARGOS_ADMIN_GROUP_NAME = "Administrador ARGOS"
 ARGOS_OPERATIONAL_GROUP_NAMES = (
     "Monitoramento ARGOS",
     "Operador ARGOS",
+    "Técnico ARGOS",
 )
 
 

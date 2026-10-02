@@ -155,7 +155,23 @@ class Camera(models.Model):
         ordering = ["nome"]
         verbose_name = "Câmera"
         verbose_name_plural = "Câmeras"
-        permissions = (("desativar_camera", "Pode desativar câmera"), ("reativar_camera", "Pode reativar câmera"), ("alterar_situacao_camera", "Pode alterar situação operacional da câmera"), ("registrar_substituicao_camera", "Pode registrar substituição física de câmera"))
+        permissions = (
+            ("desativar_camera", "Pode desativar câmera"),
+            ("reativar_camera", "Pode reativar câmera"),
+            ("alterar_situacao_camera", "Pode alterar situação operacional da câmera"),
+            ("registrar_substituicao_camera", "Pode registrar substituição física de câmera"),
+            ("view_camera_connection", "Pode consultar conexão técnica da câmera"),
+            ("change_camera_connection", "Pode alterar conexão técnica da câmera"),
+            ("manage_camera_capability", "Pode administrar capacidade técnica da câmera"),
+            ("view_camera_credential", "Pode consultar metadados da credencial da câmera"),
+            ("change_camera_credential", "Pode alterar credencial da câmera"),
+            ("reveal_camera_credential", "Pode revelar credencial da câmera"),
+            ("run_camera_connection_test", "Pode executar teste de conexão da câmera"),
+            ("view_camera_diagnostic", "Pode consultar diagnóstico técnico da câmera"),
+            ("capture_camera_image", "Pode executar captura direta da câmera"),
+            ("manage_camera_target_policy", "Pode administrar política de destino de câmeras"),
+            ("manage_monitoring_runtime", "Pode administrar o runtime de monitoramento"),
+        )
         constraints = [
             models.UniqueConstraint(Lower("nome"), condition=~Q(situacao_operacional="DESATIVADA"), name="uniq_camera_nome_ativa_ci"),
             models.UniqueConstraint(Lower("mac"), condition=Q(mac__isnull=False), name="uniq_camera_mac_ci_nao_nulo"),
