@@ -25,6 +25,7 @@ Este registro localiza os contratos do backend e define suas fronteiras. Ele nã
 | BC-AUTH | [01_ACCESS_ROLES_AUTHORIZATION_CONTRACT.md](01_ACCESS_ROLES_AUTHORIZATION_CONTRACT.md) | identidade, grupos e permissões | `usuarios/management/commands/configurar_perfis_argos.py`; `usuarios/admin_security.py` |
 | CAM-INT-01 | [camera/CAM-INT-01_CAPABILITY_CATALOG_CONTRACT.md](camera/CAM-INT-01_CAPABILITY_CATALOG_CONTRACT.md) | declaração de capacidade | ADR-021 §§3.5–3.6 |
 | CAM-INT-02 | [camera/CAM-INT-02_CREDENTIALS_CONTRACT.md](camera/CAM-INT-02_CREDENTIALS_CONTRACT.md) | segredo de equipamento | ADR-021 §§3.1–3.4, 5–6 |
+| CAM-INT-02-R1 | [camera/CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md](camera/CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md) | sub-slice: resolução interna de credencial para execução | CAM-INT-02; BC-AUTH; adjudicação CAM-INT-02-R1-ARCH |
 | CAM-INT-03 | [camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md](camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md) | adapter RTSP | ADR-019; ADR-021 §§3.5–3.8 |
 | CAM-INT-04 | [camera/CAM-INT-04_HTTP_SNAPSHOT_CONTRACT.md](camera/CAM-INT-04_HTTP_SNAPSHOT_CONTRACT.md) | captura HTTP | ADR-019; contrato de imagens |
 | CAM-INT-05 | [camera/CAM-INT-05_TECHNICAL_DIAGNOSTICS_CONTRACT.md](camera/CAM-INT-05_TECHNICAL_DIAGNOSTICS_CONTRACT.md) | resultados de probe | ADR-020 §§3–5; `cameras/monitoramento/contracts.py` |
@@ -69,8 +70,9 @@ câmera real, rede, homologação, produção, commit ou push.
 | BC-AUTH | IMPLEMENTATION_READY | primeira slice; nenhum predecessor local |
 | CAM-INT-01 | IMPLEMENTATION_READY | BC-AUTH para gestão de perfil |
 | CAM-INT-02 | IMPLEMENTATION_READY | BC-AUTH e CAM-INT-01 schema; chave externa real só para operação |
-| CAM-INT-03 | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING | CAM-INT-01/02/06/07; câmera, codec e transporte reais |
-| CAM-INT-04 | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING | CAM-INT-01/02/06/07; endpoint/vendor real |
+| CAM-INT-02-R1 | IMPLEMENTATION_READY | CAM-INT-02 publicada; API, input/output, falhas, autorização, invariantes, ownership, testes e AC-R1-01..04 fechados; resolver não implementado |
+| CAM-INT-03 | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING / READY_NOW=NO | CAM-INT-01/02/02-R1/06/07; PAUSED_ARCHITECTURAL_DEPENDENCY até R1 publicada; câmera, codec e transporte reais |
+| CAM-INT-04 | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING / READY_NOW=NO | CAM-INT-01/02/02-R1/06/07; R1 necessária para Basic/Digest; endpoint/vendor real |
 | CAM-INT-05 | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING | CAM-INT-03; A-D/fake local; mídia real depois |
 | CAM-INT-06 | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING | CAM-INT-01; dados reais fabricante/firmware externos |
 | CAM-INT-07 | IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING | CIDR, egress e rede reais por ambiente |
@@ -89,6 +91,7 @@ câmera real, rede, homologação, produção, commit ou push.
 
 ```text
 TOTAL_SPECIALIZED_CONTRACTS = 20
+COUNTS_SCOPE = HISTORICAL_BC02_BASELINE / excludes the later CAM-INT-02-R1 sub-slice
 IMPLEMENTATION_READY = 4
 IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING = 8
 ALREADY_IMPLEMENTED = 5
@@ -106,3 +109,33 @@ Permissões e trust boundaries são invariantes imediatos, independentemente
 do Security Gate final. P5 pode avançar em sua track própria; a integração de
 RTSP, credential/reveal, teste manual e health A-D depende dos contratos
 backend indicados, sem bloquear P5-0 por inferência.
+
+## CAM-INT-02-R1-ARCH — readiness corrente (2026-10-02)
+
+A tabela BC-02 preserva a classificação de arquitetura local dos contratos;
+implementações publicadas devem ser verificadas no código e em PROJECT_STATE.
+CAM-INT-02 já publicou custódia/lifecycle/reveal, mas não o resolver operacional.
+R1 é uma sub-slice, não nova authority de custódia: 20 contratos especializados
+originais + 1 sub-slice de execução. Os contadores acima são a fotografia BC-02,
+não totais recalculados de implementação corrente.
+
+```text
+CAM_INT_02_R1_ID = CAM-INT-02-R1
+CAM_INT_02_R1_TITLE = Runtime Credential Resolution Boundary
+CAM_INT_02_R1_STATUS = IMPLEMENTATION_READY / NOT_IMPLEMENTED
+CAM_INT_02_R1_READY_NOW = YES / predecessor CAM-INT-02 published; authorization still required
+RUNTIME_RESOLUTION_OWNER = CAM-INT-02
+CAM_INT_03_STATUS = PAUSED_ARCHITECTURAL_DEPENDENCY
+CAM_INT_03_READY_NOW = NO / CAM-INT-02-R1 not published
+CAM_INT_04_REQUIRES_R1 = YES / contracted Basic/Digest authentication
+CAM_INT_04_READY_NOW = NO / CAM-INT-02-R1 not published
+CAM_INT_04_EXECUTION_STATUS = LOCAL_CHANGES_OBSERVED / completion and pause not adjudicated
+IMPLEMENTATION_AUTHORIZED_BY_THIS_REGISTRY = NO
+```
+
+A adjudicação supersede as conclusões anteriores de readiness imediata de
+CAM-INT-03/04, preservadas como histórico nos checkpoints CAM-INT-07. R1 fecha
+API/input/output/failures, autorização externa versus resolução interna,
+invariantes, ownership, testes e critérios de aceite no contrato especializado.
+Consumers retomam seu gate apenas após implementação, integração, validação e
+publicação de R1, sob suas autorizações próprias. Homologação continua pendente.

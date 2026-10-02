@@ -2,10 +2,13 @@
 
 ```text
 STATUS = ACTIVE / SECURITY BASELINE
-SECRET_STORE_IMPLEMENTATION = NOT_PRESENT
+SECRET_STORE_IMPLEMENTATION = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / PUBLISHED
 BC02_STATUS = IMPLEMENTATION_READY
 IMPLEMENTATION_READY = YES
 IMPLEMENTER_TARGET = LUNA
+RUNTIME_RESOLUTION_OWNER = CAM-INT-02
+RUNTIME_RESOLUTION_CONTRACT = CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md
+RUNTIME_RESOLUTION_STATUS = IMPLEMENTATION_READY / NOT_IMPLEMENTED
 ```
 
 ## Invariantes
@@ -24,7 +27,13 @@ Falha de configuração ou autenticação é diagnóstico do subsistema, não pr
 
 Credenciais, chaves, allowlists e identidade são segregadas entre dev/teste/prod. Copiar banco não transporta autoridade de uso de segredo. Backup de ciphertext sem a chave correspondente é insuficiente; restore exige recuperação autorizada e validada da chave, sem imprimir segredo. Worker recebe apenas credencial necessária pelo menor período/escopo e não a aceita do browser nem CLI.
 
-Estado atual: não existe entidade de credenciais de equipamento nem secret manager implementado. Não conectar a câmera real ou habilitar adapter autenticado antes de fechar custódia, rotação, permissões, auditoria e restore. Referência normativa: ADR-021 §§3.1–3.4, 5–6, 8–9.
+Estado factual em `c0e5a954d8a2e290acb5ce86a1b699a10c02b190`: entidades,
+Fernet, provider local e lifecycle/reveal foram implementados e publicados
+pela CAM-INT-02. Secret manager operacional, restore e homologação reais
+continuam pendentes. A API pública interna de execução ainda não existe e
+pertence à sub-slice CAM-INT-02-R1 abaixo. Não habilitar adapter autenticado
+antes de sua publicação e dos gates próprios de ambiente. Referência normativa:
+ADR-021 §§3.1–3.4, 5–6, 8–9.
 
 ## BC-02 — custódia e lifecycle implementáveis
 
@@ -35,7 +44,9 @@ autenticado, `key_version` curto e não secreto, estado
 `PENDING/ACTIVE/RETIRED/REVOKED`, `created_at/by`, `activated_at`,
 `retired_at`, `revoked_at` e `rotated_from` opcional. `ciphertext` é payload
 versionado que contém **username e password**; não há coluna plaintext de
-username. O serviço devolve username apenas a Técnico/Admin autorizado.
+username. A leitura humana devolve username apenas a Técnico/Admin autorizado;
+a execução interna autorizada recebe username/password somente em memória
+pela boundary CAM-INT-02-R1, sem constituir reveal humano.
 Payload interno é JSON UTF-8 com versão de schema e chaves fechadas
 `username`/`password`, limites de comprimento e sem campos adicionais;
 serialização/deserialização ocorre antes/depois de Fernet, nunca no log.
@@ -111,3 +122,28 @@ Acceptance criteria:
 
 Referência técnica da escolha: [Fernet em cryptography 46.0.7](https://cryptography.io/en/46.0.7/fernet/)
 e [artefatos CPython 3.14 no PyPI](https://pypi.org/project/cryptography/46.0.7/).
+
+## CAM-INT-02-R1 — resolução operacional pública interna
+
+O contrato completo está em
+[CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md](CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md).
+CAM-INT-02 possui crypto, provider e resolução; CAM-INT-03/04 são consumers.
+API contratada: `resolve_active_credential_for_execution(*, config)` no módulo
+`cameras.integracao.credentials`, com `CameraConnectionConfig` persistido
+autorizado pelo caso de uso e retorno `ResolvedCameraCredential` efêmero.
+Somente a ACTIVE apontada pela credencial configurada da mesma câmera é
+resolvida; PENDING/RETIRED/REVOKED e qualquer inconsistência falham sem fallback.
+
+EXECUTION_RESOLUTION é interna, pública ao código de aplicação, não HTTP e
+não serializável; não exige `reveal_camera_credential`, reautenticação ou
+usuário Django fictício. Diagnóstico/captura manuais mantêm permissões próprias
+no caso de uso externo. Não gera evento de reveal por execução. O contrato R1
+fecha API, falhas, integridade, lifetime, ownership, testes e aceite sem alterar
+o schema ou as permissões. Implementação futura não autoriza consumers a usar
+helper privado, ciphertext, provider, endpoint reveal ou URI autenticada.
+
+`CAM-INT-02-R1 = IMPLEMENTATION_READY / NOT_IMPLEMENTED`; predecessora
+CAM-INT-02 publicada, successors CAM-INT-03 e CAM-INT-04 bloqueados até R1
+implementada, integrada, validada e publicada. A prontidão anterior da
+CAM-INT-02 não comprova presença dessa boundary; esta adjudicação corrige o
+gap explícito, preservando o lifecycle já publicado.

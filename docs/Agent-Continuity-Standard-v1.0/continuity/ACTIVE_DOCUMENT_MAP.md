@@ -11,8 +11,8 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; DOC-EXEC-01 section 45 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; BC-AUTH-02 section 20.9 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; CAM-INT-02-R1-ARCH section 49 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; CAM-INT-02-R1-ARCH section 20.16 |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; UI V2 authority mapped in section 16 |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
@@ -463,6 +463,10 @@ a seção 46.1 para a verificação de publicação.
 
 ## 20. CAM-INT-07 — integração controlada (2026-10-02)
 
+Snapshot histórico quanto à prontidão de CAM-INT-03/04; seção 21 supersede
+essas conclusões devido ao predecessor runtime CAM-INT-02-R1 não publicado.
+Evidências de publicação da CAM-INT-07 continuam válidas.
+
 | Path | Papel | Vigência |
 |---|---|---|
 | `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 48.1 | Snapshot factual da integração, reconciliação, validação, DAG e publicação | CURRENT / PUBLISHED / post-push verified |
@@ -474,3 +478,21 @@ CAM-INT-07 está integrada, validada e publicada, com `HEAD == origin/master`,
 divergência `0/0` e worktree limpa. CAM-INT-03/04 estão tecnicamente prontas e
 exigem autorização própria. Nenhuma sucessora, validação ambiental ou execução
 de rede foi iniciada.
+
+## 21. CAM-INT-02-R1-ARCH — authority de execução de credencial (2026-10-02)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/contracts/backend/camera/CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md` | API/input/output/failures, autorização, lifetime, ownership, testes e AC-R1-01..04 | CANONICAL / IMPLEMENTATION_READY / NOT_IMPLEMENTED |
+| `docs/projeto/contracts/backend/camera/CAM-INT-02_CREDENTIALS_CONTRACT.md` | Custódia e lifecycle; ownership da resolução e referência R1 | CANONICAL / implementation published, runtime boundary pending |
+| `docs/projeto/contracts/backend/camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md` | Consumer RTSP com dependency R1 e proibições de crypto/reveal | CANONICAL / PAUSED_ARCHITECTURAL_DEPENDENCY / READY_NOW=NO |
+| `docs/projeto/contracts/backend/camera/CAM-INT-04_HTTP_SNAPSHOT_CONTRACT.md` | Consumer Basic/Digest com mesma dependency R1 | CANONICAL / READY_NOW=NO; local execution completion unverified |
+| `docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md` | DAG e ownership R1 antes de CAM-INT-03/04 | CURRENT / reconciled |
+| `docs/projeto/contracts/backend/00_BACKEND_CONTRACT_REGISTRY.md` | Índice e classificação R1 | CURRENT / 20 original specialized contracts + 1 execution sub-slice |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 49 | Snapshot da adjudicação, baseline, limites e próxima atividade | CURRENT / documentary complete, local unpublished |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.16 | Handoff e invariantes de resolução interna | CURRENT / source for adapter readiness |
+
+Próxima atividade: implementar CAM-INT-02-R1 com Luna/High, mediante autoridade
+própria. CAM-INT-03/04 aguardam R1 implementada, integrada, validada e publicada;
+a antiga conclusão de readiness imediato após CAM-INT-07 é histórica.
+Esta adjudicação não altera worktrees dos consumers nem publica documentação.

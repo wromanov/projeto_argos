@@ -6,6 +6,9 @@ RTSP_ADAPTER_IMPLEMENTED = NO
 BC02_STATUS = IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING
 IMPLEMENTATION_READY = YES / LOCAL ADAPTER AND FAKE
 IMPLEMENTER_TARGET = LUNA
+EXECUTION_STATUS = PAUSED_ARCHITECTURAL_DEPENDENCY
+READY_NOW = NO / CAM-INT-02-R1 NOT_PUBLISHED
+REQUIRED_PREDECESSORS = CAM-INT-01; CAM-INT-02; CAM-INT-02-R1; CAM-INT-06; CAM-INT-07
 ```
 
 ## Semântica
@@ -105,3 +108,30 @@ Acceptance criteria:
 
 Referências do backend escolhido: [rtspsrc](https://gstreamer.freedesktop.org/documentation/rtsp/rtspsrc.html)
 e [appsink](https://gstreamer.freedesktop.org/documentation/app/appsink.html).
+
+## CAM-INT-02-R1 — dependency de resolução de credencial
+
+`IMPLEMENTATION_READY` acima qualifica o contrato local do adapter, não
+`READY_NOW`. CAM-INT-03 parou corretamente no gate e permanece
+`PAUSED_ARCHITECTURAL_DEPENDENCY`, blocker CAM-INT-02-R1, até implementação,
+integração, validação e publicação dessa boundary. CAM-INT-06/07 continuam
+dependencies independentes; readiness ambiental não é promovido por R1.
+
+O caso de uso interno autorizado seleciona o `CameraConnectionConfig`
+persistido da operação e chama exclusivamente
+`cameras.integracao.credentials.resolve_active_credential_for_execution(*, config)`.
+O port RTSP recebe somente `ResolvedCameraCredential` efêmero e usa
+username/password em propriedades em memória, fora do request serializável.
+Input, falhas e lifetime são normativos no
+[contrato R1](CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md).
+Resolução falha antes de port/rede, sem fallback de senha/versão ou fluxo
+anônimo; o resultado de configuração/auth continua neutro para disponibilidade.
+
+Proibidos: importar/chamar `_decrypt` ou helper privado; ler ciphertext/model
+de versão para decrypt; acessar `CredentialKeyProvider`; duplicar crypto;
+reutilizar reveal endpoint/serviço ou metadados; montar credencial em URI RTSP.
+Caller manual aplica `run_camera_connection_test` antes do resolver; worker
+aplica elegibilidade/compatibilidade/destino e ownership do seu caso de uso,
+sem permission reveal ou User fictício. Resolver não audita human reveal.
+Na implementação do adapter, testar a composição com a API R1, negação antes
+da chamada, erro seguro sem port/rede e ausência de imports privados/crypto.

@@ -6,6 +6,8 @@ HTTP_CAMERA_ADAPTER_IMPLEMENTED = NO
 BC02_STATUS = IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING
 IMPLEMENTATION_READY = YES / LOCAL ADAPTER AND FAKE
 IMPLEMENTER_TARGET = LUNA
+READY_NOW = NO / CAM-INT-02-R1 NOT_PUBLISHED
+REQUIRED_PREDECESSORS = CAM-INT-01; CAM-INT-02; CAM-INT-02-R1; CAM-INT-06; CAM-INT-07
 ```
 
 ## Separação de operações
@@ -89,3 +91,35 @@ Acceptance criteria:
 Referências do client escolhido: [HTTPX Client](https://www.python-httpx.org/advanced/clients/),
 [autenticação](https://www.python-httpx.org/advanced/authentication/) e
 [versão 0.28.1](https://pypi.org/project/httpx/0.28.1/).
+
+## CAM-INT-02-R1 — dependency factual de autenticação HTTP
+
+Basic/Digest já contratado requer username/password; portanto
+`CAM-INT-04_REQUIRES_R1 = YES`. `IMPLEMENTATION_READY` acima qualifica a
+especificação local, não `READY_NOW`: o fluxo autenticado depende de
+CAM-INT-02-R1 implementada, integrada, validada e publicada. Não criar outra
+resolução de segredo para HTTP. CAM-INT-06/07 mantêm suas dependencies próprias.
+
+O caso de uso confiável seleciona o `CameraConnectionConfig` persistido
+autorizado e resolve exclusivamente pela API pública interna
+`cameras.integracao.credentials.resolve_active_credential_for_execution(*, config)`.
+O port HTTP recebe somente `ResolvedCameraCredential` efêmero para auth
+Basic/Digest em memória. Não inclui segredo em request serializável, URL,
+resultado ou resposta; o objeto/client auth é liberado ao encerrar a tentativa.
+Input, falhas e lifetime estão no
+[contrato R1](CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md).
+
+Proibidos: helper privado de decrypt, leitura de ciphertext, acesso ao provider,
+crypto duplicada, reveal endpoint/serviço ou metadados como resolução e URI
+autenticada. Falha de resolução bloqueia port/rede, sem fallback antigo/anônimo.
+Captura manual verifica `capture_camera_image` no caso de uso externo antes
+de resolver; eventual diagnóstico verifica `run_camera_connection_test`.
+Não exigir reveal nem User fictício para execução interna. Nenhum evento de
+reveal é criado por captura/probe; a auditoria própria da captura é preservada.
+Testes do consumer cobrem integração com R1 e negação sem rede/segredo.
+
+Observação desta adjudicação: worktree `codex/cam-int-04-implementation` tem
+alterações locais em requirements, `http_snapshot/` e teste; apenas o status
+Git foi consultado. Não se declara execução pausada, aceite, falha ou conclusão
+desse trabalho sem evidência própria. O gate de publicação do fluxo autenticado
+exige R1; esta atividade não altera esse worktree nem avalia seu conteúdo.

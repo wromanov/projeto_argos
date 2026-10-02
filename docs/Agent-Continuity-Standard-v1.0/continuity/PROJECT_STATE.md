@@ -2664,6 +2664,10 @@ integração. Worktrees CAM-INT-07, MON-OBS e P5 mantêm suas alterações locai
 
 ## 48. CAM-INT-07 — integração controlada e validação local (2026-10-02)
 
+Histórico quanto à prontidão dos successors: CAM-INT-02-R1-ARCH, seção 49,
+supersede as conclusões READY_NOW/NEWLY_READY de CAM-INT-03/04 nesta seção e
+em 48.1. Evidências de integração/publicação de CAM-INT-07 permanecem válidas.
+
 Checkpoint factual após integrar a lane antiga na baseline moderna, reconciliar
 a geração para mudanças do IP cadastrado e executar a regressão integrada. A
 publicação dos commits e a verificação pós-push ainda estão pendentes neste
@@ -2770,3 +2774,96 @@ bloqueados pelas dependências do DAG. A implementação desses sucessores não
 foi iniciada. A policy não cria adapters nem executa DNS, proxy, redirects ou
 rede real. O gate de segurança final e as validações ambientais permanecem
 pendentes.
+
+## 49. CAM-INT-02-R1-ARCH — reconciliação da resolução runtime (2026-10-02)
+
+Snapshot vigente de arquitetura/readiness de credenciais e adapters. Esta
+adjudicação supersede a prontidão imediata de CAM-INT-03/04 registrada no gate
+CAM-INT-07, sem alterar sua implementação publicada ou os fatos históricos.
+
+```text
+ACTIVITY = CAM-INT-02-R1-ARCH — RUNTIME CREDENTIAL RESOLUTION CONTRACT RECONCILIATION
+STATUS = COMPLETE / PASS / DOCUMENTARY / UNPUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 100% / authorized documentary scope
+COMPLETION_BASIS = API, input/output, failures, authorization split, invariants,
+  ownership, tests, acceptance, consumer contracts, registry, DAG and continuity reconciled
+PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+BRANCH = master
+BASELINE_HEAD = c0e5a954d8a2e290acb5ce86a1b699a10c02b190
+ORIGIN_MASTER_AFTER_FETCH = c0e5a954d8a2e290acb5ce86a1b699a10c02b190
+DIVERGENCE_AT_PREFLIGHT = 0 / 0
+WORKTREE_AT_PREFLIGHT = CLEAN
+STAGING_AT_PREFLIGHT = EMPTY
+EXECUTION_MODE = DIRECT
+MULTIAGENT = NO
+SKILLS = NONE / native repository analysis and documentary editing sufficient
+PLUGINS = NONE
+CURRENT_MACROPHASE = CONTRACT_FIRST_PARALLEL_PIPELINE / backend adapter dependency reconciliation
+LAST_COMPLETED_ACTIVITY = CAM-INT-02-R1-ARCH / documentary scope only
+CAM_INT_02 = COMPLETE / PUBLISHED / custody and lifecycle
+RUNTIME_RESOLUTION_OWNER = CAM-INT-02
+PUBLIC_INTERNAL_API = cameras.integracao.credentials.resolve_active_credential_for_execution(*, config)
+INPUT = persisted CameraConnectionConfig selected by authorized internal use-case
+OUTPUT = ResolvedCameraCredential / ephemeral username and password only
+CAM_INT_02_R1 = IMPLEMENTATION_READY / NOT_IMPLEMENTED / NOT_PUBLISHED
+CAM_INT_02_R1_READY_NOW = YES / published CAM-INT-02 predecessor; separate authorization required
+CAM_INT_03 = PAUSED_ARCHITECTURAL_DEPENDENCY / gate respected; not a failed implementation
+CAM_INT_03_READY_NOW = NO
+CAM_INT_03_BLOCKER = CAM-INT-02-R1 implementation, integration, validation and publication
+CAM_INT_03_WORKTREE_OBSERVED = codex/cam-int-03-implementation / clean at observation
+CAM_INT_04_REQUIRES_R1 = YES / contracted Basic/Digest authentication
+CAM_INT_04_READY_NOW = NO / authenticated consumer depends on unpublished R1
+CAM_INT_04_EXECUTION_STATUS = LOCAL_CHANGES_OBSERVED / pause and completion unverified
+CAM_INT_04_WORKTREE_OBSERVED = codex/cam-int-04-implementation / requirements.txt modified;
+  cameras/integracao/http_snapshot/ and cameras/test_camera_http_snapshot.py untracked
+CAM_INT_04_SOURCE_REVIEWED = NO / Git file status only
+CAM_INT_03_04_WORKTREES_CHANGED_BY_THIS_ACTIVITY = NO
+CAM_INT_06_07 = INDEPENDENT_ADAPTER_PREDECESSORS / published, environmental validation remains pending
+HUMAN_REVEAL_SEPARATION = PASS / dedicated human permission, confirmation and audit retained
+MANUAL_AUTHORIZATION = external use-case checks run_camera_connection_test / capture_camera_image
+AUTOMATIC_WORKER_AUTHORIZATION = trusted eligible execution / no reveal permission or fictitious User
+ACTIVE_VERSION_RULE = configured same-camera credential / active pointer / owner and version ACTIVE
+RETIRED_REVOKED_PENDING_RULE = REJECT
+FALLBACK_RULE = NEVER
+AUDIT_SEMANTICS = NO_NEW_AUDIT_EVENT_REQUIRED / no reveal event on execution
+MIGRATION_EXPECTED = NO / service boundary only
+CANONICAL_CONTRACT = docs/projeto/contracts/backend/camera/CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md
+REGISTRY = docs/projeto/contracts/backend/00_BACKEND_CONTRACT_REGISTRY.md
+DAG = docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md
+NEXT_ACTIVITY = CAM-INT-02-R1 implementation with Luna/High
+NEXT_ACTIVITY_STATUS = IMPLEMENTATION_READY / NOT_AUTHORIZED_BY_THIS_ACTIVITY
+IMPLEMENTATION_AUTHORIZED = NO / current authority covers documentation only
+LIVE_AUTHORIZED = NO
+ENVIRONMENT_GATES = real camera/network/production pending; final security gate deferred and mandatory
+OPEN_DECISIONS = NONE for R1 local contract
+MAJOR_FINDINGS = runtime service boundary absent / addressed contractually; implementation pending
+BLOCKERS = NONE for documentary reconciliation; R1 publication blocks authenticated consumers
+DEFERRED_ITEMS = operational provider, production identity, restore and real concurrency/environment validation
+WORKTREE_AFTER_ACTIVITY = eight tracked documents modified and one new R1 contract / unstaged
+STAGING_AFTER_ACTIVITY = EMPTY
+CODE_MODIFIED = NO
+RUNTIME_TESTS_RUN = NO / requirements defined only; no runtime implementation authorized
+GIT_DIFF_CHECK = PASS
+CROSS_AUTHORITY_CONSISTENCY = PASS
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS / current dependency and next action discoverable
+ACTIVITY_COMPLETE = YES / authorized documentary work only, not R1 implementation/publication
+STAGE = NO
+COMMIT = NO
+PUSH = NO
+SOL_ESCALATION_REQUIRED = NO / unless a new material contradiction emerges
+FINAL_VERDICT = PASS / CAM-INT-02-R1 IMPLEMENTATION_READY; consumers await R1 publication
+```
+
+EVIDÊNCIA: no HEAD publicado, `credentials.py` disponibiliza gestão/reveal e
+helper privado `_decrypt`, sem resolver público; modelos já representam
+Config/credential/active_version. DECISÃO: R1 pertence a CAM-INT-02, é pública
+apenas ao código interno e não HTTP/serializável. Testes e AC-R1-01..04 estão
+no contrato especializado; nenhum resolver, adapter, teste Python ou migration
+foi escrito. CAM-INT-04 requer R1 porque seu contrato inclui Basic/Digest; não
+foi inferido estado de pausa nem qualidade de suas alterações locais.
+
+A implementação/integração/publicação de R1 e a retomada dos consumers são
+atividades posteriores sob autoridade própria. O fechamento documental é
+local e sem checkpoint Git; o pedido vigente não autoriza staging/commit/push.
+Revalidar Git e cada lane na retomada; preservar trabalho local e baselines.

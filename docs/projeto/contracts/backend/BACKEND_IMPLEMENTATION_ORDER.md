@@ -40,17 +40,15 @@ configuração, policy, codec ou decoder é neutro, nunca OFFLINE direto.
 ## 2. DAG de slices
 
 ```text
-BC-AUTH ───────────────────────────────────────────────┐
-   │                                                   │
-   └─ CAM-INT-02 ───────────────────────────────┐       │
-CAM-INT-01 ── CAM-INT-06 ────────────────────────┼───────┼─ CAM-INT-03 ─┐
-   │                                           │       │               ├─ CAM-INT-05 / CAM-HEALTH
-CAM-INT-07 ──────────────────────────────────────┘       │ CAM-INT-04 ─┤          │
-   │                                                   │               └─ IMG-CAP
-MON-OBS ────────────────────────────────────────────────┼─ MON-WORKER ← MON-PROBE /
-                                                       │                 MON-AV / MON-REC /
-                                                       │                 MON-OWN / MON-HIST
-                                                       └─ UI P5 integration contracts
+BC-AUTH -> CAM-INT-01
+BC-AUTH + CAM-INT-01 -> CAM-INT-02 -> CAM-INT-02-R1
+CAM-INT-01 -> CAM-INT-06
+CAM-INT-01 + CAM-INT-02 + CAM-INT-02-R1 + CAM-INT-06 + CAM-INT-07
+    ├-> CAM-INT-03 -> CAM-INT-05 -> CAM-HEALTH
+    └-> CAM-INT-04
+BC-AUTH + CAM-INT-03 + CAM-INT-04 + CAM-INT-06 -> IMG-CAP
+MON-OBS + CAM-INT-05 + CAM-HEALTH + core MON -> MON-WORKER
+BC-AUTH / backend contracts -> UI P5 integration contracts
 ```
 
 Dependências fortes: CAM-INT-03 e 04 exigem perfil, credencial e policy de
@@ -71,9 +69,10 @@ MON-OBS       <- []
 CAM-INT-07    <- []
 CAM-INT-01    <- [BC-AUTH]
 CAM-INT-02    <- [BC-AUTH, CAM-INT-01]
+CAM-INT-02-R1 <- [CAM-INT-02]
 CAM-INT-06    <- [CAM-INT-01]
-CAM-INT-03    <- [CAM-INT-01, CAM-INT-02, CAM-INT-06, CAM-INT-07]
-CAM-INT-04    <- [CAM-INT-01, CAM-INT-02, CAM-INT-06, CAM-INT-07]
+CAM-INT-03    <- [CAM-INT-01, CAM-INT-02, CAM-INT-02-R1, CAM-INT-06, CAM-INT-07]
+CAM-INT-04    <- [CAM-INT-01, CAM-INT-02, CAM-INT-02-R1, CAM-INT-06, CAM-INT-07]
 CAM-INT-05    <- [CAM-INT-03]
 CAM-HEALTH    <- [CAM-INT-05]
 IMG-CAP       <- [BC-AUTH, CAM-INT-03, CAM-INT-04, CAM-INT-06]
@@ -85,6 +84,33 @@ configuração; seu núcleo de policy é independente e pode começar antes em
 worktree próprio. CAM-INT-02 e CAM-INT-06 são serializados por colisão de
 `cameras/models.py`/migrations, embora o DAG lógico não imponha essa ordem.
 
+### 2.1. CAM-INT-02-R1 — reconciliação do gap operacional (2026-10-02)
+
+CAM-INT-02 publicou custódia/lifecycle/reveal, sem API pública de execução.
+Adicionar a sub-slice `CAM-INT-02-R1 — Runtime Credential Resolution Boundary`,
+cujo [contrato](camera/CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md)
+fecha o serviço interno, value object, falhas, autorização, testes e aceite.
+Não transferir crypto aos adapters. A dependência HTTP é factual: Basic/Digest
+já está contratado. CAM-INT-06 e CAM-INT-07 permanecem predecessores
+independentes dos adapters, sem arco novo vindo de R1.
+
+```text
+CAM-INT-02 -> CAM-INT-02-R1 -> CAM-INT-03
+                          -> CAM-INT-04
+CAM_INT_02_R1_STATUS = IMPLEMENTATION_READY / NOT_IMPLEMENTED
+CAM_INT_02_R1_READY_NOW = YES / CAM-INT-02 published; separate authorization required
+CAM_INT_03_STATUS = PAUSED_ARCHITECTURAL_DEPENDENCY
+CAM_INT_03_READY_NOW = NO / CAM-INT-02-R1 not published
+CAM_INT_04_READY_NOW = NO / CAM-INT-02-R1 not published
+CAM_INT_04_EXECUTION_STATUS = LOCAL_CHANGES_OBSERVED / not adjudicated as paused or complete
+```
+
+Readiness técnica imediata de CAM-INT-03/04 descrita nos checkpoints anteriores
+à descoberta do gap é histórica e supersedida por este gate. Antes de retomada
+ou integração dos consumers, R1 precisa estar implementada, integrada,
+validada e publicada; autorização existente de cada consumer deve ser
+revalidada na retomada. Lanes existentes e sua baseline são preservadas.
+
 ## 3. Waves e ownership
 
 | Wave | Slices | Paralelo | Predecessores | Arquivos compartilhados / regra |
@@ -92,7 +118,8 @@ worktree próprio. CAM-INT-02 e CAM-INT-06 são serializados por colisão de
 | 1 | BC-AUTH | Não | Core Django existente | Dono exclusivo de `usuarios/management/commands/configurar_perfis_argos.py`, `usuarios/admin_security.py` e alteração de permissões em `cameras/models.py`; migration de permissions se necessária |
 | 2 | CAM-INT-01, CAM-INT-07, MON-OBS | Sim, em worktrees distintos | Wave 1 para CAM-INT-01; nenhum para policy e observability | CAM-INT-01 possui `cameras/models.py` e sua migration; CAM-INT-07 possui `cameras/integracao/target_policy.py`; MON-OBS possui `cameras/monitoramento/observability.py`. `PROJECT_STATE`, mapa, roadmap e sprints não são propriedade de slices |
 | 3 | CAM-INT-02, CAM-INT-06 | **Não simultaneamente**: subordem CAM-INT-02 → CAM-INT-06 | Wave 2 | Ambos exigem schema em `cameras/models.py` e migration; executar em sequência na mesma linha de integração |
-| 4 | CAM-INT-03 e CAM-INT-04 | Sim, em worktrees distintos | Waves 2–3 | RTSP possui `cameras/integracao/rtsp/`; HTTP possui `cameras/integracao/http_snapshot/`; não editar o mesmo service, model ou migration. Integração de configuração comum pertence à etapa de reconciliação posterior |
+| 3-R1 | CAM-INT-02-R1 | Execução isolada antes dos consumers | CAM-INT-02 publicada | Possui `cameras/integracao/credentials.py` e novo `cameras/test_camera_credential_resolution.py`; models/provider/configuration são referências read-only; sem migration |
+| 4 | CAM-INT-03 e CAM-INT-04 | Sim, em worktrees distintos, após R1 publicada | Waves 2–3 e 3-R1 | RTSP possui `cameras/integracao/rtsp/`; HTTP possui `cameras/integracao/http_snapshot/`; não editar credentials/crypto/provider, o mesmo service, model ou migration. Integração de configuração comum pertence à etapa de reconciliação posterior |
 | 5 | CAM-INT-05/CAM-HEALTH | Não | Wave 4 | Diagnóstico cria `CameraHealthSnapshot` em `cameras/models.py` e migration própria; leitura health integra depois do schema |
 | 6 | IMG-CAP e MON-WORKER | Sim, em worktrees distintos | Wave 5; MON-OBS e core MON | Captura possui `cameras/models.py`, migration, `cameras/imagens/` e command de captura; worker possui `cameras/monitoramento/` e command de monitoramento. Views/URLs comuns só na integração sequencial |
 | 7 | Validação integrada local | Não | Waves 1–6 | Revisar permissões, fake/real boundary, migrations, migrations inversas, regressões focais e ausência de side effects de teste manual |
@@ -138,6 +165,7 @@ sequenciais; não gerar nós paralelos com o mesmo predecessor.
 | BC-AUTH | `Camera.Meta.permissions` e reconciliação de grupos | Permission ↔ Group já existentes | codename estável; sem coluna de domínio | Comando de perfis idempotente; não atribuir Técnico por inferência a usuários antigos | Remover permission só após revogar grants; preservar contas/grupos preexistentes |
 | CAM-INT-01 | `CameraCapabilityProfile`, `CameraConnectionConfig` | Profile 1:N Config; Camera 1:1 Config | `(profile_key, version)` único; configuração válida/ativa por câmera; índices de ativo e perfil | Seed idempotente `RTSP_DISCOVERY_V1` sem vendor SUPPORTED; configs antigas ausentes/inativas | Desativar vínculo antes de remover perfil; não apagar dados operacionais |
 | CAM-INT-02 | `CameraCredential`, `CameraCredentialVersion` e FK nullable em `CameraConnectionConfig` | Camera 1:1 Credential; Credential 1:N Version; versão ativa FK vinculada; Config N:1 Credential opcional | `(credential_id, version)` único; no máximo uma versão ACTIVE por credential; coerência de referência ativa validada em service transacional | Nenhum segredo legado importado; binding inicial ausente | Reverter sem expor plaintext; preservar ciphertext/backups e plano de chave |
+| CAM-INT-02-R1 | Nenhuma mudança de model/migration; API/value object no serviço existente | Reutiliza Config -> Credential -> active_version, mesma câmera e owner | Integridade/lifecycle e releitura transacional no serviço | Não | Retirar boundary/consumer sob gate, preservando custódia; nunca exportar plaintext |
 | CAM-INT-06 | `Camera.firmware_version` e `CameraCapabilityEvidence` | Profile 1:N Evidence; câmera opcional para evidência por unidade | índice `(profile, vendor, model, firmware, status)` e fonte/version obrigatórias | Não gerar `SUPPORTED` a partir de cadastro livre | Preservar evidência de auditoria antes de remover schema |
 | CAM-INT-03/04/07 | Sem nova tabela além de Config/Profile/Credential/Evidence | Reutilizar relações anteriores | Não aplicável | Não | Não aplicável |
 | CAM-INT-05 | `CameraHealthSnapshot` | Camera 1:1 Snapshot | coerência A-D e generation; índice observed_at | Não inferir A-D de status antigo | Snapshot é derivado; preservar histórico de monitoramento |

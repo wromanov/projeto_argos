@@ -972,6 +972,9 @@ seção 46.1 de `PROJECT_STATE.md`.
 
 ### 20.14. CAM-INT-07-INT — integração controlada (2026-10-02)
 
+Readiness de CAM-INT-03/04 nesta fotografia é histórico e supersedido pela
+adjudicação CAM-INT-02-R1-ARCH na seção 20.16 e PROJECT_STATE seção 49.
+
 O checkpoint local validado está na seção 48 de `PROJECT_STATE.md`. CAM-INT-07
 foi integrada por merge controlado `7b67b10`; a reconciliação `386b727` usa o
 contador moderno `ultima_geracao_configuracao` quando o IPv4 cadastrado muda.
@@ -982,6 +985,9 @@ autorização própria; nenhum sucessor foi iniciado. Rede/câmeras/ambiente rea
 produção permanecem pendentes.
 
 ### 20.15. CAM-INT-07-INT — publicação confirmada (2026-10-02)
+
+Publicação confirmada permanece factual; prontidão dos successors abaixo é
+histórica, supersedida pela seção 20.16 quanto ao novo predecessor R1.
 
 A integração, reconciliação e continuidade inicial foram publicadas em
 `f5a3a71eb64c88fa7918caa1405f091bfa6fc4a2`. O fetch pós-push confirmou
@@ -1007,3 +1013,39 @@ STATE_COMMIT = a330b06 / PUBLISHED
 PUSH_AND_POST_PUSH_VERIFY = PASS / HEAD == origin/master; divergence 0/0; clean
 NEXT_IMPLEMENTATION_ACTION = CAM-INT-07 completion, then recheck CAM-INT-03/04 readiness
 ```
+
+### 20.16. CAM-INT-02-R1-ARCH — boundary interna adjudicada (2026-10-02)
+
+O snapshot vigente está em `PROJECT_STATE.md`, seção 49. Authority completa:
+`docs/projeto/contracts/backend/camera/CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md`;
+DAG e registry foram reconciliados. O gap é a ausência de API pública interna
+de execução na CAM-INT-02 publicada, cuja crypto continua sob esse ownership.
+
+```text
+CAM_INT_02_R1 = IMPLEMENTATION_READY / NOT_IMPLEMENTED / NOT_PUBLISHED
+CAM_INT_03 = PAUSED_ARCHITECTURAL_DEPENDENCY / blocker CAM-INT-02-R1
+CAM_INT_03_READY_NOW = NO
+CAM_INT_04_REQUIRES_R1 = YES / Basic-Digest already contracted
+CAM_INT_04_READY_NOW = NO
+CAM_INT_04_EXECUTION_STATUS = LOCAL_CHANGES_OBSERVED / pause and completion not established
+RUNTIME_RESOLUTION_OWNER = CAM-INT-02
+EXECUTION_IS_HUMAN_REVEAL = NO
+EXECUTION_REVEAL_PERMISSION_REQUIRED = NO
+FICTITIOUS_DJANGO_USER_REQUIRED = NO
+NO_NEW_AUDIT_EVENT_REQUIRED = YES
+NEXT_ACTIVITY = CAM-INT-02-R1 implementation with Luna/High / separate authority required
+CURRENT_DOCUMENTARY_SCOPE = COMPLETE / PASS / LOCAL_UNPUBLISHED
+PROJECT_STATE_UPDATE = PASS
+CODE_MODIFIED = NO
+COMMIT = NO
+PUSH = NO
+```
+
+A API contratada recebe config persistido autorizado pelo caso de uso e
+retorna somente credencial ACTIVE efêmera. Human reveal e autorização manual
+continuam separados; nenhuma falha permite fallback. Consumers não podem usar
+decrypt privado, ciphertext, provider, reveal ou URI autenticada. CAM-INT-03
+respeitou o gate, não falhou. CAM-INT-04 tem alterações locais observadas apenas
+por Git status; seu worktree não foi alterado nem revisado nesta atividade.
+As antigas conclusões READY_NOW de 20.14/20.15 foram supersedidas; R1 exige
+implementação, integração, validação e publicação antes de liberar consumers.
