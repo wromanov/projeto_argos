@@ -100,7 +100,3 @@ class Migration(migrations.Migration):
         ),
         migrations.RunPython(seed_rtsp_discovery, remove_rtsp_discovery),
     ]
-
-
-
-
