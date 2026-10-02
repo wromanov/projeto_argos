@@ -1,6 +1,7 @@
 """Credential lifecycle use cases; secret material stays behind Fernet."""
 
 import json
+from dataclasses import dataclass, field
 
 from cryptography.fernet import Fernet, InvalidToken
 from django.contrib.auth import authenticate
@@ -12,6 +13,7 @@ from django.utils import timezone
 from cameras.authorization import require_camera_permission
 from cameras.models import (
     Camera,
+    CameraConnectionConfig,
     CameraCredential,
     CameraCredentialVersion,
     EventoAuditoria,
@@ -30,6 +32,20 @@ class CredentialOperationError(Exception):
     def __init__(self, code):
         self.code = code
         super().__init__(code)
+
+
+@dataclass(frozen=True)
+class ResolvedCameraCredential:
+    """Ephemeral credentials for one authorized in-memory connection attempt."""
+
+    username: str = field(repr=False)
+    password: str = field(repr=False)
+
+    def __str__(self):
+        return "ResolvedCameraCredential(<redacted>)"
+
+    def __reduce_ex__(self, protocol):
+        raise TypeError("ResolvedCameraCredential cannot be serialized.")
 
 
 def _provider(provider):
@@ -79,6 +95,90 @@ def _decrypt(version, *, key_provider):
     except ValidationError:
         raise CredentialOperationError("DECRYPT_FAILED") from None
     return payload["username"], payload["password"]
+
+
+_RESOLUTION_CONFIG_FIELDS = (
+    "camera_id",
+    "config_version",
+    "credential_id",
+    "profile_id",
+    "enabled",
+    "rtsp_uri",
+    "http_endpoint_override",
+    "http_port_override",
+    "transport",
+)
+
+
+@transaction.atomic
+def resolve_active_credential_for_execution(*, config):
+    """Resolve only the configured ACTIVE version for an internal attempt.
+
+    The caller must have selected this persisted configuration after its own
+    authorization and target-policy checks. This service enforces integrity
+    and credential lifecycle, and never performs human reveal authorization.
+    """
+    if not isinstance(config, CameraConnectionConfig) or config.pk is None or config._state.adding:
+        raise CredentialOperationError("CONFIGURATION_NOT_ALLOWED")
+
+    # Match the lock order used by credential lifecycle operations so rotation
+    # and revocation cannot interleave between eligibility checks and decrypt.
+    camera = Camera.objects.select_for_update().filter(pk=config.camera_id).first()
+    if camera is None:
+        raise CredentialOperationError("CONFIGURATION_NOT_ALLOWED")
+    persisted_config = (
+        CameraConnectionConfig.objects.select_for_update()
+        .filter(pk=config.pk, camera_id=camera.pk)
+        .first()
+    )
+    if persisted_config is None or any(
+        getattr(persisted_config, name) != getattr(config, name)
+        for name in _RESOLUTION_CONFIG_FIELDS
+    ):
+        raise CredentialOperationError("CONFIGURATION_NOT_ALLOWED")
+
+    if persisted_config.credential_id is None:
+        raise CredentialOperationError("CREDENTIAL_NOT_CONFIGURED")
+    credential = (
+        CameraCredential.objects.select_for_update()
+        .filter(pk=persisted_config.credential_id)
+        .first()
+    )
+    if credential is None:
+        raise CredentialOperationError("CREDENTIAL_NOT_CONFIGURED")
+    if credential.camera_id != persisted_config.camera_id:
+        raise CredentialOperationError("CROSS_CAMERA_REFERENCE")
+    if credential.state != CameraCredential.State.ACTIVE:
+        raise CredentialOperationError("VERSION_NOT_ALLOWED")
+    if credential.active_version_id is None:
+        raise CredentialOperationError("NO_ACTIVE_VERSION")
+
+    active_version = (
+        CameraCredentialVersion.objects.select_for_update()
+        .filter(pk=credential.active_version_id)
+        .first()
+    )
+    if active_version is None:
+        raise CredentialOperationError("VERSION_NOT_ALLOWED")
+    if active_version.credential_id != credential.pk:
+        raise CredentialOperationError("CROSS_CAMERA_REFERENCE")
+    if active_version.state != CameraCredentialVersion.State.ACTIVE:
+        raise CredentialOperationError("VERSION_NOT_ALLOWED")
+    active_ids = list(
+        credential.versions.filter(state=CameraCredentialVersion.State.ACTIVE)
+        .values_list("pk", flat=True)
+    )
+    if active_ids != [active_version.pk]:
+        raise CredentialOperationError("VERSION_NOT_ALLOWED")
+
+    try:
+        username, password = _decrypt(
+            active_version,
+            key_provider=_provider(None),
+        )
+    except CredentialKeyError as exc:
+        raise CredentialOperationError(exc.code) from None
+    return ResolvedCameraCredential(username=username, password=password)
 
 
 def _audit(*, code, summary, actor, camera, credential, version, outcome="success", request=None):
