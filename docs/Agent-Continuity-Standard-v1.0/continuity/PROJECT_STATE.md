@@ -2280,3 +2280,50 @@ introduz escopo por objeto/tenant. O comando de perfis reconcilia defaults sem
 alterar associações de usuários. Nenhum endpoint, auditoria de operação futura,
 segredo ou acesso à rede foi criado. A implementação permanece não publicada e
 isolada na branch indicada; valide Git diretamente antes de qualquer integração.
+
+## 43. BC-AUTH-02 — checkpoint de integração e publicação (2026-10-01)
+
+```text
+ACTIVITY = BC-AUTH-02 — INTEGRATION CHECKPOINT
+STATUS = INTEGRATED / VALIDATED / PUBLICATION PENDING
+ACTIVITY_COMPLETION_PERCENT = 85% at state-commit preparation
+SOURCE_BRANCH = codex/bc-auth-implementation
+SOURCE_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_bc_auth
+SOURCE_BASE_SHA = 29242953d17988c0d4e14612dbb12fdc40b6f530
+SOURCE_IMPLEMENTATION_COMMIT = 55651d22a97e19fa342320b15a4f5276beadcf4a
+SOURCE_WORKTREE_STATUS = CLEAN / staging empty after commit
+TARGET_BRANCH = master
+TARGET_PRE_INTEGRATION_HEAD = 29242953d17988c0d4e14612dbb12fdc40b6f530
+TARGET_ORIGIN_HEAD_AT_PREFLIGHT = 29242953d17988c0d4e14612dbb12fdc40b6f530
+TARGET_PRE_INTEGRATION_DIVERGENCE = 0 / 0
+INTEGRATION_METHOD = FAST-FORWARD
+INTEGRATION_RESULT = PASS / master HEAD = source implementation commit
+CONTRACT_MODIFIED = NO / all three protected backend contracts unchanged
+SPECIAL_TECHNICIAN_ADMIN_CHECK = PASS
+TECHNICIAN_ADMIN_PERMISSIONS = NO user, group, or permission administration grants
+TECHNICIAN_ALLOWLIST_EFFECT = allows an ARGOS administrator to manage an operational target profile; grants no administrator role or permissions to Técnico
+SOURCE_TEST_RESULT = PASS / 54 focused tests
+MIGRATION_CHECK = PASS / makemigrations --check; no changes detected
+INTEGRATED_FOCUSED_TEST_RESULT = PASS / 54 tests
+INTEGRATED_REGRESSION_RESULT = PASS / 209 tests across usuarios, core security, and camera governance/authorization
+TESTS_NOT_RUN = global/SCALE suite
+FILES_STAGED = 11 BC-AUTH implementation/state files; no protected contracts
+STATE_COMMIT = pending
+PUSH_RESULT = AUTHORIZED / PENDING
+WAVE_1_STATUS = IMPLEMENTED / INTEGRATED / VALIDATED; publication pending
+WAVE_2 = NOT_STARTED
+NEXT_IMPLEMENTATION_WAVE = CAM-INT-01; CAM-INT-07; MON-OBS
+DEFAULT_IMPLEMENTER = LUNA
+SECURITY_FINAL_GATE = DEFERRED
+UI_TRACK = P5 parallel
+LIVE_AUTHORIZED = NO; HOMOLOGATION_AUTHORIZED = NO; PRODUCTION_AUTHORIZED = NO
+BLOCKERS = NONE before authorized publication
+```
+
+A regressão integrada foi repetida no diretório canônico ARGOS; os 209 testes
+passaram. Uma tentativa anterior executada com o diretório corrente HERMES
+produziu dois resultados inválidos por resolução de caminhos relativos e foi
+descartada após a repetição correta. Este checkpoint reconcilia os registros
+anteriores de BC-AUTH-02 que divergiam do preflight e dos resultados observados.
+A publicação Git e sua verificação remota ainda estão pendentes neste ponto do
+registro; atualizar os fatos após o push.

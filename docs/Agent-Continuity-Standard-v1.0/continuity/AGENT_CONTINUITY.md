@@ -905,3 +905,19 @@ O commit documental `7b0135f0e9911e6a03f1a297e606d848eaa44533` foi publicado em
 a reconciliação deste checkpoint deve ser confirmado diretamente no Git. O
 próximo passo é adjudicação humana do baseline e de qualquer atividade
 posterior.
+
+### 20.9. BC-AUTH-02 — integração e publicação (2026-10-01)
+
+BC-AUTH-01 foi commitada como `55651d22a97e19fa342320b15a4f5276beadcf4a`
+(`feat(auth): implement camera authorization contract`), filho direto da
+baseline `29242953d17988c0d4e14612dbb12fdc40b6f530`. O preflight confirmou
+`master` e `origin/master` nessa baseline; a integração foi feita por
+fast-forward, sem conflito.
+
+No estado integrado, `makemigrations --check` passou; os 54 testes focais e a
+regressão de 209 testes para usuários, segurança do core e governança/autorização
+de câmeras passaram. O Técnico não recebe permissões administrativas de
+usuários, grupos ou permissões; sua allowlist afeta somente a classificação de
+alvos operacionais geridos pelo Administrador ARGOS. A publicação está
+autorizada e pendente; consultar Git diretamente para o resultado remoto e a
+baseline final. O snapshot detalhado é a seção 43 de `PROJECT_STATE.md`.
