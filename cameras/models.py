@@ -940,6 +940,81 @@ class CameraCapabilityProfile(models.Model):
         return super().save(*args, **kwargs)
 
 
+class CameraCredential(models.Model):
+    class State(models.TextChoices):
+        ACTIVE = "ACTIVE", "Active"
+        INACTIVE = "INACTIVE", "Inactive"
+
+    camera = models.OneToOneField(Camera, on_delete=models.CASCADE, related_name="credential")
+    active_version = models.ForeignKey(
+        "CameraCredentialVersion",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="active_for_credentials",
+    )
+    state = models.CharField(max_length=12, choices=State.choices, default=State.INACTIVE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="camera_credentials_updated",
+    )
+
+    def __str__(self):
+        return f"Credential for camera {self.camera_id}"
+
+
+class CameraCredentialVersion(models.Model):
+    class State(models.TextChoices):
+        PENDING = "PENDING", "Pending"
+        ACTIVE = "ACTIVE", "Active"
+        RETIRED = "RETIRED", "Retired"
+        REVOKED = "REVOKED", "Revoked"
+
+    credential = models.ForeignKey(CameraCredential, on_delete=models.CASCADE, related_name="versions")
+    version = models.PositiveIntegerField()
+    ciphertext = models.TextField()
+    key_version = models.CharField(max_length=32)
+    state = models.CharField(max_length=10, choices=State.choices, default=State.PENDING)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="camera_credential_versions_created",
+    )
+    activated_at = models.DateTimeField(null=True, blank=True)
+    retired_at = models.DateTimeField(null=True, blank=True)
+    revoked_at = models.DateTimeField(null=True, blank=True)
+    rotated_from = models.ForeignKey(
+        "self",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="rotations",
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["credential", "version"], name="uniq_camera_credential_version"),
+            models.UniqueConstraint(
+                fields=["credential"],
+                condition=Q(state="ACTIVE"),
+                name="uniq_active_camera_credential_version",
+            ),
+            models.CheckConstraint(condition=Q(version__gt=0), name="camera_credential_version_positive"),
+        ]
+        indexes = [models.Index(fields=["credential", "state", "version"], name="cam_cred_state_ver_idx")]
+
+    def __str__(self):
+        return f"Credential version {self.version} for {self.credential_id}"
+
+
 class CameraConnectionConfig(models.Model):
     class Transport(models.TextChoices):
         AUTO = "AUTO", "Automatic"
@@ -948,6 +1023,13 @@ class CameraConnectionConfig(models.Model):
 
     camera = models.OneToOneField(Camera, on_delete=models.CASCADE, related_name="connection_config")
     profile = models.ForeignKey(CameraCapabilityProfile, on_delete=models.PROTECT, related_name="camera_configs")
+    credential = models.ForeignKey(
+        CameraCredential,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="connection_configs",
+    )
     enabled = models.BooleanField(default=False)
     rtsp_uri = models.CharField(max_length=1024, blank=True, default="")
     http_endpoint_override = models.CharField(max_length=512, blank=True, default="")
