@@ -921,3 +921,14 @@ usuários, grupos ou permissões; sua allowlist afeta somente a classificação 
 alvos operacionais geridos pelo Administrador ARGOS. A publicação dos commits funcional e documental passou; o fetch confirmou
 `HEAD == origin/master` e worktrees limpas. Consultar Git diretamente para a
 baseline atual em qualquer retomada. O snapshot detalhado é a seção 43 de `PROJECT_STATE.md`.
+
+### 20.10. CAM-INT-01-FIX03 — integração validada (2026-10-02)
+
+O checkpoint factual está na seção 44 de `PROJECT_STATE.md`. O commit de
+implementação é `8d7ec31`; reparos são `9cc1159`, `e612328` e `75cdf70`.
+`master` avançou por fast-forward para
+`75cdf708b07a61b26cfd40181f163fcb44526083`; validações integradas passaram.
+No momento deste registro, o push ainda estava pendente. CAM-INT-02 tem
+predecessores técnicos satisfeitos no DAG, mas exige autorização própria e não
+foi iniciada. WAVE_2 permanece aberta: CAM-INT-07 e MON-OBS estão em execução;
+P5 permanece RUNNING. Atualizar este registro após verificar a publicação.

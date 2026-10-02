@@ -2331,3 +2331,57 @@ O push de `master` publicou o commit funcional e o checkpoint documental. O fetc
 posterior confirmou `HEAD == origin/master == b67e25bb74e695ded343e6558285f7ab0e5d44a7`,
 divergência `0/0`, staging vazio e os worktrees master e source limpos. Revalidar
 Git ao iniciar uma nova atividade.
+
+## 44. CAM-INT-01 — saneamento, integração e validação (2026-10-02)
+
+```text
+ACTIVITY = CAM-INT-01-FIX03 — BOUNDED SOURCE SANITATION AND INTEGRATION RESUME
+STATUS = PASS / INTEGRATED; publication pending at checkpoint creation
+SOURCE_BRANCH = codex/cam-int-01-capability-catalog
+SOURCE_BASE = 8d7ec31b18b911ffc1ffcefd62fee98086cca467
+SOURCE_PRE_REPAIR_HEAD = e612328e1cd1d2454bbeddd92ffbfbd5a9d632b0
+KNOWN_CONFIGURATION_DEFECT_CONFIRMED = YES / isolated literal \\n at EOF
+FILES_SCANNED = 7 CAM-INT-01 Python files
+FILES_REPAIRED = cameras/integracao/configuration.py
+REPAIR_TYPES = remove isolated literal \\n and normalize trailing EOF whitespace
+SOURCE_REPAIR_COMMIT = 75cdf708b07a61b26cfd40181f163fcb44526083
+SOURCE_VALIDATION_HEAD = 75cdf708b07a61b26cfd40181f163fcb44526083
+SOURCE_WORKTREE = CLEAN; STAGING = EMPTY
+STATIC_SYNTAX_SWEEP = PASS / all 7 CAM-INT-01 Python files compile
+MANAGE_CHECK = PASS
+MAKEMIGRATIONS_CHECK = PASS / no changes detected
+FOCUSED_TESTS = PASS / 12
+REGRESSION_TESTS = PASS / 96 across authorization, audit, model governance and camera activities
+GIT_DIFF_CHECK = PASS
+MASTER_PRE_INTEGRATION_HEAD = 8d7ec31b18b911ffc1ffcefd62fee98086cca467
+ORIGIN_MASTER_AT_PREFLIGHT = 80c458581944401510b62d1ba35febf7ddadc0d5
+INTEGRATION_METHOD = FAST-FORWARD
+MASTER_POST_INTEGRATION_HEAD = 75cdf708b07a61b26cfd40181f163fcb44526083
+INTEGRATED_MANAGE_CHECK = PASS
+INTEGRATED_MIGRATION_CHECK = PASS / no changes detected
+INTEGRATED_FOCUSED_TESTS = PASS / 12
+INTEGRATED_REGRESSION_TESTS = PASS / 96
+CONTRACT_MODIFIED = NO; SCHEMA_CHANGE = NO; SEMANTIC_CHANGE = NO
+REAL_RTSP = NOT_IMPLEMENTED; CREDENTIALS = NOT_IMPLEMENTED
+HTTP_ADAPTER = NOT_IMPLEMENTED; FRONTEND = NOT_IMPLEMENTED
+CAM_INT_01 = IMPLEMENTED / INTEGRATED / VALIDATED
+IMPLEMENTATION_COMMIT = 8d7ec31b18b911ffc1ffcefd62fee98086cca467
+REPAIR_COMMITS = 9cc1159e5e70c3caf967d78a63adb52fd9892578; e612328e1cd1d2454bbeddd92ffbfbd5a9d632b0; 75cdf708b07a61b26cfd40181f163fcb44526083
+WAVE_2 = CAM-INT-01 COMPLETE; CAM-INT-07 RUNNING; MON-OBS RUNNING
+P5 = RUNNING
+CAM_INT_02_READINESS = READY_NOW
+CAM_INT_02_MISSING_PREDECESSORS = NONE / BC-AUTH and CAM-INT-01 integrated
+CAM_INT_02_CAN_START = YES / separate activity authorization still required
+TESTS_NOT_RUN = global/SCALE suite
+PUSH = pending
+PROJECT_STATE_UPDATE = PASS
+```
+
+O scan foi limitado aos arquivos Python da slice identificados pelo diff de
+`80c458581944401510b62d1ba35febf7ddadc0d5` até a source pre-repair. O literal
+isolado em `configuration.py` era um artefato mecânico e foi removido; testes
+focais confirmam seed idempotente, versões/gerações, auditoria sem URI,
+defaults/overrides, fallback, compatibilidade `UNVERIFIED` e bloqueio de
+execução automática sem evidência. Nenhum adapter de rede ou fluxo de produto
+foi adicionado. O estado de publicação será completado após push e fetch de
+verificação; não declarar a Wave 2 completa.
