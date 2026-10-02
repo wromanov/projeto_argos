@@ -981,6 +981,15 @@ a integração identifica CAM-INT-03 e CAM-INT-04 como tecnicamente prontas, sob
 autorização própria; nenhum sucessor foi iniciado. Rede/câmeras/ambiente real e
 produção permanecem pendentes.
 
+### 20.15. CAM-INT-07-INT — publicação confirmada (2026-10-02)
+
+A integração, reconciliação e continuidade inicial foram publicadas em
+`f5a3a71eb64c88fa7918caa1405f091bfa6fc4a2`. O fetch pós-push confirmou
+`HEAD == origin/master`, divergência `0/0`, worktree limpa e staging vazio.
+O fechamento final está na seção 48.1 de `PROJECT_STATE.md`; o DAG relido após
+publicação marca CAM-INT-03 e CAM-INT-04 tecnicamente prontas, ainda sujeitas à
+autorização própria. Homologação, câmeras, rede e produção continuam pendentes.
+
 ### 20.13. CAM-INT-06-INT — integração e validação local (2026-10-02)
 
 O registro factual corrente está na seção 47 de `PROJECT_STATE.md`. CAM-INT-06

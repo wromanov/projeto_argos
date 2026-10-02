@@ -2738,3 +2738,35 @@ CAM-HEALTH; IMG-CAP aguarda CAM-INT-03 e CAM-INT-04. Nenhum sucessor foi
 iniciado. A policy não implementa cliente, resolução DNS, proxy ou seguimento
 de redirect; credenciais e compatibilidade permanecem nas boundaries CAM-INT-02
 e CAM-INT-06.
+
+### 48.1. CAM-INT-07 — publicação e fechamento (2026-10-02)
+
+O merge e a reconciliação foram publicados após fetch de segurança. O fechamento
+abaixo supersede os campos de publicação pendente da seção 48.
+
+```text
+ACTIVITY_STATUS = COMPLETE / PASS / PUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 100%
+PUBLISHED_INTEGRATION_HEAD = f5a3a71eb64c88fa7918caa1405f091bfa6fc4a2
+PUSH_RESULT = PASS / fast-forward origin/master from 9a20b13 to f5a3a71
+POST_PUSH_FETCH = PASS
+POST_PUSH_HEAD = f5a3a71eb64c88fa7918caa1405f091bfa6fc4a2
+POST_PUSH_ORIGIN_MASTER = f5a3a71eb64c88fa7918caa1405f091bfa6fc4a2
+POST_PUSH_DIVERGENCE = 0 / 0
+POST_PUSH_WORKTREE = CLEAN
+POST_PUSH_STAGING = EMPTY
+FINAL_DAG_RECHECK = PASS / BACKEND_IMPLEMENTATION_ORDER reread after publication
+CAM_INT_07_STATUS = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / PUBLISHED
+PROJECT_STATE_UPDATE = PASS / local validation and first push recorded; final closure in this checkpoint
+STATE_COMMIT = f5a3a71 / initial continuity checkpoint; this closure is published as the following state commit
+NEWLY_READY_CONTRACTS = CAM-INT-03; CAM-INT-04 / technically ready; separate implementation authorization required
+ACTIVITY_COMPLETE = YES
+ENVIRONMENT_VALIDATION = PENDING / camera, network, real environment and production
+```
+
+Após a publicação, CAM-INT-03 e CAM-INT-04 permanecem os próximos contratos
+tecnicamente prontos; CAM-INT-05, CAM-HEALTH, MON-WORKER e IMG-CAP continuam
+bloqueados pelas dependências do DAG. A implementação desses sucessores não
+foi iniciada. A policy não cria adapters nem executa DNS, proxy, redirects ou
+rede real. O gate de segurança final e as validações ambientais permanecem
+pendentes.
