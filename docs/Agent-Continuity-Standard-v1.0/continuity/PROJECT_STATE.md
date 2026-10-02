@@ -2285,8 +2285,8 @@ isolada na branch indicada; valide Git diretamente antes de qualquer integraçã
 
 ```text
 ACTIVITY = BC-AUTH-02 — INTEGRATION CHECKPOINT
-STATUS = INTEGRATED / VALIDATED / PUBLICATION PENDING
-ACTIVITY_COMPLETION_PERCENT = 85% at state-commit preparation
+STATUS = COMPLETE / PASS / PUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 100%
 SOURCE_BRANCH = codex/bc-auth-implementation
 SOURCE_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_bc_auth
 SOURCE_BASE_SHA = 29242953d17988c0d4e14612dbb12fdc40b6f530
@@ -2308,16 +2308,18 @@ INTEGRATED_FOCUSED_TEST_RESULT = PASS / 54 tests
 INTEGRATED_REGRESSION_RESULT = PASS / 209 tests across usuarios, core security, and camera governance/authorization
 TESTS_NOT_RUN = global/SCALE suite
 FILES_STAGED = 11 BC-AUTH implementation/state files; no protected contracts
-STATE_COMMIT = pending
-PUSH_RESULT = AUTHORIZED / PENDING
-WAVE_1_STATUS = IMPLEMENTED / INTEGRATED / VALIDATED; publication pending
+STATE_COMMIT = b67e25bb74e695ded343e6558285f7ab0e5d44a7 / docs(state): record BC-AUTH integration
+PUSH_RESULT = PASS / implementation and continuity checkpoint published to origin/master
+WAVE_1_STATUS = COMPLETE / implementation, integration, validation and publication passed
 WAVE_2 = NOT_STARTED
 NEXT_IMPLEMENTATION_WAVE = CAM-INT-01; CAM-INT-07; MON-OBS
 DEFAULT_IMPLEMENTER = LUNA
 SECURITY_FINAL_GATE = DEFERRED
 UI_TRACK = P5 parallel
 LIVE_AUTHORIZED = NO; HOMOLOGATION_AUTHORIZED = NO; PRODUCTION_AUTHORIZED = NO
-BLOCKERS = NONE before authorized publication
+FETCH_AFTER_PUSH = PASS / HEAD == origin/master at b67e25bb74e695ded343e6558285f7ab0e5d44a7; divergence 0 / 0; both worktrees clean
+PROJECT_STATE_UPDATE = PASS / integration, validation and publication recorded
+BLOCKERS = NONE
 ```
 
 A regressão integrada foi repetida no diretório canônico ARGOS; os 209 testes
@@ -2325,5 +2327,7 @@ passaram. Uma tentativa anterior executada com o diretório corrente HERMES
 produziu dois resultados inválidos por resolução de caminhos relativos e foi
 descartada após a repetição correta. Este checkpoint reconcilia os registros
 anteriores de BC-AUTH-02 que divergiam do preflight e dos resultados observados.
-A publicação Git e sua verificação remota ainda estão pendentes neste ponto do
-registro; atualizar os fatos após o push.
+O push de `master` publicou o commit funcional e o checkpoint documental. O fetch
+posterior confirmou `HEAD == origin/master == b67e25bb74e695ded343e6558285f7ab0e5d44a7`,
+divergência `0/0`, staging vazio e os worktrees master e source limpos. Revalidar
+Git ao iniciar uma nova atividade.

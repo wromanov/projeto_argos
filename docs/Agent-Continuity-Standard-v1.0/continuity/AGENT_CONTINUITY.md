@@ -918,6 +918,6 @@ No estado integrado, `makemigrations --check` passou; os 54 testes focais e a
 regressão de 209 testes para usuários, segurança do core e governança/autorização
 de câmeras passaram. O Técnico não recebe permissões administrativas de
 usuários, grupos ou permissões; sua allowlist afeta somente a classificação de
-alvos operacionais geridos pelo Administrador ARGOS. A publicação está
-autorizada e pendente; consultar Git diretamente para o resultado remoto e a
-baseline final. O snapshot detalhado é a seção 43 de `PROJECT_STATE.md`.
+alvos operacionais geridos pelo Administrador ARGOS. A publicação dos commits funcional e documental passou; o fetch confirmou
+`HEAD == origin/master` e worktrees limpas. Consultar Git diretamente para a
+baseline atual em qualquer retomada. O snapshot detalhado é a seção 43 de `PROJECT_STATE.md`.

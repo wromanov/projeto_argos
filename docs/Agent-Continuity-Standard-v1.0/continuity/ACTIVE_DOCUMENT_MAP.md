@@ -436,7 +436,7 @@ câmera. Estado e fronteiras não homologadas estão no registro do backend.
 | `docs/projeto/contracts/backend/monitoring/` | Core local e runtime/observabilidade novos | CURRENT / BC-02; produção pendente |
 | `docs/projeto/contracts/backend/images/IMAGE_CAPTURE_INTEGRATION_CONTRACT.md` | Job de captura separado e domínio de imagem canônico | CURRENT / BC-02; captura real pendente |
 | `docs/projeto/contracts/backend/production/` | Persistência, topologia e capacidade | CURRENT / PRODUCTION_ONLY |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 43 | Snapshot BC-AUTH-02 | CURRENT / integrated and validated; publication pending; verify Git directly |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 43 | Snapshot BC-AUTH-02 | CURRENT / BC-AUTH published and validated; verify current Git synchronization directly |
 
 BC-02 não implementa runtime nem autoriza câmera, homologação, LIVE, commit
 ou push. O domínio de imagem completo continua em
