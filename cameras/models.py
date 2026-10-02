@@ -859,3 +859,104 @@ class CameraImageRecord(models.Model):
 
     def __str__(self):
         return f"{self.provenance} · {self.camera_id} · {self.pk}"
+
+class CameraCapabilityProfile(models.Model):
+    class Adapter(models.TextChoices):
+        RTSP = "RTSP", "RTSP"
+        HTTP_SNAPSHOT = "HTTP_SNAPSHOT", "HTTP snapshot"
+
+    class TLSPolicy(models.TextChoices):
+        REQUIRED = "REQUIRED", "Required"
+        NOT_REQUIRED = "NOT_REQUIRED", "Not required"
+        NOT_APPLICABLE = "NOT_APPLICABLE", "Not applicable"
+
+    class AuthMethod(models.TextChoices):
+        NONE = "NONE", "None"
+        BASIC = "BASIC", "Basic"
+        DIGEST = "DIGEST", "Digest"
+        RTSP_NEGOTIATE = "RTSP_NEGOTIATE", "RTSP negotiate"
+
+    class EndpointPolicy(models.TextChoices):
+        PROFILE_FIXED = "PROFILE_FIXED", "Profile fixed"
+        TECHNICIAN_OVERRIDE = "TECHNICIAN_OVERRIDE", "Technician override"
+
+    class ProbeStage(models.TextChoices):
+        A = "A", "Network reachability"
+        B = "B", "Protocol reachability"
+        C = "C", "Media description"
+        D = "D", "Media delivery"
+
+    profile_key = models.CharField(max_length=64)
+    version = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    active = models.BooleanField(default=False)
+    adapter_key = models.CharField(max_length=20, choices=Adapter.choices)
+    allowed_schemes = models.JSONField(default=list)
+    allowed_ports = models.JSONField(default=list)
+    tls_policy = models.CharField(max_length=20, choices=TLSPolicy.choices)
+    auth_method = models.CharField(max_length=20, choices=AuthMethod.choices)
+    credential_required = models.BooleanField(default=False)
+    endpoint_policy = models.CharField(max_length=24, choices=EndpointPolicy.choices)
+    default_path = models.CharField(max_length=512, blank=True, default="")
+    allowed_override_fields = models.JSONField(default=list)
+    probe_evidence_stage = models.CharField(max_length=1, choices=ProbeStage.choices)
+    source_ref = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="camera_capability_profiles_created",
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["profile_key", "version"], name="uniq_camera_capability_profile_version"),
+            models.CheckConstraint(condition=Q(version__gt=0), name="camera_capability_profile_version_positive"),
+        ]
+        indexes = [models.Index(fields=["active", "adapter_key"], name="cam_cap_active_adapter_idx")]
+        ordering = ["profile_key", "-version"]
+
+    def clean(self):
+        super().clean()
+        if not isinstance(self.allowed_schemes, list) or any(item not in {"rtsp", "rtsps", "http", "https"} for item in self.allowed_schemes):
+            raise ValidationError({"allowed_schemes": "Schemes fora da allowlist do catálogo."})
+        if not isinstance(self.allowed_ports, list) or any(type(item) is not int or not 1 <= item <= 65535 for item in self.allowed_ports):
+            raise ValidationError({"allowed_ports": "Portas devem ser inteiros entre 1 e 65535."})
+        if not isinstance(self.allowed_override_fields, list) or any(item not in {"path", "port", "transport"} for item in self.allowed_override_fields):
+            raise ValidationError({"allowed_override_fields": "Override fora da allowlist do catálogo."})
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            previous = type(self).objects.get(pk=self.pk)
+            changed_fields = {
+                field.name
+                for field in self._meta.concrete_fields
+                if field.name not in {"id", "created_at"}
+                and getattr(previous, field.attname) != getattr(self, field.attname)
+            }
+            if previous.active and changed_fields - {"active"}:
+                raise ValidationError("Versões ativas de capability são imutáveis; somente a desativação é permitida.")
+        return super().save(*args, **kwargs)
+
+
+class CameraConnectionConfig(models.Model):
+    class Transport(models.TextChoices):
+        AUTO = "AUTO", "Automatic"
+        TCP = "TCP", "TCP"
+        UDP = "UDP", "UDP"
+
+    camera = models.OneToOneField(Camera, on_delete=models.CASCADE, related_name="connection_config")
+    profile = models.ForeignKey(CameraCapabilityProfile, on_delete=models.PROTECT, related_name="camera_configs")
+    enabled = models.BooleanField(default=False)
+    rtsp_uri = models.CharField(max_length=1024, blank=True, default="")
+    http_endpoint_override = models.CharField(max_length=512, blank=True, default="")
+    http_port_override = models.PositiveIntegerField(null=True, blank=True, validators=[MinValueValidator(1), MaxValueValidator(65535)])
+    transport = models.CharField(max_length=8, choices=Transport.choices, default=Transport.AUTO)
+    config_version = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
+    updated_at = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="camera_connection_configs_updated")
+
+    class Meta:
+        constraints = [models.CheckConstraint(condition=Q(config_version__gt=0), name="camera_connection_config_version_positive")]
+        indexes = [models.Index(fields=["enabled", "profile"], name="cam_conn_enabled_profile_idx")]
