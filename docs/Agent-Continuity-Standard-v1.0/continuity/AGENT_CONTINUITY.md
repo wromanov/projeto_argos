@@ -1034,11 +1034,11 @@ EXECUTION_REVEAL_PERMISSION_REQUIRED = NO
 FICTITIOUS_DJANGO_USER_REQUIRED = NO
 NO_NEW_AUDIT_EVENT_REQUIRED = YES
 NEXT_ACTIVITY = CAM-INT-02-R1 implementation with Luna/High / separate authority required
-CURRENT_DOCUMENTARY_SCOPE = COMPLETE / PASS / LOCAL_UNPUBLISHED
+CURRENT_DOCUMENTARY_SCOPE = COMPLETE / PASS / PUBLISHED / architecture commit 5efc3fdaecbb83845e891206255c7556146bc3fb
 PROJECT_STATE_UPDATE = PASS
 CODE_MODIFIED = NO
-COMMIT = NO
-PUSH = NO
+ARCHITECTURE_COMMIT = 5efc3fdaecbb83845e891206255c7556146bc3fb
+PUSH = YES / post-push fetch verified HEAD == origin/master, divergence 0/0, clean worktree and empty staging
 ```
 
 A API contratada recebe config persistido autorizado pelo caso de uso e

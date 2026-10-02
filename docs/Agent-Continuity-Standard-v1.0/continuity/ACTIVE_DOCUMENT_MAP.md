@@ -489,10 +489,10 @@ de rede foi iniciada.
 | `docs/projeto/contracts/backend/camera/CAM-INT-04_HTTP_SNAPSHOT_CONTRACT.md` | Consumer Basic/Digest com mesma dependency R1 | CANONICAL / READY_NOW=NO; local execution completion unverified |
 | `docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md` | DAG e ownership R1 antes de CAM-INT-03/04 | CURRENT / reconciled |
 | `docs/projeto/contracts/backend/00_BACKEND_CONTRACT_REGISTRY.md` | Índice e classificação R1 | CURRENT / 20 original specialized contracts + 1 execution sub-slice |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 49 | Snapshot da adjudicação, baseline, limites e próxima atividade | CURRENT / documentary complete, local unpublished |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 49 | Snapshot da adjudicação, baseline, limites e próxima atividade | CURRENT / published; architecture commit 5efc3fdaecbb83845e891206255c7556146bc3fb |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.16 | Handoff e invariantes de resolução interna | CURRENT / source for adapter readiness |
 
 Próxima atividade: implementar CAM-INT-02-R1 com Luna/High, mediante autoridade
 própria. CAM-INT-03/04 aguardam R1 implementada, integrada, validada e publicada;
 a antiga conclusão de readiness imediato após CAM-INT-07 é histórica.
-Esta adjudicação não altera worktrees dos consumers nem publica documentação.
+A reconciliação foi publicada no commit 5efc3fdaecbb83845e891206255c7556146bc3fb; as worktrees dos consumers não foram alteradas.

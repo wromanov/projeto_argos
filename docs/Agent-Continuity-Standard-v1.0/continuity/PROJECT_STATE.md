@@ -2783,7 +2783,7 @@ CAM-INT-07, sem alterar sua implementação publicada ou os fatos históricos.
 
 ```text
 ACTIVITY = CAM-INT-02-R1-ARCH — RUNTIME CREDENTIAL RESOLUTION CONTRACT RECONCILIATION
-STATUS = COMPLETE / PASS / DOCUMENTARY / UNPUBLISHED
+STATUS = COMPLETE / PASS / DOCUMENTARY / PUBLISHED
 ACTIVITY_COMPLETION_PERCENT = 100% / authorized documentary scope
 COMPLETION_BASIS = API, input/output, failures, authorization split, invariants,
   ownership, tests, acceptance, consumer contracts, registry, DAG and continuity reconciled
@@ -2839,7 +2839,7 @@ OPEN_DECISIONS = NONE for R1 local contract
 MAJOR_FINDINGS = runtime service boundary absent / addressed contractually; implementation pending
 BLOCKERS = NONE for documentary reconciliation; R1 publication blocks authenticated consumers
 DEFERRED_ITEMS = operational provider, production identity, restore and real concurrency/environment validation
-WORKTREE_AFTER_ACTIVITY = eight tracked documents modified and one new R1 contract / unstaged
+WORKTREE_AFTER_ACTIVITY = CLEAN after publication of the nine documentary files
 STAGING_AFTER_ACTIVITY = EMPTY
 CODE_MODIFIED = NO
 RUNTIME_TESTS_RUN = NO / requirements defined only; no runtime implementation authorized
@@ -2848,9 +2848,9 @@ CROSS_AUTHORITY_CONSISTENCY = PASS
 PROJECT_STATE_UPDATE = PASS
 AGENT_HANDOFF_GATE = PASS / current dependency and next action discoverable
 ACTIVITY_COMPLETE = YES / authorized documentary work only, not R1 implementation/publication
-STAGE = NO
-COMMIT = NO
-PUSH = NO
+STAGE = YES / exactly nine documentary files
+ARCHITECTURE_COMMIT = 5efc3fdaecbb83845e891206255c7556146bc3fb / docs(backend): add runtime credential resolution boundary
+PUSH = YES / origin/master; fast-forward from c0e5a95
 SOL_ESCALATION_REQUIRED = NO / unless a new material contradiction emerges
 FINAL_VERDICT = PASS / CAM-INT-02-R1 IMPLEMENTATION_READY; consumers await R1 publication
 ```
@@ -2863,7 +2863,6 @@ no contrato especializado; nenhum resolver, adapter, teste Python ou migration
 foi escrito. CAM-INT-04 requer R1 porque seu contrato inclui Basic/Digest; não
 foi inferido estado de pausa nem qualidade de suas alterações locais.
 
-A implementação/integração/publicação de R1 e a retomada dos consumers são
-atividades posteriores sob autoridade própria. O fechamento documental é
-local e sem checkpoint Git; o pedido vigente não autoriza staging/commit/push.
-Revalidar Git e cada lane na retomada; preservar trabalho local e baselines.
+A implementação/integração de R1 e a retomada dos consumers são
+atividades posteriores sob autoridade própria. A reconciliação documental foi publicada no commit 5efc3fdaecbb83845e891206255c7556146bc3fb. O fetch pós-push confirmou HEAD == origin/master, divergência 0/0, worktree limpa e staging vazio.
+O próximo baseline de implementação R1 será o HEAD publicado após este checkpoint de continuidade. Revalidar Git e cada lane na retomada; preservar trabalho local e baselines.
