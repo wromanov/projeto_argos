@@ -1078,3 +1078,29 @@ Não foram iniciadas as lanes CAM-INT-03/04, nem executados testes globais,
 SCALE, rede real, câmeras ou produção. O push e a verificação pós-push por
 `git ls-remote` passaram; `master` local e remoto coincidem em `5753201`.
 CAM-INT-03/04 permanecem lanes separadas e não foram retomadas nesta atividade.
+
+### 20.18. CAM-INT-03-INT — adapter RTSP integrado (2026-10-02)
+
+O estado operacional corrente está em `PROJECT_STATE.md`, seção 51. O commit
+`c031ea40233129408fdb9f19c44ce89c6566a972` deriva diretamente da baseline
+`0b6692e86b92d9239df92104f4d08bd55a30ba51` e foi integrado localmente por
+fast-forward, apenas com seis arquivos CAM-INT-03. Compilação, diff check,
+Django check, migration check, 17 testes focais e 130 testes de regressão
+integrada passaram. O adapter consome o resolver R1 e CAM-INT-07; nenhuma
+credencial é colocada em URI, log ou erro.
+
+```text
+CAM_INT_03 = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / NOT_PUBLISHED
+RTSP_WAIT_01 = PASS / empty poll continues; one overall deadline; auth error terminal
+CAM_INT_03_DEPENDENCIES = CAM-INT-01; CAM-INT-02; CAM-INT-02-R1; CAM-INT-06; CAM-INT-07
+CAM_INT_03_DEPENDENCIES_SATISFIED = YES
+GSTREAMER_HOMOLOGATION = PENDING
+REAL_CAMERA_NETWORK_PRODUCTION = PENDING
+REMOTE_VERIFICATION = UNAVAILABLE / fetch and ls-remote could not reach GitHub
+PUSH = PROHIBITED_UNTIL_REMOTE_SAFETY_PASS
+OTHER_LANES_TOUCHED = NO
+```
+
+CAM-INT-04 mantém trabalho local anterior e requer reconciliação das
+dependências. CAM-INT-05 aguarda a publicação de CAM-INT-03 e autoridade
+separada; CAM-HEALTH, MON-WORKER e IMG-CAP seguem bloqueados conforme seção 51.

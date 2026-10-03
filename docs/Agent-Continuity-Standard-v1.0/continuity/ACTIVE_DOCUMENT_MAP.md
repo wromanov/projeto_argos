@@ -512,3 +512,18 @@ R1 está implementada, integrada, validada e publicada pelo commit-fonte
 CAM-INT-03 deve retomar sua lane existente com a nova dependência após revalidar
 a autorização; CAM-INT-04 exige reconciliação de suas alterações locais antes
 de continuação. Nenhuma lane foi iniciada ou alterada nesta atividade.
+
+## 23. CAM-INT-03-INT — adapter RTSP integrado e validado localmente (2026-10-02)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 51 | Evidência factual da integração, validação local, bloqueio remoto e DAG | CURRENT / NOT PUBLISHED |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.18 | Handoff e invariantes do adapter RTSP integrado | CURRENT / NOT PUBLISHED |
+| `docs/projeto/contracts/backend/camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md` | Contrato e critérios AC-01..03 do adapter RTSP | CANONICAL / unchanged |
+| `docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md` | DAG e ownership da implementação backend | CURRENT / reread after local CAM-INT-03 integration |
+
+CAM-INT-03 está implementada, integrada e validada localmente pelo commit-fonte
+`c031ea40233129408fdb9f19c44ce89c6566a972`. A consulta remota falhou; a
+publicação permanece pendente e não há evidência de alinhamento com
+`origin/master` remoto. Ver seção 51 de `PROJECT_STATE.md` antes de qualquer
+continuação. CAM-INT-04 exige reconciliação; nenhum successor foi iniciado.

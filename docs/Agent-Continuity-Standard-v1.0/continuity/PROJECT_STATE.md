@@ -2954,3 +2954,82 @@ modificados. As validações locais não incluem câmera, rede real, SCALE ou
 produção. CAM-INT-03 e CAM-INT-04 não foram iniciadas nem alteradas; o DAG as
 classifica, respectivamente, como retomada da lane existente com nova
 dependência e reconciliação de dependências.
+
+## 51. CAM-INT-03-INT — adapter RTSP integrado e validado localmente (2026-10-02)
+
+```text
+ACTIVITY = CAM-INT-03-INT — RTSP ADAPTER INTEGRATION / PUBLICATION GATE
+ACTIVITY_STATUS = INTEGRATED / VALIDATED_LOCAL / NOT_PUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 85%
+COMPLETION_BASIS = source and lineage gates passed; fast-forward integration and all local validation passed; continuity and DAG recorded; publication blocked by unavailable remote verification
+PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+BRANCH = master
+MASTER_PRE_INTEGRATION_HEAD = 0b6692e86b92d9239df92104f4d08bd55a30ba51
+REMOTE_MASTER_PRE_INTEGRATION = UNAVAILABLE / fetch denied writing .git/FETCH_HEAD; ls-remote could not connect to github.com:443
+REMOTE_VERIFICATION_METHOD = git fetch origin --prune FAILED; git ls-remote --heads origin refs/heads/master FAILED
+SOURCE_COMMIT = c031ea40233129408fdb9f19c44ce89c6566a972
+SOURCE_COMMIT_EXISTS = YES
+SOURCE_COMMIT_SUBJECT = feat(camera): add RTSP connection adapter
+SOURCE_BRANCH = codex/cam-int-03-implementation
+SOURCE_BRANCH_HEAD = c031ea40233129408fdb9f19c44ce89c6566a972
+SOURCE_PARENT = 0b6692e86b92d9239df92104f4d08bd55a30ba51
+SOURCE_SCOPE = EXACT / six CAM-INT-03 files
+MERGE_BASE = 0b6692e86b92d9239df92104f4d08bd55a30ba51
+FAST_FORWARD_AVAILABLE = YES / rev-list 0 1
+INTEGRATION_METHOD = git merge --ff-only c031ea40233129408fdb9f19c44ce89c6566a972
+MASTER_AFTER_INTEGRATION = c031ea40233129408fdb9f19c44ce89c6566a972
+FILES_INTEGRATED = cameras/integracao/rtsp/__init__.py; cameras/integracao/rtsp/fake.py; cameras/integracao/rtsp/gst_adapter.py; cameras/integracao/rtsp/ports.py; cameras/integracao/rtsp/service.py; cameras/test_camera_rtsp_adapter.py
+STATIC_COMPILE = PASS / six files
+DIFF_CHECK = PASS
+DJANGO_CHECK = PASS / no issues
+MIGRATION_CHECK = PASS / No changes detected
+FOCUSED_TEST_RESULT = PASS
+FOCUSED_TEST_COUNT = 17
+INTEGRATED_REGRESSION_RESULT = PASS
+INTEGRATED_REGRESSION_COUNT = 130 / includes focused tests and CAM-INT-02, CAM-INT-02-R1, CAM-INT-06, CAM-INT-07, and BC-AUTH coverage
+RTSP_WAIT_01 = PASS / empty polls continue; one authoritative overall deadline; terminal auth error returns immediately
+AC_01 = PASS / target rejection before socket and allowed configuration boundary covered by RTSP/target-policy regression
+AC_02 = PASS / diagnostic stages and fake flow; D failure remains diagnostic; automatic success requires D frame
+AC_03 = PASS / bounded timeout/cancel cleanup, neutral auth/decoder outcomes, unavailable GStreamer is fail-closed
+R1_CREDENTIAL_INTEGRATION = PASS / public resolver API only; no ciphertext, provider, private decrypt, human reveal, or authenticated URI reuse
+TARGET_POLICY_INTEGRATION = PASS / CAM-INT-07 policy required before credential resolution and rechecked before adapter; hostname/raw-target bypass denied
+SECRET_INVARIANTS = PASS / no secret log, error, or authenticated URI
+RESOURCE_CLEANUP = PASS / covered by focused adapter tests
+FAIL_CLOSED = PASS
+SYNTHETIC_GSTREAMER_BEHAVIOR = VALIDATED_LOCAL
+GSTREAMER_RUNTIME_HOMOLOGATION = PENDING
+REAL_PIPELINE_VALIDATION = PENDING
+REAL_CAMERA_VALIDATION = PENDING
+REAL_NETWORK_VALIDATION = PENDING
+PRODUCTION_VALIDATION = PENDING
+TESTS_NOT_RUN = global suite; SCALE; CAM-INT-04 lane; real network/camera; production
+CAM_INT_03_STATUS = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / NOT_PUBLISHED
+PROJECT_STATE_UPDATE = PASS / current integrated evidence and DAG recorded
+STATE_COMMIT = PENDING
+DAG_RECHECK = PASS / BACKEND_IMPLEMENTATION_ORDER reread after local integration
+CAM_INT_04 = DEPENDENCIES_SATISFIED YES; CLASSIFICATION DEPENDENCY_RECONCILIATION_REQUIRED; CAN_START_NOW NO; NEXT_MODE reconcile existing local work and revalidate authority
+CAM_INT_05 = CAM-INT-03 dependency satisfied locally; CLASSIFICATION WAIT_FOR_PUBLICATION_AND_SEPARATE_AUTHORITY; CAN_START_NOW NO
+CAM_HEALTH = CAM-INT-05 dependency unsatisfied; CLASSIFICATION WAITING_DEPENDENCIES; CAN_START_NOW NO
+MON_WORKER = MON-OBS, CAM-INT-05 and CAM-HEALTH not all published/complete; CLASSIFICATION WAITING_DEPENDENCIES; CAN_START_NOW NO
+IMG_CAP = CAM-INT-04 remains unreconciled; CLASSIFICATION WAITING_DEPENDENCIES; CAN_START_NOW NO
+NEWLY_READY_ACTIONS = none authorized; CAM-INT-04 requires dependency reconciliation; CAM-INT-05 must wait for publication and separate authority
+PUSH_RESULT = NOT RUN / prohibited because remote state could not be verified
+REMOTE_MASTER_POST_PUSH = NOT APPLICABLE
+FINAL_REMOTE_ALIGNMENT = UNAVAILABLE
+FINAL_LOCAL_HEAD = c031ea40233129408fdb9f19c44ce89c6566a972
+FINAL_ORIGIN_MASTER = 0b6692e86b92d9239df92104f4d08bd55a30ba51 / stale tracking ref, not proof of remote state
+FINAL_WORKTREE = pending state commit
+FINAL_STAGING = pending state commit
+CONTRACT_MODIFIED = NO
+OTHER_LANES_TOUCHED = NO
+SOL_ESCALATION_REQUIRED = NO
+BLOCKERS = remote network unavailable; publication pending
+NEXT_IMPLEMENTATION_ACTION = CAM-INT-04 dependency reconciliation, only under separate authority; retry CAM-INT-03 publication after remote availability
+ACTIVITY_COMPLETE = NO / publication and remote verification remain
+```
+
+O fetch não pôde gravar `.git/FETCH_HEAD`; a consulta independente a `ls-remote`
+falhou por indisponibilidade de conexão ao GitHub. Por isso, este checkpoint
+registra integração e validação local, sem afirmar publicação. O branch local
+foi avançado pelo fast-forward autorizado e permanece intacto. A homologação
+GStreamer, pipeline real, câmera, rede e produção continuam pendentes.
