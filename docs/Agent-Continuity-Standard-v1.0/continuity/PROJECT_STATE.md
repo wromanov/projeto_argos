@@ -2555,7 +2555,7 @@ a atividade completa.
 
 ```text
 PROJECT_STATE_UPDATE = PASS / integração, validação e DAG registrados
-STATE_COMMIT = PENDING
+STATE_COMMIT = 6ad01836fd1590374bc0b5fe3d8bfbda8a9831c2 / docs(state): record CAM-INT-03 integration
 PUSH = PENDING
 ACTIVITY_COMPLETE = NO / aguarda push e verificação remota
 NEXT_IMPLEMENTATION_ACTION = CAM-INT-06 / READY_NOW, autorização própria necessária
@@ -3016,10 +3016,10 @@ NEWLY_READY_ACTIONS = none authorized; CAM-INT-04 requires dependency reconcilia
 PUSH_RESULT = NOT RUN / prohibited because remote state could not be verified
 REMOTE_MASTER_POST_PUSH = NOT APPLICABLE
 FINAL_REMOTE_ALIGNMENT = UNAVAILABLE
-FINAL_LOCAL_HEAD = c031ea40233129408fdb9f19c44ce89c6566a972
+FINAL_LOCAL_HEAD_AT_STATE_COMMIT = 6ad01836fd1590374bc0b5fe3d8bfbda8a9831c2
 FINAL_ORIGIN_MASTER = 0b6692e86b92d9239df92104f4d08bd55a30ba51 / stale tracking ref, not proof of remote state
-FINAL_WORKTREE = pending state commit
-FINAL_STAGING = pending state commit
+FINAL_WORKTREE_AT_STATE_COMMIT = CLEAN
+FINAL_STAGING_AT_STATE_COMMIT = EMPTY
 CONTRACT_MODIFIED = NO
 OTHER_LANES_TOUCHED = NO
 SOL_ESCALATION_REQUIRED = NO
@@ -3033,3 +3033,9 @@ falhou por indisponibilidade de conexão ao GitHub. Por isso, este checkpoint
 registra integração e validação local, sem afirmar publicação. O branch local
 foi avançado pelo fast-forward autorizado e permanece intacto. A homologação
 GStreamer, pipeline real, câmera, rede e produção continuam pendentes.
+
+Após o commit de continuidade `6ad01836fd1590374bc0b5fe3d8bfbda8a9831c2`, a
+rechecagem remota foi repetida antes de qualquer push: `git fetch origin
+--prune` não pôde gravar `.git/FETCH_HEAD`, e `git ls-remote` não conectou ao
+GitHub. O push não foi executado. O SHA de `origin/master` no clone permanece
+apenas a tracking ref anterior (`0b6692e`), sem validar o branch remoto.
