@@ -1090,17 +1090,18 @@ integrada passaram. O adapter consome o resolver R1 e CAM-INT-07; nenhuma
 credencial é colocada em URI, log ou erro.
 
 ```text
-CAM_INT_03 = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / PUBLICATION_PENDING
+CAM_INT_03 = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / PUBLISHED
 RTSP_WAIT_01 = PASS / empty poll continues; one overall deadline; auth error terminal
 CAM_INT_03_DEPENDENCIES = CAM-INT-01; CAM-INT-02; CAM-INT-02-R1; CAM-INT-06; CAM-INT-07
 CAM_INT_03_DEPENDENCIES_SATISFIED = YES
 GSTREAMER_HOMOLOGATION = PENDING
 REAL_CAMERA_NETWORK_PRODUCTION = PENDING
-REMOTE_VERIFICATION = PRECHECK_PASS / git ls-remote reports expected base 0b6692e
-PUSH = PENDING / repeat precheck after continuity checkpoint
+REMOTE_VERIFICATION = PASS / git ls-remote before and after publication
+PUSH = PASS / fast-forward; published HEAD 367e98e
 OTHER_LANES_TOUCHED = NO
 ```
 
 CAM-INT-04 mantém trabalho local anterior e requer reconciliação das
-dependências. CAM-INT-05 aguarda a publicação de CAM-INT-03 e autoridade
-separada; CAM-HEALTH, MON-WORKER e IMG-CAP seguem bloqueados conforme seção 51.
+dependências. CAM-INT-05 tem a dependência de publicação satisfeita, mas
+continua sujeito a autoridade separada; CAM-HEALTH, MON-WORKER e IMG-CAP seguem
+bloqueados conforme seção 51.

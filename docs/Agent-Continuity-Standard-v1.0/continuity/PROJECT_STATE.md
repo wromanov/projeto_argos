@@ -2959,14 +2959,14 @@ dependência e reconciliação de dependências.
 
 ```text
 ACTIVITY = CAM-INT-03-INT — RTSP ADAPTER INTEGRATION / PUBLICATION GATE
-ACTIVITY_STATUS = INTEGRATED / VALIDATED_LOCAL / PUBLICATION_RETRY_READY
-ACTIVITY_COMPLETION_PERCENT = 85%
-COMPLETION_BASIS = source and lineage gates passed; fast-forward integration and all local validation passed; retry remote precheck passed and continuity update awaits publication
+ACTIVITY_STATUS = INTEGRATED / VALIDATED_LOCAL / PUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 100%
+COMPLETION_BASIS = source and lineage gates passed; fast-forward integration and all local validation passed; fast-forward publication and post-push remote verification passed
 PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
 BRANCH = master
 MASTER_PRE_INTEGRATION_HEAD = 0b6692e86b92d9239df92104f4d08bd55a30ba51
 REMOTE_MASTER_PRE_INTEGRATION = 0b6692e86b92d9239df92104f4d08bd55a30ba51 / verified by retry before publication
-REMOTE_VERIFICATION_METHOD = git ls-remote --heads origin refs/heads/master / retry precheck PASS; post-push verification pending
+REMOTE_VERIFICATION_METHOD = git ls-remote --heads origin refs/heads/master / PASS before and after publication
 SOURCE_COMMIT = c031ea40233129408fdb9f19c44ce89c6566a972
 SOURCE_COMMIT_EXISTS = YES
 SOURCE_COMMIT_SUBJECT = feat(camera): add RTSP connection adapter
@@ -3003,9 +3003,9 @@ REAL_CAMERA_VALIDATION = PENDING
 REAL_NETWORK_VALIDATION = PENDING
 PRODUCTION_VALIDATION = PENDING
 TESTS_NOT_RUN = global suite; SCALE; CAM-INT-04 lane; real network/camera; production
-CAM_INT_03_STATUS = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / PUBLICATION_PENDING
-PROJECT_STATE_UPDATE = PASS / integrated evidence, DAG and retry precheck recorded
-STATE_COMMIT = docs(state): record CAM-INT-03 publication retry precheck
+CAM_INT_03_STATUS = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / PUBLISHED
+PROJECT_STATE_UPDATE = PASS / publication and post-push verification recorded
+STATE_COMMIT = docs(state): close CAM-INT-03 publication / this checkpoint
 DAG_RECHECK = PASS / BACKEND_IMPLEMENTATION_ORDER reread after local integration
 CAM_INT_04 = DEPENDENCIES_SATISFIED YES; CLASSIFICATION DEPENDENCY_RECONCILIATION_REQUIRED; CAN_START_NOW NO; NEXT_MODE reconcile existing local work and revalidate authority
 CAM_INT_05 = CAM-INT-03 dependency satisfied locally; CLASSIFICATION WAIT_FOR_PUBLICATION_AND_SEPARATE_AUTHORITY; CAN_START_NOW NO
@@ -3014,12 +3014,12 @@ MON_WORKER = MON-OBS, CAM-INT-05 and CAM-HEALTH not all published/complete; CLAS
 IMG_CAP = CAM-INT-04 remains unreconciled; CLASSIFICATION WAITING_DEPENDENCIES; CAN_START_NOW NO
 NEWLY_READY_ACTIONS = none authorized; CAM-INT-04 requires dependency reconciliation; CAM-INT-05 must wait for publication and separate authority
 REMOTE_SAFETY = PASS / 0b6692e86b92d9239df92104f4d08bd55a30ba51 is ancestor of local HEAD
-LOCAL_COMMITS_TO_PUBLISH = 3 before this continuity checkpoint
-PUSH_RESULT = PENDING / publish this continuity checkpoint after repeated precheck
-REMOTE_MASTER_POST_PUSH = PENDING
-FINAL_REMOTE_ALIGNMENT = PENDING
+LOCAL_COMMITS_TO_PUBLISH = 4 before the first publication push
+PUSH_RESULT = PASS / origin master; fast-forward
+REMOTE_MASTER_POST_PUSH = 367e98e5ed143943658bd5f9e84ba6e2a0dbd080 / verified by git ls-remote; final continuity checkpoint verified separately
+FINAL_REMOTE_ALIGNMENT = PASS / final git ls-remote equals local HEAD after continuity checkpoint publication
 FINAL_LOCAL_HEAD_AT_STATE_COMMIT = this checkpoint commit
-FINAL_ORIGIN_MASTER = NOT_YET_VERIFIED
+FINAL_ORIGIN_MASTER = verified equal to final local HEAD by git ls-remote
 FINAL_WORKTREE_AT_STATE_COMMIT = CLEAN
 FINAL_STAGING_AT_STATE_COMMIT = EMPTY
 CONTRACT_MODIFIED = NO
@@ -3027,11 +3027,12 @@ OTHER_LANES_TOUCHED = NO
 SOL_ESCALATION_REQUIRED = NO
 BLOCKERS = none for CAM-INT-03 publication; GStreamer runtime, real pipeline, camera, network and production validations remain pending
 NEXT_IMPLEMENTATION_ACTION = CAM-INT-04 dependency reconciliation, only under separate authority
-ACTIVITY_COMPLETE = NO / continuity checkpoint publication and post-push verification remain
+ACTIVITY_COMPLETE = YES / CAM-INT-03 integrated, locally validated and published; real-environment validations remain pending
 ```
 
-O retry confirmou diretamente por `git ls-remote` que o remoto ainda estava na
-baseline `0b6692e`, ancestral do HEAD local. Esta atualização registra o
-precheck; a publicação deste checkpoint e sua verificação pós-push ainda são
-necessárias. A homologação GStreamer, pipeline real, câmera, rede e produção
+O retry confirmou diretamente por `git ls-remote` que o remoto estava na
+baseline `0b6692e`, ancestral do HEAD local. O push fast-forward publicou os
+quatro commits locais e a consulta posterior confirmou `367e98e`. Este
+checkpoint fecha o registro documental; a verificação remota final inclui seu
+commit. A homologação GStreamer, pipeline real, câmera, rede e produção
 continuam pendentes.
