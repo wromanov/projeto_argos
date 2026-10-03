@@ -1090,14 +1090,14 @@ integrada passaram. O adapter consome o resolver R1 e CAM-INT-07; nenhuma
 credencial é colocada em URI, log ou erro.
 
 ```text
-CAM_INT_03 = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / NOT_PUBLISHED
+CAM_INT_03 = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / PUBLICATION_PENDING
 RTSP_WAIT_01 = PASS / empty poll continues; one overall deadline; auth error terminal
 CAM_INT_03_DEPENDENCIES = CAM-INT-01; CAM-INT-02; CAM-INT-02-R1; CAM-INT-06; CAM-INT-07
 CAM_INT_03_DEPENDENCIES_SATISFIED = YES
 GSTREAMER_HOMOLOGATION = PENDING
 REAL_CAMERA_NETWORK_PRODUCTION = PENDING
-REMOTE_VERIFICATION = UNAVAILABLE / fetch and ls-remote could not reach GitHub
-PUSH = PROHIBITED_UNTIL_REMOTE_SAFETY_PASS
+REMOTE_VERIFICATION = PRECHECK_PASS / git ls-remote reports expected base 0b6692e
+PUSH = PENDING / repeat precheck after continuity checkpoint
 OTHER_LANES_TOUCHED = NO
 ```
 
