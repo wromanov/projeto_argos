@@ -3,6 +3,30 @@ from django import template
 register = template.Library()
 
 
+_UI_V2_EXCLUDED_CAMERA_ROUTES = frozenset(
+    {
+        "historico_monitoramento",
+        "lista_substituicoes",
+        "detalhe_substituicao",
+        "lista_substituicoes_camera",
+        "lista_atividades",
+    }
+)
+
+
+@register.simple_tag
+def ui_v2_active(request):
+    """Indica se a rota atual pertence à superfície visual UI V2."""
+    resolver_match = getattr(request, "resolver_match", None)
+    if resolver_match is None:
+        return False
+
+    return not (
+        resolver_match.namespace == "cameras"
+        and resolver_match.url_name in _UI_V2_EXCLUDED_CAMERA_ROUTES
+    )
+
+
 @register.simple_tag(takes_context=True)
 def querystring(context, **updates):
     """Retorna a query string atual com parâmetros atualizados, sem o '?'."""

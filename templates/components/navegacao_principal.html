@@ -1,4 +1,4 @@
-<nav class="main-navigation" aria-label="Navegação principal">
+<nav class="main-navigation argos-docs-nav" aria-label="Navegação principal"{% if argos_ui_v2_active %} aria-describedby="argos-nav-scroll-hint"{% endif %}>
   <a class="main-navigation__link" href="{% url 'core:inicio' %}"{% if current_namespace == 'core' and current_url_name == 'inicio' %} aria-current="page"{% endif %}><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10Z"/></svg><span>Início</span></a>
   {% if perms.cameras.view_camera %}
     <a class="main-navigation__link" href="{% url 'core:dashboard' %}"{% if current_namespace == 'core' and current_url_name == 'dashboard' %} aria-current="page"{% endif %}><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M4 4h6v6H4V4Zm10 0h6v6h-6V4ZM4 14h6v6H4v-6Zm10 0h6v6h-6v-6Z"/></svg><span>Dashboard</span></a>

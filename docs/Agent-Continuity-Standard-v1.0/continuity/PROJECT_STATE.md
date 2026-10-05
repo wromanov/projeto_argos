@@ -2331,3 +2331,53 @@ O push de `master` publicou o commit funcional e o checkpoint documental. O fetc
 posterior confirmou `HEAD == origin/master == b67e25bb74e695ded343e6558285f7ab0e5d44a7`,
 divergência `0/0`, staging vazio e os worktrees master e source limpos. Revalidar
 Git ao iniciar uma nova atividade.
+
+## 44. P5-CHK-01 — checkpoint WIP da lane UI V2 (2026-10-04)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = P5-CHK-01 — UI V2 WORK-IN-PROGRESS CHECKPOINT AND REMOTE PUBLICATION
+LANE = P5 UI V2
+BRANCH = codex/ui-v2-p5-production
+BASELINE_HEAD_BEFORE_CHECKPOINT = 80c458581944401510b62d1ba35febf7ddadc0d5
+CURRENT_STATE = WIP / USER VISUAL REMEDIATION REQUIRED
+P5_TECHNICAL_STATE = PASS_LOCAL / previous technical gates passed
+USER_VISUAL_APPROVAL = REJECTED / REMEDIATION_REQUIRED
+CURRENT_VISUAL_DIRECTION = structural remediation approved for planning
+MASTER_DIRECTION = visual remediation and structural recomposition
+DESIGN_DIRECTION = SECTION != CARD; less chrome/containers; stronger hierarchy; shared patterns first
+FIRST_MAJOR_STRUCTURAL_VALIDATION_SURFACE = Camera Detail
+WORK_COMPLETED = P5 runtime environment; inventory responsive fix; UI V2 containment fix; P3-B CSS isolation; navigation hint isolation; technical visual gates
+CURRENT_FINDINGS = dashboard contrast/density problems; oversized/legacy operational cards; Page Header inconsistency; Camera Detail information architecture problems; Quick Detail label/value alignment issues; excessive card fragmentation; excessive colored headers; unbalanced grids; weak label/value association
+PROTECTED_SCOPE = P3-B activity history remains unchanged; activity-create page may receive targeted header treatment only
+CURRENT_NEXT_PHASE = P5-VR-S1A — Shared Pattern / Design System Gap Assessment
+DEFERRED = P5-R2; P5-R3; master reconciliation; integration/publication of final UI
+P5_FILES = cameras/templates/cameras/lista.html; core/templates/core/dashboard.html; core/templatetags/ui_extras.py; templates/base.html; templates/components/navegacao_principal.html; templates/components/sidebar.html; usuarios/templates/usuarios/login.html; static/css/ui-v2/production.css
+CHECKPOINT_DOCUMENTATION = docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md
+GIT_DIFF_CHECK = PASS
+DJANGO_CHECK = PASS / System check identified no issues
+TEMPLATE_CHECK = PASS / six changed templates load through Django template loader
+FOCUSED_TESTS = FAIL / 50 frontend tests; 43 passed, 7 failed on exact class-attribute assertions after additive P5 classes
+CACHED_DIFF_CHECK = PENDING
+CHECKPOINT_COMMIT = SELF / WIP checkpoint; exact SHA in activity report
+REMOTE_PRECHECK = BLOCKED / DNS resolution unavailable in this environment
+PUSH = AUTHORIZED / explicitly by activity request; post-commit verification pending
+DB_SQLITE_COMMITTED = NO
+DEV_USERS_OR_SESSIONS_COMMITTED = NO
+SECRETS_COMMITTED = NO
+MASTER_CHANGED = NO
+MERGE = NO
+REBASE = NO
+USER_VISUAL_APPROVAL = NOT_GRANTED / REMEDIATION_REQUIRED
+PROJECT_STATE_UPDATE = PASS / this section records the P5 lane checkpoint
+ACTIVITY_COMPLETE = PENDING / requires checkpoint commit and remote verification
+NEXT_ACTION = P5-VR-S1A — Shared Pattern / Design System Gap Assessment
+```
+
+O checkpoint preserva o estado visual rejeitado para retomada e não constitui
+aprovação final. O preflight factual confirmou este root, branch e HEAD, staging
+vazio e os oito arquivos P5 listados, mais os dois registros documentais deste
+checkpoint. `db.sqlite3` continua ignorado. A
+consulta remota não completou por falha de DNS; não inferir existência, ausência
+ou divergência da branch remota até uma consulta bem-sucedida. O resultado final
+do commit e da publicação deve ser reconciliado no relatório da atividade.

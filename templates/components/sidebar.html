@@ -1,8 +1,11 @@
-<aside class="app-sidebar" aria-label="Navegação da aplicação">
+<aside class="app-sidebar argos-docs-sidebar" aria-label="Navegação da aplicação">
   <div class="app-sidebar__content">
     {% url 'core:inicio' as brand_href %}
     {% include "components/brand.html" with href=brand_href subtitle="Central operacional" %}
 
+    {% if argos_ui_v2_active %}
+      <p class="argos-nav-scroll-hint" id="argos-nav-scroll-hint">Deslize horizontalmente para ver todos os itens.</p>
+    {% endif %}
     {% include "components/navegacao_principal.html" %}
   </div>
 </aside>
