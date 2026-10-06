@@ -2584,6 +2584,8 @@ BROWSER_RENDER_VALIDATION = PAGE_OPENED_BY_USER_IN_EDGE / agent visual inspectio
 DS_VISUAL_AUTOMATION = NOT_PERFORMED / Edge and Chrome headless failed with Crashpad permission
 DS_VISUAL_APPROVAL = NOT_REQUIRED_FOR_THIS_PUBLICATION / additive typography capability; Camera Detail acceptance is a separate gate
 GIT_DIFF_CHECK = PASS
+DS_VISUAL_AUTOMATION = NOT_PERFORMED / Edge and Chrome headless failed with Crashpad permission
+DS_VISUAL_APPROVAL = NOT_REQUIRED_FOR_THIS_PUBLICATION / Camera Detail acceptance remains a separate gate
 DS_CHANGE_STATUS = READY_FOR_REVIEW
 S2B_STATUS = BLOCKED_PENDING_DS_PUBLICATION
 FILES_CHANGED = four canonical DS CSS files; Visual Contract; Component Catalog; DSCR-UIV2-004; foundation typography harness; screen harness version metadata; PROJECT_STATE; AGENT_CONTINUITY; ACTIVE_DOCUMENT_MAP
@@ -2600,3 +2602,49 @@ O exemplo tipográfico usa H2 e compõe a utility com os defaults semânticos j�
 existentes. Os consumidores de 2.1.0 continuam válidos. Não houve alteração de
 Camera Detail, backend, lógica JS ou comportamento. S2B permanece bloqueada até
 a publicação do DS 2.2.0 e sua autorização própria.
+
+## 49. P5-VR-DSG-01-CP — publicação do Design System 2.2.0 (2026-10-06)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = P5-VR-DSG-01-CP — Publish Design System 2.2.0
+ACTIVITY_STATUS = PASS / PUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 100%
+BASELINE_BRANCH = codex/ui-v2-p5-production
+BASELINE_HEAD_BEFORE_COMMIT = 350b2265d00cebeec87acafc43f28f510837d680
+BASELINE_UPSTREAM = origin/codex/ui-v2-p5-production
+BASELINE_DIVERGENCE_BEFORE = 0 / 0
+BASELINE_CHECK = PASS
+FILES_STAGED = 13 reviewed files from P5-VR-DSG-01
+DS_VERSION = 2.2.0
+DSCR = DSCR-UIV2-004-KPI-TYPOGRAPHY-2.2.0 / APPROVED / IMPLEMENTED / PUBLISHED
+PUBLIC_CAPABILITY = .argos-text-kpi
+COMMIT_SHA = b9cdc00dbc35915deb922c1a0596574a2b9a12bc
+COMMIT_MESSAGE = feat(ui): publish Design System 2.2.0 KPI typography
+PUSH = PASS / origin/codex/ui-v2-p5-production
+LOCAL_HEAD_AFTER_PUSH = b9cdc00dbc35915deb922c1a0596574a2b9a12bc
+UPSTREAM_HEAD_AFTER_PUSH = b9cdc00dbc35915deb922c1a0596574a2b9a12bc
+DIVERGENCE_AFTER_PUSH = 0 / 0
+STAGING_AFTER_FEATURE_COMMIT = EMPTY
+WORKTREE_AFTER_FEATURE_COMMIT = CLEAN
+UNEXPECTED_DELTA = NO
+CONFLICTS = NONE
+DS_VISUAL_AUTOMATION = NOT_PERFORMED / Edge and Chrome headless failed with Crashpad permission
+DS_VISUAL_APPROVAL = NOT_REQUIRED_FOR_THIS_PUBLICATION
+CAMERA_DETAIL_SOURCE_CHANGED = NO
+ARGOS_DESIGN_SYSTEM = 2.2.0 / PUBLISHED
+DS_CHANGE_STATUS = PUBLISHED
+S2B_BLOCKER_DS_GAP = RESOLVED
+S2B_STATUS = READY_TO_RESUME / implementation authorization remains separate
+CAMERA_DETAIL_IMPLEMENTED = NO
+CAMERA_DETAIL_VISUAL_APPROVED = NO / PENDING
+NEXT_REQUIRED_ACTIVITY = P5-VR-S2B — Resume Camera Detail Implementation / authorization required
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES
+```
+
+O checkpoint publicado remove apenas o bloqueio causado pela ausência da
+capability no Design System. Ele não autoriza a implementação da Camera Detail
+nem registra aprovação visual dessa tela. O commit de implementação preserva a
+mensagem exigida pela atividade; a atualização deste registro acompanha a
+publicação confirmada no upstream.

@@ -1,12 +1,12 @@
 # ARGOS UI V2 — Component Catalog
 
 Baseline da foundation aprovada: 2.0.0. Design System implementado corrente:
-2.2.0 localmente, ainda não publicado. O catálogo registra ownership para
+2.2.0 publicada na branch `codex/ui-v2-p5-production`. O catálogo registra ownership para
 conter variantes oportunistas em P3.
 
 | COMPONENT | TYPE | OWNER | CASCADE_LAYER | VARIANTS | STATES | RESPONSIVE | KNOWN_CONSUMERS | STATUS |
 |---|---|---|---|---|---|---|---|---|
-| Button | COMPONENT | component | components | primary, secondary, compact, danger | default, hover, active, focus-visible, disabled | alvo 44px em mobile | forms, actions, toolbar, destructive actions | 2.1.0 implemented locally |
+| Button | COMPONENT | component | components | primary, secondary, compact, danger | default, hover, active, focus-visible, disabled | alvo 44px em mobile | forms, actions, toolbar, destructive actions | 2.1.0 published |
 | Icon Button | COMPONENT | component | components | square | default, hover, active, focus-visible, disabled | alvo 44px em mobile | shell, actions com ícone local aprovado | foundation specimen |
 | Input / Search | COMPONENT | component | components | text, search | default, focus-visible, disabled, placeholder | width fluida; alvo >=44px em mobile/touch | forms, filters | foundation specimen |
 | Select | COMPONENT | component | components | default | default, focus-visible, disabled | width fluida; alvo >=44px em mobile/touch | forms, filters | foundation specimen |
@@ -16,16 +16,16 @@ conter variantes oportunistas em P3.
 | Card | COMPONENT | component | components | header, body, footer | default | min-width zero | portal, dashboard, detail groups | foundation specimen |
 | Alert | COMPONENT | component | components | info, warning, danger | informational | text wraps | freshness, form and request feedback | foundation specimen |
 | Spinner | COMPONENT | component | components | inline | loading; reduced motion | fixed visual size | async image / quick detail conventions | foundation specimen |
-| Data Pair | COMPONENT | component | components | label/value; mono value via `code` | default | text wraps; `min-width: 0` | future detail groups; Quick Detail remains protected | 2.1.0 implemented locally |
+| Data Pair | COMPONENT | component | components | label/value; mono value via `code` | default | text wraps; `min-width: 0` | future detail groups; Quick Detail remains protected | 2.1.0 published |
 | Page Header | PATTERN | pattern | patterns | title, description, actions | default | actions wrap; stacks on mobile | all screen families | foundation specimen / unchanged |
-| KPI Typography | UTILITY | pattern | patterns | `argos-text-kpi` | inherits weight and line-height from semantic heading styles | text wraps per consumer | Camera Detail; reusable typography consumers | 2.2.0 implemented locally |
+| KPI Typography | UTILITY | pattern | patterns | `argos-text-kpi` | inherits weight and line-height from semantic heading styles | text wraps per consumer | Camera Detail; reusable typography consumers | 2.2.0 published |
 | Section Header | PATTERN | pattern | patterns | title, metadata | default | wraps | detail and grouped pages | CSS available |
-| Data Group | PATTERN | pattern | patterns | optional heading; composes `argos-two-column` when columns are useful | default | existing two-column pattern collapses on mobile | future detail groups | 2.1.0 implemented locally |
+| Data Group | PATTERN | pattern | patterns | optional heading; composes `argos-two-column` when columns are useful | default | existing two-column pattern collapses on mobile | future detail groups | 2.1.0 published |
 | KPI Card / Grid | PATTERN | pattern | patterns | 1–3 columns | default | two columns tablet, one on mobile | dashboard, portal | foundation specimen |
 | Toolbar / Filter Bar | PATTERN | pattern | patterns | filters and actions | default, focus, selected filter state | wraps at narrow widths | inventory, events, substitutions | foundation specimen |
 | Data Table | PATTERN | pattern | patterns | default, compact via argos-table--compact | hover, selected | contained horizontal scroll | inventory, events, history | foundation specimen |
 | Pagination | PATTERN | pattern | patterns | current, previous, next | current, disabled | 44px targets | paginated lists | foundation specimen |
-| Empty State | PATTERN | pattern | patterns | compact, optional action | empty | text wraps | lists, search results, section interiors | 2.1.0 implemented locally |
+| Empty State | PATTERN | pattern | patterns | compact, optional action | empty | text wraps | lists, search results, section interiors | 2.1.0 published |
 | Loading State | PATTERN | pattern | patterns | inline / area | loading, reduced motion | text wraps | async surfaces where present | foundation specimen |
 | Error State | PATTERN | pattern | patterns | inline / area, optional retry | error | text wraps | request and validation feedback | foundation specimen |
 | Documentation Shell | PATTERN | pattern | patterns | sidebar / horizontal mobile navigation | current page | sidebar collapses to scrollable nav | P2 executable foundation | foundation pages |

@@ -1005,7 +1005,7 @@ protegidos. `NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION`.
 ### 20.13. P5-VR-DSG-01 — capability tipográfica KPI 2.2.0 (2026-10-06)
 
 ```text
-CURRENT_ACTIVITY = P5-VR-DSG-01 / IMPLEMENTED / TECHNICALLY_VALIDATED LOCALLY
+CURRENT_ACTIVITY = P5-VR-DSG-01 / IMPLEMENTED / TECHNICALLY VALIDATED LOCALLY
 BASELINE_HEAD = 350b2265d00cebeec87acafc43f28f510837d680
 PROJECT_STATE = section 48 / PROJECT_STATE_UPDATE PASS
 CURRENT_DESIGN_SYSTEM_VERSION = 2.2.0 / LOCAL / NOT PUBLISHED
@@ -1024,3 +1024,23 @@ PUSH = NOT_PERFORMED
 O DSCR implementa somente a dimensão tipográfica KPI ausente. Não adiciona
 escala, altera comportamento, migra consumidores, ou libera S2B. Ver
 `PROJECT_STATE.md` seção 48 e `ACTIVE_DOCUMENT_MAP.md` seção 22.
+
+### 20.14. P5-VR-DSG-01-CP — publicação do Design System 2.2.0 (2026-10-06)
+
+```text
+ACTIVITY_STATUS = PASS / PUBLISHED
+PROJECT_STATE = section 49 / PROJECT_STATE_UPDATE PASS
+FEATURE_COMMIT = b9cdc00dbc35915deb922c1a0596574a2b9a12bc
+FEATURE_COMMIT_MESSAGE = feat(ui): publish Design System 2.2.0 KPI typography
+PUSH = PASS / origin/codex/ui-v2-p5-production
+ARGOS_DESIGN_SYSTEM = 2.2.0 / PUBLISHED
+DSCR-UIV2-004 = APPROVED / IMPLEMENTED / PUBLISHED
+PUBLIC_CAPABILITY = .argos-text-kpi / AVAILABLE
+S2B_BLOCKER_DS_GAP = RESOLVED
+S2B_STATUS = READY_TO_RESUME / implementation authorization remains separate
+CAMERA_DETAIL_IMPLEMENTED = NO
+CAMERA_DETAIL_VISUAL_APPROVED = NO / PENDING
+```
+
+O gate removido é somente a indisponibilidade da capability compartilhada. A
+retomada da S2B permanece sujeita à authority de implementação da Camera Detail.

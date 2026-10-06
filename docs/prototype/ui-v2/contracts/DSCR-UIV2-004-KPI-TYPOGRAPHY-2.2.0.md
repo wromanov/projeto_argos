@@ -3,13 +3,14 @@
 ```text
 ID = DSCR-UIV2-004-KPI-TYPOGRAPHY-2.2.0
 ACTIVITY = P5-VR-DSG-01 — KPI Typography Capability
-STATUS = IMPLEMENTED / TECHNICALLY_VALIDATED LOCALLY
+STATUS = APPROVED / IMPLEMENTED / PUBLISHED
 CURRENT_VERSION = 2.1.0
 TARGET_VERSION = 2.2.0
 VERSION_IMPACT = MINOR
 COMPATIBILITY = BACKWARD_COMPATIBLE / ADDITIVE
 BACKWARD_COMPATIBILITY = PRESERVED
-PUBLISHED = NO
+PUBLISHED = YES / commit b9cdc00dbc35915deb922c1a0596574a2b9a12bc
+PUBLISHED_BRANCH = codex/ui-v2-p5-production
 ```
 
 ## Change request
@@ -51,6 +52,8 @@ BACKEND_CHANGED = NO
 JS_CHANGED = NO
 ```
 
-The capability is additive and preserves 2.1.0 consumers. Camera Detail remains
-blocked pending DS publication and the separate authorized implementation
-activity; this DSCR does not change or implement that screen.
+The capability is additive and preserves 2.1.0 consumers. It was published in
+commit `b9cdc00dbc35915deb922c1a0596574a2b9a12bc` on
+`codex/ui-v2-p5-production`. Camera Detail implementation remains a separate
+activity with its own authorization and visual acceptance gates; this DSCR does
+not change or implement that screen.
