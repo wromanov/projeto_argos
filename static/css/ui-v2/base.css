@@ -1,4 +1,4 @@
-/* ARGOS UI V2 · 2.0.2 · reset and global defaults */
+/* ARGOS UI V2 · 2.1.0 · reset and global defaults */
 @layer reset {
   *, *::before, *::after { box-sizing: border-box; }
   [hidden]:not([hidden="until-found" i]) { display: none !important; }

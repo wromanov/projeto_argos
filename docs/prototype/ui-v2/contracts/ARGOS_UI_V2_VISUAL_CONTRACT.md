@@ -1,8 +1,8 @@
 # ARGOS UI V2 — Visual Contract
 
-- STATUS: P2 FOUNDATION APPROVED / PINNED at 2.0.0; current implemented Design System = 2.0.2
-- CURRENT_IMPLEMENTED_VERSION: 2.0.2
-- TARGET_VERSION: 2.1.0 / APPROVED via DSCR-UIV2-003; NOT IMPLEMENTED OR ACTIVE
+- STATUS: P2 FOUNDATION APPROVED / PINNED at 2.0.0; current implemented Design System = 2.1.0 locally
+- CURRENT_IMPLEMENTED_VERSION: 2.1.0
+- TARGET_VERSION: 2.1.0 / APPROVED via DSCR-UIV2-003; IMPLEMENTED LOCALLY / NOT PUBLISHED
 - DESIGN_STRATEGY: CODE_FIRST / STACK_NATIVE / PROTOTYPE_DRIVEN
 - VISUAL_DIRECTION: C — ARGOS HYBRID, aprovada; não reabrir nesta atividade
 - SCOPE: VISUAL_ONLY
@@ -75,9 +75,9 @@ P2 aprovou e pinou a foundation 2.0.0. A versão implementada corrente foi
 promovida a 2.0.1 e, depois, 2.0.2 por DSCRs anteriores. No estado atual:
 
 ```text
-CURRENT_IMPLEMENTED_VERSION = 2.0.2
-TARGET_VERSION = 2.1.0 / DSCR-UIV2-003 / APPROVED / NOT IMPLEMENTED / NOT ACTIVE
-TARGET_VERSION_IMPLEMENTED = NO
+CURRENT_IMPLEMENTED_VERSION = 2.1.0
+TARGET_VERSION = 2.1.0 / DSCR-UIV2-003 / APPROVED / IMPLEMENTED LOCALLY / NOT PUBLISHED
+TARGET_VERSION_IMPLEMENTED = YES / local canonical CSS
 ```
 
 Regra SemVer do ARGOS Design System:
@@ -98,5 +98,5 @@ novo pode exigir MINOR; uma alteração física pequena pode ser MAJOR se quebra
 consumidores.
 
 A promoção para 2.1.0 aprovada em DSCR-UIV2-003 é MINOR e backward-compatible /
-aditiva. Até implementação autorizada, a versão corrente permanece 2.0.2 e 2.1.0
-não é ACTIVE.
+aditiva. P5-VR-S1B materializou localmente os quatro changes do DSCR; sem commit
+ou push, a implementação permanece local e não publicada.

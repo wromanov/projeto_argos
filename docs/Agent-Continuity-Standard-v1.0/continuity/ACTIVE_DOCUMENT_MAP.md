@@ -471,3 +471,27 @@ STAT_GROUP = DEFERRED
 O mapa não altera authorities históricas nem autoriza a implementação. A
 foundation aprovada em 2.0.0 permanece referência histórica; a implementação
 corrente continua 2.0.2 até uma atividade futura autorizada.
+
+## 20. P5-VR-S1B — patterns compartilhados do Design System 2.1.0 (2026-10-05)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/prototype/ui-v2/contracts/DSCR-UIV2-003-SHARED-PATTERNS-2.1.0.md` | Escopo aprovado e status factual de implementação dos quatro changes | CURRENT / IMPLEMENTED LOCALLY / NOT PUBLISHED |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md` | Authority visual e versionamento SemVer | CURRENT / 2.1.0 IMPLEMENTED LOCALLY |
+| `docs/prototype/ui-v2/contracts/COMPONENT_CATALOG.md` | Ownership, camada e estado dos componentes/patterns compartilhados | CURRENT / 2.1.0 IMPLEMENTED LOCALLY |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 46 | Baseline, autorização, implementação, validação, limites e próxima atividade | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.11 | Resumo de retomada da lane UI V2 | CURRENT / S1B TECHNICAL PASS |
+
+```text
+CURRENT_DESIGN_SYSTEM_VERSION = 2.1.0 / IMPLEMENTED LOCALLY / NOT PUBLISHED
+P5-VR-S1B = COMPLETE / TECHNICAL VALIDATION PASS
+STAT_GROUP = DEFERRED
+CONSUMER_MIGRATION = NO
+NEXT = review; separate Git checkpoint; then P5-VR-S2
+```
+
+O pedido explícito atual do usuário autorizou P5-VR-S1B, separadamente da
+aprovação original do DSCR. A seção 19 deste mapa, o PROJECT_STATE §45 e o
+AGENT_CONTINUITY §20.10 registram corretamente o estado anterior à autorização
+e permanecem históricos. P3-B e o Quick Detail continuam protegidos; publicação
+e integração posterior não foram realizadas.

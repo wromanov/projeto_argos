@@ -1,4 +1,4 @@
-/* ARGOS UI V2 · 2.0.2 · reusable compositions */
+/* ARGOS UI V2 · 2.1.0 · reusable compositions */
 @layer patterns {
   .argos-docs-layout { display: grid; min-height: 100vh; grid-template-columns: 232px minmax(0, 1fr); }
   .argos-docs-sidebar { display: flex; flex-direction: column; gap: var(--argos-space-6); padding: var(--argos-space-5) var(--argos-space-4); background: var(--argos-color-surface-inverse); color: var(--argos-color-ink-inverse); }
@@ -19,6 +19,7 @@
   .argos-lead { max-width: 72ch; color: var(--argos-color-ink-muted); font-size: var(--argos-text-body); }
   .argos-page-header__actions, .argos-inline, .argos-chip-group, .argos-pagination { display: flex; flex-wrap: wrap; align-items: center; gap: var(--argos-space-2); }
   .argos-stack { display: grid; gap: var(--argos-section-gap); }
+  .argos-data-group { display: grid; gap: var(--argos-space-4); min-width: 0; }
   .argos-section-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--argos-space-3); margin-bottom: var(--argos-space-4); }
   .argos-section-header h2, .argos-section-header h3 { font-size: var(--argos-text-section); }
   .argos-kpi-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--argos-space-4); }
@@ -43,6 +44,7 @@
   .argos-pagination a, .argos-pagination span { display: inline-flex; min-width: var(--argos-touch-target-min); min-height: var(--argos-touch-target-min); align-items: center; justify-content: center; padding-inline: var(--argos-space-2); border: var(--argos-border-width) solid var(--argos-color-border-strong); border-radius: var(--argos-radius-control); background: var(--argos-color-surface); color: var(--argos-color-ink); font-size: var(--argos-text-secondary); text-decoration: none; }
   .argos-pagination [aria-current="page"] { border-color: var(--argos-color-action); background: var(--argos-color-action); color: var(--argos-color-ink-inverse); }
   .argos-state { display: grid; justify-items: start; gap: var(--argos-space-2); padding: var(--argos-space-5); border: var(--argos-border-width) solid var(--argos-color-border); border-radius: var(--argos-radius-surface); background: var(--argos-color-surface); }
+  .argos-state--compact { gap: var(--argos-space-1); padding: 0; border: 0; border-radius: 0; background: transparent; }
   .argos-state__title { font-size: var(--argos-text-body); }
   .argos-state__copy { color: var(--argos-color-ink-muted); overflow-wrap: anywhere; }
   .argos-color-grid, .argos-type-grid, .argos-two-column { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--argos-space-4); }

@@ -949,3 +949,26 @@ reaprovação da mudança, mas não concede autorização de implementação par
 O estado pinned/read-only continua vigente até uma atividade de implementação
 separadamente autorizada. Quick Detail permanece protegido e mantém sua semântica
 funcional.
+
+### 20.11. P5-VR-S1B — implementação local do Design System 2.1.0 (2026-10-05)
+
+```text
+CURRENT_ACTIVITY = P5-VR-S1B / IMPLEMENTED / TECHNICALLY_VALIDATED LOCALLY
+BASELINE_HEAD = 112a1f5fe18588aab84b3f8c2b4ec842bf49b78c
+PROJECT_STATE = section 46 / PROJECT_STATE_UPDATE PASS
+CURRENT_DESIGN_SYSTEM_VERSION = 2.1.0 / LOCAL / NOT PUBLISHED
+DSCR = DSCR-UIV2-003 / all four approved changes implemented
+STAT_GROUP = DEFERRED / NOT IMPLEMENTED
+QUICK_DETAIL_INTERACTION = UNCHANGED
+P3_B = UNCHANGED / HARD HOLD PRESERVED
+CONSUMER_MIGRATION = NO
+GIT_CHECKPOINT = PENDING / separate activity
+NEXT_ACTIVITY = review; separate Git checkpoint; then P5-VR-S2 — Camera Detail Structural Remediation
+```
+
+O pedido explícito atual do usuário autorizou a implementação separada que as
+seções 20.10 e 45 ainda marcavam como não autorizada. Esses snapshots permanecem
+históricos. O relatório focal e as authorities atualizadas estão em
+`PROJECT_STATE.md`, seção 46; o CSS de produção, as páginas consumidoras, o
+Quick Detail e P3-B não foram alterados. Não declarar publicação nem aprovação
+visual humana.

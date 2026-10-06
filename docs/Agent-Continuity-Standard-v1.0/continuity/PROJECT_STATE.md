@@ -2429,3 +2429,70 @@ adjudication supplied by the user for this activity. `PROJECT_STATE_UPDATE =
 PASS` records documentary reconciliation and does not grant implementation
 authority. P5-VR-S1B is next and ready for separate authorization; this activity
 does not grant that authorization.
+
+## 46. P5-VR-S1B — implementação de patterns compartilhados (2026-10-05)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = P5-VR-S1B — Shared Pattern Implementation
+ACTIVITY_STATUS = IMPLEMENTED / TECHNICALLY_VALIDATED_LOCALLY / NOT_PUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 100%
+BASELINE_ROOT = C:\Users\walac\desenvolvimento\projeto_argos_ui_p5
+BASELINE_BRANCH = codex/ui-v2-p5-production
+BASELINE_HEAD = 112a1f5fe18588aab84b3f8c2b4ec842bf49b78c
+BASELINE_UPSTREAM = origin/codex/ui-v2-p5-production
+BASELINE_WORKTREE = CLEAN / STAGING EMPTY / AHEAD 0 / BEHIND 0
+IMPLEMENTATION_AUTHORIZATION = EXPLICIT_CURRENT_USER_ACTIVITY_REQUEST
+DESIGN_SYSTEM_VERSION_BEFORE = 2.0.2
+DESIGN_SYSTEM_VERSION_AFTER = 2.1.0 / IMPLEMENTED LOCALLY / NOT PUBLISHED
+DSCR = DSCR-UIV2-003-SHARED-PATTERNS-2.1.0 / APPROVED / IMPLEMENTED LOCALLY
+DATA_PAIR = PASS
+DATA_GROUP = PASS
+COMPACT_EMPTY_STATE = PASS
+BUTTON_DANGER = PASS
+STAT_GROUP = NOT_IMPLEMENTED / DEFERRED
+PAGE_HEADER = UNCHANGED
+SECTION_HEADING = UNCHANGED
+STATUS_BADGE = UNCHANGED
+P3_B_VISUAL_IMPACT = NONE
+QUICK_DETAIL_INTERACTION_IMPACT = NONE
+CONSUMER_PAGE_MIGRATION = NO
+BACKWARD_COMPATIBILITY = PRESERVED / additive classes and modifier only
+TEST_VALIDATION = PASS / 22 focused Playwright browser assertions; no repository UI V2/CSS test suite found
+VALIDATION_SURFACE = existing foundation/data-display showcase with in-memory specimen
+VALIDATION_VIEWPORTS = 1280x900; 390x844
+VISUAL_RUNTIME_VALIDATION = PASS / no document overflow; long values wrap; focus, active, disabled, and touch target verified
+DJANGO_TESTS = NOT_RUN / no template/backend changes; bundled Python runtime has no Django
+TESTS_CHANGED = NO
+STATIC_VALIDATION = PASS / git diff --check; selectors scoped; tokens reused; no new !important; responsive and accessibility review
+FILES_CHANGED = 12 tracked files: four canonical CSS files, DSCR, Visual Contract, Component Catalog, harness version metadata, PROJECT_STATE, AGENT_CONTINUITY, ACTIVE_DOCUMENT_MAP
+UNAUTHORIZED_SCOPE_EXPANSION = NO
+OVERENGINEERING_CHECK = PASS
+USER_VISUAL_APPROVAL = NOT_CLAIMED
+PUBLISHED = NO
+COMMIT = NOT_CREATED
+PUSH = NOT_PERFORMED
+GIT_STATUS_FINAL = expected local edits only; unstaged; staging empty; HEAD unchanged at baseline
+PROJECT_STATE_UPDATE = PASS / this section records the implementation and validation
+ACTIVITY_COMPLETE = YES / local technical scope; Git checkpoint remains separate
+NEXT_RECOMMENDED_ACTION = review implementation; create a separately authorized Git checkpoint; then P5-VR-S2 — Camera Detail Structural Remediation
+```
+
+O pedido explícito atual do usuário autorizou P5-VR-S1B como atividade separada;
+portanto, o estado `NOT AUTHORIZED` da seção 45 continua correto para seu
+checkpoint histórico, mas não é o gate vigente desta execução. O baseline Git
+confirmado corresponde ao commit documental `112a1f5` que registrou a aprovação
+do DSCR. Os quatro changes foram adicionados somente às folhas compartilhadas
+`static/css/ui-v2/`; o CSS de produção, os templates consumidores, o Quick Detail
+e a tela P3-B não foram alterados.
+
+O teste focal foi executado no showcase HTML existente do Design System, com um
+espécime inserido somente no DOM durante a sessão. As 22 asserções cobriram
+semântica/apresentação dos pares, quebra de conteúdo longo, grupo responsivo,
+estado vazio compacto, contraste e estados do Button Danger, alvo mobile de 44px
+e ausência de overflow em 1280×900 e 390×844. As capturas foram inspecionadas;
+nenhum arquivo de demo foi criado. Não há suíte de teste CSS/UI V2 dedicada no
+repositório; nenhum teste de Django foi necessário para as folhas CSS alteradas.
+O DS 2.1.0 permanece local e não publicado. A próxima etapa é revisão da
+implementação e checkpoint Git separado; a remediação de Camera Detail continua
+uma atividade posterior.

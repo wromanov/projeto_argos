@@ -76,3 +76,20 @@ CSS_EDIT_CAPABILITY -> DOES_NOT_TRANSFER_AUTHORITY
 Este DSCR registra a aprovação humana da proposta. A aprovação não promove 2.1.0
 a versão implementada/ativa, não altera o estado pinned/read-only e não autoriza
 implementação, workaround local, mudança de tela ou alteração de CSS.
+
+## Implementação local — P5-VR-S1B
+
+```text
+IMPLEMENTATION_AUTHORIZATION = GRANTED_BY_SEPARATE_EXPLICIT_USER_ACTIVITY_REQUEST
+IMPLEMENTATION_STATUS = IMPLEMENTED / TECHNICALLY_VALIDATED LOCALLY
+DESIGN_SYSTEM_VERSION_AFTER = 2.1.0
+PUBLISHED = NO
+CONSUMER_MIGRATION = NO
+STAT_GROUP = DEFERRED / NOT_IMPLEMENTED
+```
+
+O pedido explícito da atividade P5-VR-S1B autorizou a implementação separada
+do change set aprovado. Os quatro patterns foram materializados nas folhas CSS
+canônicas; os consumidores não foram migrados. O relatório e os resultados de
+validação ficam no `PROJECT_STATE.md`, seção 46. Esta implementação local não
+declara publicação nem aprovação visual humana.
