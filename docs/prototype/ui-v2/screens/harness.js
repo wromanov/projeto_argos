@@ -1,4 +1,4 @@
-// DESIGN_SYSTEM_VERSION = 2.2.0; OWNER = ROOT.
+// DESIGN_SYSTEM_VERSION = 2.3.0; OWNER = ROOT.
 // PROTOTYPE_ONLY: resolve deterministic UI variants; no domain or network behavior.
 (() => {
   const states = new Set(["default", "empty", "loading", "error"]);

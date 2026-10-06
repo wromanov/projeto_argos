@@ -1,8 +1,8 @@
 # ARGOS UI V2 — Visual Contract
 
-- STATUS: P2 FOUNDATION APPROVED / PINNED at 2.0.0; current implemented Design System = 2.2.0 published on codex/ui-v2-p5-production
-- CURRENT_IMPLEMENTED_VERSION: 2.2.0
-- TARGET_VERSION: 2.2.0 / PUBLISHED via DSCR-UIV2-004 / commit b9cdc00dbc35915deb922c1a0596574a2b9a12bc
+- STATUS: P2 FOUNDATION APPROVED / PINNED at 2.0.0; current implemented Design System = 2.3.0 local on codex/ui-v2-p5-production / pending review and publication
+- CURRENT_IMPLEMENTED_VERSION: 2.3.0 / LOCAL / NOT PUBLISHED
+- TARGET_VERSION: 2.3.0 / DSCR-UIV2-005 / IMPLEMENTED LOCALLY / NOT PUBLISHED
 - DESIGN_STRATEGY: CODE_FIRST / STACK_NATIVE / PROTOTYPE_DRIVEN
 - VISUAL_DIRECTION: C — ARGOS HYBRID, aprovada; não reabrir nesta atividade
 - SCOPE: VISUAL_ONLY
@@ -75,8 +75,8 @@ P2 aprovou e pinou a foundation 2.0.0. A versão implementada corrente foi
 promovida a 2.0.1 e, depois, 2.0.2 por DSCRs anteriores. No estado atual:
 
 ```text
-CURRENT_IMPLEMENTED_VERSION = 2.2.0
-TARGET_VERSION = 2.2.0 / DSCR-UIV2-004 / IMPLEMENTED / PUBLISHED
+CURRENT_IMPLEMENTED_VERSION = 2.3.0 / IMPLEMENTED LOCALLY / NOT PUBLISHED
+TARGET_VERSION = 2.3.0 / DSCR-UIV2-005 / IMPLEMENTED LOCALLY / NOT PUBLISHED
 TARGET_VERSION_IMPLEMENTED = YES / local canonical CSS
 ```
 
@@ -103,3 +103,7 @@ aditiva. P5-VR-S1B materializou localmente os quatro changes do DSCR. A promoç�
 token existente, sem exigir migração de consumidores. A versão 2.1.0 foi
 publicada no checkpoint S1B; a 2.2.0 foi publicada em
 `b9cdc00dbc35915deb922c1a0596574a2b9a12bc`.
+
+A promoção 2.3.0 em DSCR-UIV2-005 adiciona `.argos-back-link`, consumindo os
+tokens tipográficos e de cor existentes e o foco global `:focus-visible`, sem
+migrar outros consumidores.

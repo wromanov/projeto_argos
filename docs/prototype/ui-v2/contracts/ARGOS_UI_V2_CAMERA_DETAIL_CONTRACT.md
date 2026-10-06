@@ -3423,3 +3423,18 @@ SOURCE_CODE_CHANGED = NO
 DESIGN_SYSTEM_CHANGED = NO
 COMMIT = NOT_PERFORMED
 PUSH = NOT_PERFORMED
+
+## P5-VR-DSG-02 implementation binding
+
+This additive Design System binding materializes the already approved
+`BACK_NAVIGATION_STYLE` from section 17 without reopening its visual decision:
+
+```text
+BACK_NAVIGATION_PUBLIC_CAPABILITY = .argos-back-link
+BACK_NAVIGATION_IMPLEMENTATION = shared pattern in static/css/ui-v2/patterns.css
+BACK_NAVIGATION_STYLE = --argos-text-secondary / --argos-weight-medium / --argos-color-action / global :focus-visible
+```
+
+The Camera Detail consumer migration remains within its separately authorized
+implementation activity. Position, copy, destination, semantics, spacing, and
+hierarchy remain as specified above.

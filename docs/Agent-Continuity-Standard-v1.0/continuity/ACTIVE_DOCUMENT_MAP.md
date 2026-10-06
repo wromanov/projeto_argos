@@ -572,3 +572,27 @@ S2B_STATUS = READY_TO_RESUME / implementation authorization remains separate
 CAMERA_DETAIL_IMPLEMENTED = NO
 CAMERA_DETAIL_VISUAL_APPROVED = NO / PENDING
 ```
+
+## 24. P5-VR-DSG-02 — Back Navigation Link 2.3.0 (2026-10-06)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/prototype/ui-v2/contracts/DSCR-UIV2-005-BACK-NAVIGATION-LINK-2.3.0.md` | Escopo, semântica da capability e versionamento | CURRENT / IMPLEMENTED LOCALLY / NOT PUBLISHED |
+| `static/css/ui-v2/patterns.css` | Capability pública `.argos-back-link` | CURRENT / 2.3.0 LOCAL |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md` | Authority visual, versão corrente e SemVer | CURRENT / 2.3.0 LOCAL / NOT PUBLISHED |
+| `docs/prototype/ui-v2/contracts/COMPONENT_CATALOG.md` | Ownership da capability compartilhada | CURRENT / 2.3.0 LOCAL |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_CAMERA_DETAIL_CONTRACT.md` | Vínculo concreto da capability ao estilo já aprovado | CURRENT / unchanged visual decision |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 50 | Baseline, preservação S2B, validação e gates | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.15 | Handoff e retomada da lane P5 | CURRENT / DSG-02 TECHNICAL PASS |
+
+```text
+CURRENT_DESIGN_SYSTEM_VERSION = 2.3.0 / LOCAL / NOT PUBLISHED
+VERSION_IMPACT = MINOR / BACKWARD_COMPATIBLE / ADDITIVE
+PUBLIC_CAPABILITY = .argos-back-link
+TOKEN_CHANGES = NONE
+S2B_FILES_PRESERVED = YES
+S2B_STATUS = BLOCKED_PENDING_DS_PUBLICATION
+```
+
+As seções 22–23 registram o estado publicado 2.2.0 antes desta atividade e
+permanecem históricas. Publicação 2.3.0 e retomada de S2B continuam separadas.

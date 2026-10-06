@@ -1,4 +1,4 @@
-/* ARGOS UI V2 · 2.2.0 · shared primitives and components */
+/* ARGOS UI V2 · 2.3.0 · shared primitives and components */
 @layer components {
   .argos-skip-link {
     position: absolute; z-index: 2; top: var(--argos-space-2); left: var(--argos-space-2);

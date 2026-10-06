@@ -2646,3 +2646,53 @@ capability no Design System. Ele não autoriza a implementação da Camera Detai
 nem registra aprovação visual dessa tela. O commit de implementação preserva a
 mensagem exigida pela atividade; a atualização deste registro acompanha a
 publicação confirmada no upstream.
+
+## 50. P5-VR-DSG-02 — capability compartilhada de Back Navigation Link (2026-10-06)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = P5-VR-DSG-02 — Back Navigation Link Capability
+ACTIVITY_STATUS = IMPLEMENTED / TECHNICALLY_VALIDATED LOCALLY / NOT PUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 100%
+BASELINE_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos_ui_p5
+BASELINE_BRANCH = codex/ui-v2-p5-production
+BASELINE_HEAD = a68b5cc86cd5a6a014548e7d146efaa121439439
+BASELINE_UPSTREAM = origin/codex/ui-v2-p5-production
+BASELINE_DIVERGENCE = 0 / 0
+BASELINE_STAGING = EMPTY
+BASELINE_CHECK = PASS
+PREEXISTING_S2B_FILES = cameras/templates/cameras/detalhe.html; cameras/templates/cameras/partials/_monitoring_badge.html; cameras/templates/cameras/partials/_atividade_tipo_badge.html; static/css/ui-v2/camera-detail.css; cameras/test_frontend.py
+S2B_FILES_PRESERVED = YES / SHA-256 verified against activity-start snapshot
+ROOT_CAUSE = DS 2.2.0 had the required existing tokens and shared focus behavior but no public reusable back-navigation link capability.
+PUBLIC_CAPABILITY = .argos-back-link / patterns layer / font-size, font-weight, and color only
+TEXT_SECONDARY_SOURCE = static/css/ui-v2/tokens.css --argos-text-secondary: 12px
+WEIGHT_MEDIUM_SOURCE = static/css/ui-v2/tokens.css --argos-weight-medium: 500
+COLOR_ACTION_SOURCE = static/css/ui-v2/tokens.css --argos-color-action: #2563a6
+FOCUS_SOURCE = static/css/ui-v2/base.css global :focus-visible rule / existing focus tokens
+DS_VERSION_BEFORE = 2.2.0
+DS_VERSION_AFTER = 2.3.0 / IMPLEMENTED LOCALLY / NOT PUBLISHED
+VERSION_IMPACT = MINOR
+DSCR = DSCR-UIV2-005-BACK-NAVIGATION-LINK-2.3.0
+FILES_CHANGED_BY_DSG02 = static/css/ui-v2/tokens.css; static/css/ui-v2/base.css; static/css/ui-v2/components.css; static/css/ui-v2/patterns.css; docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md; docs/prototype/ui-v2/contracts/COMPONENT_CATALOG.md; docs/prototype/ui-v2/contracts/DSCR-UIV2-005-BACK-NAVIGATION-LINK-2.3.0.md; docs/prototype/ui-v2/contracts/ARGOS_UI_V2_CAMERA_DETAIL_CONTRACT.md; docs/prototype/ui-v2/foundation/typography.html; docs/prototype/ui-v2/screens/harness.js; docs/prototype/ui-v2/screens/index.html; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md; docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md
+NEW_FILES = docs/prototype/ui-v2/contracts/DSCR-UIV2-005-BACK-NAVIGATION-LINK-2.3.0.md
+BACKEND_CHANGED = NO
+JS_CHANGED = NO / only screen harness version metadata updated
+CAMERA_DETAIL_IMPLEMENTATION_CHANGED_BY_THIS_ACTIVITY = NO
+LEGACY_DETAIL_BACK_LINK_CHANGED = NO
+TESTS = PASS / focused CSS assertions; harness JavaScript syntax check
+GIT_DIFF_CHECK = PASS
+DS_CHANGE_STATUS = READY_FOR_REVIEW
+S2B_STATUS = BLOCKED_PENDING_DS_PUBLICATION
+WORKTREE_FINAL = DIRTY_EXPECTED / five pre-existing S2B files plus DSG-02 files; unstaged
+STAGING = EMPTY
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES / local technical scope; publication remains separate
+```
+
+The new class consumes only existing tokens. Shared link hover and visible focus
+remain owned by base styles. No other page migrated; the legacy selector and its
+three existing consumers were left untouched. The Camera Detail contract now
+binds its previously approved style to this capability without changing its
+visual decisions. The five S2B files match their activity-start hashes.

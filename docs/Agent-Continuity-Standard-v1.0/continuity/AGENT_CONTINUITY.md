@@ -1044,3 +1044,26 @@ CAMERA_DETAIL_VISUAL_APPROVED = NO / PENDING
 
 O gate removido é somente a indisponibilidade da capability compartilhada. A
 retomada da S2B permanece sujeita à authority de implementação da Camera Detail.
+
+### 20.15. P5-VR-DSG-02 — Back Navigation Link 2.3.0 (2026-10-06)
+
+```text
+CURRENT_ACTIVITY = P5-VR-DSG-02 / IMPLEMENTED / TECHNICALLY VALIDATED LOCALLY
+PROJECT_STATE = section 50 / PROJECT_STATE_UPDATE PASS
+BASELINE_HEAD = a68b5cc86cd5a6a014548e7d146efaa121439439
+CURRENT_DESIGN_SYSTEM_VERSION = 2.3.0 / LOCAL / NOT PUBLISHED
+DSCR = DSCR-UIV2-005-BACK-NAVIGATION-LINK-2.3.0
+PUBLIC_CAPABILITY = .argos-back-link / existing text, weight, color, and focus sources
+S2B_FILES_PRESERVED = YES / hashes match activity-start snapshot
+CAMERA_DETAIL_IMPLEMENTATION_CHANGED = NO
+LEGACY_DETAIL_BACK_LINK_CHANGED = NO
+TESTS = PASS / focused CSS assertions and harness JavaScript syntax
+S2B_STATUS = BLOCKED_PENDING_DS_PUBLICATION
+STAGING = EMPTY
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+```
+
+DSCR-UIV2-005 adiciona a capability na camada `patterns` sem tokens novos,
+migração de outras páginas ou alterações às decisões visuais da Camera Detail.
+O registro completo e a lista de arquivos estão em `PROJECT_STATE.md`, seção 50.
