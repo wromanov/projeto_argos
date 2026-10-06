@@ -75,12 +75,12 @@ PRIMARY_REPOSITORY = https://github.com/wromanov/projeto_argos.git
 
 LAST_VERIFIED_LOCAL_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
 LAST_VERIFIED_BRANCH = master
-CURRENT_CANONICAL_GIT_BASELINE = f4e88146c1146cdf04d657eb6e3cefa560639b61
-CURRENT_BASELINE_BEFORE_DOCUMENTARY_COMMIT = f4e88146c1146cdf04d657eb6e3cefa560639b61
-LAST_VERIFIED_HEAD = f4e88146c1146cdf04d657eb6e3cefa560639b61
-LAST_VERIFIED_ORIGIN_MASTER = f4e88146c1146cdf04d657eb6e3cefa560639b61
+CURRENT_CANONICAL_GIT_BASELINE = ae8199e019c8f1c9331da919e7807d23d7f7210f
+CURRENT_BASELINE_BEFORE_DOCUMENTARY_COMMIT = ae8199e019c8f1c9331da919e7807d23d7f7210f
+LAST_VERIFIED_HEAD = ae8199e019c8f1c9331da919e7807d23d7f7210f
+LAST_VERIFIED_ORIGIN_MASTER = ae8199e019c8f1c9331da919e7807d23d7f7210f
 LAST_VERIFIED_DIVERGENCE = HEAD ahead 0 / behind 0
-LAST_VERIFIED_WORKTREE = CLEAN (baseline antes deste commit documental)
+LAST_VERIFIED_WORKTREE = CLEAN (baseline antes deste checkpoint documental)
 LAST_VERIFIED_STAGING = EMPTY
 
 Observação:
@@ -102,7 +102,7 @@ Regras de version hygiene:
 - Skills/Plugins v1.2 substitui v1.1;
 - versões superseded não são authorities ativas.
 
-## 4. Contexto histórico do estado técnico (status vigente na seção 19 e em PROJECT_STATE.md)
+## 4. Contexto histórico do estado técnico (status vigente na seção 20.19 e em PROJECT_STATE.md, seção 52)
 
 LAST_COMPLETED_PUBLISHED_ACTIVITY = MON-09 — fechamento técnico publicado em 850efd2
 LAST_PUBLISHED_BASELINE = 850efd2
@@ -1105,3 +1105,31 @@ CAM-INT-04 mantém trabalho local anterior e requer reconciliação das
 dependências. CAM-INT-05 tem a dependência de publicação satisfeita, mas
 continua sujeito a autoridade separada; CAM-HEALTH, MON-WORKER e IMG-CAP seguem
 bloqueados conforme seção 51.
+
+### 20.19. CAM-INT-03-RUNTIME-02 — homologação bloqueada por defeito no adapter (2026-10-06)
+
+O estado factual e o snapshot Git pré-checkpoint estão na seção 52 de
+PROJECT_STATE.md. Esta atividade não alterou código: gst_adapter.py exige a
+ligação estática decoder->appsink antes do PLAYING, embora o decoder exponha
+pad dinâmico. O callback pad-added está no fluxo, mas o erro de link encerra a
+criação do pipeline antes de seu registro. A evidência reportada reproduziu
+link() = False com GStreamer real.
+
+~~~~text
+CAM_INT_03_RUNTIME_STATUS = BLOCKED / CODE_DEFECT / NOT_HOMOLOGATED
+GSTREAMER_RUNTIME = PASS / 1.28.7
+GSTREAMER_PIPELINE = FAIL / dynamic decoder pad not linked
+RTSP_CONNECTION = NOT_ESTABLISHED
+SAMPLES_RECEIVED = 0
+FOCAL_TESTS = PASS / prior mocks do not capture this condition
+SOURCE_CHANGED = NO
+LOCAL_CREDENTIAL_PORTABILITY = NO / depends on ephemeral work-session key
+LOCAL_DATABASE_COPIED_OR_VERSIONED = NO
+HANDOFF_GATE = PENDING / registry, DAG e contrato CAM-INT-03 requerem reconciliação de status após as publicações de R1 e do adapter
+IMPLEMENTATION_AUTHORIZED_IN_CHECKPOINT = NO
+NEXT_REQUIRED_ACTIVITY = authorized repair of dynamic decoder->appsink linking and real-GStreamer validation
+~~~~
+
+Não registrar nem transportar chave Fernet, variáveis de ambiente, conteúdo de
+credencial, URI RTSP sensível ou banco SQLite. A correção do adapter não foi
+incluída nesta atividade e precisa de autorização própria. Os cabeçalhos de status do registry, DAG e contrato CAM-INT-03 ainda refletem o estado pré-R1; consultar PROJECT_STATE seção 52 e reconciliá-los em atividade documental separada.

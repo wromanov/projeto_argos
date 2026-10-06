@@ -11,8 +11,8 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; CAM-INT-02-R1-ARCH section 49 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; CAM-INT-02-R1-ARCH section 20.16 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; CAM-INT-03-RUNTIME-02 section 52 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; CAM-INT-03-RUNTIME-02 section 20.19 |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; UI V2 authority mapped in section 16 |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
@@ -513,12 +513,14 @@ CAM-INT-03 deve retomar sua lane existente com a nova dependência após revalid
 a autorização; CAM-INT-04 exige reconciliação de suas alterações locais antes
 de continuação. Nenhuma lane foi iniciada ou alterada nesta atividade.
 
-## 23. CAM-INT-03-INT — adapter RTSP integrado e validado localmente (2026-10-02)
+## 23. CAM-INT-03-INT — adapter RTSP integrado e validado localmente (snapshot histórico, supersedido quanto ao estado atual)
+
+STATUS = HISTORICAL / consulte a seção 24 deste mapa e PROJECT_STATE seção 52 para a homologação runtime atual.
 
 | Path | Papel | Vigência |
 |---|---|---|
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 51 | Evidência factual da integração, validação local, bloqueio remoto e DAG | CURRENT / NOT PUBLISHED |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.18 | Handoff e invariantes do adapter RTSP integrado | CURRENT / NOT PUBLISHED |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 51 | Evidência factual da integração, validação local, bloqueio remoto e DAG | HISTORICAL / supersedido pela seção 24 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.18 | Handoff e invariantes do adapter RTSP integrado | HISTORICAL / supersedido pela seção 24 |
 | `docs/projeto/contracts/backend/camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md` | Contrato e critérios AC-01..03 do adapter RTSP | CANONICAL / unchanged |
 | `docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md` | DAG e ownership da implementação backend | CURRENT / reread after local CAM-INT-03 integration |
 
@@ -527,3 +529,18 @@ CAM-INT-03 está implementada, integrada e validada localmente pelo commit-fonte
 publicação permanece pendente e não há evidência de alinhamento com
 `origin/master` remoto. Ver seção 51 de `PROJECT_STATE.md` antes de qualquer
 continuação. CAM-INT-04 exige reconciliação; nenhum successor foi iniciado.
+
+## 24. CAM-INT-03-RUNTIME-02 — homologação bloqueada por defeito no adapter (2026-10-06)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md, seção 52 | Snapshot sanitizado, baseline Git, evidências e próxima ação | CURRENT / checkpoint documental solicitado |
+| docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md, seção 20.19 | Handoff do defeito, limites locais e autorização | CURRENT / checkpoint documental solicitado |
+| docs/projeto/contracts/backend/camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md | Contrato e critérios do adapter RTSP | CANONICAL / comportamento; cabeçalho de status pré-R1, ver PROJECT_STATE seção 52 |
+
+CAM-INT-03 runtime permanece bloqueada e não homologada. O runtime GStreamer
+1.28.7 está disponível, mas a ligação estática do decoder ao appsink falha
+antes de o callback pad-added ser registrado. A próxima atividade é uma
+correção autorizada dessa ligação, seguida de validação com GStreamer real.
+A credencial local depende de chave efêmera da sessão de trabalho e não é
+portátil; nenhum segredo ou banco foi copiado para o Git. Os cabeçalhos do contrato CAM-INT-03, do registry e do DAG ainda refletem o estado anterior à publicação de R1 e do adapter; sua reconciliação fica para atividade documental separada.

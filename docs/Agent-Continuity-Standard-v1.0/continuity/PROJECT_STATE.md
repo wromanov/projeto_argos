@@ -3036,3 +3036,77 @@ quatro commits locais e a consulta posterior confirmou `367e98e`. Este
 checkpoint fecha o registro documental; a verificação remota final inclui seu
 commit. A homologação GStreamer, pipeline real, câmera, rede e produção
 continuam pendentes.
+
+## 52. CAM-INT-03-RUNTIME-02 — checkpoint bloqueado antes da troca de máquina (2026-10-06)
+
+~~~~text
+ACTIVITY = CAM-INT-03-RUNTIME-02 / REAL RTSP HOMOLOGATION
+ACTIVITY_STATUS = BLOCKED / CODE_DEFECT
+ACTIVITY_COMPLETION_PERCENT = 75% / estimativa, não conclusão
+PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+BRANCH = master
+BASELINE_HEAD_BEFORE_DOCUMENTARY_COMMIT = ae8199e019c8f1c9331da919e7807d23d7f7210f
+ORIGIN_MASTER_AT_PREFLIGHT = ae8199e019c8f1c9331da919e7807d23d7f7210f
+DIVERGENCE_AT_PREFLIGHT = 0 / 0
+WORKTREE_AT_PREFLIGHT = CLEAN
+STAGING_AT_PREFLIGHT = EMPTY
+SNAPSHOT_SCOPE = estado factual imediatamente anterior a este checkpoint documental; revalidar Git após o commit
+
+ENV_FORMAT_DISCOVERY = PASS
+POLICY_LOAD = PASS
+FERNET_KEYRING_LOAD = PASS / somente na sessão local de trabalho
+TEST_CAMERA = EXISTING
+CREDENTIAL = CREATED_VIA_CANONICAL_SERVICE
+CONNECTION_CONFIG = UPDATED_VIA_CANONICAL_SERVICE
+CONFIG_RESOLUTION = PASS
+CREDENTIAL_RESOLUTION = PASS
+TARGET_POLICY = PASS
+TCP_REACHABILITY = PASS
+RTSP_CONNECTION = NOT_ESTABLISHED
+AUTHENTICATION = INCONCLUSIVE
+GSTREAMER_RUNTIME = PASS / 1.28.7
+GSTREAMER_PIPELINE = FAIL
+STREAM_NEGOTIATION = NOT_RUN
+CODEC = NOT_DETECTED
+TRANSPORT = NOT_DETERMINED
+SAMPLES_RECEIVED = 0
+CLEAN_SHUTDOWN = NOT_FULLY_VERIFIED
+LOCAL_DIAGNOSTIC_NULL_STATE = PASS
+NEGATIVE_PATH = PASS / execução anterior
+FOCAL_TESTS = PASS / execução anterior com mocks; mocks não reproduzem a saída dinâmica real do decoder
+DJANGO_CHECK = PASS / execução anterior
+TESTS_RUN_IN_THIS_CHECKPOINT = NO
+SECRET_LEAKAGE = NONE_OBSERVED
+
+FINDING_CLASS = CODE_DEFECT
+FINDING_LOCATION = cameras/integracao/rtsp/gst_adapter.py:224
+FINDING = A criação do pipeline exige decoder.link(sink) antes do PLAYING; a saída do decoder é dinâmica. O callback pad-added existe no fluxo, mas só é registrado depois que a criação do pipeline retorna. Com link() retornando False, a execução aborta antes de registrar o callback.
+RUNTIME_DIAGNOSTIC = retorno False reproduzido na execução real relatada; homologação parou antes da conexão RTSP
+SOURCE_CHANGED = NO
+CONTRACT_CHANGED = NO
+RELATED_DOCUMENT_STATUS_DIVERGENCE = registry, DAG e cabeçalho do contrato CAM-INT-03 mantêm status anterior à publicação de R1 e do adapter; as seções 50-51 e o Git confirmam essas publicações
+DOCUMENT_RECONCILIATION_FOLLOWUP = reconciliar esses status em atividade documental separada; fora do escopo deste checkpoint
+IMPLEMENTATION_AUTHORIZED_IN_THIS_CHECKPOINT = NO / correção requer atividade autorizada própria
+
+LOCAL_CREDENTIAL_PORTABILITY = NÃO PORTÁVEL / a credencial local depende da chave efêmera na sessão PowerShell do computador de trabalho
+LOCAL_DATABASE = NÃO COPIADO / não versionar
+FERNET_KEY_OR_ENVIRONMENT_VALUES = NÃO REGISTRADOS / não copiar nem versionar
+NEXT_REQUIRED_ACTIVITY = corrigir a ligação dinâmica decoder->appsink e validar com GStreamer real, sob autorização explícita
+CAM_INT_03_RUNTIME_STATUS = NOT_HOMOLOGATED
+PROJECT_STATE_UPDATE = PASS / estado bloqueado e próxima atividade registrados
+HANDOFF_GATE = PENDING / cabeçalhos de status do registry, DAG e contrato CAM-INT-03 ainda mostram estado pré-R1
+STATE_COMMIT = este checkpoint documental
+PUSH = AUTORIZADO / origin/master; confirmar o resultado após o commit
+ACTIVITY_COMPLETE = NO / homologação runtime permanece bloqueada
+~~~~
+
+Este checkpoint registra o defeito sem alterar o adapter. O runtime e o ambiente
+GStreamer estavam disponíveis; a falha ocorre ao montar o pipeline por causa da
+ligação estática do decoder. A conexão RTSP não foi estabelecida, a autenticação
+permanece inconclusiva e nenhum sample foi recebido. Os resultados anteriores
+de testes focais usaram mocks e não cobrem essa condição real.
+
+A credencial cadastrada localmente não é portátil para casa porque depende da
+chave efêmera mantida na sessão PowerShell do computador de trabalho. Nenhuma
+chave, variável de ambiente, credencial, URI RTSP sensível ou banco local deve
+ser copiado ou incluído neste checkpoint.
