@@ -1,7 +1,7 @@
 # ARGOS UI V2 — Component Catalog
 
 Baseline da foundation aprovada: 2.0.0. Design System implementado corrente:
-2.1.0 localmente, ainda não publicado. O catálogo registra ownership para
+2.2.0 localmente, ainda não publicado. O catálogo registra ownership para
 conter variantes oportunistas em P3.
 
 | COMPONENT | TYPE | OWNER | CASCADE_LAYER | VARIANTS | STATES | RESPONSIVE | KNOWN_CONSUMERS | STATUS |
@@ -18,6 +18,7 @@ conter variantes oportunistas em P3.
 | Spinner | COMPONENT | component | components | inline | loading; reduced motion | fixed visual size | async image / quick detail conventions | foundation specimen |
 | Data Pair | COMPONENT | component | components | label/value; mono value via `code` | default | text wraps; `min-width: 0` | future detail groups; Quick Detail remains protected | 2.1.0 implemented locally |
 | Page Header | PATTERN | pattern | patterns | title, description, actions | default | actions wrap; stacks on mobile | all screen families | foundation specimen / unchanged |
+| KPI Typography | UTILITY | pattern | patterns | `argos-text-kpi` | inherits weight and line-height from semantic heading styles | text wraps per consumer | Camera Detail; reusable typography consumers | 2.2.0 implemented locally |
 | Section Header | PATTERN | pattern | patterns | title, metadata | default | wraps | detail and grouped pages | CSS available |
 | Data Group | PATTERN | pattern | patterns | optional heading; composes `argos-two-column` when columns are useful | default | existing two-column pattern collapses on mobile | future detail groups | 2.1.0 implemented locally |
 | KPI Card / Grid | PATTERN | pattern | patterns | 1–3 columns | default | two columns tablet, one on mobile | dashboard, portal | foundation specimen |

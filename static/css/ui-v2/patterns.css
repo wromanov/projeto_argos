@@ -1,4 +1,4 @@
-/* ARGOS UI V2 · 2.1.0 · reusable compositions */
+/* ARGOS UI V2 · 2.2.0 · reusable compositions */
 @layer patterns {
   .argos-docs-layout { display: grid; min-height: 100vh; grid-template-columns: 232px minmax(0, 1fr); }
   .argos-docs-sidebar { display: flex; flex-direction: column; gap: var(--argos-space-6); padding: var(--argos-space-5) var(--argos-space-4); background: var(--argos-color-surface-inverse); color: var(--argos-color-ink-inverse); }
@@ -16,6 +16,7 @@
   .argos-page-header__copy { display: grid; gap: var(--argos-space-2); min-width: 0; }
   .argos-eyebrow { color: var(--argos-color-action); font-size: var(--argos-text-label); font-weight: var(--argos-weight-bold); letter-spacing: .08em; text-transform: uppercase; }
   .argos-page-title { font-size: clamp(27px, 3vw, var(--argos-text-page-title)); }
+  .argos-text-kpi { font-size: var(--argos-text-kpi); }
   .argos-lead { max-width: 72ch; color: var(--argos-color-ink-muted); font-size: var(--argos-text-body); }
   .argos-page-header__actions, .argos-inline, .argos-chip-group, .argos-pagination { display: flex; flex-wrap: wrap; align-items: center; gap: var(--argos-space-2); }
   .argos-stack { display: grid; gap: var(--argos-section-gap); }

@@ -1,8 +1,8 @@
 # ARGOS UI V2 — Visual Contract
 
-- STATUS: P2 FOUNDATION APPROVED / PINNED at 2.0.0; current implemented Design System = 2.1.0 locally
-- CURRENT_IMPLEMENTED_VERSION: 2.1.0
-- TARGET_VERSION: 2.1.0 / APPROVED via DSCR-UIV2-003; IMPLEMENTED LOCALLY / NOT PUBLISHED
+- STATUS: P2 FOUNDATION APPROVED / PINNED at 2.0.0; current implemented Design System = 2.2.0 locally
+- CURRENT_IMPLEMENTED_VERSION: 2.2.0
+- TARGET_VERSION: 2.2.0 / IMPLEMENTED LOCALLY via DSCR-UIV2-004; NOT PUBLISHED
 - DESIGN_STRATEGY: CODE_FIRST / STACK_NATIVE / PROTOTYPE_DRIVEN
 - VISUAL_DIRECTION: C — ARGOS HYBRID, aprovada; não reabrir nesta atividade
 - SCOPE: VISUAL_ONLY
@@ -75,8 +75,8 @@ P2 aprovou e pinou a foundation 2.0.0. A versão implementada corrente foi
 promovida a 2.0.1 e, depois, 2.0.2 por DSCRs anteriores. No estado atual:
 
 ```text
-CURRENT_IMPLEMENTED_VERSION = 2.1.0
-TARGET_VERSION = 2.1.0 / DSCR-UIV2-003 / APPROVED / IMPLEMENTED LOCALLY / NOT PUBLISHED
+CURRENT_IMPLEMENTED_VERSION = 2.2.0
+TARGET_VERSION = 2.2.0 / DSCR-UIV2-004 / IMPLEMENTED LOCALLY / NOT PUBLISHED
 TARGET_VERSION_IMPLEMENTED = YES / local canonical CSS
 ```
 
@@ -97,6 +97,9 @@ arquivos alterados. Muitos arquivos podem continuar PATCH; um primitive público
 novo pode exigir MINOR; uma alteração física pequena pode ser MAJOR se quebrar
 consumidores.
 
-A promoção para 2.1.0 aprovada em DSCR-UIV2-003 é MINOR e backward-compatible /
-aditiva. P5-VR-S1B materializou localmente os quatro changes do DSCR; sem commit
-ou push, a implementação permanece local e não publicada.
+A promoção 2.1.0 aprovada em DSCR-UIV2-003 foi MINOR e backward-compatible /
+aditiva. P5-VR-S1B materializou localmente os quatro changes do DSCR. A promoção
+2.2.0 em DSCR-UIV2-004 adiciona a capability `argos-text-kpi`, consumindo o
+token existente, sem exigir migração de consumidores. A versão 2.1.0 foi
+publicada no checkpoint S1B; a 2.2.0 permanece local até seu checkpoint de
+publicação.

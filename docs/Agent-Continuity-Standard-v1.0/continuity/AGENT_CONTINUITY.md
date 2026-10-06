@@ -1001,3 +1001,26 @@ antes da remoção, preservar hooks funcionais e deixar CSS morto fora de escopo
 Overrides compensatórios e escalada de especificidade são proibidos; qualquer
 gap inesperado exige `STOP_AND_ESCALATE`. Quick Detail e P3-B continuam
 protegidos. `NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION`.
+
+### 20.13. P5-VR-DSG-01 — capability tipográfica KPI 2.2.0 (2026-10-06)
+
+```text
+CURRENT_ACTIVITY = P5-VR-DSG-01 / IMPLEMENTED / TECHNICALLY_VALIDATED LOCALLY
+BASELINE_HEAD = 350b2265d00cebeec87acafc43f28f510837d680
+PROJECT_STATE = section 48 / PROJECT_STATE_UPDATE PASS
+CURRENT_DESIGN_SYSTEM_VERSION = 2.2.0 / LOCAL / NOT PUBLISHED
+DSCR = DSCR-UIV2-004-KPI-TYPOGRAPHY-2.2.0
+PUBLIC_CAPABILITY = .argos-text-kpi / existing --argos-text-kpi token / 24px
+WEIGHT_AND_LINE_HEIGHT = semantic H1-H3 base styles; no standalone utilities added
+CAMERA_DETAIL_SOURCE_CHANGED = NO
+TESTS = PASS / focused CSS assertions and harness JavaScript syntax
+BROWSER_RENDER_VALIDATION = PAGE_OPENED_BY_USER_IN_EDGE / agent visual inspection not verified; local automation blocked by Crashpad permission
+S2B_STATUS = BLOCKED_PENDING_DS_PUBLICATION
+STAGING = EMPTY
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+```
+
+O DSCR implementa somente a dimensão tipográfica KPI ausente. Não adiciona
+escala, altera comportamento, migra consumidores, ou libera S2B. Ver
+`PROJECT_STATE.md` seção 48 e `ACTIVE_DOCUMENT_MAP.md` seção 22.

@@ -2546,3 +2546,57 @@ registro reconcilia o snapshot lógico com a baseline fornecida e verificada.
 O contrato mantém as 24 seções da proposta S2A-R1 e adiciona a seção normativa
 25 de migração de classes legadas. Quick Detail e P3-B continuam protegidos.
 S2B é a próxima atividade requerida, sem autorização de execução.
+
+## 48. P5-VR-DSG-01 — capability de tipografia KPI do Design System 2.2.0 (2026-10-06)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = P5-VR-DSG-01 — KPI Typography Capability
+ACTIVITY_STATUS = IMPLEMENTED / TECHNICALLY_VALIDATED LOCALLY / NOT PUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 100%
+BASELINE_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos_ui_p5
+BASELINE_BRANCH = codex/ui-v2-p5-production
+BASELINE_HEAD = 350b2265d00cebeec87acafc43f28f510837d680
+BASELINE_UPSTREAM = origin/codex/ui-v2-p5-production
+BASELINE_DIVERGENCE = 0 / 0
+BASELINE_WORKTREE = CLEAN / STAGING EMPTY
+BASELINE_CHECK = PASS
+ROOT_CAUSE = DS 2.1.0 had the existing KPI scale token but no public `.argos-text-kpi` capability.
+EXISTING_KPI_TOKEN = --argos-text-kpi: 24px
+EXISTING_WEIGHT_CAPABILITY = semantic H1-H3 base style uses --argos-weight-semibold: 600; no standalone utility selector
+EXISTING_LINE_HEIGHT_CAPABILITY = semantic H1-H3 base style uses --argos-line-tight: 1.2; no standalone utility selector
+PUBLIC_CAPABILITY_ADDED = .argos-text-kpi / font-size only / patterns layer
+DSCR = DSCR-UIV2-004-KPI-TYPOGRAPHY-2.2.0
+DS_VERSION_BEFORE = 2.1.0
+DS_VERSION_AFTER = 2.2.0 / IMPLEMENTED LOCALLY / NOT PUBLISHED
+VERSION_IMPACT = MINOR
+BACKWARD_COMPATIBILITY = PRESERVED / additive
+TOKEN_VALUE_CHANGED = NO
+PAGE_SPECIFIC_TYPOGRAPHY_ADDED = NO
+CAMERA_DETAIL_SOURCE_CHANGED = NO
+CAMERA_DETAIL_PRODUCTION_CHANGED = NO
+BACKEND_CHANGED = NO
+JS_LOGIC_CHANGED = NO / only current harness version comment updated
+BEHAVIOR_CHANGED = NO
+COMPONENT_DUPLICATED = NO
+TESTS = PASS / focused CSS contract assertions; harness JS syntax check
+BROWSER_RENDER_VALIDATION = PAGE_OPENED_BY_USER_IN_EDGE / agent visual inspection not verified; local automation blocked by Crashpad permission
+DS_VISUAL_AUTOMATION = NOT_PERFORMED / Edge and Chrome headless failed with Crashpad permission
+DS_VISUAL_APPROVAL = NOT_REQUIRED_FOR_THIS_PUBLICATION / additive typography capability; Camera Detail acceptance is a separate gate
+GIT_DIFF_CHECK = PASS
+DS_CHANGE_STATUS = READY_FOR_REVIEW
+S2B_STATUS = BLOCKED_PENDING_DS_PUBLICATION
+FILES_CHANGED = four canonical DS CSS files; Visual Contract; Component Catalog; DSCR-UIV2-004; foundation typography harness; screen harness version metadata; PROJECT_STATE; AGENT_CONTINUITY; ACTIVE_DOCUMENT_MAP
+WORKTREE_FINAL = DIRTY_EXPECTED / activity files only
+STAGING = EMPTY
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES / local technical scope; publication remains separate
+```
+
+O seletor novo consome o token de 24px existente e não define peso nem line-height.
+O exemplo tipográfico usa H2 e compõe a utility com os defaults semânticos já
+existentes. Os consumidores de 2.1.0 continuam válidos. Não houve alteração de
+Camera Detail, backend, lógica JS ou comportamento. S2B permanece bloqueada até
+a publicação do DS 2.2.0 e sua autorização própria.

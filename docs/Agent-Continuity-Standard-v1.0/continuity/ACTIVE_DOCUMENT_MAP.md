@@ -525,3 +525,30 @@ As seções 19–20 preservam os snapshots do DSCR e S1B; esta seção 21 regist
 reconciliação posterior com a baseline S1B e a nova authority única da Camera
 Detail. A publicação do contrato não autoriza implementação, stage, commit ou
 push.
+
+## 22. P5-VR-DSG-01 — capability tipográfica KPI do Design System 2.2.0 (2026-10-06)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/prototype/ui-v2/contracts/DSCR-UIV2-004-KPI-TYPOGRAPHY-2.2.0.md` | Escopo fechado, semântica e versão da capability compartilhada | CURRENT / IMPLEMENTED LOCALLY / NOT PUBLISHED |
+| `static/css/ui-v2/patterns.css` | Capability pública `.argos-text-kpi`, consumindo token existente | CURRENT / 2.2.0 |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md` | Authority visual, versão corrente e SemVer | CURRENT / 2.2.0 IMPLEMENTED LOCALLY |
+| `docs/prototype/ui-v2/contracts/COMPONENT_CATALOG.md` | Ownership e capability tipográfica pública | CURRENT / 2.2.0 IMPLEMENTED LOCALLY |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 48 | Baseline, validação e gates da atividade | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.13 | Handoff e retomada da lane P5 | CURRENT / AGENT_HANDOFF_GATE PASS |
+
+```text
+CURRENT_DESIGN_SYSTEM_VERSION = 2.2.0 / IMPLEMENTED LOCALLY / NOT PUBLISHED
+VERSION_IMPACT = MINOR / BACKWARD_COMPATIBLE / ADDITIVE
+PUBLIC_CAPABILITY = .argos-text-kpi / font-size only / token 24px
+TOKEN_CHANGES = NONE
+CAMERA_DETAIL_SOURCE_CHANGED = NO
+P5-VR-DSG-01 = COMPLETE / TECHNICAL VALIDATION PASS
+S2B_STATUS = BLOCKED_PENDING_DS_PUBLICATION
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+```
+
+As seções 19–21 são snapshots históricos; esta seção registra a versão atual.
+O contrato Camera Detail e suas fontes produtivas não foram alterados. S2B só
+pode prosseguir após publicação do Design System e autorização própria.
