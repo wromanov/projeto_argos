@@ -921,3 +921,31 @@ usuários, grupos ou permissões; sua allowlist afeta somente a classificação 
 alvos operacionais geridos pelo Administrador ARGOS. A publicação dos commits funcional e documental passou; o fetch confirmou
 `HEAD == origin/master` e worktrees limpas. Consultar Git diretamente para a
 baseline atual em qualquer retomada. O snapshot detalhado é a seção 43 de `PROJECT_STATE.md`.
+
+### 20.10. P5-VR-DSCR-01 — DSCR e regra de versionamento 2.1.0 (2026-10-05)
+
+```text
+CURRENT_ACTIVITY = P5-VR-DSCR-01C / DOCUMENTATION_ONLY / COMPLETE
+BRANCH = codex/ui-v2-p5-production
+BASELINE_HEAD = 043e9ff81e9d8629dd3e44762f198f07115bc11d
+CURRENT_DESIGN_SYSTEM_VERSION = 2.0.2
+TARGET_DESIGN_SYSTEM_VERSION = 2.1.0 / NOT IMPLEMENTED OR ACTIVE
+VERSION_IMPACT = MINOR / BACKWARD_COMPATIBLE / ADDITIVE
+DSCR = DSCR-UIV2-003-SHARED-PATTERNS-2.1.0 / APPROVED (2026-10-05)
+APPROVED_CHANGE_SET = Data Pair; Data Group extension; Compact Empty State; Button Danger
+REUSE_EXISTING = Page Header; Section Heading; Status / Badge
+STAT_GROUP = DEFERRED / OUTSIDE_THIS_DSCR
+S1A = FORMALLY RECONCILED / CLOSED
+NEXT_ACTIVITY = P5-VR-S1B — Shared Pattern Implementation
+NEXT_ACTIVITY_AUTHORIZATION = NOT_GRANTED / READY_FOR_AUTHORIZATION
+IMPLEMENTATION_AUTHORIZED = NO
+PROJECT_STATE = section 45
+ACTIVE_DOCUMENT_MAP = section 19
+AGENT_HANDOFF_GATE = PASS
+```
+
+O usuário aprovou explicitamente o DSCR nesta atividade. A aprovação satisfaz a
+reaprovação da mudança, mas não concede autorização de implementação para S1B.
+O estado pinned/read-only continua vigente até uma atividade de implementação
+separadamente autorizada. Quick Detail permanece protegido e mantém sua semântica
+funcional.

@@ -1,6 +1,8 @@
 # ARGOS UI V2 — Visual Contract
 
-- STATUS: P2 CLOSED / PASS, version 2.0.0 pinned
+- STATUS: P2 FOUNDATION APPROVED / PINNED at 2.0.0; current implemented Design System = 2.0.2
+- CURRENT_IMPLEMENTED_VERSION: 2.0.2
+- TARGET_VERSION: 2.1.0 / APPROVED via DSCR-UIV2-003; NOT IMPLEMENTED OR ACTIVE
 - DESIGN_STRATEGY: CODE_FIRST / STACK_NATIVE / PROTOTYPE_DRIVEN
 - VISUAL_DIRECTION: C — ARGOS HYBRID, aprovada; não reabrir nesta atividade
 - SCOPE: VISUAL_ONLY
@@ -61,6 +63,40 @@ Validação técnica isolada não marca aprovação humana. Para esta foundation
 
 Para mudanças futuras pós-freeze, usar registro curto com CHANGE, REASON, AFFECTED_COMPONENTS, AFFECTED_SCREENS, VERSION_IMPACT e USER_REAPPROVAL_REQUIRED. O pedido evita drift silencioso; não cria fluxo burocrático.
 
+O estado pinned/read-only permanece. Um DS_CHANGE_REQUEST aprovado registra o
+change set, mas não autoriza implementação; execução requer autorização própria.
+Mudança não adjudicada não pode ser implementada e um gap que bloqueie a tela não
+deve receber workaround local. Capacidade técnica para editar CSS não transfere
+authority.
+
 ## Versionamento
 
-Versão aprovada e pinada: 2.0.0, após aprovação humana explícita. Esta decisão fecha P2 e não inicia P3 nem libera integração de UI em templates produtivos.
+P2 aprovou e pinou a foundation 2.0.0. A versão implementada corrente foi
+promovida a 2.0.1 e, depois, 2.0.2 por DSCRs anteriores. No estado atual:
+
+```text
+CURRENT_IMPLEMENTED_VERSION = 2.0.2
+TARGET_VERSION = 2.1.0 / DSCR-UIV2-003 / APPROVED / NOT IMPLEMENTED / NOT ACTIVE
+TARGET_VERSION_IMPLEMENTED = NO
+```
+
+Regra SemVer do ARGOS Design System:
+
+- **PATCH — X.Y.Z+1:** correção backward-compatible do contrato existente, sem
+  expansão material de capability pública. Exemplos: selector bug, correção de
+  acessibilidade, regressão visual, valor de token ou comportamento existente.
+- **MINOR — X.Y+1.0:** nova capability backward-compatible ou extensão pública
+  compatível. Exemplos: primitive, shared pattern, variante ou token compatível.
+- **MAJOR — X+1.0.0:** mudança incompatível, como remover/renomear primitive,
+  variante ou token público, alterar semanticamente o contrato de forma
+  incompatível, quebrar markup/classes públicas ou exigir migração estrutural
+  incompatível.
+
+`VERSION_IMPACT` reflete a mudança do contrato público, não a quantidade de
+arquivos alterados. Muitos arquivos podem continuar PATCH; um primitive público
+novo pode exigir MINOR; uma alteração física pequena pode ser MAJOR se quebrar
+consumidores.
+
+A promoção para 2.1.0 aprovada em DSCR-UIV2-003 é MINOR e backward-compatible /
+aditiva. Até implementação autorizada, a versão corrente permanece 2.0.2 e 2.1.0
+não é ACTIVE.

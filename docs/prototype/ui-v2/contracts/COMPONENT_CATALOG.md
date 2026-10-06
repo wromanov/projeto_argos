@@ -1,6 +1,9 @@
 # ARGOS UI V2 — Component Catalog
 
-Versão aprovada: 2.0.0. O catálogo registra ownership para conter variantes oportunistas em P3.
+Baseline da foundation aprovada: 2.0.0. Design System implementado corrente:
+2.0.2. Target 2.1.0 foi aprovado em DSCR-UIV2-003, mas este catálogo não declara
+os componentes/variantes aprovados como implementados. O catálogo
+registra ownership para conter variantes oportunistas em P3.
 
 | COMPONENT | TYPE | OWNER | CASCADE_LAYER | VARIANTS | STATES | RESPONSIVE | KNOWN_CONSUMERS | STATUS |
 |---|---|---|---|---|---|---|---|---|

@@ -447,3 +447,27 @@ BC-AUTH-02 registra o commit, fast-forward e validação da primeira wave de
 implementação; a publicação permanece pendente neste snapshot. A próxima wave
 é CAM-INT-01, CAM-INT-07 e MON-OBS. Nenhum trabalho dessa wave foi iniciado
 ou autorizado por esse registro.
+
+## 19. P5-VR-DSCR-01 — canonicalização do Design System 2.1.0 (2026-10-05)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/prototype/ui-v2/contracts/DSCR-UIV2-003-SHARED-PATTERNS-2.1.0.md` | Change request pós-freeze aprovado; escopo, consumidores previstos, quatro mudanças e Stat Group deferred | CURRENT / APPROVED; implementation not authorized |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md` | Authority do Design System e regra SemVer; registra versão implementada e target aprovado | CURRENT / 2.0.2 IMPLEMENTED; 2.1.0 APPROVED TARGET / NOT ACTIVE |
+| `docs/prototype/ui-v2/contracts/COMPONENT_CATALOG.md` | Catálogo de ownership e componentes | CURRENT / 2.0.2 baseline; mudanças 2.1.0 ainda não implementadas |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 45 | Snapshot factual, gate do DSCR e próxima atividade | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.10 | Handoff da lane P5 para retomada | CURRENT / AGENT_HANDOFF_GATE PASS |
+
+```text
+CURRENT_DESIGN_SYSTEM_VERSION = 2.0.2
+TARGET_DESIGN_SYSTEM_VERSION = 2.1.0 / APPROVED / NOT IMPLEMENTED / NOT ACTIVE
+VERSION_IMPACT = MINOR / BACKWARD_COMPATIBLE / ADDITIVE
+P5-VR-S1A = FORMALLY RECONCILED / CLOSED
+NEXT_ACTIVITY = P5-VR-S1B — Shared Pattern Implementation
+NEXT_ACTIVITY_AUTHORIZATION = NOT_GRANTED / READY_FOR_AUTHORIZATION
+STAT_GROUP = DEFERRED
+```
+
+O mapa não altera authorities históricas nem autoriza a implementação. A
+foundation aprovada em 2.0.0 permanece referência histórica; a implementação
+corrente continua 2.0.2 até uma atividade futura autorizada.

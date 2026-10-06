@@ -2381,3 +2381,51 @@ checkpoint. `db.sqlite3` continua ignorado. A
 consulta remota não completou por falha de DNS; não inferir existência, ausência
 ou divergência da branch remota até uma consulta bem-sucedida. O resultado final
 do commit e da publicação deve ser reconciliado no relatório da atividade.
+
+## 45. P5-VR-DSCR-01 — change request e versionamento do Design System (2026-10-05)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = P5-VR-DSCR-01C — DSCR Approval / Continuity Reconciliation
+ACTIVITY_STATUS = DOCUMENTATION_ONLY / COMPLETE
+ACTIVITY_COMPLETION_PERCENT = 100%
+BASELINE_ROOT = C:\Users\walac\desenvolvimento\projeto_argos_ui_p5
+BASELINE_BRANCH = codex/ui-v2-p5-production
+BASELINE_HEAD = 043e9ff81e9d8629dd3e44762f198f07115bc11d
+BASELINE_UPSTREAM = origin/codex/ui-v2-p5-production
+BASELINE_WORKTREE = CLEAN / STAGING EMPTY
+CURRENT_IMPLEMENTED_DESIGN_SYSTEM_VERSION = 2.0.2
+TARGET_DESIGN_SYSTEM_VERSION = 2.1.0 / APPROVED / NOT IMPLEMENTED / NOT ACTIVE
+VERSION_IMPACT = MINOR / BACKWARD_COMPATIBLE / ADDITIVE
+VERSIONING_POLICY = CANONICALIZED / ARGOS_UI_V2_VISUAL_CONTRACT.md
+DSCR_ID = DSCR-UIV2-003-SHARED-PATTERNS-2.1.0
+DSCR_STATUS = APPROVED / USER_DECISION_RECORDED (2026-10-05)
+DSCR_CHANGE_SET = Data Pair; Data Group extension; Compact Empty State variant; Button Danger variant
+DSCR_USER_REAPPROVAL_REQUIRED = SATISFIED
+DSCR_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
+REUSE_EXISTING = Page Header; Section Heading; Status / Badge
+STAT_GROUP = DEFERRED / OUTSIDE_THIS_DSCR / no contract or API reserved
+DESIGN_SYSTEM_STATE = PINNED / READ_ONLY; DSCR APPROVED; implementation authorization still required
+S1A_STATUS = FORMALLY RECONCILED / CLOSED
+S1A_EVIDENCE_NOTE = findings summarized in prior P5 checkpoint and adjudications supplied in this activity; no standalone S1A assessment file located in this checkout
+NEXT_ACTIVITY = P5-VR-S1B — Shared Pattern Implementation
+NEXT_ACTIVITY_STATUS = READY_FOR_AUTHORIZATION / NOT AUTHORIZED
+UI_IMPLEMENTATION = NO
+PRODUCTION_FILES_CHANGED = NO
+PROJECT_STATE_UPDATE = PASS
+CONTINUITY_RECONCILIATION = PASS / approval, current DS, target and authorization boundary recorded
+ACTIVITY_COMPLETE = YES / documentary scope only
+```
+
+Files created/changed: DSCR-UIV2-003, ARGOS_UI_V2_VISUAL_CONTRACT.md,
+COMPONENT_CATALOG.md, this state snapshot, ACTIVE_DOCUMENT_MAP.md and
+AGENT_CONTINUITY.md. The current CSS and runtime remain at 2.0.2; the approved
+2.1.0 change set was not implemented. The findings available in the prior P5
+checkpoint identify Dashboard composition and Quick Detail label/value issues;
+the DSCR records Camera Detail and Dashboard as planned consumers and Quick
+Detail as a protected consideration. No standalone S1A assessment artifact was
+present in this checkout; the decisions in this checkpoint follow the explicit
+adjudication supplied by the user for this activity. `PROJECT_STATE_UPDATE =
+PASS` records documentary reconciliation and does not grant implementation
+authority. P5-VR-S1B is next and ready for separate authorization; this activity
+does not grant that authorization.
