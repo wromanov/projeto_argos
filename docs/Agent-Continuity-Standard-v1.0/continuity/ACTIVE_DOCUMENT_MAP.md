@@ -495,3 +495,33 @@ aprovação original do DSCR. A seção 19 deste mapa, o PROJECT_STATE §45 e o
 AGENT_CONTINUITY §20.10 registram corretamente o estado anterior à autorização
 e permanecem históricos. P3-B e o Quick Detail continuam protegidos; publicação
 e integração posterior não foram realizadas.
+
+## 21. P5-VR-S2A-R2 — contrato canônico da Camera Detail (2026-10-06)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_CAMERA_DETAIL_CONTRACT.md` | Única authority canônica para arquitetura visual, composição, preservação funcional e migração de classes legadas da Camera Detail | CURRENT / APPROVED / CANONICAL |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 47 | Baseline, reconciliação S1B, status S2A/S2B e gates | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.12 | Handoff vinculante para o executor S2B | CURRENT / AGENT_HANDOFF_GATE PASS |
+
+```text
+P5-VR-S1A = CLOSED
+P5-VR-S1B = IMPLEMENTED / PUBLISHED
+P5-VR-S1B_CHECKPOINT = eaeb25e19b0c6fb99e8bc78efd75ce368195d9d3
+P5-VR-S2A-R1 = ARCHITECTURE PROPOSAL COMPLETE / APPROVED WITH REQUIRED REFINEMENT
+P5-VR-S2A-R2 = PASS
+CAMERA_DETAIL_ARCHITECTURE_CONTRACT = APPROVED / CANONICAL
+LEGACY_PRESENTATIONAL_CLASS_MIGRATION_CONTRACT = REQUIRED
+DESIGN_SYSTEM_VERSION = 2.1.0
+CAMERA_DETAIL_IMPLEMENTATION = NOT_STARTED
+CAMERA_DETAIL_VISUAL_RUNTIME_VALIDATION = NOT_PERFORMED
+CAMERA_DETAIL_USER_VISUAL_APPROVAL = PENDING
+S2B_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED
+NEXT_REQUIRED_ACTIVITY = P5-VR-S2B — Camera Detail Implementation
+NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION
+```
+
+As seções 19–20 preservam os snapshots do DSCR e S1B; esta seção 21 registra a
+reconciliação posterior com a baseline S1B e a nova authority única da Camera
+Detail. A publicação do contrato não autoriza implementação, stage, commit ou
+push.

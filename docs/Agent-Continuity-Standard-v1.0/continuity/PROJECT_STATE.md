@@ -2496,3 +2496,53 @@ repositório; nenhum teste de Django foi necessário para as folhas CSS alterada
 O DS 2.1.0 permanece local e não publicado. A próxima etapa é revisão da
 implementação e checkpoint Git separado; a remediação de Camera Detail continua
 uma atividade posterior.
+
+## 47. P5-VR-S2A-R2 — canonicalização do contrato Camera Detail (2026-10-06)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = P5-VR-S2A-R2 — Canonicalization
+ACTIVITY_STATUS = PASS / DOCUMENTATION CANONICALIZATION COMPLETE
+ACTIVITY_COMPLETION_PERCENT = 100%
+BASELINE_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos_ui_p5
+BASELINE_BRANCH = codex/ui-v2-p5-production
+BASELINE_HEAD = eaeb25e19b0c6fb99e8bc78efd75ce368195d9d3
+BASELINE_UPSTREAM = origin/codex/ui-v2-p5-production
+BASELINE_DIVERGENCE = 0/0
+BASELINE_WORKTREE = CLEAN / STAGING EMPTY
+P5-VR-S1A = CLOSED
+P5-VR-S1B = IMPLEMENTED / PUBLISHED
+P5-VR-S1B_CHECKPOINT = eaeb25e19b0c6fb99e8bc78efd75ce368195d9d3
+DESIGN_SYSTEM_VERSION = 2.1.0
+P5-VR-S2A-R1 = ARCHITECTURE PROPOSAL COMPLETE / APPROVED WITH REQUIRED REFINEMENT
+P5-VR-S2A-R2 = PASS
+CANONICAL_CONTRACT = docs/prototype/ui-v2/contracts/ARGOS_UI_V2_CAMERA_DETAIL_CONTRACT.md
+CAMERA_DETAIL_ARCHITECTURE_CONTRACT = APPROVED / CANONICAL
+LEGACY_PRESENTATIONAL_CLASS_MIGRATION_CONTRACT = CANONICALIZED
+DS_GAP = NONE
+DOMAIN_DECISION_GAP = NONE
+ARCHITECTURAL_GAP = NONE
+CAMERA_DETAIL_IMPLEMENTATION = NOT_STARTED
+CAMERA_DETAIL_VISUAL_RUNTIME_VALIDATION = NOT_PERFORMED
+CAMERA_DETAIL_USER_VISUAL_APPROVAL = PENDING
+S2B_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED
+NEXT_REQUIRED_ACTIVITY = P5-VR-S2B — Camera Detail Implementation
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES / documentary canonicalization only
+GIT_DIFF_CHECK = PASS
+FILES_CHANGED = ARGOS_UI_V2_CAMERA_DETAIL_CONTRACT.md; PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md
+WORKTREE_FINAL = DIRTY_EXPECTED / four documentary files, unstaged
+STAGING = EMPTY
+SOURCE_CODE_CHANGED = NO
+DESIGN_SYSTEM_CHANGED = NO
+STAGE = NOT_PERFORMED
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+```
+
+A baseline confirmou `HEAD` igual ao checkpoint S1B e ao upstream configurado,
+com divergência 0/0 e worktree limpa; não foi feito fetch nesta atividade. O
+registro reconcilia o snapshot lógico com a baseline fornecida e verificada.
+O contrato mantém as 24 seções da proposta S2A-R1 e adiciona a seção normativa
+25 de migração de classes legadas. Quick Detail e P3-B continuam protegidos.
+S2B é a próxima atividade requerida, sem autorização de execução.

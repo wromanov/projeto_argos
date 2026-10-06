@@ -972,3 +972,32 @@ históricos. O relatório focal e as authorities atualizadas estão em
 `PROJECT_STATE.md`, seção 46; o CSS de produção, as páginas consumidoras, o
 Quick Detail e P3-B não foram alterados. Não declarar publicação nem aprovação
 visual humana.
+
+### 20.12. P5-VR-S2A-R2 — contrato canônico da Camera Detail (2026-10-06)
+
+```text
+CURRENT_ACTIVITY = P5-VR-S2A-R2 / PASS / DOCUMENTATION ONLY
+AGENT_HANDOFF_GATE = PASS
+PROJECT_STATE = section 47 / PROJECT_STATE_UPDATE PASS
+CANONICAL_CONTRACT = docs/prototype/ui-v2/contracts/ARGOS_UI_V2_CAMERA_DETAIL_CONTRACT.md
+USER_ADJUDICATION = APPROVED WITH REQUIRED REFINEMENT
+LEGACY_PRESENTATIONAL_CLASS_MIGRATION_CONTRACT = REQUIRED / CANONICAL
+DESIGN_SYSTEM_VERSION = 2.1.0
+P5-VR-S1A = CLOSED
+P5-VR-S1B = IMPLEMENTED / PUBLISHED
+P5-VR-S1B_CHECKPOINT = eaeb25e19b0c6fb99e8bc78efd75ce368195d9d3
+CAMERA_DETAIL_IMPLEMENTATION = NOT_STARTED
+CAMERA_DETAIL_VISUAL_RUNTIME_VALIDATION = NOT_PERFORMED
+CAMERA_DETAIL_USER_VISUAL_APPROVAL = PENDING
+S2B_IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED
+NEXT_REQUIRED_ACTIVITY = P5-VR-S2B — Camera Detail Implementation
+```
+
+A seção 20.11 e os estados S1B anteriores são snapshots históricos; a seção 20.12 registra a reconciliação vigente. O contrato S2A está fechado e não concede liberdade de redesign na S2B. O
+executor deve preservar os destinos de campos, históricos, ações, estados,
+acessibilidade, ownership, grids, responsividade e aceite registrados no
+contrato. A migração de classes legadas exige classificar cada classe relevante
+antes da remoção, preservar hooks funcionais e deixar CSS morto fora de escopo.
+Overrides compensatórios e escalada de especificidade são proibidos; qualquer
+gap inesperado exige `STOP_AND_ESCALATE`. Quick Detail e P3-B continuam
+protegidos. `NEXT_REQUIRED_ACTIVITY != EXECUTION_AUTHORIZATION`.
