@@ -2552,7 +2552,7 @@ S2B é a próxima atividade requerida, sem autorização de execução.
 ```text
 PROJECT = ARGOS
 ACTIVITY = P5-VR-DSG-01 — KPI Typography Capability
-ACTIVITY_STATUS = IMPLEMENTED / TECHNICALLY_VALIDATED LOCALLY / NOT PUBLISHED
+ACTIVITY_STATUS = PUBLISHED
 ACTIVITY_COMPLETION_PERCENT = 100%
 BASELINE_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos_ui_p5
 BASELINE_BRANCH = codex/ui-v2-p5-production
@@ -2670,7 +2670,7 @@ WEIGHT_MEDIUM_SOURCE = static/css/ui-v2/tokens.css --argos-weight-medium: 500
 COLOR_ACTION_SOURCE = static/css/ui-v2/tokens.css --argos-color-action: #2563a6
 FOCUS_SOURCE = static/css/ui-v2/base.css global :focus-visible rule / existing focus tokens
 DS_VERSION_BEFORE = 2.2.0
-DS_VERSION_AFTER = 2.3.0 / IMPLEMENTED LOCALLY / NOT PUBLISHED
+DS_VERSION_AFTER = 2.3.0 / PUBLISHED
 VERSION_IMPACT = MINOR
 DSCR = DSCR-UIV2-005-BACK-NAVIGATION-LINK-2.3.0
 FILES_CHANGED_BY_DSG02 = static/css/ui-v2/tokens.css; static/css/ui-v2/base.css; static/css/ui-v2/components.css; static/css/ui-v2/patterns.css; docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md; docs/prototype/ui-v2/contracts/COMPONENT_CATALOG.md; docs/prototype/ui-v2/contracts/DSCR-UIV2-005-BACK-NAVIGATION-LINK-2.3.0.md; docs/prototype/ui-v2/contracts/ARGOS_UI_V2_CAMERA_DETAIL_CONTRACT.md; docs/prototype/ui-v2/foundation/typography.html; docs/prototype/ui-v2/screens/harness.js; docs/prototype/ui-v2/screens/index.html; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md; docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md
@@ -2681,14 +2681,19 @@ CAMERA_DETAIL_IMPLEMENTATION_CHANGED_BY_THIS_ACTIVITY = NO
 LEGACY_DETAIL_BACK_LINK_CHANGED = NO
 TESTS = PASS / focused CSS assertions; harness JavaScript syntax check
 GIT_DIFF_CHECK = PASS
-DS_CHANGE_STATUS = READY_FOR_REVIEW
-S2B_STATUS = BLOCKED_PENDING_DS_PUBLICATION
-WORKTREE_FINAL = DIRTY_EXPECTED / five pre-existing S2B files plus DSG-02 files; unstaged
+DS_CHANGE_STATUS = PUBLISHED
+S2B_DS_BLOCKERS = NONE
+S2B_STATUS = READY_TO_RESUME_VALIDATION
+WORKTREE_FINAL = DIRTY_EXPECTED / five S2B files only; unstaged or untracked
 STAGING = EMPTY
-COMMIT = NOT_PERFORMED
-PUSH = NOT_PERFORMED
+COMMIT_SHA = 18e93267e2a2973acc9026bb1f9df45bfced83dc
+COMMIT_MESSAGE = feat(ui): publish Design System 2.3.0 back link
+PUSH = PASS / origin/codex/ui-v2-p5-production
+LOCAL_HEAD = 18e93267e2a2973acc9026bb1f9df45bfced83dc
+UPSTREAM_HEAD = 18e93267e2a2973acc9026bb1f9df45bfced83dc
+FINAL_DIVERGENCE = 0 / 0
 PROJECT_STATE_UPDATE = PASS
-ACTIVITY_COMPLETE = YES / local technical scope; publication remains separate
+ACTIVITY_COMPLETE = YES
 ```
 
 The new class consumes only existing tokens. Shared link hover and visible focus
@@ -2696,3 +2701,7 @@ remain owned by base styles. No other page migrated; the legacy selector and its
 three existing consumers were left untouched. The Camera Detail contract now
 binds its previously approved style to this capability without changing its
 visual decisions. The five S2B files match their activity-start hashes.
+
+The 14-path checkpoint was published as `18e93267e2a2973acc9026bb1f9df45bfced83dc`
+to `origin/codex/ui-v2-p5-production`; the upstream matches local HEAD and the
+only remaining worktree deltas are the five protected S2B paths.
