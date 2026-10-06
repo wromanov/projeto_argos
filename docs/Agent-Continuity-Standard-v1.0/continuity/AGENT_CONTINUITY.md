@@ -1070,3 +1070,21 @@ FINAL_S2B_DIRTY_PATHS = exactly the five protected paths in PROJECT_STATE.md sec
 DSCR-UIV2-005 adiciona a capability na camada `patterns` sem tokens novos,
 migração de outras páginas ou alterações às decisões visuais da Camera Detail.
 O registro completo e a lista de arquivos estão em `PROJECT_STATE.md`, seção 50.
+
+
+### 20.16. P5-VR-S2A-R3 / DSG-SURFACE-01 (2026-10-06)
+
+Estado vigente: PROJECT_STATE.md, seção 51. Baseline Git: 742a3894b2d06c1e28f4ff11740e6cdfd9abc61f,
+branch codex/ui-v2-p5-production, upstream local 0/0, staging EMPTY e cinco
+dirty paths S2B esperados. DS 2.4.0 implementado localmente, sem publicação.
+`.argos-section-surface` no layer patterns usa tokens existentes; quatro macro
+surfaces na Camera Detail, Hero e subgrupos sem surface. DSCR-UIV2-006 e seção 26
+do contrato Camera Detail registram a revisão autorizada S2A-R3.
+
+STATUS = TECHNICAL_READY_FOR_HUMAN_VISUAL_REVIEW. Validação: 156/164 testes
+passaram após retry ambiental de upload; oito falhas preexistentes reproduzidas
+no baseline, detalhes na seção 51. Django check e static checks PASS.
+Backend/JS, Quick Detail, P3-B, partials e composição CSS da página preservados.
+HUMAN_VISUAL_APPROVAL = PENDING; VISUAL_AUTOMATION = NOT_PERFORMED.
+PROJECT_STATE_UPDATE = PASS. Próxima ação: revisão visual humana.
+Staging vazio; nenhum commit/push. Publicação requer autorização própria.

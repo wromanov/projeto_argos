@@ -1,4 +1,13 @@
-<span class="badge badge--{{ monitoring.effective_state|lower }}"{% if monitoring.contexto %} title="{{ monitoring.contexto }}"{% endif %}>
-  {{ monitoring.label }}
-</span>
-{% if monitoring.contexto %}<small>{{ monitoring.contexto }}</small>{% endif %}
+{% if ui_v2_badges %}
+  <span class="argos-camera-detail__monitoring-summary">
+    <span class="argos-status-badge {% if monitoring.effective_state == 'ONLINE' %}argos-status-badge--success{% elif monitoring.effective_state == 'OFFLINE' %}argos-status-badge--danger{% else %}argos-status-badge--neutral{% endif %}"{% if monitoring.contexto %} title="{{ monitoring.contexto }}"{% endif %}>
+      {{ monitoring.label }}
+    </span>
+    {% if monitoring.contexto %}<small>{{ monitoring.contexto }}</small>{% endif %}
+  </span>
+{% else %}
+  <span class="badge badge--{{ monitoring.effective_state|lower }}"{% if monitoring.contexto %} title="{{ monitoring.contexto }}"{% endif %}>
+    {{ monitoring.label }}
+  </span>
+  {% if monitoring.contexto %}<small>{{ monitoring.contexto }}</small>{% endif %}
+{% endif %}

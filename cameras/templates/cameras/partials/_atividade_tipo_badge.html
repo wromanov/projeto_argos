@@ -1,4 +1,16 @@
-{% if atividade.tipo == "AVARIA" %}
+{% if ui_v2_badges %}
+  {% if atividade.tipo == "AVARIA" %}
+    <span class="argos-badge argos-badge--danger">{{ atividade.get_tipo_display }}</span>
+  {% elif atividade.tipo == "RETIRADA" or atividade.tipo == "ENVIO_CONSERTO" or atividade.tipo == "RETORNO_CONSERTO" %}
+    <span class="argos-badge argos-badge--warning">{{ atividade.get_tipo_display }}</span>
+  {% elif atividade.tipo == "SUBSTITUICAO" %}
+    <span class="argos-badge argos-badge--info">{{ atividade.get_tipo_display }}</span>
+  {% elif atividade.tipo == "OUTRO" %}
+    <span class="argos-badge argos-badge--neutral">{{ atividade.get_tipo_display }}</span>
+  {% else %}
+    <span class="argos-badge argos-badge--info">{{ atividade.get_tipo_display }}</span>
+  {% endif %}
+{% elif atividade.tipo == "AVARIA" %}
     <span class="activity-badge activity-badge--danger">{{ atividade.get_tipo_display }}</span>
 {% elif atividade.tipo == "RETIRADA" or atividade.tipo == "ENVIO_CONSERTO" or atividade.tipo == "RETORNO_CONSERTO" %}
     <span class="activity-badge activity-badge--warning">{{ atividade.get_tipo_display }}</span>

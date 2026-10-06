@@ -1,5 +1,10 @@
 # ARGOS UI V2 — Camera Detail Visual Architecture Contract
 
+> Revisão vigente S2A-R3 (2026-10-06), autorizada pelo pedido explícito do usuário:
+> a seção 26 prevalece sobre as decisões anteriores de ausência de surface/borda
+> nas quatro macro regiões. As demais restrições funcionais e de composição
+> continuam vigentes. Aprovação visual humana: PENDING.
+
 ```text
 DOCUMENT_TYPE = CANONICAL_SCREEN_ARCHITECTURE_CONTRACT
 PROJECT = ARGOS
@@ -3438,3 +3443,49 @@ BACK_NAVIGATION_STYLE = --argos-text-secondary / --argos-weight-medium / --argos
 The Camera Detail consumer migration remains within its separately authorized
 implementation activity. Position, copy, destination, semantics, spacing, and
 hierarchy remain as specified above.
+
+
+## 26. S2A-R3 — Macro grouping / DSG-SURFACE-01 (2026-10-06)
+
+Finding confirmado: `INSUFFICIENT_MACRO_VISUAL_GROUPING`. Este contrato revisa
+as decisões anteriores de surface NONE para as quatro macro regiões, inclusive
+as seções 10 e 11 e referências repetidas nos contratos de cada região.
+
+```text
+DESIGN_SYSTEM_VERSION = 2.4.0 / IMPLEMENTED_LOCALLY / NOT_PUBLISHED
+DSCR = DSCR-UIV2-006-SECTION-SURFACE-2.4.0
+PUBLIC_CAPABILITY = argos-section-surface / patterns layer
+DADOS_PRINCIPAIS_SURFACE = ONE
+OPERACAO_SURFACE = ONE
+GOVERNANCA_CADASTRAL_SURFACE = ONE
+HISTORICO_SURFACE = ONE / all history subgroups in the same macro surface
+HERO_SURFACE = NONE
+NESTED_SURFACES = NONE
+UPLOAD_SURFACE = NONE / optional supporting compact surface not adopted
+PAGE_SPECIFIC_CSS_ROLE = COMPOSITION_ONLY
+TOKENS_NEW = NONE
+SHADOW = NONE
+COLORED_HEADER = NONE
+ACCENT_BAR = NONE
+GRADIENT = NONE
+BREAKPOINTS = existing 900 / 680 / 600 only
+JS_CHANGED = NO
+BACKEND_CHANGED = NO
+HUMAN_VISUAL_APPROVAL = PENDING
+```
+
+A capability define somente fundo `--argos-color-surface`, borda
+`--argos-border-width` solid `--argos-color-border`, raio
+`--argos-radius-surface` e padding base `--argos-space-6`.
+Sem variante local, override compartilhado ou aumento de especificidade.
+
+Identificação, Localização, Rede, Gravação, Monitoramento técnico, Situação e
+completude, Indisponibilidades, Atividades, Substituições e Auditoria ficam sem
+surfaces próprias. Itens de histórico e estados vazios também ficam sem surface.
+A borda sutil externa das quatro macro surfaces é a única nova borda autorizada;
+dividers continuam NONE. Hero permanece sem surface.
+
+O pedido atual autoriza esta remediação e sua documentação, sem staging, commit
+ou push. Preservar conteúdo, ações, rotas, permissões, CSRF, forms, IDs, atributos
+de dados, upload, ordenação e limites de histórico, monitoramento, Quick Detail
+e P3-B. Resultado técnico máximo: TECHNICAL_READY_FOR_HUMAN_VISUAL_REVIEW.

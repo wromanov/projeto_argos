@@ -1,241 +1,236 @@
 {% extends "base.html" %}{% load static %}
 {% block titulo %}{{ camera.nome }} — ARGOS{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/inventario.css' %}"><link rel="stylesheet" href="{% static 'css/governanca.css' %}">{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/inventario.css' %}"><link rel="stylesheet" href="{% static 'css/governanca.css' %}"><link rel="stylesheet" href="{% static 'css/ui-v2/camera-detail.css' %}">{% endblock %}
 {% block conteudo %}
-<section
-  class="inventory-hero detail-heading camera-detail-hero"
-  aria-labelledby="camera-detail-title"
->
-  <a
-    class="detail-back-link camera-detail-hero__back"
-    href="{% url 'cameras:lista' %}"
-  >
-    ← Voltar ao inventário
-  </a>
+<div class="argos-camera-detail">
+  <div class="argos-camera-detail__intro">
+    <a class="argos-back-link argos-camera-detail__back" href="{% url 'cameras:lista' %}">← Voltar ao inventário</a>
+    <div class="argos-camera-detail__page-heading">
+      <header class="argos-page-header">
+        <div class="argos-page-header__copy">
+          <span class="argos-eyebrow">Inventário CFTV</span>
+          <h1 class="argos-page-title" id="camera-detail-page-title">Detalhe da câmera</h1>
+        </div>
+      </header>
 
-  <div class="camera-detail-hero__content">
-    <div class="camera-detail-hero__identity">
-      <span class="inventory-eyebrow">
-        Inventário CFTV
-      </span>
-
-      <h1 id="camera-detail-title">
-        {{ camera.nome }}
-      </h1>
-
-      <p class="camera-detail-hero__equipment">
-        {% if camera.fabricante %}
-          {{ camera.fabricante }}
-        {% endif %}
-
-        {% if camera.fabricante and camera.modelo %}
-          <span aria-hidden="true"> · </span>
-        {% endif %}
-
-        {% if camera.modelo %}
-          {{ camera.modelo }}
-        {% endif %}
-
-        {% if camera.tipo %}
-          {% if camera.fabricante or camera.modelo %}
-            <span aria-hidden="true"> · </span>
+      <section class="argos-camera-detail__hero" aria-labelledby="camera-detail-title">
+        <div class="argos-camera-detail__hero-main">
+          <h2 class="argos-camera-detail__name argos-text-kpi" id="camera-detail-title">{{ camera.nome }}</h2>
+          {% if perms.cameras.change_camera %}
+            <a class="argos-button argos-button--primary" href="{% url 'cameras:editar' camera.pk %}">Editar câmera</a>
           {% endif %}
-          {{ camera.get_tipo_display }}
-        {% endif %}
-
-        {% if not camera.fabricante and not camera.modelo and not camera.tipo %}
-          —
-        {% endif %}
-      </p>
-    </div>
-
-    <div class="detail-heading__actions camera-detail-hero__aside">
-      <div
-        class="camera-detail-hero__badges"
-        aria-label="Estados da câmera"
-      >
-        {% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring %}
-
-        <span
-          class="governance-badge governance-badge--{{ camera.situacao_operacional|lower }}"
-        >
-          {{ camera.get_situacao_operacional_display }}
-        </span>
-
-        {% if camera.cadastro_completo %}
-          <span class="completeness completeness--ok">
-            Cadastro completo
-          </span>
-        {% else %}
-          <span class="completeness completeness--warning">
-            Cadastro incompleto
-          </span>
-        {% endif %}
-      </div>
-
-      {% if perms.cameras.change_camera %}
-        <a
-          class="button button--secondary"
-          href="{% url 'cameras:editar' camera.pk %}"
-        >
-          Editar câmera
-        </a>
-      {% endif %}
-    </div>
-  </div>
-
-  <dl
-    class="camera-detail-summary"
-    aria-label="Resumo da câmera"
-  >
-    <div class="camera-detail-summary__item">
-      <dt>Patrimônio</dt>
-      <dd class="technical-value">
-        {{ camera.patrimonio|default:"—" }}
-      </dd>
-    </div>
-
-    <div class="camera-detail-summary__item">
-      <dt>Endereço IP</dt>
-      <dd class="technical-value">
-        {{ camera.ip|default:"—" }}
-      </dd>
-    </div>
-
-    <div class="camera-detail-summary__item">
-      <dt>Localização</dt>
-      <dd>
-        {% if camera.terminal or camera.ambiente %}
-          {% if camera.terminal %}
-            {{ camera.terminal }}
+        </div>
+        <div class="argos-camera-detail__statuses" aria-label="Estados da câmera">
+          {% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring ui_v2_badges=True %}
+          <span class="argos-status-badge {% if camera.situacao_operacional == 'PRODUCAO' %}argos-status-badge--success{% else %}argos-status-badge--neutral{% endif %}">{{ camera.get_situacao_operacional_display }}</span>
+          {% if camera.cadastro_completo %}
+            <span class="argos-status-badge argos-status-badge--success">Cadastro completo</span>
+          {% else %}
+            <span class="argos-status-badge argos-status-badge--warning">Cadastro incompleto</span>
           {% endif %}
-
-          {% if camera.terminal and camera.ambiente %}
-            <span aria-hidden="true"> · </span>
-          {% endif %}
-
-          {% if camera.ambiente %}
-            {{ camera.ambiente }}
-          {% endif %}
-        {% else %}
-          —
-        {% endif %}
-      </dd>
-    </div>
-  </dl>
-</section>
-
-<div class="detail-layout">
-{% if perms.cameras.add_cameraimagerecord %}
-<section class="inventory-panel detail-card detail-card--full">
-  <div class="inventory-panel__header"><h2>Enviar imagem manualmente</h2></div>
-  <p>A imagem será registrada como upload manual, sem data de captura da câmera.</p>
-  <form action="{% url 'cameras:upload_imagem' camera.pk %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <label for="imagem-camera">Imagem</label>
-    <input id="imagem-camera" name="imagem" type="file" accept="image/jpeg,image/png,image/webp" required>
-    <button class="button button--primary" type="submit">Enviar imagem</button>
-  </form>
-</section>
-{% endif %}
-<section class="inventory-panel detail-card detail-card--identity"><div class="inventory-panel__header"><h2>Identificação</h2></div><dl class="detail-grid"><dt>Patrimônio</dt><dd class="technical-value{% if not camera.patrimonio %} detail-value--empty{% endif %}">{{ camera.patrimonio|default:"—" }}</dd><dt>Nome</dt><dd class="detail-value--strong">{{ camera.nome }}</dd><dt>Fabricante</dt><dd class="detail-value--strong">{{ camera.fabricante }}</dd><dt>Modelo</dt><dd class="detail-value--strong">{{ camera.modelo }}</dd><dt>Serial</dt><dd class="technical-value{% if not camera.serial %} detail-value--empty{% endif %}">{{ camera.serial|default:"—" }}</dd><dt>MAC</dt><dd class="technical-value{% if not camera.mac %} detail-value--empty{% endif %}">{{ camera.mac|default:"—" }}</dd><dt>Tipo</dt><dd class="detail-value--strong{% if not camera.tipo %} detail-value--empty{% endif %}">{{ camera.get_tipo_display|default:"—" }}</dd></dl></section>
-<section class="inventory-panel detail-card detail-card--location"><div class="inventory-panel__header"><h2>Localização</h2></div><dl class="detail-grid"><dt>Terminal</dt><dd {% if not camera.terminal %}class="detail-value--empty"{% endif %}>{{ camera.terminal|default:"—" }}</dd><dt>Pavimento</dt><dd {% if not camera.pavimento %}class="detail-value--empty"{% endif %}>{{ camera.pavimento|default:"—" }}</dd><dt>Setor</dt><dd {% if not camera.setor %}class="detail-value--empty"{% endif %}>{{ camera.setor|default:"—" }}</dd><dt>Ambiente</dt><dd {% if not camera.ambiente %}class="detail-value--empty"{% endif %}>{{ camera.ambiente|default:"—" }}</dd><dt>Descrição detalhada</dt><dd {% if not camera.descricao_detalhada %}class="detail-value--empty"{% endif %}>{{ camera.descricao_detalhada|default:"—" }}</dd><dt>Ponto de referência</dt><dd {% if not camera.ponto_referencia %}class="detail-value--empty"{% endif %}>{{ camera.ponto_referencia|default:"—" }}</dd></dl></section>
-<section class="inventory-panel detail-card detail-card--network"><div class="inventory-panel__header"><h2>Rede</h2></div><dl class="detail-grid"><dt>IP</dt><dd class="technical-value{% if not camera.ip %} detail-value--empty{% endif %}">{{ camera.ip|default:"—" }}</dd><dt>Máscara</dt><dd class="technical-value{% if not camera.mascara_subrede %} detail-value--empty{% endif %}">{{ camera.mascara_subrede|default:"—" }}</dd><dt>Gateway</dt><dd class="technical-value{% if not camera.gateway %} detail-value--empty{% endif %}">{{ camera.gateway|default:"—" }}</dd><dt>VLAN</dt><dd class="technical-value{% if not camera.vlan %} detail-value--empty{% endif %}">{{ camera.vlan|default:"—" }}</dd></dl></section>
-<section class="inventory-panel detail-card detail-card--recording"><div class="inventory-panel__header"><h2>Gravação</h2></div><dl class="detail-grid"><dt>Farm</dt><dd class="technical-value{% if not camera.farm %} detail-value--empty{% endif %}">{{ camera.farm|default:"—" }}</dd><dt>Retenção esperada</dt><dd class="technical-value{% if not camera.retencao_esperada_dias %} detail-value--empty{% endif %}">{{ camera.retencao_esperada_dias|default:"—" }}</dd><dt>Codec</dt><dd class="technical-value{% if not camera.codec %} detail-value--empty{% endif %}">{{ camera.codec|default:"—" }}</dd></dl></section>
-<section class="inventory-panel detail-card detail-card--monitoring detail-card--status-{{ monitoring.effective_state|lower }}"><div class="inventory-panel__header"><h2>Monitoramento técnico</h2></div><dl class="detail-grid"><dt>Estado atual</dt><dd>{% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring %}</dd><dt>Último estado confirmado</dt><dd>{{ monitoring.stable_label }}</dd><dt>Última evidência útil</dt><dd>{{ monitoring.evidence_at|date:"d/m/Y H:i"|default:"—" }}</dd><dt>Estado desde</dt><dd>{{ monitoring.state_since|date:"d/m/Y H:i"|default:"—" }}</dd>{% if monitoring.open_outage %}<dt>Indisponibilidade aberta</dt><dd>Desde {{ monitoring.open_outage.opened_at|date:"d/m/Y H:i" }} · {{ monitoring.outage_duration }}</dd>{% endif %}</dl></section>
-<section class="inventory-panel detail-card detail-card--full detail-history-card"><div class="inventory-panel__header"><h2>Histórico técnico de indisponibilidades</h2><a class="button button--secondary" href="{% url 'cameras:historico_monitoramento' camera.pk %}">Ver histórico completo</a></div><div class="activity-list detail-history-list">{% for item in outage_preview %}<article class="activity-card activity-card--preview"><strong>{{ item.opened_at|date:"d/m/Y H:i" }}{% if item.closed_at %} → {{ item.closed_at|date:"d/m/Y H:i" }}{% else %} · Em aberto{% endif %}</strong><span>Duração: {{ item.duration }} · {{ item.open_origin }}{% if item.close_reason %} · {{ item.close_reason }}{% endif %}</span></article>{% empty %}<p class="detail-empty-state">Nenhuma indisponibilidade técnica registrada.</p>{% endfor %}</div></section>
-<section class="inventory-panel detail-card detail-card--registration{% if not camera.cadastro_completo %} detail-card--warning{% endif %}"><div class="inventory-panel__header"><h2>Governança cadastral</h2></div><dl class="detail-grid"><dt>Criado por</dt><dd>{{ camera.criado_por|default:"—" }}</dd><dt>Criado em</dt><dd>{{ camera.criado_em|date:"d/m/Y H:i" }}</dd><dt>Atualizado por</dt><dd>{{ camera.atualizado_por|default:"—" }}</dd><dt>Atualizado em</dt><dd>{{ camera.atualizado_em|date:"d/m/Y H:i" }}</dd><dt>Origem</dt><dd>{{ camera.get_origem_cadastro_display }}</dd><dt>Observações</dt><dd>{{ camera.observacoes|default:"—" }}</dd></dl></section>
-<section class="inventory-panel detail-card detail-card--full governance-section camera-governance-panel{% if not camera.cadastro_completo %} camera-governance-panel--warning{% endif %}"><div class="inventory-panel__header"><div><span class="inventory-eyebrow">Governança operacional</span><h2>Situação e completude</h2></div><div class="governance-actions camera-governance-actions" aria-label="Ações de governança">{% if camera.situacao_operacional == "PRODUCAO" %}{% if perms.cameras.alterar_situacao_camera %}<a class="button button--secondary" href="{% url 'cameras:alterar_situacao' camera.pk %}">Mover para Estoque</a>{% endif %}{% if perms.cameras.desativar_camera %}<a class="button button--danger" href="{% url 'cameras:desativar' camera.pk %}">Desativar</a>{% endif %}{% if perms.cameras.registrar_substituicao_camera %}<a class="button button--primary" href="{% url 'cameras:substituir' camera.pk %}">Substituir</a>{% endif %}{% elif camera.situacao_operacional == "ESTOQUE" %}{% if perms.cameras.alterar_situacao_camera %}<a class="button button--primary" href="{% url 'cameras:alterar_situacao' camera.pk %}">Colocar em Produção</a>{% endif %}{% if perms.cameras.desativar_camera %}<a class="button button--danger" href="{% url 'cameras:desativar' camera.pk %}">Desativar</a>{% endif %}{% else %}{% if perms.cameras.reativar_camera %}<a class="button button--success" href="{% url 'cameras:reativar' camera.pk %}">Reativar</a>{% endif %}{% endif %}</div></div><dl class="detail-grid"><dt>Situação</dt><dd><span class="governance-badge governance-badge--{{ camera.situacao_operacional|lower }}">{{ camera.get_situacao_operacional_display }}</span></dd><dt>Completude</dt><dd>{% if camera.cadastro_completo %}<span class="completeness completeness--ok">Cadastro completo</span>{% else %}<span class="completeness completeness--warning">Cadastro incompleto</span>{% endif %}</dd>{% if not camera.cadastro_completo %}<dt class="governance-missing-fields__label">Campos faltantes</dt><dd class="governance-missing-fields">{{ camera.rotulos_campos_incompletos|join:", " }}</dd>{% endif %}<dt>Motivo da última desativação</dt><dd>{{ camera.motivo_desativacao|default:"—" }}</dd><dt>Desativada em</dt><dd>{{ camera.desativada_em|date:"d/m/Y H:i"|default:"—" }}</dd><dt>Desativada por</dt><dd>{{ camera.desativada_por|default:"—" }}</dd></dl></section>
-<section class="inventory-panel detail-card detail-card--full detail-history-card detail-history-card--activities">
-  <div class="inventory-panel__header">
-    <h2>Histórico de atividades</h2>
-    <div class="detail-history-actions" aria-label="Ações do histórico">
-      <a class="button button--secondary" href="{% url 'cameras:lista_atividades' camera.pk %}">
-        Ver histórico completo
-      </a>
-      {% if perms.cameras.add_atividadecamera %}
-        <a class="button button--primary" href="{% url 'cameras:criar_atividade' camera.pk %}">
-          Registrar atividade
-        </a>
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="activity-list detail-history-list">
-    {% for atividade in atividades %}
-      <article class="activity-card activity-card--preview">
-        <header class="activity-card__preview-header">
-          <div class="activity-card__heading">
-            {% include "cameras/partials/_atividade_tipo_badge.html" %}
-            <h3 class="activity-card__title">{{ atividade.titulo }}</h3>
+        </div>
+        <dl class="argos-camera-detail__hero-summary">
+          <div class="argos-data-pair">
+            <dt>Patrimônio</dt>
+            <dd><code>{{ camera.patrimonio|default:"—" }}</code></dd>
           </div>
-
-          {% if perms.cameras.change_atividadecamera %}
-            <a class="activity-card__edit-link" href="{% url 'cameras:editar_atividade' atividade.pk %}">
-              Editar
-            </a>
-          {% endif %}
-        </header>
-
-        <p class="activity-card__description">
-          {{ atividade.descricao|truncatechars:180 }}
-        </p>
-
-        <dl class="activity-card__preview-meta" aria-label="Resumo da atividade">
-          <div>
-            <dt>Ocorrida em</dt>
-            <dd>{{ atividade.ocorrida_em|date:"d/m/Y H:i" }}</dd>
-          </div>
-          <div>
-            <dt>Responsável</dt>
-            <dd>{{ atividade.responsavel|default:"—" }}</dd>
+          <div class="argos-data-pair">
+            <dt>Localização</dt>
+            <dd>{% if camera.terminal or camera.ambiente %}{% if camera.terminal %}{{ camera.terminal }}{% endif %}{% if camera.terminal and camera.ambiente %} · {% endif %}{% if camera.ambiente %}{{ camera.ambiente }}{% endif %}{% else %}—{% endif %}</dd>
           </div>
         </dl>
-      </article>
-    {% empty %}
-      <p class="detail-empty-state">Nenhuma atividade registrada para esta câmera.</p>
-    {% endfor %}
-  </div>
-</section>
-{% if perms.cameras.consultar_substituicoescamera %}
-<section class="inventory-panel detail-card detail-card--full detail-history-card detail-history-card--replacements">
-  <div class="inventory-panel__header">
-    <div>
-      <h2>Histórico de substituições</h2>
+      </section>
     </div>
-
-    <a
-      class="button button--secondary"
-      href="{% url 'cameras:lista_substituicoes_camera' camera.pk %}"
-    >
-      Ver histórico completo
-    </a>
   </div>
 
-  <div class="replacement-list detail-history-list">
-    {% for item in substituicoes %}
+  <section class="argos-section-surface argos-camera-detail__region" aria-labelledby="camera-detail-main-heading">
+    <h2 class="argos-camera-detail__section-title" id="camera-detail-main-heading">Dados principais</h2>
+    <div class="argos-camera-detail__main-grid">
+      <div class="argos-camera-detail__data-column">
+        <section aria-labelledby="camera-detail-identification-heading">
+          <header class="argos-section-header"><h3 id="camera-detail-identification-heading">Identificação</h3></header>
+          <dl class="argos-data-group argos-camera-detail__pairs">
+            <div class="argos-data-pair"><dt>Fabricante</dt><dd>{{ camera.fabricante|default:"—" }}</dd></div>
+            <div class="argos-data-pair"><dt>Modelo</dt><dd>{{ camera.modelo|default:"—" }}</dd></div>
+            <div class="argos-data-pair"><dt>Serial</dt><dd><code>{{ camera.serial|default:"—" }}</code></dd></div>
+            <div class="argos-data-pair"><dt>MAC</dt><dd><code>{{ camera.mac|default:"—" }}</code></dd></div>
+            <div class="argos-data-pair"><dt>Tipo</dt><dd>{{ camera.get_tipo_display|default:"—" }}</dd></div>
+          </dl>
+        </section>
+        <section aria-labelledby="camera-detail-location-heading">
+          <header class="argos-section-header"><h3 id="camera-detail-location-heading">Localização</h3></header>
+          <dl class="argos-data-group argos-camera-detail__pairs">
+            <div class="argos-data-pair"><dt>Terminal</dt><dd>{{ camera.terminal|default:"—" }}</dd></div>
+            <div class="argos-data-pair"><dt>Pavimento</dt><dd>{{ camera.pavimento|default:"—" }}</dd></div>
+            <div class="argos-data-pair"><dt>Setor</dt><dd>{{ camera.setor|default:"—" }}</dd></div>
+            <div class="argos-data-pair"><dt>Ambiente</dt><dd>{{ camera.ambiente|default:"—" }}</dd></div>
+            <div class="argos-data-pair argos-camera-detail__pair--full"><dt>Descrição detalhada</dt><dd>{{ camera.descricao_detalhada|default:"—" }}</dd></div>
+            <div class="argos-data-pair argos-camera-detail__pair--full"><dt>Ponto de referência</dt><dd>{{ camera.ponto_referencia|default:"—" }}</dd></div>
+          </dl>
+        </section>
+      </div>
+      <div class="argos-camera-detail__data-column">
+        <section aria-labelledby="camera-detail-network-heading">
+          <header class="argos-section-header"><h3 id="camera-detail-network-heading">Rede</h3></header>
+          <dl class="argos-data-group argos-camera-detail__pairs">
+            <div class="argos-data-pair"><dt>IP</dt><dd><code>{{ camera.ip|default:"—" }}</code></dd></div>
+            <div class="argos-data-pair"><dt>Máscara</dt><dd><code>{{ camera.mascara_subrede|default:"—" }}</code></dd></div>
+            <div class="argos-data-pair"><dt>Gateway</dt><dd><code>{{ camera.gateway|default:"—" }}</code></dd></div>
+            <div class="argos-data-pair"><dt>VLAN</dt><dd><code>{{ camera.vlan|default:"—" }}</code></dd></div>
+          </dl>
+        </section>
+        <section aria-labelledby="camera-detail-recording-heading">
+          <header class="argos-section-header"><h3 id="camera-detail-recording-heading">Gravação</h3></header>
+          <dl class="argos-data-group argos-camera-detail__pairs">
+            <div class="argos-data-pair"><dt>Farm</dt><dd><code>{{ camera.farm|default:"—" }}</code></dd></div>
+            <div class="argos-data-pair"><dt>Retenção esperada</dt><dd><code>{{ camera.retencao_esperada_dias|default:"—" }}</code></dd></div>
+            <div class="argos-data-pair"><dt>Codec</dt><dd><code>{{ camera.codec|default:"—" }}</code></dd></div>
+          </dl>
+        </section>
+      </div>
+    </div>
+  </section>
 
-      {% if camera.pk == item.camera_anterior_id %}
-        <a href="{% url 'cameras:detalhe_substituicao' item.pk %}">
-          {{ item.ocorrida_em|date:"d/m/Y H:i" }}
-          &middot; Foi substituída
-          &middot; {{ item.nome_operacional }} &rarr; {{ item.nome_anterior_substituta }}
-        </a>
-      {% else %}
-        <a href="{% url 'cameras:detalhe_substituicao' item.pk %}">
-          {{ item.ocorrida_em|date:"d/m/Y H:i" }}
-          &middot; Entrou como substituta
-          &middot; {{ item.nome_operacional }} &rarr; {{ item.nome_anterior_substituta }}
-        </a>
+  <section class="argos-section-surface argos-camera-detail__region" aria-labelledby="camera-detail-operation-heading">
+    <h2 class="argos-camera-detail__section-title" id="camera-detail-operation-heading">Operação</h2>
+    <div class="argos-camera-detail__operation-grid">
+      <section aria-labelledby="camera-detail-monitoring-heading">
+        <header class="argos-section-header"><h3 id="camera-detail-monitoring-heading">Monitoramento técnico</h3></header>
+        <dl class="argos-data-group argos-camera-detail__pairs">
+          <div class="argos-data-pair argos-camera-detail__pair--full"><dt>Estado atual</dt><dd>{% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring ui_v2_badges=True %}</dd></div>
+          <div class="argos-data-pair"><dt>Último estado confirmado</dt><dd>{{ monitoring.stable_label|default:"—" }}</dd></div>
+          <div class="argos-data-pair"><dt>Última evidência útil</dt><dd>{{ monitoring.evidence_at|date:"d/m/Y H:i"|default:"—" }}</dd></div>
+          <div class="argos-data-pair"><dt>Estado desde</dt><dd>{{ monitoring.state_since|date:"d/m/Y H:i"|default:"—" }}</dd></div>
+          {% if monitoring.open_outage %}<div class="argos-data-pair argos-camera-detail__pair--full"><dt>Indisponibilidade aberta</dt><dd>Desde {{ monitoring.open_outage.opened_at|date:"d/m/Y H:i" }} · {{ monitoring.outage_duration }}</dd></div>{% endif %}
+        </dl>
+      </section>
+
+      <section aria-labelledby="camera-detail-situation-heading">
+        <header class="argos-section-header"><h3 id="camera-detail-situation-heading">Situação e completude</h3></header>
+        <dl class="argos-camera-detail__pairs">
+          <div class="argos-data-pair"><dt>Situação</dt><dd><span class="argos-status-badge {% if camera.situacao_operacional == 'PRODUCAO' %}argos-status-badge--success{% else %}argos-status-badge--neutral{% endif %}">{{ camera.get_situacao_operacional_display }}</span></dd></div>
+          <div class="argos-data-pair"><dt>Completude</dt><dd>{% if camera.cadastro_completo %}<span class="argos-status-badge argos-status-badge--success">Cadastro completo</span>{% else %}<span class="argos-status-badge argos-status-badge--warning">Cadastro incompleto</span>{% endif %}</dd></div>
+          {% if not camera.cadastro_completo %}<div class="argos-data-pair argos-camera-detail__pair--full"><dt>Campos faltantes</dt><dd>{{ camera.rotulos_campos_incompletos|join:", " }}</dd></div>{% endif %}
+          <div class="argos-data-pair"><dt>Motivo da última desativação</dt><dd>{{ camera.motivo_desativacao|default:"—" }}</dd></div>
+          <div class="argos-data-pair"><dt>Desativada em</dt><dd>{{ camera.desativada_em|date:"d/m/Y H:i"|default:"—" }}</dd></div>
+          <div class="argos-data-pair"><dt>Desativada por</dt><dd>{{ camera.desativada_por|default:"—" }}</dd></div>
+        </dl>
+        <div class="argos-camera-detail__actions" aria-label="Ações de situação">
+          {% if camera.situacao_operacional == "PRODUCAO" %}
+            {% if perms.cameras.registrar_substituicao_camera %}<a class="argos-button argos-button--primary" href="{% url 'cameras:substituir' camera.pk %}">Substituir</a>{% endif %}
+            {% if perms.cameras.alterar_situacao_camera %}<a class="argos-button argos-button--secondary" href="{% url 'cameras:alterar_situacao' camera.pk %}">Mover para Estoque</a>{% endif %}
+            {% if perms.cameras.desativar_camera %}<a class="argos-button argos-button--danger" href="{% url 'cameras:desativar' camera.pk %}">Desativar</a>{% endif %}
+          {% elif camera.situacao_operacional == "ESTOQUE" %}
+            {% if perms.cameras.alterar_situacao_camera %}<a class="argos-button argos-button--primary" href="{% url 'cameras:alterar_situacao' camera.pk %}">Colocar em Produção</a>{% endif %}
+            {% if perms.cameras.desativar_camera %}<a class="argos-button argos-button--danger" href="{% url 'cameras:desativar' camera.pk %}">Desativar</a>{% endif %}
+          {% else %}
+            {% if perms.cameras.reativar_camera %}<a class="argos-button argos-button--primary" href="{% url 'cameras:reativar' camera.pk %}">Reativar</a>{% endif %}
+          {% endif %}
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="argos-section-surface argos-camera-detail__region argos-camera-detail__governance" aria-labelledby="camera-detail-governance-heading">
+    <header class="argos-section-header"><h2 id="camera-detail-governance-heading">Governança cadastral</h2></header>
+    <dl class="argos-data-group argos-camera-detail__pairs">
+      <div class="argos-data-pair"><dt>Criado por</dt><dd>{{ camera.criado_por|default:"—" }}</dd></div>
+      <div class="argos-data-pair"><dt>Criado em</dt><dd>{{ camera.criado_em|date:"d/m/Y H:i"|default:"—" }}</dd></div>
+      <div class="argos-data-pair"><dt>Atualizado por</dt><dd>{{ camera.atualizado_por|default:"—" }}</dd></div>
+      <div class="argos-data-pair"><dt>Atualizado em</dt><dd>{{ camera.atualizado_em|date:"d/m/Y H:i"|default:"—" }}</dd></div>
+      <div class="argos-data-pair"><dt>Origem</dt><dd>{{ camera.get_origem_cadastro_display|default:"—" }}</dd></div>
+      <div class="argos-data-pair argos-camera-detail__pair--full"><dt>Observações cadastrais</dt><dd>{{ camera.observacoes|default:"—" }}</dd></div>
+    </dl>
+  </section>
+
+  <section class="argos-section-surface argos-camera-detail__region" aria-labelledby="camera-detail-history-heading">
+    <h2 class="argos-camera-detail__section-title" id="camera-detail-history-heading">Histórico</h2>
+    <div class="argos-camera-detail__history">
+      <section aria-labelledby="camera-detail-outages-heading">
+        <header class="argos-section-header">
+          <h3 id="camera-detail-outages-heading">Histórico técnico de indisponibilidades</h3>
+          <a class="argos-button argos-button--secondary argos-button--compact" aria-labelledby="camera-detail-outages-heading camera-detail-outages-all" id="camera-detail-outages-all" href="{% url 'cameras:historico_monitoramento' camera.pk %}">Ver histórico completo</a>
+        </header>
+        <div class="argos-camera-detail__history-list">
+          {% for item in outage_preview %}
+            <article class="argos-camera-detail__history-item">
+              <strong>{{ item.opened_at|date:"d/m/Y H:i" }}{% if item.closed_at %} → {{ item.closed_at|date:"d/m/Y H:i" }}{% else %} · Em aberto{% endif %}</strong>
+              <p>Duração: {{ item.duration }} · {{ item.open_origin }}{% if item.close_reason %} · {{ item.close_reason }}{% endif %}</p>
+            </article>
+          {% empty %}<p class="argos-state__copy argos-state--compact">Nenhuma indisponibilidade técnica registrada.</p>{% endfor %}
+        </div>
+      </section>
+
+      <section aria-labelledby="camera-detail-activities-heading">
+        <header class="argos-section-header">
+          <h3 id="camera-detail-activities-heading">Histórico de atividades</h3>
+          <div class="argos-camera-detail__history-actions" aria-label="Ações do histórico">
+            <a class="argos-button argos-button--secondary argos-button--compact" aria-labelledby="camera-detail-activities-heading camera-detail-activities-all" id="camera-detail-activities-all" href="{% url 'cameras:lista_atividades' camera.pk %}">Ver histórico completo</a>
+            {% if perms.cameras.add_atividadecamera %}<a class="argos-button argos-button--primary argos-button--compact" href="{% url 'cameras:criar_atividade' camera.pk %}">Registrar atividade</a>{% endif %}
+          </div>
+        </header>
+        <div class="argos-camera-detail__history-list">
+          {% for atividade in atividades %}
+            <article class="argos-camera-detail__history-item">
+              <header class="argos-camera-detail__activity-heading">
+                <div class="argos-camera-detail__activity-title">
+                  {% include "cameras/partials/_atividade_tipo_badge.html" with ui_v2_badges=True %}
+                  <strong>{{ atividade.titulo }}</strong>
+                </div>
+                {% if perms.cameras.change_atividadecamera %}<a class="argos-camera-detail__text-link" href="{% url 'cameras:editar_atividade' atividade.pk %}">Editar</a>{% endif %}
+              </header>
+              <p>{{ atividade.descricao|truncatechars:180 }}</p>
+              <dl class="argos-camera-detail__activity-meta">
+                <div class="argos-data-pair"><dt>Ocorrida em</dt><dd>{{ atividade.ocorrida_em|date:"d/m/Y H:i" }}</dd></div>
+                <div class="argos-data-pair"><dt>Responsável</dt><dd>{{ atividade.responsavel|default:"—" }}</dd></div>
+              </dl>
+            </article>
+          {% empty %}<p class="argos-state__copy argos-state--compact">Nenhuma atividade registrada para esta câmera.</p>{% endfor %}
+        </div>
+      </section>
+
+      {% if perms.cameras.consultar_substituicoescamera %}
+        <section aria-labelledby="camera-detail-replacements-heading">
+          <header class="argos-section-header">
+            <h3 id="camera-detail-replacements-heading">Histórico de substituições</h3>
+            <a class="argos-button argos-button--secondary argos-button--compact" aria-labelledby="camera-detail-replacements-heading camera-detail-replacements-all" id="camera-detail-replacements-all" href="{% url 'cameras:lista_substituicoes_camera' camera.pk %}">Ver histórico completo</a>
+          </header>
+          <div class="argos-camera-detail__history-list">
+            {% for item in substituicoes %}
+              <a class="argos-camera-detail__text-link" href="{% url 'cameras:detalhe_substituicao' item.pk %}">{% if camera.pk == item.camera_anterior_id %}{{ item.ocorrida_em|date:"d/m/Y H:i" }} · Foi substituída · {{ item.nome_operacional }} → {{ item.nome_anterior_substituta }}{% else %}{{ item.ocorrida_em|date:"d/m/Y H:i" }} · Entrou como substituta · {{ item.nome_operacional }} → {{ item.nome_anterior_substituta }}{% endif %}</a>
+            {% empty %}<p class="argos-state__copy argos-state--compact">Nenhuma substituição registrada para esta câmera.</p>{% endfor %}
+          </div>
+        </section>
       {% endif %}
 
-    {% empty %}
-      <p class="detail-empty-state">
-        Nenhuma substituição registrada para esta câmera.
-      </p>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
-{% if perms.cameras.consultar_eventos %}<section class="inventory-panel detail-card detail-card--full detail-history-card detail-history-card--audit"><div class="inventory-panel__header"><h2>Eventos de auditoria</h2><a class="button button--secondary" href="{% url 'cameras:eventos_camera' camera.pk %}">Ver todos os eventos</a></div><div class="activity-list detail-history-list">{% for evento in eventos_auditoria %}<a href="{% url 'eventos:detalhe' evento.pk %}">{{ evento.codigo }} · {{ evento.resumo }}</a>{% empty %}<p class="detail-empty-state">Nenhum evento registrado.</p>{% endfor %}</div></section>{% endif %}
-</div>{% endblock %}
+      {% if perms.cameras.consultar_eventos %}
+        <section aria-labelledby="camera-detail-audit-heading">
+          <header class="argos-section-header">
+            <h3 id="camera-detail-audit-heading">Eventos de auditoria</h3>
+            <a class="argos-button argos-button--secondary argos-button--compact" aria-labelledby="camera-detail-audit-heading camera-detail-audit-all" id="camera-detail-audit-all" href="{% url 'cameras:eventos_camera' camera.pk %}">Ver todos os eventos</a>
+          </header>
+          <div class="argos-camera-detail__history-list">
+            {% for evento in eventos_auditoria %}<a class="argos-camera-detail__text-link" href="{% url 'eventos:detalhe' evento.pk %}">{{ evento.codigo }} · {{ evento.resumo }}</a>
+            {% empty %}<p class="argos-state__copy argos-state--compact">Nenhum evento registrado.</p>{% endfor %}
+          </div>
+        </section>
+      {% endif %}
+    </div>
+  </section>
+
+  {% if perms.cameras.add_cameraimagerecord %}
+    <section class="argos-camera-detail__region" aria-labelledby="camera-detail-complementary-heading">
+      <h2 class="argos-camera-detail__section-title" id="camera-detail-complementary-heading">Operações complementares</h2>
+      <section aria-labelledby="camera-detail-upload-heading">
+        <header class="argos-section-header"><h3 id="camera-detail-upload-heading">Enviar imagem manualmente</h3></header>
+        <p class="argos-camera-detail__upload-copy">A imagem será registrada como upload manual, sem data de captura da câmera.</p>
+        <form class="argos-camera-detail__upload-form" action="{% url 'cameras:upload_imagem' camera.pk %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <label class="argos-field argos-camera-detail__upload-field" for="imagem-camera"><span class="argos-field__label">Imagem</span><input class="argos-input" id="imagem-camera" name="imagem" type="file" accept="image/jpeg,image/png,image/webp" required></label>
+          <button class="argos-button argos-button--primary" type="submit">Enviar imagem</button>
+        </form>
+      </section>
+    </section>
+  {% endif %}
+</div>
+{% endblock %}

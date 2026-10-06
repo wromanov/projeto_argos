@@ -599,3 +599,19 @@ As seções 22–23 registram o estado publicado 2.2.0 antes desta atividade e
 permanecem históricas. O checkpoint 2.3.0 foi publicado no commit
 `18e93267e2a2973acc9026bb1f9df45bfced83dc`; a retomada da validação S2B é a
 próxima atividade, com sua authority própria.
+
+
+## 25. P5-VR-S2A-R3 / DSG-SURFACE-01 — Section Surface 2.4.0 (2026-10-06)
+
+| Documento | Conteúdo | Vigência |
+|---|---|---|
+| `docs/prototype/ui-v2/contracts/DSCR-UIV2-006-SECTION-SURFACE-2.4.0.md` | Capability pública neutra, tokens existentes, escopo e MINOR backward-compatible | CURRENT / IMPLEMENTED_LOCALLY / NOT_PUBLISHED |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_CAMERA_DETAIL_CONTRACT.md`, seção 26 | Revisão S2A-R3: quatro macro surfaces, nenhum nesting, Hero sem surface | CURRENT / explicit user authorization; supersedes earlier macro surface NONE decisions |
+| `static/css/ui-v2/patterns.css` | `.argos-section-surface`, quatro propriedades visuais permitidas | CURRENT / DS 2.4.0 LOCAL |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 51 | Baseline, delta da atividade, validação, findings preexistentes e próxima ação | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.16 | Handoff técnico e gate visual pendente | CURRENT |
+
+A 2.3.0 permanece publicada; 2.4.0 é a versão corrente implementada localmente.
+A próxima ação é a revisão visual humana da Camera Detail. Aprovação visual
+PENDING, publicação não autorizada. Registros anteriores preservam os snapshots
+de suas atividades; a seção 51 é o estado operacional vigente desta remediação.

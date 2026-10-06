@@ -248,6 +248,108 @@ class ListaCamerasFrontendTests(TestCase):
             self.assertEqual(link.count("status=ONLINE"), 1)
             self.assertEqual(link.count("page="), 1)
 
+
+class CameraDetailFrontendTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_superuser(
+            username="frontend-camera-detail", password="senha-forte", email=""
+        )
+        self.client.force_login(self.user)
+        self.camera = Camera.objects.create(
+            nome="CAMERA-DETALHE",
+            patrimonio="PAT-DETALHE",
+            ip="10.20.30.40",
+            mascara_subrede="255.255.255.0",
+            gateway="10.20.30.1",
+            vlan=20,
+            fabricante="AXIS",
+            modelo="P3265",
+            serial="SERIAL-DETALHE",
+            mac="AA:BB:CC:DD:EE:FF",
+            tipo=Camera.TipoCamera.DOME,
+            situacao_operacional=Camera.SituacaoOperacional.PRODUCAO,
+            terminal="TPS1",
+            ambiente="SALA DE MONITORAMENTO",
+            farm="FARM-01",
+            retencao_esperada_dias=30,
+            codec="H.264",
+        )
+
+    def test_detail_uses_canonical_regions_and_removes_legacy_presentational_classes(self):
+        response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode("utf-8")
+
+        expected_order = (
+            "← Voltar ao inventário",
+            "Inventário CFTV",
+            "Detalhe da câmera",
+            "CAMERA-DETALHE",
+            "Dados principais",
+            "Operação",
+            "Governança cadastral",
+            "Histórico",
+            "Histórico técnico de indisponibilidades",
+            "Histórico de atividades",
+            "Histórico de substituições",
+            "Eventos de auditoria",
+            "Operações complementares",
+            "Enviar imagem manualmente",
+        )
+        content_start = html.index("← Voltar ao inventário")
+        positions = [html.index(item, content_start) for item in expected_order]
+        self.assertEqual(positions, sorted(positions))
+        self.assertContains(response, 'id="camera-detail-title"')
+        self.assertContains(response, "argos-text-kpi")
+        self.assertContains(response, "argos-back-link")
+        self.assertContains(response, "argos-section-surface", count=4)
+        for region in ("main", "operation", "governance", "history"):
+            self.assertRegex(
+                html,
+                rf'<section class="argos-section-surface [^"]*" '
+                rf'aria-labelledby="camera-detail-{region}-heading">',
+            )
+        self.assertContains(
+            response,
+            '<section class="argos-camera-detail__hero" '
+            'aria-labelledby="camera-detail-title">',
+        )
+        self.assertContains(response, 'class="argos-data-pair"')
+        for legacy_class in (
+            "inventory-panel",
+            "detail-card",
+            "detail-grid",
+            "detail-empty-state",
+            "camera-governance-panel",
+            "activity-card",
+        ):
+            self.assertNotIn(legacy_class, html)
+
+    def test_detail_preserves_upload_form_contract_and_authorized_edit_action(self):
+        response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
+        self.assertContains(response, reverse("cameras:editar", args=[self.camera.pk]))
+        self.assertContains(response, reverse("cameras:upload_imagem", args=[self.camera.pk]))
+        self.assertContains(
+            response,
+            '<form class="argos-camera-detail__upload-form" action="'
+            f'{reverse("cameras:upload_imagem", args=[self.camera.pk])}'
+            '" method="post" enctype="multipart/form-data">',
+        )
+        self.assertContains(
+            response,
+            'id="imagem-camera" name="imagem" type="file" '
+            'accept="image/jpeg,image/png,image/webp" required',
+        )
+        self.assertContains(response, 'name="csrfmiddlewaretoken"')
+        self.assertContains(response, '<button class="argos-button argos-button--primary" type="submit">Enviar imagem</button>')
+
+    def test_monitoring_badge_remains_legacy_on_inventory_and_ui_v2_on_detail(self):
+        detail = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
+        self.assertContains(detail, "argos-status-badge--success")
+
+        inventory = self.client.get(reverse("cameras:lista"))
+        self.assertRegex(inventory.content.decode("utf-8"), r'class="badge badge--[^\"]+"')
+
     def test_eventos_compartilham_contrato_visual_de_filtros_sem_alterar_parametros(self):
         response = self.client.get(
             reverse("eventos:lista"),

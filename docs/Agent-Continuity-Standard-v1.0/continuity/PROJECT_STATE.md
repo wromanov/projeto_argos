@@ -2705,3 +2705,117 @@ visual decisions. The five S2B files match their activity-start hashes.
 The 14-path checkpoint was published as `18e93267e2a2973acc9026bb1f9df45bfced83dc`
 to `origin/codex/ui-v2-p5-production`; the upstream matches local HEAD and the
 only remaining worktree deltas are the five protected S2B paths.
+
+
+## 51. P5-VR-S2A-R3 / DSG-SURFACE-01 — Camera Detail Visual Remediation (2026-10-06)
+
+```text
+ACTIVITY = P5-VR-S2A-R3 / DSG-SURFACE-01
+STATUS = TECHNICAL_READY_FOR_HUMAN_VISUAL_REVIEW
+ACTIVITY_COMPLETION_PERCENT = 100% / authorized implementation and technical scope only
+COMPLETION_BASIS = shared capability + four macro consumers + canonical documentation + static and functional validation
+IMPLEMENTATION_AUTHORITY = explicit current user request
+ENVIRONMENT = CODEX
+EXECUTION_MODE = DIRECT
+SKILL = NONE
+PLUGIN = NONE
+BASELINE_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos_ui_p5
+BASELINE_BRANCH = codex/ui-v2-p5-production
+BASELINE_HEAD = 742a3894b2d06c1e28f4ff11740e6cdfd9abc61f
+BASELINE_UPSTREAM = origin/codex/ui-v2-p5-production
+BASELINE_DIVERGENCE = 0 / 0 / local upstream reference; no fetch
+BASELINE_STAGING = EMPTY
+BASELINE_DIRTY_PATHS = exactly five expected S2B paths listed in section 50
+BASELINE = PASS / HEAD is documentary publication checkpoint following 18e9326
+DESIGN_SYSTEM_BEFORE = 2.3.0 / PUBLISHED
+DESIGN_SYSTEM_AFTER = 2.4.0 / IMPLEMENTED_LOCALLY / NOT_PUBLISHED
+DSCR = DSCR-UIV2-006-SECTION-SURFACE-2.4.0
+SECTION_SURFACE_CAPABILITY = IMPLEMENTED / .argos-section-surface / patterns layer
+VERSION_IMPACT = MINOR / BACKWARD_COMPATIBLE / ADDITIVE
+TOKENS_REUSED = --argos-color-surface; --argos-border-width; --argos-color-border; --argos-radius-surface; --argos-space-6
+NEW_TOKENS = NONE
+DADOS_PRINCIPAIS_SURFACE = ONE
+OPERACAO_SURFACE = ONE
+GOVERNANCA_SURFACE = ONE
+HISTORICO_SURFACE = ONE
+HERO_SURFACE = NONE
+UPLOAD_SURFACE = NONE / optional supporting surface not adopted
+NESTED_CARDS = NONE
+PAGE_SPECIFIC_CSS_ROLE = COMPOSITION_ONLY / camera-detail.css unchanged in this activity
+SHARED_DS_OVERRIDE = NONE
+SPECIFICITY_ESCALATION = NONE
+LEGACY_PRESENTATIONAL_DEPENDENCY = NONE
+BREAKPOINTS = 900 / 680 / 600 / unchanged; page composition uses 900/680 and shared controls use 600
+STATIC_VALIDATION = PASS / no new !important, surface redefinition, legacy class, nested surface, breakpoint or token
+DJANGO_CHECK = PASS / no issues
+TESTS = 164 distinct tests exercised; 156 passed after upload environment retry; 8 PREEXISTING_BASELINE_FAILURES
+FOCAL_PROTECTION = 127 / 128 PASS; one known Dashboard baseline failure
+CAMERA_DETAIL_FRONTEND = 9 / 9 PASS
+UPLOAD_TESTS = 7 / 7 PASS / retry outside sandbox temporary-folder restriction
+EXPANDED_FRONTEND = 29 / 36 PASS; Inventory failure + six additional legacy shell/Dashboard expectations reproduced against baseline
+BASELINE_FAILURE_VERIFICATION = 45 frontend tests with pre-remediation source in memory + one Governance Dashboard test; same eight failure identities
+FUNCTIONAL_REGRESSION = NONE identified in exercised scope
+QUICK_DETAIL_IMPACT = NONE
+P3B_IMPACT = NONE
+JS_CHANGED = NO / even harness version comment preserved per current instruction
+BACKEND_CHANGED = NO
+VISUAL_AUTOMATION = NOT_PERFORMED / no visual approval claimed
+CAMERA_DETAIL_TECHNICAL_STATUS = READY_FOR_MANUAL_VISUAL_REVIEW
+HUMAN_VISUAL_APPROVAL = PENDING
+GIT_DIFF_CHECK = PASS
+STAGING = EMPTY
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+NEXT_ACTION = human visual review of Camera Detail; Git publication requires separate authorization
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS / technical handoff, human visual gate pending
+ACTIVITY_COMPLETE = YES / authorized local technical scope only; visual acceptance remains pending
+```
+
+A capability aditiva define somente fundo neutro, borda sutil, raio aprovado e
+padding base de 24px com tokens existentes, sem sombra. O Histórico recebe uma
+única macro surface. Ao remover apenas a classe nova, o template é idêntico ao
+snapshot S2B inicial: conteúdo, condições, actions, URLs, forms, CSRF, IDs e
+atributos de dados foram preservados. Os dois partials e camera-detail.css foram
+comparados ao snapshot inicial e permanecem idênticos. A seção 26 do contrato
+Camera Detail registra a revisão explícita S2A-R3 das antigas decisões NONE.
+
+As falhas conhecidas de Inventory/Dashboard continuam fora do escopo. A execução
+ampliada de core.test_frontend identificou seis outras expectativas antigas de
+classes/textos do shell/Dashboard, também reproduzidas com o baseline anterior:
+`test_base_compoe_componentes_globais`,
+`test_base_possui_skip_link_main_mensagens_e_logout_post`,
+`test_cards_dashboard_usam_filtros_existentes`,
+`test_dashboard_diferencia_cards_clicaveis_e_informativos`,
+`test_dashboard_separa_inventario_monitoramento_e_qualidade` e
+`test_sidebar_preserva_links_condicionais_por_permissao`. Não foram corrigidas
+nesta atividade. A comparação usou código anterior em memória e não executou
+restore, reset ou outras mutações Git.
+
+Os primeiros testes de upload encontraram WinError 5 nas pastas TemporaryDirectory
+do Windows, inclusive dentro do worktree. A execução autorizada fora do sandbox
+passou os sete testes, sem alteração de código. A pasta temporária criada dentro
+do worktree foi removida após conferir seu caminho absoluto. Não há evidência
+de regressão de upload. Nenhuma avaliação visual automatizada foi realizada;
+prontidão técnica não equivale a aprovação visual humana.
+
+Arquivos alterados por esta atividade (15; inclui este registro):
+- `cameras/templates/cameras/detalhe.html`
+- `cameras/test_frontend.py`
+- `static/css/ui-v2/tokens.css`
+- `static/css/ui-v2/base.css`
+- `static/css/ui-v2/components.css`
+- `static/css/ui-v2/patterns.css`
+- `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_CAMERA_DETAIL_CONTRACT.md`
+- `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md`
+- `docs/prototype/ui-v2/contracts/COMPONENT_CATALOG.md`
+- `docs/prototype/ui-v2/contracts/DSCR-UIV2-006-SECTION-SURFACE-2.4.0.md`
+- `docs/prototype/ui-v2/foundation/typography.html`
+- `docs/prototype/ui-v2/screens/index.html`
+- `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`
+- `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`
+- `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`
+
+Os partials `_monitoring_badge.html`, `_atividade_tipo_badge.html` e o arquivo
+untracked `camera-detail.css` continuam dirty por S2B, sem delta desta atividade.
+HEAD e staging permanecem no estado inicial.

@@ -1,8 +1,8 @@
 # ARGOS UI V2 — Visual Contract
 
-- STATUS: P2 FOUNDATION APPROVED / PINNED at 2.0.0; current implemented Design System = 2.3.0 local on codex/ui-v2-p5-production / pending review and publication
-- CURRENT_IMPLEMENTED_VERSION: 2.3.0 / LOCAL / NOT PUBLISHED
-- TARGET_VERSION: 2.3.0 / DSCR-UIV2-005 / IMPLEMENTED LOCALLY / NOT PUBLISHED
+- STATUS: P2 FOUNDATION APPROVED / PINNED at 2.0.0; current implemented Design System = 2.4.0 local on codex/ui-v2-p5-production / pending review and publication
+- CURRENT_IMPLEMENTED_VERSION: 2.4.0 / LOCAL / NOT PUBLISHED
+- TARGET_VERSION: 2.4.0 / DSCR-UIV2-006 / IMPLEMENTED LOCALLY / NOT PUBLISHED
 - DESIGN_STRATEGY: CODE_FIRST / STACK_NATIVE / PROTOTYPE_DRIVEN
 - VISUAL_DIRECTION: C — ARGOS HYBRID, aprovada; não reabrir nesta atividade
 - SCOPE: VISUAL_ONLY
@@ -75,8 +75,8 @@ P2 aprovou e pinou a foundation 2.0.0. A versão implementada corrente foi
 promovida a 2.0.1 e, depois, 2.0.2 por DSCRs anteriores. No estado atual:
 
 ```text
-CURRENT_IMPLEMENTED_VERSION = 2.3.0 / IMPLEMENTED LOCALLY / NOT PUBLISHED
-TARGET_VERSION = 2.3.0 / DSCR-UIV2-005 / IMPLEMENTED LOCALLY / NOT PUBLISHED
+CURRENT_IMPLEMENTED_VERSION = 2.4.0 / IMPLEMENTED LOCALLY / NOT PUBLISHED
+TARGET_VERSION = 2.4.0 / DSCR-UIV2-006 / IMPLEMENTED LOCALLY / NOT PUBLISHED
 TARGET_VERSION_IMPLEMENTED = YES / local canonical CSS
 ```
 
@@ -107,3 +107,13 @@ publicada no checkpoint S1B; a 2.2.0 foi publicada em
 A promoção 2.3.0 em DSCR-UIV2-005 adiciona `.argos-back-link`, consumindo os
 tokens tipográficos e de cor existentes e o foco global `:focus-visible`, sem
 migrar outros consumidores.
+
+
+A promoção 2.4.0 em DSCR-UIV2-006 adiciona `.argos-section-surface` no layer
+`patterns`: fundo neutro, borda sutil, raio aprovado e padding base, exclusivamente
+com tokens existentes. Sem sombra, cabeçalho colorido, accent bar ou gradiente.
+A implementação foi autorizada no pedido explícito P5-VR-S2A-R3 / DSG-SURFACE-01.
+A 2.3.0 anterior foi publicada em 18e93267e2a2973acc9026bb1f9df45bfced83dc
+e seu checkpoint documental em 742a3894b2d06c1e28f4ff11740e6cdfd9abc61f.
+A 2.4.0 está implementada localmente, sem publicação; aprovação visual da Camera
+Detail permanece PENDING. Nenhum consumidor anterior precisa migrar.
