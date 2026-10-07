@@ -11,9 +11,9 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; CAM-INT-03 persistence reconciliation section 58 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; CAM-INT-03 persistence reconciliation section 20.25 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; UI V2 authority mapped in section 16 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; CAM-INT-03 post-publication reconciliation section 60 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; CAM-INT-03 post-publication reconciliation section 20.27 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; CAM-INT-03 post-publication reconciliation section 32; UI V2 authority mapped in section 16 |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
 ## 2. Authorities canônicas do projeto
@@ -658,10 +658,13 @@ OPEN.
 
 ## 31. CAM-INT-03-FINAL-REVIEW-AND-CHECKPOINT — revisão final e commit local (2026-10-07)
 
+Este mapa registra o estado observado antes da publicação. O status local/push
+pendente abaixo é histórico e foi supersedido pela seção 32.
+
 | Path | Papel | Vigência |
 |---|---|---|
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 59 | Resultado de revisão, regressão, reconciliação e checkpoint local | CURRENT / LOCAL_CHECKPOINT_PASS / PUSH_PENDING |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.26 | Handoff e próxima atividade | CURRENT / HOMOLOGATED / COMMITTED_LOCAL |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 59 | Resultado de revisão, regressão, reconciliação e checkpoint local | HISTORICAL / LOCAL_CHECKPOINT_PASS / PUSH_PENDING |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.26 | Handoff e próxima atividade | HISTORICAL / HOMOLOGATED / COMMITTED_LOCAL |
 | `docs/projeto/contracts/backend/camera/CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md` | Contrato de ambiente/composição; status de implementação histórica | CURRENT CONTRACT / historical status snapshots preserved |
 | `docs/projeto/audits/CAM-INT-03_INDEPENDENT_END_TO_END_TECHNICAL_AUDIT.md` | Evidência da causa e execução observada durante a auditoria | HISTORICAL TECHNICAL EVIDENCE / unchanged |
 | `docs/projeto/contracts/backend/camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md` | Contrato de comportamento RTSP; cabeçalho de status histórico | CANONICAL BEHAVIOR / known non-blocking status conflict |
@@ -674,3 +677,20 @@ contraditório do harness é defeito de rotulagem. O finding secundário de liga
 decodebin→appsink e o aviso giolibproxy permanecem abertos/não bloqueantes. Não
 reabrir esta lane sem regressão. `REMOTE_CONTINUATION_READY` só será `YES` após
 push aprovado e verificação de igualdade com `origin/master`.
+
+## 32. CAM-INT-03-POST-PUBLICATION-CONTINUITY-RECONCILIATION — estado atual (2026-10-07)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 60 | Fechamento documental e estado publicado | CURRENT / CONSISTENT / PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.27 | Handoff corrente e próxima atividade | CURRENT / PUBLISHED / REMOTE_CONTINUATION_READY |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`, seção 32 | Índice da reconciliação corrente | CURRENT |
+| `4a0eada4d06b9c61a12c78149257005297ce6a65` | Implementação CAM-INT-03 | PUBLISHED / HOMOLOGATED |
+
+CAM-INT-03 está homologada e publicada. A implementação foi publicada com
+`PUSH=PASS`; `HEAD=origin/master`, divergência `0/0`, worktree limpa, staging
+vazio e continuação remota pronta. Os findings secundários de ligação
+decodebin→appsink e de provisionamento local de autenticação permanecem abertos
+e não bloqueantes; giolibproxy permanece não causal para CAM-INT-03. A próxima
+atividade recomendada é retomar o backend ARGOS pela próxima atividade aberta
+após CAM-INT-03.

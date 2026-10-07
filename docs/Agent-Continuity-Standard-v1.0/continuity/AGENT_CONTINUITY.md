@@ -10,10 +10,10 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL CAM-INT-03: consultar PROJECT_STATE seção 59 e seção 20.26
-abaixo. Revisão final concluída e checkpoint comprometido localmente; publicação
-em origin/master aguarda confirmação direta após rejeição da revisão automática.
-Runtime homologado, causa raiz resolvida; próxima atividade após CAM-INT-03.
+RETOMADA ATUAL CAM-INT-03: consultar PROJECT_STATE seção 60 e seção 20.27
+abaixo. Runtime homologado e implementação publicada no commit
+4a0eada4d06b9c61a12c78149257005297ce6a65; HEAD local igual a origin/master,
+divergência 0/0 e continuação remota pronta. Próxima atividade após CAM-INT-03.
 
 ## UI-V2-P1 — seleção visual e fechamento (2026-09-27)
 
@@ -1333,6 +1333,9 @@ COMMIT_PUSH = NOT_PERFORMED
 
 ### 20.26. CAM-INT-03-FINAL-REVIEW-AND-CHECKPOINT — commit local (2026-10-07)
 
+Este registro preserva o estado observado antes da publicação; foi supersedido
+pelo fechamento posterior na seção 20.27 e não deve ser usado como estado atual.
+
 O estado final desta revisão está em `PROJECT_STATE.md`, seção 59. A causa
 `DYNAMIC_ELEMENT_LIFECYCLE_DEFECT` foi resolvida pelo sync checado do depayloader
 dinâmico; homologação real A/B/C/D PASS, H264, 2,484 s, timeout de produção de
@@ -1356,6 +1359,28 @@ PROJECT_STATE_UPDATE = PASS / PROJECT_STATE section 59
 PUSH = BLOCKED_BY_AUTO_REVIEW / NOT_PERFORMED; explicit user confirmation required
 LOCAL_HEAD_EQUALS_UPSTREAM = NO / local checkpoint commit is one commit ahead
 REMOTE_CONTINUATION_READY = NO / until normal push is approved and verified
+```
+
+### 20.27. CAM-INT-03-POST-PUBLICATION-CONTINUITY-RECONCILIATION — publicação confirmada (2026-10-07)
+
+O commit de implementação `4a0eada4d06b9c61a12c78149257005297ce6a65`
+(`fix(camera): homologate CAM-INT-03 RTSP runtime`) está publicado em
+`origin/master`. O precheck desta reconciliação confirmou branch `master`,
+HEAD local igual ao upstream, worktree limpa e staging vazio. O estado corrente
+é o fechamento da seção 60 de `PROJECT_STATE.md`.
+
+```text
+CAM_INT_03_RUNTIME_STATUS = HOMOLOGATED
+CAM_INT_03_IMPLEMENTATION = PUBLISHED
+IMPLEMENTATION_COMMIT = 4a0eada4d06b9c61a12c78149257005297ce6a65
+PUSH = PASS
+LOCAL_HEAD_EQUALS_UPSTREAM = YES
+DIVERGENCE = 0/0
+REMOTE_CONTINUATION_READY = YES
+SECONDARY_DECODEBIN_APPSINK_LINK_FINDING = OPEN_NON_BLOCKING
+GIOLIBPROXY = NON_CAUSAL_FOR_CAM_INT_03
+LOCAL_AUTH_PROVISIONING_FINDING = OPEN_NON_BLOCKING
+NEXT_RECOMMENDED_ACTIVITY = RESUME ARGOS BACKEND FROM NEXT OPEN ACTIVITY AFTER CAM-INT-03
 ```
 
 Não repetir RTSP nesta atividade. A revisão automática rejeitou o push para

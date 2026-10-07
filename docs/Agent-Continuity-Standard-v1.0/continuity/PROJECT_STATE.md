@@ -3621,3 +3621,40 @@ seção é a autoridade corrente de continuidade para CAM-INT-03. O relatório d
 auditoria permanece evidência histórica da auditoria e não foi reescrito para
 atribuir autorização retroativa ao fix. Nenhum finding secundário foi corrigido
 neste checkpoint.
+
+## 60. CAM-INT-03-POST-PUBLICATION-CONTINUITY-RECONCILIATION — publicação reconciliada (2026-10-07)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = CAM-INT-03-POST-PUBLICATION-CONTINUITY-RECONCILIATION
+CLASSIFICATION = DOCUMENTATION_ONLY_RECONCILIATION
+IMPLEMENTATION_CHANGE = NO
+RUNTIME_EXECUTION = NO
+STATUS = PASS
+BRANCH = master
+IMPLEMENTATION_COMMIT = 4a0eada4d06b9c61a12c78149257005297ce6a65
+IMPLEMENTATION_COMMIT_MESSAGE = fix(camera): homologate CAM-INT-03 RTSP runtime
+CAM_INT_03_RUNTIME_STATUS = HOMOLOGATED
+CAM_INT_03_IMPLEMENTATION = PUBLISHED
+PUSH = PASS
+LOCAL_HEAD_EQUALS_UPSTREAM = YES
+DIVERGENCE = 0/0
+REMOTE_CONTINUATION_READY = YES
+SECONDARY_DECODEBIN_APPSINK_LINK_FINDING = OPEN_NON_BLOCKING
+GIOLIBPROXY = NON_CAUSAL_FOR_CAM_INT_03
+LOCAL_AUTH_PROVISIONING_FINDING = OPEN_NON_BLOCKING
+PROJECT_STATE_UPDATE = PASS
+FILES_CHANGED = PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md
+CODE_CHANGED = NO
+TESTS_RUN = NOT_REQUIRED
+WORKTREE = CLEAN
+STAGING = EMPTY
+DOCUMENTATION_PUBLICATION_STATE = CONSISTENT
+NEXT_RECOMMENDED_ACTIVITY = RESUME ARGOS BACKEND FROM NEXT OPEN ACTIVITY AFTER CAM-INT-03
+```
+
+Este fechamento posterior atualiza apenas a continuidade documental. A seção
+59 permanece intacta como evidência do estado observado antes da publicação;
+seu registro de push pendente foi supersedido por esta seção. A homologação e a
+resolução da causa raiz continuam válidas. Os três findings acima permanecem
+abertos conforme registrados; nenhum foi resolvido nesta atividade.
