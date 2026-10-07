@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="argos-ui-version" content="2.4.0">
+  <meta name="argos-screen-id" content="SCR-CAM-DETAIL-001">
+  <meta name="argos-prototype-status" content="PENDING_USER_APPROVAL">
+  <title>Detalhe da câmera — proposta visual ARGOS</title>
+  <link rel="stylesheet" href="../../../../../static/css/design-system.css">
+  <link rel="stylesheet" href="../../../../../static/css/argos.css">
+  <link rel="stylesheet" href="../../../../../static/css/portal.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/tokens.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/base.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/components.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/patterns.css">
+  <link rel="stylesheet" href="../../../../../static/css/ui-v2/production.css">
+  <link rel="stylesheet" href="proposal.css">
+  <script src="proposal.js" defer></script>
+</head>
+<body class="app-shell argos-ui-v2-production">
+  <a class="skip-link argos-skip-link" href="#main">Pular para o conteúdo principal</a>
+  <div class="app-layout argos-docs-layout">
+    <aside class="app-sidebar argos-docs-sidebar" aria-label="Navegação da aplicação">
+      <div class="app-sidebar__content">
+        <a class="argos-brand" href="../index.html" aria-label="ARGOS — início do protótipo">
+          <span class="argos-brand__icon" aria-hidden="true"><img src="../../../../../static/img/brand/argos-icon.svg" alt="" width="36" height="36"></span>
+          <span class="argos-brand__content"><strong class="argos-brand__name">ARGOS</strong><span class="argos-brand__subtitle">Central operacional</span></span>
+        </a>
+        <p class="argos-nav-scroll-hint" id="argos-nav-scroll-hint">Deslize horizontalmente para ver todos os itens.</p>
+        <nav class="main-navigation argos-docs-nav" aria-label="Navegação principal" aria-describedby="argos-nav-scroll-hint">
+          <a class="main-navigation__link" href="../index.html#screen-scr-portal-001"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10Z"/></svg><span>Início</span></a>
+          <a class="main-navigation__link" href="../index.html#screen-scr-dash-001"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M4 4h6v6H4V4Zm10 0h6v6h-6V4ZM4 14h6v6H4v-6Zm10 0h6v6h-6v-6Z"/></svg><span>Dashboard</span></a>
+          <a class="main-navigation__link" href="../index.html#screen-scr-inv-001" aria-current="page"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M4 7h16M4 12h16M4 17h11"/></svg><span>Inventário</span></a>
+          <a class="main-navigation__link" href="../index.html#screen-scr-sub-list-001"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4"/></svg><span>Governança</span></a>
+          <a class="main-navigation__link" href="../index.html#screen-scr-event-list-001"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M12 8v5l3 2M20 12a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg><span>Eventos</span></a>
+        </nav>
+      </div>
+    </aside>
+    <div class="app-workspace argos-docs-main">
+      <header class="app-topbar argos-docs-topbar"><div class="app-topbar__content"><div class="app-topbar__context"><span class="app-topbar__label">Central operacional</span><strong>Inventário</strong></div><details class="user-menu"><summary aria-label="Abrir menu de usuário de demonstração"><span class="portal-avatar" aria-hidden="true">PD</span><span class="portal-user__name">Usuário de demonstração</span><span class="user-menu__indicator" aria-hidden="true"></span></summary><div class="user-menu__panel"><a href="#prototype-feedback">Meu perfil</a><a href="#prototype-feedback">Editar perfil</a><a href="#prototype-feedback">Alterar senha</a><button class="button button--ghost" type="button" data-demo-action="Sair">Sair</button></div></details></div></header>
+      <main class="page-container app-shell__main argos-docs-content camera-proposal" id="main" tabindex="-1">
+        <div class="camera-proposal__context">
+          <a class="argos-back-link" href="../index.html#screen-scr-inv-001">← Voltar ao inventário</a>
+          <span class="argos-eyebrow">Inventário CFTV / Detalhe da câmera</span>
+        </div>
+
+        <section class="camera-proposal__record-surface argos-section-surface" aria-label="Ficha da câmera">
+        <header class="camera-proposal__hero" aria-labelledby="camera-name">
+          <div class="camera-proposal__hero-main">
+            <div class="camera-proposal__hero-copy">
+              <p class="camera-proposal__eyebrow">Câmera · <span data-field="patrimonio">PAT-2841</span></p>
+              <h1 class="argos-page-title" id="camera-name" data-field="nome">P5 DEV — Corredor Leste</h1>
+              <p class="camera-proposal__model"><span data-field="fabricante">Axis</span> · <span data-field="modelo">P3265-LVE</span> · <span data-field="tipo">Bullet</span></p>
+              <p class="camera-proposal__location" data-field="location-summary">Terminal Leste · 1º pavimento · Corredor Leste</p>
+            </div>
+            <div class="camera-proposal__hero-side">
+              <div class="camera-proposal__badges" aria-label="Estados da câmera">
+                <span class="argos-status-badge argos-status-badge--success" data-field="monitoring-badge">Online</span>
+                <span class="argos-status-badge argos-status-badge--success" data-field="situation-badge">Em produção</span>
+                <span class="argos-status-badge argos-status-badge--success" data-field="completion-badge">Cadastro completo</span>
+              </div>
+              <a class="argos-button argos-button--primary" href="/cameras/2/editar/" data-demo-action="Editar câmera">Editar câmera</a>
+            </div>
+          </div>
+        </header>
+
+        <div class="camera-proposal__record" aria-label="Ficha operacional da câmera">
+          <div class="camera-proposal__main-column">
+            <section class="camera-proposal__record-section camera-proposal__identity-location" aria-labelledby="identity-location-heading">
+              <header class="argos-section-header"><h2 id="identity-location-heading">Identificação e localização</h2></header>
+              <div class="camera-proposal__subgroup camera-proposal__subgroup--first"><h3>Identificação</h3><dl class="camera-proposal__pairs">
+              <div class="argos-data-pair"><dt>Fabricante</dt><dd data-field="fabricante-detail">Axis</dd></div>
+              <div class="argos-data-pair"><dt>Modelo</dt><dd data-field="modelo-detail">P3265-LVE</dd></div>
+              <div class="argos-data-pair"><dt>Tipo</dt><dd data-field="tipo-detail">Bullet</dd></div>
+              <div class="argos-data-pair"><dt>Patrimônio</dt><dd><code data-field="patrimonio-detail">PAT-2841</code></dd></div>
+              <div class="argos-data-pair"><dt>Serial</dt><dd><code data-field="serial">AX-2841-LE</code></dd></div>
+              <div class="argos-data-pair"><dt>MAC</dt><dd><code data-field="mac">00:40:8C:4A:22:71</code></dd></div>
+            </dl></div>
+              <div class="camera-proposal__subgroup"><h3>Localização</h3><dl class="camera-proposal__pairs">
+              <div class="argos-data-pair"><dt>Terminal</dt><dd data-field="terminal">Terminal Leste</dd></div>
+              <div class="argos-data-pair"><dt>Pavimento</dt><dd data-field="pavimento">1º pavimento</dd></div>
+              <div class="argos-data-pair"><dt>Setor</dt><dd data-field="setor">Corredor</dd></div>
+              <div class="argos-data-pair"><dt>Ambiente</dt><dd data-field="ambiente">Corredor Leste</dd></div>
+              <div class="argos-data-pair camera-proposal__pair-full"><dt>Descrição detalhada</dt><dd data-field="descricao">Acesso entre saguão e área de embarque.</dd></div>
+              <div class="argos-data-pair camera-proposal__pair-full"><dt>Ponto de referência</dt><dd data-field="referencia">Próximo à entrada do corredor.</dd></div>
+            </dl></div>
+            </section>
+            <section class="camera-proposal__record-section camera-proposal__network-recording" aria-labelledby="network-recording-heading">
+              <header class="argos-section-header"><h2 id="network-recording-heading">Rede e gravação</h2></header>
+              <div class="camera-proposal__subgroup camera-proposal__subgroup--first"><h3>Rede</h3><dl class="camera-proposal__pairs">
+                <div class="argos-data-pair"><dt>IP</dt><dd><code data-field="ip">10.32.18.42</code></dd></div>
+                <div class="argos-data-pair"><dt>Máscara</dt><dd><code data-field="mask">255.255.255.0</code></dd></div>
+                <div class="argos-data-pair"><dt>Gateway</dt><dd><code data-field="gateway">10.32.18.1</code></dd></div>
+                <div class="argos-data-pair"><dt>VLAN</dt><dd><code data-field="vlan">218</code></dd></div>
+              </dl></div>
+              <div class="camera-proposal__subgroup"><h3>Gravação</h3><dl class="camera-proposal__pairs">
+              <div class="argos-data-pair"><dt>Farm</dt><dd><code data-field="farm">FARM-LE-02</code></dd></div>
+              <div class="argos-data-pair"><dt>Retenção esperada</dt><dd><code data-field="retention">30</code> dias</dd></div>
+              <div class="argos-data-pair"><dt>Codec</dt><dd><code data-field="codec">H.265</code></dd></div>
+            </dl></div>
+            </section>
+          </div>
+          <aside class="camera-proposal__operational-rail" aria-label="Operação da câmera">
+            <section class="camera-proposal__record-section camera-proposal__situation" aria-labelledby="situation-heading">
+              <header class="argos-section-header"><h2 id="situation-heading">Situação e completude</h2></header><div class="camera-proposal__status-pairs">
+              <div><span class="camera-proposal__status-label">Situação</span><span class="argos-status-badge argos-status-badge--success" data-field="situation-detail">Em produção</span></div>
+              <div><span class="camera-proposal__status-label">Completude</span><span class="argos-status-badge argos-status-badge--success" data-field="completion-detail">Cadastro completo</span></div>
+            </div>
+            <dl class="camera-proposal__pairs camera-proposal__situation-meta">
+              <div class="argos-data-pair camera-proposal__pair-full" data-field-container="missing"><dt>Campos faltantes</dt><dd data-field="missing">—</dd></div>
+              <div class="argos-data-pair camera-proposal__pair-full"><dt>Motivo da última desativação</dt><dd data-field="deactivation-reason">—</dd></div>
+              <div class="argos-data-pair"><dt>Desativada em</dt><dd data-field="deactivated-at">—</dd></div>
+              <div class="argos-data-pair"><dt>Desativada por</dt><dd data-field="deactivated-by">—</dd></div>
+            </dl>
+            </section>
+            <section class="camera-proposal__record-section camera-proposal__monitoring" aria-labelledby="monitoring-heading">
+              <header class="argos-section-header"><h2 id="monitoring-heading">Monitoramento técnico</h2></header><div class="camera-proposal__monitoring-current"><span class="camera-proposal__status-label">Estado atual</span><span class="argos-status-badge argos-status-badge--success" data-field="monitoring-detail">Online</span><small data-field="monitoring-context">Em escopo de monitoramento</small></div><dl class="camera-proposal__pairs">
+              <div class="argos-data-pair"><dt>Último estado confirmado</dt><dd data-field="stable-state">Online</dd></div>
+              <div class="argos-data-pair"><dt>Última evidência útil</dt><dd data-field="evidence-at">06/10/2026 09:42</dd></div>
+              <div class="argos-data-pair"><dt>Estado desde</dt><dd data-field="state-since">06/10/2026 07:10</dd></div>
+              <div class="argos-data-pair" data-field-container="outage"><dt>Indisponibilidade aberta</dt><dd data-field="outage">—</dd></div>
+            </dl>
+            </section>
+            <section class="camera-proposal__record-section camera-proposal__rail-actions" aria-labelledby="actions-heading">
+              <header class="argos-section-header"><h2 id="actions-heading">Ações operacionais</h2></header><div class="camera-proposal__action-row" aria-label="Ações de situação">
+              <a class="argos-button argos-button--primary" href="/cameras/2/substituir/" data-demo-action="Substituir">Substituir</a>
+              <a class="argos-button argos-button--secondary" href="/cameras/2/alterar-situacao/" data-demo-action="Mover para Estoque">Mover para Estoque</a>
+              <a class="argos-button argos-button--danger" href="/cameras/2/desativar/" data-demo-action="Desativar">Desativar</a>
+            </div>
+            </section>
+          </aside>
+        <section class="camera-proposal__governance" aria-labelledby="governance-heading">
+          <header class="argos-section-header"><h2 id="governance-heading">Governança cadastral</h2></header>
+          <dl class="camera-proposal__pairs">
+            <div class="argos-data-pair"><dt>Criado por</dt><dd data-field="created-by">Equipe CFTV</dd></div>
+            <div class="argos-data-pair"><dt>Criado em</dt><dd data-field="created-at">24/09/2026 14:18</dd></div>
+            <div class="argos-data-pair"><dt>Atualizado por</dt><dd data-field="updated-by">Equipe CFTV</dd></div>
+            <div class="argos-data-pair"><dt>Atualizado em</dt><dd data-field="updated-at">02/10/2026 11:06</dd></div>
+            <div class="argos-data-pair"><dt>Origem</dt><dd data-field="origin">Cadastro manual</dd></div>
+            <div class="argos-data-pair camera-proposal__governance-notes"><dt>Observações cadastrais</dt><dd data-field="notes">—</dd></div>
+          </dl>
+        </section>
+        </div>
+        </section>
+
+        <section class="camera-proposal__history argos-section-surface" aria-labelledby="history-heading">
+          <header class="argos-section-header"><h2 id="history-heading">Histórico</h2></header>
+          <div class="camera-proposal__history-grid">
+            <section aria-labelledby="outages-heading">
+              <h3 id="outages-heading">Indisponibilidades</h3>
+              <p data-field="history-outages">Nenhuma indisponibilidade técnica registrada.</p>
+              <div class="camera-proposal__history-actions"><a class="argos-back-link" href="/cameras/2/monitoramento/historico/" data-demo-action="Ver histórico técnico completo">Ver histórico completo</a></div>
+            </section>
+            <section aria-labelledby="activities-heading">
+              <h3 id="activities-heading">Atividades</h3>
+              <p data-field="history-activities">Nenhuma atividade registrada para esta câmera.</p>
+              <div class="camera-proposal__history-actions">
+                <a class="argos-back-link camera-proposal__history-detail" href="/cameras/atividades/1/editar/" data-demo-action="Editar atividade" data-long-only hidden>Editar atividade</a>
+                <a class="argos-back-link" href="/cameras/2/atividades/nova/" data-demo-action="Registrar atividade">Registrar atividade</a>
+                <a class="argos-back-link" href="/cameras/2/atividades/" data-demo-action="Ver histórico de atividades">Ver histórico completo</a>
+              </div>
+            </section>
+            <section aria-labelledby="replacements-heading">
+              <h3 id="replacements-heading">Substituições</h3>
+              <p data-field="history-replacements">Nenhuma substituição registrada para esta câmera.</p>
+              <div class="camera-proposal__history-actions">
+                <a class="argos-back-link camera-proposal__history-detail" href="/cameras/substituicoes/1/" data-demo-action="Ver detalhe da substituição" data-long-only hidden>Ver detalhe</a>
+                <a class="argos-back-link" href="/cameras/2/substituicoes/" data-demo-action="Ver histórico de substituições">Ver histórico completo</a>
+              </div>
+            </section>
+            <section aria-labelledby="audit-heading">
+              <h3 id="audit-heading">Eventos de auditoria</h3>
+              <p data-field="history-audit">Nenhum evento registrado.</p>
+              <div class="camera-proposal__history-actions">
+                <a class="argos-back-link camera-proposal__history-detail" href="/eventos/1/" data-demo-action="Ver detalhe do evento" data-long-only hidden>Ver detalhe</a>
+                <a class="argos-back-link" href="/cameras/2/eventos/" data-demo-action="Ver todos os eventos">Ver todos os eventos</a>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="camera-proposal__complementary" aria-labelledby="complementary-heading">
+          <div><h2 id="complementary-heading">Operações complementares</h2><h3>Enviar imagem manualmente</h3><p>A imagem será registrada como upload manual, sem data de captura da câmera.</p></div>
+          <form class="camera-proposal__upload" action="/cameras/2/imagens/upload/" method="post" enctype="multipart/form-data" data-demo-form>
+            <label class="argos-field" for="imagem-camera"><span class="argos-field__label">Imagem</span><input class="argos-input" id="imagem-camera" name="imagem" type="file" accept="image/jpeg,image/png,image/webp" required></label>
+            <button class="argos-button argos-button--primary" type="submit">Enviar imagem</button>
+          </form>
+        </section>
+        <p class="camera-proposal__notice" id="prototype-feedback" role="status" aria-live="polite">Protótipo visual. Ações demonstrativas não alteram dados.</p>
+      </main>
+      <footer class="app-footer"><div class="app-footer__content"><p>Projeto ARGOS — Sistema de Inventário e Monitoramento de Câmeras</p></div></footer>
+    </div>
+  </div>
+</body>
+</html>
