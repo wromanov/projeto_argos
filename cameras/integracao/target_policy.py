@@ -175,11 +175,15 @@ class TargetPolicy:
                 scheme, raw_ports = item.split(":", 1)
                 ports[scheme] = tuple(int(port) for port in _split_csv(raw_ports))
             farms = _split_csv(environ.get("ARGOS_CAMERA_ALLOWED_FARMS", ""))
+            paths: dict[str, tuple[str, ...]] = {}
+            if "ARGOS_CAMERA_ALLOWED_PATHS" in environ:
+                paths = _parse_environment_paths(environ["ARGOS_CAMERA_ALLOWED_PATHS"])
             return cls.from_mapping({
                 "allowed_cidrs": allowed,
                 "denied_cidrs": denied,
                 "ports_by_scheme": ports,
                 "allowed_farms": farms or None,
+                "allowed_paths_by_scheme": paths,
             })
         except (KeyError, TypeError, ValueError) as exc:
             raise TargetPolicyError() from exc
@@ -367,3 +371,23 @@ def _split_csv(value: object) -> tuple[str, ...]:
     if not isinstance(value, str):
         raise TargetPolicyError()
     return tuple(item.strip() for item in value.split(",") if item.strip())
+
+
+def _parse_environment_paths(value: object) -> dict[str, tuple[str, ...]]:
+    """Parse scheme:path[,path];... without normalizing path contents."""
+    if not isinstance(value, str):
+        raise TargetPolicyError()
+    groups = value.split(";")
+    parsed: dict[str, tuple[str, ...]] = {}
+    for raw_group in groups:
+        group = raw_group.strip()
+        if not group or ":" not in group:
+            raise TargetPolicyError()
+        raw_scheme, raw_paths = group.split(":", 1)
+        scheme = raw_scheme.strip()
+        members = raw_paths.split(",")
+        paths = tuple(member.strip() for member in members)
+        if not scheme or any(not path for path in paths):
+            raise TargetPolicyError()
+        parsed[scheme] = paths
+    return parsed

@@ -1,5 +1,9 @@
 # ARGOS — Project State
 
+Estado corrente CAM-INT-03: seção 59, revisão final publicada; runtime
+homologado e implementação publicada. Ver continuidade §20.26. As seções
+anteriores preservam os snapshots históricos de cada atividade.
+
 ## UI-V2-P1 — seleção visual e fechamento (2026-09-27)
 
 Este registro fecha P1 após a seleção humana de C. O snapshot de UI-V2-P0 abaixo permanece como histórico. P2 segue sem início e exige sua própria autorização.
@@ -2521,7 +2525,8 @@ atômica preservando a credencial anterior diante de falha; decrypt pela versão
 de chave registrada; falha fechada para chave ausente/inválida/desconhecida e
 ciphertext adulterado; permissões Técnico/Admin; bloqueio de Operador e
 Monitoramento; reveal explícito POST+CSRF com reautenticação, auditoria e
-`no-store`; revogação sem fallback; requisito de credencial ativa na mesma
+
+o-store`; revogação sem fallback; requisito de credencial ativa na mesma
 câmera; e ausência de segredo em logs, auditoria e respostas normais.
 
 Releitura de `BACKEND_IMPLEMENTATION_ORDER.md` após a integração:
@@ -3110,3 +3115,509 @@ A credencial cadastrada localmente não é portátil para casa porque depende da
 chave efêmera mantida na sessão PowerShell do computador de trabalho. Nenhuma
 chave, variável de ambiente, credencial, URI RTSP sensível ou banco local deve
 ser copiado ou incluído neste checkpoint.
+
+## 53. CAM-INT-03-REAL-RTSP-RUNTIME-HOMOLOGATION — gate de policy falhou; sem stream real (2026-10-07)
+
+```text
+ACTIVITY = CAM-INT-03-REAL-RTSP-RUNTIME-HOMOLOGATION
+CLASSIFICATION = REAL_RUNTIME_INTEGRATION_HOMOLOGATION
+ACTIVITY_STATUS = BLOCKED_AT_POLICY_GATE / NOT_HOMOLOGATED
+ACTIVITY_COMPLETION_PERCENT = 60 / early stop required before socket, key or credential operations
+PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+BRANCH = master
+HEAD = 0483f3bbca8108bc45b78b70d39577b1e30b96df
+ORIGIN_MASTER = 0483f3bbca8108bc45b78b70d39577b1e30b96df
+DIVERGENCE = 0 / 0
+WORKTREE = DIRTY / gst_adapter.py + PROJECT_STATE.md + AGENT_CONTINUITY.md + ACTIVE_DOCUMENT_MAP.md
+STAGING = EMPTY
+
+CODE_DEFECT = REPAIRED_LOCALLY / UNCOMMITTED
+SOURCE_CHANGE = removed premature decoder.link(sink); dynamic decoder pad callback remains registered before PLAYING
+PREVIOUS_FOCAL_TESTS = PASS / cameras.test_camera_rtsp_adapter 17/17 before this activity
+GSTREAMER_RUNTIME = PASS / 1.28.7
+PIPELINE_CONSTRUCTION = PASS / real local GStreamer; no RTSP connection attempted
+DYNAMIC_PAD_SMOKE = PASS / synthetic videotestsrc -> decodebin pad-added -> appsink; sample received; no RTSP
+TARGET_POLICY_BOOTSTRAP = PASS / exact process-local CIDR and rtsp:554 policy loaded
+TARGET_POLICY_NEGATIVE_CHECKS = PASS / alternate IP denied; port 5555 denied
+CAMERA_RESOLUTION = PASS / CAMERA_ID=1, CAM-TESTE, 10.143.36.33
+CONNECTION_CONFIG_RESOLUTION = PASS / enabled RTSP profile, port 554; compatibility UNVERIFIED
+PROFILE_DEFAULT_PATH = EMPTY
+AUTHORIZED_TARGET = FAIL / MISCONFIGURED_POLICY: Target policy path is missing
+TARGET_POLICY_VALIDATION = FAIL / positive authorization refused by canonical validator
+TCP_PRECHECK = NOT_RUN / stopped before socket after policy failure
+FERNET_BOOTSTRAP = NOT_RUN / no ephemeral key generated after policy gate failure
+CREDENTIAL_BOOTSTRAP = NOT_REQUIRED / stopped before credential mutation
+CREDENTIAL_RESOLUTION = NOT_REQUIRED / no secret decrypted
+CREDENTIAL_SECRET_EXPOSED = NO
+CREDENTIAL_MUTATION = NOT_PERFORMED
+RTSP_RUNTIME_STARTED = NO
+RTSPSRC_CONNECTION = NOT_RUN
+AUTHENTICATION = INCONCLUSIVE / no RTSP request
+TRANSPORT_ACTUAL = INCONCLUSIVE / configured AUTO; no runtime session
+CODEC_DETECTED = INCONCLUSIVE
+DECODEBIN_DYNAMIC_PAD_EMITTED = NOT_RUN
+DYNAMIC_PAD_LINK_RESULT = NOT_RUN
+APPSINK_SAMPLE_RECEIVED = NO
+SAMPLE_COUNT = 0
+PIPELINE_CREATED = NO
+PIPELINE_STATE_NULL = NOT_APPLICABLE / no pipeline created
+RESOURCE_RELEASE = NOT_APPLICABLE / no runtime resources allocated
+NO_BACKGROUND_PIPELINE = PASS / runtime not started
+NO_HANG = NOT_APPLICABLE / runtime not started
+RUNTIME_FAILURE_CLASS = POLICY_FAILURE
+FOCAL_TESTS = PASS / cameras.test_camera_rtsp_adapter 17/17
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+REAL_CAMERA_ACCESSED = NO
+LOCAL_APPLICATION_DATABASE_ACCESSED = YES / read-only camera and connection configuration resolution
+TEST_DATABASE = CREATED_AND_DESTROYED / focused Django test suite
+FERNET_KEY_GENERATED = NO
+SECRET_EXPOSED = NO
+COMMIT = NOT_AUTHORIZED / NOT_CREATED
+PUSH = NOT_AUTHORIZED / NOT_PERFORMED
+
+ACTIVITY_COMPLETE = NO / policy gate failed before real RTSP validation
+NEXT_REQUIRED_ACTIVITY = resolve the camera profile's missing authorized RTSP path through a separately authorized configuration activity, then rerun this homologation; preserve the exact target and port scope
+HANDOFF_GATE = PENDING / registry, DAG and CAM-INT-03 contract status headers still have the divergence recorded in section 52
+PROJECT_STATE_UPDATE = PASS / correction and fail-closed homologation result recorded
+```
+
+O reparo local do adapter permanece válido: o pipeline constrói com GStreamer
+1.28.7, a prova sintética `videotestsrc` ligou o pad dinâmico ao `appsink`, e
+os testes focais passaram novamente (17/17). Nesta tentativa, a policy
+process-local aceitou o escopo exato e negou os controles negativos, mas a
+autorização positiva falhou em fail-closed porque o perfil RTSP ativo não tem
+`default_path`; o validador retornou `MISCONFIGURED_POLICY` / “Target policy
+path is missing”. A resolução de câmera/configuração foi read-only. Por esse
+gate, nenhum socket, chave Fernet, credencial ou stream foi acessado; portanto
+codec, transporte, pad real, sample e shutdown do pipeline permanecem sem
+validação. `manage.py check` e `git diff --check` passaram. A correção e o
+checkpoint continuam locais, sem staging ou commit.
+
+## 54. CAM-INT-03-TARGET-POLICY-CONFIGURATION-CONTRACT — contrato proposto (2026-10-07)
+
+Snapshot histórico anterior à autorização de implementação; consultar a seção
+55 para o estado técnico corrente.
+
+```text
+ACTIVITY = CAM-INT-03-TARGET-POLICY-CONFIGURATION-CONTRACT
+CLASSIFICATION = ARCHITECTURAL_ADJUDICATION / IMPLEMENTATION_CONTRACT
+ACTIVITY_STATUS = CONTRACT_PROPOSED / ARCHITECTURE_CONFIRMED
+PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+BRANCH = master
+HEAD = 0483f3bbca8108bc45b78b70d39577b1e30b96df
+ORIGIN_MASTER_LOCAL_REF = 0483f3bbca8108bc45b78b70d39577b1e30b96df
+DIVERGENCE_VS_LOCAL_ORIGIN_REF = 0 / 0
+REMOTE_QUERIED = NO / referência local não prova o remoto atual
+WORKTREE_AT_ENTRY = DIRTY / gst_adapter.py e três documentos de continuidade
+STAGING = EMPTY
+BOOTSTRAP_ROOT_CAUSE_CLASS = CASE_C
+CONFIGURATION_CONTRACT_COMPLETE = YES / especificação proposta; código não implementado
+CONFIGURATION_SOURCE = TRUSTED_ENVIRONMENT
+PRODUCTION_PARSER = TargetPolicy.from_environment / recebe mapping explícito
+NEW_ENVIRONMENT_KEY = ARGOS_CAMERA_ALLOWED_PATHS
+RUNTIME_COMPOSITION_ROOT = cameras.integracao.rtsp.runtime.run_camera_connection_test_from_environment
+POLICY_LIFETIME = PER_INVOCATION
+SERVICE_ENV_COUPLING = NONE
+DATABASE_POLICY_PERSISTENCE = NONE
+TARGET_POLICY_SEMANTICS_CHANGE = NO
+FROM_ENVIRONMENT_CAPABILITY_EXTENSION = PLANNED
+IMPLEMENTATION_AUTHORIZED = NO
+IMPLEMENTATION = DEFERRED_NO_AUTHORITY
+NEXT_REQUIRED_ACTIVITY = CAM-INT-03-TARGET-POLICY-CONFIGURATION-IMPLEMENTATION
+NEXT_ACTIVITY_AUTHORIZED = NO / requer autorização explícita separada
+REAL_RTSP_HOMOLOGATION = NOT_HOMOLOGATED / permanece pendente após implementação
+GLOBAL_HANDOFF_STATUS_RECONCILIATION = PENDING / divergência histórica pré-R1 em registry, DAG e contrato RTSP
+ACTIVITY_HANDOFF_GATE = PASS / contrato, evidências, limites e próxima ação recuperáveis
+PROJECT_STATE_UPDATE = PASS
+CODE_CHANGED = NO / nesta atividade; delta anterior do adapter preservado
+DB_CHANGED = NO
+CONFIG_CHANGED = NO
+DOCUMENTS_CHANGED = YES / contrato e continuidade exigidos pela governança
+RTSP_SESSION_STARTED = NO
+TESTS_RUN = NO / inspeção estática; plano futuro no contrato
+EXECUTION_MODE = DIRECT
+SUBAGENTS_USED = 0
+SKILL_SELECTED = NONE
+PLUGIN_SELECTED = NONE
+COMMIT = NOT_AUTHORIZED / NOT_PERFORMED
+PUSH = NOT_AUTHORIZED / NOT_PERFORMED
+ACTIVITY_COMPLETE = YES / adjudicação e proposta contratual documentadas; não implementação ou homologação
+```
+
+Contrato especializado:
+`docs/projeto/contracts/backend/camera/CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md`.
+A inspeção confirmou as cinco dimensões em `from_mapping`, a ausência de paths
+no parser de ambiente e a falta de composição produtiva do serviço manual.
+O runtime proposto exige portas e paths RTSP antes de chamar o serviço e
+deriva `environment_allowed_ports` da mesma policy. Isso preserva a validação
+existente, inclusive seu uso de paths de perfil por consumidores internos,
+sem permitir esse fallback na nova entrada produtiva.
+
+A instrução atual adjudica que a URI da câmera resolve corretamente; não houve
+nova consulta ao banco ou à câmera nesta atividade. A explicação causal da
+seção 53 (necessidade de preencher `default_path`) fica supersedida quanto à
+retomada: o gap é o contrato de ambiente/bootstrap, e nenhum campo da câmera ou
+perfil deve mudar. Nenhum valor interno de homologação foi adicionado ao contrato.
+O reparo anterior do adapter e as alterações documentais locais foram preservados.
+Gates globais e status de outras lanes não foram promovidos.
+
+## 55. CAM-INT-03-TARGET-POLICY-CONFIGURATION-IMPLEMENTATION — technical pass local (2026-10-07)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = CAM-INT-03-TARGET-POLICY-CONFIGURATION-IMPLEMENTATION
+CLASSIFICATION = CONTRACT_IMPLEMENTATION
+STATUS = IMPLEMENTED_LOCALLY / TECHNICAL_PASS
+ACTIVITY_COMPLETION_PERCENT = 100
+PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+BRANCH = master
+HEAD = 0483f3bbca8108bc45b78b70d39577b1e30b96df
+ORIGIN_MASTER_LOCAL_REF = 0483f3bbca8108bc45b78b70d39577b1e30b96df
+BASELINE_DIRTY_FILES = M cameras/integracao/rtsp/gst_adapter.py; M docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md; M docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md; M docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; ?? docs/projeto/contracts/backend/camera/CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md
+BASELINE_DIFF_STAT = 4 tracked files / 243 insertions / 2 deletions; contrato novo untracked
+FILES_CHANGED_THIS_ACTIVITY = cameras/integracao/target_policy.py; cameras/test_camera_target_policy.py; cameras/integracao/rtsp/runtime.py; cameras/test_camera_rtsp_runtime.py; docs/projeto/contracts/backend/camera/CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md; docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md
+TARGET_POLICY_ENV_PATH_SUPPORT = PASS
+RUNTIME_COMPOSITION_ROOT = PASS
+SERVICE_ENV_COUPLING = NONE
+POLICY_LIFETIME = PER_INVOCATION
+FAIL_CLOSED_BOOTSTRAP = PASS
+TARGET_POLICY_TESTS = 24/24 PASS
+RTSP_RUNTIME_TESTS = 5/5 PASS
+RTSP_ADAPTER_TESTS = 17/17 PASS
+RTSP_URI_TESTS = REQUESTED_MODULE_ABSENT / cameras.test_camera_rtsp_uri não existe neste checkout
+RTSP_URI_EQUIVALENT_TESTS = cameras.test_camera_connection_config / 8/8 PASS
+CAM_INT_03_FOCAL_TESTS = cameras.test_camera_rtsp_adapter / 17/17 PASS
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+CONTRACT_UPDATE = PASS
+PROJECT_STATE_UPDATE = PASS
+REAL_RTSP_SESSION_STARTED = NO
+SECRET_ACCESSED = NO
+DATABASE_CHANGED = NO / banco temporário dos testes criado e destruído
+NEW_ARCHITECTURAL_DECISION = NONE
+CONTRACT_DEVIATION = NONE
+TEST_SUITE_NAME_DEVIATION = cameras.test_camera_rtsp_uri ausente; cameras.test_camera_connection_config executada como equivalente (8/8)
+CAM_INT_03_RUNTIME_STATUS = NOT_HOMOLOGATED
+IMPLEMENTATION_STATUS = TECHNICAL_PASS
+STAGING = EMPTY
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+NEXT_RECOMMENDED_ACTIVITY = CAM-INT-03-REAL-RTSP-RUNTIME-HOMOLOGATION-R2
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES / implementação local, regressões e atualização de estado concluídas
+```
+
+`TargetPolicy.from_environment` agora transporta `ARGOS_CAMERA_ALLOWED_PATHS`
+para `from_mapping`, sem mudar `validate`. A gramática rejeita grupos e membros
+vazios, scheme ausente/não canônico/desconhecido e scheme de path sem porta;
+preserva duplicatas e conteúdo do path. A ausência da chave mantém compatibilidade
+do construtor genérico.
+
+`cameras.integracao.rtsp.runtime.run_camera_connection_test_from_environment`
+monta a policy por chamada, exige CIDR, porta RTSP e path RTSP, deriva as portas
+da policy e injeta policy, portas, adapter, timeouts e clocks no serviço. Bootstrap
+inválido retorna `MISCONFIGURED_POLICY` / `TARGET_BLOCKED`, A/B/C/D `NOT_RUN`,
+duração zero e timestamp UTC-aware, antes de serviço, resolver de credencial,
+adapter ou socket. `service.py`, configuração da câmera e adapter não foram
+modificados nesta atividade. Nenhuma sessão real foi iniciada.
+
+Comandos de validação executados pelo Python do ambiente do repositório:
+
+```text
+& '.venv\Scripts\python.exe' manage.py test cameras.test_camera_target_policy — 24/24
+& '.venv\Scripts\python.exe' manage.py test cameras.test_camera_rtsp_runtime — 5/5
+& '.venv\Scripts\python.exe' manage.py test cameras.test_camera_rtsp_adapter — 17/17
+& '.venv\Scripts\python.exe' manage.py test cameras.test_camera_connection_config — 8/8 (cobertura equivalente de URI)
+& '.venv\Scripts\python.exe' manage.py test cameras.test_camera_rtsp_adapter — 17/17 (focal CAM-INT-03 repetida)
+& '.venv\Scripts\python.exe' manage.py check — PASS
+git diff --check — PASS
+```
+
+O label solicitado `cameras.test_camera_rtsp_uri` falhou por ausência do módulo;
+a busca no checkout encontrou URI RTSP coberta por
+`cameras.test_camera_connection_config`, cuja suíte passou. O registro não
+promove homologação, readiness global ou status de outra lane. Mudanças baseline
+locais, inclusive o reparo anterior de `gst_adapter.py`, foram preservadas.
+
+## 56. CAM-INT-03-INDEPENDENT-END-TO-END-TECHNICAL-AUDIT — causa comprovada (2026-10-07)
+
+Relatório completo, evidências, matriz de hipóteses e plano de correção:
+`docs/projeto/audits/CAM-INT-03_INDEPENDENT_END_TO_END_TECHNICAL_AUDIT.md`.
+
+```text
+ACTIVITY = CAM-INT-03-INDEPENDENT-END-TO-END-TECHNICAL-AUDIT
+STATUS = AUDIT_COMPLETE / ROOT_CAUSE_PROVEN
+PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+BRANCH = master
+HEAD = 0483f3bbca8108bc45b78b70d39577b1e30b96df
+ORIGIN_MASTER_LOCAL_REF = 0483f3bbca8108bc45b78b70d39577b1e30b96df
+REMOTE_QUERIED = NO
+WORKTREE_AT_ENTRY = DIRTY / 6 modified tracked + 3 untracked; lista no relatório
+WORKTREE_AT_EXIT = DIRTY / baseline preservada + relatório novo + continuidade atualizada
+STAGING = EMPTY
+ROOT_CAUSE = PROVEN / depayloader dinâmico permanece NULL sem sync_state_with_parent
+ROOT_CAUSE_CONFIDENCE = PROVEN
+PARENT_STATE_AT_DEPAY_ADD = PAUSED / pending PLAYING; após pedido PLAYING
+UNCHANGED_RUNTIME = A/B/C PASS; D TIMEOUT; 15.028 s; depay NULL; 0 buffers depay
+SYNC_ONLY_DIAGNOSTIC_RUNTIME = A/B/C/D PASS; 0.663 s; depay PLAYING; 328 input / 16 output; 2 appsink buffers
+ACTUAL_DECODER_IN_TREATMENT = d3d12h264dec
+CONTROL_SCOPE = duas tentativas TCP limitadas de 15 s; somente câmera autorizada
+INDEPENDENT_CONTROL_PIPELINE = NOT_REQUIRED / causa isolada por intervenção única
+STAGE_C_CAN_PASS_WITH_ZERO_MEDIA_BUFFERS = YES
+GSTREAMER_RUNTIME = 1.28.7 / caminho H264 funcional comprovado
+GIOLIBPROXY_CLASSIFICATION = NON_CAUSAL / detalhe do loader permanece UNRESOLVED
+FOCAL_TESTS = PASS / 66; adapter 17 + runtime 5 + policy 24 + configuração 8 + resolução 12
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+CREDENTIAL_PERSISTENCE = ROLLED_BACK
+DATABASE_FILE_HASH_UNCHANGED = YES
+SECRET_IN_NEW_DIAGNOSTICS_OR_DOCUMENTATION = NO
+REPOSITORY_CODE_CHANGED = NO / nesta auditoria
+REPOSITORY_DOCUMENTATION_CHANGED = YES / relatório e continuidade
+PIPELINES_FINAL_STATE = NULL / ambas as tentativas
+CODE_FIX_REQUIRED = YES
+ARCHITECTURAL_CHANGE_REQUIRED = NO
+CONTRACT_CHANGE_REQUIRED = NO / comportamento; status históricos exigem reconciliação própria
+CONTRACT_STATUS_DIVERGENCE = PENDING / cabeçalhos históricos pré-publicação preservados
+CAM_INT_03_RUNTIME_STATUS = NOT_HOMOLOGATED / código produtivo continua sem sync
+IMPLEMENTATION_AUTHORIZED = NO / DEFERRED_NO_AUTHORITY
+PRODUCTION_FIX_AUTHORIZED = NO
+NEXT_RECOMMENDED_ACTIVITY = CAM-INT-03-DYNAMIC-DEPAYLOADER-STATE-FIX-AND-REAL-RUNTIME-REVALIDATION
+NEXT_ACTIVITY_AUTHORIZED = NO
+COMMIT_PUSH = NOT_PERFORMED
+EXECUTION_MODE = DIRECT
+SUBAGENTS_USED = 0
+SKILL_SELECTED = activity-progress-reporting / instrução de comunicação desta sessão
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_HANDOFF_GATE = PASS / relatório e próxima ação recuperáveis; divergência global explícita
+ACTIVITY_COMPLETION_PERCENT = 100 / auditoria, não correção/homologação
+ACTIVITY_COMPLETE = YES / auditoria encerrada
+```
+
+A intervenção ficou exclusivamente no harness TEMP: sincronizar o elemento
+logo após add liberou encoded buffers, autoplug, raw pad e appsink. Nenhum
+arquivo de código/teste, configuração de câmera, policy persistente ou RBAC
+foi alterado. O serviço canônico e o composition root foram exercitados com
+credencial temporária por transaction/rollback; o banco manteve SHA-256
+idêntico. O aviso de giolibproxy também ocorreu no processo que entregou vídeo.
+
+Achados secundários sem causalidade neste bloqueio: retorno do raw pad link
+ignorado; exceções de callback sem canal explícito para o loop; bus sem
+observabilidade de estados; teardown sem confirmação/bound absoluto no código.
+As limitações e testes necessários estão no relatório. Não promover readiness
+global, suporte modelo/firmware, homologação ou outras lanes pelo experimento.
+## 57. CAM-INT-03 — correção local validada; homologação aguardando injeção process-local (2026-10-07)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = CAM-INT-03-DYNAMIC-DEPAYLOADER-STATE-FIX-AND-REAL-RUNTIME-REVALIDATION
+STATUS = LOCAL_FIX_AND_VALIDATION_PASS / REAL_RUNTIME_NOT_EXECUTED
+PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+BRANCH = master
+HEAD = 0483f3bbca8108bc45b78b70d39577b1e30b96df
+ORIGIN_MASTER_LOCAL_REF = 0483f3bbca8108bc45b78b70d39577b1e30b96df
+WORKTREE_AT_ENTRY = DIRTY / 6 modified tracked + 4 untracked; list below
+BASELINE_DIRTY_SET = M cameras/integracao/rtsp/gst_adapter.py; M cameras/integracao/target_policy.py; M cameras/test_camera_target_policy.py; M docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md; M docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md; M docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; ?? cameras/integracao/rtsp/runtime.py; ?? cameras/test_camera_rtsp_runtime.py; ?? docs/projeto/audits/CAM-INT-03_INDEPENDENT_END_TO_END_TECHNICAL_AUDIT.md; ?? docs/projeto/contracts/backend/camera/CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md
+AUDIT_INPUT_HASHES = gst_adapter.py and test_camera_rtsp_adapter.py matched the manifest in audit §56 at entry
+ROOT_CAUSE = PROVEN / dynamic depayloader not synchronized with parent target
+FIX = IMPLEMENTED LOCALLY / sync_state_with_parent checked before upstream pad link
+SYNC_FAILURE = FAIL_CLOSED / deterministic DYNAMIC_ELEMENT_SYNC_FAILED, Stage C FAIL, no upstream media link
+SECONDARY_IGNORED_DECODEBIN_PAD_LINK_RETURN = OPEN_SECONDARY_FINDING / unchanged
+ADAPTER_TESTS = 19/19 PASS
+RTSP_RUNTIME_TESTS = 5/5 PASS
+TARGET_POLICY_TESTS = 24/24 PASS
+CONNECTION_CONFIG_TESTS = 8/8 PASS
+CREDENTIAL_RESOLUTION_TESTS = 12/12 PASS
+TOTAL_RELEVANT_TESTS = 68/68 PASS
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+REAL_RUNTIME_EXECUTED = NO / process-local lab username/password not available to this runner
+HISTORICAL_KEYRING_RESTORATION = NOT_REQUESTED / superseded by user's corrected instruction
+FRESH_EPHEMERAL_FERNET_KEY = NOT_GENERATED / generate in the runtime process after lab credential injection
+ACTOR_AND_CAMERA_LOCAL_PRESENCE = YES / run and credential-change permissions, camera, and config exist; sanitized check only
+POLICY_BOOTSTRAP = NOT_EXECUTED
+TARGET_AUTHORIZATION = NOT_EXECUTED
+RTSP_REACHABILITY = NOT_EXECUTED
+CODEC_AND_STAGES_A_B_C_D = NOT_EXECUTED
+PIPELINE_FINAL_STATE = NOT_CREATED / no real pipeline started
+CREDENTIAL_PERSISTENCE = NOT_MUTATED
+DATABASE_PERSISTENTLY_CHANGED = NO / read-only inspection; test databases were isolated
+CAM_INT_03_RUNTIME_STATUS = NOT_HOMOLOGATED
+FILES_CHANGED_THIS_ACTIVITY = cameras/integracao/rtsp/gst_adapter.py; cameras/test_camera_rtsp_adapter.py; PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md
+STAGING = EMPTY
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS / checkpoint records local pass and external prerequisite
+ACTIVITY_COMPLETION_PERCENT = 80%
+ACTIVITY_COMPLETE = NO / resume after temporary lab username/password are injected securely into the local process
+NEXT_REQUIRED_ACTIVITY = Make the temporary lab username/password available through secure process-local injection; generate a fresh in-process Fernet key, call replace_camera_credential within an outer transaction, run the canonical production composition root with timeout_seconds=5.0, and roll back
+ARCHITECTURAL_CHANGE = NO
+CONTRACT_CHANGE = NO
+CONTRACT_DEVIATION = NONE
+```
+
+## 58. CAM-INT-03-DATABASE-PERSISTENCE-RECONCILIATION — homologação reconciliada (2026-10-07)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = CAM-INT-03-DATABASE-PERSISTENCE-RECONCILIATION
+CLASSIFICATION = POST-HOMOLOGATION-EVIDENCE-RECONCILIATION
+STATUS = PASS
+EXECUTION_MODE = DIRECT / READ_ONLY
+BRANCH = master
+HEAD_AT_ENTRY = 0483f3bbca8108bc45b78b70d39577b1e30b96df
+WORKTREE_AT_ENTRY = DIRTY / pre-existing CAM-INT-03 implementation and documentation preserved
+DATABASE_ENGINE = django.db.backends.sqlite3
+DATABASE_PATH = db.sqlite3
+DATABASE_PERSISTENCE_CHECK = credential_snapshot before/after outer transaction
+DATABASE_CHECK_USES = ROW_SNAPSHOT / not raw file hash
+SNAPSHOT_FIELDS = credential id, active_version_id, state, updated_by_id, updated_at; credential version count; credential.created/replaced audit count
+HARNESS_OUTPUT_CONSISTENCY = DEFECT / both labels use the same equality result; ROLLED_BACK and DATABASE_PERSISTENTLY_CHANGED=YES cannot co-occur in inspected harness
+SQLITE_JOURNAL_MODE = delete
+WAL_EXISTS = NO
+SHM_EXISTS = NO
+JOURNAL_EXISTS = NO
+FILE_HASH_CHANGED = UNRESOLVED / harness has no pre/post file hash
+FILE_MTIME_CHANGED = UNRESOLVED / no before measurement
+FILE_SIZE_CHANGED = UNRESOLVED / no before measurement; current size 512000 bytes
+ACTIVE_CREDENTIAL_REFERENCE_EXISTS = YES / camera 1 credential id 1 → active version id 2
+CREDENTIAL_ROW_COUNT = 1
+CREDENTIAL_VERSION_COUNT = 2
+TEMPORARY_CREDENTIAL_REMAINS = NO / pre/post rollback snapshot matched; active version and count remain at pre-test state
+CREDENTIAL_LOGICAL_STATE_RESTORED = YES
+RELEVANT_LOGICAL_STATE_CHANGED = NO / rollback snapshot matched; inspected RTSP diagnostic path has no persistent diagnostic/audit model write
+CHANGED_TABLES = NONE IDENTIFIED
+PERSISTENT_WRITE_PATHS_FOUND = replace_camera_credential writes credential/version rows and audit event inside the outer atomic transaction; harness forces rollback
+ON_COMMIT_CALLBACKS_RELEVANT = NO
+AUDIT_EVENT_PERSISTED = NO / credential audit count matched before/after
+OTHER_MODEL_WRITES = NO / service resolves configuration and credential read-only; adapter performs network/media work
+SQLITE_INTEGRITY = PASS / PRAGMA integrity_check = ok
+DATABASE_PERSISTENCE_VERDICT = LOGICALLY_UNCHANGED / HARNESS_SIGNAL_DEFECT
+ROOT_CAUSE = PROVEN / dynamic depayloader state was not synchronized with parent
+PRODUCTION_FIX = IMPLEMENTED / checked sync_state_with_parent before upstream RTP pad link
+TOTAL_RELEVANT_TESTS = 68/68 PASS
+MANAGE_PY_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+REAL_RUNTIME_STATUS = SUCCESS / existing homologation evidence supplied for this reconciliation
+REAL_CANONICAL_RUNTIME = SUCCESS
+REAL_RUNTIME_DURATION_SECONDS = 2.484
+STAGES = A:PASS; B:PASS; C:PASS; D:PASS
+CODEC = H264
+ROOT_CAUSE_FIX_STATUS = RESOLVED
+CREDENTIAL_ROLLBACK = PASS
+CAM_INT_03_RUNTIME_STATUS = HOMOLOGATED
+SECONDARY_PAD_LINK_FINDING = OPEN / decodebin→appsink ignored-link result remains separate
+GIOLIBPROXY_WARNING = NON_BLOCKING / NON_CAUSAL
+PROJECT_STATE_UPDATE = PASS
+REAL_RTSP_SESSION_STARTED_THIS_ACTIVITY = NO
+DATABASE_CHANGED_THIS_ACTIVITY = NO
+SECRET_ACCESSED = NO
+STAGING = EMPTY
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES
+NEXT_RECOMMENDED_ACTIVITY = CAM-INT-03-FINAL-REVIEW-AND-CHECKPOINT
+```
+
+O arquivo do harness em `%TEMP%` deriva `CREDENTIAL_PERSISTENCE` e
+`DATABASE_PERSISTENTLY_CHANGED` da mesma comparação `before_snapshot ==
+after_snapshot`; não mede o arquivo SQLite. O snapshot cobre metadados da
+credencial, ponteiro ativo, contagem de versões e contagem de eventos de
+criação/substituição. A indicação simultânea de rollback e banco alterado é
+inconsistente com essa implementação e foi adjudicada como defeito de detecção/
+rotulagem. Sem hash ou metadados anteriores à homologação, não se afirma mudança
+física do arquivo.
+
+A inspeção SQLite foi aberta em modo somente leitura. O estado atual da câmera
+1 contém uma credencial ativa e duas versões, com versão 2 ativa; a comparação
+do harness confirma a restauração lógica após rollback. A função de troca cria
+versão e evento de auditoria dentro da transação; o composition root/service
+apenas leem configuração e credenciais durante o diagnóstico. `integrity_check`
+retornou `ok`. A evidência funcional existente permanece A/B/C/D PASS, H264 e
+2,484 s; nenhuma nova sessão RTSP foi executada nesta reconciliação.
+
+O dirty set foi preservado. A alteração preexistente em `gst_adapter.py`
+(remoção da ligação estática decoder→appsink) foi mantida. Os testes dinâmicos
+modelam o pai em PAUSED com PLAYING pendente: o depayloader nasce NULL, só
+aceita fluxo depois de alcançar PLAYING, e uma falha de sync fecha o caminho
+antes da ligação RTP. A falha de sync usa o estado compartilhado existente do
+probe loop, sem redesenhar propagação global de callbacks.
+
+**Snapshot histórico supersedido pela seção 58:** naquela tentativa, o processo
+local não recebeu as credenciais temporárias e não executou RTSP; a instrução
+posterior forneceu evidência da homologação real e reconciliou a persistência.
+O estado atual não aguarda credenciais e não reutiliza a evidência de harness
+como homologação.
+
+## 59. CAM-INT-03-FINAL-REVIEW-AND-CHECKPOINT — revisão e checkpoint local (2026-10-07)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = CAM-INT-03-FINAL-REVIEW-AND-CHECKPOINT
+CLASSIFICATION = FINAL_REVIEW_AND_PUBLICATION
+STATUS = LOCAL_CHECKPOINT_PASS / REMOTE_PUBLICATION_PENDING
+ACTIVITY_COMPLETION_PERCENT = 90%
+BRANCH = master
+PRE_COMMIT_HEAD = 0483f3bbca8108bc45b78b70d39577b1e30b96df
+COMMIT_MESSAGE = fix(camera): homologate CAM-INT-03 RTSP runtime
+CAM_INT_03_RUNTIME_STATUS = HOMOLOGATED
+CAM_INT_03_IMPLEMENTATION = COMMITTED_LOCAL / REMOTE_PUBLICATION_PENDING
+ROOT_CAUSE = DYNAMIC_ELEMENT_LIFECYCLE_DEFECT / PROVEN
+ROOT_CAUSE_STATUS = RESOLVED
+PRODUCTION_FIX = checked dynamic depayloader sync_state_with_parent before releasing upstream RTP flow
+TARGET_POLICY_BOOTSTRAP_STATUS = RESOLVED
+RUNTIME_COMPOSITION_ROOT = run_camera_connection_test_from_environment / per-invocation policy, fail-closed bootstrap
+REAL_RUNTIME = SUCCESS / A-B-C-D PASS; H264; 2.484 s; production timeout 5.0 s
+DATABASE_PERSISTENCE_VERDICT = LOGICALLY_UNCHANGED / HARNESS_SIGNAL_DEFECT
+CREDENTIAL_PERSISTENCE = ROLLED_BACK
+SQLITE_INTEGRITY_CHECK = PASS
+SECONDARY_PAD_LINK_FINDING = OPEN_NON_BLOCKING
+GIOLIBPROXY = NON_BLOCKING / NON-CAUSAL_FOR_INCIDENT
+LOCAL_AUTH_PROVISIONING_FINDING = OPEN_NON_BLOCKING / local canonical group absent; homologation account had direct permissions
+DOCUMENTATION_HISTORICAL_CONFLICT = KNOWN_NON_BLOCKING / audit chronology and historical contract/registry/DAG headers preserved
+ADAPTER_TESTS = 19/19 PASS
+RTSP_RUNTIME_TESTS = 5/5 PASS
+TARGET_POLICY_TESTS = 24/24 PASS
+CONNECTION_CONFIG_TESTS = 8/8 PASS / URI-equivalent suite; requested rtsp_uri module absent
+CREDENTIAL_RESOLUTION_TESTS = 12/12 PASS
+TOTAL_RELEVANT_TESTS = 68/68 PASS
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+FINAL_DIFF_REVIEW = PASS
+SECRET_LITERAL_FOUND = NO
+SENSITIVE_FILES_STAGED = 0
+UNRELATED_FILES_STAGED = 0
+PROJECT_STATE_UPDATE = PASS
+STAGING = EMPTY / after commit
+WORKTREE = CLEAN / after commit
+PUSH = BLOCKED_BY_AUTO_REVIEW / NOT_PERFORMED; explicit user confirmation required
+LOCAL_HEAD_EQUALS_UPSTREAM = NO
+DIVERGENCE = 1/0 / local ahead 1, behind 0
+REMOTE_CONTINUATION_READY = NO / pending approved normal fast-forward push
+NEXT_RECOMMENDED_ACTIVITY = RESUME ARGOS BACKEND FROM NEXT OPEN ACTIVITY AFTER CAM-INT-03
+REAL_RTSP_SESSION_STARTED_THIS_ACTIVITY = NO
+```
+
+A revisão confirmou que o decodebin continua usando `pad-added`, a ligação
+estática decoder→appsink foi removida, o sync dinâmico é checado antes da
+ligação RTP e a falha fecha o diagnóstico sem promover Stage C. Cleanup mantém
+o pipeline em `NULL`. A composição cria `TargetPolicy` por chamada na fronteira
+de ambiente, injeta a mesma policy e suas portas RTSP no serviço, e falha antes
+de credencial ou rede quando a configuração é inválida. Os testes cobrem o pai
+em PAUSED com PLAYING pendente, sync com sucesso/falha e bloqueio de fluxo.
+
+O push normal para `origin/master` foi rejeitado pela revisão automática por
+publicar no branch padrão compartilhado sem uma confirmação de usuário
+verificável na solicitação de elevação. Nenhum push foi executado por rota
+alternativa. Aguardar autorização direta para concluir a publicação e então
+validar `HEAD = origin/master`, divergência `0/0` e prontidão de continuação
+remota. O commit local já contém o checkpoint CAM-INT-03 completo.
+
+O contrato de TargetPolicy e cabeçalhos de registry/DAG/contrato RTSP ainda
+contêm status de snapshots anteriores. Foram preservados como histórico; esta
+seção é a autoridade corrente de continuidade para CAM-INT-03. O relatório de
+auditoria permanece evidência histórica da auditoria e não foi reescrito para
+atribuir autorização retroativa ao fix. Nenhum finding secundário foi corrigido
+neste checkpoint.

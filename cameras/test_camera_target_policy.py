@@ -87,11 +87,104 @@ class TargetPolicyTests(TestCase):
             "ARGOS_CAMERA_ALLOWED_CIDRS": "10.42.0.0/24",
             "ARGOS_CAMERA_DENIED_CIDRS": "10.42.0.128/25",
             "ARGOS_CAMERA_ALLOWED_PORTS": "rtsp:554,8554;http:80",
+            "ARGOS_CAMERA_ALLOWED_PATHS": "rtsp:/stream-a,/stream-b;http:/image.jpg",
             "ARGOS_CAMERA_ALLOWED_FARMS": "FARM-A",
         })
         self.assertIn("rtsp", parsed.ports_by_scheme)
+        self.assertEqual(parsed.allowed_paths_by_scheme["rtsp"], ("/stream-a", "/stream-b"))
+        self.assertEqual(parsed.allowed_paths_by_scheme["http"], ("/image.jpg",))
         with self.assertRaises(TargetPolicyError):
             TargetPolicy.from_environment({})
+
+    def test_environment_path_parser_preserves_case_colons_and_duplicate_paths(self):
+        parsed = TargetPolicy.from_environment({
+            "ARGOS_CAMERA_ALLOWED_CIDRS": "10.42.0.0/24",
+            "ARGOS_CAMERA_ALLOWED_PORTS": "rtsp:554",
+            "ARGOS_CAMERA_ALLOWED_PATHS": "rtsp: /Mixed/Path:Camera, /Mixed/Path:Camera ",
+        })
+        self.assertEqual(
+            parsed.allowed_paths_by_scheme["rtsp"],
+            ("/Mixed/Path:Camera", "/Mixed/Path:Camera"),
+        )
+
+    def test_environment_path_parser_uses_last_duplicate_scheme_group(self):
+        parsed = TargetPolicy.from_environment({
+            "ARGOS_CAMERA_ALLOWED_CIDRS": "10.42.0.0/24",
+            "ARGOS_CAMERA_ALLOWED_PORTS": "rtsp:554",
+            "ARGOS_CAMERA_ALLOWED_PATHS": "rtsp:/first;rtsp:/last,/also-last",
+        })
+        self.assertEqual(parsed.allowed_paths_by_scheme["rtsp"], ("/last", "/also-last"))
+
+    def test_missing_environment_paths_remains_compatible_with_generic_constructor(self):
+        parsed = TargetPolicy.from_environment({
+            "ARGOS_CAMERA_ALLOWED_CIDRS": "10.42.0.0/24",
+            "ARGOS_CAMERA_ALLOWED_PORTS": "rtsp:554",
+        })
+        self.assertEqual(dict(parsed.allowed_paths_by_scheme), {})
+        generic = TargetPolicy.from_mapping({
+            "allowed_cidrs": ["10.42.0.0/24"],
+            "ports_by_scheme": {"rtsp": [554]},
+        })
+        self.assertEqual(dict(generic.allowed_paths_by_scheme), {})
+
+    def test_environment_path_parser_rejects_malformed_and_mismatched_groups_safely(self):
+        invalid_values = (
+            "rtsp",                         # no colon
+            ":/stream",                     # empty scheme
+            "RTSP:/stream",                 # noncanonical uppercase scheme
+            "ftp:/stream",                  # unknown scheme
+            "rtsp:/stream;",                # trailing empty group
+            ";rtsp:/stream",                # leading empty group
+            "rtsp:/stream,,/other",         # empty CSV member
+            "rtsp:/stream,",                # trailing empty member
+            "rtsp:",                        # no path
+            "",                             # present but empty
+            "   ",                          # present but whitespace only
+            "rtsp:stream",                  # path without leading slash
+            "rtsp:/stream;http:/image",     # HTTP path has no matching port scheme
+        )
+        for value in invalid_values:
+            with self.subTest(value=value):
+                with self.assertRaises(TargetPolicyError) as raised:
+                    TargetPolicy.from_environment({
+                        "ARGOS_CAMERA_ALLOWED_CIDRS": "10.42.0.0/24",
+                        "ARGOS_CAMERA_ALLOWED_PORTS": "rtsp:554",
+                        "ARGOS_CAMERA_ALLOWED_PATHS": value,
+                    })
+                if value:
+                    self.assertNotIn(value, str(raised.exception))
+
+    def test_path_authorization_remains_an_independent_exact_dimension(self):
+        allowed = self.validate()
+        wrong_path = self.validate("rtsp://10.42.0.10/other")
+        wrong_port = self.validate("rtsp://10.42.0.10:8555/stream1")
+        wrong_ip = policy(allowed_paths_by_scheme={"rtsp": ["/stream1"]}).validate(
+            "10.43.0.11", "rtsp://10.43.0.11/stream1",
+            allowed_schemes=("rtsp",), allowed_ports=(554,), allowed_paths=("/stream1",), farm="FARM-A",
+        )
+        denied_cidr = policy().validate(
+            "10.42.0.200", "rtsp://10.42.0.200/stream1",
+            allowed_schemes=("rtsp",), allowed_ports=(554,), allowed_paths=("/stream1",), farm="FARM-A",
+        )
+        wrong_farm = self.validate(farm="FARM-B")
+        self.assertEqual(allowed.decision, TargetDecision.AUTHORIZED_TARGET)
+        self.assertEqual(wrong_path.decision, TargetDecision.DENIED_TARGET)
+        self.assertEqual(wrong_port.decision, TargetDecision.DENIED_TARGET)
+        self.assertEqual(wrong_ip.decision, TargetDecision.DENIED_TARGET)
+        self.assertEqual(denied_cidr.decision, TargetDecision.DENIED_TARGET)
+        self.assertEqual(wrong_farm.decision, TargetDecision.DENIED_TARGET)
+
+    def test_root_and_star_paths_are_never_implicit_or_wildcards(self):
+        root_not_configured = policy().validate(
+            "10.42.0.10", "rtsp://10.42.0.10/",
+            allowed_schemes=("rtsp",), allowed_ports=(554,), allowed_paths=("/",), farm="FARM-A",
+        )
+        star_is_literal = policy(allowed_paths_by_scheme={"rtsp": ["/*"]}).validate(
+            "10.42.0.10", "rtsp://10.42.0.10/stream1",
+            allowed_schemes=("rtsp",), allowed_ports=(554,), allowed_paths=("/*",), farm="FARM-A",
+        )
+        self.assertEqual(root_not_configured.decision, TargetDecision.DENIED_TARGET)
+        self.assertEqual(star_is_literal.decision, TargetDecision.DENIED_TARGET)
 
     def test_policy_is_immutable(self):
         parsed = policy()

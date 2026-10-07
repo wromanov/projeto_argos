@@ -11,8 +11,8 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; CAM-INT-03-RUNTIME-02 section 52 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; CAM-INT-03-RUNTIME-02 section 20.19 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; CAM-INT-03 persistence reconciliation section 58 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; CAM-INT-03 persistence reconciliation section 20.25 |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; UI V2 authority mapped in section 16 |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
@@ -530,12 +530,12 @@ publicação permanece pendente e não há evidência de alinhamento com
 `origin/master` remoto. Ver seção 51 de `PROJECT_STATE.md` antes de qualquer
 continuação. CAM-INT-04 exige reconciliação; nenhum successor foi iniciado.
 
-## 24. CAM-INT-03-RUNTIME-02 — homologação bloqueada por defeito no adapter (2026-10-06)
+## 24. CAM-INT-03-RUNTIME-02 — checkpoint histórico do defeito no adapter (2026-10-06)
 
 | Path | Papel | Vigência |
 |---|---|---|
-| docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md, seção 52 | Snapshot sanitizado, baseline Git, evidências e próxima ação | CURRENT / checkpoint documental solicitado |
-| docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md, seção 20.19 | Handoff do defeito, limites locais e autorização | CURRENT / checkpoint documental solicitado |
+| docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md, seção 52 | Snapshot sanitizado, baseline Git, evidências e próxima ação | HISTORICAL / supersedido pelos checkpoints posteriores |
+| docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md, seção 20.19 | Handoff do defeito, limites locais e autorização | HISTORICAL / reparo local registrado depois |
 | docs/projeto/contracts/backend/camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md | Contrato e critérios do adapter RTSP | CANONICAL / comportamento; cabeçalho de status pré-R1, ver PROJECT_STATE seção 52 |
 
 CAM-INT-03 runtime permanece bloqueada e não homologada. O runtime GStreamer
@@ -544,3 +544,133 @@ antes de o callback pad-added ser registrado. A próxima atividade é uma
 correção autorizada dessa ligação, seguida de validação com GStreamer real.
 A credencial local depende de chave efêmera da sessão de trabalho e não é
 portátil; nenhum segredo ou banco foi copiado para o Git. Os cabeçalhos do contrato CAM-INT-03, do registry e do DAG ainda refletem o estado anterior à publicação de R1 e do adapter; sua reconciliação fica para atividade documental separada.
+
+O diagnóstico do defeito dinâmico foi posteriormente reparado localmente; este
+checkpoint não descreve a causa ou o estado técnico corrente.
+
+## 25. CAM-INT-03-REAL-RTSP-RUNTIME-HOMOLOGATION — bloqueada no gate de policy (2026-10-07)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md, seção 53 | Snapshot do reparo, gate de policy, validações e status de homologação | HISTORICAL / retomada atual na seção 55 |
+| docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md, seção 20.20 | Handoff do reparo, resultado fail-closed e limite da validação real | HISTORICAL / retomada atual na seção 20.22 |
+| docs/projeto/contracts/backend/camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md | Comportamento e critérios do adapter RTSP | CANONICAL / sem alteração nesta atividade |
+
+O defeito de ligação estática foi removido localmente; a prova dinâmica
+sintética e os 17 testes focais passaram. Na tentativa real, a policy exata
+carregou e os controles negativos passaram, mas o destino autorizado foi
+recusado porque o perfil RTSP não define `default_path`. A atividade parou
+antes de TCP ou stream real e permanece `NOT_HOMOLOGATED`; não houve geração de
+chave, acesso a segredo ou mutação de credencial. `manage.py check` e
+`git diff --check` passaram. Os cabeçalhos de status do registry, DAG e
+contrato CAM-INT-03 mantêm a divergência histórica registrada na seção 52 de
+`PROJECT_STATE.md`; não foram alterados nesta atividade.
+
+Este registro antecede a implementação do transporte de paths e do composition
+root; use a seção 27 para o estado atual.
+
+## 26. CAM-INT-03 — contrato de configuração TargetPolicy (2026-10-07)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/contracts/backend/camera/CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md` | Contrato, implementação e evidências técnicas em §8 | CURRENT / IMPLEMENTED_LOCALLY / TECHNICAL_PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 54 | Snapshot da adjudicação contratual anterior | HISTORICAL / proposta supersedida pela seção 55 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.21 | Handoff da proposta contratual | HISTORICAL / supersedido pela seção 20.22 |
+| `docs/projeto/contracts/backend/camera/CAM-INT-07_INTEGRATION_HARDENING_CONTRACT.md` | Semântica de validação de destino e baseline de hardening | CANONICAL / preservado |
+| `docs/projeto/contracts/backend/camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md` | Comportamento RTSP e credenciais | CANONICAL / cabeçalho histórico divergente já registrado |
+
+As seções 24–25 preservam tentativas históricas. Para a causa do gate de policy e
+a próxima ação, prevalece a adjudicação atual: URI da câmera resolvida corretamente,
+gap no transporte de paths pelo ambiente e no composition root. Não preencher
+default_path nem modificar câmera/perfil. Policy de ambiente segue independente da
+configuração da câmera. Implementação, configuração efetiva e nova homologação
+dependem de autorização própria. A reconciliação geral de status pré-R1 no registry,
+DAG e contrato RTSP continua pendente, fora deste escopo contratual.
+
+## 27. CAM-INT-03 — implementação local da configuração TargetPolicy (2026-10-07)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/contracts/backend/camera/CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md`, §8 | Contrato aplicado, comportamento e evidências das suítes | CURRENT / IMPLEMENTED_LOCALLY / TECHNICAL_PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 55 | Snapshot de implementação, baseline dirty, testes e gates | CURRENT / local / sem staging |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.22 | Handoff da implementação e próxima atividade | CURRENT |
+| `docs/projeto/contracts/backend/camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md` | Contrato RTSP preservado; comportamento do adapter | CANONICAL / sem alteração nesta implementação |
+| `docs/projeto/contracts/backend/camera/CAM-INT-07_INTEGRATION_HARDENING_CONTRACT.md` | Semântica independente de autorização de destino | CANONICAL / sem alteração nesta implementação |
+
+`ARGOS_CAMERA_ALLOWED_PATHS` e o composition root foram implementados e
+validados localmente. CAM-INT-03 permanece `NOT_HOMOLOGATED`; nenhuma sessão
+real foi executada. Próximo passo recomendado: homologação RTSP real R2, que
+exige authority própria. A divergência histórica de status pré-R1 em registry,
+DAG e contrato RTSP permanece fora desta atividade.
+
+## 28. CAM-INT-03-INDEPENDENT-END-TO-END-TECHNICAL-AUDIT — causa comprovada (2026-10-07)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/audits/CAM-INT-03_INDEPENDENT_END_TO_END_TECHNICAL_AUDIT.md` | Prova causal, stages/topologia, harness/logs, ambiente, testes, matriz e recomendação | CURRENT / EVIDENCE_REPORT; não autoriza patch |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 56 | Baseline, resultado, proteção de estado e próxima atividade | CURRENT / audit complete; fix not authorized |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.23 | Retomada, causa comprovada e limites | CURRENT / fix deferred; NOT_HOMOLOGATED |
+| `docs/projeto/contracts/backend/camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md` | Comportamento normativo RTSP | CANONICAL / unchanged; status histórico divergente explícito |
+
+A auditoria isolou a ausência de sync do depayloader: controle produtivo
+falha D; intervenção única no harness TEMP entrega vídeo raw ao appsink.
+Código/testes preservados; transaction revertida e hash do banco idêntico.
+Próxima atividade recomendada: correção de estado dinâmico e revalidação real,
+somente sob autorização própria. Não promover homologação/readiness ou outras
+lanes; reconciliação global de status históricos permanece pendente.
+
+## 29. CAM-INT-03 — correção do estado dinâmico e checkpoint de homologação (2026-10-07)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `cameras/integracao/rtsp/gst_adapter.py` e `cameras/test_camera_rtsp_adapter.py` | Correção de lifecycle e cobertura sync/falha | LOCAL / 19 TESTS PASS; preserva alteração baseline do adapter |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 57 | Baseline, validações, pré-requisito ausente e retomada | HISTORICAL / superseded by section 58 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.24 | Handoff do patch e bloqueio ambiental | HISTORICAL / superseded by section 20.25 |
+| `docs/projeto/audits/CAM-INT-03_INDEPENDENT_END_TO_END_TECHNICAL_AUDIT.md` | Autoridade da causa raiz comprovada | CANONICAL EVIDENCE / unchanged |
+| `docs/projeto/contracts/backend/camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md` | Contrato comportamental do adapter | CANONICAL / unchanged |
+
+O patch e 68 testes relevantes passaram, mas a homologação real não foi
+executada porque os valores de usuário/senha temporários não estavam disponíveis
+ao processo. O usuário autorizou uma chave Fernet nova, efêmera, e uso de
+`replace_camera_credential` dentro de transação externa com rollback;
+restauração de material histórico foi explicitamente cancelada. CAM-INT-03
+permanece `NOT_HOMOLOGATED`. Retomar a validação canônica de 5 segundos quando
+a credencial temporária estiver disponível por injeção process-local segura.
+
+
+## 30. CAM-INT-03-DATABASE-PERSISTENCE-RECONCILIATION — homologação reconciliada (2026-10-07)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 58 | Snapshot da reconciliação SQLite, veredicto do sinal e homologação | CURRENT / PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.25 | Handoff e próxima atividade | CURRENT / HOMOLOGATED |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Índice dos documentos atuais | CURRENT / esta atividade |
+| `docs/projeto/audits/CAM-INT-03_INDEPENDENT_END_TO_END_TECHNICAL_AUDIT.md` | Evidência da causa raiz e runtime anterior | CANONICAL EVIDENCE / unchanged |
+
+O harness mede snapshot de linhas de credencial, não hash do arquivo. Seus dois
+labels conflitantes derivam da mesma comparação; classificado como defeito de
+sinal/rotulagem. Snapshot lógico restaurado, sem outro caminho de escrita
+persistente identificado, SQLite íntegro. CAM-INT-03 está homologada pela
+execução real já registrada no pedido (A/B/C/D PASS, H264, 2,484 s). Hash e
+mudança de metadados físicos não têm baseline anterior verificável. Warning de
+giolibproxy não bloqueia nem causa o resultado; achado decodebin→appsink segue
+OPEN.
+
+## 31. CAM-INT-03-FINAL-REVIEW-AND-CHECKPOINT — revisão final e commit local (2026-10-07)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 59 | Resultado de revisão, regressão, reconciliação e checkpoint local | CURRENT / LOCAL_CHECKPOINT_PASS / PUSH_PENDING |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.26 | Handoff e próxima atividade | CURRENT / HOMOLOGATED / COMMITTED_LOCAL |
+| `docs/projeto/contracts/backend/camera/CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md` | Contrato de ambiente/composição; status de implementação histórica | CURRENT CONTRACT / historical status snapshots preserved |
+| `docs/projeto/audits/CAM-INT-03_INDEPENDENT_END_TO_END_TECHNICAL_AUDIT.md` | Evidência da causa e execução observada durante a auditoria | HISTORICAL TECHNICAL EVIDENCE / unchanged |
+| `docs/projeto/contracts/backend/camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md` | Contrato de comportamento RTSP; cabeçalho de status histórico | CANONICAL BEHAVIOR / known non-blocking status conflict |
+
+CAM-INT-03 foi revista e comprometida localmente; o push está pendente de
+confirmação direta após rejeição da revisão automática. Causa dinâmica resolvida; TargetPolicy e
+composition root resolvidos; runtime real homologado com A/B/C/D PASS, H264 e
+2,484 s. Persistência lógica permaneceu inalterada após rollback; o sinal
+contraditório do harness é defeito de rotulagem. O finding secundário de ligação
+decodebin→appsink e o aviso giolibproxy permanecem abertos/não bloqueantes. Não
+reabrir esta lane sem regressão. `REMOTE_CONTINUATION_READY` só será `YES` após
+push aprovado e verificação de igualdade com `origin/master`.
