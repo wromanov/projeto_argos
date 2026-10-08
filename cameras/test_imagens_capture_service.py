@@ -1,4 +1,5 @@
 from datetime import date
+import os
 import tempfile
 from unittest.mock import patch
 
@@ -218,6 +219,73 @@ class CameraCaptureServiceTests(TestCase):
         self.assertEqual(result.pk, job.pk)
         self.assertEqual(result.status, CameraCaptureJob.Status.SUCCEEDED)
         self.assertEqual(adapter.requests[0][0].target.request.path, "/snapshot-alt")
+
+    def test_worker_uses_environment_http_path_allowlist_and_fails_closed_on_change(self):
+        self._configure_path_override_profile()
+        CameraConnectionConfig.objects.filter(pk=self.config.pk).update(
+            http_endpoint_override="/snapshot-alt"
+        )
+        environment = {
+            "ARGOS_CAMERA_ALLOWED_CIDRS": "10.42.0.0/24",
+            "ARGOS_CAMERA_ALLOWED_PORTS": "https:443",
+            "ARGOS_CAMERA_ALLOWED_PATHS": "https:/snapshot-alt",
+            "ARGOS_CAMERA_ALLOWED_FARMS": "FARM-A",
+        }
+        with patch.dict("os.environ", environment):
+            allowed_job = request_camera_capture(
+                actor=self.actor, camera_id=self.camera.pk,
+                idempotency_key="capture-env-path-allowed-01",
+            )
+            allowed_adapter = _FakeSnapshotAdapter()
+            allowed_result = run_next_capture(adapter=allowed_adapter)
+
+            self.assertEqual(allowed_result.pk, allowed_job.pk)
+            self.assertEqual(allowed_result.status, CameraCaptureJob.Status.SUCCEEDED)
+            self.assertEqual(allowed_adapter.requests[0][0].target.request.path, "/snapshot-alt")
+
+            absent_job = request_camera_capture(
+                actor=self.actor, camera_id=self.camera.pk,
+                idempotency_key="capture-env-path-absent-01",
+            )
+            os.environ.pop("ARGOS_CAMERA_ALLOWED_PATHS")
+            absent_adapter = _FakeSnapshotAdapter()
+            with patch("cameras.imagens.capture_service.resolve_active_credential_for_execution") as resolver:
+                absent_result = run_next_capture(adapter=absent_adapter)
+            resolver.assert_not_called()
+            self.assertEqual(absent_result.pk, absent_job.pk)
+            self.assertEqual(absent_result.status, CameraCaptureJob.Status.FAILED)
+            self.assertEqual(absent_result.error_code, "TARGET_DENIED")
+            self.assertEqual(absent_adapter.requests, [])
+
+            os.environ["ARGOS_CAMERA_ALLOWED_PATHS"] = "https:/snapshot-alt"
+            revoked_job = request_camera_capture(
+                actor=self.actor, camera_id=self.camera.pk,
+                idempotency_key="capture-env-path-revoked-01",
+            )
+            os.environ["ARGOS_CAMERA_ALLOWED_PATHS"] = "https:/snapshot-other"
+            revoked_adapter = _FakeSnapshotAdapter()
+            with patch("cameras.imagens.capture_service.resolve_active_credential_for_execution") as resolver:
+                revoked_result = run_next_capture(adapter=revoked_adapter)
+            resolver.assert_not_called()
+            self.assertEqual(revoked_result.pk, revoked_job.pk)
+            self.assertEqual(revoked_result.status, CameraCaptureJob.Status.FAILED)
+            self.assertEqual(revoked_result.error_code, "TARGET_DENIED")
+            self.assertEqual(revoked_adapter.requests, [])
+
+            os.environ["ARGOS_CAMERA_ALLOWED_PATHS"] = "https:/snapshot-alt"
+            invalid_job = request_camera_capture(
+                actor=self.actor, camera_id=self.camera.pk,
+                idempotency_key="capture-env-path-invalid-01",
+            )
+            os.environ["ARGOS_CAMERA_ALLOWED_PATHS"] = "https:relative-path"
+            invalid_adapter = _FakeSnapshotAdapter()
+            with patch("cameras.imagens.capture_service.resolve_active_credential_for_execution") as resolver:
+                invalid_result = run_next_capture(adapter=invalid_adapter)
+            resolver.assert_not_called()
+            self.assertEqual(invalid_result.pk, invalid_job.pk)
+            self.assertEqual(invalid_result.status, CameraCaptureJob.Status.FAILED)
+            self.assertEqual(invalid_result.error_code, "CONFIG_INVALID")
+            self.assertEqual(invalid_adapter.requests, [])
 
     def test_custom_path_not_listed_by_policy_is_denied_before_job(self):
         self._configure_path_override_profile()

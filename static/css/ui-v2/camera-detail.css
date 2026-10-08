@@ -1,0 +1,439 @@
+/* SCR-CAM-DETAIL-001 composition; shared controls and surfaces remain DS-owned. */
+@layer pages {
+  .argos-camera-detail {
+    display: grid;
+    align-content: start;
+    gap: var(--argos-space-4);
+    width: 100%;
+    max-width: var(--argos-content-max);
+    min-width: 0;
+  }
+
+  .argos-camera-detail__context {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--argos-space-2);
+    min-width: 0;
+  }
+
+  .argos-camera-detail__context .argos-eyebrow,
+  .argos-camera-detail__model,
+  .argos-camera-detail__location,
+  .argos-camera-detail__upload-copy {
+    margin: 0;
+  }
+
+  .argos-camera-detail__back { width: fit-content; }
+
+  .argos-camera-detail__record-surface,
+  .argos-camera-detail__history-surface {
+    min-width: 0;
+    box-shadow: none;
+  }
+
+  .argos-camera-detail__hero {
+    min-width: 0;
+    padding-bottom: var(--argos-space-5);
+    border-bottom: var(--argos-border-width) solid var(--argos-color-border);
+  }
+
+  .argos-camera-detail__hero-main {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--argos-space-6);
+    min-width: 0;
+  }
+
+  .argos-camera-detail__hero-copy,
+  .argos-camera-detail__hero-side { min-width: 0; }
+
+  .argos-camera-detail__hero-copy { flex: 1 1 auto; }
+
+  .argos-camera-detail__eyebrow {
+    margin: 0 0 var(--argos-space-1);
+    color: var(--argos-color-action);
+    font-size: var(--argos-text-label);
+    font-weight: var(--argos-weight-bold);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  .argos-camera-detail__name {
+    margin: 0;
+    overflow-wrap: anywhere;
+    line-height: var(--argos-line-tight);
+  }
+
+  .argos-camera-detail__model {
+    margin-top: var(--argos-space-2);
+    font-size: var(--argos-text-body);
+    font-weight: var(--argos-weight-semibold);
+    overflow-wrap: anywhere;
+  }
+
+  .argos-camera-detail__location {
+    margin-top: var(--argos-space-2);
+    color: var(--argos-color-ink-muted);
+    font-size: var(--argos-text-body);
+    overflow-wrap: anywhere;
+  }
+
+  .argos-camera-detail__hero-side {
+    display: grid;
+    flex: 0 1 38%;
+    justify-items: end;
+    align-content: start;
+    gap: var(--argos-space-4);
+  }
+
+  .argos-camera-detail__statuses,
+  .argos-camera-detail__actions,
+  .argos-camera-detail__history-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--argos-space-2);
+    min-width: 0;
+  }
+
+  .argos-camera-detail__status-cluster {
+    display: grid;
+    gap: var(--argos-space-1);
+    width: 100%;
+    min-width: 0;
+  }
+
+  .argos-camera-detail__monitoring-status {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--argos-space-1);
+    width: fit-content;
+    max-width: 100%;
+    min-width: 0;
+    vertical-align: top;
+  }
+
+  .argos-camera-detail__monitoring-status > .argos-status-badge {
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .argos-camera-detail__statuses { justify-content: flex-end; }
+
+  .argos-camera-detail__status-support {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    color: var(--argos-color-ink-muted);
+    font-size: var(--argos-text-secondary);
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+
+  .argos-camera-detail__record {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-areas: "main rail" "governance governance";
+    align-items: start;
+    column-gap: var(--argos-space-6);
+    row-gap: var(--argos-space-3);
+    min-width: 0;
+    margin-top: var(--argos-space-5);
+  }
+
+  .argos-camera-detail__main-column,
+  .argos-camera-detail__operational-rail {
+    display: grid;
+    align-content: start;
+    gap: var(--argos-space-4);
+    min-width: 0;
+  }
+
+  .argos-camera-detail__main-column { grid-area: main; }
+
+  .argos-camera-detail__operational-rail {
+    grid-area: rail;
+    padding-left: var(--argos-space-5);
+    border-left: var(--argos-border-width) solid var(--argos-color-border);
+  }
+
+  .argos-camera-detail__record-section,
+  .argos-camera-detail__subgroup,
+  .argos-camera-detail__record-section > section { min-width: 0; }
+
+  .argos-camera-detail__record-section {
+    padding-bottom: var(--argos-space-4);
+    border-bottom: var(--argos-border-width) solid var(--argos-color-border);
+  }
+
+  .argos-camera-detail__main-column > .argos-camera-detail__record-section:last-child,
+  .argos-camera-detail__operational-rail > .argos-camera-detail__record-section:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .argos-camera-detail__record-section > .argos-section-header,
+  .argos-camera-detail__subgroup > section > .argos-section-header {
+    margin-bottom: var(--argos-space-3);
+  }
+
+  .argos-camera-detail__subgroup + .argos-camera-detail__subgroup {
+    margin-top: var(--argos-space-4);
+    padding-top: var(--argos-space-3);
+    border-top: var(--argos-border-width) solid var(--argos-color-border);
+  }
+
+  .argos-camera-detail__subgroup > section > .argos-section-header h3 {
+    color: var(--argos-color-ink-muted);
+    font-size: var(--argos-text-secondary);
+    font-weight: var(--argos-weight-semibold);
+  }
+
+  .argos-camera-detail__pairs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--argos-space-2) var(--argos-space-4);
+    min-width: 0;
+    margin: 0;
+  }
+
+  .argos-camera-detail__pairs code { white-space: normal; overflow-wrap: anywhere; }
+
+  .argos-camera-detail__pair--full { grid-column: 1 / -1; }
+
+  .argos-camera-detail__governance {
+    grid-area: governance;
+    grid-column: 1 / -1;
+    min-width: 0;
+    padding-top: var(--argos-space-3);
+    border-top: var(--argos-border-width) solid var(--argos-color-border);
+  }
+
+  .argos-camera-detail__governance .argos-section-header { margin-bottom: var(--argos-space-2); }
+
+  .argos-camera-detail__governance .argos-camera-detail__pairs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .argos-camera-detail__governance .argos-camera-detail__pair--full { grid-column: span 3; }
+
+  .argos-camera-detail__actions { margin-top: 0; }
+
+  .argos-camera-detail__history {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    min-width: 0;
+  }
+
+  .argos-camera-detail__history > section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--argos-space-2);
+    min-width: 0;
+    padding: 0 var(--argos-space-4);
+    border-left: var(--argos-border-width) solid var(--argos-color-border);
+  }
+
+  .argos-camera-detail__history > section:first-child { padding-left: 0; border-left: 0; }
+  .argos-camera-detail__history > section:last-child { padding-right: 0; }
+
+  .argos-camera-detail__history-heading {
+    display: grid;
+    align-content: start;
+    justify-items: start;
+    gap: var(--argos-space-2);
+    margin: 0;
+  }
+
+  .argos-camera-detail__history-heading h3 {
+    margin: 0;
+    font-size: var(--argos-text-body);
+    overflow-wrap: anywhere;
+  }
+
+  .argos-camera-detail__history-list {
+    display: grid;
+    gap: var(--argos-space-3);
+    width: 100%;
+    min-width: 0;
+  }
+
+  .argos-camera-detail__history-list > p { margin: 0; }
+
+  .argos-camera-detail__history-item {
+    display: grid;
+    gap: var(--argos-space-2);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .argos-camera-detail__history-item > p { margin: 0; }
+
+  .argos-camera-detail__activity-heading,
+  .argos-camera-detail__activity-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--argos-space-2);
+    min-width: 0;
+  }
+
+  .argos-camera-detail__activity-heading { justify-content: space-between; }
+  .argos-camera-detail__activity-title > strong { min-width: 0; overflow-wrap: anywhere; }
+
+  .argos-camera-detail__activity-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--argos-space-3);
+    min-width: 0;
+    margin: 0;
+  }
+
+  .argos-camera-detail__text-link { min-width: 0; overflow-wrap: anywhere; }
+
+  .argos-camera-detail__complementary {
+    display: grid;
+    grid-template-columns: minmax(0, 300px) minmax(0, 590px);
+    align-items: end;
+    gap: var(--argos-space-6);
+    width: 100%;
+    min-width: 0;
+    padding-top: var(--argos-space-4);
+    border-top: var(--argos-border-width) solid var(--argos-color-border);
+  }
+
+  .argos-camera-detail__complementary-copy { min-width: 0; }
+
+  .argos-camera-detail__complementary-copy h2 {
+    margin: 0 0 var(--argos-space-2);
+    color: var(--argos-color-ink-muted);
+    font-size: var(--argos-text-section);
+  }
+
+  .argos-camera-detail__complementary-copy h3 {
+    margin: 0 0 var(--argos-space-1);
+    font-size: var(--argos-text-body);
+  }
+
+  .argos-camera-detail__upload-copy {
+    color: var(--argos-color-ink-muted);
+    font-size: var(--argos-text-secondary);
+  }
+
+  .argos-camera-detail__upload-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: var(--argos-space-3);
+    min-width: 0;
+  }
+
+  .argos-camera-detail__upload-field { min-width: 0; }
+
+  .argos-camera-detail__upload-form input[type="file"] {
+    min-width: 0;
+    height: var(--argos-control-height);
+    padding: var(--argos-space-1) var(--argos-space-2);
+    color: var(--argos-color-ink);
+    font-size: var(--argos-text-secondary);
+    line-height: 1.25;
+  }
+
+  .argos-camera-detail__upload-form input[type="file"]::file-selector-button {
+    box-sizing: border-box;
+    min-height: calc(var(--argos-control-height) - var(--argos-space-2) - var(--argos-border-width) - var(--argos-border-width));
+    margin-block: 0;
+    margin-inline-start: var(--argos-space-1);
+    margin-inline-end: var(--argos-space-3);
+    padding: 0 var(--argos-space-3);
+    border: var(--argos-border-width) solid var(--argos-color-border-strong);
+    border-radius: var(--argos-radius-control);
+    background: var(--argos-color-surface-subtle);
+    color: var(--argos-color-ink);
+    font: inherit;
+    font-weight: var(--argos-weight-semibold);
+    cursor: pointer;
+  }
+
+  .argos-camera-detail__upload-form input[type="file"]::file-selector-button:hover {
+    background: var(--argos-color-surface);
+  }
+
+  .argos-camera-detail__upload-form > .argos-button { white-space: nowrap; }
+
+  @media (max-width: 900px) {
+    .argos-camera-detail__hero-main { flex-direction: column; }
+    .argos-camera-detail__hero-side { justify-items: start; flex-basis: auto; }
+    .argos-camera-detail__statuses { justify-content: flex-start; }
+    .argos-camera-detail__status-support { text-align: left; }
+  }
+
+  @media (max-width: 900px) {
+    .argos-camera-detail__record {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "rail" "main" "governance";
+      row-gap: var(--argos-space-2);
+    }
+
+    .argos-camera-detail__operational-rail {
+      width: 100%;
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .argos-camera-detail__main-column { width: 100%; }
+    .argos-camera-detail__record-section { width: 100%; padding: var(--argos-space-4) 0; }
+    .argos-camera-detail__record-section > .argos-section-header { margin-bottom: var(--argos-space-3); }
+
+    .argos-camera-detail__governance .argos-camera-detail__pairs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .argos-camera-detail__governance .argos-camera-detail__pair--full { grid-column: 1 / -1; }
+
+    .argos-camera-detail__history { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--argos-space-4); }
+    .argos-camera-detail__history > section:nth-child(odd) { padding-left: 0; border-left: 0; }
+
+    .argos-camera-detail__complementary { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  @media (max-width: 680px) {
+    .argos-camera-detail__hero { padding-top: 0; }
+    .argos-camera-detail__hero-side { gap: var(--argos-space-3); }
+    .argos-camera-detail__hero-main { gap: var(--argos-space-4); }
+
+    .argos-camera-detail__pairs,
+    .argos-camera-detail__governance .argos-camera-detail__pairs,
+    .argos-camera-detail__history,
+    .argos-camera-detail__activity-meta {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .argos-camera-detail__pair--full,
+    .argos-camera-detail__governance .argos-camera-detail__pair--full { grid-column: auto; }
+
+    .argos-camera-detail__history > section,
+    .argos-camera-detail__history > section:nth-child(odd) {
+      padding: var(--argos-space-3) 0 0;
+      border-top: var(--argos-border-width) solid var(--argos-color-border);
+      border-left: 0;
+    }
+
+    .argos-camera-detail__history > section:first-child { padding-top: 0; border-top: 0; }
+
+    .argos-camera-detail__history > section > .argos-section-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .argos-camera-detail__history-actions { align-items: flex-start; flex-direction: column; width: 100%; }
+
+    .argos-camera-detail__upload-form { grid-template-columns: minmax(0, 1fr); }
+    .argos-camera-detail__upload-form input[type="file"] { height: var(--argos-touch-target-min); }
+    .argos-camera-detail__upload-form input[type="file"]::file-selector-button { min-height: calc(var(--argos-touch-target-min) - var(--argos-space-2) - var(--argos-border-width) - var(--argos-border-width)); }
+    .argos-camera-detail__upload-form > .argos-button { justify-self: stretch; }
+  }
+}

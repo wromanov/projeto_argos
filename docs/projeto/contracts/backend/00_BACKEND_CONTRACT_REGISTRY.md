@@ -149,9 +149,8 @@ arquiteturais e ownership.
 | Lane | Estado factual corrente |
 |---|---|
 | CAM-INT-02-R1 | Implementada, integrada, validada localmente e publicada; ver PROJECT_STATE §50. |
-| CAM-INT-03 | Implementada e publicada; homologação runtime permanece não concluída e há checkpoint de defeito em PROJECT_STATE §52. |
-| CAM-INT-04 | Adapter e composição HTTP-R1 presentes localmente; default_path funciona; path customizado segue fail-closed no worker ambiental até política CAM-INT-07 separada; testes não executados e homologação pendente. |
-| IMG-CAP | Implementação local HTTP-only em CAM-INT-04; RTSP e storage de produção permanecem pendentes; sem homologação real. |
+| CAM-INT-03 | Implementada, publicada e homologada; regressão local integrada PASS (68/68); sem nova sessão RTSP real nesta atividade. |
+| CAM-INT-04 | HTTP Snapshot e composição HTTP-R1 integrados e validados localmente; default_path inalterado; path customizado depende exclusivamente de allowlist ambiental explícita e exata; publicação e homologação real permanecem pendentes. |
+| IMG-CAP | Implementação local HTTP-only validada (service 16/16; worker 1/1); RTSP e storage de produção permanecem pendentes; sem homologação real. |
 
-Nenhuma dessas declarações altera a ordem do DAG ou autoriza runtime real,
-migration local, commit ou publicação.
+A extensão ambiental de paths está documentada no contrato CAM-INT-03 TargetPolicy. `ARGOS_CAMERA_ALLOWED_PATHS` só transporta uma allowlist confiável explícita; não muda `default_path`, não amplia autorização por perfil e não permite fallback. Configuração ausente, inválida, não listada ou revogada permanece fail-closed. Nenhuma dessas declarações autoriza runtime real, migration no banco operacional, push ou incorporação ao master.

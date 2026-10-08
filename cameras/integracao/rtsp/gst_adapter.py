@@ -78,7 +78,7 @@ class GStreamerRtspAdapter:
             sock.close(); sock = None
             Gst, GstRtsp = self.loader()
             pipeline, src, decoder, sink = self._pipeline(Gst, GstRtsp, request)
-            seen = {"sdp": False, "codec": None, "frame": False, "unsupported": False}
+            seen = {"sdp": False, "codec": None, "frame": False, "unsupported": False, "failure": None}
             def on_sdp(_src, _sdp):
                 seen["sdp"] = True
             def source_pad(_src, pad):
@@ -99,6 +99,14 @@ class GStreamerRtspAdapter:
                 pipeline.add(depay)
                 if not depay.link(decoder):
                     raise _Failure("PROTOCOL_ERROR")
+                try:
+                    synchronized = depay.sync_state_with_parent()
+                except Exception:
+                    synchronized = False
+                if not synchronized:
+                    # PyGObject callback exceptions do not reliably reach the probe loop.
+                    seen["failure"] = "DYNAMIC_ELEMENT_SYNC_FAILED"
+                    return
                 target = depay.get_static_pad("sink")
                 if target is None or pad.link(target) != Gst.PadLinkReturn.OK:
                     raise _Failure("PROTOCOL_ERROR")
@@ -120,6 +128,8 @@ class GStreamerRtspAdapter:
             bus = pipeline.get_bus()
             mask = Gst.MessageType.ERROR | Gst.MessageType.EOS | Gst.MessageType.ELEMENT | Gst.MessageType.REDIRECT
             while self.monotonic() < deadline and not seen["frame"]:
+                if seen["failure"]:
+                    raise _Failure(seen["failure"])
                 if request.cancel_event.is_set():
                     raise _Failure("CANCELLED")
                 remaining = deadline - self.monotonic()
@@ -139,6 +149,8 @@ class GStreamerRtspAdapter:
                 if message.type == Gst.MessageType.ELEMENT:
                     struct = message.get_structure()
                     if struct and struct.get_name() == "redirect": raise _Failure("UNAUTHORIZED_REDIRECT")
+            if seen["failure"]:
+                raise _Failure(seen["failure"])
             if seen["sdp"]:
                 statuses[1] = StageStatus.PASS
                 if seen["codec"]:
@@ -221,5 +233,4 @@ class GStreamerRtspAdapter:
         sink.set_property("max-bytes", MAX_FRAME_BYTES)
         sink.set_property("enable-last-sample", False); sink.set_property("caps", Gst.Caps.from_string("video/x-raw"))
         pipeline.add(source); pipeline.add(decoder); pipeline.add(sink)
-        if not decoder.link(sink): raise GStreamerUnavailable
         return pipeline, source, decoder, sink

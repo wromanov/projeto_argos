@@ -268,6 +268,7 @@ O serviço R1 está publicado e sua API permanece a única boundary autorizada
 para resolução runtime de credenciais. O finding HTTP-R1-CALLSITE-01 é
 responsabilidade do consumer IMG-CAP: CAM-INT-04 fornece o adapter; o worker
 IMG-CAP verifica autorização e TargetPolicy, resolve pela API R1 e só então
-chama o adapter. A implementação consumer está presente localmente no branch
-CAM-INT-04, com testes focais ainda não executados; este registro não declara
-homologação do consumer.
+chama o adapter. A integração local passou nos testes de resolução de credencial
+(12/12), adapter HTTP Snapshot (15/15) e capture service (16/16), sem fallback
+inseguro nem exposição de credenciais. O finding está RESOLVED para a slice
+local; isso não declara homologação de câmera ou credencial real.

@@ -10,6 +10,11 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
+RETOMADA ATUAL CAM-INT-03: consultar PROJECT_STATE seção 60 e seção 20.27
+abaixo. Runtime homologado e implementação publicada no commit
+4a0eada4d06b9c61a12c78149257005297ce6a65; HEAD local igual a origin/master,
+divergência 0/0 e continuação remota pronta. Próxima atividade após CAM-INT-03.
+
 ## UI-V2-P1 — seleção visual e fechamento (2026-09-27)
 
 O usuário selecionou C — ARGOS HYBRID como direção visual do ARGOS UI V2.
@@ -1134,9 +1139,318 @@ Não registrar nem transportar chave Fernet, variáveis de ambiente, conteúdo d
 credencial, URI RTSP sensível ou banco SQLite. A correção do adapter não foi
 incluída nesta atividade e precisa de autorização própria. Os cabeçalhos de status do registry, DAG e contrato CAM-INT-03 ainda refletem o estado pré-R1; consultar PROJECT_STATE seção 52 e reconciliá-los em atividade documental separada.
 
-### 20.20. CAM-INT-04-HTTP-R1-CALLSITE-01 — implementação local pendente de validação (2026-10-08)
+### 20.20. CAM-INT-03-REAL-RTSP-RUNTIME-HOMOLOGATION — bloqueada no gate de policy (2026-10-07)
 
-O estado factual está em PROJECT_STATE §53. O callsite pertence ao worker
+O reparo local removeu a ligação estática antecipada `decoder.link(sink)` de
+`cameras/integracao/rtsp/gst_adapter.py`; o `pad-added` existente continua
+registrado antes de `PLAYING`, para ligar a saída dinâmica de vídeo ao
+`appsink`. Os testes focais do adapter passaram (17/17), e a montagem do
+pipeline passou com GStreamer 1.28.7. Na homologação controlada, a policy
+process-local carregou somente `10.143.36.33/32` e `rtsp:554`; outro IP e a
+porta 5555 foram negados. A câmera e a configuração foram resolvidas em modo
+read-only, mas a autorização positiva foi recusada como
+`MISCONFIGURED_POLICY`: o perfil RTSP ativo não define `default_path`. A
+execução parou antes do socket, do bootstrap Fernet/credencial e do stream.
+Não houve exposição de segredo nem mutação do banco. Os testes focais passaram
+novamente (17/17), `manage.py check` passou e `git diff --check` passou.
+CAM-INT-03 permanece `NOT_HOMOLOGATED`; para retomar, uma atividade de
+configuração autorizada precisa fornecer um path permitido sem ampliar o alvo
+ou a porta. Veja `PROJECT_STATE.md`, seção 53. A divergência histórica nos
+cabeçalhos de registry, DAG e contrato CAM-INT-03 descrita na seção 52 também
+permanece pendente.
+
+### 20.21. CAM-INT-03 — contrato de ambiente e composição TargetPolicy (2026-10-07)
+
+Checkpoint histórico da proposta contratual; o resultado de implementação
+mais recente e os próximos gates constam na seção 20.22.
+
+Estado factual: `PROJECT_STATE.md`, seção 54. Contrato proposto completo:
+`docs/projeto/contracts/backend/camera/CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md`.
+Decisões do usuário: ambiente confiável; `TargetPolicy.from_environment` como
+parser produtivo; nova chave `ARGOS_CAMERA_ALLOWED_PATHS`; policy por invocação;
+injeção preservada; sem banco ou Django settings como transporte adicional.
+
+A inspeção confirmou que o parser exige mapping explícito e ainda não transporta
+paths. A nova entrada proposta é
+`cameras.integracao.rtsp.runtime.run_camera_connection_test_from_environment`:
+lê a fonte confiável, exige portas/paths RTSP e injeta policy e portas derivadas
+no serviço. Bootstrap inválido retorna `MISCONFIGURED_POLICY` antes do serviço,
+credencial ou rede. Não alterar semântica de validate, config, perfil ou adapter.
+
+A instrução atual adjudica que a câmera já resolve o path correto; a explicação
+da seção 20.20 que motivava preencher default_path não rege a retomada.
+Não houve nova consulta a banco/ambiente real. O gap atual é CASE C, transporte
+e composição ausentes. O reparo local anterior do adapter permanece preservado.
+
+```text
+CURRENT_ACTIVITY = CONTRACT_PROPOSED / ARCHITECTURE_CONFIRMED
+PROJECT_STATE_UPDATE = PASS / seção 54
+ACTIVITY_HANDOFF_GATE = PASS / escopo contratual
+GLOBAL_STATUS_RECONCILIATION = PENDING / divergência histórica de registry, DAG e contrato RTSP
+NEXT_REQUIRED_ACTIVITY = CAM-INT-03-TARGET-POLICY-CONFIGURATION-IMPLEMENTATION
+IMPLEMENTATION_AUTHORIZED = NO / DEFERRED_NO_AUTHORITY
+REAL_RTSP_HOMOLOGATION = NOT_HOMOLOGATED
+CODE_DB_CONFIG_CHANGED = NO / nesta atividade
+DOCUMENTS_CHANGED = YES / governança exige contrato e continuidade
+RTSP_SESSION_STARTED = NO
+COMMIT_PUSH = NOT_AUTHORIZED / NOT_PERFORMED
+```
+
+### 20.22. CAM-INT-03 — implementação local da TargetPolicy (2026-10-07)
+
+Estado factual e evidências: `PROJECT_STATE.md`, seção 55. Contrato atualizado:
+`docs/projeto/contracts/backend/camera/CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md`.
+
+`TargetPolicy.from_environment` transporta `ARGOS_CAMERA_ALLOWED_PATHS` e
+mantém `from_mapping` como construtor tipado. O composition root
+`cameras.integracao.rtsp.runtime.run_camera_connection_test_from_environment`
+reconstrói a policy por chamada, exige CIDR/porta/path RTSP e injeta a policy
+completa e as portas derivadas no serviço. Bootstrap inválido falha fechado
+antes do serviço, credencial, adapter ou socket. `service.py` segue sem acoplar
+ao ambiente. Os testes focais e de regressão passaram; veja contagens e o
+equivalente disponível para URI na seção 55.
+
+```text
+CURRENT_ACTIVITY = CAM-INT-03-TARGET-POLICY-CONFIGURATION-IMPLEMENTATION
+IMPLEMENTATION_STATUS = IMPLEMENTED_LOCALLY / TECHNICAL_PASS
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE seção 55
+TARGET_POLICY_TESTS = 24/24 PASS
+RTSP_RUNTIME_TESTS = 5/5 PASS
+RTSP_ADAPTER_TESTS = 17/17 PASS
+RTSP_URI_TEST_MODULE = ABSENT / URI EQUIVALENT cameras.test_camera_connection_config 8/8 PASS
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+REAL_RTSP_SESSION_STARTED = NO
+REAL_RTSP_HOMOLOGATION = NOT_HOMOLOGATED
+NEXT_REQUIRED_ACTIVITY = CAM-INT-03-REAL-RTSP-RUNTIME-HOMOLOGATION-R2
+NEXT_ACTIVITY_AUTHORIZED = NO / requer autoridade própria de homologação
+CAMERA_PROFILE_OR_EFFECTIVE_CONFIG_CHANGED = NO
+SECRET_ACCESSED = NO
+DATABASE_CHANGED = NO / banco temporário de testes criado e destruído
+STAGING = EMPTY
+COMMIT_PUSH = NOT_PERFORMED
+```
+
+### 20.23. CAM-INT-03 — auditoria independente com causa comprovada (2026-10-07)
+
+Estado factual: `PROJECT_STATE.md`, seção 56. Detalhe técnico e evidência:
+`docs/projeto/audits/CAM-INT-03_INDEPENDENT_END_TO_END_TECHNICAL_AUDIT.md`.
+
+`rtph264depay` é adicionado no callback source quando o pipeline está PAUSED
+com PLAYING pendente, depois da solicitação PLAYING; permanece NULL/pad inativo
+porque o adapter não sincroniza seu estado. Comparação limitada TCP usando
+composition root e adapter reais: inalterado A/B/C PASS e D TIMEOUT em 15,028 s;
+sync-only no harness TEMP A/B/C/D PASS em 0,663 s, encoded/raw/appsink reais.
+Decoder observado: d3d12h264dec. Essa prova não modifica nem homologa o código
+produtivo. Os 66 testes focais passaram, com lacuna de estados/fluxo nos mocks.
+
+```text
+LAST_COMPLETED_ACTIVITY = CAM-INT-03-INDEPENDENT-END-TO-END-TECHNICAL-AUDIT
+ROOT_CAUSE_CONFIDENCE = PROVEN
+CAM_INT_03_RUNTIME_STATUS = NOT_HOMOLOGATED
+NEXT_REQUIRED_ACTIVITY = CAM-INT-03-DYNAMIC-DEPAYLOADER-STATE-FIX-AND-REAL-RUNTIME-REVALIDATION
+NEXT_ACTIVITY_AUTHORIZED = NO / DEFERRED_NO_AUTHORITY
+IMPLEMENTATION_PRODUCTION_FIX_AUTHORIZED = NO
+CODE_OR_TEST_CHANGED_THIS_AUDIT = NO
+DATABASE_PERSISTENTLY_CHANGED = NO / rollback e hash idêntico
+SECRET_IN_NEW_DIAGNOSTICS_OR_DOCUMENTATION = NO
+PIPELINES_FINAL_STATE = NULL
+TARGET_POLICY_OR_RBAC_CHANGED = NO
+GLOBAL_CONTRACT_STATUS_RECONCILIATION = PENDING / histórica, fora do escopo
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_HANDOFF_GATE = PASS / findings e limites recuperáveis no relatório
+COMMIT_PUSH = NOT_PERFORMED
+```
+
+### 20.24. CAM-INT-03 — correção local validada; homologação aguarda injeção process-local (2026-10-07)
+
+Estado factual e retomada: `PROJECT_STATE.md`, seção 57.
+
+O adapter agora sincroniza o depayloader dinâmico com o estado-alvo do pai e
+checa o retorno antes de ligar o pad RTP upstream. Falha de sync é comunicada
+ao loop pelo estado compartilhado existente, resulta em diagnóstico
+`DYNAMIC_ELEMENT_SYNC_FAILED` e Stage C FAIL, sem liberar mídia. O teste fake
+modela PAUSED/PLAYING pendente, depay inicialmente NULL, fluxo após sync e
+teardown NULL. Achado separado do retorno ignorado do link decodebin→appsink
+permanece aberto e não foi alterado.
+
+Suítes relevantes 68/68 passaram; `manage.py check` e `git diff --check`
+passaram. A homologação real não começou: o ator e a configuração existem
+localmente, mas o usuário/senha temporários não estão disponíveis ao processo.
+O usuário cancelou a alternativa de restaurar material histórico e autorizou
+chave Fernet nova efêmera + `replace_camera_credential` dentro de transação
+externa com rollback. Essa rota ainda aguarda injeção local dos valores; não
+houve runtime real, mutação de credencial nem escrita persistente no banco. Não
+inferir A/B/C/D, codec, autorização do alvo ou limpeza de pipeline não criada.
+
+```text
+CURRENT_ACTIVITY = CAM-INT-03-DYNAMIC-DEPAYLOADER-STATE-FIX-AND-REAL-RUNTIME-REVALIDATION
+LOCAL_FIX = IMPLEMENTED_AND_VALIDATED
+ROOT_CAUSE = DYNAMIC_ELEMENT_LIFECYCLE_DEFECT / PROVEN
+ADAPTER_TESTS = 19/19 PASS
+REGRESSION_TESTS = 49/49 PASS
+TOTAL_RELEVANT_TESTS = 68/68 PASS
+REAL_RUNTIME = NOT_EXECUTED / TEMPORARY_LAB_CREDENTIAL_NOT_AVAILABLE_TO_PROCESS
+CAM_INT_03_RUNTIME_STATUS = NOT_HOMOLOGATED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE section 57
+ACTIVITY_COMPLETE = NO
+NEXT_REQUIRED_ACTION = Inject temporary lab username/password only into the local process; generate a fresh in-memory Fernet key; replace credential inside outer transaction; run canonical 5-second validation; roll back
+STAGING = EMPTY
+COMMIT_PUSH = NOT_PERFORMED
+```
+
+Não repetir investigação cega de transporte/decoder nem aumentar timeout para
+
+### 20.25. CAM-INT-03-DATABASE-PERSISTENCE-RECONCILIATION — homologação reconciliada (2026-10-07)
+
+Estado factual: `PROJECT_STATE.md`, seção 58. O harness TEMP compara snapshots
+ORM limitados à credencial da câmera 1, suas versões por contagem e eventos de
+criação/substituição por contagem. Os dois labels de persistência usam a mesma
+comparação; `CREDENTIAL_PERSISTENCE=ROLLED_BACK` junto de
+`DATABASE_PERSISTENTLY_CHANGED=YES` é impossível nessa versão. O harness não
+calcula SHA-256 do banco; portanto mudança física do arquivo não foi provada.
+
+Inspeção SQLite somente leitura confirmou journal mode `delete`, sem sidecars,
+integridade `ok`, uma referência de credencial ativa e duas versões, com a
+segunda ativa. O rollback restaurou o snapshot da credencial. Não foram
+identificados callbacks `on_commit`, escrita de diagnóstico ou outros modelos
+persistidos pela composição RTSP. A classificação é defeito no sinal/rotulagem,
+com estado lógico reconciliado; CAM-INT-03 passa a `HOMOLOGATED` pela evidência
+real já fornecida: A/B/C/D PASS, H264 e 2,484 s. Warning de giolibproxy segue
+não bloqueante/não causal; o finding decodebin→appsink segue OPEN. Nenhum RTSP
+foi iniciado nesta atividade.
+
+```text
+CURRENT_ACTIVITY = CAM-INT-03-DATABASE-PERSISTENCE-RECONCILIATION
+DATABASE_PERSISTENCE_VERDICT = LOGICALLY_UNCHANGED / HARNESS_SIGNAL_DEFECT
+CAM_INT_03_RUNTIME_STATUS = HOMOLOGATED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE section 58
+ACTIVITY_COMPLETE = YES
+NEXT_REQUIRED_ACTIVITY = CAM-INT-03-FINAL-REVIEW-AND-CHECKPOINT
+STAGING = EMPTY
+COMMIT_PUSH = NOT_PERFORMED
+```
+
+### 20.26. CAM-INT-03-FINAL-REVIEW-AND-CHECKPOINT — commit local (2026-10-07)
+
+Este registro preserva o estado observado antes da publicação; foi supersedido
+pelo fechamento posterior na seção 20.27 e não deve ser usado como estado atual.
+
+O estado final desta revisão está em `PROJECT_STATE.md`, seção 59. A causa
+`DYNAMIC_ELEMENT_LIFECYCLE_DEFECT` foi resolvida pelo sync checado do depayloader
+dinâmico; homologação real A/B/C/D PASS, H264, 2,484 s, timeout de produção de
+5 s. A reconciliação SQLite permanece logicamente inalterada, com defeito de
+rotulagem do harness. A revisão não reabre os achados secundários.
+
+```text
+CURRENT_ACTIVITY = CAM-INT-03-FINAL-REVIEW-AND-CHECKPOINT
+STATUS = LOCAL_CHECKPOINT_PASS / REMOTE_PUBLICATION_PENDING
+CAM_INT_03_RUNTIME_STATUS = HOMOLOGATED
+CAM_INT_03_IMPLEMENTATION = COMMITTED_LOCAL / REMOTE_PUBLICATION_PENDING
+ROOT_CAUSE_STATUS = RESOLVED
+TARGET_POLICY_BOOTSTRAP_STATUS = RESOLVED
+REAL_RUNTIME = PASS / A-B-C-D; H264; 2.484 s; production timeout 5.0 s
+DATABASE_PERSISTENCE_VERDICT = LOGICALLY_UNCHANGED / HARNESS_SIGNAL_DEFECT
+SECONDARY_PAD_LINK_FINDING = OPEN_NON_BLOCKING
+GIOLIBPROXY = NON_BLOCKING / NON_CAUSAL_FOR_INCIDENT
+DOCUMENTATION_HISTORICAL_CONFLICT = KNOWN_NON_BLOCKING / prior activity snapshots and contract headers preserved
+NEXT_REQUIRED_ACTIVITY = RESUME ARGOS BACKEND FROM NEXT OPEN ACTIVITY AFTER CAM-INT-03
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE section 59
+PUSH = BLOCKED_BY_AUTO_REVIEW / NOT_PERFORMED; explicit user confirmation required
+LOCAL_HEAD_EQUALS_UPSTREAM = NO / local checkpoint commit is one commit ahead
+REMOTE_CONTINUATION_READY = NO / until normal push is approved and verified
+```
+
+### 20.27. CAM-INT-03-POST-PUBLICATION-CONTINUITY-RECONCILIATION — publicação confirmada (2026-10-07)
+
+O commit de implementação `4a0eada4d06b9c61a12c78149257005297ce6a65`
+(`fix(camera): homologate CAM-INT-03 RTSP runtime`) está publicado em
+`origin/master`. O precheck desta reconciliação confirmou branch `master`,
+HEAD local igual ao upstream, worktree limpa e staging vazio. O estado corrente
+é o fechamento da seção 60 de `PROJECT_STATE.md`.
+
+```text
+CAM_INT_03_RUNTIME_STATUS = HOMOLOGATED
+CAM_INT_03_IMPLEMENTATION = PUBLISHED
+IMPLEMENTATION_COMMIT = 4a0eada4d06b9c61a12c78149257005297ce6a65
+PUSH = PASS
+LOCAL_HEAD_EQUALS_UPSTREAM = YES
+DIVERGENCE = 0/0
+REMOTE_CONTINUATION_READY = YES
+SECONDARY_DECODEBIN_APPSINK_LINK_FINDING = OPEN_NON_BLOCKING
+GIOLIBPROXY = NON_CAUSAL_FOR_CAM_INT_03
+LOCAL_AUTH_PROVISIONING_FINDING = OPEN_NON_BLOCKING
+NEXT_RECOMMENDED_ACTIVITY = RESUME ARGOS BACKEND FROM NEXT OPEN ACTIVITY AFTER CAM-INT-03
+```
+
+Não repetir RTSP nesta atividade. A revisão automática rejeitou o push para
+`origin/master` por ser uma publicação de alto impacto no branch padrão e exigir
+confirmação verificável do usuário. Não houve tentativa por outro caminho. O
+relatório da auditoria mantém sua conclusão
+histórica no momento da auditoria; esta seção registra apenas o follow-up factual
+posterior. A divergência histórica de cabeçalhos do registry, DAG e contrato
+RTSP permanece conhecida e não bloqueia a continuidade desta lane.
+
+
+### 20.28. ARGOS-UI-P5-PRODUCTION-INTEGRATION — Camera Detail integrado localmente (2026-10-07)
+
+O estado desta integração está registrado em `PROJECT_STATE.md`, seção 61. O
+commit P5 `c91bc6d4658faa408a9f565b9d1c3d6279571cb4` foi integrado por
+cherry-pick no `master` sincronizado em `0235c8d`, produzindo
+`662e80e16df53ae80a87b0c9c28f6700f6dd2e9b`. A adjudicação humana definiu a P5
+como autoridade visual e estrutural para Camera Detail; o master continua
+autoridade para contratos funcionais. A comparação não encontrou binding
+funcional pós-P5 ausente da implementação aprovada.
+
+```text
+UI_P5_STATUS = CLOSED / PRODUCTION_INTEGRATED_LOCALLY
+UI_SOURCE_COMMIT = c91bc6d4658faa408a9f565b9d1c3d6279571cb4
+MASTER_UI_COMMIT = 662e80e16df53ae80a87b0c9c28f6700f6dd2e9b
+CONFLICT_RESOLUTION = P5_VISUAL_AUTHORITY_PRESERVED
+UI_FOCUSED_TESTS = 17/17 PASS
+INTEGRATED_REGRESSION = 101/101 PASS
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+CAM_INT_03_CHANGED = NO
+CAM_INT_04_CHANGED = NO
+PUSH = AUTHORIZED / PENDING
+REMOTE_CONTINUATION_READY = NO / pending post-push verification
+NEXT_ACTION = publish master normally, verify remote equality, then record the publication checkpoint
+```
+
+O worktree P5 permaneceu intacto e sujo como solicitado. O ZIP local de
+continuidade continua não rastreado e fora do commit. Não reabrir CAM-INT-03:
+o checkpoint de runtime permanece conforme `PROJECT_STATE.md`, seção 60.
+
+
+### 20.29. ARGOS-UI-P5-PRODUCTION-INTEGRATION — publicação confirmada (2026-10-07)
+
+Consulte `PROJECT_STATE.md`, seção 62, para o fechamento factual. O commit de
+integração `662e80e16df53ae80a87b0c9c28f6700f6dd2e9b` e o checkpoint documental
+pré-publicação foram publicados normalmente em `origin/master`; o fetch posterior
+confirmou igualdade local/remota e divergência zero.
+
+```text
+UI_P5_STATUS = PUBLISHED_TO_MASTER
+CONFLICT_RESOLUTION_STATUS = PASS
+P5_VISUAL_AUTHORITY_PRESERVED = YES
+POST_P5_FUNCTIONAL_BINDINGS_FOUND = NO
+UI_FOCUSED_TESTS = 17/17 PASS
+INTEGRATED_REGRESSION = 101/101 PASS
+DJANGO_CHECK = PASS
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES
+REMOTE_CONTINUATION_READY = YES
+NEXT_ACTION = resume ARGOS backend from the next open activity after CAM-INT-03
+```
+
+O worktree da UI permaneceu intocado; o ZIP local de continuidade segue não
+rastreado e preservado. Publicação no repositório não implica deploy operacional.
+
+### 20.30. CAM-INT-04-HTTP-R1-CALLSITE-01 — snapshot histórico supersedido (2026-10-08)
+
+O estado factual está em PROJECT_STATE §63. O callsite pertence ao worker
 IMG-CAP e compõe autorização, TargetPolicy, R1 e o adapter HTTP existente.
 A branch CAM-INT-04 contém implementação e testes focais; Django está disponível
 no ambiente virtual do projeto, mas a revisão automática bloqueou a execução
@@ -1155,9 +1469,9 @@ autorização específica para migrations no banco isolado de testes ou configur
 validação que não aplique migrations. A homologação de câmera continua sem
 autorização.
 
-### 20.21. CAM-INT-04-WORKTREE-RECOVERY-AND-IMPLEMENTATION-AUDIT (2026-10-08)
+### 20.31. CAM-INT-04-WORKTREE-RECOVERY-AND-IMPLEMENTATION-AUDIT — snapshot histórico (2026-10-08)
 
-O resultado factual está em `PROJECT_STATE.md`, seção 55. A branch remota
+O resultado factual está em `PROJECT_STATE.md`, seção 65. A branch remota
 `origin/codex/cam-int-04-implementation` foi recuperada em worktree local
 limpa inicialmente, na branch de acompanhamento
 `codex/cam-int-04-implementation`, HEAD `f9ae0e73be7b2d8e7ab4a6a3a6e45ee2e48b4efe`.
@@ -1178,7 +1492,7 @@ CAM_INT_04_READY_FOR_INTEGRATION = NO
 WORKTREE_CLEAN = NO / continuity-only audit checkpoint recorded
 IMPLEMENTATION_OR_CONTRACT_FILES_CHANGED = NO
 COMMIT / PUSH / MERGE = NOT_PERFORMED
-PROJECT_STATE_UPDATE = PASS / PROJECT_STATE §55
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE §65
 ACTIVITY_COMPLETION_PERCENT = 100% / audit objective complete; implementation validation pending
 ```
 
@@ -1191,9 +1505,9 @@ composição após resolver a dependência `httpx` e a falha de import do teste 
 worker. Não inferir aceite da implementação a partir do system check ou do
 checkpoint publicado. Não acessar câmera ou credenciais reais.
 
-### 20.22. CAM-INT-04-FOCAL-REMEDIATION-AND-VALIDATION (2026-10-08)
+### 20.32. CAM-INT-04-FOCAL-REMEDIATION-AND-VALIDATION — focal PASS supersedido (2026-10-08)
 
-O resultado supersedente está em `PROJECT_STATE.md`, seção 56. Em
+O resultado supersedente está em `PROJECT_STATE.md`, seção 66. Em
 `codex/cam-int-04-implementation`, HEAD `f9ae0e73`, as dependências declaradas
 foram instaladas num `.venv` local isolado; HTTPX 0.28.1 importa e o manifesto
 não mudou. Django 5.2 usou SQLite compartilhado em memória para testes; migrations
@@ -1225,3 +1539,32 @@ configuração ausente, inválida, não listada ou revogada continua fail-closed
 Reexecutar TargetPolicy, runtime RTSP, HTTP Snapshot, capture service e worker.
 Não fazer essa reconciliação contratual nesta atividade, que não autorizou
 alterar authority nem integrar master.
+
+### 20.33. CAM-INT-04-MASTER-INTEGRATION-AND-REGRESSION (2026-10-08)
+
+Estado vigente: `PROJECT_STATE.md`, seção 67. A branch
+`codex/cam-int-04-implementation` integrou o master `5bd22b0` com checkpoint
+local de segurança `fce1e86`; o merge foi validado localmente. CAM-INT-03 segue
+homologada e UI P5 permanece publicada/preservada.
+
+```text
+STATUS = PASS
+TARGET_POLICY = ARGOS_CAMERA_ALLOWED_PATHS / trusted environment / per invocation / exact match / fail closed
+DEFAULT_PATH_CHANGED = NO
+HTTP_R1_CALLSITE_01 = RESOLVED
+CAM_INT_03_REGRESSION = 68/68 PASS
+CAM_INT_04_REGRESSION = 32/32 PASS
+UI_P5_REGRESSION = 17/17 PASS
+TOTAL_INTEGRATED_TESTS = 117/117 PASS
+MIGRATION_0018 = source only in repository; test-only in-memory application passed
+REAL_CAMERA_OR_CREDENTIAL_ACCESS = NO
+MASTER_CHANGED = NO
+PUSH = NOT_PERFORMED
+NEXT_REQUIRED_ACTIVITY = CAM-INT-04-FINAL-REVIEW-AND-PUBLICATION
+```
+
+A allowlist ambiental é uma fonte explícita confiável, independente da
+configuração da câmera e do override recebido. Sem path, com valor inválido,
+fora da lista ou revogado, o worker falha fechado antes de R1 e da rede. Os
+snapshots 20.30–20.32 preservam a sequência histórica e estão supersedidos por
+este handoff.

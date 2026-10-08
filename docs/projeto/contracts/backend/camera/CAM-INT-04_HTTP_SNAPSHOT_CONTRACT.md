@@ -6,7 +6,7 @@ HTTP_CAMERA_ADAPTER_IMPLEMENTED = YES / CODE PRESENT IN CAM-INT-04 BRANCH
 BC02_STATUS = IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING
 IMPLEMENTATION_READY = YES / HTTP ADAPTER AND IMG-CAP WORKER COMPOSITION
 IMPLEMENTER_TARGET = LUNA
-READY_NOW = NO / TEST RUN REQUIRES TEST-DATABASE MIGRATIONS; NOT AUTHORIZED
+READY_NOW = YES / LOCAL INTEGRATED VALIDATION PASS; REAL CAMERA HOMOLOGATION SEPARATE
 REQUIRED_PREDECESSORS = CAM-INT-01; CAM-INT-02; CAM-INT-02-R1; CAM-INT-06; CAM-INT-07
 LOCAL_CALLSITE_OWNER = IMG-CAP
 ```
@@ -133,18 +133,23 @@ adapter, e resolve Basic/Digest somente por
 resolve_active_credential_for_execution(*, config) em HTTPS. O adapter recebe
 o objeto efêmero; não há fallback de scheme, fonte, segredo ou destino.
 
-A implementação e os testes focais estão presentes no branch CAM-INT-04.
-Os testes não foram executados porque o ambiente disponível não tem Django.
-A migration 0018_cameracapturejob.py é somente fonte e não foi aplicada.
-Não houve homologação de câmera real. O estado da implementação não equivale a
-aceite local ou publicação.
+A implementação foi integrada com `origin/master` na branch CAM-INT-04. As
+suites locais passaram: HTTP Snapshot 15/15, IMG-CAP capture service 16/16 e
+worker 1/1; a regressão integrada foi 117/117, incluindo CAM-INT-03 e UI P5.
+A migration `0018_cameracapturejob.py` permanece como fonte no repositório; o
+runner aplicou-a somente ao SQLite compartilhado em memória e o destruiu ao
+final. Nenhuma migration foi aplicada ao banco operacional. Não houve
+homologação de câmera real.
 
 ### Política de path nesta remediação
 
-Quando o path efetivo for igual ao default_path declarado no profile, o
-consumer passa somente esse path à TargetPolicy como path autorizado pelo
-profile, inclusive se o profile também permitir override. Um path alternativo
-requer allowed_paths_by_scheme em uma TargetPolicy confiável e independente;
-o worker com loader ambiental atual falha fechado porque não carrega essa lista.
-Ampliar a configuração ambiental de paths pertence a uma atividade CAM-INT-07
-separada. Esta regra não autoautoriza override escolhido por Técnico/Admin.
+Quando o path efetivo for igual ao `default_path` declarado no profile, o
+consumer continua passando somente esse path à TargetPolicy, sem mudança de
+default. Um path alternativo só é autorizado quando a policy confiável contém
+o path exato para o scheme e porta aprovados. `TargetPolicy.from_environment`
+carrega a lista explícita `ARGOS_CAMERA_ALLOWED_PATHS` segundo a gramática
+`scheme:path[,path];...`; ausência mantém paths ambientais vazios e falha
+fechado para override, enquanto configuração malformada falha antes de R1 e da
+rede. A allowlist vem exclusivamente do ambiente confiável: o consumer não
+transforma o override em autorização, não amplia a lista e não habilita
+wildcards.

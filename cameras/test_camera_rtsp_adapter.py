@@ -57,19 +57,33 @@ class _FakeRtsp:
 
 
 class _TemporalPad:
+    def __init__(self): self.link_calls, self.flow_active = 0, False
     def get_current_caps(self): return self
     def query_caps(self, _value): return self
     def get_size(self): return 1
     def get_structure(self, _index): return self
     def get_string(self, key): return {"media": "video", "encoding-name": "H264"}.get(key)
-    def link(self, _other): return 0
+    def link(self, target):
+        self.link_calls += 1
+        self.flow_active = target.owner.state == "PLAYING"
+        return 0
+
+class _TemporalSinkPad:
+    def __init__(self, owner): self.owner, self.linked = owner, False
+    def is_linked(self): return self.linked
 
 class _TemporalElement:
-    def __init__(self): self.signals, self.props = {}, {}
+    def __init__(self, sync_result=True):
+        self.signals, self.props = {}, {}
+        self.sync_result, self.state, self.sync_calls = sync_result, "NULL", 0
     def connect(self, signal, callback): self.signals[signal] = callback
     def set_property(self, name, value): self.props[name] = value
     def link(self, _other): return True
-    def get_static_pad(self, _name): return _TemporalPad()
+    def sync_state_with_parent(self):
+        self.sync_calls += 1
+        if self.sync_result: self.state = "PLAYING"
+        return self.sync_result
+    def get_static_pad(self, _name): return _TemporalSinkPad(self)
     def emit(self, _signal): return SimpleNamespace(get_buffer=lambda: SimpleNamespace(get_size=lambda: 1024))
 
 class _TemporalBus:
@@ -84,18 +98,34 @@ class _TemporalBus:
         return None
 
 class _TemporalPipeline:
-    def __init__(self, bus): self.bus, self.states = bus, []
-    def add(self, _element): pass
-    def set_state(self, state): self.states.append(state); return 0
+    def __init__(self, bus):
+        self.bus, self.states = bus, []
+        self.current_state, self.pending_state, self.added_dynamic_state = "NULL", None, None
+    def add(self, item):
+        if self.pending_state == "PLAYING":
+            item.state = "NULL"
+            self.added_dynamic_state = (self.current_state, self.pending_state, item.state)
+    def set_state(self, state):
+        self.states.append(state)
+        if state == 1:
+            self.current_state, self.pending_state = "PAUSED", "PLAYING"
+        elif state == 0:
+            self.current_state, self.pending_state = "NULL", None
+        return 0
     def get_bus(self): return self.bus
 
-def _temporal_gstreamer_adapter():
+def _temporal_gstreamer_adapter(sync_result=True):
     clock = [0.0]
     bus = _TemporalBus(clock)
     pipeline, src, decoder, sink = _TemporalPipeline(bus), _TemporalElement(), _TemporalElement(), _TemporalElement()
+    elements = []
     class Factory:
         @staticmethod
-        def make(_name, _instance): return _TemporalElement()
+        def make(name, _instance):
+            element = _TemporalElement(sync_result=sync_result)
+            element.name = name
+            elements.append(element)
+            return element
     gst = SimpleNamespace(
         SECOND=1_000_000_000,
         MessageType=SimpleNamespace(ERROR=1, EOS=2, ELEMENT=4, REDIRECT=8),
@@ -108,12 +138,14 @@ def _temporal_gstreamer_adapter():
     adapter = GStreamerRtspAdapter(socket_factory=lambda *_: _FakeSocket(),
         loader=lambda: (gst, object()), monotonic=lambda: clock[0])
     adapter._pipeline = lambda *_: (pipeline, src, decoder, sink)
+    rtp_pad = _TemporalPad()
     def deliver_frame():
         src.signals["on-sdp"](src, None)
-        src.signals["pad-added"](src, _TemporalPad())
-        sink.signals["new-sample"](sink)
+        src.signals["pad-added"](src, rtp_pad)
+        if rtp_pad.flow_active:
+            sink.signals["new-sample"](sink)
     bus.deliver_frame = deliver_frame
-    return adapter, bus, clock, pipeline, gst
+    return adapter, bus, clock, pipeline, gst, elements, rtp_pad
 
 class _FakeSocket:
     def settimeout(self, _value): pass
@@ -215,15 +247,43 @@ class RtspPortTests(TestCase):
 
 
     def test_gstreamer_empty_polls_continue_until_later_contract_success(self):
-        adapter, bus, _clock, _pipeline, _gst = _temporal_gstreamer_adapter()
+        adapter, bus, _clock, _pipeline, _gst, _elements, _rtp_pad = _temporal_gstreamer_adapter()
         bus.actions = [None, None, bus.deliver_frame]
         result = adapter.probe(request())
         self.assertTrue(result.is_success)
         self.assertEqual(len(bus.quanta), 3)
         self.assertEqual(tuple(stage.status for stage in result.stages), (StageStatus.PASS,) * 4)
 
+    def test_dynamic_depayloader_syncs_to_parent_target_before_rtp_flow(self):
+        adapter, bus, _clock, pipeline, _gst, elements, rtp_pad = _temporal_gstreamer_adapter()
+        bus.actions = [bus.deliver_frame]
+        result = adapter.probe(request())
+        depay = next(element for element in elements if element.name == "rtph264depay")
+        self.assertEqual(pipeline.added_dynamic_state, ("PAUSED", "PLAYING", "NULL"))
+        self.assertEqual(depay.sync_calls, 1)
+        self.assertEqual(depay.state, "PLAYING")
+        self.assertEqual(rtp_pad.link_calls, 1)
+        self.assertTrue(rtp_pad.flow_active)
+        self.assertTrue(result.is_success)
+        self.assertEqual(tuple(stage.status for stage in result.stages), (StageStatus.PASS,) * 4)
+
+    def test_dynamic_depay_sync_failure_fails_closed_before_rtp_release(self):
+        adapter, bus, _clock, pipeline, _gst, elements, rtp_pad = _temporal_gstreamer_adapter(sync_result=False)
+        bus.actions = [bus.deliver_frame]
+        result = adapter.probe(request())
+        depay = next(element for element in elements if element.name == "rtph264depay")
+        self.assertEqual(depay.sync_calls, 1)
+        self.assertEqual(depay.state, "NULL")
+        self.assertEqual(rtp_pad.link_calls, 0)
+        self.assertFalse(rtp_pad.flow_active)
+        self.assertEqual(tuple(stage.status for stage in result.stages),
+                         (StageStatus.PASS, StageStatus.PASS, StageStatus.FAIL, StageStatus.NOT_RUN))
+        self.assertEqual(result.error_code, "DYNAMIC_ELEMENT_SYNC_FAILED")
+        self.assertEqual(result.category, ProbeResultCode.PROTOCOL_ERROR)
+        self.assertEqual(pipeline.states[-1], _gst.State.NULL)
+
     def test_gstreamer_empty_polls_consume_one_overall_deadline(self):
-        adapter, bus, _clock, pipeline, gst = _temporal_gstreamer_adapter()
+        adapter, bus, _clock, pipeline, gst, _elements, _rtp_pad = _temporal_gstreamer_adapter()
         result = adapter.probe(request(timeout=0.2, connect_timeout=0.15))
         self.assertEqual(result.category, ProbeResultCode.TIMEOUT)
         self.assertEqual(result.error_code, "TIMEOUT")
@@ -233,7 +293,7 @@ class RtspPortTests(TestCase):
         self.assertGreaterEqual(sum(bus.quanta), int(0.2 * gst.SECOND) - 2)
         self.assertEqual(pipeline.states[-1], gst.State.NULL)
     def test_gstreamer_terminal_auth_error_does_not_wait_for_deadline(self):
-        adapter, bus, _clock, pipeline, gst = _temporal_gstreamer_adapter()
+        adapter, bus, _clock, pipeline, gst, _elements, _rtp_pad = _temporal_gstreamer_adapter()
         bus.actions = [SimpleNamespace(type=gst.MessageType.ERROR,
             parse_error=lambda: ("401 unauthorized", None))]
         result = adapter.probe(request())

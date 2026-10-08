@@ -1,12 +1,14 @@
 import re
+from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from .catalogos import VALOR_PERSONALIZADO
 from .forms import CameraEdicaoForm
-from .models import Camera
+from .models import Camera, EstadoMonitoramento
 
 
 class ListaCamerasFrontendTests(TestCase):
@@ -527,6 +529,177 @@ class ListaCamerasFrontendTests(TestCase):
             response,
             'aria-errormessage="id_farm_personalizado_errors"',
         )
+
+
+class CameraDetailFrontendTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_superuser(
+            username="frontend-camera-detail", password="senha-forte", email=""
+        )
+        self.client.force_login(self.user)
+        self.camera = Camera.objects.create(
+            nome="CAMERA-DETALHE",
+            patrimonio="PAT-DETALHE",
+            ip="10.20.30.40",
+            mascara_subrede="255.255.255.0",
+            gateway="10.20.30.1",
+            vlan=20,
+            fabricante="AXIS",
+            modelo="P3265",
+            serial="SERIAL-DETALHE",
+            mac="AA:BB:CC:DD:EE:FF",
+            tipo=Camera.TipoCamera.DOME,
+            situacao_operacional=Camera.SituacaoOperacional.PRODUCAO,
+            terminal="TPS1",
+            ambiente="SALA DE MONITORAMENTO",
+            farm="FARM-01",
+            retencao_esperada_dias=30,
+            codec="H.264",
+        )
+
+    def test_detail_uses_canonical_regions_and_removes_legacy_presentational_classes(self):
+        response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode("utf-8")
+
+        expected_order = (
+            "← Voltar ao inventário",
+            "Inventário CFTV / Detalhe da câmera",
+            "CAMERA-DETALHE",
+            "Estados da câmera",
+            "Editar câmera",
+            "Situação e completude",
+            "Monitoramento técnico",
+            "Ações operacionais",
+            "Identificação e localização",
+            "<dt>Fabricante</dt>",
+            "Rede e gravação",
+            "Governança cadastral",
+            "Histórico",
+            "Histórico técnico de indisponibilidades",
+            "Histórico de atividades",
+            "Histórico de substituições",
+            "Eventos de auditoria",
+            "Operações complementares",
+            "Enviar imagem manualmente",
+        )
+        content_start = html.index("← Voltar ao inventário")
+        positions = [html.index(item, content_start) for item in expected_order]
+        self.assertEqual(positions, sorted(positions))
+        self.assertContains(response, 'id="camera-detail-title"')
+        self.assertContains(response, 'argos-camera-detail__name argos-page-title')
+        self.assertContains(response, "argos-back-link")
+        self.assertContains(response, "argos-section-surface", count=2)
+        self.assertRegex(html, r'<section class="argos-section-surface argos-camera-detail__record-surface" aria-label="Ficha da câmera">')
+        self.assertRegex(html, r'<section class="argos-section-surface argos-camera-detail__history-surface" aria-labelledby="camera-detail-history-heading">')
+        for region in ("situation", "monitoring", "actions", "identification-location", "network-recording", "governance", "history", "complementary"):
+            self.assertIn(f'id="camera-detail-{region}-heading"', html)
+        self.assertContains(
+            response,
+            '<header class="argos-camera-detail__hero" aria-labelledby="camera-detail-title">',
+        )
+        self.assertContains(response, 'class="argos-data-pair"')
+        for legacy_class in (
+            "inventory-panel",
+            "detail-card",
+            "detail-grid",
+            "detail-empty-state",
+            "camera-governance-panel",
+            "activity-card",
+        ):
+            self.assertNotIn(legacy_class, html)
+
+    def test_detail_reading_order_grouping_and_empty_values(self):
+        self.camera.motivo_desativacao = ""
+        self.camera.save(update_fields=("motivo_desativacao",))
+        response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
+        html = response.content.decode("utf-8")
+        hero = html[html.index('aria-labelledby="camera-detail-title"'):]
+        positions = [hero.index(marker) for marker in (
+            'id="camera-detail-title"',
+            'argos-camera-detail__location',
+            'aria-label="Estados da câmera"',
+            '>Editar câmera</a>',
+        )]
+        self.assertEqual(positions, sorted(positions))
+        for region in ("situation", "monitoring", "actions", "identification-location",
+                       "network-recording", "governance", "history", "complementary"):
+            self.assertRegex(html, rf'<header class="argos-section-header"><h2 '
+                             rf'id="camera-detail-{region}-heading">')
+        situation = html[html.index('id="camera-detail-situation-heading"'):]
+        self.assertIn('<dl class="argos-data-group argos-camera-detail__pairs">', situation)
+        self.assertIn('<div class="argos-data-pair argos-camera-detail__pair--full">'
+                      '<dt>Motivo da última desativação</dt>', situation)
+        self.assertIn('<span class="argos-state__copy">—</span>', situation)
+        activity = html[html.index('id="camera-detail-activities-heading"'):]
+        self.assertLess(activity.index('>Registrar atividade</a>'),
+                        activity.index('id="camera-detail-activities-all"'))
+
+    def test_detail_preserves_upload_form_contract_and_authorized_edit_action(self):
+        response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
+        self.assertContains(response, reverse("cameras:editar", args=[self.camera.pk]))
+        self.assertContains(response, reverse("cameras:upload_imagem", args=[self.camera.pk]))
+        self.assertContains(
+            response,
+            '<form class="argos-camera-detail__upload-form" action="'
+            f'{reverse("cameras:upload_imagem", args=[self.camera.pk])}'
+            '" method="post" enctype="multipart/form-data">',
+        )
+        self.assertContains(
+            response,
+            'id="imagem-camera" name="imagem" type="file" '
+            'accept="image/jpeg,image/png,image/webp" required',
+        )
+        self.assertContains(response, 'name="csrfmiddlewaretoken"')
+        self.assertContains(response, '<button class="argos-button argos-button--primary" type="submit">Enviar imagem</button>')
+
+    def test_monitoring_badge_remains_legacy_on_inventory_and_ui_v2_on_detail(self):
+        detail = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
+        self.assertContains(detail, "argos-status-badge--success")
+
+        inventory = self.client.get(reverse("cameras:lista"))
+        self.assertRegex(inventory.content.decode("utf-8"), r'class="badge badge--[^\"]+"')
+
+    def test_stale_unknown_context_stacks_below_compact_badges_and_keeps_confirmed_state(self):
+        stale_at = timezone.now() - timedelta(days=1)
+        self.camera.pavimento = "1º PAVIMENTO"
+        self.camera.setor = "SEGURANÇA"
+        self.camera.save(update_fields=("pavimento", "setor"))
+        EstadoMonitoramento.objects.create(
+            camera=self.camera,
+            estado_estavel=EstadoMonitoramento.EstadoEstavel.UNKNOWN,
+            estado_alterado_em=stale_at,
+            ultima_evidencia_util_em=stale_at,
+            em_escopo=True,
+        )
+
+        response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode("utf-8")
+        self.assertEqual(html.count("Dados desatualizados"), 1)
+        self.assertNotIn("Dados desatualizados · último estado UNKNOWN", html)
+        self.assertRegex(html, r'<dt>Último estado confirmado</dt><dd><span>UNKNOWN</span></dd>')
+
+        hero = html[html.index('class="argos-camera-detail__status-cluster"'):html.index("</header>", html.index('class="argos-camera-detail__status-cluster"'))]
+        self.assertIn('role="group" aria-label="Estados da câmera"', hero)
+        self.assertNotIn("Dados desatualizados", hero)
+
+        monitoring_start = html.index('class="argos-camera-detail__monitoring-status"')
+        monitoring = html[monitoring_start:html.index("</dd>", monitoring_start)]
+        self.assertLess(
+            monitoring.index("UNKNOWN"),
+            monitoring.index("Dados desatualizados"),
+        )
+
+    def test_nonstale_scope_context_keeps_existing_detail_badge_composition(self):
+        self.camera.situacao_operacional = Camera.SituacaoOperacional.ESTOQUE
+        self.camera.save(update_fields=("situacao_operacional",))
+
+        response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
+        html = response.content.decode("utf-8")
+        self.assertContains(response, "Fora do escopo")
+        self.assertContains(response, 'class="argos-camera-detail__monitoring-summary"')
+        self.assertNotIn('class="argos-camera-detail__status-support"', html)
 
 
 class GovernancaActionShellFrontendTests(TestCase):
