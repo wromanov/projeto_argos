@@ -786,3 +786,21 @@ os testes para reexecutar.
 CAM-INT-03 e UI P5 foram preservadas. A regressão integrada passou 117/117;
 nenhuma câmera/credencial real foi acessada e nenhuma migration operacional
 foi aplicada. Publicação continua separada.
+
+
+## 39. CAM-INT-04-POST-PUBLICATION-CONTINUITY-RECONCILIATION (2026-10-08)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 68 | Checkpoint remoto, resultado pós-publicação e próxima atividade | CURRENT / PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.34 | Handoff pós-publicação e limites da próxima atividade | CURRENT / PASS |
+| `43a08a511650016de03ec175a3d09b402ab2f149` | Implementação integrada CAM-INT-04 | PUBLISHED / branch checkpoint |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 67 | Integração local e regressão de pré-publicação | HISTORICAL / superseded for publication state by section 68 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.33 | Handoff de integração pré-publicação | HISTORICAL / superseded by section 20.34 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`, seção 38 | Mapa de integração pré-publicação | HISTORICAL / superseded by section 39 |
+
+A branch `codex/cam-int-04-implementation` foi publicada com divergência 0/0
+no checkpoint do commit `43a08a5`; `master` permaneceu em `5bd22b0`. A
+implementação local está completa e a validação ampliada passou 141/141. A
+homologação HTTP real permanece pendente e exige atividade e autorização
+separadas. CAM-INT-03 homologada e UI P5 publicada foram preservadas.

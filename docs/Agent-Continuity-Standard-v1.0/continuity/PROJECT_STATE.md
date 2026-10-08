@@ -4074,3 +4074,51 @@ de schema fora do contrato, publicação ou mudança no master.
 Os registros de CAM-INT-04 nas seções 63–66 são snapshots históricos e estão
 supersedidos por esta seção. CAM-INT-03 permanece homologada e UI P5 publicada;
 nenhuma delas foi reaberta ou rehomologada nesta atividade.
+
+
+## 68. CAM-INT-04-POST-PUBLICATION-CONTINUITY-RECONCILIATION (2026-10-08)
+
+Registro factual posterior à publicação normal da implementação CAM-INT-04. A
+seção 67 permanece preservada como histórico de pré-publicação; este adendo
+reconcilia o checkpoint remoto e o handoff.
+
+```text
+PROJECT = ARGOS
+ACTIVITY = CAM-INT-04-POST-PUBLICATION-CONTINUITY-RECONCILIATION
+STATUS = PASS
+BRANCH = codex/cam-int-04-implementation
+IMPLEMENTATION_COMMIT = 43a08a511650016de03ec175a3d09b402ab2f149
+BRANCH_PUSH = PASS / normal fast-forward to origin/codex/cam-int-04-implementation
+REMOTE_BRANCH_CHECKPOINT_READY = YES
+LOCAL_HEAD_EQUALS_REMOTE = YES / at pre-reconciliation checkpoint
+DIVERGENCE = 0/0 / at pre-reconciliation checkpoint
+WORKTREE = CLEAN / pre-reconciliation checkpoint
+STAGING = EMPTY / pre-reconciliation checkpoint
+MASTER_LOCAL = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
+ORIGIN_MASTER = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
+MASTER_UNCHANGED = YES
+CAM_INT_03_PRESERVED = YES / homologated and published
+UI_P5_PRESERVED = YES / published
+HTTP_R1_CALLSITE_01 = RESOLVED
+IMG_CAP_LOCAL_IMPLEMENTATION = COMPLETE / HTTP-only local implementation
+TARGET_POLICY_RECONCILIATION = PASS
+INTEGRATED_TESTS = 141/141 PASS
+DJANGO_CHECK = PASS
+MAKEMIGRATIONS_CHECK = PASS
+SECRET_SCAN = PASS
+UNRELATED_CHANGES = NONE
+REAL_HTTP_HOMOLOGATION = PENDING / no real camera or credentials accessed
+MASTER_PUBLICATION = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS / section 68
+AGENT_CONTINUITY_UPDATE = PASS / section 20.34
+ACTIVE_DOCUMENT_MAP_UPDATE = PASS / section 39
+AGENT_HANDOFF_GATE = PASS
+NEXT_RECOMMENDED_ACTIVITY = CAM-INT-04-REAL-HTTP-HOMOLOGATION-PREPARATION
+```
+
+O push atualizou exclusivamente a branch dedicada; `master` permaneceu no
+baseline `5bd22b0`. A validação integrada ampliada executada no commit de
+implementação passou 141/141 testes. Os 117 testes da regressão CAM-INT-03,
+CAM-INT-04 e UI P5 também permanecem registrados na seção 67. Nenhuma câmera
+real, credencial produtiva ou banco operacional foi usado. A homologação HTTP
+real continua pendente e depende de atividade e autorização próprias.

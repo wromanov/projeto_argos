@@ -1568,3 +1568,36 @@ configuração da câmera e do override recebido. Sem path, com valor inválido,
 fora da lista ou revogado, o worker falha fechado antes de R1 e da rede. Os
 snapshots 20.30–20.32 preservam a sequência histórica e estão supersedidos por
 este handoff.
+
+
+### 20.34. CAM-INT-04-POST-PUBLICATION-CONTINUITY-RECONCILIATION (2026-10-08)
+
+Estado vigente: `PROJECT_STATE.md`, seção 68. A implementação CAM-INT-04 foi
+publicada em `origin/codex/cam-int-04-implementation` no commit
+`43a08a511650016de03ec175a3d09b402ab2f149`; a revisão de continuidade registra
+o checkpoint remoto e conclui o handoff desta atividade.
+
+```text
+ACTIVITY = CAM-INT-04-POST-PUBLICATION-CONTINUITY-RECONCILIATION
+STATUS = PASS
+BRANCH_PUSH = PASS
+IMPLEMENTATION_COMMIT = 43a08a511650016de03ec175a3d09b402ab2f149
+REMOTE_BRANCH_CHECKPOINT_READY = YES
+LOCAL_HEAD_EQUALS_REMOTE = YES / 0/0 at publication checkpoint
+MASTER_UNCHANGED = YES / 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
+CAM_INT_03 = PRESERVED / HOMOLOGATED / PUBLISHED
+UI_P5 = PRESERVED / PUBLISHED
+HTTP_R1_CALLSITE_01 = RESOLVED
+IMG_CAP_LOCAL_IMPLEMENTATION = COMPLETE
+TARGET_POLICY_RECONCILIATION = PASS
+INTEGRATED_TESTS = 141/141 PASS
+REAL_HTTP_HOMOLOGATION = PENDING
+MASTER_PUBLICATION = NOT_PERFORMED
+NEXT_REQUIRED_ACTIVITY = CAM-INT-04-REAL-HTTP-HOMOLOGATION-PREPARATION
+REAL_HOMOLOGATION_AUTHORITY = SEPARATE_ACTIVITY_AND_AUTHORIZATION_REQUIRED
+```
+
+Os registros anteriores, inclusive o resultado integrado 117/117 da seção
+20.33, permanecem como evidência histórica. A verificação ampliada 141/141
+corresponde ao commit de implementação publicado. Não houve acesso a câmera
+real, credencial produtiva ou banco operacional nesta atividade.
