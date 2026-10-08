@@ -2819,3 +2819,483 @@ Arquivos alterados por esta atividade (15; inclui este registro):
 Os partials `_monitoring_badge.html`, `_atividade_tipo_badge.html` e o arquivo
 untracked `camera-detail.css` continuam dirty por S2B, sem delta desta atividade.
 HEAD e staging permanecem no estado inicial.
+
+## 52. P5-VR-CAMERA-DETAIL-REMEDIATION-01 (2026-10-06)
+
+```text
+STATUS = TECHNICAL_READY_FOR_HUMAN_VISUAL_REVIEW
+ACTIVITY_COMPLETION_PERCENT = 100% / escopo técnico local autorizado
+ENVIRONMENT = CODEX / pt-BR / DIRECT / NATIVE
+MODEL_TARGET_REQUESTED = SOL / HIGH / configuração não alterada pelo agente
+SKILL = NONE
+PLUGIN = NONE
+SUBAGENTS = 0
+BASELINE = PASS
+BASELINE_ROOT = C:\Users\walac\desenvolvimento\projeto_argos_ui_p5
+BASELINE_BRANCH = codex/ui-v2-p5-production
+BASELINE_HEAD = 4a2d40da502ea4dafd8bc78202e707416695bee3
+BASELINE_UPSTREAM = origin/codex/ui-v2-p5-production / same HEAD / local ref; no fetch
+BASELINE_DIVERGENCE = 0 / 0
+BASELINE_WORKTREE = CLEAN
+BASELINE_STAGING = EMPTY
+OBJECTIVE_DRIFT_FIXES = PASS
+CASCADE_ROOT_FIX = PASS
+HERO_HIERARCHY = PASS / implementação e checks automatizados; aceite humano pendente
+SECTION_HEADING_CONSISTENCY = PASS
+DATA_GROUPS = PASS
+OPERATION_COMPOSITION = PASS
+GOVERNANCE_SUPPORTING_HIERARCHY = PASS / densidade supporting; aceite humano pendente
+HISTORY_RHYTHM = PASS / clusters adjacentes; aceite humano pendente
+SECTION_SURFACE_2_4 = UNCHANGED / LOCAL / UNPUBLISHED / REVISE_IN_PLACE
+NEW_TOKENS = NONE
+NEW_PUBLIC_COMPONENTS = NONE
+BREAKPOINTS = 900 / 680 / 600 / nenhum novo
+FUNCTIONAL_REGRESSION = NONE_IDENTIFIED / exercised scope
+QUICK_DETAIL_IMPACT = NONE_IDENTIFIED / functional tests + computed-style sample
+P3B_IMPACT = NONE_IDENTIFIED / functional tests + computed-style sample
+FOCAL_TESTS = 10 / 10 PASS / CameraDetailFrontendTests
+UPLOAD_TESTS = 7 / 7 PASS / retry unsandboxed due Windows TemporaryDirectory WinError 5
+FUNCTIONAL_AND_SHARED_TESTS = 165 distinct / 157 PASS / 8 preexisting baseline failures
+NEW_TEST_FAILURES = NONE
+BASELINE_FAILURE_REPRODUCTION = 27 tests / same eight failures / zero errors
+DJANGO_CHECK = PASS / no issues
+GIT_DIFF_CHECK = PASS
+CAMERA_DETAIL_TECHNICAL_STATUS = READY_FOR_MANUAL_VISUAL_REVIEW
+HUMAN_VISUAL_APPROVAL = PENDING
+STAGING = EMPTY
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS / technical handoff; human review pending
+ACTIVITY_COMPLETE = YES / somente escopo técnico autorizado
+NEXT_ACTION = human visual review / 1440x900 / 100% / three captures
+```
+
+Arquivos alterados (11): `cameras/templates/cameras/detalhe.html`,
+`cameras/test_frontend.py`, `static/css/argos.css`,
+`static/css/ui-v2/camera-detail.css`, Camera Detail Contract, Visual Contract,
+Component Catalog, DSCR-UIV2-006, PROJECT_STATE, AGENT_CONTINUITY e
+ACTIVE_DOCUMENT_MAP. As quatro authorities de contrato estão em
+`docs/prototype/ui-v2/contracts/`; os três registros de continuidade estão
+em `docs/Agent-Continuity-Standard-v1.0/continuity/`.
+
+FATO / causa: `a { color: inherit; text-decoration: none; }`, unlayered em
+argos.css, superava cores V2 layered independentemente da ordem de carga.
+Mapa: argos.css carrega antes de tokens/base/components/patterns/production;
+tokens declara reset, tokens, base, components, patterns, pages, overrides.
+Consumidores relevantes: shell e páginas V1; botões/link de retorno/textuais V2
+em Camera Detail, Inventory e Dashboard; Quick Detail com regras legadas
+específicas; P3-B route-gated sem V2. A menor correção move apenas o default
+global para reset. V1 continua herdando, suas classes unlayered mantêm authority,
+e V2 retoma cores de base/components/patterns. Nenhum override de cor local,
+!important novo ou escalada de especificidade.
+
+EVIDÊNCIA / browser: Primary e Danger = branco; Secondary = #172b3a;
+Back e link textual normal = #2563a6; marcador vazio = #607485. Comparei estilos
+calculados antes/depois da regra em HTML de fixture: dois links do Quick Detail
+e dois links de P3-B sem delta; oito links de Dashboard com único delta no
+Primary Nova câmera, de ink para branco, dimensões preservadas. Inventory mantém
+composição e markup; componentes V2 recebem a correção de cores compartilhada.
+Sem alteração de Quick Detail/P3-B source, backend, JS ou partials.
+
+Hero usa heading existente de 27–34px com H2 e preserva contexto projetado;
+estados/editar no cluster direito e leitura mobile nome → estados → editar →
+resumo. Todas as macro headings usam Section Header. Situação agora possui
+Data Group real, motivo integral e ações vinculadas. Governança mantém surface
+e ordem com gap vertical de 8px. Histórico usa alinhamento inicial por família,
+ações próximas e Registrar atividade antes do histórico completo. Sem cards
+internos. Surface 2.4 e tokens permanecem idênticos ao HEAD.
+
+Proteção estática: mesmos conjuntos de URLs, permissões e IDs; formulário de
+upload idêntico após normalização de finais de linha. camera-detail.css não
+define cor, fundo ou tamanho de fonte, nem novo breakpoint.
+
+Validação automatizada em Chrome existente, preview HTTP 127.0.0.1 isolado e
+HTML renderizado com banco de testes, sem mutar db.sqlite3. Tamanhos:
+1440x900, 1366x768, 899/900/901x900, 680x900, 600x900 e 390x844. Sem overflow;
+Operação 2 colunas somente >900, pares 2 somente >680; ordem mobile confirmada.
+São checks técnicos antecipados, sem substituir gates humanos posteriores.
+Capturas inspecionadas tecnicamente; zoom 100% e deviceScaleFactor 1.
+
+Artefatos locais (fora do Git):
+`C:\Users\walac\.codex\visualizations\2026\10\07\01a113ab-19fc-72b3-9f40-f42f24a96d8c\`:
+`camera-detail-1440-1.png` (Page Header/Hero/Dados principais),
+`camera-detail-1440-2.png` (Operação/Governança),
+`camera-detail-1440-3.png` (Histórico), `qa-results.json`,
+`tests-current.json`, `tests-baseline.json`. Scripts transitórios render_qa.py,
+run_tests.py e qa.cjs não são source do produto. Servidor/browser encerrados.
+
+Falhas preexistentes reproduzidas usando testes de HEAD carregados em memória;
+templates/fluxos dessas oito falhas não foram alterados. Nenhum reset/restore:
+`test_dashboard_exibe_situacoes_completude_e_ips_duplicados`,
+`test_lista_camera_possui_filtros_e_tabela_acessiveis`,
+`test_base_compoe_componentes_globais`,
+`test_base_possui_skip_link_main_mensagens_e_logout_post`,
+`test_cards_dashboard_usam_filtros_existentes`,
+`test_dashboard_diferencia_cards_clicaveis_e_informativos`,
+`test_dashboard_separa_inventario_monitoramento_e_qualidade`,
+`test_sidebar_preserva_links_condicionais_por_permissao`.
+Upload encontrou WinError 5 nas pastas temporárias do sandbox; os sete testes
+passaram fora dessa restrição, sem alteração de código. A auditoria nomeada
+P5-VR-CAMERA-DETAIL-CONFORMANCE-01 não foi encontrada no checkout; o pedido
+forneceu os achados objetivos, confirmados diretamente nas fontes. Não alegar
+leitura de relatório inexistente. Nenhuma aprovação visual humana foi inferida.
+
+## 53. P5-VR-CAM-DESIGN-01 — proposta visual candidata (2026-10-06)
+
+```text
+STATUS = PROTOTYPE_SOURCE_CREATED / VISUAL_QA_INCOMPLETE
+ACTIVITY_COMPLETION_PERCENT = 75% / fonte, contrato e captura ultra-wide; viewports obrigatórios pendentes
+SCREEN = SCR-CAM-DETAIL-001
+ROUTE = /cameras/<id>/
+BASELINE_ROOT = C:\Users\walac\desenvolvimento\projeto_argos_ui_p5
+BASELINE_BRANCH = codex/ui-v2-p5-production
+BASELINE_HEAD = 4a2d40da502ea4dafd8bc78202e707416695bee3
+BASELINE_WORKTREE = DIRTY_FROM_PRIOR_P5_REMEDIATION / preserved
+MODEL_EFFORT = runtime current / no model reconfiguration
+MULTIAGENT = DIRECT / 0 subagents
+SKILL_PLUGIN = Product Design index + get-context + user-context / Product Design
+PROTOTYPE_CREATED = YES / static source, three query-string fixtures
+VISUAL_PROPOSAL_CREATED = YES / CANDIDATE / not canonical
+PRODUCTION_DJANGO_CHANGED_BY_THIS_ACTIVITY = NO
+OTHER_SCREENS_CHANGED_BY_THIS_ACTIVITY = NO
+DESIGN_SYSTEM_CHANGED_BY_THIS_ACTIVITY = NO
+QUICK_DETAIL_CHANGED_BY_THIS_ACTIVITY = NO
+FIELD_ACTION_PERMISSION_MAPPING = DOCUMENTED / static inspection
+VIEWPORT_1920x1080 = NOT_RUN
+VIEWPORT_1440x900 = NOT_RUN
+VIEWPORT_1366x768 = NOT_RUN
+INTERMEDIATE_SMOKE = NOT_RUN
+VIEWPORT_390x844 = NOT_RUN
+VIEWPORT_2556x916 = PARTIAL_VISUAL_PASS / user screenshot, top
+VIEWPORT_2559x918 = PARTIAL_VISUAL_PASS / user screenshot, bottom
+LONG_CONTENT = NOT_RUN
+GLOBAL_HORIZONTAL_OVERFLOW = UNVERIFIED
+NESTED_VERTICAL_SCROLL = UNVERIFIED
+CURRENT_VS_PROPOSED = STRUCTURAL_COMPARISON_COMPLETE / screenshot comparison pending
+DS_GAP = NONE_IDENTIFIED_STATICALLY
+USER_VISUAL_APPROVAL = PENDING
+CANONICAL_CONTRACT_CHANGED_BY_THIS_ACTIVITY = NO
+COMMIT = NONE
+PUSH = NO
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO / visual QA and evidence missing
+```
+
+Artefatos novos: `docs/prototype/ui-v2/screens/camera-detail-redesign/index.html`,
+`proposal.css`, `proposal.js`, `DESIGN_QA.md` e
+`docs/prototype/ui-v2/contracts/ARGOS_UI_V2_CAMERA_DETAIL_VISUAL_PROPOSAL.md`.
+O protótipo estático reutiliza os CSS atuais do shell e do Design System; somente
+o conteúdo da Camera Detail recebe nova composição. Os valores da fixture são
+representativos de campos existentes e não pertencem necessariamente à câmera 2.
+O usuário abriu o arquivo local; não há confirmação de inspeção visual ou aceite.
+
+A automação do navegador bloqueou `file://` por política e proibiu contorno por
+outra rota de navegador. O usuário abriu o arquivo e forneceu duas capturas
+ultra-wide, 2556×916 e 2559×918, preservadas em
+`docs/prototype/ui-v2/evidence/screenshots/camera-detail-redesign/`; elas mostram
+Hero, grid, Histórico e upload sem quebra visível. Viewports requeridos ainda
+não foram validados. `node --check` para o JavaScript, existência de referências
+locais e `git diff --check` passaram. A captura prévia da implementação atual
+em 1440×900 foi inspecionada para comparação estrutural. Próximo passo:
+revisão visual humana e capturas nos viewports exigidos; somente depois julgar
+qualidade da proposta. Sem autorização para implementação produtiva, atualização
+de contrato canônico, commit ou push.
+
+O usuário autorizou posteriormente o uso do computador e da integração do Edge
+para capturas. A política do navegador manteve o bloqueio para a URL `file://`
+e proibiu contorno via superfície alternativa. Não repetir essa tentativa.
+
+### Adendo visual de upload manual (2026-10-06)
+
+Novo pedido do usuário restringe-se a Operações complementares → Enviar imagem
+manualmente, sem mudança funcional. `proposal.css` foi refinado para agrupar
+contexto, seletor nativo e botão em largura local limitada, com estilo
+progressivo de `::file-selector-button` e empilhamento em mobile. O HTML,
+formulário demonstrativo, endpoints e campos permaneceram idênticos; produção
+continua intocada nesta atividade. O contrato candidato e `DESIGN_QA.md` foram
+atualizados. As duas capturas ultra-wide precedem o adendo e não o validam.
+`UPLOAD_VISUAL_QA = PENDING`; `ACTIVITY_COMPLETE = NO`.
+
+Duas capturas pós-adendo fornecidas pelo usuário e preservadas em
+`docs/prototype/ui-v2/evidence/screenshots/camera-detail-redesign/`:
+`SCR-CAM-DETAIL-001__2553x916__redesign__upload-adendum-top.png` e
+`SCR-CAM-DETAIL-001__2555x921__redesign__upload-adendum-bottom.png`.
+A inferior permite PASS visual parcial do grupo sem arquivo em ultra-wide:
+seletor com styling secundário, CTA Primary adjacente, largura contida e
+contexto próximo. Mobile, 1440/1366, nome longo e foco seguem pendentes.
+
+### Iteração de hierarquia visual após parecer do usuário (2026-10-06)
+
+O usuário concluiu que a primeira proposta ainda tinha cards homogêneos e
+hierarquia fraca. `index.html` ganhou apenas legenda de estados no Hero;
+`proposal.css` passou a distinguir Hero/Situação como papéis primários, cards
+da segunda linha como apoio e Histórico/Upload como utilidades. Foram usados
+somente tokens, bordas e espaçamento existentes. O Hero empilha até 1200px
+para evitar compressão da coluna de estados. As ações de situação ficam juntas
+no card contextual; Editar câmera fica no Hero, sem duplicação. O contrato
+candidato e QA foram atualizados. Capturas anteriores não validam esta
+iteração. `USER_VISUAL_APPROVAL = PENDING`; `ACTIVITY_COMPLETE = NO`.
+
+### Correção de direção — layout assimétrico sem ornamentação (2026-10-06)
+
+O usuário rejeitou o redesign decorativo dos cards e determinou reorganizar
+somente o layout. Acentos azuis, borda lateral, legenda de estados, padding
+distinto dos cards da segunda linha e divisor das ações foram removidos do
+protótipo. Hero e seis cards retornaram à aparência anterior. `proposal.css`
+agora posiciona três linhas desktop: Dados técnicos/Situação 2:1,
+Localização/Monitoramento 1:1, Gravação/Governança 1:2, com gap uniforme
+`--argos-space-4`; até 900px os cards empilham em prioridade operacional.
+Histórico full-width e upload refinado permanecem. Somente layout, ordem e
+proporção mudaram; nenhuma mudança produtiva ou funcional. Contrato candidato
+e QA atualizados; capturas antigas não validam a composição vigente.
+`PROJECT_STATE_UPDATE = PASS`; `ACTIVITY_COMPLETE = NO`.
+
+### Nova direção — ficha operacional Camera Detail (2026-10-06)
+
+O usuário substituiu a direção de seis cards por `DETAIL PAGE / OPERATIONAL RECORD`.
+O protótipo `docs/prototype/ui-v2/screens/camera-detail-redesign/` foi
+reorganizado em cabeçalho aberto, conteúdo principal 8/4 e coluna operacional,
+Histórico de largura total e upload utilitário. Conteúdo principal agrupa
+Identificação/Localização, Rede/Gravação e Governança; a coluna operacional
+agrupa Situação/Completude, Monitoramento e ações. Em até 900px, a coluna
+operacional precede os dados; em até 680px, pares e histórico empilham.
+Editar câmera permanece no cabeçalho; as outras três ações ficam na coluna,
+sem duplicação. Campos, estados demonstrativos, links e upload existentes foram
+preservados. Não foi criada estética de card, sombra, acento ou token.
+
+O contrato candidato e `DESIGN_QA.md` agora descrevem a direção vigente;
+as capturas ultra-wide anteriores são históricas e não validam esta versão.
+Checagens estáticas passaram: `node --check` do JavaScript, equilíbrio de tags
+HTML e chaves CSS, unicidade dos IDs, presença dos campos essenciais,
+ausência das classes dos seis cards e `git diff --check`. QA visual em 1920,
+1440, 1366 e 390px, conteúdo longo e aceite humano seguem pendentes.
+A recusa da ferramenta de navegador para `file://` permanece; não houve
+contorno. Arquivos produtivos pré-existentes no working tree não foram editados
+por esta atividade. Sem commit ou push.
+`PROJECT_STATE_UPDATE = PASS`; `ACTIVITY_COMPLETE = NO`.
+
+### Correção da hierarquia de superfícies — Camera Detail (2026-10-06)
+
+O usuário informou que a versão cardless perdeu contenção visual. O adendo
+anexado definiu uma única `CAMERA RECORD SURFACE`, Histórico em uma segunda
+superfície independente e Operações complementares como seção aberta.
+`index.html` agora envolve identidade/cabeçalho, coluna principal e faixa
+operacional em um único `section` com o padrão existente `argos-section-surface`.
+A superfície usa os tokens neutros atuais de canvas/surface, borda e raio, com
+sombra explicitamente nula. Não há cards internos, linhas/acento azul ou nova
+cor. Histórico reutiliza o padrão de superfície existente; upload permanece
+fora de ambos. O contêiner amplo continua sendo o existente do shell; não foi
+criado limite local.
+
+Mobile mantém a ficha como uma superfície única e ordena identidade, situação,
+monitoramento, ações, identificação/localização, rede/gravação e governança;
+Histórico e upload permanecem depois. Contrato candidato e QA descrevem esta
+versão. Não há captura atual: imagens antigas não verificam a correção; a
+ferramenta bloqueou o acesso a `file://` e não houve contorno. Revisão visual
+em 1920, 1440, 1366 e 390px e aceite humano seguem pendentes.
+`PROJECT_STATE_UPDATE = PASS`; `TECHNICAL_READY_FOR_USER_VISUAL_REVIEW = YES`;
+`ACTIVITY_COMPLETE = NO`.
+
+### Polimento final da composição Camera Detail (2026-10-06)
+
+O usuário aprovou a arquitetura como base visual e anexou um passe final de
+composição, sem redesign. `proposal.css` mantém as superfícies da ficha e do
+Histórico; aplica explicitamente o maior contêiner existente da fundação
+(`--argos-content-max: 1440px`); reduz espaçamentos verticais de pares,
+subgrupos e seções via tokens já existentes; remove redução local de fonte na
+governança; mantém a faixa operacional guiada pelo conteúdo. `index.html`
+agora reúne as ações do Histórico em grupos de alinhamento por região, sem
+mudar textos, destinos ou hierarquia. Upload, estrutura responsiva e
+comportamento demonstrativo foram preservados. Nenhuma alteração produtiva,
+componente, token ou linguagem visual nova.
+
+Contrato candidato e QA atualizados. Mudança técnica está pronta para revisão
+visual humana; métricas de densidade/uso de viewport permanecem não verificadas
+sem captura. Evidências necessárias: 1920×1080, 1440×900, 1366×768, 390×844,
+zoom 100%. A política da ferramenta segue bloqueando acesso local `file://` e
+não foi contornada; capturas anteriores não representam este polimento.
+Direção visual aprovada como base, mas freeze final ainda pendente.
+`PROJECT_STATE_UPDATE = PASS`; `TECHNICAL_READY_FOR_USER_VISUAL_REVIEW = YES`;
+`ACTIVITY_COMPLETE = NO`.
+
+### Governança em faixa full-width — Camera Detail (2026-10-06)
+
+O usuário aprovou a direção visual/base e determinou uma correção estrutural:
+Governança sai da coluna principal e passa a uma faixa de metadados full-width
+no rodapé da única superfície da ficha. As duas colunas preservam Identificação/
+Localização e Rede/Gravação à esquerda, Situação/Monitoramento/Ações à direita.
+O rail não recebeu altura mínima nem conteúdo inventado. Em desktop amplo,
+Governança usa quatro pares por linha: criação e atualização na primeira;
+Origem e Observações na segunda. Breakpoints existentes passam a duas colunas
+e depois uma coluna. Nenhum fundo, borda, fonte menor, card ou decoração
+própria foi adicionado. O Histórico e o upload não foram alterados nesta
+iteração.
+
+`index.html`, `proposal.css`, contrato candidato e QA foram atualizados; apenas
+artefatos do protótipo e documentação candidata/continuidade. Capturas novas
+em 1920×1080, 1440×900, 1366×768 e 390×844 ainda são necessárias para avaliar
+o equilíbrio real e overflow. O browser permanece bloqueado para a URL local
+`file://`; não houve contorno. Direção visual aprovada; freeze final e
+ACTIVITY_COMPLETE seguem pendentes.
+`PROJECT_STATE_UPDATE = PASS`; `READY_FOR_USER_VISUAL_REVIEW = YES`;
+`ACTIVITY_COMPLETE = NO`.
+
+### Fechamento visual do corpo antes de Governança (2026-10-06)
+
+Novo achado do usuário: a faixa full-width de Governança ainda parecia extensão
+vertical da coluna Rede/Gravação. A grade da ficha agora declara as áreas
+`main`, `rail` e `governance` em três linhas: dados + operações na primeira
+e Governança com `grid-column: 1 / -1` na seguinte. Uma divisória neutra do DS
+(`--argos-color-border`, `--argos-border-width`) atravessa a largura da faixa;
+padding superior separa o divisor do título. No mobile, as áreas reorganizam
+em rail → main → governance dentro da mesma superfície. A faixa de Governança
+mantém distribuição compacta de metadados; nenhuma superfície interna, fundo
+ou acento foi adicionado. Histórico e upload não mudaram.
+
+Contrato candidato e QA atualizados. Estrutura estática está pronta para revisão
+visual, mas as capturas finais em 1920, 1440, 1366 e 390px seguem pendentes.
+A política do navegador bloqueia acesso automatizado a `file://`; nenhuma rota
+alternativa foi tentada. Aceite visual/freeze e conclusão continuam pendentes.
+`PROJECT_STATE_UPDATE = PASS`; `READY_FOR_USER_VISUAL_REVIEW = YES`;
+`ACTIVITY_COMPLETE = NO`.
+
+### Aprovação e freeze visual — Camera Detail (2026-10-06)
+
+O usuário aprovou explicitamente a composição atual após o refinamento de
+Governança em linha de grid própria com divisor neutro full-width. Registrei
+`USER_APPROVED / FROZEN`; não farei novas alterações visuais sem novo achado
+factual. O HTML/CSS do protótipo permanecem congelados. QA e contrato foram
+atualizados para registrar a aprovação.
+
+A captura final de evidências pedida anteriormente (1920×1080, 1440×900,
+1366×768 e 390×844 a 100%) não foi arquivada: a política da ferramenta
+bloqueia automatizar a URL local `file://`, e não houve contorno. Isto é uma
+lacuna documental, não uma aprovação visual pendente: o usuário aprovou. Por
+isso `USER_FREEZE = YES`, `FINAL_EVIDENCE = NOT_CAPTURED` e
+`ACTIVITY_COMPLETE = NO / capture archive outstanding`.
+`PROJECT_STATE_UPDATE = PASS`.
+
+### Commit local da Camera Detail e gate de publicação (2026-10-06)
+
+Por autorização do usuário, foram staged explicitamente cinco artefatos do
+protótipo aprovado (HTML, CSS, JS, QA e contrato candidato) e criado o commit
+`bb4699687c105f7146a59aaf3074c09461d860a5` na branch
+`codex/ui-v2-p5-production`. Alterações Django/CSS produtivas preexistentes e
+capturas históricas permaneceram fora do commit.
+
+O push ao upstream configurado `origin`
+(`https://github.com/wromanov/projeto_argos.git`, branch
+`codex/ui-v2-p5-production`) foi rejeitado pela revisão automática de risco:
+a propriedade/privacidade do remoto e autorização específica de destino para
+egresso não foram estabelecidas. Não houve tentativa alternativa. O commit
+permanece local, branch ahead 1; aguarda aprovação explícita do usuário para
+essa URL/repositório e SHA.
+`PROJECT_STATE_UPDATE = PASS`; `COMMIT = CREATED`; `PUSH = BLOCKED_PENDING_EXPLICIT_DESTINATION_APPROVAL`.
+
+## 54. P5-VR-S2B — SCR-CAM-DETAIL-001 Production Conformance (2026-10-07)
+
+```text
+STATUS = IMPLEMENTED / TECHNICAL_QA_PASS / PRODUCT_DESIGN_QA_BLOCKED
+ACTIVITY_COMPLETION_PERCENT = 92% / current local visual approval received; paired source review and requested screenshot archive remain open
+CURRENT_CYCLE = ajustes finais de hierarquia do UNKNOWN stale e espaçamento do upload nativo
+CURRENT_CYCLE_COMPLETION_PERCENT = 100% / cinco arquivos revisados, staged e commitados; demais artefatos preservados fora do commit
+BASELINE_ROOT = C:\Users\walac\desenvolvimento\projeto_argos_ui_p5
+BASELINE_BRANCH = codex/ui-v2-p5-production
+HEAD_AT_INITIAL_INSPECTION = 4a2d40da502ea4dafd8bc78202e707416695bee3
+HEAD_AFTER_USER_PROTOTYPE_COMMIT = bb4699687c105f7146a59aaf3074c09461d860a5
+CURRENT_HEAD = c91bc6d4658faa408a9f565b9d1c3d6279571cb4
+ORIGIN_MASTER = 0483f3bbca8108bc45b78b70d39577b1e30b96df / no fetch
+CURRENT_HEAD_VS_ORIGIN_MASTER = 12 ahead / 29 behind / existing local refs; no fetch after commit
+CURRENT_UPSTREAM_STATUS = origin/codex/ui-v2-p5-production / ahead 2 / existing local ref; no push
+WORKTREE = DIRTY / documentação, contratos, evidências e configuração local preservados fora do commit
+STAGING = EMPTY / commit criado
+IMPLEMENTATION = LOCAL / same user-specified P5 repository
+FILES_CHANGED_BY_S2B = cameras/templates/cameras/detalhe.html; cameras/templates/cameras/partials/_monitoring_badge.html; cameras/test_frontend.py; static/css/argos.css; static/css/ui-v2/camera-detail.css; design-qa.md; PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md; docs/prototype/ui-v2/evidence/screenshots/camera-detail-production/SCR-CAM-DETAIL-001__1265x712__production__default.jpg
+PREEXISTING_DIRTY_WORK = PRESERVED / includes argos.css, approved prototype/contracts, prior continuity records and historical screenshots
+BACKEND_CHANGED = NO
+JS_CHANGED = NO
+DATABASE_SCHEMA_CHANGED = NO
+QUICK_DETAIL_CHANGED = NO
+P3B_IMPACT = NONE_IDENTIFIED
+DESIGN_SYSTEM_CHANGED_BY_S2B = NO
+FUNCTIONAL_CONTRACT = PRESERVED / fields, actions, permissions, form, URL and upload contract covered by focal tests
+UNKNOWN_STALE_DOM_COMPOSITION = PASS / UNKNOWN compacto; aviso único abaixo e alinhado à esquerda em Estado atual; par de estado confirmado preservado
+UNKNOWN_STALE_CSS = PASS / wrapper inline-flex com largura fit-content; badge DS não é esticado pela grade; sem novo componente, cor ou decoração
+UNKNOWN_STALE_VISUAL_RECHECK = PASS / aprovado explicitamente pelo usuário em 2026-10-07
+HEADER_STALE_SUPPORT_COPY = PASS / aviso removido do Hero; mantido somente em Monitoramento técnico > Estado atual
+NATIVE_FILE_INPUT = PASS / input e file-selector-button nativos preservados; padding usa tokens space-1/space-2, inset space-1 e gap space-3
+FILE_INPUT_CONTROL_HEIGHT = PASS / 36px desktop e 44px mobile; botão interno dimensionado com os tokens de altura e padding; botão Enviar imagem inalterado
+FILE_INPUT_VISUAL_REVIEW = PASS / incluído na aprovação explícita do usuário em 2026-10-07
+DJANGO_CHECK = PASS
+FOCUSED_TESTS = 17 / 17 PASS / Camera Detail + Quick Detail + stale and non-stale inventory regressions; includes single-helper UNKNOWN/stale and native upload form acceptance
+WIDER_FRONTEND_TESTS = 25 / 26 PASS / one inventory-heading assertion fails outside the S2B diff
+GIT_DIFF_CHECK = PASS / after this checkpoint
+ISOLATED_BROWSER_FIXTURE = PASS / synthetic camera pk=2; original db.sqlite3 untouched; isolated DB/settings retained for the requested local preview
+VIEWPORT_1920x1080 = PASS / 100%, DPR 1, no horizontal overflow
+VIEWPORT_1440x900 = PASS / 100%, DPR 1, no horizontal overflow
+VIEWPORT_1366x768 = PASS / 100%, DPR 1, no horizontal overflow
+VIEWPORT_390x844 = PASS / 100%, DPR 1, no horizontal overflow; mobile order confirmed
+INTERMEDIATE_901_900_899 = PASS / breakpoint switches between 901 and 900; no overflow
+ACCESSIBILITY_BASELINE = PARTIAL PASS / semantic headings, status text, labelled upload and visible keyboard focus verified; no WCAG claim
+BROWSER_ERRORS = NONE OBSERVED
+LONG_CONTENT = NOT_RUN
+PERMISSION_VARIATION = NOT_BROWSER_TESTED
+CURRENT_APPROVED_SOURCE_SCREENSHOT = UNAVAILABLE / archived prototype screenshots are historical and explicitly do not validate current Governance composition
+PRODUCTION_SCREENSHOTS_CAPTURED = YES / browser in-memory captures inspected at requested CSS viewport sizes
+PRODUCTION_SCREENSHOTS_ARCHIVED = PARTIAL / one archived JPEG measures 1265x712 and does not match requested viewport sizes
+PRODUCT_DESIGN_DESIGN_QA = BLOCKED / source image unavailable for paired comparison
+AUTOMATED_LOCAL_BROWSER_ACCESS = BLOCKED / current browser URL policy rejected automated access to the local preview; no alternate route used
+LOCAL_PREVIEW = RUNNING / http://127.0.0.1:8765/cameras/2/ / synthetic isolated database; original db.sqlite3 untouched
+PROTOTYPE_EVIDENCE_DEBT = STILL_OPEN
+USER_VISUAL_APPROVAL = PASS / explicit user approval received 2026-10-07 for the current local preview
+READY_FOR_USER_REVIEW = PASS / current local composition approved; paired source review and full evidence archive remain open
+COMMIT = CREATED / c91bc6d4658faa408a9f565b9d1c3d6279571cb4 / feat(ui): implement camera detail production view
+PUSH_PERFORMED = NO
+MERGE_PERFORMED = NO
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO
+NEXT_ACTION = complete paired source review and requested viewport screenshot archive when the approved source is available; retain ACTIVITY_COMPLETE=NO until evidence gates pass
+```
+
+The S2B implementation changed the production detail template, its detail-only
+monitoring status partial, existing page stylesheet, focused frontend tests and
+QA records; backend and JavaScript behavior did not change. Desktop rendered the
+approved architecture: one record surface with main information and operational
+rail, full-width Governance below them, a separate History surface, and open
+complementary operations. Mobile and 900 px breakpoint ordering were confirmed
+in the real Django route using a synthetic isolated database. The browser images
+were visible during this run; only one JPEG was archived, at its actual 1265×712
+dimensions, so the four requested viewport evidence files remain incomplete. The
+old prototype screenshots were not treated as current references. The local
+preview server is now active on the isolated synthetic database for human review;
+the original database remains untouched. No production visual acceptance,
+commit, push, merge, or database change is claimed.
+
+The broader frontend test run’s single failure is
+`test_lista_camera_possui_filtros_e_tabela_acessiveis`, which asserts an
+inventory heading class and is outside the Camera Detail changes. The focused
+regression rerun for this addendum passed 17/17: Camera Detail, Quick Detail,
+and stale/non-stale inventory behavior. The acceptance tests confirm the
+canonical stale helper stays separate, the confirmed-state data pair remains,
+and the prior composition for other states is preserved.
+
+## 55. ARGOS-GLOBAL-GITHUB-CHECKPOINT-20261008 — estado P5
+
+```text
+PROJECT = ARGOS
+ACTIVITY = ARGOS-GLOBAL-GITHUB-CHECKPOINT-20261008
+BRANCH = codex/ui-v2-p5-production
+BASELINE_HEAD = c91bc6d4658faa408a9f565b9d1c3d6279571cb4
+LOCAL_UNPUBLISHED_COMMITS_AT_PREFLIGHT = 2
+P5_QA_CONTRACT_CONTINUITY_CHANGES = CHECKPOINTED
+P5_SCREENSHOTS = EXCLUDED_FROM_GITHUB / local evidence contains camera identifiers, MAC and IP values; automated approval review rejected publication as insufficiently verified
+P5_LOCAL_QA_SETTINGS = EXCLUDED / environment-specific SQLite configuration
+LOCAL_DATABASE = NOT STAGED / NOT PUBLISHED
+TESTS = NOT_RUN_IN_THIS_CHECKPOINT
+REDESIGN_OR_MASTER_INTEGRATION = NOT_PERFORMED
+PUSH = PENDING
+PROJECT_STATE_UPDATE = PASS
+```
+
+Os documentos de QA, contratos e continuidade foram selecionados como trabalho pertinente. As capturas de produção/redesign permanecem no worktree local, fora do GitHub, até que seus identificadores possam ser avaliados ou redigidos por uma rota autorizada. A configuração `s2b_qa_settings.py` foi excluída por ser específica do banco SQLite local. O checkpoint não executou testes nem iniciou redesign ou integração com `master`.

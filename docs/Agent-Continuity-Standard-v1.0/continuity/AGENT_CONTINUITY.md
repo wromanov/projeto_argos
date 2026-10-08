@@ -1088,3 +1088,45 @@ Backend/JS, Quick Detail, P3-B, partials e composição CSS da página preservad
 HUMAN_VISUAL_APPROVAL = PENDING; VISUAL_AUTOMATION = NOT_PERFORMED.
 PROJECT_STATE_UPDATE = PASS. Próxima ação: revisão visual humana.
 Staging vazio; nenhum commit/push. Publicação requer autorização própria.
+
+### 20.17. P5-VR-CAMERA-DETAIL-REMEDIATION-01 (2026-10-06)
+
+Estado vigente: PROJECT_STATE.md, seção 52; Camera Detail Contract, seção 27.
+Baseline confirmada: codex/ui-v2-p5-production, HEAD/upstream local
+4a2d40da502ea4dafd8bc78202e707416695bee3, 0/0, clean, staging EMPTY.
+Remediação local do Hero, grupos, headings, vazios, Governança e Histórico;
+default global de links movido ao layer reset em argos.css, sem override local.
+DS 2.4 permanece LOCAL / UNPUBLISHED, surface/tokens/API inalterados.
+
+STATUS = TECHNICAL_READY_FOR_HUMAN_VISUAL_REVIEW. Escopo técnico 100%; 165
+testes distintos, 157 PASS e oito falhas antigas reproduzidas no HEAD; upload
+7/7 PASS após retry ambiental. Django check e diff check PASS. Browser checks
+de cores, grids, ausência de overflow e ordem mobile PASS; Quick Detail/P3-B
+sem delta nas amostras. Três capturas 1440x900/100% no diretório de artefatos
+indicado na seção 52. Primeiro gate humano desktop PENDING; gates humanos
+1366x768/mobile/fronteiras permanecem posteriores. Staging EMPTY, sem commit,
+push, backend ou JS. PROJECT_STATE_UPDATE = PASS. Próxima ação: revisão humana.
+
+### 20.18. P5-VR-S2B — SCR-CAM-DETAIL-001 (2026-10-07)
+
+Estado operacional: PROJECT_STATE.md, seção 54; relatório em `design-qa.md`.
+Implementação Django local concluída no repositório P5 indicado pelo usuário;
+template, partial de badge e CSS da Camera Detail ajustados, sem backend/JS/Quick Detail/DS.
+Django check e 17 testes focados PASS; suíte frontend mais ampla teve uma falha
+de assertion da listagem de inventário fora do diff S2B. Browser na rota real
+com fixture sintética confirmou as quatro dimensões CSS pedidas, breakpoint
+901/900, ordem mobile, foco visível e ausência de overflow/erros. SQLite original
+não foi usado. O preview está ativo em `http://127.0.0.1:8765/cameras/2/` com
+banco/settings sintéticos retidos para revisão humana.
+
+Uma captura JPEG foi arquivada com dimensão real 1265×712; não substitui as
+quatro capturas de viewport pedidas. A política atual do navegador rejeitou
+automação da URL local na retomada; nenhum caminho alternativo foi usado. A
+captura aprovada vigente ainda não está disponível; imagens antigas não validam
+Governança full-width. Product Design design-qa = BLOCKED; aceite da
+implementação real PENDING; usuário pode revisar a rota produtiva localmente.
+Adendo UNKNOWN/stale: badge compacto no grupo, helper canônico abaixo, e último
+estado confirmado preservado no par factual; listagem e monitoramento inalterados.
+Worktree dirty pré-existente preservado, staging vazio; nenhum commit/push/merge.
+PROJECT_STATE_UPDATE = PASS. Próxima ação: revisão visual humana pelo preview e,
+se o comparativo pareado continuar obrigatório, obter a captura aprovada vigente.

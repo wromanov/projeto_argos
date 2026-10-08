@@ -33,3 +33,9 @@ conter variantes oportunistas em P3.
 | Documentation Shell | PATTERN | pattern | patterns | sidebar / horizontal mobile navigation | current page | sidebar collapses to scrollable nav | P2 executable foundation | foundation pages |
 
 A page may not redefine a shared component without an explicit variant contract. A screen-specific layout stays page-owned until a second real consumer demonstrates reuse. Quick Detail stays protected.
+
+P5-VR-CAMERA-DETAIL-REMEDIATION-01: Camera Detail reutiliza Section Header em
+todas as macro headings/Upload e Data Group em Situação/completude. Nome H2
+consome `argos-page-title`; empty values consomem `argos-state__copy` em span.
+Nenhuma capability pública é criada ou alterada. Section Surface 2.4.0
+permanece inalterada/local/não publicada, com aprovação humana pendente.

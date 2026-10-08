@@ -615,3 +615,46 @@ A 2.3.0 permanece publicada; 2.4.0 é a versão corrente implementada localmente
 A próxima ação é a revisão visual humana da Camera Detail. Aprovação visual
 PENDING, publicação não autorizada. Registros anteriores preservam os snapshots
 de suas atividades; a seção 51 é o estado operacional vigente desta remediação.
+
+## 26. P5-VR-CAMERA-DETAIL-REMEDIATION-01 (2026-10-06)
+
+Esta seção sucede os snapshots anteriores para o estado operacional da Camera
+Detail; mantém DS 2.4.0 local/não publicado e o gate visual humano pendente.
+
+| Documento | Papel | Vigência |
+|---|---|---|
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_CAMERA_DETAIL_CONTRACT.md`, seção 27 | Adjudicação R1–R10, hierarquia e preservação funcional | CURRENT / IMPLEMENTED LOCALLY |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md` | Authority da cascata V1/V2 e ownership | CURRENT / legacy link default in reset |
+| `docs/prototype/ui-v2/contracts/COMPONENT_CATALOG.md` | Capabilities existentes reutilizadas | CURRENT / no public API expansion |
+| `docs/prototype/ui-v2/contracts/DSCR-UIV2-006-SECTION-SURFACE-2.4.0.md` | Surface 2.4 revisada in place, inalterada | CURRENT / LOCAL / UNPUBLISHED |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 52 | Baseline, resultado, testes, limitações e capturas | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.17 | Handoff técnico | CURRENT / human visual review pending |
+
+P5-VR-CAMERA-DETAIL-CONFORMANCE-01 foi citado no pedido, mas seu relatório não
+está no checkout. Achados fornecidos foram confirmados nas fontes. Nenhuma
+publicação, aprovação humana, alteração de backend/JS ou redesign foi inferida.
+
+## 27. P5-VR-S2B — SCR-CAM-DETAIL-001 (2026-10-07)
+
+Esta seção sucede os checkpoints anteriores como estado operacional da
+implementação produtiva; a aprovação do protótipo segue USER_APPROVED / FROZEN,
+mas a aceitação visual da implementação Django permanece pendente.
+
+| Documento | Papel | Vigência |
+|---|---|---|
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_CAMERA_DETAIL_VISUAL_PROPOSAL.md` | Composição aprovada e congelada | CURRENT / SOURCE AUTHORITY; imagem vigente não arquivada |
+| `docs/prototype/ui-v2/screens/camera-detail-redesign/DESIGN_QA.md` | Estado da evidência do protótipo | CURRENT / capture archive missing; screenshots antigos não validam Governança full-width |
+| `cameras/templates/cameras/detalhe.html` | Dados, hierarquia semântica, grupo de status e ações na rota Django | IMPLEMENTED LOCALLY / S2B |
+| `cameras/templates/cameras/partials/_monitoring_badge.html` | Modo badge compacto para composição local de status no detalhe | IMPLEMENTED LOCALLY / S2B / inventário legado preservado |
+| `static/css/ui-v2/camera-detail.css` | Composição responsiva da Camera Detail e helper de status abaixo dos grupos | IMPLEMENTED LOCALLY / S2B |
+| `design-qa.md` | QA da rota real, captura parcial e estado do preview/comparação | CURRENT / Product Design design-qa blocked |
+| `docs/prototype/ui-v2/evidence/screenshots/camera-detail-production/SCR-CAM-DETAIL-001__1265x712__production__default.jpg` | Captura real arquivada, dimensões conferidas | PARTIAL EVIDENCE / não corresponde aos quatro viewports pedidos |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 54 | Baseline, diff, testes, browser QA e estado dos gates | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.18 | Handoff e próxima ação | CURRENT / evidence and human visual review pending |
+
+Uma captura de produção foi arquivada em 1265×712; as quatro capturas exigidas e
+a imagem fonte atual seguem pendentes. O adendo UNKNOWN/stale foi implementado
+com helper canônico separado e estado confirmado preservado; 17 testes focados
+passam. O preview local está ativo em
+`http://127.0.0.1:8765/cameras/2/` para revisão humana. Não inferir visual
+acceptance, fechamento da dívida de evidência, commit, push ou merge.

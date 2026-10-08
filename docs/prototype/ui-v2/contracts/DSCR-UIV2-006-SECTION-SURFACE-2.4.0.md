@@ -45,3 +45,12 @@ Quick Detail e P3-B permanecem protegidos. Nenhum breakpoint é adicionado.
 Validação técnica e estática registrada em `PROJECT_STATE.md`, seção 51.
 Aprovação visual humana permanece pendente e não decorre dos testes.
 Staging, commit e push não estão autorizados nesta atividade.
+
+## Remediação in place — 2026-10-06
+
+P5-VR-CAMERA-DETAIL-REMEDIATION-01 revisou o consumo e concluiu que as quatro
+propriedades atuais materializam boundary/grouping sem chrome adicional.
+SECTION_SURFACE_2_4 = UNCHANGED. Densidade supporting de Governança e clusters
+de Histórico ficam na composição, sem modifier público novo ou nested cards.
+Versão 2.4.0 permanece LOCAL / UNPUBLISHED; nenhuma 2.5 é criada.
+Validação e próximo gate humano estão em PROJECT_STATE.md, seção 52.

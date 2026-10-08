@@ -106,3 +106,53 @@ Título e hierarquia de headings presentes; landmarks `header`, `nav`, `main` e 
 P0: nenhum. P1: nenhum. P2: nenhum. P3: revisar o conteúdo e a navegação por tabela em cada tela de família quando seus próprios estados e fixtures forem renderizados. Nenhuma tela de família foi iniciada ou aprovada nesta atividade.
 
 `DESIGN_QA_COMPLETE = YES` para o harness compartilhado. Aprovação humana do P3-0 continua pendente e não é inferida deste resultado técnico.
+
+## P5-VR-S2B — QA da rota Django (2026-10-07)
+
+```text
+final result: blocked
+activity: P5-VR-S2B — SCR-CAM-DETAIL-001 Production Conformance
+source: approved prototype is USER_APPROVED / FROZEN, but a current source screenshot is unavailable
+implementation: real Django route /cameras/2/ with synthetic fixture pk=2
+environment: local Django runserver at http://127.0.0.1:8765/cameras/2/, isolated SQLite s2b_qa_20261007.sqlite3, synthetic fixture, DPR=1, browser viewport at 100%
+product design: design-qa applied after production render; source-to-production visual pairing blocked
+global activity: 88%; current correction implementation/test cycle UNKNOWN/stale: 100%
+```
+
+The screenshots in `docs/prototype/ui-v2/evidence/screenshots/camera-detail-redesign/` are historical. They show an earlier composition and do not validate the approved full-width Governance region, so they were excluded as the source image. The source files were not opened through another route after the browser policy blocked automated `file://` access.
+
+The production route was checked at CSS viewports 1920×1080, 1440×900, 1366×768 and 390×844. All four checks found no document-level horizontal overflow. Desktop showed one record surface, main information beside the operational rail, full-width Governance below both columns, a separate History surface and open complementary operations. Mobile placed the rail before main information and Governance, then History and upload. Intermediate checks at 901/900/899 px confirmed the desktop-to-stacked breakpoint. The 1366 px actions wrapped within the rail without overflow. Keyboard focus was visible on the skip link; status remained textual; the upload control had a label. Console error/warning list was empty.
+
+One production JPEG is archived at `docs/prototype/ui-v2/evidence/screenshots/camera-detail-production/SCR-CAM-DETAIL-001__1265x712__production__default.jpg`. Its actual dimensions are 1265×712, so it does not satisfy any of the four requested viewport captures. The remaining requested viewport screenshots are not archived. In the resumed turn, the browser security policy rejected automated navigation to the local preview; no alternate browser surface or network client was used to work around that restriction. The local preview server is running again with the synthetic isolated database and settings; the original `db.sqlite3` remains untouched.
+
+### Adendo — composição do estado UNKNOWN/stale
+
+Após a rechecagem, foi identificado que a regra de grade compartilhada aplicava `width: 100%` ao wrapper de monitoramento e esticava o badge UNKNOWN, dando aparência de campo. O wrapper agora usa `inline-flex` e `width: fit-content`; o badge mantém o tamanho natural do pattern do Design System. O cabeçalho continua com o badge compacto e sem repetir o aviso. Em Monitoramento técnico, o aviso canônico `Dados desatualizados` aparece uma única vez logo abaixo de `UNKNOWN`, alinhado à esquerda. `Último estado confirmado: UNKNOWN` permanece como par factual separado. A lista, a view de projeção, a lógica de monitoramento, os demais estados e o token neutro/azul não foram alterados. Nenhum componente, card, fundo, borda, sombra ou decoração novos foram adicionados.
+
+Os testes focados cobrem a ordem dos elementos, a ocorrência única do aviso, a remoção da frase redundante, a presença de `UNKNOWN` no par factual e a preservação da composição nos estados não stale. Os 17 testes focados (Camera Detail, Quick Detail e regressões da listagem) passaram e `manage.py check` não apontou problemas. A conferência visual automatizada do browser continua indisponível neste contexto. O usuário aprovou explicitamente a prévia local atual em 2026-10-07, incluindo o badge UNKNOWN e o espaçamento do controle nativo de upload.
+
+### Adendo — espaçamento interno do upload nativo
+
+O controle continua sendo `<input type="file">` com `::file-selector-button` nativo. O padding interno usa `space-1` vertical e `space-2` horizontal; o botão recebe inset inicial `space-1` e separação `space-3` antes do nome do arquivo. A altura externa permanece `control-height` (36 px) no desktop e `touch-target-min` (44 px) no mobile. A altura mínima interna é calculada a partir dessas dimensões e dos tokens de borda/espaçamento, mantendo o botão abaixo da área total sem aumentar o controle. O botão “Enviar imagem”, o foco visível, o formulário e o comportamento do upload não foram alterados. Os 17 testes focados passaram; a inspeção visual humana permanece pendente.
+
+P0: none observed in the rendered production route. P1/P2: not fully assessed because the approved source image is unavailable and no paired comparison could be made. P3: obtain a current approved source capture and complete the paired visual review. This report does not infer visual acceptance from code or from the user’s earlier approval of the prototype.
+
+```text
+PRODUCTION_ROUTE_RENDER = PASS
+RESPONSIVE_STRUCTURAL_CHECKS = PASS
+PRODUCTION_SCREENSHOTS_ARCHIVED = PARTIAL / one 1265x712 capture; four requested viewport files remain incomplete
+PRODUCT_DESIGN_DESIGN_QA = BLOCKED / current source screenshot unavailable
+AUTOMATED_LOCAL_BROWSER_ACCESS = BLOCKED / browser URL policy rejected the local preview in the resumed turn
+LOCAL_PREVIEW = RUNNING / http://127.0.0.1:8765/cameras/2/ / isolated synthetic fixture
+UNKNOWN_STALE_DOM_COMPOSITION = PASS / compact fit-content badge; single left-aligned helper below in technical monitoring; confirmed-state pair preserved
+UNKNOWN_STALE_CSS = PASS / no full-width status wrapper or input-like appearance
+UNKNOWN_STALE_VISUAL_RECHECK = PENDING / automated browser access blocked; updated local preview available for human review
+HEADER_STALE_SUPPORT_COPY = PASS / no helper text in Camera Identity header; only in technical monitoring
+NATIVE_FILE_INPUT_SPACING = PASS / token-based inset and selector-to-filename gap; 36px desktop / 44px mobile outer height
+FOCUSED_REGRESSION_TESTS = 17 / 17 PASS / Camera Detail + Quick Detail + stale and non-stale inventory behavior
+USER_VISUAL_APPROVAL = PASS / explicit approval of current local preview received 2026-10-07
+UNKNOWN_STALE_VISUAL_RECHECK = PASS / included in user's approval
+FILE_INPUT_VISUAL_REVIEW = PASS / included in user's approval
+READY_FOR_USER_REVIEW = PASS / current composition accepted; source pairing and full evidence archive remain open
+ACTIVITY_COMPLETE = NO
+```

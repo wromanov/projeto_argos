@@ -3489,3 +3489,39 @@ O pedido atual autoriza esta remediação e sua documentação, sem staging, com
 ou push. Preservar conteúdo, ações, rotas, permissões, CSRF, forms, IDs, atributos
 de dados, upload, ordenação e limites de histórico, monitoramento, Quick Detail
 e P3-B. Resultado técnico máximo: TECHNICAL_READY_FOR_HUMAN_VISUAL_REVIEW.
+
+## 27. CAMERA-DETAIL-REMEDIATION-01 — adjudicação visual (2026-10-06)
+
+Authority: pedido explícito P5-VR-CAMERA-DETAIL-REMEDIATION-01. Esta seção
+supersede somente as decisões visuais anteriores incompatíveis com R1–R10;
+o contrato funcional permanece vigente. Não há nova direção visual.
+
+- Hero aberto: H1/eyebrow preservados; nome continua H2, consumindo a capability
+  existente `argos-page-title` (27–34px), sem modificar `argos-text-kpi`.
+  Identidade à esquerda e cluster estados/edição à direita em tracks 3fr/2fr.
+  Até 680px, o DOM expressa nome → estados/contexto → editar → resumo.
+  Nenhum campo novo de equipamento é introduzido; contexto projetado e resumo
+  patrimonial/localização mantêm os destinos contratados.
+- Todas as macro headings e Upload consomem `argos-section-header`.
+- Situação/completude consome `argos-data-group`; dois pares por linha acima
+  de 680px, motivo integral e ações associadas ao mesmo grupo. Operação mantém
+  2fr/3fr acima de 900px.
+- Valores ausentes preservam `—`, recebendo o tratamento compartilhado
+  `argos-state__copy` em span; filtros e valores técnicos/monospace preservados.
+- Governança mantém surface, campos e ordem; gap vertical entre pares de 8px
+  manifesta densidade supporting, com o mesmo Section Heading compartilhado.
+- Histórico mantém uma surface, famílias sem cards e empty states compactos.
+  Cada heading reúne título e ações adjacentes por alinhamento inicial;
+  Registrar atividade precede Ver histórico completo quando autorizado.
+- Section Surface 2.4.0 permanece inalterada, local e não publicada. Nenhum
+  token, modifier público, componente, breakpoint, sombra ou faixa é adicionado.
+
+A correção da cascata é compartilhada em `static/css/argos.css`: o default
+legado de links pertence ao layer reset, deixando base/components/patterns V2
+exercerem sua authority. Não há override de cor na página.
+
+Evidência técnica e gates: PROJECT_STATE.md, seção 52. A auditoria citada
+P5-VR-CAMERA-DETAIL-CONFORMANCE-01 não está disponível neste checkout; os
+achados fornecidos no pedido foram verificados diretamente nas fontes.
+HUMAN_VISUAL_APPROVAL = PENDING. Primeiro gate humano: três capturas de
+1440×900 / 100%; revisão humana posterior de 1366×768, 390×844 e fronteiras.

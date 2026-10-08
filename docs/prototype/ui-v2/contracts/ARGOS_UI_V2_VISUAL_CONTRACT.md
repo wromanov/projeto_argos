@@ -33,6 +33,13 @@ A implementação única do Design System é:
 
 Ordem conceitual: @layer reset, tokens, base, components, patterns, pages, overrides. Cada propriedade deve ter owner previsível; especificidade arbitrária não é mecanismo de resolução.
 
+Na coexistência produtiva V1/V2, `static/css/argos.css` declara seu default de
+links (`color: inherit; text-decoration: none`) no layer `reset`. Sem V2, o
+default legado continua disponível; com V2, cores pertencem ao layer `base` e
+aos componentes/patterns. Não elevar especificidade nem compensar na página.
+Correção autorizada por P5-VR-CAMERA-DETAIL-REMEDIATION-01; 2.4.0 permanece
+local, não publicada, revisada in place sem nova API ou versão 2.5.
+
 Todos os nomes novos de componentes usam namespace argos-. Evitar primitives genéricas como .button, .card e .badge enquanto V1 e V2 coexistem. Base contém somente reset mínimo e defaults globais.
 
 ### Ownership
