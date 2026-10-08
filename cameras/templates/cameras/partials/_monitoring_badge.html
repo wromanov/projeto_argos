@@ -1,4 +1,8 @@
-{% if ui_v2_badges %}
+{% if ui_v2_status_only %}
+  <span class="argos-status-badge {% if monitoring.effective_state == 'ONLINE' %}argos-status-badge--success{% elif monitoring.effective_state == 'OFFLINE' %}argos-status-badge--danger{% else %}argos-status-badge--neutral{% endif %}">
+    {{ monitoring.label }}
+  </span>
+{% elif ui_v2_badges %}
   <span class="argos-camera-detail__monitoring-summary">
     <span class="argos-status-badge {% if monitoring.effective_state == 'ONLINE' %}argos-status-badge--success{% elif monitoring.effective_state == 'OFFLINE' %}argos-status-badge--danger{% else %}argos-status-badge--neutral{% endif %}"{% if monitoring.contexto %} title="{{ monitoring.contexto }}"{% endif %}>
       {{ monitoring.label }}
