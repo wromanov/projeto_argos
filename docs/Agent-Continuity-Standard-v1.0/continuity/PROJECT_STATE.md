@@ -3182,3 +3182,20 @@ foi aplicada. Não foram acessadas credenciais nem chamadas câmeras. git diff
 --check e AST parse dos oito arquivos Python passaram. A atividade permanece
 incompleta e requer autorização específica para o banco de teste ou validação
 numa configuração que não aplique migrations.
+
+## 54. ARGOS-GLOBAL-GITHUB-CHECKPOINT-20261008 — publicação CAM-INT-04
+
+```text
+ACTIVITY = ARGOS-GLOBAL-GITHUB-CHECKPOINT-20261008
+BRANCH = codex/cam-int-04-implementation
+CHECKPOINT_COMMIT = 0852465
+PUSH = PASS / origin/codex/cam-int-04-implementation
+UPSTREAM_DIVERGENCE = 0/0
+IMPLEMENTATION_STATUS = PARTIAL
+FOCAL_TESTS = NOT_EXECUTED
+REAL_CAMERA_HOMOLOGATION = NOT_AUTHORIZED
+MIGRATIONS_OR_TESTS = NOT_RUN_IN_THIS_CHECKPOINT
+PROJECT_STATE_UPDATE = PASS
+```
+
+O checkpoint publicou a implementação IMG-CAP, migration-fonte, worker, testes adicionados e contratos/continuidade revisados. Nenhum teste ou migration foi executado durante a publicação. Esta seção registra o push e não altera o estado parcial ou a homologação não autorizada da atividade CAM-INT-04.
