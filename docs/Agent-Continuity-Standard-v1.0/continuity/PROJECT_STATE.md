@@ -3299,3 +3299,20 @@ PROJECT_STATE_UPDATE = PASS
 ```
 
 Os documentos de QA, contratos e continuidade foram selecionados como trabalho pertinente. As capturas de produção/redesign permanecem no worktree local, fora do GitHub, até que seus identificadores possam ser avaliados ou redigidos por uma rota autorizada. A configuração `s2b_qa_settings.py` foi excluída por ser específica do banco SQLite local. O checkpoint não executou testes nem iniciou redesign ou integração com `master`.
+
+## 56. ARGOS-GLOBAL-GITHUB-CHECKPOINT-20261008 — publicação P5
+
+```text
+ACTIVITY = ARGOS-GLOBAL-GITHUB-CHECKPOINT-20261008
+BRANCH = codex/ui-v2-p5-production
+CHECKPOINT_COMMIT = 9551d07
+PREEXISTING_LOCAL_COMMITS_PUBLISHED = 2
+PUSH = PASS / origin/codex/ui-v2-p5-production
+UPSTREAM_DIVERGENCE = 0/0
+SCREENSHOTS = EXCLUDED / local files retained; automated review rejected publication due to visible camera identifiers, MAC and IP values
+LOCAL_QA_SETTINGS = EXCLUDED / SQLite-specific
+DATABASE = NOT_PUBLISHED
+PROJECT_STATE_UPDATE = PASS
+```
+
+O checkpoint P5 publicou QA, contratos e continuidade, junto com os dois commits que já estavam locais na branch. As capturas visuais e a configuração SQLite continuam no worktree original; nenhum redesign ou integração com master foi realizado. Esta seção supersede o estado PENDING da seção 55 quanto ao push.
