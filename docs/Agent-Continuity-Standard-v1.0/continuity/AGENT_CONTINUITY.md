@@ -1601,3 +1601,23 @@ Os registros anteriores, inclusive o resultado integrado 117/117 da seção
 20.33, permanecem como evidência histórica. A verificação ampliada 141/141
 corresponde ao commit de implementação publicado. Não houve acesso a câmera
 real, credencial produtiva ou banco operacional nesta atividade.
+
+### 20.35. CAM-INT-04-REAL-HTTP-HOMOLOGATION-PREPARATION (2026-10-08)
+
+Estado desta lane: PROJECT_STATE §69. Contrato operacional:
+`docs/projeto/contracts/backend/camera/CAM-INT-04_REAL_HTTP_HOMOLOGATION_PREPARATION_CONTRACT.md`.
+Preparação pronta no HEAD `8e6fa230a9d137c8b1aedd502e0ac9cdf6ef2ecf`, branch
+`codex/cam-int-04-implementation`, delta documental sem commit/push.
+Master preservado em `5bd22b0`; sem código/teste, DB, migration, segredo ou câmera.
+
+TARGET_STATUS = REQUIRES_OPERATOR_INPUT; endpoint não confirmado. Critérios
+A/B e isolamento/cleanup estão fechados. Basic/Digest só HTTPS; R1 público e
+provider efêmero no mesmo processo de call_command('run_capture_worker', once=True).
+Defaults settings são operacionais: sobrescrever DB/media antes de setup no
+preflight futuro. Não inferir HTTP SUPPORTED de RTSP, recovery RUNNING ou
+remoção infalível de arquivos por rollback. Negativos controlados não são
+captura real nem autorização para provocar falha no equipamento.
+
+NEXT_REQUIRED_ACTIVITY = CAM-INT-04-REAL-HTTP-HOMOLOGATION
+NEXT_ACTIVITY_AUTHORIZATION = NOT_GRANTED / contract §10 gates pending
+HOMOLOGATION_CONTRACT_READY = YES / not REAL_EXECUTION_READY

@@ -4122,3 +4122,77 @@ implementação passou 141/141 testes. Os 117 testes da regressão CAM-INT-03,
 CAM-INT-04 e UI P5 também permanecem registrados na seção 67. Nenhuma câmera
 real, credencial produtiva ou banco operacional foi usado. A homologação HTTP
 real continua pendente e depende de atividade e autorização próprias.
+
+## 69. CAM-INT-04-REAL-HTTP-HOMOLOGATION-PREPARATION (2026-10-08)
+
+```text
+ACTIVITY = CAM-INT-04-REAL-HTTP-HOMOLOGATION-PREPARATION
+MODE = CONTRACT_PREPARATION
+STATUS = PREPARATION_COMPLETE / REAL_EXECUTION_NOT_AUTHORIZED
+PROJECT_ROOT = C:/Users/walacedelgado/PycharmProjects/projeto_argos_cam_int_04
+BRANCH = codex/cam-int-04-implementation
+HEAD = 8e6fa230a9d137c8b1aedd502e0ac9cdf6ef2ecf
+ORIGIN_BASELINE = local origin/codex/cam-int-04-implementation equal HEAD; no fetch
+DIVERGENCE = 0/0 at preparation preflight
+MASTER_HEAD = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9 / unchanged
+BASELINE_WORKTREE = CLEAN
+BASELINE_STAGING = EMPTY
+CURRENT_DELTA = documentary preparation only / uncommitted
+EXECUTION_MODE = DIRECT
+SUBAGENTS = 0
+HTTP_SNAPSHOT_CONTRACT_STATUS = CLOSED_FOR_PREPARATION / REAL_VALIDATION_PENDING
+IMG_CAP_CONTRACT_STATUS = CLOSED_FOR_PREPARATION / REAL_VALIDATION_PENDING
+TARGET_STATUS = REQUIRES_OPERATOR_INPUT
+HTTP_ENDPOINT_STATUS = UNCONFIRMED
+HOMOLOGATION_CONTRACT_READY = YES / procedure, not execution approval
+REAL_EXECUTION_READY = NO
+IMPLEMENTATION_AUTHORIZED = NO
+LIVE_AUTHORIZED = NO
+REAL_HTTP_EXECUTION_AUTHORIZED = NO
+REAL_CAMERA_ACCESSED = NO
+REAL_CREDENTIALS_ACCESSED = NO
+DATABASE_OR_MIGRATION_EXECUTION = NOT_PERFORMED
+PRODUCTION_CODE_CHANGED = NO
+TEST_CODE_CHANGED = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+CANONICAL_CONTRACT = docs/projeto/contracts/backend/camera/CAM-INT-04_REAL_HTTP_HOMOLOGATION_PREPARATION_CONTRACT.md
+NEXT_ACTIVITY = CAM-INT-04-REAL-HTTP-HOMOLOGATION / separate approval required
+PROJECT_STATE_UPDATE = PASS / section 69
+```
+
+O contrato fecha procedimentos e critérios de Gate A (adapter real/bytes
+válidos, sem persistência) e B (serviço e comando produtivos, DB/storage
+isolados), diferenciando prova REAL_TARGET de CONTROLLED. Python 3.13.1 e
+versões instaladas foram verificadas por metadados. Nenhum Django setup,
+teste, DB, migration, segredo ou câmera foi executado/acessado nesta atividade.
+141/141 de §68 é evidência histórica, não homologação HTTP real.
+
+Pendências do operador: CAMERA_ID e identidade física, fabricante/modelo/
+firmware, endpoint/scheme/porta, auth/TLS por IPv4, profile/evidence HTTP
+SUPPORTED, operador, policy, schema/settings isolados, credencial efêmera,
+T/janela/budget, watchdog, retenção e negativos. Detalhes/gates no contrato
+§§3–10. Basic/Digest só em HTTPS; RTSP prévio não comprova HTTP.
+Não há recovery automático visível de RUNNING; delete compensatório pode
+falhar e exige reconciliação. Negativos storage/DB não são declarados
+comprovados pelos testes focais inspecionados. Não mascarar limites via harness.
+
+Divergência explicitada no contrato §1: parágrafo histórico IMG-CAP sobre
+testes não executados é supersedido pelos resultados posteriores de §§67–68.
+CAM-INT-03, UI P5, master e worktrees UI permanecem preservados.
+
+### Validação documental e fechamento da preparação §69
+
+```text
+VALIDATION = PASS / git diff --check; 10 sections; balanced fences; referenced paths exist; no trailing whitespace in new contract
+CHANGE_SCOPE = PASS / one new contract and append-only additions to three continuity files
+FINAL_HEAD = 8e6fa230a9d137c8b1aedd502e0ac9cdf6ef2ecf / unchanged
+FINAL_MASTER = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9 / clean and unchanged
+STAGING = EMPTY
+PROJECT_STATE_UPDATE = PASS
+DOCUMENT_QUALITY_GATE = PASS
+AGENT_HANDOFF_GATE = PASS / criteria and pending approvals discoverable in contract §§3–10
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES / preparation only
+REAL_HOMOLOGATION = NOT_PERFORMED / NOT_AUTHORIZED
+```

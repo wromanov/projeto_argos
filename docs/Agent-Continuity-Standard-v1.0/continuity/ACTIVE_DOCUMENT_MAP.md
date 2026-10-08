@@ -804,3 +804,17 @@ no checkpoint do commit `43a08a5`; `master` permaneceu em `5bd22b0`. A
 implementação local está completa e a validação ampliada passou 141/141. A
 homologação HTTP real permanece pendente e exige atividade e autorização
 separadas. CAM-INT-03 homologada e UI P5 publicada foram preservadas.
+
+## 40. CAM-INT-04-REAL-HTTP-HOMOLOGATION-PREPARATION (2026-10-08)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/contracts/backend/camera/CAM-INT-04_REAL_HTTP_HOMOLOGATION_PREPARATION_CONTRACT.md` | Procedimento A/B, pré-requisitos, policy, credencial, isolamento, efeitos, cleanup e gate | CURRENT / preparação fechada; execução não autorizada |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §69 | Estado documental e pendências | CURRENT / lane CAM-INT-04 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.35 | Handoff de preparação | CURRENT |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §68 | Publicação e resultados locais anteriores | HISTORICAL baseline / preservado |
+
+Contratos CAM-INT-04 e IMG-CAP conservam autoridade sobre comportamento;
+o novo contrato fecha homologação futura, sem ampliar APIs/permissões.
+Alvo/endpoint exigem operador; gates §10 pendentes. Nenhuma câmera/credencial
+real foi acessada.
