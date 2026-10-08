@@ -1422,3 +1422,28 @@ NEXT_ACTION = publish master normally, verify remote equality, then record the p
 O worktree P5 permaneceu intacto e sujo como solicitado. O ZIP local de
 continuidade continua não rastreado e fora do commit. Não reabrir CAM-INT-03:
 o checkpoint de runtime permanece conforme `PROJECT_STATE.md`, seção 60.
+
+
+### 20.29. ARGOS-UI-P5-PRODUCTION-INTEGRATION — publicação confirmada (2026-10-07)
+
+Consulte `PROJECT_STATE.md`, seção 62, para o fechamento factual. O commit de
+integração `662e80e16df53ae80a87b0c9c28f6700f6dd2e9b` e o checkpoint documental
+pré-publicação foram publicados normalmente em `origin/master`; o fetch posterior
+confirmou igualdade local/remota e divergência zero.
+
+```text
+UI_P5_STATUS = PUBLISHED_TO_MASTER
+CONFLICT_RESOLUTION_STATUS = PASS
+P5_VISUAL_AUTHORITY_PRESERVED = YES
+POST_P5_FUNCTIONAL_BINDINGS_FOUND = NO
+UI_FOCUSED_TESTS = 17/17 PASS
+INTEGRATED_REGRESSION = 101/101 PASS
+DJANGO_CHECK = PASS
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES
+REMOTE_CONTINUATION_READY = YES
+NEXT_ACTION = resume ARGOS backend from the next open activity after CAM-INT-03
+```
+
+O worktree da UI permaneceu intocado; o ZIP local de continuidade segue não
+rastreado e preservado. Publicação no repositório não implica deploy operacional.

@@ -711,3 +711,16 @@ binding funcional pós-P5 adicional a preservar. Testes focados 17/17 e
 regressão integrada 101/101 passaram. A publicação remota ainda aguarda push
 normal autorizado e verificação `HEAD = origin/master`; consulte a seção 61 de
 `PROJECT_STATE.md` antes de continuar.
+
+
+## 34. ARGOS-UI-P5-PRODUCTION-INTEGRATION — publicação (2026-10-07)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 62 | Fechamento publicado, gates e estado remoto final | CURRENT / COMPLETED / REMOTE_EQUAL |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.29 | Handoff após a publicação P5 | CURRENT / REMOTE_CONTINUATION_READY |
+| `cameras/templates/cameras/detalhe.html` | Tela Camera Detail P5 | PUBLISHED / P5 CANONICAL |
+| `static/css/ui-v2/camera-detail.css` | Estilos Camera Detail | PUBLISHED / P5 RESTORED |
+
+A publicação foi verificada em `origin/master` com divergência zero. A seção 62
+de `PROJECT_STATE.md` supersede o status de push pendente da seção 61.

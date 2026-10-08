@@ -3713,3 +3713,57 @@ files had no high-confidence secret-pattern matches. CAM-INT-03 and CAM-INT-04
 code were not changed. The user-approved P5 visual state remains authoritative.
 This section records the locally validated integration; a later section must
 record publication after remote verification.
+
+
+## 62. ARGOS-HOME-SYNC-AND-UI-P5-PRODUCTION-INTEGRATION — publicação confirmada (2026-10-07)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = ARGOS-HOME-SYNC-AND-UI-P5-PRODUCTION-INTEGRATION
+STATUS = COMPLETED
+ACTIVITY_COMPLETION_PERCENT = 100%
+BRANCH = master
+MASTER_UI_COMMIT = 662e80e16df53ae80a87b0c9c28f6700f6dd2e9b
+DOCUMENTATION_COMMIT = 73c21b40dc8df9dfec503e7f29eeacb8fe6e962b
+UI_PUBLICATION_VERIFIED_HEAD = 73c21b40dc8df9dfec503e7f29eeacb8fe6e962b
+ORIGIN_MASTER = 73c21b40dc8df9dfec503e7f29eeacb8fe6e962b
+PUSH = PASS / normal master -> origin/master
+POST_PUSH_FETCH = PASS
+DIVERGENCE = 0/0
+TRACKED_WORKTREE = CLEAN
+STAGING = EMPTY
+KNOWN_UNTRACKED_LOCAL_FILE = docs/Agent-Continuity-Standard-v1.0.zip / preserved, unmodified
+CONFLICT_RESOLUTION_STATUS = PASS
+P5_VISUAL_AUTHORITY_PRESERVED = YES
+POST_P5_FUNCTIONAL_BINDINGS_FOUND = NO
+FUNCTIONAL_BINDINGS_PRESERVED = NONE_REQUIRED / current backend contracts already satisfied
+SUPERSEDED_MASTER_UI_REMOVED = YES
+DETAIL_TEMPLATE_RESOLUTION = P5_CANONICAL
+MONITORING_BADGE_RESOLUTION = P5_CANONICAL
+CAMERA_DETAIL_CSS_RESOLUTION = P5_RESTORED
+FRONTEND_TEST_RESOLUTION = SEMANTIC_UNION
+CONFLICT_MARKERS = NONE
+UNMERGED_PATHS = 0
+UI_FOCUSED_TESTS = 17/17 PASS
+INTEGRATED_REGRESSION = 101/101 PASS
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+SECRET_SCAN = PASS / no high-confidence credential patterns in integration files
+HUMAN_VISUAL_APPROVAL = PASS
+UI_P5_STATUS = PUBLISHED_TO_MASTER
+UI_WORKTREE_PRESERVED = YES / last verified before publication; no further access or changes
+CAM_INT_03_CHANGED = NO
+CAM_INT_04_CHANGED = NO
+PROJECT_STATE_UPDATE = PASS
+REMOTE_CONTINUATION_READY = YES
+ACTIVITY_COMPLETE = YES
+NEXT_RECOMMENDED_ACTIVITY = Resume ARGOS backend from the next open activity after CAM-INT-03
+```
+
+A publicação normal atualizou `origin/master`; o `fetch` posterior confirmou o mesmo
+HEAD local e remoto e divergência zero. O commit de integração P5 é
+`662e80e16df53ae80a87b0c9c28f6700f6dd2e9b`; o commit documental que registrou
+a validação pré-publicação é `73c21b40dc8df9dfec503e7f29eeacb8fe6e962b`.
+Este checkpoint supersede o estado pendente de publicação da seção 61. O ZIP local
+permaneceu fora do Git. A UI P5 foi publicada no repositório `master`; isso não
+registra um deploy separado em servidor operacional.
