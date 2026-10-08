@@ -1390,3 +1390,35 @@ relatório da auditoria mantém sua conclusão
 histórica no momento da auditoria; esta seção registra apenas o follow-up factual
 posterior. A divergência histórica de cabeçalhos do registry, DAG e contrato
 RTSP permanece conhecida e não bloqueia a continuidade desta lane.
+
+
+### 20.28. ARGOS-UI-P5-PRODUCTION-INTEGRATION — Camera Detail integrado localmente (2026-10-07)
+
+O estado desta integração está registrado em `PROJECT_STATE.md`, seção 61. O
+commit P5 `c91bc6d4658faa408a9f565b9d1c3d6279571cb4` foi integrado por
+cherry-pick no `master` sincronizado em `0235c8d`, produzindo
+`662e80e16df53ae80a87b0c9c28f6700f6dd2e9b`. A adjudicação humana definiu a P5
+como autoridade visual e estrutural para Camera Detail; o master continua
+autoridade para contratos funcionais. A comparação não encontrou binding
+funcional pós-P5 ausente da implementação aprovada.
+
+```text
+UI_P5_STATUS = CLOSED / PRODUCTION_INTEGRATED_LOCALLY
+UI_SOURCE_COMMIT = c91bc6d4658faa408a9f565b9d1c3d6279571cb4
+MASTER_UI_COMMIT = 662e80e16df53ae80a87b0c9c28f6700f6dd2e9b
+CONFLICT_RESOLUTION = P5_VISUAL_AUTHORITY_PRESERVED
+UI_FOCUSED_TESTS = 17/17 PASS
+INTEGRATED_REGRESSION = 101/101 PASS
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+HUMAN_VISUAL_APPROVAL = PASS
+CAM_INT_03_CHANGED = NO
+CAM_INT_04_CHANGED = NO
+PUSH = AUTHORIZED / PENDING
+REMOTE_CONTINUATION_READY = NO / pending post-push verification
+NEXT_ACTION = publish master normally, verify remote equality, then record the publication checkpoint
+```
+
+O worktree P5 permaneceu intacto e sujo como solicitado. O ZIP local de
+continuidade continua não rastreado e fora do commit. Não reabrir CAM-INT-03:
+o checkpoint de runtime permanece conforme `PROJECT_STATE.md`, seção 60.

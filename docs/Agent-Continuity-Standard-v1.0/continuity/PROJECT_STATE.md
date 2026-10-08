@@ -3658,3 +3658,58 @@ Este fechamento posterior atualiza apenas a continuidade documental. A seção
 seu registro de push pendente foi supersedido por esta seção. A homologação e a
 resolução da causa raiz continuam válidas. Os três findings acima permanecem
 abertos conforme registrados; nenhum foi resolvido nesta atividade.
+
+
+## 61. ARGOS-HOME-SYNC-AND-UI-P5-PRODUCTION-INTEGRATION — integração local validada (2026-10-07)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = ARGOS-HOME-SYNC-AND-UI-P5-PRODUCTION-INTEGRATION
+STATUS = LOCAL_INTEGRATION_VALIDATED / REMOTE_PUBLICATION_PENDING
+ACTIVITY_COMPLETION_PERCENT = 92%
+MAIN_INITIAL_HEAD = ae8199e019c8f1c9331da919e7807d23d7f7210f
+CACHED_ORIGIN_MASTER_BEFORE_FETCH = 0483f3bbca8108bc45b78b70d39577b1e30b96df
+FETCH = PASS
+FETCHED_ORIGIN_MASTER = 0235c8d3f5df48a318e61b7d9e5b80cf2a923f1e
+HOME_MASTER_SYNC = PASS / fast-forward, no local commits ahead
+MAIN_PRE_INTEGRATION_HEAD = 0235c8d3f5df48a318e61b7d9e5b80cf2a923f1e
+UI_SOURCE_BRANCH = codex/ui-v2-p5-production
+UI_SOURCE_COMMIT = c91bc6d4658faa408a9f565b9d1c3d6279571cb4
+INTEGRATION_METHOD = CHERRY_PICK
+MASTER_UI_COMMIT = 662e80e16df53ae80a87b0c9c28f6700f6dd2e9b
+CONFLICT_RESOLUTION = P5_VISUAL_AUTHORITY_PRESERVED
+POST_P5_FUNCTIONAL_BINDINGS_FOUND = NO
+P5_VISUAL_AUTHORITY_PRESERVED = YES
+FILES_FROM_UI_COMMIT = cameras/templates/cameras/detalhe.html; cameras/templates/cameras/partials/_monitoring_badge.html; cameras/test_frontend.py; static/css/argos.css; static/css/ui-v2/camera-detail.css
+FRONTEND_TEST_RESOLUTION = SEMANTIC_UNION / all current master tests preserved; six P5 Camera Detail tests added
+UI_FOCUSED_TESTS = 17/17 PASS / CameraDetailFrontendTests 6; cameras.test_quick_detail 4; cameras.test_monitoramento_ui 7
+INTEGRATED_REGRESSION = 101/101 PASS / cameras.test_frontend; cameras.test_quick_detail; cameras.test_monitoramento_ui; cameras.test_governanca_views; cameras.test_authorization; core.test_frontend
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+SECRET_SCAN = PASS / no high-confidence credential patterns in the five integration files
+CAM_INT_03_CHANGED = NO
+CAM_INT_04_CHANGED = NO
+HUMAN_VISUAL_APPROVAL = PASS
+UI_WORKTREE_PRESERVED = YES / intentionally dirty state unchanged
+KNOWN_UNTRACKED_LOCAL_FILE = docs/Agent-Continuity-Standard-v1.0.zip / preserved untracked
+PUSH = AUTHORIZED / PENDING
+UI_P5_STATUS = CLOSED / PRODUCTION_INTEGRATED_LOCALLY
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO / awaiting push and post-push verification
+REMOTE_CONTINUATION_READY = NO / awaiting push and post-push verification
+```
+
+The local clone was fetched and fast-forwarded from `ae8199e` to the user-
+specified checkpoint `0235c8d`. The untracked continuity ZIP remained
+untouched. The P5 source commit contained exactly the five listed UI files.
+The master-side version of Camera Detail had no additional required URL or
+permission binding absent from P5; current backend context and monitoring
+states are supported by the P5 template and badge. The competing master visual
+structure was superseded for this screen by explicit user adjudication.
+
+The 17 focused tests and the 101-test integrated regression passed. Django
+system checks and Git whitespace checks passed; the five changed integration
+files had no high-confidence secret-pattern matches. CAM-INT-03 and CAM-INT-04
+code were not changed. The user-approved P5 visual state remains authoritative.
+This section records the locally validated integration; a later section must
+record publication after remote verification.

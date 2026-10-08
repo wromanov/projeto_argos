@@ -694,3 +694,20 @@ decodebin→appsink e de provisionamento local de autenticação permanecem aber
 e não bloqueantes; giolibproxy permanece não causal para CAM-INT-03. A próxima
 atividade recomendada é retomar o backend ARGOS pela próxima atividade aberta
 após CAM-INT-03.
+
+
+## 33. ARGOS-UI-P5-PRODUCTION-INTEGRATION — Camera Detail (2026-10-07)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 61 | Estado factual da sincronização local, integração, conflitos, testes e gates | CURRENT / LOCAL_INTEGRATION_VALIDATED / PUSH_PENDING |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.28 | Handoff, autoridade visual P5 e próximo gate remoto | CURRENT / P5_INTEGRATED_LOCALLY |
+| `cameras/templates/cameras/detalhe.html` | Implementação aprovada da tela Camera Detail | P5 CANONICAL / integrated by `662e80e` |
+| `static/css/ui-v2/camera-detail.css` | Estilos de produção Camera Detail | P5 CANONICAL / restored by `662e80e` |
+
+O commit P5 `c91bc6d` foi integrado localmente no `master` por cherry-pick
+como `662e80e`. A autoridade visual da tela é a P5 aprovada; não foi encontrado
+binding funcional pós-P5 adicional a preservar. Testes focados 17/17 e
+regressão integrada 101/101 passaram. A publicação remota ainda aguarda push
+normal autorizado e verificação `HEAD = origin/master`; consulte a seção 61 de
+`PROJECT_STATE.md` antes de continuar.
