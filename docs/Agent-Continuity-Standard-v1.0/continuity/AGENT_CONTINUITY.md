@@ -1154,3 +1154,74 @@ erros sanitizados; RTSP rejeitado nesta slice HTTP. Próxima ação é obter
 autorização específica para migrations no banco isolado de testes ou configurar
 validação que não aplique migrations. A homologação de câmera continua sem
 autorização.
+
+### 20.21. CAM-INT-04-WORKTREE-RECOVERY-AND-IMPLEMENTATION-AUDIT (2026-10-08)
+
+O resultado factual está em `PROJECT_STATE.md`, seção 55. A branch remota
+`origin/codex/cam-int-04-implementation` foi recuperada em worktree local
+limpa inicialmente, na branch de acompanhamento
+`codex/cam-int-04-implementation`, HEAD `f9ae0e73be7b2d8e7ab4a6a3a6e45ee2e48b4efe`.
+O `master` ficou em `5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9`, limpo e sem
+alterações.
+
+```text
+HTTP_R1_CALLSITE_CONTRACT = CLOSED
+HTTP_R1_CALLSITE_IMPLEMENTATION = PARTIAL / PRESENT, FOCAL VALIDATION PENDING
+IMG_CAP_IMPLEMENTATION = PARTIAL / HTTP-ONLY SOURCE PRESENT, FOCAL VALIDATION PENDING
+FOCAL_TESTS = BLOCKED / missing httpx; worker command test additionally fails before assertion resolving its patch target
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+MIGRATION_0018 = SOURCE ONLY / follows master migration 0017; not applied
+REAL_CAMERA_OR_CREDENTIAL_ACCESS = NO
+MASTER_COMPATIBILITY = CONFLICT_RISK / TargetPolicy environment-path extension and shared continuity docs require reconciliation
+CAM_INT_04_READY_FOR_INTEGRATION = NO
+WORKTREE_CLEAN = NO / continuity-only audit checkpoint recorded
+IMPLEMENTATION_OR_CONTRACT_FILES_CHANGED = NO
+COMMIT / PUSH / MERGE = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE §55
+ACTIVITY_COMPLETION_PERCENT = 100% / audit objective complete; implementation validation pending
+```
+
+O `master` atual amplia `TargetPolicy.from_environment` com
+`ARGOS_CAMERA_ALLOWED_PATHS`. A composição do worker continua usando métodos
+compatíveis e a extensão é fail-closed, mas pode autorizar paths customizados
+quando a allowlist ambiental estiver configurada. Reconciliar os contratos
+CAM-INT-04/IMG-CAP com o contrato de configuração CAM-INT-03 e validar a
+composição após resolver a dependência `httpx` e a falha de import do teste do
+worker. Não inferir aceite da implementação a partir do system check ou do
+checkpoint publicado. Não acessar câmera ou credenciais reais.
+
+### 20.22. CAM-INT-04-FOCAL-REMEDIATION-AND-VALIDATION (2026-10-08)
+
+O resultado supersedente está em `PROJECT_STATE.md`, seção 56. Em
+`codex/cam-int-04-implementation`, HEAD `f9ae0e73`, as dependências declaradas
+foram instaladas num `.venv` local isolado; HTTPX 0.28.1 importa e o manifesto
+não mudou. Django 5.2 usou SQLite compartilhado em memória para testes; migrations
+não tocaram banco operacional. As suítes passaram: HTTP Snapshot 15/15, IMG-CAP
+service 15/15, worker 1/1, total 31/31. `manage.py check`, diff checks e
+`makemigrations --check --dry-run` passaram.
+
+O patch do teste apontava ao símbolo certo no namespace do comando. Resolvida a
+falha de import causada pelo ambiente sem HTTPX, a única falha restante foi a
+asserção de stdout vazio, incompatível com a string retornada por `handle()` no
+Django; só a asserção foi corrigida. Nenhum código produtivo mudou. A migration
+0018 permanece fonte e depende da 0017; não foi aplicada ao banco operacional.
+
+```text
+HTTP_R1_CALLSITE_IMPLEMENTATION = COMPLETE / focal validation passed
+HTTP_R1_CALLSITE_FINDING = RESOLVED
+IMG_CAP_IMPLEMENTATION = COMPLETE / local HTTP slice; production homologation pending
+TARGET_POLICY_RECONCILIATION = READY_FOR_INTEGRATION
+CAM_INT_04_READY_FOR_INTEGRATION = YES
+MASTER_INTEGRATION / MERGE / REBASE / COMMIT / PUSH = NOT_PERFORMED
+NEXT_REQUIRED_ACTIVITY = CAM-INT-04-MASTER-INTEGRATION-AND-REGRESSION
+```
+
+Na integração, reconciliar as notas de path de CAM-INT-04, IMG-CAP, registry e
+mapa documental com `CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md` e o
+parser `ARGOS_CAMERA_ALLOWED_PATHS` do master. A lista ambiental pode permitir
+path HTTP customizado somente se confiável, exata e compatível com scheme/porta;
+configuração ausente, inválida, não listada ou revogada continua fail-closed.
+Reexecutar TargetPolicy, runtime RTSP, HTTP Snapshot, capture service e worker.
+Não fazer essa reconciliação contratual nesta atividade, que não autorizou
+alterar authority nem integrar master.

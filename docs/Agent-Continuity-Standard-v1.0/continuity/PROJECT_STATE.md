@@ -3199,3 +3199,150 @@ PROJECT_STATE_UPDATE = PASS
 ```
 
 O checkpoint publicou a implementação IMG-CAP, migration-fonte, worker, testes adicionados e contratos/continuidade revisados. Nenhum teste ou migration foi executado durante a publicação. Esta seção registra o push e não altera o estado parcial ou a homologação não autorizada da atividade CAM-INT-04.
+
+## 55. CAM-INT-04-WORKTREE-RECOVERY-AND-IMPLEMENTATION-AUDIT (2026-10-08)
+
+```text
+ACTIVITY = CAM-INT-04-WORKTREE-RECOVERY-AND-IMPLEMENTATION-AUDIT
+MODE = INSPECTION_AND_VALIDATION
+WORKTREE_RECOVERY = PASS
+MAIN_BRANCH = master / 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9 / clean / equal origin/master
+LOCAL_BRANCH = codex/cam-int-04-implementation / tracks origin/codex/cam-int-04-implementation
+WORKTREE_PATH = C:\Users\walacedelgado\PycharmProjects\projeto_argos_cam_int_04
+WORKTREE_HEAD = f9ae0e73be7b2d8e7ab4a6a3a6e45ee2e48b4efe / equal remote branch
+RECOVERY_STATUS = CLEAN before audit documentation; continuity-only files changed by this checkpoint
+WORKTREE_CLEAN = NO / only PROJECT_STATE.md, AGENT_CONTINUITY.md and ACTIVE_DOCUMENT_MAP.md changed for this report
+SOURCE_DELTA = 21 files; 4 branch-only commits and 5 current-master-only commits from merge base
+HTTP_R1_CALLSITE_CONTRACT = CLOSED
+HTTP_R1_CALLSITE_IMPLEMENTATION = PARTIAL / adapter and worker composition present; focal validation incomplete
+HTTP_R1_CALLSITE_FINDING = NEEDS_VALIDATION
+IMG_CAP_IMPLEMENTATION = PARTIAL / HTTP-only local pipeline, migration source and worker present; validation incomplete
+HTTP_SNAPSHOT_TESTS = BLOCKED / test import fails because httpx is absent from the available venv
+CAPTURE_SERVICE_TESTS = BLOCKED / test import fails because httpx is absent from the available venv
+CAPTURE_WORKER_TESTS = FAIL_BEFORE_ASSERTION / mock patch cannot resolve run_capture_worker on commands package
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+AST_PARSE = PASS / 12 changed Python files
+MIGRATION_REVIEW = SOURCE_ONLY / model and 0018 match; dependency is latest current-master migration 0017; no competing 0018
+MIGRATION_CHECK = NO CHANGES DETECTED / database-history probe warned that local db.sqlite3 could not be opened
+TEST_DATABASE = configured as SQLite shared in-memory; focal runner failed before database setup; no migration applied
+REAL_CAMERA_OR_CREDENTIAL_ACCESS = NO
+MASTER_COMPATIBILITY = CONFLICT_RISK / no feature-code overlap; three shared continuity docs; current master adds environment path parsing
+CAM_INT_03_IMPACT = additive TargetPolicy.from_environment support for ARGOS_CAMERA_ALLOWED_PATHS; validate integration against updated contract
+UI_P5_IMPACT = no CAM-INT-04 UI/template/static path changed; preserve current master UI commits
+MIGRATION_0018_RISK = low structural collision risk; additive after 0017; retain migration review gate during integration
+CONTRACT_DEVIATIONS = continuity/contract snapshot says ambient custom paths fail closed; current master can load an explicit trusted path allowlist
+REMAINING_DEFECTS = httpx missing in available venv; worker test patch target import failure; no source-runtime defect validated in this audit
+ARCHITECTURAL_ESCALATION_NEEDED = NO
+CAM_INT_04_READY_FOR_INTEGRATION = NO / focal test suites have not passed and path-policy documentation needs reconciliation
+IMPLEMENTATION_OR_CONTRACT_FILES_CHANGED = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_STATUS = COMPLETE_WITH_VALIDATION_BLOCKERS / audit objective complete; implementation acceptance pending
+AUDIT_ACTIVITY_COMPLETE = YES / findings and blockers recorded; implementation acceptance remains pending
+NEXT_RECOMMENDED_ACTIVITY = CAM-INT-04-FOCAL-VALIDATION-AND-INTEGRATION-PREFLIGHT after test dependency and worker-test loader are addressed under separate authority
+```
+
+O precheck confirmou o `master` limpo em `5bd22b0`, igual a `origin/master`,
+branch remota disponível em `f9ae0e7`, ausência de branch local homônima e
+ausência da pasta de worktree anterior. A worktree local acompanha a referência
+publicada e permaneceu sem alterações de implementação. A auditoria cobriu os
+21 arquivos do delta.
+
+Os contratos CAM-INT-04, R1, IMG-CAP e registry deixam fechado o comportamento
+da slice local e identificam a implementação como presente, não homologada.
+O adapter e o worker compõem HTTP/R1 e IMG-CAP; a migration 0018 é apenas fonte.
+`manage.py check`, AST parse e `git diff --check` passaram. O test runner não
+alcançou as asserções: HTTPX não está instalado no venv atual e o teste do
+comando worker falha ao resolver o caminho de patch. Nenhuma câmera ou
+credencial foi acessada; nenhuma migration foi aplicada.
+
+O `master` atual adiciona ao `TargetPolicy.from_environment` o parser de
+`ARGOS_CAMERA_ALLOWED_PATHS`. A extensão é aditiva e mantém os métodos usados
+pelo consumer, mas pode permitir paths customizados quando a allowlist
+ambiental confiável estiver configurada. Reconciliar essa diferença com os
+contratos IMG-CAP/CAM-INT-04 e testar a policy integrada antes de integração.
+CAM-INT-03 e UI P5 permanecem preservados; a lane não altera seus arquivos.
+O diagnóstico de auditoria está completo, mas CAM-INT-04 não está pronta para
+integração até a validação focal passar e a divergência de path ser adjudicada.
+
+## 56. CAM-INT-04-FOCAL-REMEDIATION-AND-VALIDATION (2026-10-08)
+
+```text
+ACTIVITY = CAM-INT-04-FOCAL-REMEDIATION-AND-VALIDATION
+EXECUTION_MODE = DIRECT
+BRANCH = codex/cam-int-04-implementation
+HEAD = f9ae0e73be7b2d8e7ab4a6a3a6e45ee2e48b4efe
+MASTER_HEAD = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9 / equal origin/master; unchanged
+BASELINE_DIRTY_FILES = PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md
+BASELINE_STAGING = EMPTY
+HTTPX_ROOT_CAUSE = project dependencies were declared, but neither Django nor httpx was installed in available interpreters; isolated Python 3.13 venv was absent
+HTTPX_IMPORT = PASS / httpx 0.28.1 from declared requirements; no manifest change
+WORKER_PATCH_ROOT_CAUSE = namespace was correct; the reported resolution failure occurred while importing capture_service with missing httpx. After environment repair, the test reached its assertion and exposed an obsolete expectation that command output be empty; Django writes the string returned by handle() to stdout.
+WORKER_PATCH_FIX = updated only the output assertion to Processed 0 capture job(s).\n
+TEST_DATABASE_ISOLATION = PASS / Django SQLite TEST.NAME defaults to shared in-memory file:memorydb_default?mode=memory&cache=shared; test migrations only; database destroyed after run
+HTTP_SNAPSHOT_TESTS = PASS / 15 of 15
+CAPTURE_SERVICE_TESTS = PASS / 15 of 15
+CAPTURE_WORKER_TESTS = PASS / 1 of 1
+TOTAL_FOCAL_TESTS = 31 / 31 PASS
+DJANGO_CHECK = PASS
+MODEL_MIGRATION_CHECK = PASS / makemigrations --check --dry-run: no changes detected
+GIT_DIFF_CHECK = PASS / unstaged and staged checks; staging remains empty
+HTTP_R1_CALLSITE_IMPLEMENTATION = COMPLETE
+HTTP_R1_CALLSITE_FINDING = RESOLVED / focal success and failure paths validated
+IMG_CAP_IMPLEMENTATION = COMPLETE / HTTP-only local scope; no camera/storage production homologation implied
+MIGRATION_0018_REVIEW = PASS / depends on cameras.0017; matches CameraCaptureJob; test-only migration in memory; no pending model migration
+TARGET_POLICY_RECONCILIATION = READY_FOR_INTEGRATION
+TARGET_POLICY_COMPATIBILITY_RISKS = current CAM-INT-04 branch omits ARGOS_CAMERA_ALLOWED_PATHS loader; after master integration, trusted exact allowlist may authorize custom HTTP paths; malformed or missing policy remains fail-closed
+CONTRACT_DEVIATIONS = NONE
+PRODUCTION_CODE_CHANGED = NO
+TEST_CODE_CHANGED = YES / one worker command output assertion
+DOCUMENTATION_CHANGED = YES / append-only continuity updates
+UNRELATED_CHANGES = NONE
+MASTER_INTEGRATION_PERFORMED = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+CAM_INT_04_READY_FOR_INTEGRATION = YES / focal acceptance passed; follow integration matrix below
+NEXT_RECOMMENDED_ACTIVITY = CAM-INT-04-MASTER-INTEGRATION-AND-REGRESSION
+PROJECT_STATE_UPDATE = PASS / section 56
+ACTIVITY_COMPLETION_PERCENT = 100%
+STATUS = PASS
+```
+
+O bloqueio de ambiente era instalação ausente, não lacuna no manifesto: a
+worktree não tinha virtualenv e os Python 3.13/3.14 disponíveis não encontravam
+Django nem httpx. Foi criado `.venv` isolado com `requirements-dev.txt`, que
+inclui as versões de produção já declaradas; nenhum pacote foi instalado
+globalmente. A revisão do teste do worker confirmou que o target de patch
+`cameras.management.commands.run_capture_worker.run_next_capture` coincide
+com o símbolo importado pelo comando. A única regressão era a asserção da
+saída vazia; ela foi ajustada sem alterar código produtivo.
+
+A execução focal aplicou migrations somente ao SQLite compartilhado em memória
+do Django e o destruiu ao final. Todas as 31 provas passaram. `manage.py check`
+passou e `makemigrations --check --dry-run` reportou `No changes detected`.
+A migration 0018 continua apenas como fonte; nenhuma migration foi aplicada a
+banco operacional. Nenhuma câmera ou credencial real foi acessada.
+
+### Matriz de reconciliação TargetPolicy para integração
+
+| Superfície | Estado CAM-INT-04 (`f9ae0e7`) | Master (`5bd22b0`) | Reconciliar durante integração |
+|---|---|---|---|
+| API `TargetPolicy` | `from_mapping`/`validate` já suportam allowlist exata por scheme; `from_environment` não lê paths | Parser `ARGOS_CAMERA_ALLOWED_PATHS=scheme:path[,path];...`; parser estrito e fail-closed | Preservar semântica exata, scheme/porta compatível e falha fechada; não copiar manualmente código |
+| CAM-INT-03 | Contrato de extensão de ambiente ausente neste branch | `CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md` descreve gramática, validação e runtime RTSP | Incorporar a fonte canônica e conferir que configuração HTTP não altera o runtime RTSP |
+| CAM-INT-04 / HTTP Snapshot | Default do profile autorizado; path customizado falha fechado no loader ambiental | `TargetPolicy` pode transportar allowlist HTTP explicitamente configurada | Atualizar a seção de path para refletir a integração; manter allowlist confiável independente, sem promover override de usuário a autorização |
+| IMG-CAP | Worker chama `TargetPolicy.from_environment`; path customizado não passa sem allowlist carregada | A mesma variável ambiental pode tornar paths customizados elegíveis após validação | Atualizar a nota de limite; cobrir caminho ausente, malformado, permitido e revogado |
+| Registry/continuidade | Snapshot declara custom path fechado até CAM-INT-07 | Snapshot do master retira status factual anterior; contrato CAM-INT-03 passa a ser o detalhe canônico | Reconciliar status factuais e mapa documental, preservando registros históricos |
+
+Riscos delimitados: a integração expõe configuração de destino privilegiada;
+somente ambiente operacional confiável deve definir paths. Parser inválido,
+scheme sem porta compatível, path não listado ou revogação continuam negando
+antes de R1 e antes da rede. O adapter HTTP não muda seu contrato de bytes,
+timeouts, TLS ou redirects. Reexecutar após integração:
+`cameras.test_camera_target_policy`, `cameras.test_camera_rtsp_runtime`,
+`cameras.test_camera_http_snapshot`, `cameras.test_imagens_capture_service`,
+`cameras.test_imagens_capture_worker` e os testes de serviço RTSP afetados.
+Esta matriz reconcilia comportamento sem alterar autoridade contratual agora.

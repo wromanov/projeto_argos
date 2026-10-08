@@ -13,4 +13,4 @@ class CaptureWorkerCommandTests(SimpleTestCase):
         call_command("run_capture_worker", "--once", stdout=output)
 
         run_next.assert_called_once_with()
-        self.assertEqual(output.getvalue(), "")
+        self.assertEqual(output.getvalue(), "Processed 0 capture job(s).\n")

@@ -566,3 +566,34 @@ A decisão de path limita-se ao default declarado pelo profile. Paths
 customizados continuam fechados no worker ambiental até uma extensão
 CAM-INT-07 autorizada e configurada; consulte as seções atualizadas de CAM-INT-04
 e IMG-CAP.
+
+## 26. CAM-INT-04-WORKTREE-RECOVERY-AND-IMPLEMENTATION-AUDIT (2026-10-08)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 55 | Recuperação, HEAD, validação, migration e compatibilidade | CURRENT / audit complete; implementation partial |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.21 | Handoff e próxima atividade de validação CAM-INT-04 | CURRENT / integration not ready |
+| `docs/projeto/contracts/backend/camera/CAM-INT-04_HTTP_SNAPSHOT_CONTRACT.md` | Comportamento HTTP e path do consumer | CURRENT / path statement requires reconciliation with CAM-INT-03 environment parser |
+| `docs/projeto/contracts/backend/images/IMAGE_CAPTURE_INTEGRATION_CONTRACT.md` | Ownership e status IMG-CAP | CURRENT / focal validation pending |
+| `docs/projeto/contracts/backend/camera/CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md` | Extensão de parser de paths presente no master atual | CURRENT / dependency to reconcile before integration |
+
+HTTP-R1-CALLSITE-01 e IMG-CAP permanecem implementações locais parciais até
+os testes focais passarem. A extensão ambiental de `allowed_paths_by_scheme`
+do CAM-INT-03 é compatível em API com a implementação recuperada, mas altera
+o comportamento possível de paths customizados quando configurada.
+
+## 27. CAM-INT-04-FOCAL-REMEDIATION-AND-VALIDATION (2026-10-08)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 56 | Resultados, causas, testes e matriz TargetPolicy | CURRENT / PASS / ready for integration |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.22 | Handoff e invariantes de integração | CURRENT / focal validation passed |
+| `docs/projeto/contracts/backend/camera/CAM-INT-04_HTTP_SNAPSHOT_CONTRACT.md` | Adapter HTTP e notas de allowlist de path | CURRENT for branch; reconcile during master integration |
+| `docs/projeto/contracts/backend/images/IMAGE_CAPTURE_INTEGRATION_CONTRACT.md` | Ownership IMG-CAP e caminho de captura | CURRENT for branch; reconcile during master integration |
+| `docs/projeto/contracts/backend/camera/CAM-INT-03_TARGET_POLICY_CONFIGURATION_CONTRACT.md` | Nova gramática ambiental e semântica TargetPolicy no master | MASTER SOURCE / incorporate and validate during integration |
+| `docs/projeto/contracts/backend/00_BACKEND_CONTRACT_REGISTRY.md` | Estado agregado das lanes | Branch snapshot requires factual reconciliation after integration |
+
+31/31 testes focais passaram; o worker precisou somente de correção na
+expectativa de stdout. Não houve mudança de código produtivo, aplicação de
+migration operacional ou integração do master. A seção 56 contém a matriz e
+os testes para reexecutar.
