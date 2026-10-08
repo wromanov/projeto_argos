@@ -3796,3 +3796,30 @@ ACTIVITY_COMPLETE = NO
 ```
 
 O estado inicial local do worktree principal foi registrado antes da criação da branch. As onze alterações rastreadas foram selecionadas para o checkpoint: os seis arquivos da Inventory UI V2, os três arquivos CSS de Camera Detail e os dois arquivos de configuração de agentes. O ZIP local foi preservado fora do Git por duplicar documentação de continuidade já versionada e incluir um prompt adicional cuja necessidade para a retomada não foi demonstrada. Nenhum teste ou homologação visual foi executado nesta atividade.
+
+## 64. ARGOS-GLOBAL-GITHUB-CHECKPOINT-20261008 — reconciliação pós-push
+
+```text
+PROJECT = ARGOS
+ACTIVITY = ARGOS-GLOBAL-GITHUB-CHECKPOINT-20261008
+STATUS = PARTIAL / evidências visuais P5 aguardam decisão de segurança
+MAIN_BRANCH = codex/argos-ui-v2-wip-20261008
+MAIN_COMMIT = 8c79bfa / PUSH PASS / upstream divergence 0/0
+BACKEND_BRANCH = codex/cam-int-04-implementation
+BACKEND_COMMIT = 0852465 / PUSH PASS / upstream divergence 0/0
+BACKEND_IMPLEMENTATION_STATUS = PARTIAL
+BACKEND_FOCAL_TESTS = NOT_EXECUTED
+BACKEND_REAL_CAMERA_HOMOLOGATION = NOT_AUTHORIZED
+P5_BRANCH = codex/ui-v2-p5-production
+P5_COMMIT = 9551d07 / PUSH PASS / includes two pre-existing local commits / upstream divergence 0/0
+P5_SCREENSHOTS = EXCLUDED / automated review rejected the five local captures due to camera identifiers, MAC and IP values
+P5_LOCAL_QA_SETTINGS = EXCLUDED / SQLite-specific local configuration
+MAIN_CONTINUITY_ZIP = EXCLUDED / duplicate archive, retained locally
+DATABASES_AND_CREDENTIALS = NOT_STAGED / NOT_PUBLISHED
+TESTS_AND_MIGRATIONS = NOT_RUN_IN_THIS_CHECKPOINT
+MASTER_INTEGRATION = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO / pending user decision on P5 screenshot evidence
+```
+
+Os três checkpoints estão publicados em branches próprias e os respectivos upstreams foram reconciliados em 0/0. A branch P5 também publicou os dois commits locais preexistentes, além do checkpoint documental. Nenhum trabalho foi integrado ao `master`. O pedido de publicação das capturas P5 foi rejeitado pela revisão automática; elas e a configuração QA local permanecem no computador de origem. Este registro supersede os estados PENDING das seções 63 e P5/Backend correspondentes apenas quanto aos pushes do checkpoint global; não altera os gates de validação ou homologação existentes.
