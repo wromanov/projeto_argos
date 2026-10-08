@@ -1133,3 +1133,24 @@ NEXT_REQUIRED_ACTIVITY = authorized repair of dynamic decoder->appsink linking a
 Não registrar nem transportar chave Fernet, variáveis de ambiente, conteúdo de
 credencial, URI RTSP sensível ou banco SQLite. A correção do adapter não foi
 incluída nesta atividade e precisa de autorização própria. Os cabeçalhos de status do registry, DAG e contrato CAM-INT-03 ainda refletem o estado pré-R1; consultar PROJECT_STATE seção 52 e reconciliá-los em atividade documental separada.
+
+### 20.20. CAM-INT-04-HTTP-R1-CALLSITE-01 — implementação local pendente de validação (2026-10-08)
+
+O estado factual está em PROJECT_STATE §53. O callsite pertence ao worker
+IMG-CAP e compõe autorização, TargetPolicy, R1 e o adapter HTTP existente.
+A branch CAM-INT-04 contém implementação e testes focais; Django está disponível
+no ambiente virtual do projeto, mas a revisão automática bloqueou a execução
+porque o runner aplicaria migrations no banco de teste e LOCAL_DB_MIGRATION
+está NOT_AUTHORIZED. A migration 0018_cameracapturejob.py não foi aplicada.
+Não houve câmera real, acesso a credenciais, alteração de P5/Camera Detail,
+commit, push ou merge. O system check e o AST parse passaram.
+
+As decisões fechadas permanecem: permission check no enqueue e antes de R1 no
+worker; TargetPolicy antes de segredo/rede e novamente após resolução; somente
+Basic/Digest sobre HTTPS para perfis autenticados; default_path do profile
+permitido; custom path exige allowlist independente e o worker ambiental falha
+fechado até atividade CAM-INT-07; sem fallback; sem efeito no monitoramento;
+erros sanitizados; RTSP rejeitado nesta slice HTTP. Próxima ação é obter
+autorização específica para migrations no banco isolado de testes ou configurar
+validação que não aplique migrations. A homologação de câmera continua sem
+autorização.

@@ -1,13 +1,14 @@
 # CAM-INT-04 — Captura HTTP de snapshot
 
 ```text
-STATUS = ACTIVE / ADAPTER CONTRACT; NOT HOMOLOGATED
-HTTP_CAMERA_ADAPTER_IMPLEMENTED = NO
+STATUS = ACTIVE / HTTP ADAPTER AND IMG-CAP CALLSITE PRESENT LOCALLY; NOT HOMOLOGATED
+HTTP_CAMERA_ADAPTER_IMPLEMENTED = YES / CODE PRESENT IN CAM-INT-04 BRANCH
 BC02_STATUS = IMPLEMENTATION_READY_ENVIRONMENT_VALIDATION_PENDING
-IMPLEMENTATION_READY = YES / LOCAL ADAPTER AND FAKE
+IMPLEMENTATION_READY = YES / HTTP ADAPTER AND IMG-CAP WORKER COMPOSITION
 IMPLEMENTER_TARGET = LUNA
-READY_NOW = NO / CAM-INT-02-R1 NOT_PUBLISHED
+READY_NOW = NO / TEST RUN REQUIRES TEST-DATABASE MIGRATIONS; NOT AUTHORIZED
 REQUIRED_PREDECESSORS = CAM-INT-01; CAM-INT-02; CAM-INT-02-R1; CAM-INT-06; CAM-INT-07
+LOCAL_CALLSITE_OWNER = IMG-CAP
 ```
 
 ## Separação de operações
@@ -94,10 +95,10 @@ Referências do client escolhido: [HTTPX Client](https://www.python-httpx.org/ad
 
 ## CAM-INT-02-R1 — dependency factual de autenticação HTTP
 
-Basic/Digest já contratado requer username/password; portanto
-`CAM-INT-04_REQUIRES_R1 = YES`. `IMPLEMENTATION_READY` acima qualifica a
-especificação local, não `READY_NOW`: o fluxo autenticado depende de
-CAM-INT-02-R1 implementada, integrada, validada e publicada. Não criar outra
+Basic/Digest requer username/password; portanto
+`CAM-INT-04_REQUIRES_R1 = YES`. CAM-INT-02-R1 está implementada, integrada,
+validada localmente e publicada conforme PROJECT_STATE §50; essa dependência
+está satisfeita. Isso não comprova a validação deste consumer. Não criar outra
 resolução de segredo para HTTP. CAM-INT-06/07 mantêm suas dependencies próprias.
 
 O caso de uso confiável seleciona o `CameraConnectionConfig` persistido
@@ -118,8 +119,32 @@ Não exigir reveal nem User fictício para execução interna. Nenhum evento de
 reveal é criado por captura/probe; a auditoria própria da captura é preservada.
 Testes do consumer cobrem integração com R1 e negação sem rede/segredo.
 
-Observação desta adjudicação: worktree `codex/cam-int-04-implementation` tem
-alterações locais em requirements, `http_snapshot/` e teste; apenas o status
-Git foi consultado. Não se declara execução pausada, aceite, falha ou conclusão
-desse trabalho sem evidência própria. O gate de publicação do fluxo autenticado
-exige R1; esta atividade não altera esse worktree nem avalia seu conteúdo.
+Observação histórica desta adjudicação (2026-10-02): worktree
+`codex/cam-int-04-implementation` tinha alterações locais em requirements,
+`http_snapshot/` e teste; apenas o status Git foi consultado naquele momento.
+Esse registro não descreve a execução atual; consulte o status atualizado abaixo.
+
+## HTTP-R1-CALLSITE-01 — implementação local atual (2026-10-08)
+
+O callsite de captura pertence ao caso de uso e worker IMG-CAP em
+cameras/imagens/capture_service.py. O fluxo verifica capture_camera_image
+no enqueue e no worker, valida TargetPolicy antes de R1 e novamente antes do
+adapter, e resolve Basic/Digest somente por
+resolve_active_credential_for_execution(*, config) em HTTPS. O adapter recebe
+o objeto efêmero; não há fallback de scheme, fonte, segredo ou destino.
+
+A implementação e os testes focais estão presentes no branch CAM-INT-04.
+Os testes não foram executados porque o ambiente disponível não tem Django.
+A migration 0018_cameracapturejob.py é somente fonte e não foi aplicada.
+Não houve homologação de câmera real. O estado da implementação não equivale a
+aceite local ou publicação.
+
+### Política de path nesta remediação
+
+Quando o path efetivo for igual ao default_path declarado no profile, o
+consumer passa somente esse path à TargetPolicy como path autorizado pelo
+profile, inclusive se o profile também permitir override. Um path alternativo
+requer allowed_paths_by_scheme em uma TargetPolicy confiável e independente;
+o worker com loader ambiental atual falha fechado porque não carrega essa lista.
+Ampliar a configuração ambiental de paths pertence a uma atividade CAM-INT-07
+separada. Esta regra não autoautoriza override escolhido por Técnico/Admin.

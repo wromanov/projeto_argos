@@ -544,3 +544,25 @@ antes de o callback pad-added ser registrado. A próxima atividade é uma
 correção autorizada dessa ligação, seguida de validação com GStreamer real.
 A credencial local depende de chave efêmera da sessão de trabalho e não é
 portátil; nenhum segredo ou banco foi copiado para o Git. Os cabeçalhos do contrato CAM-INT-03, do registry e do DAG ainda refletem o estado anterior à publicação de R1 e do adapter; sua reconciliação fica para atividade documental separada.
+
+## 25. CAM-INT-04-HTTP-R1-CALLSITE-01-REMEDIATION — estado local (2026-10-08)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md, seção 53 | Estado do branch, implementação, testes e gates | CURRENT / IMPLEMENTATION_PRESENT / VALIDATION_PENDING |
+| docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md, seção 20.20 | Handoff e invariantes do consumer | CURRENT / VALIDATION_PENDING |
+| docs/projeto/contracts/backend/camera/CAM-INT-04_HTTP_SNAPSHOT_CONTRACT.md | Adapter e status do callsite R1 | CURRENT / local implementation, not homologated |
+| docs/projeto/contracts/backend/images/IMAGE_CAPTURE_INTEGRATION_CONTRACT.md | Ownership IMG-CAP e escopo HTTP-only | CURRENT / RTSP pending |
+| docs/projeto/contracts/backend/camera/CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md | Boundary pública de resolução | CURRENT / R1 published |
+| docs/projeto/contracts/backend/00_BACKEND_CONTRACT_REGISTRY.md | Estado factual corrente das dependências | CURRENT / local consumer validation pending |
+
+A implementação não está homologada: os testes focais foram bloqueados pela
+revisão automática porque o Django runner aplicaria migrations no banco de teste
+e LOCAL_DB_MIGRATION está NOT_AUTHORIZED. O system check e o AST parse passaram.
+A migration não foi aplicada; não houve teste de câmera, credenciais, commit,
+push ou merge.
+
+A decisão de path limita-se ao default declarado pelo profile. Paths
+customizados continuam fechados no worker ambiental até uma extensão
+CAM-INT-07 autorizada e configurada; consulte as seções atualizadas de CAM-INT-04
+e IMG-CAP.

@@ -8,7 +8,7 @@ IMPLEMENTATION_READY = YES
 IMPLEMENTER_TARGET = LUNA
 RUNTIME_RESOLUTION_OWNER = CAM-INT-02
 RUNTIME_RESOLUTION_CONTRACT = CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md
-RUNTIME_RESOLUTION_STATUS = IMPLEMENTATION_READY / NOT_IMPLEMENTED
+RUNTIME_RESOLUTION_STATUS = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / PUBLISHED (PROJECT_STATE §50)
 ```
 
 ## Invariantes
@@ -142,8 +142,13 @@ fecha API, falhas, integridade, lifetime, ownership, testes e aceite sem alterar
 o schema ou as permissões. Implementação futura não autoriza consumers a usar
 helper privado, ciphertext, provider, endpoint reveal ou URI autenticada.
 
-`CAM-INT-02-R1 = IMPLEMENTATION_READY / NOT_IMPLEMENTED`; predecessora
-CAM-INT-02 publicada, successors CAM-INT-03 e CAM-INT-04 bloqueados até R1
-implementada, integrada, validada e publicada. A prontidão anterior da
-CAM-INT-02 não comprova presença dessa boundary; esta adjudicação corrige o
-gap explícito, preservando o lifecycle já publicado.
+Estado histórico da adjudicação (2026-10-02): CAM-INT-02-R1 ainda aguardava
+implementação, integração, validação e publicação. A R1 está publicada conforme
+PROJECT_STATE §50; isso atualiza o estado factual, sem alterar a boundary,
+custódia, lifecycle ou permissões deste contrato.
+
+## Estado factual da CAM-INT-02-R1 (2026-10-08)
+
+R1 está implementada, integrada, validada localmente e publicada, conforme
+PROJECT_STATE §50 e o contrato especializado. Consumers continuam usando
+somente a API pública interna e mantendo autorização própria no caso de uso.

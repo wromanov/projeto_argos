@@ -19,7 +19,7 @@ Futuro fluxo de captura: autenticar/autorizar operador ou identidade de serviço
 
 O domínio canônico determina ordenação de `LATEST_CAMERA_CAPTURE`, ausência de fallback para captura antiga quando a latest falha, `DISPLAY_IMAGE` com upload manual somente quando nenhuma captura existe, preview privado, hash/integridade, variants fechadas, autorização `cameras.view_camera`, `nosniff` e `no-store`. IMG-CAP não redefine esses contratos; remete às seções 7, 18, 19, 24 e 25 do documento canônico.
 
-Upload manual atual é implementado com `cameras.add_cameraimagerecord`, valida JPEG/PNG/WEBP estático, tamanho/dimensões bounded, decode/re-encode, storage configurado e auditoria. Limites correntes são operacionais, não política definitiva de produção. Adapter de captura a câmera, worker/caminho autenticado e armazenamento de produção não estão implementados/homologados.
+Upload manual atual é implementado com `cameras.add_cameraimagerecord`, valida JPEG/PNG/WEBP estático, tamanho/dimensões bounded, decode/re-encode, storage configurado e auditoria. Limites correntes são operacionais, não política definitiva de produção. O adapter HTTP e a composição local do worker autenticado existem no branch CAM-INT-04; não estão validados por testes focais executados nem homologados em câmera real. RTSP continua sem worker de captura nesta slice e falha fechado. O backend de storage de produção não está homologado.
 
 ## Decisões abertas
 
@@ -96,3 +96,28 @@ Acceptance criteria:
 3. Usuário sem permissão não cria job; captura não revela segredo/URI/bytes em
    log/auditoria; latest inválida não promove captura antiga; upload manual
    conserva sua proveniência e seu fluxo.
+
+## HTTP-R1-CALLSITE-01 — estado da slice local (2026-10-08)
+
+IMG-CAP é owner do callsite. O enqueue valida autorização, elegibilidade,
+TargetPolicy e idempotência. O worker revalida autorização, configuração e
+TargetPolicy; para Basic/Digest usa a boundary pública R1 e só então chama o
+adapter HTTPS com TLS verificado. O fluxo grava CameraImageRecord com
+proveniência CAPTURA_CAMERA; não altera monitoramento. A fonte RTSP é
+rejeitada nesta implementação HTTP-only, sem fallback.
+
+O model e a migration 0018_cameracapturejob.py foram adicionados ao branch,
+mas nenhuma migration foi aplicada. Testes focais foram adicionados, mas não
+executados: o Django test runner cria e migra um banco de teste, bloqueado pela
+restrição LOCAL_DB_MIGRATION = NOT_AUTHORIZED. A UI P5 e Camera Detail não
+receberam alterações. Não houve teste de câmera real.
+
+### Limite de path nesta slice HTTP
+
+O path default declarado no profile é permitido mesmo quando o profile contém
+a flag path de override. Path efetivo diferente do default só é permitido se
+uma TargetPolicy confiável trouxer allowed_paths_by_scheme compatível. O worker
+que carrega policy do ambiente ainda não carrega essa allowlist e, portanto,
+falha fechado para overrides customizados. Habilitar paths ambientais exige
+adjudicação CAM-INT-07 separada; o consumer nunca transforma o override
+recebido em sua própria allowlist.

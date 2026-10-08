@@ -4,7 +4,7 @@
 ID = CAM-INT-02-R1
 STATUS = IMPLEMENTATION_READY
 IMPLEMENTATION_READY = YES / LOCAL SERVICE BOUNDARY
-IMPLEMENTATION = NOT_IMPLEMENTED
+IMPLEMENTATION = IMPLEMENTED / INTEGRATED / VALIDATED_LOCAL / PUBLISHED (PROJECT_STATE §50)
 ACTIVITY = CAM-INT-02-R1-ARCH / DOCUMENTARY ADJUDICATION
 BASELINE_HEAD = c0e5a954d8a2e290acb5ce86a1b699a10c02b190
 RUNTIME_CREDENTIAL_RESOLUTION_OWNER = CAM-INT-02
@@ -261,3 +261,13 @@ PAUSED_ARCHITECTURAL_DEPENDENCY até implementação, integração, validação 
 publicação de R1. CAM-INT-04 também depende de R1 para autenticação; seu trabalho
 local observado não é avaliado nem declarado concluído por esta adjudicação.
 Contrato pronto não equivale a resolver publicado ou autorização de retomada.
+
+## Estado de publicação (2026-10-08)
+
+O serviço R1 está publicado e sua API permanece a única boundary autorizada
+para resolução runtime de credenciais. O finding HTTP-R1-CALLSITE-01 é
+responsabilidade do consumer IMG-CAP: CAM-INT-04 fornece o adapter; o worker
+IMG-CAP verifica autorização e TargetPolicy, resolve pela API R1 e só então
+chama o adapter. A implementação consumer está presente localmente no branch
+CAM-INT-04, com testes focais ainda não executados; este registro não declara
+homologação do consumer.

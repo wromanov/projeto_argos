@@ -3110,3 +3110,75 @@ A credencial cadastrada localmente não é portátil para casa porque depende da
 chave efêmera mantida na sessão PowerShell do computador de trabalho. Nenhuma
 chave, variável de ambiente, credencial, URI RTSP sensível ou banco local deve
 ser copiado ou incluído neste checkpoint.
+
+## 53. CAM-INT-04-HTTP-R1-CALLSITE-01-REMEDIATION — implementação local e validação pendente (2026-10-08)
+
+~~~~text
+PROJECT = ARGOS
+ACTIVITY = CAM-INT-04-HTTP-R1-CALLSITE-01-REMEDIATION
+STATUS = IMPLEMENTATION_PRESENT / VALIDATION_PENDING
+ACTIVITY_COMPLETION_PERCENT = 92%
+ROOT = LUNA / XHIGH
+EXECUTION_MODE = MULTIAGENT
+CONTRACT_PREFLIGHT = PASS
+IMPLEMENTATION_CONTRACT = CLOSED / default path supported; custom path deferred to CAM-INT-07 policy configuration
+MULTIAGENT_GATE = PASS / IMG-CAP implementation plus independent Architect and security review
+OFFLOAD_MATERIALITY_GATE = PASS / implementation and independent reviews had distinct scope
+ARCHITECT_EXECUTED = YES / only after new material path-policy finding
+SECURITY_REVIEW = PASS / no material security blocker found; production storage and process-crash orphan risk remain for homologation
+ARCHITECT_USAGE = USED / new material TargetPolicy path decision; gpt-6.1-sol/high
+WORKER_STATUS = IMPLEMENTATION_DELIVERED / HOLD; final bounded correction completed by root after worker usage limit
+BRANCH = codex/cam-int-04-implementation
+HEAD = c7dd6704d1b4090a7121cc2dbf647b9cc1c33abd
+DIRTY_STATE = implementation and tests listed below; pre-existing CAM-INT-04 branch was clean at preflight
+FINDING = HTTP-R1-CALLSITE-01
+FINDING_ROOT_CAUSE = R1 resolver had no HTTP consumer composition in the authorized capture use case
+ARCHITECTURAL_DECISION = IMG-CAP worker owns authorization, source/job lifecycle, TargetPolicy, R1 resolution, and adapter call; use profile default path when effective path equals default, require independent TargetPolicy path allowlist for custom path
+CAM_INT_03_DEPENDENCY = R1 published; CAM-INT-03 published separately; no CAM-INT-03 code changed
+EXACT_REMEDIATION_SCOPE = HTTP-only IMG-CAP enqueue/worker composition using existing CAM-INT-04 adapter and public R1 API; no CAM-INT-07 changes
+PRESERVED_INVARIANTS = permission at enqueue and worker; TargetPolicy before R1 and rechecked before network; Basic/Digest HTTPS only; default path is profile-authorized; custom path requires independent allowlist; no fallback; no monitor-state side effects; sanitized failures/audit; canonical CameraImageRecord
+RTSP = REJECTED / no worker implementation or fallback in this slice
+TESTS_ADDED = idempotency; fake success; permission denial/revocation; target denial before R1; Basic/Digest R1 composition; resolver failure; IP/config change; default/custom path allowlisting and revocation; no monitor mutation; worker --once
+TESTS_RUN = NO / auto-review blocked test runner because isolated test database setup applies migrations; LOCAL_DB_MIGRATION NOT_AUTHORIZED
+MIGRATION_SOURCE = cameras/migrations/0018_cameracapturejob.py
+DJANGO_SYSTEM_CHECK = PASS
+LOCAL_DB_MIGRATION = NOT_RUN
+REAL_CAMERA_TEST = NOT_RUN / NOT_AUTHORIZED
+CREDENTIAL_ACCESS = NONE
+UI_P5_OR_CAMERA_DETAIL_CHANGED = NO
+COMMIT = NO
+PUSH = NO
+MERGE = NO
+FILES_MODIFIED = cameras/models.py; cameras/migrations/0018_cameracapturejob.py; cameras/imagens/capture_service.py; cameras/management/__init__.py; cameras/management/commands/__init__.py; cameras/management/commands/run_capture_worker.py; cameras/test_imagens_capture_service.py; cameras/test_imagens_capture_worker.py; CAM-INT-04, IMG-CAP, R1, credential, registry and continuity documents
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO / focal tests blocked; Django system check passed
+IMPLEMENTATION_AUTHORIZATION = GRANTED FOR THIS LOCAL SLICE ONLY
+NEXT_ACTIVITY = obtain separate approval for migrations in the isolated test database, then run focal validation and final review; real camera remains separately unauthorized
+~~~~
+
+O preflight confirmou o worktree projeto_argos_cam_int_04, branch esperado e
+HEAD c7dd6704d1b4090a7121cc2dbf647b9cc1c33abd; estava limpo antes da
+implementação. O worker IMG-CAP adicionou o model/job durável, migration como
+fonte, request service, command de worker e testes. A revisão confirmou
+TargetPolicy antes da resolução R1 e revalidação do destino antes do adapter.
+O fluxo autenticado usa HTTPS e a API pública R1; a mudança de IP/config após
+R1 falha antes do adapter. O sucesso grava CameraImageRecord com proveniência
+de captura e sem alterar EstadoMonitoramento.
+
+A revisão arquitetural adicional confirmou que a policy ambiental atual não
+carrega allowed_paths_by_scheme: um profile com flag path falhava até mesmo no
+default_path. A decisão mínima, restrita ao ownership IMG-CAP, autoriza somente
+default_path declarado pelo profile; override diferente continua fail-closed
+sem allowlist independente. Estender TargetPolicy/CAM-INT-07 ficou fora desta
+slice e requer atividade própria.
+
+A primeira tentativa pelo Python de sistema falhou ao importar Django; o
+ambiente virtual do projeto contém Django 5.2.16 e as dependências do adapter.
+manage.py check passou. A tentativa de executar a regressão focal pelo ambiente
+virtual foi rejeitada pela revisão automática antes de iniciar: o Django test
+runner aplicaria migrations no banco temporário de testes, contrariando
+LOCAL_DB_MIGRATION = NOT_AUTHORIZED. Nenhum teste iniciou e nenhuma migration
+foi aplicada. Não foram acessadas credenciais nem chamadas câmeras. git diff
+--check e AST parse dos oito arquivos Python passaram. A atividade permanece
+incompleta e requer autorização específica para o banco de teste ou validação
+numa configuração que não aplique migrations.
