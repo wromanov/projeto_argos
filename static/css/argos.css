@@ -245,3 +245,126 @@ body {
     .app-sidebar .argos-brand__subtitle, .portal-user__name { display: none; }
     .user-menu__panel { width: min(18rem, calc(100vw - (2 * var(--space-4)))); }
 }
+
+/* P5 shell retrofit: enabled only on the Inventory route by base.html. */
+body.argos-ui-v2-production .app-layout.argos-docs-layout {
+    display: grid;
+    min-height: 100vh;
+    grid-template-columns: 232px minmax(0, 1fr);
+    background: var(--argos-color-canvas);
+}
+
+body.argos-ui-v2-production .app-sidebar.argos-docs-sidebar {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    padding: var(--argos-space-5) var(--argos-space-4);
+    background: var(--argos-color-surface-inverse);
+    color: var(--argos-color-ink-inverse);
+}
+
+body.argos-ui-v2-production .app-sidebar__content {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    gap: var(--argos-space-6);
+}
+
+body.argos-ui-v2-production .argos-nav-scroll-hint { display: none; }
+body.argos-ui-v2-production .app-workspace.argos-docs-main { min-width: 0; }
+
+body.argos-ui-v2-production .page-container.argos-docs-content {
+    width: min(100%, var(--argos-content-max));
+    margin-inline: auto;
+    padding: 28px var(--argos-page-inline) 44px;
+}
+
+body.argos-ui-v2-production .app-footer {
+    border-top: 1px solid var(--argos-color-border);
+    color: var(--argos-color-ink-muted);
+}
+
+body.argos-ui-v2-production .app-topbar a { color: var(--argos-color-action); }
+
+body.argos-ui-v2-production .main-navigation.argos-docs-nav {
+    display: grid;
+    align-content: start;
+    gap: var(--argos-space-1);
+}
+
+body.argos-ui-v2-production .main-navigation.argos-docs-nav > a {
+    min-height: 40px;
+    padding: var(--argos-space-2) var(--argos-space-3);
+    border-radius: var(--argos-radius-control);
+    color: var(--argos-color-ink-inverse-muted);
+    text-decoration: none;
+}
+
+body.argos-ui-v2-production .main-navigation.argos-docs-nav > a:hover {
+    background: var(--argos-color-overlay-hover);
+    color: var(--argos-color-ink-inverse);
+}
+
+body.argos-ui-v2-production .main-navigation.argos-docs-nav > a[aria-current="page"] {
+    background: var(--argos-color-action);
+    color: var(--argos-color-action-contrast);
+}
+
+body.argos-ui-v2-production .main-navigation.argos-docs-nav > a:focus-visible {
+    outline: var(--argos-focus-width) solid var(--argos-color-action-contrast);
+    outline-offset: var(--argos-focus-offset);
+}
+
+@media (max-width: 900px) {
+    body.argos-ui-v2-production .app-layout.argos-docs-layout { grid-template-columns: 190px minmax(0, 1fr); }
+}
+
+@media (max-width: 680px) {
+    body.argos-ui-v2-production .page-container.argos-docs-content {
+        padding: var(--argos-space-5) var(--argos-page-inline-mobile) 35px;
+    }
+    body.argos-ui-v2-production .app-sidebar.argos-docs-sidebar {
+        min-height: 0;
+        gap: var(--argos-space-3);
+        padding: var(--argos-space-3) var(--argos-page-inline-mobile);
+    }
+    body.argos-ui-v2-production .app-sidebar__content { gap: var(--argos-space-3); }
+    body.argos-ui-v2-production .app-layout.argos-docs-layout { grid-template-columns: minmax(0, 1fr); }
+    body.argos-ui-v2-production .main-navigation.argos-docs-nav {
+        display: flex;
+        min-width: 0;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scroll-behavior: smooth;
+        scroll-padding-inline: var(--argos-space-2);
+        padding: 0 var(--argos-space-2) var(--argos-space-2) 0;
+        scrollbar-width: auto;
+        scrollbar-color: var(--argos-color-action) var(--argos-color-surface-inverse);
+    }
+    body.argos-ui-v2-production .main-navigation.argos-docs-nav::-webkit-scrollbar { height: 7px; }
+    body.argos-ui-v2-production .main-navigation.argos-docs-nav::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: var(--argos-color-action);
+    }
+    body.argos-ui-v2-production .main-navigation.argos-docs-nav::-webkit-scrollbar-track {
+        border-radius: 999px;
+        background: var(--argos-color-surface-inverse);
+    }
+    body.argos-ui-v2-production .main-navigation.argos-docs-nav > a {
+        flex: 0 0 auto;
+        min-height: var(--argos-touch-target-min);
+        padding: var(--argos-space-3);
+        scroll-margin-inline: var(--argos-space-2);
+    }
+    body.argos-ui-v2-production .argos-nav-scroll-hint {
+        display: block;
+        margin: 0;
+        color: var(--argos-color-ink-inverse-muted);
+        font-size: var(--argos-text-caption);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.argos-ui-v2-production .main-navigation.argos-docs-nav { scroll-behavior: auto; }
+}

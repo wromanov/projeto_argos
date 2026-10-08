@@ -59,6 +59,23 @@
   .argos-space-sample { display: flex; align-items: center; gap: var(--argos-space-3); }
   .argos-space-sample__bar { width: var(--sample-size); height: 16px; flex: 0 0 auto; border-radius: 2px; background: var(--argos-color-action); }
   .argos-callout { padding: var(--argos-space-4); border-left: 3px solid var(--argos-color-action); border-radius: 0 var(--argos-radius-control) var(--argos-radius-control) 0; background: var(--argos-color-surface-subtle); }
+  .argos-back-link {
+    color: var(--argos-color-action);
+    font-size: var(--argos-text-secondary);
+    font-weight: var(--argos-weight-medium);
+  }
+  .argos-data-group {
+    display: grid;
+    gap: var(--argos-space-4);
+    min-width: 0;
+  }
+  .argos-section-surface {
+    background: var(--argos-color-surface);
+    border: var(--argos-border-width) solid
+      var(--argos-color-border);
+    border-radius: var(--argos-radius-surface);
+    padding: var(--argos-space-6);
+  }
   @media (max-width: 900px) {
     .argos-docs-layout { grid-template-columns: 190px minmax(0, 1fr); }
     .argos-docs-content, .argos-docs-topbar { padding-inline: var(--argos-space-4); }

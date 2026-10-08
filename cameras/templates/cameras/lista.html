@@ -13,32 +13,39 @@
 {% block conteudo %}
 {% url 'cameras:lista' as lista_url %}
 {% url 'cameras:criar' as criar_url %}
-<section class="inventory-hero inventory-page-header">
-  <div>
-    <span class="page-heading__eyebrow">Inventário CFTV</span>
-    <h1 class="page-heading__title">Câmeras</h1>
-    <p>Consulte, filtre e acompanhe os equipamentos cadastrados.</p>
+<section class="argos-page-header inventory-hero inventory-page-header">
+  <div class="argos-page-header__copy">
+    <p class="argos-eyebrow">Central operacional</p>
+    <h1 class="argos-page-title">Inventário de câmeras</h1>
+    <p class="argos-lead">Localize registros e consulte sua situação operacional, monitoramento e completude.</p>
   </div>
-  <div class="inventory-hero__actions">
-    <article class="metric-card inventory-result-count"><strong>{{ total_resultados }}</strong><span>câmera{{ total_resultados|pluralize:"s" }}</span></article>
-    {% if perms.cameras.add_camera %}<a class="button button--primary" href="{{ criar_url }}">Nova câmera</a>{% endif %}
+  <div class="argos-page-header__actions inventory-hero__actions">
+    <article class="argos-kpi-card inventory-result-count"><strong>{{ total_resultados }}</strong><span>câmera{{ total_resultados|pluralize:"s" }}</span></article>
+    {% if perms.cameras.add_camera %}<a class="argos-button argos-button--primary" href="{{ criar_url }}">Nova câmera</a>{% endif %}
   </div>
 </section>
 
-<section class="form-container filter-panel inventory-filters-card" aria-labelledby="filtros-heading">
-  <div class="filter-panel__header inventory-filters-card__header"><span class="filter-panel__eyebrow">Refine a consulta</span><h2 class="filter-panel__title" id="filtros-heading">Filtros do inventário</h2></div>
-  <form class="filter-panel__grid inventory-filter-form" method="get" role="search" aria-label="Filtros do inventário de câmeras">
-    <div class="form-field form-field--search"><label class="form-label" for="id_q">Pesquisar</label><input id="id_q" type="search" name="q" value="{{ q }}" placeholder="Nome, patrimônio, IP ou fabricante"></div>
-    {% include "components/filtro_multisselecao.html" with label="Status legado (histórico)" name="status" opcoes=status_filtro_opcoes selecionados=status_selecionados empty_label="Todos" %}
-    {% include "components/filtro_multisselecao.html" with label="Situação operacional" name="situacao_operacional" opcoes=situacoes_operacionais selecionados=situacoes_selecionadas empty_label="Todas" %}
-    {% include "components/filtro_multisselecao.html" with label="Completude" name="completude" opcoes=completude_filtro_opcoes selecionados=completudes_selecionadas empty_label="Todos" %}
-    {% include "components/filtro_multisselecao.html" with label="Terminal" name="terminal" opcoes=terminais_filtro_opcoes selecionados=terminais_selecionados empty_label="Todos" %}
-    {% include "components/filtro_multisselecao.html" with label="Tipo" name="tipo" opcoes=tipos_camera selecionados=tipos_selecionados empty_label="Todos" %}
-    {% include "components/filtro_multisselecao.html" with label="Fabricante" name="fabricante" opcoes=fabricantes_filtro_opcoes selecionados=fabricantes_selecionados empty_label="Todos" %}
-    {% include "components/filtro_multisselecao.html" with label="VLAN" name="vlan" opcoes=vlans_filtro_opcoes selecionados=vlans_selecionadas empty_label="Todas" %}
-    {% include "components/filtro_multisselecao.html" with label="Farm" name="farm" opcoes=farms_filtro_opcoes selecionados=farms_selecionadas empty_label="Todas" %}
-    <div class="filter-panel__actions inventory-filter-actions"><button class="button button--primary" type="submit">Filtrar</button></div>
-  </form>
+<section class="argos-card inventory-filters-card" aria-labelledby="filtros-heading">
+  <div class="argos-card__header"><h2 class="argos-card__title" id="filtros-heading">Filtros</h2></div>
+  <div class="argos-card__body">
+    <form class="argos-filter-bar inventory-filter-form" method="get" role="search" aria-label="Filtros do inventário de câmeras">
+      <label class="argos-field form-field--search" for="id_q"><span class="argos-field__label">Pesquisar</span><input class="argos-input" id="id_q" type="search" name="q" value="{{ q }}" placeholder="Nome, patrimônio, IP ou fabricante"></label>
+      <details class="inventory-advanced-filters" {% if status_selecionados or situacoes_selecionadas or completudes_selecionadas or terminais_selecionados or tipos_selecionados or fabricantes_selecionados or vlans_selecionadas or farms_selecionadas %}open{% endif %}>
+        <summary class="argos-button argos-button--secondary">Filtros avançados</summary>
+        <div class="inventory-advanced-filters__grid">
+          {% include "components/filtro_multisselecao.html" with label="Situação operacional" name="situacao_operacional" opcoes=situacoes_operacionais selecionados=situacoes_selecionadas empty_label="Todas" %}
+          {% include "components/filtro_multisselecao.html" with label="Monitoramento (status legado)" name="status" opcoes=status_filtro_opcoes selecionados=status_selecionados empty_label="Todos" %}
+          {% include "components/filtro_multisselecao.html" with label="Completude" name="completude" opcoes=completude_filtro_opcoes selecionados=completudes_selecionadas empty_label="Todos" %}
+          {% include "components/filtro_multisselecao.html" with label="Terminal" name="terminal" opcoes=terminais_filtro_opcoes selecionados=terminais_selecionados empty_label="Todos" %}
+          {% include "components/filtro_multisselecao.html" with label="Tipo" name="tipo" opcoes=tipos_camera selecionados=tipos_selecionados empty_label="Todos" %}
+          {% include "components/filtro_multisselecao.html" with label="Fabricante" name="fabricante" opcoes=fabricantes_filtro_opcoes selecionados=fabricantes_selecionados empty_label="Todos" %}
+          {% include "components/filtro_multisselecao.html" with label="VLAN" name="vlan" opcoes=vlans_filtro_opcoes selecionados=vlans_selecionadas empty_label="Todas" %}
+          {% include "components/filtro_multisselecao.html" with label="Farm" name="farm" opcoes=farms_filtro_opcoes selecionados=farms_selecionadas empty_label="Todas" %}
+        </div>
+      </details>
+      <div class="argos-inline inventory-filter-actions"><button class="argos-button argos-button--primary" type="submit">Aplicar filtros</button><a class="argos-button argos-button--secondary" href="{{ lista_url }}">Limpar</a></div>
+    </form>
+  </div>
 </section>
 
 {% if filtros_ativos %}
@@ -46,7 +53,7 @@
 {% endif %}
 
 {% if total_resultados %}
-<section class="card inventory-panel" aria-labelledby="tabela-cameras-heading">
+<section class="argos-card inventory-panel" aria-labelledby="tabela-cameras-heading">
   <div class="inventory-panel__header inventory-results-header">
     <div>
       <span class="inventory-eyebrow">Resultados encontrados</span>
@@ -64,8 +71,9 @@
       </span>
     </p>
   </div>
-  <div class="table-region" role="region" aria-label="Câmeras encontradas" tabindex="0">
-    <table class="data-table camera-table">
+  <p class="inventory-table-hint" id="inventory-table-hint">Em telas menores, deslize a tabela horizontalmente para consultar todas as colunas.</p>
+  <div class="argos-table-region table-region inventory-camera-table-region" role="region" aria-label="Câmeras encontradas" aria-describedby="inventory-table-hint" tabindex="0">
+    <table class="argos-table argos-table--compact data-table camera-table">
       <caption>Relação de câmeras encontradas no inventário</caption>
       <colgroup>
         <col class="camera-table__col--status"><col class="camera-table__col--camera"><col class="camera-table__col--location"><col class="camera-table__col--network"><col class="camera-table__col--equipment"><col class="camera-table__col--governance"><col class="camera-table__col--actions">
@@ -94,7 +102,7 @@
           <td class="camera-table__cell camera-table__cell--network" data-label="Rede"><span class="technical-value inventory-cell__primary">{{ camera.ip|default:"—" }}</span><small>VLAN: <span class="technical-value">{{ camera.vlan|default:"—" }}</span></small></td>
           <td class="camera-table__cell camera-table__cell--equipment" data-label="Equipamento"><span class="inventory-cell__primary">{% if camera.fabricante %}{{ camera.fabricante }}{% endif %}{% if camera.fabricante and camera.modelo %}<span aria-hidden="true"> · </span>{% endif %}{% if camera.modelo %}{{ camera.modelo }}{% endif %}{% if not camera.fabricante and not camera.modelo %}—{% endif %}</span><small>Tipo: {{ camera.get_tipo_display|default:"—" }}</small></td>
           <td class="camera-table__cell camera-table__cell--governance" data-label="Governança"><div class="inventory-governance"><span class="badge badge--{{ camera.situacao_operacional|lower }}">{{ camera.get_situacao_operacional_display }}</span>{% if camera.cadastro_completo %}<span class="badge badge--completo">Cadastro completo</span>{% else %}<span class="badge badge--incompleto" title="{{ camera.rotulos_campos_incompletos|join:', ' }}">Cadastro incompleto</span>{% endif %}</div></td>
-          <td class="camera-table__cell camera-table__cell--actions" data-label="Ações"><div class="table-actions"><button class="button button--secondary button--small" type="button" data-quick-detail-trigger aria-haspopup="dialog" aria-label="Visualizar rapidamente {{ camera.nome }}">Visualizar rapidamente</button><a class="button button--secondary button--small" href="{% url 'cameras:detalhe' camera.pk %}">Ver detalhes<span class="visually-hidden"> da câmera {{ camera.nome }}</span></a></div></td>
+          <td class="camera-table__cell camera-table__cell--actions" data-label="Ações"><div class="table-actions"><button class="argos-button argos-button--secondary argos-button--compact" type="button" data-quick-detail-trigger aria-haspopup="dialog" aria-label="Visualizar rapidamente {{ camera.nome }}">Visualizar rapidamente</button><a class="argos-button argos-button--secondary argos-button--compact" href="{% url 'cameras:detalhe' camera.pk %}">Ver detalhes<span class="visually-hidden"> da câmera {{ camera.nome }}</span></a></div></td>
         </tr>
         {% endwith %}{% endfor %}
       </tbody>

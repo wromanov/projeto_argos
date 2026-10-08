@@ -1,4 +1,5 @@
 {% load static %}
+{% with current_namespace=request.resolver_match.namespace current_url_name=request.resolver_match.url_name %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -9,23 +10,28 @@
   <link rel="stylesheet" href="{% static 'css/design-system.css' %}">
   <link rel="stylesheet" href="{% static 'css/argos.css' %}">
   <link rel="stylesheet" href="{% static 'css/portal.css' %}">
+  {% if current_namespace == 'cameras' and current_url_name == 'lista' %}
+  <link rel="stylesheet" href="{% static 'css/ui-v2/tokens.css' %}">
+  <link rel="stylesheet" href="{% static 'css/ui-v2/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/ui-v2/components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/ui-v2/patterns.css' %}">
+  {% endif %}
   {% block extra_css %}{% endblock %}
 </head>
-<body class="app-shell">
-  <a class="skip-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
-  {% with current_namespace=request.resolver_match.namespace current_url_name=request.resolver_match.url_name %}
-  <div class="app-layout">
+<body class="app-shell{% if current_namespace == 'cameras' and current_url_name == 'lista' %} argos-ui-v2-production{% endif %}">
+  <a class="skip-link{% if current_namespace == 'cameras' and current_url_name == 'lista' %} argos-skip-link{% endif %}" href="#conteudo-principal">Pular para o conteúdo principal</a>
+  <div class="app-layout{% if current_namespace == 'cameras' and current_url_name == 'lista' %} argos-docs-layout{% endif %}">
     {% include "components/sidebar.html" %}
-    <div class="app-workspace">
+    <div class="app-workspace{% if current_namespace == 'cameras' and current_url_name == 'lista' %} argos-docs-main{% endif %}">
       {% include "components/cabecalho.html" %}
-      <main id="conteudo-principal" class="page-container app-shell__main" tabindex="-1">
+      <main id="conteudo-principal" class="page-container app-shell__main{% if current_namespace == 'cameras' and current_url_name == 'lista' %} argos-docs-content{% endif %}" tabindex="-1">
         {% include "components/mensagens.html" %}
         {% block conteudo %}{% endblock %}
       </main>
       <footer class="app-footer"><div class="app-footer__content"><p>Projeto ARGOS — Sistema de Inventário e Monitoramento de Câmeras</p></div></footer>
     </div>
   </div>
-  {% endwith %}
   {% block extra_js %}{% endblock %}
 </body>
 </html>
+{% endwith %}

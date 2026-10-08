@@ -3767,3 +3767,32 @@ a validação pré-publicação é `73c21b40dc8df9dfec503e7f29eeacb8fe6e962b`.
 Este checkpoint supersede o estado pendente de publicação da seção 61. O ZIP local
 permaneceu fora do Git. A UI P5 foi publicada no repositório `master`; isso não
 registra um deploy separado em servidor operacional.
+
+## 63. ARGOS-GLOBAL-GITHUB-CHECKPOINT-20261008 — checkpoint UI V2 principal
+
+```text
+PROJECT = ARGOS
+ACTIVITY = ARGOS-GLOBAL-GITHUB-CHECKPOINT-20261008
+STATUS = PARTIAL / PUBLICAÇÃO REMOTA PENDENTE
+WORKTREE = C:\\Users\\walac\\desenvolvimento\\projeto_argos
+INITIAL_BRANCH = master
+INITIAL_HEAD = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
+INITIAL_CACHED_ORIGIN_MASTER = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
+INITIAL_DIVERGENCE_TO_CACHED_ORIGIN_MASTER = 0/0
+CHECKPOINT_BRANCH = codex/argos-ui-v2-wip-20261008
+CHECKPOINT_SCOPE = inventory UI V2; camera-detail CSS; agent model configuration
+CONTINUITY_STATE = UPDATED
+ZIP = docs/Agent-Continuity-Standard-v1.0.zip / EXCLUDED; duplicates versioned continuity package, includes an extra internalization prompt, and was not required for continuation
+ZIP_CONTENTS_REVIEW = ARCHIVE LISTED; no extraction or publication
+UI_VALIDATION = PENDING / not homologated
+KNOWN_UI_ISSUES = visual validation pending; two presentation regressions reported; legacy test expectation to reconcile
+TESTS = NOT_RUN / checkpoint only
+FETCH = FAILED / DNS could not resolve github.com
+REMOTE_DIVERGENCE = UNVERIFIED_AFTER_FETCH_FAILURE
+COMMIT = PENDING
+PUSH = AUTHORIZED / PENDING
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO
+```
+
+O estado inicial local do worktree principal foi registrado antes da criação da branch. As onze alterações rastreadas foram selecionadas para o checkpoint: os seis arquivos da Inventory UI V2, os três arquivos CSS de Camera Detail e os dois arquivos de configuração de agentes. O ZIP local foi preservado fora do Git por duplicar documentação de continuidade já versionada e incluir um prompt adicional cuja necessidade para a retomada não foi demonstrada. Nenhum teste ou homologação visual foi executado nesta atividade.

@@ -20,6 +20,14 @@
   .argos-button { padding: 0 var(--argos-space-4); }
   .argos-button--primary { background: var(--argos-color-action); color: var(--argos-color-action-contrast); }
   .argos-button--primary:hover { background: var(--argos-color-action-hover); color: var(--argos-color-action-contrast); }
+  .argos-button--danger {
+    background: var(--argos-status-danger-fg);
+    color: var(--argos-color-ink-inverse);
+  }
+  .argos-button--danger:hover:not(:disabled) {
+    filter: brightness(.9);
+    color: var(--argos-color-ink-inverse);
+  }
   .argos-button--secondary { border-color: var(--argos-color-border-strong); background: var(--argos-color-surface); color: var(--argos-color-ink); }
   .argos-button--secondary:hover { background: var(--argos-color-surface-subtle); }
   .argos-button:not(:disabled):active, .argos-icon-button:not(:disabled):active { transform: translateY(1px); }
@@ -30,6 +38,32 @@
   .argos-icon-button {
     width: var(--argos-control-height); padding: 0; background: var(--argos-color-surface);
     border-color: var(--argos-color-border); color: var(--argos-color-ink);
+  }
+  .argos-data-pair {
+    display: grid;
+    align-content: start;
+    gap: var(--argos-space-1);
+    min-width: 0;
+    margin: 0;
+  }
+  .argos-data-pair dt {
+    margin: 0;
+    color: var(--argos-color-ink-muted);
+    font-size: var(--argos-text-label);
+    font-weight: var(--argos-weight-medium);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+  .argos-data-pair dd {
+    min-width: 0;
+    margin: 0;
+    color: var(--argos-color-ink);
+    font-size: var(--argos-text-body);
+    line-height: var(--argos-line-base);
+    overflow-wrap: anywhere;
+  }
+  .argos-data-pair code {
+    font-family: var(--argos-font-mono);
   }
   .argos-field { display: grid; gap: var(--argos-space-1); min-width: 0; }
   .argos-field__label { color: var(--argos-color-ink); font-size: var(--argos-text-label); font-weight: var(--argos-weight-semibold); }

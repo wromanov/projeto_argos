@@ -5,7 +5,7 @@ IMPLEMENTER para alterações delimitadas que ainda exigem julgamento técnico m
 integração não trivial ou decisões locais compatíveis com o contrato.
 """
 
-model = "gpt-6-sol"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 
