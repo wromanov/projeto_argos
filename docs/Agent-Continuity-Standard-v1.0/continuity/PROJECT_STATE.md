@@ -1,5 +1,12 @@
 # ARGOS — Project State
 
+Checkpoint local MON runtime (2026-10-09): seção 66, decisões V1 consolidadas.
+CONTRACT_STATUS = CLOSED / contrato local; extensão e worker não implementados.
+Janela de dedup, término antes de release e defaults V1 definidos;
+implementação/testes/commit/push continuam não autorizados.
+Worker não implementado nem autorizado. Os checkpoints publicados
+abaixo mantêm sua validade histórica e não descrevem o dirty set documental atual.
+
 Estado corrente CAM-INT-03: seção 59, revisão final publicada; runtime
 homologado e implementação publicada. Ver continuidade §20.26. As seções
 anteriores preservam os snapshots históricos de cada atividade.
@@ -3767,3 +3774,246 @@ a validação pré-publicação é `73c21b40dc8df9dfec503e7f29eeacb8fe6e962b`.
 Este checkpoint supersede o estado pendente de publicação da seção 61. O ZIP local
 permaneceu fora do Git. A UI P5 foi publicada no repositório `master`; isso não
 registra um deploy separado em servidor operacional.
+
+## 63. MON-RUNTIME-CONTRACT-CLOSURE — proposta documental local (2026-10-09)
+
+Snapshot anterior supersedido pela revisão da seção 64; a reciclagem periódica
+da proposta original foi retirada. Os fatos de entrada desta seção permanecem históricos.
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-CONTRACT-CLOSURE
+STATUS = REVIEWABLE_DOCUMENTATION / PENDING_USER_ADJUDICATION
+EXECUTION_MODE = DIRECT
+REQUESTED_ORCHESTRATOR = SOL / HIGH
+SKILL = activity-progress-reporting
+REPOSITORY_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos_mon_runtime
+BRANCH = codex/mon-runtime-contract-closure
+HEAD = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
+ORIGIN_BASELINE = origin/master / locally recorded ref at same HEAD
+REMOTE_FETCH = NOT_PERFORMED / remote freshness not independently checked
+DIVERGENCE = 0/0 against locally recorded origin/master
+WORKTREE_AT_ENTRY = CLEAN
+WORKTREE_AT_CHECKPOINT = DOCUMENTATION_ONLY_DIRTY / four files, unstaged
+STAGING = EMPTY
+CURRENT_ACTIVITY = MON runtime architectural/operational contract review
+LAST_COMPLETED_ACTIVITY = published UI P5 checkpoint remains section 62
+SPECIALIZED_AUTHORITY = docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md / MON-RUNTIME-CONTRACT-CLOSURE addendum
+DOMAIN_AUTHORITIES = seven MON contracts; ADR-019/020/021
+DEPENDENCY_AUTHORITY = docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md
+OPEN_DECISIONS = MR-01 configuration replacement; MR-02 discovery/fairness and bounded scheduler lifetime; MR-03 recovery and verified shutdown budget
+MATERIAL_DECISION_STATUS = PROPOSED / DEFERRED_NO_AUTHORITY
+ARCHITECTURAL_AND_OPERATIONAL_CLOSURE = PENDING / requires user approval
+IMPLEMENTATION_READY_BC02 = LOCAL_ARCHITECTURAL_CLASSIFICATION / not execution authorization
+MON_WORKER_READY_NOW = NO
+DEPENDENCIES = MON-OBS; CAM-INT-05; CAM-HEALTH; existing MON core
+DEPENDENCY_IMPLEMENTATION_IN_THIS_HEAD = observability provider, automatic A-D snapshot/integration and MON runtime not found
+MAJOR_FINDINGS = implicit promotion of attempts; unbounded lifetime bookkeeping; discovery cost not proven bounded; shutdown does not cancel real tasks/ORM by itself
+FINDING_DESTINATION = specialized addendum evidence table and RT-01..08
+PRODUCTION_CODE_CHANGED = NO
+TESTS_CHANGED = NO
+TESTS_RUN = NO / documentation-only review
+WORKER_IMPLEMENTED = NO
+CAM_INT_04_AND_EXTERNAL_MON_OBS_ACCESSED = NO
+OTHER_WORKTREES_MODIFIED = NO
+REAL_CAMERAS_ACCESSED = NO
+SECRETS_ACCESSED = NO
+IMPLEMENTATION_AUTHORIZED = NO
+LIVE_AUTHORIZED = NO
+COMMIT = NOT_PERFORMED / NOT_AUTHORIZED
+PUSH = NOT_PERFORMED / NOT_AUTHORIZED
+ENVIRONMENT_GATES = unchanged; PostgreSQL, multi-worker, production capacity/egress/supervisor remain unvalidated in MON
+DEFERRED_ITEMS = deployment; PostgreSQL contention; real thresholds; retention; distributed topology
+NEXT_ACTIVITY = USER_ADJUDICATION_OF_MR-01..03 / no implementation
+NEXT_IMPLEMENTATION_PREREQUISITES = approved closure; integrated dependencies; RT-01..08 plan; separate explicit implementation authorization
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS / pending decisions and boundaries discoverable; not architectural closure
+ACTIVITY_COMPLETION_PERCENT = 96%
+ACTIVITY_COMPLETE = NO / material approvals pending
+```
+
+Requisitos derivados mantêm DueScheduler, ConfirmationMemory e repository como
+core único; preservam estados, cancelamento, streaks, freshness, history e
+ownership/epoch/geração atuais. A proposta não muda nenhuma dessas implementações.
+O contrato concentra evidências, alternativas, recomendações concretas e oito
+gates de aceite futuro. Os detalhes não são duplicados neste snapshot.
+
+O `IMPLEMENTATION_READY` de BC-02 é distinto de `READY_NOW`: predecessor
+publicado e prontidão operacional precisam ser comprovados. Este registro não
+reabre MON-09 nem reclassifica findings/security gates de outras atividades.
+Nenhum fetch foi executado; igualdade de origin/master refere-se ao ref local.
+
+## 64. MON-RUNTIME-CONTRACT-CLOSURE — parecer arquitetural reconciliado (2026-10-09)
+
+Snapshot anterior supersedido pela adjudicação parcial da seção 65.
+
+```text
+ACTIVITY = MON-RUNTIME-CONTRACT-CLOSURE
+STATUS = ARCHITECTURAL_REVIEW / RECONCILIATION_PREPARED
+CONTRACT_STATUS = OPEN / NOT_CLOSED
+REPOSITORY_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos_mon_runtime
+BRANCH = codex/mon-runtime-contract-closure
+HEAD = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
+ORIGIN_MASTER = same HEAD / locally recorded ref, no new fetch
+DIVERGENCE = 0/0 against locally recorded origin/master
+WORKTREE_AT_REVIEW_ENTRY = four pre-existing modified documents, preserved
+WORKTREE_AT_REVIEW_CHECKPOINT = same four documents modified, unstaged
+STAGING = EMPTY
+EXECUTION_MODE = DIRECT
+REQUESTED_ORCHESTRATOR = SOL / HIGH
+SKILL = activity-progress-reporting
+SPECIALIZED_AUTHORITY = docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md / reconciled final proposed clauses
+HUMAN_REVIEW_MR_01 = APPROVABLE_WITH_CONSTRAINTS
+HUMAN_REVIEW_MR_02 = CHANGES_REQUIRED
+HUMAN_REVIEW_MR_03 = APPROVABLE_WITH_CONSTRAINTS
+FINAL_APPROVAL = NOT_GRANTED / review is not final adoption
+PERIODIC_RECYCLING_10000 = REMOVED / no measured justification
+MR_01 = coordinated bounded drain; retain active snapshot/generation/owner/epoch; no replacement on incomplete drain
+MR_02 = bounded discovery/tasks/references; public terminal-retirement boundary proposed; no mandatory recycling
+MR_03 = capped backoff/reset; finite recovery budget and DB/adapter/cleanup deadlines; incomplete operations explicitly diagnosed
+OPEN_MATERIAL_DECISION = MR-02-A / memory retention and late callback API versus persistent write idempotency
+OPEN_OPERATIONAL_GATES = MR-02-B / measured retention/maps/pages capacities; recovery budget; DB/cleanup deadline configuration and backend capability
+MON_AUTHORITY_TENSIONS = terminal disposal versus retained dispositions; early core release versus real tasks/ORM; partial timeout schema versus total shutdown guarantee
+DOMAIN_INVARIANTS = unchanged / states, confirmation, due, ownership fencing, history, freshness and capture separation
+MON_WORKER_READY_NOW = NO / predecessors and runtime validation pending
+DEPENDENCIES = MON-OBS; CAM-INT-05; CAM-HEALTH; existing MON core
+IMPLEMENTATION_AUTHORIZED = NO
+WORKER_IMPLEMENTED = NO
+PRODUCTION_CODE_CHANGED = NO
+TESTS_CHANGED = NO
+TESTS_RUN = NO / documentation-only review
+REAL_CAMERA_ACCESS = NO
+OTHER_WORKTREES_MODIFIED = NO
+COMMIT_AND_PUSH = NOT_PERFORMED / NOT_AUTHORIZED
+LIVE_AUTHORIZED = NO
+ENVIRONMENT_GATES = unchanged / no production or real-network readiness claim
+NEXT_ACTIVITY = adjudicate reconciled clauses and MR-02-A; define bounded operational parameters before readiness
+NEXT_IMPLEMENTATION = NOT_AUTHORIZED / separate authorization and integrated dependencies required
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS / unresolved decisions and authority tensions explicit
+ACTIVITY_COMPLETION_PERCENT = 96%
+ACTIVITY_COMPLETE = NO / contract remains open
+```
+
+As cláusulas, alternativas descartadas, conflitos e critérios RT-01..08 estão
+no contrato especializado. A proposta anterior de reciclagem a cada 10.000
+tentativas não vigora. A revisão não cria API, teste, parâmetro ou schema; não
+supõe shutdown bem-sucedido por STOPPED/cancelamento do chamador. Preserva a
+verdade persistida e exige reconciliação de operações de desfecho incerto.
+
+## 65. MON-RUNTIME-CONTRACT-FINAL-ADJUDICATION — decisão parcial documentada (2026-10-09)
+
+Snapshot anterior supersedido pela consolidação da seção 66. As pendências de
+decisão aqui registradas não descrevem o contrato V1 adotado posteriormente.
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-CONTRACT-FINAL-ADJUDICATION
+STATUS = CONTRACT_ONLY / ADJUDICATION_DOCUMENTED_WITH_PENDING_SAFETY_BOUNDARIES
+MODEL_REQUESTED = SOL / HIGH
+EXECUTION_MODE = DIRECT
+SKILL = activity-progress-reporting
+PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos_mon_runtime
+BRANCH_AND_HEAD = codex/mon-runtime-contract-closure / 5bd22b0 / previously verified, not revalidated this activity
+GIT_STATE_THIS_ACTIVITY = NOT_REVALIDATED / user forbids all Git operations
+FILES_EDITED_THIS_ACTIVITY = MONITORING_WORKER_RUNTIME_CONTRACT.md; MONITORING_OBSERVABILITY_CONFIG_CONTRACT.md; PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md
+AUTHORITY_RUNTIME = docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md / final adjudication section
+AUTHORITY_BUDGET_MATRIX = docs/projeto/contracts/backend/monitoring/MONITORING_OBSERVABILITY_CONFIG_CONTRACT.md / final adjudication section
+MR_01 = APPROVED
+MR_02_MEMORY_BOUNDING = APPROVED
+MR_02_PERSISTENT_RETIREMENT = DEFERRED
+MR_02_DEDUPLICATION_PROOF = INSUFFICIENT / after local retirement
+MR_03_RECOVERY_MODEL = APPROVED
+MR_03_OPERATIONAL_BUDGETS = PENDING
+OWNERSHIP_RELEASE_SAFETY = UNRESOLVED
+MONITORING_CONFIG_CONTRACT = PENDING
+MATERIAL_DECISIONS_PENDING = safe local retention/dedup; matrix values and three-field config extension; termination-before-release coordination
+CONTRACT_STATUS = PROPOSED_PENDING_APPROVAL
+PROOF_SCOPE = static source/test reading only; token fencing supported, arbitrary attempt retirement not supported
+PERSISTENT_DATA_DELETION = NOT_AUTHORIZED
+AUDIT_RETENTION = UNCHANGED / no new expiry or purge
+IMPLEMENTATION = FORBIDDEN
+CODE_CHANGE = FORBIDDEN / NOT_PERFORMED
+TEST_CHANGE = FORBIDDEN / NOT_PERFORMED
+CODE_EXECUTION = NOT_PERFORMED
+TEST_EXECUTION = NOT_PERFORMED
+GIT_OPERATIONS = NOT_PERFORMED
+COMMIT_AND_PUSH = FORBIDDEN / NOT_PERFORMED
+REAL_CAMERA_ACCESS = NO
+HTTP_SNAPSHOT_RTSP_IMG_CAP_CHANGED = NO
+NEW_INFRASTRUCTURE = NONE
+RECOVERING_STATE = NOT_ADDED
+DOMAIN_INVARIANTS = DueScheduler; ConfirmationMemory; DjangoMonitoringRepository; UNKNOWN/ONLINE/OFFLINE preserved
+NEXT_ACTIVITY = adjudicate minimal budgets and safe retention/release boundaries / contract only
+MON_WORKER_READY_NOW = NO / safety boundaries and integrated dependencies still required
+LIVE_AND_ENVIRONMENT_AUTHORIZATION = UNCHANGED / no new authorization
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS / pending boundaries and approvals discoverable
+ACTIVITY_COMPLETION_PERCENT = 96%
+ACTIVITY_COMPLETE = NO / indispensable material decisions remain
+```
+
+O usuário aprovou os invariantes, não os valores novos da matriz. Somente
+probe/shutdown e parâmetros usados para derivar drain/backoff existem em
+MonitoringConfig; três campos de DB/recovery estão propostos, sem implementação.
+Nenhum ledger persistente por UUID de tentativa foi encontrado. Retention
+local necessária à dedup não pode ser apagada por autorização genérica de
+liberar objetos. Não repetir store de desfecho incerto ou trocar token para
+reapresentar resultado antigo. Cancelamento do core pode liberar lease antes
+do término real do produtor: regra aprovada, coordenação ainda não comprovada.
+
+## 66. MON-RUNTIME-CONTRACT-DECISION-CONSOLIDATION — contrato local V1 fechado (2026-10-09)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-CONTRACT-DECISION-CONSOLIDATION
+EXECUTOR_REQUESTED = SOL / HIGH
+EXECUTION_MODE = DIRECT
+MODE = CONTRACT_ONLY
+SKILL = activity-progress-reporting
+ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos_mon_runtime
+GIT_IDENTITY = branch codex/mon-runtime-contract-closure and HEAD 5bd22b0 previously verified; no new Git verification
+CONTRACT_STATUS = CLOSED / LOCAL V1 DECISIONS, NOT_IMPLEMENTATION
+CURRENT_ACTIVITY = documentary consolidation complete
+LAST_COMPLETED_ACTIVITY = MON-RUNTIME-CONTRACT-DECISION-CONSOLIDATION / local documentation only
+MATERIAL_DECISIONS_PENDING = NONE_FOR_THIS_LOCAL_CONTRACT
+MR_01 = coordinated drain; no explicit release before actual producer termination; drain/shutdown timeout INCOMPLETE
+MR_02 = finite local terminal window W=C+Q; exact dedup inside, unknown callback fail-closed outside; no persistent deletion or new ledger
+MR_03 = defaults V1 adopted; typed/range/cross-budget validation; no assumed synchronous cancellation
+CORE_EXTENSION = SPECIFIED / NOT_IMPLEMENTED
+MODEL_OR_SCHEMA_CHANGE = NONE / future configuration fields only
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED
+WORKER_IMPLEMENTED = NO
+CODE_CHANGED = NO
+TESTS_CHANGED = NO
+TESTS_EXECUTED = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+GIT_OPERATIONS_THIS_ACTIVITY = NOT_PERFORMED
+REAL_CAMERA_ACCESS = NO
+HTTP_SNAPSHOT_RTSP_IMG_CAP_CHANGED = NO
+PERSISTENT_ATTEMPT_RETIREMENT = DEFERRED / not required for local window
+AUDIT_AND_DOMAIN_RETENTION = UNCHANGED
+NEW_INFRASTRUCTURE_AND_RECOVERING_STATE = NONE
+AUTHORITIES = MONITORING_WORKER_RUNTIME_CONTRACT.md and MONITORING_OBSERVABILITY_CONFIG_CONTRACT.md / final V1 consolidation sections
+AUTHORITY_ROOT = docs/projeto/contracts/backend/monitoring/
+AFFECTED_MON_CLAUSES = runtime; configuration; ownership; recovery
+VALIDATION = source/API/authority compatibility and documentation consistency reviewed; no dynamic proof claimed
+MATERIAL_AUTHORITY_CONFLICTS = NONE_UNADJUDICATED
+IMPLEMENTATION_GAPS = current unbounded terminal references; release before producer acknowledgment; missing minimal config fields and pagination
+FUTURE_ACCEPTANCE = DC-01..07 in runtime contract; tests to be written/run only under separate authority
+NEXT_ACTIVITY = separately authorize minimal core/runtime implementation after integrated predecessor gates
+MON_WORKER_READY_NOW = NO / MON-OBS, CAM-INT-05, CAM-HEALTH integration and implementation validation required
+ENVIRONMENT_GATES = unchanged; no real-network, PostgreSQL/multi-worker or production readiness claim
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES / CONTRACT_ONLY
+```
+
+A decisão de janela limitada resolve a exigência anterior de classificação
+histórica exata indefinidamente. O contrato especifica confirmação de término
+antes do release e bounds de todas as estruturas locais afetadas; não afirma
+que o core atual já os cumpre. Detalhes, prova do comportamento atual e testes
+futuros ficam nas authorities MON. Retention persistente e gates ambientais
+não foram reclassificados como concluídos. Fechamento contratual não inicia worker.

@@ -37,3 +37,21 @@ shared files com MON-WORKER, portanto integração sequencial. Critério:
 generation/owner antigo não escreve nem fecha intervalo de novo owner;
 restart não duplica transição. PostgreSQL/multi-worker exige validação futura.
 Escalar a Sol se o banco alvo invalidar atomic completion/fencing.
+
+## MON-RUNTIME-CONTRACT-DECISION-CONSOLIDATION — recovery e janela local V1
+
+Recovery serial usa DEGRADED e defaults/budgets de
+`MONITORING_OBSERVABILITY_CONFIG_CONTRACT.md`, seção de consolidação V1.
+Reset somente após recuperação completa; esgotamento vira falha persistente
+observável. Não criar RECOVERING, repetir store de desfecho incerto ou liberar
+ownership de operação cujo término não foi comprovado. Crash conserva
+lease/epoch/fencing e ConfirmationMemory; nenhuma falsa transição/captura.
+
+Classificação de tentativa duplicada é exata dentro da janela local limitada
+definida em `MONITORING_WORKER_RUNTIME_CONTRACT.md`. Após aposentadoria,
+callback desconhecido falha fechado antes de persistência, sem exigência de
+disposition histórica exata. Persistência, memória de confirmação e histórico
+não são excluídos; nenhum ledger novo. Essa decisão humana substitui a hipótese
+de retenção local ilimitada e não altera idempotência de escrita/fencing.
+Os gates de callbacks atrasados/restart/commit incerto estão no contrato V1;
+nenhuma extensão ou teste foi implementado por esta consolidação.

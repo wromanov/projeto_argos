@@ -33,3 +33,19 @@ Ownership: `cameras/monitoramento/repository.py`, `scheduler.py`; testes
 shared files com MON-WORKER. Critério: claim/release/completion sempre com
 owner+epoch; worker obsoleto não altera domínio. PostgreSQL real permanece
 validação externa. Escalar a Sol se concorrência real exigir alterar fencing.
+
+## MON-RUNTIME-CONTRACT-DECISION-CONSOLIDATION — término e release V1
+
+Nenhuma liberação explícita enquanto produtor real/ORM anterior ainda puder
+produzir efeitos. Cancellation solicitada, timeout ou STOPPED de bookkeeping
+não são comprovação. Completion aceita continua consumindo lease no commit
+transacional cercado por owner/epoch/generation; após término do adapter e
+sem outro escritor da tentativa. Release explícito continua condicionado a
+owner/epoch, sem zerar epoch. Crash usa expiry/takeover/epoch já existentes;
+expiry sozinha não invalida completion nem garante ausência de I/O antigo.
+
+Coordenação de término, tentativa pinned e remoção de release automático
+prematuro do scheduler são extensão **não implementada** especificada em
+`MONITORING_WORKER_RUNTIME_CONTRACT.md`, seção de consolidação V1. Não altera
+schema, tokens, repository CAS ou validação futura PostgreSQL/multi-worker.
+Timeout de drain/shutdown é INCOMPLETE; não autoriza novo owner por suposição.

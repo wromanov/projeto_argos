@@ -10,6 +10,11 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
+RETOMADA LOCAL MON RUNTIME (2026-10-09): PROJECT_STATE seção 66 e seção 20.33
+abaixo. Contrato local V1 fechado, extensão/core/worker não implementados, sem
+autorização de implementação. Revalidar Git; não tratar snapshots de master
+abaixo como identidade do worktree MON.
+
 RETOMADA ATUAL CAM-INT-03: consultar PROJECT_STATE seção 60 e seção 20.27
 abaixo. Runtime homologado e implementação publicada no commit
 4a0eada4d06b9c61a12c78149257005297ce6a65; HEAD local igual a origin/master,
@@ -1447,3 +1452,124 @@ NEXT_ACTION = resume ARGOS backend from the next open activity after CAM-INT-03
 
 O worktree da UI permaneceu intocado; o ZIP local de continuidade segue não
 rastreado e preservado. Publicação no repositório não implica deploy operacional.
+
+### 20.30 MON-RUNTIME-CONTRACT-CLOSURE — adjudicação pendente (2026-10-09)
+
+Snapshot anterior, supersedido pela seção 20.31 após parecer humano. Não usar
+a recomendação de reciclagem periódica original como decisão vigente.
+
+Consulte PROJECT_STATE seção 63 e o adendo `MON-RUNTIME-CONTRACT-CLOSURE` em
+`docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md`.
+O checkout local foi confirmado limpo na entrada, branch
+`codex/mon-runtime-contract-closure`, HEAD `5bd22b0`, igual ao ref local
+`origin/master`, divergência 0/0; sem fetch ou comprovação remota nova.
+
+```text
+CURRENT_ACTIVITY = MON-RUNTIME-CONTRACT-CLOSURE
+STATUS = REVIEWABLE_DOCUMENTATION / PENDING_USER_ADJUDICATION
+OPEN_DECISIONS = MR-01; MR-02; MR-03 / proposed, not approved
+NEXT_ACTION = USER_ADJUDICATION_OF_MR-01..03
+MON_WORKER_READY_NOW = NO / MON-OBS + CAM-INT-05 + CAM-HEALTH dependencies
+IMPLEMENTATION_AUTHORIZED = NO
+CAM_INT_04_AND_EXTERNAL_MON_OBS = NOT_ACCESSED / reference only if necessary
+CODE_AND_TESTS_CHANGED = NO
+REAL_CAMERA_ACCESS = NO
+COMMIT_AND_PUSH = NOT_AUTHORIZED
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS / pending state discoverable
+ACTIVITY_COMPLETE = NO
+```
+
+Runtime futuro reusa scheduler, memória e repository, com writer único. Atenção
+às promoções internas de tentativas em complete/cancel, lifetime de bookkeeping,
+descoberta não estritamente bounded e ausência de cancelamento real de tasks
+pelo scheduler. Evidências e gates RT-01..08 estão somente no contrato.
+Não iniciar worker a partir de readiness BC-02 histórica; aprovar propostas,
+comprovar predecessores integrados e obter autorização própria de implementação.
+
+### 20.31 MON-RUNTIME-CONTRACT-CLOSURE — parecer reconciliado (2026-10-09)
+
+Snapshot anterior, supersedido pela adjudicação da seção 20.32.
+
+Consultar PROJECT_STATE seção 64 e as cláusulas MR-01..03 reconciliadas em
+`docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md`.
+Branch/HEAD permanecem `codex/mon-runtime-contract-closure` / `5bd22b0`;
+revalidar Git. Quatro documentos modificados, staging vazio, sem commit/push.
+
+```text
+STATUS = ARCHITECTURAL_REVIEW / RECONCILIATION_PREPARED
+CONTRACT_STATUS = OPEN / NOT_CLOSED
+MR_01_REVIEW = APPROVABLE_WITH_CONSTRAINTS / active tokens retained, bounded drain, replacement fail-closed
+MR_02_REVIEW = CHANGES_REQUIRED / bounded discovery and terminal retirement, no count-based recycling
+MR_03_REVIEW = APPROVABLE_WITH_CONSTRAINTS / recovery capped/reset, operation deadlines, no false shutdown success
+OPEN_DECISIONS = MR-02-A retirement/late-callback boundary; operational caps and budgets; final clause approval
+NEXT_ACTION = adjudicate reconciled clauses and define bounded operational parameters
+IMPLEMENTATION_AUTHORIZED = NO
+MON_WORKER_READY_NOW = NO / dependencies and operational gates remain
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS / unresolved state discoverable
+ACTIVITY_COMPLETE = NO
+```
+
+Não confundir preservação da idempotência de escrita com retenção ilimitada da
+resposta DUPLICATE em memória. Não liberar lease de produtor ainda executando
+nem tratar timeout de await como término de ORM. Deadline vencido com operação
+pendente é INCOMPLETE; replacement/recovery não reabre admissão nesse cenário.
+Nenhuma cláusula nova foi promovida a implementação ou autorização de operação.
+
+### 20.32 MON-RUNTIME-CONTRACT-FINAL-ADJUDICATION — pendências explícitas (2026-10-09)
+
+Snapshot histórico supersedido pela seção 20.33 após decisão humana de consolidação.
+
+Consultar PROJECT_STATE §65, seção final de MONITORING_WORKER_RUNTIME_CONTRACT
+para prova/retention/release e seção final de MONITORING_OBSERVABILITY_CONFIG_CONTRACT
+para a matriz operacional; ambos em `docs/projeto/contracts/backend/monitoring/`.
+
+```text
+MR_01 = APPROVED
+MR_02_MEMORY_BOUNDING = APPROVED
+MR_02_PERSISTENT_RETIREMENT = DEFERRED
+MR_02_DEDUPLICATION_PROOF = INSUFFICIENT
+MR_03_RECOVERY_MODEL = APPROVED
+MR_03_OPERATIONAL_BUDGETS = PENDING
+OWNERSHIP_RELEASE_SAFETY = UNRESOLVED
+MONITORING_CONFIG_CONTRACT = PENDING
+CONTRACT_STATUS = PROPOSED_PENDING_APPROVAL
+NEXT_ACTION = contract adjudication of safe local retention, minimal budgets and termination-before-release
+IMPLEMENTATION_CODE_TESTS_GIT = FORBIDDEN
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO
+```
+
+Git não foi consultado nesta atividade por proibição explícita; os valores
+anteriores de branch/HEAD não são revalidação atual. Não excluir registros
+necessários à idempotência ou criar ledger novo sem necessidade comprovada.
+Fencing de writer não encerra adapter/ORM; cancellation solicitada não permite
+release prematuro nem shutdown SUCCESS. Nenhum RECOVERING ou alteração de
+HTTP Snapshot, RTSP, IMG-CAP, estados técnicos ou infraestrutura foi introduzido.
+
+### 20.33 MON-RUNTIME-CONTRACT-DECISION-CONSOLIDATION — V1 documental (2026-10-09)
+
+Consultar PROJECT_STATE §66 e seções finais V1 em
+`docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md`
+e `MONITORING_OBSERVABILITY_CONFIG_CONTRACT.md` no mesmo diretório.
+
+```text
+CONTRACT_STATUS = CLOSED / LOCAL V1
+MATERIAL_DECISIONS_PENDING = NONE_FOR_THIS_LOCAL_CONTRACT
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED
+CORE_EXTENSION_AND_WORKER = NOT_IMPLEMENTED
+PERSISTENT_RETIREMENT = DEFERRED / no deletion or ledger
+NEXT_ACTIVITY = separately authorize minimal core/runtime implementation after predecessor integration gates
+TESTS_CODE_COMMIT_PUSH = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS
+ACTIVITY_COMPLETE = YES / CONTRACT_ONLY
+```
+
+V1 define W=C+Q como janela terminal e bounds de attempts/caches/heap/tasks;
+ID desconhecido após eviction é rejeitado sem persistência. Nenhuma disposition
+histórica exata fora da janela. Término real precede release; timeout de drain/
+shutdown é INCOMPLETE. Defaults V1 e três campos mínimos de configuração estão
+especificados; DC-01..07 ainda não executados. Preservar fencing/reducer/estado,
+sem RECOVERING, expurgo ou mudança em HTTP Snapshot/RTSP/IMG-CAP.

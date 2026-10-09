@@ -1,5 +1,8 @@
 # ARGOS — Active Document Map
 
+Checkpoint local MON runtime (2026-10-09): seção 38, decisões V1 consolidadas.
+Contrato local CLOSED; extensão/core/worker não implementados nem autorizados.
+
 STATUS = CURRENT
 DOCUMENT_TYPE = PROJECT_SPECIFIC_AUTHORITY_MAP
 PROJECT = ARGOS
@@ -724,3 +727,63 @@ normal autorizado e verificação `HEAD = origin/master`; consulte a seção 61 
 
 A publicação foi verificada em `origin/master` com divergência zero. A seção 62
 de `PROJECT_STATE.md` supersede o status de push pendente da seção 61.
+
+## 35. MON-RUNTIME-CONTRACT-CLOSURE — proposta local (2026-10-09)
+
+Índice do snapshot anterior; a revisão da seção 36 supersede a proposta inicial.
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md`, adendo MON-RUNTIME-CONTRACT-CLOSURE | Evidências do core, requisitos derivados, propostas MR-01..03 e aceite futuro RT-01..08 | BC-02 ACTIVE; novas decisões PROPOSED / PENDING_USER_ADJUDICATION |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 63 | Identidade factual do worktree, limites, pendências e próxima ação | CURRENT LOCAL MON CHECKPOINT / NOT_COMPLETE |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.30 | Retomada MON sem inferir autorização ou implementação | CURRENT LOCAL HANDOFF |
+| `docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md` | Predecessores de MON-WORKER: MON-OBS, CAM-INT-05 e CAM-HEALTH | ACTIVE / dependency authority unchanged |
+
+Os demais contratos MON e ADR-019/020/021 preservam autoridade de domínio.
+Readiness BC-02 local não comprova readiness operacional; nenhum predecessor
+externo foi promovido a integrado. Próxima ação é adjudicar MR-01..03; produção,
+worker, testes e outros worktrees não foram modificados.
+
+## 36. MON-RUNTIME-CONTRACT-CLOSURE — parecer reconciliado (2026-10-09)
+
+Índice do snapshot anterior, supersedido pela seção 37.
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md`, cláusulas finais propostas MR-01..03 e tabela de conflitos | Redação reconciliada; retirement/limites/recovery/deadlines e aceite futuro | ARCHITECTURAL_REVIEW / CONTRACT OPEN; final approval pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 64 | Estado local, parecer humano, decisões materiais/gates ainda abertos | CURRENT LOCAL MON CHECKPOINT |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.31 | Retomada com limites e próxima ação explícitos | CURRENT LOCAL HANDOFF |
+
+Reciclagem obrigatória por 10.000 tentativas retirada. MR-02-A permanece aberta
+quanto à aposentadoria/dispatch e duração da resposta de idempotência em memória;
+caps e budgets exigem definição/validação. MON-REC/OWN/OBS preservam authority.
+Nenhum contrato CLOSED, código/teste, commit/push ou gate operacional novo.
+
+## 37. MON-RUNTIME-CONTRACT-FINAL-ADJUDICATION — aprovação parcial (2026-10-09)
+
+Índice histórico supersedido pela consolidação da seção 38.
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md`, seção final adjudication | MR-01 aprovado; memory bounding aprovado; prova de dedup/fencing, separação de retention e release | CURRENT / PROPOSED_PENDING_APPROVAL for indispensable pending boundaries |
+| `docs/projeto/contracts/backend/monitoring/MONITORING_OBSERVABILITY_CONFIG_CONTRACT.md`, matriz final adjudication | Oito budgets; campos existentes, três extensões propostas, default/range/relações/falhas/testes futuros | CURRENT PROPOSED MATRIX / budgets and config contract PENDING |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 65 | Estado, aprovações, pendências e proibição de execução/Git | CURRENT LOCAL MON CHECKPOINT |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.32 | Retomada sem falsa prova de retirement/shutdown ou Git revalidado | CURRENT LOCAL HANDOFF |
+
+MON-OWN/REC mantêm authority de fencing/estado; MON-HIST mantém retention
+persistida sem novo expurgo. Retirement persistente DEFERRED; coordenação de
+release UNRESOLVED. Nenhuma implementação ou exclusão autorizada.
+
+## 38. MON-RUNTIME-CONTRACT-DECISION-CONSOLIDATION — contrato V1 (2026-10-09)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md`, seção final V1 | Janela finita, bounds/eviction, término antes de release, mínima extensão e gates DC-01..07 | CURRENT / CONTRACT CLOSED / NOT_IMPLEMENTED |
+| `docs/projeto/contracts/backend/monitoring/MONITORING_OBSERVABILITY_CONFIG_CONTRACT.md`, seção final V1 | Defaults adotados, três campos mínimos, ranges/relações/deadlines/falhas/testes futuros | CURRENT LOCAL V1 CONFIG CONTRACT / NOT_IMPLEMENTED |
+| `docs/projeto/contracts/backend/monitoring/MONITORING_OWNERSHIP_CONTRACT.md`, seção V1 | Release condicionado a término, fencing preservado e crash/takeover | ACTIVE / integration clause |
+| `docs/projeto/contracts/backend/monitoring/MONITORING_FAILURE_RECOVERY_CONTRACT.md`, seção V1 | Recovery bounded e janela local sem alterar retention persistente | ACTIVE / integration clause |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 66 | Fechamento documental, gaps de implementação e authority de próxima atividade | CURRENT LOCAL CHECKPOINT |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.33 | Handoff V1 sem confundir contrato fechado com worker pronto | CURRENT LOCAL HANDOFF |
+
+Sem ledger, expurgo, infraestrutura ou RECOVERING. Próxima implementação exige
+autorização própria e predecessores integrados; testes DC ainda não executados.
