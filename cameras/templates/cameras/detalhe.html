@@ -58,6 +58,22 @@
             {% if monitoring.open_outage %}<div class="argos-data-pair argos-camera-detail__pair--full"><dt>Indisponibilidade aberta</dt><dd>Desde {{ monitoring.open_outage.opened_at|date:"d/m/Y H:i" }} · {{ monitoring.outage_duration }}</dd></div>{% endif %}
           </dl>
         </section>
+        <section class="argos-camera-detail__record-section" aria-labelledby="camera-detail-health-heading">
+          <header class="argos-section-header"><h2 id="camera-detail-health-heading">Diagnóstico técnico A–D</h2></header>
+          <dl class="argos-data-group argos-camera-detail__pairs">
+            <div class="argos-data-pair"><dt>Evidência automática</dt><dd>{{ camera_health.evidence_state }}</dd></div>
+            <div class="argos-data-pair"><dt>Frescor</dt><dd>{{ camera_health.freshness }}</dd></div>
+            <div class="argos-data-pair"><dt>Observada em</dt><dd>{{ camera_health.evidence_at|date:"d/m/Y H:i:s T"|default:"—" }}</dd></div>
+          </dl>
+          {% if camera_health.stages %}
+          <table class="argos-data-table" aria-label="Resultados dos estágios do diagnóstico">
+            <thead><tr><th scope="col">Estágio</th><th scope="col">Resultado</th><th scope="col">Código</th></tr></thead>
+            <tbody>{% for stage in camera_health.stages %}
+              <tr><th scope="row">{{ stage.stage }}</th><td>{{ stage.state }}</td><td>{{ stage.error_code|default:"—" }}</td></tr>
+            {% endfor %}</tbody>
+          </table>
+          {% endif %}
+        </section>
         <section class="argos-camera-detail__record-section" aria-labelledby="camera-detail-actions-heading">
           <header class="argos-section-header"><h2 id="camera-detail-actions-heading">Ações operacionais</h2></header>
           <div class="argos-camera-detail__actions" aria-label="Ações de situação">

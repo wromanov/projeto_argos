@@ -15,6 +15,7 @@ from .forms import (
     CameraEdicaoForm, DesativarCameraForm, ReativarCameraForm, SubstituirCameraForm,
 )
 from .integracao.configuration import invalidate_target_config_generation_if_ip_changed
+from .authorization import require_camera_permission
 from .governanca import (
     ErroGovernancaCamera, alterar_situacao_camera, desativar_camera,
     q_camera_completa, q_camera_incompleta, reativar_camera, substituir_camera,
@@ -409,9 +410,18 @@ def detalhe_camera(request, pk):
     service = MonitoringReadService()
     camera = get_object_or_404(service.camera_queryset(Camera.objects.all()), pk=pk)
     monitoring = _monitoramento_ui(service.project(camera))
+    include_diagnostic = request.user.has_perm("cameras.view_camera_diagnostic")
+    if include_diagnostic:
+        require_camera_permission(
+            actor=request.user,
+            permission_codename="view_camera_diagnostic",
+            camera_id=camera.pk,
+        )
+    camera_health = service.camera_health(camera, include_details=include_diagnostic)
     history = service.history_page(camera.pk, limit=5)
     outage_preview = tuple(_historico_indisponibilidade_ui(item) for item in history.items)
-    contexto = {"camera": camera, "monitoring": monitoring, "outage_preview": outage_preview,
+    contexto = {"camera": camera, "monitoring": monitoring, "camera_health": camera_health,
+                "outage_preview": outage_preview,
                 "atividades": camera.atividades.select_related("criado_por", "atualizado_por")[:10]}
     if request.user.has_perm("cameras.consultar_eventos"):
         contexto["eventos_auditoria"] = camera.eventos_auditoria.select_related("usuario")[:10]

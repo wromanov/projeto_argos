@@ -1512,3 +1512,34 @@ classificar como exclusivamente assíncronos. O teste de rollback registrou
 CAM-INT-04 contém `0018_cameracapturejob.py`, também dependente de 0017; a
 colisão numérica deve ser resolvida no checkpoint de integração. Nenhuma
 migration foi renumerada nesta atividade.
+
+### 20.32. CAM-HEALTH-IMPLEMENTATION — retomada (2026-10-10)
+
+```text
+CAM_HEALTH_IMPLEMENTATION = COMPLETE
+CAM_HEALTH_LOCAL_VALIDATION = PASS / focal Django suites 41/41; manage.py check; migration check; Bandit; diff check
+CAM_HEALTH_PUBLICATION = PENDING_UNTIL_REMOTE_CONFIRMATION
+CAM_HEALTH_MASTER_INTEGRATION = PENDING
+CAM_INT_05 = PUBLISHED
+MON_OBS = PUBLISHED
+FRESHNESS_POLICY = shared MonitoringConfig.stale_after_seconds; UTC timestamp; age >= threshold is stale; absent/invalid/future/stale => technical UNKNOWN
+AUTHORIZATION_SUMMARY = cameras.view_camera
+AUTHORIZATION_DETAILS = cameras.view_camera_diagnostic + require_camera_permission(camera_id)
+MIGRATION_REQUIREMENT = NONE / uses CAM-INT-05 CameraHealthSnapshot
+BC_02_DEPENDENCIES = CAM-INT-05 source commit is ancestor; no runtime probes or real-camera validation
+KNOWN_LIMITATIONS = full MON 63-test suite not rerun; no object/tenant authorization backend; migration 0018 collision remains open
+GIT_CHECKPOINT = AUTHORIZED / feature branch only
+FEATURE_BRANCH_PUSH = PENDING_UNTIL_REMOTE_CONFIRMATION
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE section 65
+MASTER_UNCHANGED = YES
+MON_WORKER_STATUS = BLOCKED_BY_BC_02
+MIGRATION_INTEGRATION_RISK = OPEN
+NEXT_ACTIVITY = BC-02-INTEGRATION-READINESS-REVIEW
+```
+
+O estado completo e os caminhos alterados constam em `PROJECT_STATE.md`,
+seção 65. CAM-HEALTH reaproveita o limiar compartilhado do MON e mantém
+separados o resumo da câmera e os estágios A-D protegidos. O teste usa relógio
+controlável e valores de limiar apenas nos fixtures. A colisão de migrations
+0018 CAM-INT-04/CAM-INT-05 permanece para reconciliação serializada antes da
+integração; não foi criada nova migration nem alterado o master.

@@ -759,3 +759,17 @@ As evidências externas confirmadas e sua reconciliação, incluindo a suíte MO
 mista síncrona/assíncrona, constam na seção 64 de `PROJECT_STATE.md`. A branch
 CAM-INT-04 tem uma migration 0018 independente; reconciliar o grafo antes da
 integração, sem tratar a colisão como defeito do contrato local.
+
+## 37. CAM-HEALTH-IMPLEMENTATION — projeção A-D local (2026-10-10)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 65 | Baseline, fileset, validações, freshness, permissões e limitações | CURRENT / IMPLEMENTATION COMPLETE / PUBLICATION PENDING REMOTE CONFIRMATION |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.32 | Handoff, status do checkpoint e próxima atividade | CURRENT / FEATURE BRANCH CHECKPOINT |
+| `docs/projeto/contracts/backend/camera/CAMERA_HEALTH_DIAGNOSTIC_CONTRACT.md` | A-D, stale/UNKNOWN, autorização separada e limites SSR | CANONICAL / IMPLEMENTED LOCALLY |
+| `cameras/monitoramento/read_service.py` | Projeção read-only e freshness compartilhada do MON | LOCAL / FOCAL VALIDATION PASS |
+| `cameras/views.py`; `cameras/templates/cameras/detalhe.html` | Resumo SSR e detalhes A-D autorizados | LOCAL / FOCAL VALIDATION PASS |
+| `cameras/test_camera_health_projection.py` | Freshness, A-D, isolamento e autorização HTML | LOCAL / 41 focused tests across requested suites PASS |
+
+Não houve migration nova. A colisão 0018 entre CAM-INT-04 e CAM-INT-05 segue
+aberta para checkpoint serializado; MON Worker continua bloqueado por BC-02.

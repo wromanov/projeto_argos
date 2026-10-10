@@ -3921,3 +3921,43 @@ As validações externas foram declaradas para este mesmo root e WIP. Não foi
 fornecido manifesto externo de hashes por arquivo; a revisão local não alterou
 arquivos de implementação. A revisão final e `git diff --check` passaram após
 esta atualização documental. `PROJECT_STATE_UPDATE = PASS`.
+
+## 65. CAM-HEALTH-IMPLEMENTATION — projeção automática A-D (2026-10-10)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = CAM-HEALTH-IMPLEMENTATION
+STATUS = COMPLETE / LOCAL / NOT PUBLISHED
+ACTIVITY_COMPLETION_PERCENT = 100%
+ROOT = C:\Users\walac\desenvolvimento\projeto_argos_cam_health
+BRANCH = codex/cam-health-implementation
+INITIAL_HEAD = 68d593d88b84b218210dac0fe8ddf16c08fd413a
+FINAL_HEAD = 68d593d88b84b218210dac0fe8ddf16c08fd413a
+SOURCE_CAM_INT_05 = 68d593d88b84b218210dac0fe8ddf16c08fd413a / ANCESTOR
+CAM_HEALTH_IMPLEMENTATION_SUMMARY = MonitoringReadService projection + Django SSR
+CAM_HEALTH_VALIDATION_EVIDENCE = PASS / 41 focused tests; check; migration check; Bandit; diff check
+FRESHNESS_POLICY = Reuses MonitoringConfig.stale_after_seconds and is_evidence_stale; UTC; age >= limit stale; absent, invalid, future, or stale snapshot => UNKNOWN
+AUTHORIZATION = view_camera summary; view_camera_diagnostic stages; require_camera_permission bound to requested camera id
+MIGRATION_REQUIREMENT = NONE / reuses CAM-INT-05 CameraHealthSnapshot
+BC_02_DEPENDENCIES = CAM-INT-05 snapshot ancestor present; no real camera accessed
+KNOWN_LIMITATIONS = no full MON-63 suite rerun; no production or real-camera validation; Django model permissions are global (no object/tenant backend)
+CAM_HEALTH_IMPLEMENTATION = COMPLETE
+CAM_HEALTH_LOCAL_VALIDATION = PASS
+CAM_HEALTH_PUBLICATION = PENDING_UNTIL_REMOTE_CONFIRMATION
+CAM_HEALTH_MASTER_INTEGRATION = PENDING
+CAM_INT_05 = PUBLISHED
+MON_OBS = PUBLISHED
+GIT_CHECKPOINT = AUTHORIZED / feature branch only
+FEATURE_BRANCH_PUSH = PENDING_REMOTE_CONFIRMATION
+MASTER_UNCHANGED = YES
+MIGRATION_INTEGRATION_RISK = OPEN / CAM-INT-04 and CAM-INT-05 each carry independent migration 0018
+MON_WORKER_STATUS = BLOCKED_BY_BC_02
+NEXT_RECOMMENDED_ACTIVITY = BC-02-INTEGRATION-READINESS-REVIEW
+PROJECT_STATE_UPDATE = PASS
+```
+
+O read service projeta somente timestamp e estado de evidência para o resumo;
+estágios A-D e códigos sanitizados são incluídos no contexto SSR apenas com
+`view_camera_diagnostic`. Snapshot atual não promove nem altera MON. A data de
+teste de 60 segundos pertence somente aos fixtures; nenhum freshness de
+produção foi fixado. A integração de migrações continua fora desta atividade.

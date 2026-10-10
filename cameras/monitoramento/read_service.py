@@ -6,7 +6,7 @@ configuração técnica.
 """
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone as datetime_timezone
 from enum import StrEnum
 from django.db.models import BooleanField, Case, CharField, Count, Exists, F, OuterRef, Q, Subquery, Value, When
 from django.db.models.functions import Coalesce
@@ -14,7 +14,7 @@ from django.db.models.query import QuerySet
 from django.utils import timezone
 
 from cameras.governanca import q_camera_completa
-from cameras.models import Camera, EstadoMonitoramento, Indisponibilidade
+from cameras.models import Camera, CameraHealthSnapshot, EstadoMonitoramento, Indisponibilidade
 
 from .repository import is_evidence_stale
 from .schemas import MonitoringConfig
@@ -103,6 +103,24 @@ class OutageHistoryPage:
     total: int
     limit: int
     offset: int
+
+
+@dataclass(frozen=True, slots=True)
+class HealthStageProjection:
+    stage: str
+    state: str
+    error_code: str
+
+
+@dataclass(frozen=True, slots=True)
+class CameraHealthProjection:
+    """Allowlist da evidência automática CAM-INT-05 para apresentação."""
+
+    camera_id: int
+    evidence_at: datetime | None
+    freshness: str
+    evidence_state: str
+    stages: tuple[HealthStageProjection, ...] | None
 
 
 class MonitoringReadService:
@@ -200,6 +218,53 @@ class MonitoringReadService:
     def current(self, camera_id: int, queryset: QuerySet | None = None) -> MonitoringProjection:
         camera = self.camera_queryset(queryset).get(pk=camera_id)
         return self.project(camera)
+
+    def camera_health(
+        self,
+        camera: Camera,
+        *,
+        include_details: bool = False,
+        snapshot: CameraHealthSnapshot | None = None,
+    ) -> CameraHealthProjection:
+        """Projeta apenas o snapshot automático; nunca inicia probe ou altera estado."""
+
+        if snapshot is None:
+            queryset = CameraHealthSnapshot.objects.filter(camera_id=camera.pk)
+            if not include_details:
+                queryset = queryset.only("pk", "camera_id", "observed_at")
+            snapshot = queryset.first()
+
+        now = self._now()
+        observed_at = snapshot.observed_at if snapshot is not None else None
+        timestamp_valid = (
+            isinstance(observed_at, datetime)
+            and timezone.is_aware(observed_at)
+        )
+        if timestamp_valid:
+            observed_at = observed_at.astimezone(datetime_timezone.utc)
+        future = timestamp_valid and observed_at > now
+        stale = (
+            not timestamp_valid
+            or future
+            or is_evidence_stale(observed_at, now, self.stale_after)
+        )
+        stages = None
+        if include_details and snapshot is not None:
+            stages = tuple(
+                HealthStageProjection(
+                    stage=stage.upper(),
+                    state=getattr(snapshot, f"stage_{stage}_state"),
+                    error_code=getattr(snapshot, f"stage_{stage}_error_code"),
+                )
+                for stage in "abcd"
+            )
+        return CameraHealthProjection(
+            camera_id=camera.pk,
+            evidence_at=observed_at if timestamp_valid else None,
+            freshness="UNKNOWN" if future or not timestamp_valid else "STALE" if stale else "FRESH",
+            evidence_state="UNKNOWN" if stale else "CURRENT",
+            stages=stages,
+        )
 
     @staticmethod
     def _history_queryset(camera_id: int) -> QuerySet:
@@ -311,6 +376,8 @@ class MonitoringReadService:
 
 __all__ = [
     "MonitoringAggregate",
+    "CameraHealthProjection",
+    "HealthStageProjection",
     "MonitoringEffectiveState",
     "MonitoringFreshness",
     "MonitoringProjection",
