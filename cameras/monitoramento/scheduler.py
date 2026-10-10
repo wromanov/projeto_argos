@@ -10,11 +10,13 @@ from numbers import Real
 from collections import deque
 import logging
 import re
+import time
 from typing import Awaitable, Callable, Iterable, TypeVar, cast
 from uuid import UUID, uuid4
 
 from .confirmation import ConfirmationPolicy, reduce_confirmation
 from .contracts import Clock, ProbeResult
+from .observability import MonitoringTelemetry, NoopTelemetry, config_snapshot
 from .ports import ConfirmationStatePort, OwnershipClaimPort
 from .schemas import (
     Attempt,
@@ -152,6 +154,7 @@ class DueScheduler:
         ownership_port: OwnershipClaimPort | None = None,
         service_instance_id: str | None = None,
         attempt_id_factory: Callable[[], UUID] = uuid4,
+        telemetry: MonitoringTelemetry | None = None,
     ) -> None:
         if not isinstance(config, MonitoringConfig):
             raise TypeError("config must be a MonitoringConfig")
@@ -175,6 +178,9 @@ class DueScheduler:
             self._owner_id = None
         self._ownership_port = ownership_port
         self._attempt_id_factory = attempt_id_factory
+        self._telemetry = telemetry if telemetry is not None else NoopTelemetry()
+        self._cycle_started_monotonic: float | None = None
+        self._telemetry_failure_reported = False
         self._lifecycle = SchedulerLifecycle.STARTING
         self._queue = BoundedDueQueue(config.queue_bound)
         self._attempts: dict[UUID, Attempt] = {}
@@ -257,9 +263,13 @@ class DueScheduler:
         if self._lifecycle is SchedulerLifecycle.STARTING:
             self._lifecycle = SchedulerLifecycle.RUNNING
             logger.info("MONITORING_SCHEDULER_STARTED concurrency=%s queue_capacity=%s", self._config.concurrency, self._queue.capacity)
+            self._emit_event("monitoring.scheduler.started", {"concurrency": self._config.concurrency, "queue_capacity": self._queue.capacity})
+            self._emit_event("monitoring.config.snapshot", config_snapshot(self._config, self._confirmation_policy))
+            self._emit_event("monitoring.scheduler.lifecycle", {"state": self._lifecycle.value})
         elif self._lifecycle is SchedulerLifecycle.DEGRADED:
             self._lifecycle = SchedulerLifecycle.RUNNING
             self._operational_error = None
+            self._emit_event("monitoring.scheduler.lifecycle", {"state": self._lifecycle.value})
         elif self._lifecycle is not SchedulerLifecycle.RUNNING:
             raise RuntimeError(f"cannot start scheduler from {self._lifecycle}")
         return self._lifecycle
@@ -312,6 +322,8 @@ class DueScheduler:
                     break
                 if ownership is None:
                     self._ownership_denied += 1
+                    self._emit_event("monitoring.ownership", {"outcome": "DENIED"})
+                    self._increment("monitoring.ownership.outcomes", {"outcome": "DENIED"})
                     logger.info("MONITORING_OWNERSHIP_DENIED camera_id=%s", candidate.camera_id)
                     self._discard(attempt, CompletionDisposition.OWNERSHIP_LOST, now)
                     continue
@@ -328,8 +340,11 @@ class DueScheduler:
             started.append(active)
             self._active_by_camera[candidate.camera_id] = attempt_id
             self._attempts_started += 1
+            self._increment("monitoring.attempts.started")
             if ownership is not None:
                 self._ownership_acquired += 1
+                self._emit_event("monitoring.ownership", {"outcome": "ACQUIRED"})
+                self._increment("monitoring.ownership.outcomes", {"outcome": "ACQUIRED"})
                 logger.info("MONITORING_OWNERSHIP_ACQUIRED camera_id=%s ownership_epoch=%s", candidate.camera_id, ownership.epoch)
             logger.info("MONITORING_ATTEMPT_STARTED camera_id=%s", candidate.camera_id)
         return tuple(started)
@@ -340,7 +355,10 @@ class DueScheduler:
     def tick(self, now: datetime | None = None, candidates: Iterable[ScheduleCandidate] = ()) -> TickReport:
         now = _aware_utc(self._clock.now() if now is None else now, "now")
         self._last_cycle_started_at = now
+        self._cycle_started_monotonic = time.perf_counter()
         self._cycles_started += 1
+        self._emit_event("monitoring.cycle.started", {"timestamp": now})
+        self._emit_event("monitoring.scheduler.lifecycle", {"state": self._lifecycle.value})
         logger.info("MONITORING_CYCLE_STARTED")
         if self._lifecycle is SchedulerLifecycle.STARTING:
             self.start()
@@ -388,6 +406,23 @@ class DueScheduler:
     def _complete_cycle(self, report: TickReport) -> TickReport:
         self._last_cycle_completed_at = report.now
         self._cycles_completed += 1
+        duration = max(0.0, time.perf_counter() - self._cycle_started_monotonic) if self._cycle_started_monotonic is not None else 0.0
+        fields = {
+            "timestamp": report.now, "eligible": report.eligible,
+            "due": report.due, "admitted": report.admitted,
+            "deferred": report.deferred, "queued": report.queued,
+            "active": report.active, "duration_seconds": duration,
+        }
+        self._emit_event("monitoring.cycle.completed", fields)
+        self._observe_seconds("monitoring.cycle.duration_seconds", duration)
+        self._gauge("monitoring.work.eligible", report.eligible)
+        self._gauge("monitoring.work.due", report.due)
+        self._gauge("monitoring.work.admitted", report.admitted)
+        self._gauge("monitoring.work.deferred", report.deferred)
+        self._gauge("monitoring.queue.depth", report.queued)
+        self._gauge("monitoring.attempts.active", report.active)
+        self._emit_event("monitoring.worker.heartbeat", {"timestamp": report.now, "state": self._lifecycle.value, "active": report.active, "queued": report.queued})
+        self._gauge("monitoring.worker.heartbeat_age_seconds", 0)
         logger.info(
             "MONITORING_CYCLE_COMPLETED eligible=%s due=%s admitted=%s deferred=%s queued=%s in_flight=%s",
             report.eligible, report.due, report.admitted, report.deferred, report.queued, report.active,
@@ -423,6 +458,9 @@ class DueScheduler:
             return CompletionOutcome(attempt, CompletionDisposition.OLD_ATTEMPT)
         if attempt.state is not AttemptState.ACTIVE:
             return CompletionOutcome(attempt, CompletionDisposition.CANCELLED)
+        self._emit_event("monitoring.probe.completed", {"outcome": result.code.value, "duration_seconds": result.duration_seconds})
+        self._increment("monitoring.probe.outcomes", {"outcome": result.code.value})
+        self._observe_seconds("monitoring.probe.duration_seconds", result.duration_seconds, {"outcome": result.code.value})
         try:
             current_generation = attempt.config_generation if self._current_generation is None else self._current_generation(attempt.camera_id)
             eligible = self._is_eligible(attempt.camera_id)
@@ -464,6 +502,10 @@ class DueScheduler:
                 if stored is CompletionDisposition.OWNERSHIP_LOST:
                     self._ownership_lost += 1
                     self._stale_owner_completions_rejected += 1
+                    self._emit_event("monitoring.ownership", {"outcome": "LOST"})
+                    self._increment("monitoring.ownership.outcomes", {"outcome": "LOST"})
+                    self._emit_event("monitoring.stale_completion.rejected", {})
+                    self._increment("monitoring.stale_completion.rejections")
                     logger.info("MONITORING_STALE_OWNER_COMPLETION_REJECTED camera_id=%s ownership_epoch=%s", attempt.camera_id, attempt.ownership.epoch)
                     return self._discard(attempt, CompletionDisposition.OWNERSHIP_LOST, now)
             except Exception as exc:
@@ -475,6 +517,7 @@ class DueScheduler:
         self._schedule_epoch[attempt.camera_id] = epoch
         self._next_due[attempt.camera_id] = scheduled_next
         self._attempts_completed += 1
+        self._increment("monitoring.attempts.completed")
         logger.info("MONITORING_ATTEMPT_COMPLETED camera_id=%s disposition=%s", attempt.camera_id, CompletionDisposition.ACCEPTED)
         self._start_from_queue(now)
         self._finish_shutdown_if_due(now)
@@ -488,6 +531,7 @@ class DueScheduler:
         self._current_by_camera.pop(attempt.camera_id, None)
         self._release_ownership(attempt)
         self._attempts_cancelled += 1
+        self._increment("monitoring.attempts.cancelled")
         logger.info("MONITORING_ATTEMPT_CANCELLED camera_id=%s disposition=%s", attempt.camera_id, disposition)
         self._start_from_queue(now)
         self._finish_shutdown_if_due(now)
@@ -504,6 +548,7 @@ class DueScheduler:
         self._current_by_camera.pop(attempt.camera_id, None)
         self._release_ownership(attempt)
         self._attempts_cancelled += 1
+        self._increment("monitoring.attempts.cancelled")
         logger.info("MONITORING_ATTEMPT_CANCELLED camera_id=%s disposition=%s", attempt.camera_id, CompletionDisposition.CANCELLED)
         self._start_from_queue(cancelled.started_at or cancelled.scheduled_at)
         return CompletionOutcome(cancelled, CompletionDisposition.CANCELLED)
@@ -515,6 +560,8 @@ class DueScheduler:
             released = self._ownership_port.release(attempt.camera_id, attempt.ownership)
             if not released:
                 self._ownership_lost += 1
+                self._emit_event("monitoring.ownership", {"outcome": "LOST"})
+                self._increment("monitoring.ownership.outcomes", {"outcome": "LOST"})
                 logger.info("MONITORING_OWNERSHIP_LOST camera_id=%s ownership_epoch=%s", attempt.camera_id, attempt.ownership.epoch)
         except Exception as exc:
             self.report_repository_failure(type(exc).__name__)
@@ -524,6 +571,7 @@ class DueScheduler:
         if self._lifecycle is SchedulerLifecycle.STOPPED:
             return self._lifecycle
         self._lifecycle = SchedulerLifecycle.DRAINING
+        self._emit_event("monitoring.scheduler.lifecycle", {"state": self._lifecycle.value})
         self._draining_since = now
         self._finish_shutdown_if_due(now)
         return self._lifecycle
@@ -547,6 +595,36 @@ class DueScheduler:
         if self._lifecycle is not SchedulerLifecycle.STOPPED:
             self._lifecycle = SchedulerLifecycle.STOPPED
             logger.info("MONITORING_SCHEDULER_STOPPED")
+            self._emit_event("monitoring.scheduler.lifecycle", {"state": self._lifecycle.value})
+
+    def _telemetry_failed(self) -> None:
+        if not self._telemetry_failure_reported:
+            self._telemetry_failure_reported = True
+            logger.warning("MONITORING_TELEMETRY_FAILURE")
+
+    def _emit_event(self, name: str, fields: dict[str, object]) -> None:
+        try:
+            self._telemetry.emit_event(name, fields)
+        except Exception:
+            self._telemetry_failed()
+
+    def _increment(self, name: str, labels: dict[str, str] | None = None) -> None:
+        try:
+            self._telemetry.increment(name, {} if labels is None else labels)
+        except Exception:
+            self._telemetry_failed()
+
+    def _gauge(self, name: str, value: Real) -> None:
+        try:
+            self._telemetry.gauge(name, value)
+        except Exception:
+            self._telemetry_failed()
+
+    def _observe_seconds(self, name: str, value: Real, labels: dict[str, str] | None = None) -> None:
+        try:
+            self._telemetry.observe_seconds(name, value, {} if labels is None else labels)
+        except Exception:
+            self._telemetry_failed()
 
     def report_repository_failure(self, error_code: str) -> SchedulerLifecycle:
         if not isinstance(error_code, str) or not _SAFE_OPERATIONAL_ERROR_CODE.fullmatch(error_code):
@@ -554,8 +632,11 @@ class DueScheduler:
         self._operational_error = error_code
         self._operational_failures += 1
         logger.warning("MONITORING_OPERATIONAL_FAILURE error_code=%s", error_code)
+        self._emit_event("monitoring.repository.failed", {"error_code": error_code})
+        self._increment("monitoring.repository.failures", {"error_code": error_code})
         if self._lifecycle not in (SchedulerLifecycle.STOPPED, SchedulerLifecycle.DRAINING):
             self._lifecycle = SchedulerLifecycle.DEGRADED
+            self._emit_event("monitoring.scheduler.lifecycle", {"state": self._lifecycle.value})
         return self._lifecycle
 
     def restart(self, candidates: Iterable[ScheduleCandidate], now: datetime | None = None) -> TickReport:

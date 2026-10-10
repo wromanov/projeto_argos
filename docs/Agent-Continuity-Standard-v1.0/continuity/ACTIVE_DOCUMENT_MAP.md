@@ -773,3 +773,19 @@ integração, sem tratar a colisão como defeito do contrato local.
 
 Não houve migration nova. A colisão 0018 entre CAM-INT-04 e CAM-INT-05 segue
 aberta para checkpoint serializado; MON Worker continua bloqueado por BC-02.
+
+## 38. BC-02-INTEGRATION-EXECUTION — integração local validada (2026-10-10)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 69 | Baselines, merge pendente, validação combinada, migrations e gates | CURRENT / READY_FOR_CHECKPOINT |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.33 | Handoff BC-02, status de publicação/master e obrigação do worker | CURRENT / LOCAL_INTEGRATION_VALIDATED |
+| `cameras/monitoramento/scheduler.py` | Completion integrada, fencing, snapshot CAM-INT-05 e telemetria MON-OBS | VALIDATED / MERGE PENDING |
+| `cameras/monitoramento/observability.py`; `cameras/test_monitoramento_observability.py` | Sink e testes MON-OBS | VALIDATED / MERGE PENDING |
+| `cameras/migrations/0018_camera_health_snapshot.py` | Snapshot CAM-INT-05 único no grafo desta integração | VALIDATED / fresh DB and 0017→0018 upgrade PASS |
+
+MON-OBS, CAM-INT-05 e CAM-HEALTH estão publicados em suas referências fonte. A
+integração local BC-02 foi validada em worktree exclusiva; o branch integrado
+não foi publicado e ainda não foi integrado ao master. `MERGE_HEAD` permanece
+presente para checkpoint Git posterior. O MON Runtime Worker e seu heartbeat
+independente continuam não implementados.

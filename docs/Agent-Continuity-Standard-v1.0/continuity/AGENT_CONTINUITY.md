@@ -1543,3 +1543,33 @@ separados o resumo da câmera e os estágios A-D protegidos. O teste usa relógi
 controlável e valores de limiar apenas nos fixtures. A colisão de migrations
 0018 CAM-INT-04/CAM-INT-05 permanece para reconciliação serializada antes da
 integração; não foi criada nova migration nem alterado o master.
+
+### 20.33. BC-02-INTEGRATION-EXECUTION — integração local validada (2026-10-10)
+
+```text
+MON_OBS_PUBLICATION = PASS / 6fc4f708778210c617cf4b5bca6cca441bdb0705
+CAM_INT_05_PUBLICATION = PASS / 68d593d88b84b218210dac0fe8ddf16c08fd413a
+CAM_HEALTH_PUBLICATION = PASS / 6ef2f7035dae858282eeae76ff5fefff160443bd
+BC_02_LOCAL_INTEGRATION = VALIDATED / combined checks pass; local merge pending
+BC_02_GIT_PUBLICATION = PENDING
+BC_02_MASTER_INTEGRATION = PENDING
+INITIAL_MASTER_SHA = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
+INTEGRATION_BRANCH = codex/bc-02-integration
+INTEGRATION_HEAD = 6ef2f7035dae858282eeae76ff5fefff160443bd
+MERGE_HEAD = 6fc4f708778210c617cf4b5bca6cca441bdb0705
+INTEGRATION_TESTS = 275/275 PASS / Django and SQLite in-memory
+MIGRATION_GRAPH = PASS / camera leaf 0018; fresh database and 0017→0018 upgrade PASS
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE section 69
+MON_WORKER = NOT_IMPLEMENTED
+INDEPENDENT_WORKER_HEARTBEAT = REQUIRED BY RUNTIME CONTRACT / scheduler-cycle heartbeat does not satisfy it
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MASTER_UNCHANGED = YES
+NEXT_ACTIVITY = BC-02-INTEGRATION-GIT-CHECKPOINT
+```
+
+Os registros MON-OBS anteriores foram preservados no `PROJECT_STATE.md` como
+seções 66–68, sem remover os registros CAM-INT-05 e CAM-HEALTH. O conflito era
+de numeração documental; não houve conflito de implementação no scheduler. O
+merge está resolvido e pronto para revisão/checkpoint, mantendo o merge commit
+pendente de autorização separada. O worker não foi iniciado.
