@@ -15,6 +15,8 @@ from django.utils import timezone
 
 from cameras.models import (
     Camera,
+    CameraConnectionConfig,
+    CameraHealthSnapshot,
     EstadoMonitoramento,
     Indisponibilidade,
     TransicaoEstadoMonitoramento,
@@ -164,6 +166,7 @@ class DjangoMonitoringRepository:
         decision: TechnicalDecision,
         next_due_at: datetime,
         ownership: OwnershipLease | None = None,
+        diagnostic=None,
     ) -> bool | CompletionDisposition:
         """Persiste uma completion em uma transação curta e monotônica.
 
@@ -173,6 +176,39 @@ class DjangoMonitoringRepository:
         """
 
         with transaction.atomic():
+            if diagnostic is not None:
+                from cameras.integracao.diagnostics import ConnectionTestResult, DiagnosticSource
+
+                if not isinstance(diagnostic, ConnectionTestResult) or diagnostic.source is not DiagnosticSource.AUTOMATIC:
+                    raise TypeError("diagnostic must be an automatic ConnectionTestResult")
+                if diagnostic.config_generation != candidate.config_generation:
+                    raise ValueError("diagnostic generation does not match candidate")
+                if diagnostic.camera_id != candidate.camera_id:
+                    raise ValueError("diagnostic camera does not match candidate")
+                if diagnostic.probe_result != result:
+                    raise ValueError("diagnostic and ProbeResult must describe the same observation")
+                config = (
+                    CameraConnectionConfig.objects.select_for_update()
+                    .select_related("camera", "profile")
+                    .filter(camera_id=candidate.camera_id)
+                    .first()
+                )
+                if (
+                    config is None
+                    or not config.enabled
+                    or not config.profile.active
+                    or config.profile.adapter_key != "RTSP"
+                    or config.config_version != diagnostic.config_version
+                    or not self._eligible(config.camera)
+                ):
+                    return CompletionDisposition.CONFIG_CHANGED
+                from cameras.integracao.capabilities import require_automatic_compatibility
+                from django.core.exceptions import ValidationError
+
+                try:
+                    require_automatic_compatibility(config.camera, config.profile)
+                except ValidationError:
+                    return CompletionDisposition.CONFIG_CHANGED
             state, _ = EstadoMonitoramento.objects.select_for_update().get_or_create(
                 camera_id=candidate.camera_id,
                 defaults={"versao_politica_confirmacao": memory.policy_version},
@@ -234,6 +270,22 @@ class DjangoMonitoringRepository:
                     if owner_is_current and state.ultima_geracao_configuracao != candidate.config_generation
                     else CompletionDisposition.OWNERSHIP_LOST
                 )
+            if diagnostic is not None:
+                snapshot = CameraHealthSnapshot.objects.select_for_update().filter(camera_id=candidate.camera_id).first()
+                is_newer = (
+                    snapshot is None
+                    or snapshot.config_generation < candidate.config_generation
+                    or (
+                        snapshot.config_generation == candidate.config_generation
+                        and snapshot.observed_at < diagnostic.observed_at
+                    )
+                )
+                if is_newer:
+                    values = diagnostic.snapshot_values()
+                    CameraHealthSnapshot.objects.update_or_create(
+                        camera_id=candidate.camera_id,
+                        defaults=values,
+                    )
             if changed:
                 if self._before_transition is not None:
                     self._before_transition()

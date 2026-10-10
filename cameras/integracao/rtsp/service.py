@@ -82,10 +82,11 @@ def _blocked(error_code, now):
     observed = now()
     if observed.tzinfo is None or observed.utcoffset() is None:
         observed = observed.replace(tzinfo=timezone.utc)
+    observed = observed.astimezone(timezone.utc)
     return RtspDiagnosticResult((
-        StageResult(RtspStage.NETWORK_REACHABILITY, StageStatus.NOT_RUN),
-        StageResult(RtspStage.RTSP_REACHABILITY, StageStatus.NOT_RUN),
-        StageResult(RtspStage.MEDIA_DESCRIPTION, StageStatus.NOT_RUN),
-        StageResult(RtspStage.MEDIA_DELIVERY, StageStatus.NOT_RUN)),
+        StageResult(RtspStage.NETWORK_REACHABILITY, StageStatus.NOT_RUN, observed_at=observed, duration_seconds=0.0),
+        StageResult(RtspStage.RTSP_REACHABILITY, StageStatus.NOT_RUN, observed_at=observed, duration_seconds=0.0),
+        StageResult(RtspStage.MEDIA_DESCRIPTION, StageStatus.NOT_RUN, observed_at=observed, duration_seconds=0.0),
+        StageResult(RtspStage.MEDIA_DELIVERY, StageStatus.NOT_RUN, observed_at=observed, duration_seconds=0.0)),
         ProbeResultCode.TARGET_BLOCKED if error_code in {"TARGET_BLOCKED", "MISCONFIGURED_POLICY"} else ProbeResultCode.INCONCLUSIVE,
         observed, 0.0, error_code)

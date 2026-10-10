@@ -497,6 +497,84 @@ class EstadoMonitoramento(models.Model):
         ]
 
 
+class CameraHealthSnapshot(models.Model):
+    """Última sequência sanitizada de diagnóstico automático A-D."""
+
+    class StageState(models.TextChoices):
+        PASS = "PASS", "Pass"
+        FAIL = "FAIL", "Fail"
+        NOT_RUN = "NOT_RUN", "Not run"
+
+    camera = models.OneToOneField(
+        Camera,
+        on_delete=models.CASCADE,
+        related_name="health_snapshot",
+    )
+    observed_at = models.DateTimeField()
+    config_generation = models.PositiveIntegerField()
+    stage_a_state = models.CharField(max_length=7, choices=StageState.choices)
+    stage_a_observed_at = models.DateTimeField()
+    stage_a_duration_seconds = models.FloatField()
+    stage_a_error_code = models.CharField(max_length=64, blank=True, default="")
+    stage_b_state = models.CharField(max_length=7, choices=StageState.choices)
+    stage_b_observed_at = models.DateTimeField()
+    stage_b_duration_seconds = models.FloatField()
+    stage_b_error_code = models.CharField(max_length=64, blank=True, default="")
+    stage_c_state = models.CharField(max_length=7, choices=StageState.choices)
+    stage_c_observed_at = models.DateTimeField()
+    stage_c_duration_seconds = models.FloatField()
+    stage_c_error_code = models.CharField(max_length=64, blank=True, default="")
+    stage_d_state = models.CharField(max_length=7, choices=StageState.choices)
+    stage_d_observed_at = models.DateTimeField()
+    stage_d_duration_seconds = models.FloatField()
+    stage_d_error_code = models.CharField(max_length=64, blank=True, default="")
+    reached_stage = models.CharField(max_length=1, blank=True, default="")
+    correlation_id = models.UUIDField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [models.Index(fields=["observed_at"], name="cam_health_observed_idx")]
+        constraints = [
+            models.CheckConstraint(condition=Q(config_generation__gt=0), name="cam_health_generation_positive"),
+            *[
+                models.CheckConstraint(
+                    condition=Q(**{f"stage_{stage}_state__in": ["PASS", "FAIL", "NOT_RUN"]}),
+                    name=f"cam_health_stage_{stage}_state_valid",
+                )
+                for stage in "abcd"
+            ],
+            *[
+                models.CheckConstraint(
+                    condition=Q(**{f"stage_{stage}_duration_seconds__gte": 0}),
+                    name=f"cam_health_stage_{stage}_duration_nonnegative",
+                )
+                for stage in "abcd"
+            ],
+            models.CheckConstraint(
+                condition=Q(reached_stage__in=["", "A", "B", "C", "D"]),
+                name="cam_health_reached_stage_valid",
+            ),
+            models.CheckConstraint(
+                condition=Q(stage_a_state="PASS") | Q(stage_b_state="NOT_RUN"),
+                name="cam_health_stage_b_requires_a",
+            ),
+            models.CheckConstraint(
+                condition=Q(stage_b_state="PASS") | Q(stage_c_state="NOT_RUN"),
+                name="cam_health_stage_c_requires_b",
+            ),
+            models.CheckConstraint(
+                condition=Q(stage_c_state="PASS") | Q(stage_d_state="NOT_RUN"),
+                name="cam_health_stage_d_requires_c",
+            ),
+            models.CheckConstraint(
+                condition=Q(stage_a_state="PASS", stage_b_state="PASS", stage_c_state="PASS", stage_d_state="PASS")
+                | ~Q(stage_d_state="PASS"),
+                name="cam_health_d_pass_requires_abc",
+            ),
+        ]
+
+
 class TransicaoEstadoMonitoramento(models.Model):
     """Histórico enxuto: somente mudanças de estado técnico estável."""
 

@@ -394,15 +394,26 @@ class DueScheduler:
         )
         return report
 
-    def complete(self, attempt_id: UUID, result: ProbeResult, now: datetime | None = None) -> CompletionOutcome:
+    def complete(self, attempt_id: UUID, result: ProbeResult, now: datetime | None = None, *, diagnostic=None) -> CompletionOutcome:
         if not isinstance(attempt_id, UUID):
             raise TypeError("attempt_id must be a UUID")
         if not isinstance(result, ProbeResult):
             raise TypeError("result must be a ProbeResult")
+        if diagnostic is not None:
+            from cameras.integracao.diagnostics import ConnectionTestResult, DiagnosticSource
+
+            if not isinstance(diagnostic, ConnectionTestResult):
+                raise TypeError("diagnostic must be a ConnectionTestResult")
+            if diagnostic.source is not DiagnosticSource.AUTOMATIC:
+                raise ValueError("only automatic diagnostics may accompany MON completion")
+            if diagnostic.probe_result != result:
+                raise ValueError("diagnostic and MON result must describe the same observation")
         now = _aware_utc(self._clock.now() if now is None else now, "now")
         attempt = self._attempts.get(attempt_id)
         if attempt is None:
             raise KeyError("unknown attempt_id")
+        if diagnostic is not None and diagnostic.camera_id != attempt.camera_id:
+            raise ValueError("diagnostic camera does not match MON attempt")
         current_id = self._current_by_camera.get(attempt.camera_id)
         if attempt.state in (AttemptState.COMPLETED, AttemptState.CANCELLED):
             if current_id is not None and current_id != attempt_id:
@@ -435,15 +446,16 @@ class DueScheduler:
                 memory = self._confirmation_port.load(candidate, self._confirmation_policy)
                 memory, decision = reduce_confirmation(memory, result, self._confirmation_policy)
                 if attempt.ownership is None:
-                    stored = self._confirmation_port.store(candidate, result, memory, decision, scheduled_next)
+                    if diagnostic is None:
+                        stored = self._confirmation_port.store(candidate, result, memory, decision, scheduled_next)
+                    else:
+                        stored = self._confirmation_port.store(candidate, result, memory, decision, scheduled_next, diagnostic=diagnostic)
                 else:
+                    store_kwargs = {"ownership": attempt.ownership}
+                    if diagnostic is not None:
+                        store_kwargs["diagnostic"] = diagnostic
                     stored = self._confirmation_port.store(
-                        candidate,
-                        result,
-                        memory,
-                        decision,
-                        scheduled_next,
-                        ownership=attempt.ownership,
+                        candidate, result, memory, decision, scheduled_next, **store_kwargs,
                     )
                 if stored is False:
                     return self._discard(attempt, CompletionDisposition.CONFIG_CHANGED, now)

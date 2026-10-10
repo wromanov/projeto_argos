@@ -57,7 +57,7 @@ def _misconfigured_policy(now) -> RtspDiagnosticResult:
     else:
         observed = observed.astimezone(timezone.utc)
     return RtspDiagnosticResult(
-        stages=tuple(StageResult(stage, StageStatus.NOT_RUN) for stage in RtspStage),
+        stages=tuple(StageResult(stage, StageStatus.NOT_RUN, observed_at=observed, duration_seconds=0.0) for stage in RtspStage),
         category=ProbeResultCode.TARGET_BLOCKED,
         observed_at=observed,
         duration_seconds=0.0,

@@ -3767,3 +3767,157 @@ a validação pré-publicação é `73c21b40dc8df9dfec503e7f29eeacb8fe6e962b`.
 Este checkpoint supersede o estado pendente de publicação da seção 61. O ZIP local
 permaneceu fora do Git. A UI P5 foi publicada no repositório `master`; isso não
 registra um deploy separado em servidor operacional.
+
+
+## 63. CAM-INT-05-IMPLEMENTATION — implementação local em validação (2026-10-10)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = CAM-INT-05-IMPLEMENTATION
+STATUS = PARTIAL / ASYNC_TEST_RUNTIME_BLOCKED
+ACTIVITY_COMPLETION_PERCENT = 76%
+BRANCH = codex/cam-int-05-implementation
+INITIAL_HEAD = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
+FINAL_HEAD = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
+SOURCE_BASELINE = origin/master
+CONTRACT_STATUS = READ / NO MATERIAL CONFLICT FOUND
+AUTOMATIC_DIAGNOSTIC = IMPLEMENTED / 10/10 CAM-INT-05 TESTS PASS
+STAGE_A = IMPLEMENTED / TCP EVIDENCE
+STAGE_B = IMPLEMENTED / RTSP EVIDENCE
+STAGE_C = IMPLEMENTED / MEDIA DESCRIPTION EVIDENCE
+STAGE_D = IMPLEMENTED / DECODED MEDIA EVIDENCE
+AUTOMATIC_D_PASS_MAPPING = PASS / TESTED
+MANUAL_DIAGNOSTIC_ISOLATION = PASS / TESTED
+CAMERA_HEALTH_SNAPSHOT = MODEL AND MIGRATION CREATED / APPLIED IN TEST DATABASE
+SNAPSHOT_PERSISTENCE = ATOMIC WITH MON COMPLETION / TESTED
+TRANSACTIONAL_CONSISTENCY = PASS / ROLLBACK TESTED
+OWNERSHIP_FENCING = OWNER/EPOCH AND CONFIG GENERATION REUSED / TESTED
+STALE_RESULT_REJECTION = GENERATION, OWNER, AND OBSERVATION ORDER TESTED
+CREDENTIAL_RESOLUTION = CAM-INT-02-R1 SERVICE REUSED / 74 RELEVANT TESTS PASS
+TARGET_POLICY = CAM-INT-07 POLICY REUSED / TESTED; NO REAL NETWORK ACCESS
+MON_INTEGRATION_BOUNDARY = OPTIONAL AUTOMATIC DIAGNOSTIC ON DUE SCHEDULER COMPLETION
+DJANGO_CHECK = PASS
+MIGRATION_CHECK = PASS / NO MODEL DRIFT; 0018 APPLIED IN TEST DATABASE
+UNIT_TESTS = CAM-INT-05 10/10 PASS; ASYNC PROBE TESTS BLOCKED BY EVENT LOOP
+INTEGRATION_TESTS = RTSP/CREDENTIAL/TARGET/CONFIGURATION 74/74 PASS
+REGRESSION_TESTS = SYNCHRONOUS MON CORE AND SCHEDULER/REDUCER 94/94 PASS
+QUALITY_CHECKS = PY_COMPILE PASS; GIT_DIFF_CHECK PASS; FOCAL BANDIT PASS
+REAL_CAMERA_VALIDATION = NOT_PERFORMED
+FILES_CHANGED = cameras/integracao/rtsp/gst_adapter.py; cameras/integracao/rtsp/ports.py;
+                cameras/integracao/rtsp/runtime.py; cameras/integracao/rtsp/service.py;
+                cameras/models.py; cameras/monitoramento/repository.py;
+                cameras/monitoramento/scheduler.py; PROJECT_STATE.md;
+                AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md
+FILES_CREATED = cameras/integracao/diagnostics.py; cameras/migrations/0018_camera_health_snapshot.py;
+                cameras/test_camera_diagnostics.py
+MIGRATIONS_CREATED = cameras/migrations/0018_camera_health_snapshot.py / UNVALIDATED
+KNOWN_LIMITATIONS = ASYNC TEST EXECUTION BLOCKS IN THIS WINDOWS HOST; EVEN asyncio.run(asyncio.sleep(0)) DID NOT COMPLETE
+MATERIAL_CONTRACT_CONFLICTS = NONE FOUND
+PROJECT_STATE_UPDATE = PASS / THIS SECTION
+STAGING = EMPTY
+FINAL_BRANCH = codex/cam-int-05-implementation
+WORKTREE_STATUS = MODIFIED BY AUTHORIZED SLICE / NO UNRELATED CHANGES OBSERVED
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MASTER_CHANGED = NO
+CAM_HEALTH_STATUS = NOT_IMPLEMENTED
+MON_WORKER_STATUS = BLOCKED_BY_BC_02 / NOT IMPLEMENTED
+MON_WORKER_UNBLOCKED = NO / ASYNC TEST GATE PENDING
+NEXT_RECOMMENDED_ACTIVITY = CAM-INT-05-VALIDATION-AND-GIT-CHECKPOINT
+```
+
+O boundary de diagnóstico automático reutiliza CAM-INT-03, resolução de
+credenciais CAM-INT-02-R1 e TargetPolicy CAM-INT-07. A completion opcionalmente
+transporta evidência A-D automática até `DjangoMonitoringRepository.store`, que
+grava o snapshot no mesmo bloco transacional da confirmação MON, sob o fencing
+existente. Resultado manual não pode usar essa persistência. O adapter registra
+instante e duração por estágio; cancelamentos deixam estágios não observados em
+`NOT_RUN`. A migration adiciona somente o snapshot derivado.
+
+Os testes CAM-INT-05 foram escritos, mas o Python disponível não possui Django.
+O ambiente virtual local foi criado; o sandbox não resolveu `pypi.org`, e não
+havia wheels locais. Portanto `manage.py check`, verificação de migration e
+suítes Django permanecem pendentes. A sintaxe Python e `git diff --check`
+passaram. Nenhuma câmera real foi acessada; nenhum commit ou push foi feito.
+
+
+## 64. CAM-INT-05-TECHNICAL-CLOSURE — fechamento técnico local (2026-10-10)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = CAM-INT-05-TECHNICAL-CLOSURE
+STATUS = COMPLETE / CONTRACT_CONFORMANCE_PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+CONTRACT = docs/projeto/contracts/backend/camera/CAM-INT-05_TECHNICAL_DIAGNOSTICS_CONTRACT.md
+CONTRACT_CONFORMANCE = PASS / A-D, D-ONLY SUCCESS, MANUAL ISOLATION, SANITIZED OUTPUT
+IMPLEMENTATION_STATUS = COMPLETE / LOCAL WIP / NOT PUBLISHED
+VALIDATION_GATE = PASS
+ROOT = C:\Users\walac\desenvolvimento\projeto_argos_cam_int_05
+BRANCH = codex/cam-int-05-implementation
+BASELINE_HEAD = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
+HEAD = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
+CAM_INT_05_TESTS = 10/10 PASS
+MON_EXTERNAL_REGRESSION = 63/63 PASS / MIXED SYNCHRONOUS AND ASYNCHRONOUS
+ASYNCIO_EXTERNAL_SMOKE = PASS
+PREVIOUS_RTSP_CREDENTIAL_POLICY_TESTS = 74/74 PASS / PRIOR VALIDATION
+PREVIOUS_MON_SYNC_TESTS = 94/94 PASS / PRIOR VALIDATION / OVERLAPPING, NOT ADDITIVE
+DJANGO_CHECK = PASS
+MIGRATION_0018_TEST_DATABASE = PASS
+MIGRATION_SCHEMA_CHECK = PASS
+BANDIT_FOCUSED = PASS
+GIT_DIFF_CHECK = PASS
+ROLLBACK_TEST = PASS / EXPECTED MONITORING_OPERATIONAL_FAILURE EVENT RECORDED
+PYTHON_RUNTIME = 3.12.14
+DJANGO_RUNTIME = 5.2.16
+PYTHON_COMPATIBILITY = PASS / DJANGO 5.2 SUPPORTS PYTHON 3.12; PROJECT RANGE UNDECLARED
+MIGRATION_GRAPH_LOCAL = 0018_CAMERA_HEALTH_SNAPSHOT AFTER 0017
+MIGRATION_COLLISION = codex/cam-int-04-implementation HAS INDEPENDENT 0018_CAMERACAPTUREJOB
+INTEGRATION_RISK = YES / RECONCILE MIGRATION DAG BEFORE MERGE; NOT CHANGED HERE
+SECURITY_FINDINGS = NO CAM-INT-05 FINDING IDENTIFIED / FOCAL BANDIT PASS / TWO LOW BASELINE FINDINGS RETAINED
+REAL_CAMERA_ACCESS = NO
+EVIDENCE_SOURCE = USER-CONFIRMED EXTERNAL WINDOWS POWERSHELL RUN / SAME PROJECT WIP
+EXTERNAL_SOURCE_HASH_MANIFEST = NOT_PROVIDED
+FILES_CHANGED = 10 TRACKED MODIFIED + 3 NEW BEFORE THIS CLOSURE UPDATE; 3 CONTINUITY FILES TOTAL
+PROJECT_STATE_UPDATE = PASS / SECTION 64
+STAGING = EMPTY
+WORKTREE_STATUS = MODIFIED / UNSTAGED / 13 PATHS / AUTHORIZED ACTIVITY SCOPE
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MASTER_UNCHANGED = YES
+CAM_HEALTH_IMPLEMENTED = NO
+MON_WORKER_STARTED = NO
+NEXT_RECOMMENDED_ACTIVITY = CAM-INT-05-GIT-CHECKPOINT
+```
+
+Revisão dos critérios: o adapter produz estágios A-D; somente A-D PASS mapeia
+para `SUCCESS`; o serviço manual autorizado permanece separado e não grava
+estado MON, e `ConnectionTestResult.snapshot_values`/scheduler rejeitam fonte
+manual. A execução automática reutiliza credenciais e TargetPolicy; revalida
+configuração, perfil e geração antes do probe e configuração/perfil na
+completion. O repositório grava snapshot e completion na mesma transação,
+fenced por owner/epoch/generation, e rejeita owners, gerações e observações
+antigas. Saídas e persistência são sanitizadas, sem URI completa, SDP, frame ou
+segredos.
+
+A migration 0018 cria apenas snapshot derivado, com OneToOne, índice de
+`observed_at`, geração positiva, enums, duração não negativa e coerência da
+sequência A-D. A árvore local termina em 0018 e `showmigrations` confirmou o
+grafo; por esse comando, o banco padrão local está sem as migrations aplicadas.
+O banco de teste aplicado e a checagem de schema são evidências externas
+confirmadas. Uma branch independente CAM-INT-04 também cria migration 0018
+dependente de 0017; a colisão é risco de integração e exige reconciliação
+serializada antes da integração, sem renumeração nesta atividade.
+
+Python 3.12.14 é compatível com Django 5.2.16; `requirements.txt` fixa Django,
+mas o projeto não declara `requires-python` nem outra faixa Python. Não foram
+instalados nem alterados runtimes. A suíte MON externa de 63 testes contém
+casos síncronos e assíncronos. A smoke de asyncio é evidência separada. Os 74
+testes anteriores RTSP/credenciais/policy e os 94 testes síncronos MON são
+referências de validações prévias e não devem ser somados às 63 regressões.
+O evento `MONITORING_OPERATIONAL_FAILURE` no rollback foi esperado e o teste
+terminou PASS. Não foram repetidos testes aprovados nem acessada câmera real.
+
+As validações externas foram declaradas para este mesmo root e WIP. Não foi
+fornecido manifesto externo de hashes por arquivo; a revisão local não alterou
+arquivos de implementação. A revisão final e `git diff --check` passaram após
+esta atualização documental. `PROJECT_STATE_UPDATE = PASS`.

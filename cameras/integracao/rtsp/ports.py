@@ -32,11 +32,23 @@ class StageResult:
     stage: RtspStage
     status: StageStatus
     error_code: str | None = None
+    observed_at: datetime | None = None
+    duration_seconds: float | None = None
     def __post_init__(self):
         if not isinstance(self.stage, RtspStage) or not isinstance(self.status, StageStatus):
             raise TypeError("stage/status must use RTSP enums")
         if self.error_code is not None and (not _CODE.fullmatch(self.error_code) or self.status is not StageStatus.FAIL):
             raise ValueError("failed stage error code is invalid")
+        if self.observed_at is not None:
+            if not isinstance(self.observed_at, datetime) or self.observed_at.utcoffset() is None:
+                raise ValueError("stage observed_at must be timezone-aware")
+            object.__setattr__(self, "observed_at", self.observed_at.astimezone(timezone.utc))
+        if self.duration_seconds is not None:
+            if isinstance(self.duration_seconds, bool) or not isinstance(self.duration_seconds, Real):
+                raise TypeError("stage duration must be a real number")
+            if not math.isfinite(float(self.duration_seconds)) or self.duration_seconds < 0:
+                raise ValueError("stage duration must be finite and non-negative")
+            object.__setattr__(self, "duration_seconds", float(self.duration_seconds))
 
 @dataclass(frozen=True, slots=True)
 class RtspSession:
@@ -97,6 +109,8 @@ class RtspDiagnosticResult:
         stages = tuple(self.stages)
         if tuple(s.stage for s in stages) != tuple(RtspStage):
             raise ValueError("diagnostic must contain ordered A/B/C/D stages")
+        if any(stage.observed_at is None or stage.duration_seconds is None for stage in stages):
+            raise ValueError("each stage requires an observed_at and duration")
         if not isinstance(self.category, ProbeResultCode): raise TypeError("category must be ProbeResultCode")
         if self.observed_at.tzinfo is None or self.observed_at.utcoffset() is None:
             raise ValueError("observed_at must be timezone-aware")
@@ -117,8 +131,18 @@ class RtspAdapter(Protocol):
     def receive_one_frame(self, session: RtspSession) -> bool: ...
     def cancel(self, target: RtspConnectionRequest | RtspSession) -> None: ...
 
-def make_result(statuses, category, started, *, error_code=None, codec=None, monotonic, now):
-    stages = tuple(StageResult(stage, status, error_code if status is StageStatus.FAIL else None)
-                   for stage, status in zip(RtspStage, statuses, strict=True))
-    return RtspDiagnosticResult(stages, category, now().astimezone(timezone.utc),
-                                max(0.0, monotonic() - started), error_code, codec)
+def make_result(statuses, category, started, *, error_code=None, codec=None, stage_timings=None, monotonic, now):
+    observed = now().astimezone(timezone.utc)
+    timings = stage_timings or {}
+    elapsed = max(0.0, monotonic() - started)
+    stages = tuple(
+        StageResult(
+            stage,
+            status,
+            error_code if status is StageStatus.FAIL else None,
+            timings.get(stage, (observed, 0.0 if status is StageStatus.NOT_RUN else elapsed))[0],
+            timings.get(stage, (observed, 0.0 if status is StageStatus.NOT_RUN else elapsed))[1],
+        )
+        for stage, status in zip(RtspStage, statuses, strict=True)
+    )
+    return RtspDiagnosticResult(stages, category, observed, elapsed, error_code, codec)

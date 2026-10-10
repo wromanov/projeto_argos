@@ -1447,3 +1447,68 @@ NEXT_ACTION = resume ARGOS backend from the next open activity after CAM-INT-03
 
 O worktree da UI permaneceu intocado; o ZIP local de continuidade segue não
 rastreado e preservado. Publicação no repositório não implica deploy operacional.
+
+
+### 20.30. CAM-INT-05-IMPLEMENTATION — registro inicial (supersedido)
+
+Este registro inicial foi supersedido pela seção 20.31 e pela seção 64 de
+`PROJECT_STATE.md`. Os fatos e validações desta fotografia histórica não devem
+ser usados como estado atual.
+
+```text
+CAM_INT_05_IMPLEMENTATION = LOCAL / PARTIAL / ASYNC_TEST_RUNTIME_BLOCKED / HISTORICAL
+CAMERA_HEALTH_SNAPSHOT = MODEL_AND_MIGRATION_CREATED / TEST_DATABASE_APPLIED
+AUTOMATIC_MANUAL_ISOLATION = PASS / CAM-INT-05 TESTS 10/10
+MON_SNAPSHOT_COMPLETION_ATOMICITY = PASS / ROLLBACK AND FENCING TESTED
+PYTHON_SYNTAX = PASS
+GIT_DIFF_CHECK = PASS
+DJANGO_CHECK = PASS
+MIGRATION_CHECK = PASS / NO MODEL DRIFT
+TESTS = CAM-INT-05 10/10; RTSP AND POLICY 74/74; SYNCHRONOUS MON 94/94
+ASYNC_TESTS = BLOCKED / WINDOWS HOST EVENT LOOP HANG
+SECURITY_CHECK = FOCAL BANDIT PASS / BASELINE HAS TWO LOW FINDINGS IN EXISTING CODE
+REAL_CAMERA_ACCESS = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md SECTION 63
+CAM_HEALTH_IMPLEMENTED = NO
+MON_WORKER_STATUS = BLOCKED_BY_BC_02
+MON_WORKER_UNBLOCKED = NO
+NEXT_ACTIVITY = CAM-INT-05-TECHNICAL-CLOSURE
+```
+
+### 20.31. CAM-INT-05-TECHNICAL-CLOSURE — fechamento técnico local (2026-10-10)
+
+O estado factual e as evidências estão na seção 64 de `PROJECT_STATE.md`. A
+atividade fechou localmente contra o contrato CAM-INT-05. A branch continua
+`codex/cam-int-05-implementation`, com `HEAD` na baseline
+`5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9`; nenhuma publicação ocorreu.
+
+```text
+CAM_INT_05 = COMPLETE / CONTRACT_CONFORMANCE_PASS
+CAM_INT_05_TESTS = 10/10 PASS
+MON_EXTERNAL_REGRESSION = 63/63 PASS / MIXED SYNCHRONOUS AND ASYNCHRONOUS
+ASYNCIO_EXTERNAL_SMOKE = PASS
+PREVIOUS_RTSP_CREDENTIAL_POLICY_TESTS = 74/74 PASS
+PREVIOUS_MON_SYNC_TESTS = 94/94 PASS / OVERLAPPING EVIDENCE, NOT ADDITIVE
+DJANGO_CHECK = PASS
+MIGRATION_0018_TEST_DATABASE = PASS
+MIGRATION_SCHEMA_CHECK = PASS
+BANDIT_FOCUSED = PASS
+GIT_DIFF_CHECK = PASS
+PYTHON = 3.12.14 / COMPATIBLE WITH DJANGO 5.2.16
+MIGRATION_COLLISION = CAM-INT-04 ALSO HAS INDEPENDENT 0018 / INTEGRATION RISK
+CAM_HEALTH_IMPLEMENTED = NO
+MON_WORKER_STARTED = NO
+REAL_CAMERA_ACCESS = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+NEXT_ACTIVITY = CAM-INT-05-GIT-CHECKPOINT
+```
+
+Os 63 testes da regressão MON incluem casos síncronos e assíncronos; não os
+classificar como exclusivamente assíncronos. O teste de rollback registrou
+`MONITORING_OPERATIONAL_FAILURE` como esperado e terminou em PASS. A branch
+CAM-INT-04 contém `0018_cameracapturejob.py`, também dependente de 0017; a
+colisão numérica deve ser resolvida no checkpoint de integração. Nenhuma
+migration foi renumerada nesta atividade.

@@ -62,6 +62,9 @@ class GStreamerRtspAdapter:
         started = self.monotonic()
         deadline = started + request.timeout_seconds
         statuses = [StageStatus.NOT_RUN] * 4
+        stage_started = [started, None, None, None]
+        stage_ended = [None, None, None, None]
+        stage_observed = [None, None, None, None]
         code, category, codec = None, ProbeResultCode.INCONCLUSIVE, None
         sock = pipeline = None
         Gst = None
@@ -75,12 +78,17 @@ class GStreamerRtspAdapter:
             if request.cancel_event.is_set():
                 raise _Failure("CANCELLED")
             statuses[0] = StageStatus.PASS
+            stage_ended[0] = self.monotonic(); stage_observed[0] = self.now()
+            stage_started[1] = stage_ended[0]
             sock.close(); sock = None
             Gst, GstRtsp = self.loader()
             pipeline, src, decoder, sink = self._pipeline(Gst, GstRtsp, request)
             seen = {"sdp": False, "codec": None, "frame": False, "unsupported": False, "failure": None}
             def on_sdp(_src, _sdp):
                 seen["sdp"] = True
+                if stage_ended[1] is None:
+                    stage_ended[1] = self.monotonic(); stage_observed[1] = self.now()
+                    stage_started[2] = stage_ended[1]
             def source_pad(_src, pad):
                 caps = pad.get_current_caps() or pad.query_caps(None)
                 if not caps or not caps.get_size(): return
@@ -111,6 +119,9 @@ class GStreamerRtspAdapter:
                 if target is None or pad.link(target) != Gst.PadLinkReturn.OK:
                     raise _Failure("PROTOCOL_ERROR")
                 seen["codec"] = encoding[:32]
+                if stage_ended[2] is None:
+                    stage_ended[2] = self.monotonic(); stage_observed[2] = self.now()
+                    stage_started[3] = stage_ended[2]
             def decoder_pad(_decoder, pad):
                 caps = pad.get_current_caps() or pad.query_caps(None)
                 if caps and caps.get_size() and caps.get_structure(0).get_name().startswith("video/x-raw"):
@@ -120,6 +131,7 @@ class GStreamerRtspAdapter:
                 value = sink.emit("pull-sample")
                 if value and value.get_buffer() and 0 < value.get_buffer().get_size() <= MAX_FRAME_BYTES:
                     seen["frame"] = True
+                    stage_ended[3] = self.monotonic(); stage_observed[3] = self.now()
                 return Gst.FlowReturn.OK
             src.connect("on-sdp", on_sdp); src.connect("pad-added", source_pad)
             decoder.connect("pad-added", decoder_pad); sink.connect("new-sample", sample)
@@ -153,8 +165,14 @@ class GStreamerRtspAdapter:
                 raise _Failure(seen["failure"])
             if seen["sdp"]:
                 statuses[1] = StageStatus.PASS
+                if stage_ended[1] is None:
+                    stage_ended[1] = self.monotonic(); stage_observed[1] = self.now()
+                    stage_started[2] = stage_ended[1]
                 if seen["codec"]:
                     statuses[2] = StageStatus.PASS; codec = seen["codec"]
+                    if stage_ended[2] is None:
+                        stage_ended[2] = self.monotonic(); stage_observed[2] = self.now()
+                        stage_started[3] = stage_ended[2]
                     if seen["frame"]:
                         statuses[3] = StageStatus.PASS; category = ProbeResultCode.SUCCESS
                     else:
@@ -185,9 +203,11 @@ class GStreamerRtspAdapter:
                 statuses[1] = StageStatus.PASS
                 if seen["codec"]:
                     statuses[2] = StageStatus.PASS; codec = seen["codec"]
-            idx = 1 if statuses[1] is StageStatus.NOT_RUN else 2 if statuses[2] is StageStatus.NOT_RUN else 3
-            statuses[idx] = StageStatus.FAIL; code = exc.code
+            code = exc.code
             category = ProbeResultCode.CANCELLED if code == "CANCELLED" else ProbeResultCode.AUTH_FAILURE if code == "AUTH_FAILURE" else ProbeResultCode.INCONCLUSIVE if code in {"UNAUTHORIZED_REDIRECT", "MEDIA_DELIVERY_FAILED", "VIDEO_NOT_ANNOUNCED", "UNSUPPORTED_CAPABILITY", "CONFIG_ERROR"} else ProbeResultCode.PROTOCOL_ERROR
+            if code != "CANCELLED":
+                idx = 1 if statuses[1] is StageStatus.NOT_RUN else 2 if statuses[2] is StageStatus.NOT_RUN else 3
+                statuses[idx] = StageStatus.FAIL
         except Exception:
             idx = 1 if statuses[1] is StageStatus.NOT_RUN else 2 if statuses[2] is StageStatus.NOT_RUN else 3
             statuses[idx] = StageStatus.FAIL; code, category = "PROTOCOL_ERROR", ProbeResultCode.PROTOCOL_ERROR
@@ -198,8 +218,21 @@ class GStreamerRtspAdapter:
             if pipeline is not None and Gst is not None:
                 try: pipeline.set_state(Gst.State.NULL)
                 except Exception: pass
+        finished = self.monotonic()
+        finished_at = self.now()
+        stage_timings = {}
+        for index, stage in enumerate(RtspStage):
+            if statuses[index] is StageStatus.NOT_RUN:
+                stage_timings[stage] = (finished_at, 0.0)
+                continue
+            end = stage_ended[index] if stage_ended[index] is not None else finished
+            start = stage_started[index] if stage_started[index] is not None else end
+            stage_timings[stage] = (
+                stage_observed[index] if stage_observed[index] is not None else finished_at,
+                max(0.0, end - start),
+            )
         return make_result(tuple(statuses), category, started, error_code=code, codec=codec,
-                           monotonic=self.monotonic, now=self.now)
+                           stage_timings=stage_timings, monotonic=self.monotonic, now=self.now)
     @staticmethod
     def _classify_error(error):
         # Provider text is inspected transiently and never returned or logged.

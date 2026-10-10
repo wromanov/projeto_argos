@@ -724,3 +724,38 @@ normal autorizado e verificação `HEAD = origin/master`; consulte a seção 61 
 
 A publicação foi verificada em `origin/master` com divergência zero. A seção 62
 de `PROJECT_STATE.md` supersede o status de push pendente da seção 61.
+
+
+## 35. CAM-INT-05-IMPLEMENTATION — registro inicial (supersedido em 2026-10-10)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 63 | Registro inicial da implementação e validação parcial | HISTORICAL / SUPERSEDED BY SECTION 64 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.30 | Registro inicial da fronteira CAM-INT-05 | HISTORICAL / SUPERSEDED |
+| `cameras/integracao/diagnostics.py` | Boundary automática A-D e resultado sanitizado | LOCAL / VALIDATED |
+| `cameras/models.py`, `cameras/migrations/0018_camera_health_snapshot.py` | Snapshot automático por câmera | LOCAL / MIGRATION AND SCHEMA VALIDATED |
+| `cameras/monitoramento/repository.py`, `cameras/monitoramento/scheduler.py` | Completion integrada com snapshot e fencing MON | LOCAL / VALIDATED |
+| `cameras/test_camera_diagnostics.py` | Testes da slice CAM-INT-05 | AUTHORED / 10 PASS |
+
+O snapshot é derivado e automático; o worker MON e CAM-HEALTH continuam fora
+desta atividade. O fechamento e as evidências validadas estão na seção 64 de
+`PROJECT_STATE.md` e na seção 20.31 de `AGENT_CONTINUITY.md`. O risco de
+colisão com a migration 0018 da branch CAM-INT-04 permanece para reconciliação
+no checkpoint de integração.
+
+## 36. CAM-INT-05-TECHNICAL-CLOSURE — fechamento técnico local (2026-10-10)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 64 | Resultado, evidências, fileset e risco de integração | CURRENT / COMPLETE / NOT PUBLISHED |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.31 | Handoff de fechamento e próximo checkpoint | CURRENT / COMPLETE |
+| `docs/projeto/contracts/backend/camera/CAM-INT-05_TECHNICAL_DIAGNOSTICS_CONTRACT.md` | Contrato de aceite | ACTIVE / CONFORMANT |
+| `cameras/integracao/diagnostics.py`; `cameras/integracao/rtsp/*` | Evidência técnica A-D, adaptador RTSP e isolamento de fonte | LOCAL / VALIDATED |
+| `cameras/models.py`; `cameras/migrations/0018_camera_health_snapshot.py` | Snapshot derivado, constraints e índice | LOCAL / TEST DATABASE AND SCHEMA PASS |
+| `cameras/monitoramento/repository.py`; `cameras/monitoramento/scheduler.py` | Revalidação, fencing e completion atômica | LOCAL / VALIDATED |
+| `cameras/test_camera_diagnostics.py` | Testes CAM-INT-05 | AUTHORED / 10 PASS |
+
+As evidências externas confirmadas e sua reconciliação, incluindo a suíte MON
+mista síncrona/assíncrona, constam na seção 64 de `PROJECT_STATE.md`. A branch
+CAM-INT-04 tem uma migration 0018 independente; reconciliar o grafo antes da
+integração, sem tratar a colisão como defeito do contrato local.
