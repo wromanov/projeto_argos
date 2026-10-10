@@ -2331,3 +2331,124 @@ O push de `master` publicou o commit funcional e o checkpoint documental. O fetc
 posterior confirmou `HEAD == origin/master == b67e25bb74e695ded343e6558285f7ab0e5d44a7`,
 divergência `0/0`, staging vazio e os worktrees master e source limpos. Revalidar
 Git ao iniciar uma nova atividade.
+
+
+## 44. MON-OBS — recuperação local de implementação (2026-10-09)
+
+```text
+ACTIVITY = MON-OBS-IMPLEMENTATION-RECOVERY-AND-VALIDATION
+STATUS = PARTIAL / implementação local reconciliada; regressão Django não executada
+INITIAL_BRANCH = codex/mon-obs-observability
+INITIAL_HEAD = 80c458581944401510b62d1ba35febf7ddadc0d5
+FINAL_BRANCH = codex/mon-obs-observability
+FINAL_HEAD = 80c458581944401510b62d1ba35febf7ddadc0d5
+WIP_RECOVERY = PRESERVED / duas alterações rastreadas e dois arquivos não rastreados já existiam no início
+OBSERVABILITY_PROVIDER = PASS / MonitoringTelemetry; NoopTelemetry; LoggingTelemetry JSON estruturado; allowlists locais
+SCHEDULER_INSTRUMENTATION = PASS / ciclos, heartbeat, lifecycle, fila, tentativas, resultados, falhas de repositório e ownership
+CONFIG_SNAPSHOT = PASS / valores bounded e status/versão da ConfirmationPolicy; sem thresholds, target ou segredo
+STAGE_FAILURE_INTERFACE = PASS / record_stage_failure; produtor adapter permanece fora do escopo MON-OBS
+CORE_COMPATIBILITY = PASS / DueScheduler existente; nenhuma alteração de modelo ou migration
+MONITORING_STATE_SEMANTICS = PASS / sink não altera resultado nem estado de domínio; sem atribuição de saúde de câmera pela telemetria
+OWNERSHIP_FENCING = PRESERVED / eventos de denied/acquired/lost e stale rejection; sem mudança do fencing do core
+TELEMETRY_RETENTION = N/A LOCAL / retenção, backend, alertas e SLO permanecem posteriores (PROD-CAP/TOPO)
+ACCEPTANCE_CRITERIA = PASS localmente para allowlists, escalares finitos, sanitização, sink indisponível, lifecycle, fila, outcomes, stage helper, heartbeat e contenção de lease
+UNIT_TESTS = PASS / 116 testes e 188 subtests em seis módulos MON puros
+INTEGRATION_TESTS = BLOCKED / módulos Django não coletados; Django ausente do Python disponível
+REGRESSION_TESTS = PARTIAL / scheduler, probe, confirmação e laboratórios puros PASS; nove módulos Django falharam na coleta por ModuleNotFoundError: django
+QUALITY_CHECKS = PASS / compileall nos quatro módulos editados; git diff --check; Django check não executável sem Django
+LOCAL_INTEGRATION = PASS / instrumentação no scheduler local; sem integração de adapter/worker
+IMPLEMENTATION_STATUS = PARTIAL / provider e core integrados; validação de integração pendente
+FILES_MODIFIED = cameras/monitoramento/__init__.py; cameras/monitoramento/scheduler.py; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md
+PREEXISTING_UNTRACKED_FILES = cameras/monitoramento/observability.py; cameras/test_monitoramento_observability.py
+WORKTREE_STATUS = 3 modified; 2 untracked MON-OBS; sem staging
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+MASTER_CHANGED = NO
+MON_WORKER_DEPENDENCY_GATE = PENDING / CAM-INT-05 e CAM-HEALTH continuam necessários
+PROJECT_STATE_UPDATE = PASS / seção 44 registra evidência e limitações sem declarar conclusão técnica total
+NEXT_RECOMMENDED_ACTIVITY = disponibilizar dependências Django aprovadas e executar regressão MON integrada; depois revisar o fechamento MON-OBS
+```
+
+O provider local instrumenta o scheduler existente e mantém dados de câmera separados da saúde operacional do MON. A validação disponível passou nos módulos sem Django. A suíte integrada e o check Django permanecem pendentes porque o único interpretador Python encontrado não tem Django instalado; o checkout não contém ambiente virtual. MON-WORKER permanece bloqueado pelos gates CAM-INT-05 e CAM-HEALTH.
+
+
+## 45. MON-OBS — validação Django integrada (2026-10-09)
+
+```text
+ACTIVITY = MON-OBS-DJANGO-ENVIRONMENT-VALIDATION
+STATUS = COMPLETE / critérios funcionais e de ambiente aprovados; findings independentes registrados
+EXECUTION_ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_obs
+GIT_BRANCH = codex/mon-obs-observability
+GIT_HEAD = 80c458581944401510b62d1ba35febf7ddadc0d5
+PYTHON_VERSION = 3.14.7
+PYTHON_EXECUTABLE = C:\Users\walac\.cache\argos\venvs\projeto_argos_mon_obs-py3.14\Scripts\python.exe
+VENV_PATH = C:\Users\walac\.cache\argos\venvs\projeto_argos_mon_obs-py3.14
+DEPENDENCY_SOURCE = requirements-dev.txt -> requirements.txt / sem alterações aos manifestos
+DJANGO_VERSION = 5.2.16 / pin declarado
+PILLOW_VERSION = 12.3.0 / satisfeito por Pillow>=11,<13
+PIP_CHECK = PASS
+DJANGO_CHECK = PASS / nenhum problema
+MAKEMIGRATIONS_CHECK = PASS / nenhuma mudança detectada
+TEST_DATABASE = PASS / SQLite em memória file:memorydb_default; migrations aplicadas apenas no DB de teste
+MON_OBS_TESTS = PASS / 10 testes via manage.py test
+DJANGO_MON_TESTS = PASS / 213 testes descobertos e concluídos com exit code 0 nos 9 módulos desbloqueados, MON-OBS e regressões selecionadas
+REGRESSION_TESTS = PASS / persistência, leitura/UI, probe, confirmação, ownership/fencing e MON-08C; quatro cenários em escala de 2300 ativos
+PREVIOUS_COLLECTION_ERRORS = RESOLVED
+MON_OBS_IMPLEMENTATION = COMPLETE / nenhuma reimplementação nesta atividade; fixtures sintéticas ajustadas para evitar detecção indevida de credenciais
+MON_OBS_LOCAL_VALIDATION = PASS
+MON_OBS_DEPENDENCY_GATE = PASS / ambiente reproduzido segundo os manifestos; nenhum pacote instalado globalmente
+BANDIT = PASS / nenhum issue Medium ou High
+PIP_AUDIT = FINDING / Django 5.2.16: PYSEC-2026-3717 e PYSEC-2026-4035; versões de correção reportadas: 5.2.17 ou 6.0.8; pin não alterado por estar fora do escopo desta atividade
+DETECT_SECRETS = PASS_FOCUSED / arquivos MON-OBS limpos após ajuste; scan de todo o repositório ainda sinaliza fixtures preexistentes em outros módulos
+WIP_PRESERVATION = PASS / arquivos preexistentes preservados; sem acesso a câmera real ou credenciais operacionais
+FILES_CHANGED = cameras/test_monitoramento_observability.py; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md
+FILES_CREATED = NONE IN REPOSITORY / venv isolado criado fora do repo
+PROJECT_STATE_UPDATE = PASS / seção 45 separa validação local de publicação e documenta findings de dependências
+BRANCH_PUBLICATION = NOT_PERFORMED
+MASTER_INTEGRATION = NOT_PERFORMED
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MASTER_CHANGED = NO
+WORKTREE_STATUS = 3 modified; 2 preexisting MON-OBS files untracked; no staging
+NEXT_RECOMMENDED_ACTIVITY = checkpoint Git separado; tratar atualização de Django 5.2.16 para versão corrigida em atividade explícita de dependências/security
+```
+
+O ambiente usa Python 3.14.7, compatível oficialmente com Django 5.2; a compatibilidade com Python 3.14 foi adicionada na linha Django 5.2.8. A validação integrada não publicou nem integrou a branch. A auditoria de dependências revelou dois advisories para o pin existente Django 5.2.16; a correção de dependência exige atividade própria. O detector global também encontrou padrões em fixtures preexistentes fora de MON-OBS; os quatro arquivos MON-OBS verificados passaram após normalização das URLs fictícias usadas nos testes.
+
+
+## 46. MON-OBS — checkpoint Git final (2026-10-09)
+
+```text
+ACTIVITY = MON-OBS-FINAL-GIT-CHECKPOINT
+STATUS = PARTIAL / commit local autorizado; publicação pendente de conectividade remota
+EXECUTION_ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_obs
+BRANCH = codex/mon-obs-observability
+INITIAL_HEAD = 80c458581944401510b62d1ba35febf7ddadc0d5
+MON_OBS_IMPLEMENTATION = COMPLETE
+MON_OBS_LOCAL_VALIDATION = PASS
+DJANGO_REGRESSION_EVIDENCE = PASS / 213 testes da execução integrada anterior
+INTERRUPTED_REGRESSION = NOT_COUNTED / execução posterior interrompida por falha ambiental do asyncio antes do corpo do teste
+MON_OBS_TESTS = PASS / 10 testes
+MON_08B_EXTERNAL_VALIDATION = PASS / execução manual externa confirmada pelo usuário
+MON_08B_DURATION_SECONDS = 1.904
+MON_08B_EXIT_CODE = 0
+DJANGO_CHECK = PASS
+MIGRATION_CHECK = PASS / nenhuma mudança detectada
+QUALITY_CHECKS = PASS conforme seção 45; diff --check também PASS neste checkpoint
+SECRETS_CHECK = PASS focado nos arquivos MON-OBS conforme seção 45
+VALIDATED_CONTENT_EQUIVALENCE = PASS / arquivos produtivos MON-OBS já estavam presentes na validação integrada; teste MON-OBS foi normalizado antes dela; sem mudança funcional posterior identificada
+FILES_REVIEWED = cameras/monitoramento/__init__.py; cameras/monitoramento/scheduler.py; cameras/monitoramento/observability.py; cameras/test_monitoramento_observability.py; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md
+KNOWN_SECURITY_FINDINGS = PYSEC-2026-3717; PYSEC-2026-4035 / Django 5.2.16, sem alteração de pin nesta atividade
+MON_OBS_BRANCH_PUBLICATION = PENDING_UNTIL_REMOTE_CONFIRMATION
+REMOTE_CHECK = UNAVAILABLE / git ls-remote falhou por falha de resolução DNS de github.com
+MON_OBS_MASTER_INTEGRATION = PENDING
+CAM_INT_05 = NOT_IMPLEMENTED
+CAM_HEALTH = NOT_IMPLEMENTED
+MON_WORKER = BLOCKED_BY_BC_02
+LOCAL_MASTER_MODIFIED = NO
+PROJECT_STATE_UPDATE = PASS
+NEXT_RECOMMENDED_ACTIVITY = CAM-INT-05-IMPLEMENTATION
+```
+
+O precheck confirmou o repo, a branch e o HEAD esperados, sem staging prévio; os três arquivos modificados e dois não rastreados correspondem ao escopo MON-OBS e de continuidade. A conectividade GitHub não pôde ser confirmada neste checkpoint. O commit autorizado é local; push e confirmação de upstream, divergência, worktree final e estado remoto de master permanecem pendentes até que o remoto esteja acessível.

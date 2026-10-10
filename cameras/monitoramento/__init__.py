@@ -11,6 +11,14 @@ from .confirmation import (
     TechnicalState,
     reduce_confirmation,
 )
+from .observability import (
+    LoggingTelemetry,
+    MonitoringTelemetry,
+    NoopTelemetry,
+    config_snapshot,
+    record_heartbeat,
+    record_stage_failure,
+)
 from .ports import (
     ConfirmationStatePort,
     ConfigGenerationPort,
@@ -55,6 +63,9 @@ __all__ = [
     "EligibilityPort",
     "OwnershipClaimPort",
     "MonitoringConfig",
+    "MonitoringTelemetry",
+    "LoggingTelemetry",
+    "NoopTelemetry",
     "OwnershipLease",
     "ProcessingDisposition",
     "ProbeAdapter",
@@ -74,4 +85,7 @@ __all__ = [
     "run_bounded",
     "TickReport",
     "reduce_confirmation",
+    "config_snapshot",
+    "record_heartbeat",
+    "record_stage_failure",
 ]
