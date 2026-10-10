@@ -22,6 +22,7 @@ from .monitoramento.schemas import (
     AttemptState,
     CompletionDisposition,
     MonitoringConfig,
+    OwnershipLease,
     ScheduleCandidate,
     SchedulerLifecycle,
 )
@@ -77,7 +78,10 @@ class MonitoringConfigTests(unittest.TestCase):
 class SchedulerContractTests(unittest.TestCase):
     def make_scheduler(self, *, concurrency: int = 2, queue_bound: int | None = None, generation=None, eligible=None, port=None) -> tuple[DueScheduler, FakeClock]:
         clock = FakeClock(start_at=START_AT)
-        config = MonitoringConfig(concurrency=concurrency, queue_bound=queue_bound, shutdown_timeout_seconds=5)
+        config = MonitoringConfig(
+            concurrency=concurrency, queue_bound=queue_bound, shutdown_timeout_seconds=5,
+            probe_timeout_seconds=2.5, connect_timeout_seconds=1.5, db_operation_deadline_seconds=2.5,
+        )
         scheduler = DueScheduler(config, clock, current_generation=generation, is_eligible=eligible, confirmation_port=port, confirmation_policy=port.policy if port else None)
         return scheduler, clock
 
@@ -195,8 +199,10 @@ class SchedulerContractTests(unittest.TestCase):
         scheduler.request_shutdown()
         clock.advance(5)
         scheduler.tick(clock.now())
-        self.assertEqual(scheduler.lifecycle, SchedulerLifecycle.STOPPED)
-        self.assertEqual(scheduler.attempts[0].state, AttemptState.CANCELLED)
+        self.assertEqual(scheduler.lifecycle, SchedulerLifecycle.DRAINING)
+        self.assertTrue(scheduler.incomplete_shutdown)
+        self.assertEqual(scheduler.attempts[0].state, AttemptState.ACTIVE)
+        self.assertEqual(scheduler.active_count, 1)
         self.assertEqual(port.stores, 0)
 
     def test_shutdown_cancels_queued_attempts_without_leaking_queue_state(self) -> None:
@@ -229,6 +235,40 @@ class SchedulerContractTests(unittest.TestCase):
         source = inspect.getsource(__import__("cameras.monitoramento.scheduler", fromlist=["DueScheduler"]))
         for forbidden in ("import django", "import socket", "import requests", "sleep(", "FixedDelayScheduler", "finish_cycle"):
             self.assertNotIn(forbidden, source)
+
+    def test_terminal_attempt_window_is_finite_and_rejects_evicted_callbacks(self) -> None:
+        scheduler, clock = self.make_scheduler(concurrency=1, queue_bound=1)
+        completed = []
+        for camera_id in range(1, 101):
+            attempt = scheduler.tick(clock.now(), [candidate(camera_id, clock.now())]).attempts[0]
+            completed.append(attempt.attempt_id)
+            scheduler.complete(attempt.attempt_id, result(ProbeResultCode.INCONCLUSIVE, clock.now()))
+            clock.advance(301)
+        self.assertEqual(len(scheduler.attempts), 2)
+        self.assertLessEqual(len(scheduler._candidate_by_attempt), 2)
+        self.assertLessEqual(len(scheduler._next_due), 2)
+        self.assertEqual(tuple(scheduler._terminal_order), tuple(completed[-2:]))
+        duplicate = scheduler.complete(completed[-1], result(ProbeResultCode.SUCCESS, clock.now()))
+        self.assertEqual(duplicate.disposition, CompletionDisposition.DUPLICATE)
+        with self.assertRaises(KeyError):
+            scheduler.complete(completed[0], result(ProbeResultCode.SUCCESS, clock.now()))
+
+    def test_shutdown_deadline_does_not_release_active_owner_or_mark_stopped(self) -> None:
+        policy = ConfirmationPolicy(2, 1, "v1")
+        port = MemoryConfirmationPort(policy)
+        port.claim = lambda *_args: OwnershipLease("worker-a", 1)
+        port.release = lambda *_args: setattr(port, "released", True) or True
+        port.released = False
+        config = MonitoringConfig(concurrency=1, queue_bound=1, probe_timeout_seconds=1, connect_timeout_seconds=1, db_operation_deadline_seconds=1, shutdown_timeout_seconds=2)
+        scheduler = DueScheduler(config, FakeClock(start_at=START_AT), confirmation_port=port, confirmation_policy=policy, ownership_port=port, service_instance_id="worker")
+        active = scheduler.tick(START_AT, [candidate(1)]).attempts[0]
+        scheduler.request_shutdown(START_AT)
+        scheduler.tick(START_AT + timedelta(seconds=2))
+        self.assertEqual(scheduler.lifecycle, SchedulerLifecycle.DRAINING)
+        self.assertEqual(scheduler.active_count, 1)
+        self.assertFalse(port.released)
+        with self.assertRaises(RuntimeError):
+            scheduler.complete(active.attempt_id, result(ProbeResultCode.SUCCESS, START_AT))
 
     def test_jitter_is_deterministic_and_bounded(self) -> None:
         config = MonitoringConfig()

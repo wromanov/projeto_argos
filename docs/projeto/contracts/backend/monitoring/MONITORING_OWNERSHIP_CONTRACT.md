@@ -17,7 +17,7 @@ Com lease, completion exige ownership atual e geração de configuração idênt
 
 ## Responsabilidades
 
-Cada instância recebe service instance ID não secreto, claim por alvo, heartbeat/renovação conforme futuro runtime, liberação condicional e métricas de denied/lost/stale completion. ID não é credencial de autenticação e não substitui restrição de banco. Nunca aceitar owner/epoch do browser.
+Cada instância recebe service instance ID não secreto e claim por tentativa. No runtime local V1, ownership é adquirido por tentativa e encerrado por completion transacional ou release condicional após término comprovado do produtor. Não há renovação explícita de lease V1. O heartbeat independente do worker é telemetria e não renova ownership. Expiração permite takeover com epoch novo, mas não invalida sozinha completion do owner ainda atual nem comprova término físico do produtor anterior. Release verifica owner/epoch; nunca aceitar owner/epoch do browser. As interfaces existentes permanecem `DjangoMonitoringRepository.list_due/claim/release/load/store/current_generation/is_eligible` e `DueScheduler`, `active_attempts`, `tick`, `complete`, `request_shutdown`. Fencing não encerra I/O físico.
 
 ## Limites
 

@@ -58,7 +58,7 @@ class MonitoringObservabilityTests(SimpleTestCase):
             "ARGOS_MONITORING_CYCLE_INTERVAL_SECONDS": "90",
             "ARGOS_MONITORING_PROBE_TIMEOUT_SECONDS": "8",
             "ARGOS_MONITORING_CONNECT_TIMEOUT_SECONDS": "2",
-            "ARGOS_MONITORING_SHUTDOWN_TIMEOUT_SECONDS": "11",
+            "ARGOS_MONITORING_SHUTDOWN_TIMEOUT_SECONDS": "16",
             "ARGOS_MONITORING_JITTER_RATIO": "0.15",
             "ARGOS_MONITORING_STALE_AFTER_SECONDS": "270",
             "ARGOS_MONITORING_HEARTBEAT_SECONDS": "20",
@@ -81,7 +81,9 @@ class MonitoringObservabilityTests(SimpleTestCase):
                 get_monitoring_config_from_environment()
 
     def test_default_lease_is_operationally_derived_but_configuration_remains_independent(self):
-        short_shutdown = MonitoringConfig(shutdown_timeout_seconds=1)
+        with self.assertRaises(ValueError):
+            MonitoringConfig(shutdown_timeout_seconds=1)
+        short_shutdown = MonitoringConfig(shutdown_timeout_seconds=30)
         long_shutdown = MonitoringConfig(shutdown_timeout_seconds=300)
         longer_probe = MonitoringConfig(probe_timeout_seconds=8)
 
@@ -150,7 +152,7 @@ class MonitoringObservabilityTests(SimpleTestCase):
             attempt_id_factory=uuid4,
         )
         attempt = stale.tick(START, [candidate(2)]).attempts[0]
-        outcome = stale.complete(attempt.attempt_id, success(), START)
+        outcome = stale.complete(attempt.attempt_id, success(), START, producer_terminated=True)
         status = stale.runtime_status
         self.assertEqual(outcome.disposition, CompletionDisposition.OWNERSHIP_LOST)
         self.assertEqual((status.ownership_acquired, status.stale_owner_completions_rejected), (1, 1))

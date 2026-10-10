@@ -788,4 +788,59 @@ MON-OBS, CAM-INT-05 e CAM-HEALTH estão publicados em suas referências fonte. A
 integração local BC-02 foi validada em worktree exclusiva; o branch integrado
 não foi publicado e ainda não foi integrado ao master. `MERGE_HEAD` permanece
 presente para checkpoint Git posterior. O MON Runtime Worker e seu heartbeat
-independente continuam não implementados.
+
+
+## 39. MON-RUNTIME-V1-CONTRACT-BASELINE-RECONCILIATION (2026-10-10)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md` | Decisões locais V1, bounds e gates DC-01..07 | CURRENT / V1 CLOSED / WORKER NOT STARTED |
+| `docs/projeto/contracts/backend/monitoring/MONITORING_OBSERVABILITY_CONFIG_CONTRACT.md` | Matriz V1 e três campos mínimos de configuração futura | CURRENT / CONFIG CONTRACT CLOSED / EXTENSION NOT IMPLEMENTED |
+| `docs/projeto/contracts/backend/monitoring/MONITORING_OWNERSHIP_CONTRACT.md` | Claim/release por tentativa, expiry e fencing | CURRENT / NO EXPLICIT LEASE RENEWAL V1 |
+| `docs/projeto/contracts/backend/monitoring/MONITORING_FAILURE_RECOVERY_CONTRACT.md` | Recovery serial bounded, callback fail-closed e sem OFFLINE operacional | CURRENT / V1 |
+| `docs/projeto/contracts/backend/00_BACKEND_CONTRACT_REGISTRY.md`; `BACKEND_IMPLEMENTATION_ORDER.md` | Overlay factual sobre classificação e ordem BC-02 | CURRENT OVERLAY / BC-02 COUNTS AND DAG PRESERVED |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 70 | Snapshot da reconciliação e estado Git verificado | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.34 | Decisões e handoff desta reconciliação | CURRENT / V1 CHECKPOINT |
+
+```text
+BASELINE = BC-02 / ccc0267527da7cac0a139a68c11982100f627147 / PRESERVED
+SOURCE_DECISION = 22c9e3a59fe2be44dd17c2fd2cc90fc63f6059c4
+WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+BRANCH = codex/mon-runtime-v1-implementation
+HEAD = ccc0267527da7cac0a139a68c11982100f627147
+MON_WORKER_IMPLEMENTATION = NOT_STARTED
+HEARTBEAT_OWNER = WORKER_RUNTIME
+HEARTBEAT_CADENCE = INDEPENDENT_OF_SCHEDULER_CYCLES
+IMPLEMENTATION_READINESS = PASS / LOCAL CONTRACT BASELINE RECONCILED
+OPERATIONAL_PRODUCTION_READINESS = NOT_ESTABLISHED
+HISTORICAL_OPEN_PROPOSALS = SUPERSEDED_BY_FINAL_V1_ADJUDICATION
+```
+
+Os registros de BC-02 e os checkpoints anteriores permanecem históricos sem alteração. PostgreSQL, multi-worker, rede/câmera reais, capacidade e deploy são gates externos futuros. Esta reconciliação não implementa runtime, schema/migration, ledger ou estado `RECOVERING`, e não autoriza operação produtiva.
+
+## 40. MON-RUNTIME-V1-IMPLEMENTATION (2026-10-10)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `cameras/monitoramento/runtime.py`; `cameras/management/commands/run_monitoring_worker.py` | Runtime local e comando de worker isolado | IMPLEMENTED / LOCAL V1 / 921 TESTS PASS |
+| `cameras/monitoramento/scheduler.py`; `repository.py`; `schemas.py`; `observability.py`; `config/environment.py` | Bounds, paginação, budgets de configuração e heartbeat/runtime | IMPLEMENTED / CONTRACT V1 CLOSED |
+| `cameras/test_monitoramento_worker_runtime.py` e testes MON/CAM associados | Provas de runtime, fencing, drain, persistência, observabilidade e recuperação | VALIDATED / 921 TESTS PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 71 | Snapshot técnico, validação e gates externos | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.35 | Decisões e handoff da implementação | CURRENT / LOCAL IMPLEMENTATION COMPLETE |
+
+```text
+BRANCH = codex/mon-runtime-v1-implementation
+HEAD = ccc0267527da7cac0a139a68c11982100f627147
+STAGING = EMPTY
+STATUS = COMPLETE / LOCAL IMPLEMENTATION AND VALIDATION / 100%
+MON_WORKER_IMPLEMENTATION = COMPLETE / LOCAL
+MON_WORKER_LOCAL_VALIDATION = PASS / FULL_REGRESSION 921 PASS
+MON_WORKER_BRANCH_PUBLICATION = PENDING_UNTIL_REMOTE_CONFIRMATION
+MON_WORKER_MASTER_INTEGRATION = PENDING
+PRODUCTION_READINESS = NOT_ESTABLISHED
+POSTGRESQL_HOMOLOGATION = PENDING
+MULTI_WORKER_HOMOLOGATION = PENDING
+REAL_CAMERA_HOMOLOGATION = PENDING
+TESTS = 921 PASS / temporary SQLite / 1299.244 seconds
+NEXT = separate operational homologation only if authorized
+```

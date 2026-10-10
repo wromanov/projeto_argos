@@ -145,18 +145,26 @@ class Mon08CExecutionStrategyHarnessTests(TransactionTestCase):
 
         scheduler = self._scheduler(repository, result.observed_at)
         processed = 0
+        remaining = {candidate.camera_id: candidate for candidate in candidates}
         query_counter = self._QueryCounter()
         started = perf_counter()
         with connection.execute_wrapper(query_counter):
-            while processed < len(candidates):
+            while remaining:
                 if scheduler.active_count == 0:
-                    scheduler.tick(result.observed_at, candidates[processed:])
+                    scheduler.tick(result.observed_at, remaining.values())
                 active_attempts = scheduler.active_attempts
-                self.assertTrue(active_attempts, "scheduler stopped admitting eligible due assets")
+                self.assertTrue(
+                    active_attempts,
+                    "scheduler stopped admitting eligible due assets "
+                    f"(processed={processed}, lifecycle={scheduler.lifecycle}, "
+                    f"queued={scheduler.queued_count}, active={scheduler.active_count}, "
+                    f"operational_error={scheduler._operational_error!r})",
+                )
                 for attempt in active_attempts:
                     outcome = scheduler.complete(attempt.attempt_id, result, result.observed_at)
                     self.assertEqual(outcome.disposition, CompletionDisposition.ACCEPTED)
                     processed += 1
+                    remaining.pop(attempt.camera_id, None)
         duration = perf_counter() - started
         profile = query_counter.profile
         return processed, duration, sum(profile.values()), profile

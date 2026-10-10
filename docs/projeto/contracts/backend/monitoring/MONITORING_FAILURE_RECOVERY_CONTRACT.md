@@ -37,3 +37,9 @@ shared files com MON-WORKER, portanto integração sequencial. Critério:
 generation/owner antigo não escreve nem fecha intervalo de novo owner;
 restart não duplica transição. PostgreSQL/multi-worker exige validação futura.
 Escalar a Sol se o banco alvo invalidar atomic completion/fencing.
+
+## MON-RUNTIME-CONTRACT-DECISION-CONSOLIDATION — recovery V1
+
+Recovery V1 é serial e bounded pelos campos `recovery_max_attempts` e `recovery_max_elapsed_seconds` definidos na matriz vigente de MON-OBS; usa DEGRADED e reseta somente após recuperação completa. Esgotamento é falha persistente observável. Não criar estado `RECOVERING`, repetir store de desfecho incerto, nem liberar ownership enquanto o término do produtor não estiver comprovado. Falhas operacionais, cancelamento e erro de banco não geram `OFFLINE`.
+
+A classificação terminal é local e limitada a `W = C + Q`; tentativas totais não excedem `2(C+Q)`. Após eviction, callback desconhecido é rejeitado antes de load/claim/store, sem ledger, expurgo persistente ou mudança de memória de confirmação/histórico. Fencing por owner/epoch/config_generation, expiry sem takeover e completion atômica via repository mantêm a semântica V1. Critérios DC-01..07 e limites PostgreSQL/multi-worker, rede/câmera, capacidade e deploy são gates futuros, não evidência de implementação.

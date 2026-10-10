@@ -1572,4 +1572,55 @@ Os registros MON-OBS anteriores foram preservados no `PROJECT_STATE.md` como
 seções 66–68, sem remover os registros CAM-INT-05 e CAM-HEALTH. O conflito era
 de numeração documental; não houve conflito de implementação no scheduler. O
 merge está resolvido e pronto para revisão/checkpoint, mantendo o merge commit
-pendente de autorização separada. O worker não foi iniciado.
+
+
+
+
+### 20.34 MON-RUNTIME-V1-CONTRACT-BASELINE-RECONCILIATION (2026-10-10)
+
+A consolidação V1 foi materializada sobre BC-02 sem alterar a baseline publicada, o DAG ou os registros históricos. A decisão aceita é a seção `MON-RUNTIME-CONTRACT-DECISION-CONSOLIDATION — V1` na autoridade-fonte SHA `22c9e3a59fe2be44dd17c2fd2cc90fc63f6059c4`, junto à matriz V1 de MON-OBS. Propostas/estados `OPEN` anteriores nesta linhagem são históricos e supersedidos pela adjudicação final; não há decisão material pendente para o contrato local.
+
+```text
+BASELINE = ccc0267527da7cac0a139a68c11982100f627147 / BC-02 PRESERVED
+WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+BRANCH = codex/mon-runtime-v1-implementation
+HEAD = ccc0267527da7cac0a139a68c11982100f627147
+MON_WORKER_IMPLEMENTATION = NOT_STARTED
+HEARTBEAT_OWNER = WORKER_RUNTIME
+HEARTBEAT_CADENCE = INDEPENDENT_OF_SCHEDULER_CYCLES
+IMPLEMENTATION_READINESS = PASS / contract baseline reconciliation only
+OPERATIONAL_PRODUCTION_READINESS = NOT_ESTABLISHED
+PROJECT_STATE_UPDATE = PASS
+```
+
+Lease V1 não exige renovação explícita. Claim/release são por tentativa com owner/epoch/config_generation e usam interfaces/repository existentes. Expiry permite takeover com epoch novo, mas não invalida sozinha a completion do owner ainda atual nem comprova término físico do produtor. Fencing não encerra I/O. Antes de release explícito, provar término de adapter/task/ORM; deadlines/cancellation não bastam. Completion permanece atômica no repository. A janela terminal é `W=C+Q`, tentativas totais ficam em `<=2(C+Q)`, callback evicted é rejeitado antes de qualquer write e nenhuma exclusão persistente/ledger é criada.
+
+A extensão futura de `MonitoringConfig` contém somente `db_operation_deadline_seconds`, `recovery_max_attempts` e `recovery_max_elapsed_seconds`, conforme ranges e defaults V1 de MON-OBS. O heartbeat do worker é independente dos ciclos do scheduler, inclusive durante drain/recovery enquanto vivo; cancelamento e falhas operacionais não produzem `OFFLINE`. DC-01..07 são aceites futuros do worker, ainda não validados nesta reconciliação.
+
+PostgreSQL, múltiplos workers, rede/câmera reais, capacidade e deploy permanecem gates externos. Não declarar worker implementado nem operação aprovada com base neste checkpoint.
+
+### 20.35 MON-RUNTIME-V1-IMPLEMENTATION (2026-10-10)
+
+Implementação local concluída no branch `codex/mon-runtime-v1-implementation`, sem migration nem alteração do contrato V1. O entrypoint é `python manage.py run_monitoring_worker`; runtime e wiring vivem em `cameras/monitoramento/runtime.py` e `cameras/management/commands/run_monitoring_worker.py`. A composição reutiliza scheduler, repository, política de confirmação e diagnóstico existentes; heartbeat independente, paginação limitada, deadlines/recovery bounded, fail-closed e drain preservando producers/leases seguem os contratos.
+
+```text
+BASELINE_HEAD = ccc0267527da7cac0a139a68c11982100f627147
+CURRENT_HEAD = ccc0267527da7cac0a139a68c11982100f627147
+STAGING = EMPTY
+STATUS = COMPLETE / LOCAL IMPLEMENTATION AND VALIDATION
+ACTIVITY_COMPLETION_PERCENT = 100%
+TESTS = 921 PASS / temporary SQLite / 1299.244 seconds
+DJANGO_CHECK = PASS
+MIGRATION_CHECK = PASS / no changes
+BANDIT_FOCAL = PASS
+SECRET_SCAN_FOCAL = PASS / zero findings
+DIFF_CHECK = PASS
+REAL_CAMERA_OR_OPERATIONAL_DB = NOT_USED
+MON_WORKER_BRANCH_PUBLICATION = PENDING_UNTIL_REMOTE_CONFIRMATION
+MON_WORKER_MASTER_INTEGRATION = PENDING
+OPERATIONAL_PRODUCTION_READINESS = NOT_ESTABLISHED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE section 71 final snapshot
+ACTIVITY_COMPLETE = YES / local implementation and validation scope
+```
+
+O fixture de integração recria de forma idempotente o perfil canônico quando uma `TransactionTestCase` já fez flush da seed da migration. Os dois ajustes aos testes preservam o contrato: falha transacional mantém a tentativa ativa/degradada; o harness MON-08C rastreia candidatos por camera_id para não depender da ordem de admissão. Os 2.300 registros da prova de escala são dados de teste SQLite. Config adiciona somente `db_operation_deadline_seconds=5.0`, `recovery_max_attempts=5` e `recovery_max_elapsed_seconds=900.0`. Nove documentos WIP preexistentes mantêm conteúdo; somente checkpoints de continuidade receberam adições. Não houve commit/push. A suíte completa passou com 921 testes em 1.299,244 segundos; PostgreSQL, multi-worker, ambiente real e operação/deploy continuam pendentes.

@@ -80,6 +80,9 @@ class MonitoringConfig:
     stale_after_seconds: int | None = None
     heartbeat_seconds: int = 30
     ownership_lease_seconds: int | None = None
+    db_operation_deadline_seconds: float = 5.0
+    recovery_max_attempts: int = 5
+    recovery_max_elapsed_seconds: float = 900.0
 
     def __post_init__(self) -> None:
         concurrency = _integer_in_range(self.concurrency, "concurrency", 1, 50)
@@ -95,11 +98,24 @@ class MonitoringConfig:
         if not 0 <= jitter_ratio <= 0.20:
             raise ValueError("jitter_ratio must be between 0 and 0.20")
         stale_after = cycle_interval * 3 if self.stale_after_seconds is None else _integer_in_range(self.stale_after_seconds, "stale_after_seconds", cycle_interval, 86400)
-        shutdown_timeout = _integer_in_range(self.shutdown_timeout_seconds, "shutdown_timeout_seconds", 1, 300)
         _integer_in_range(self.heartbeat_seconds, "heartbeat_seconds", 10, 300)
         # A lease define somente a janela operacional para takeover. O epoch
         # de ownership é o fencing token da conclusão e independe da duração
         # da attempt ou do tempo de shutdown.
+        shutdown_timeout = _integer_in_range(self.shutdown_timeout_seconds, "shutdown_timeout_seconds", 1, 300)
+        if probe_timeout > shutdown_timeout / 2:
+            raise ValueError("probe_timeout_seconds cannot exceed half the shutdown budget")
+        db_deadline = _finite_real(self.db_operation_deadline_seconds, "db_operation_deadline_seconds")
+        if not 0.1 <= db_deadline <= 30 or db_deadline > shutdown_timeout / 2:
+            raise ValueError("db_operation_deadline_seconds is outside the V1 range or exceeds half the shutdown budget")
+        recovery_attempts = _integer_in_range(self.recovery_max_attempts, "recovery_max_attempts", 1, 10)
+        recovery_elapsed = _finite_real(self.recovery_max_elapsed_seconds, "recovery_max_elapsed_seconds")
+        if not 1 <= recovery_elapsed <= 3600:
+            raise ValueError("recovery_max_elapsed_seconds must be between 1 and 3600")
+        if recovery_elapsed <= min(self.heartbeat_seconds, cycle_interval):
+            raise ValueError("recovery_max_elapsed_seconds must exceed the initial recovery backoff")
+        if db_deadline > recovery_elapsed:
+            raise ValueError("db_operation_deadline_seconds cannot exceed recovery_max_elapsed_seconds")
         ownership_lease = math.ceil(probe_timeout) + 1 if self.ownership_lease_seconds is None else _integer_in_range(
             self.ownership_lease_seconds,
             "ownership_lease_seconds",
@@ -112,6 +128,8 @@ class MonitoringConfig:
         object.__setattr__(self, "stale_after_seconds", stale_after)
         object.__setattr__(self, "jitter_ratio", jitter_ratio)
         object.__setattr__(self, "ownership_lease_seconds", ownership_lease)
+        object.__setattr__(self, "db_operation_deadline_seconds", db_deadline)
+        object.__setattr__(self, "recovery_max_elapsed_seconds", recovery_elapsed)
 
 @dataclass(frozen=True, slots=True)
 class ScheduleCandidate:

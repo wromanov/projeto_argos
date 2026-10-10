@@ -83,7 +83,7 @@ class MonitoringOwnershipFencingTests(TestCase):
         scheduler = self.scheduler(repository, service="worker-a")
         attempt = scheduler.tick(START, [self.candidate(camera)]).attempts[0]
 
-        outcome = scheduler.complete(attempt.attempt_id, self.result(), START)
+        outcome = scheduler.complete(attempt.attempt_id, self.result(), START, producer_terminated=True)
 
         state = EstadoMonitoramento.objects.get(camera=camera)
         self.assertEqual(outcome.disposition, CompletionDisposition.ACCEPTED)
@@ -100,7 +100,7 @@ class MonitoringOwnershipFencingTests(TestCase):
         attempt = scheduler.tick(START, [self.candidate(camera)]).attempts[0]
         self.expire(camera)
 
-        outcome = scheduler.complete(attempt.attempt_id, self.result(), START)
+        outcome = scheduler.complete(attempt.attempt_id, self.result(), START, producer_terminated=True)
 
         state = EstadoMonitoramento.objects.get(camera=camera)
         self.assertEqual(outcome.disposition, CompletionDisposition.ACCEPTED)
@@ -118,7 +118,7 @@ class MonitoringOwnershipFencingTests(TestCase):
         self.expire(camera)
         owner_b = repository.claim(camera.pk, "worker-b:runtime-b", 30)
 
-        outcome = scheduler_a.complete(attempt_a.attempt_id, self.result(), START)
+        outcome = scheduler_a.complete(attempt_a.attempt_id, self.result(), START, producer_terminated=True)
 
         state = EstadoMonitoramento.objects.get(camera=camera)
         self.assertEqual(outcome.disposition, CompletionDisposition.OWNERSHIP_LOST)
@@ -140,8 +140,8 @@ class MonitoringOwnershipFencingTests(TestCase):
         scheduler_b = self.scheduler(repository, service="worker-b")
         attempt_b = scheduler_b.tick(START, [self.candidate(camera)]).attempts[0]
 
-        stale = scheduler_a.complete(attempt_a.attempt_id, self.result(), START)
-        accepted = scheduler_b.complete(attempt_b.attempt_id, self.result(), START)
+        stale = scheduler_a.complete(attempt_a.attempt_id, self.result(), START, producer_terminated=True)
+        accepted = scheduler_b.complete(attempt_b.attempt_id, self.result(), START, producer_terminated=True)
 
         state = EstadoMonitoramento.objects.get(camera=camera)
         self.assertEqual(stale.disposition, CompletionDisposition.OWNERSHIP_LOST)
@@ -158,7 +158,7 @@ class MonitoringOwnershipFencingTests(TestCase):
         config_stale = scheduler.tick(START, [self.candidate(camera)]).attempts[0]
         EstadoMonitoramento.objects.filter(camera=camera).update(ultima_geracao_configuracao=2)
 
-        config_outcome = scheduler.complete(config_stale.attempt_id, self.result(), START)
+        config_outcome = scheduler.complete(config_stale.attempt_id, self.result(), START, producer_terminated=True)
         self.assertEqual(config_outcome.disposition, CompletionDisposition.CONFIG_CHANGED)
         self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 0)
 
@@ -168,14 +168,14 @@ class MonitoringOwnershipFencingTests(TestCase):
         self.expire(camera)
         repository.claim(camera.pk, "worker-b:runtime-b", 30)
 
-        ownership_outcome = scheduler.complete(ownership_stale.attempt_id, self.result(), START)
+        ownership_outcome = scheduler.complete(ownership_stale.attempt_id, self.result(), START, producer_terminated=True)
         self.assertEqual(ownership_outcome.disposition, CompletionDisposition.OWNERSHIP_LOST)
         self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 0)
 
         self.expire(camera)
         scheduler = self.scheduler(repository, service="worker-c")
         valid = scheduler.tick(START, [self.candidate(camera)]).attempts[0]
-        accepted = scheduler.complete(valid.attempt_id, self.result(), START)
+        accepted = scheduler.complete(valid.attempt_id, self.result(), START, producer_terminated=True)
         self.assertEqual(accepted.disposition, CompletionDisposition.ACCEPTED)
         self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 1)
 
@@ -201,7 +201,7 @@ class MonitoringOwnershipFencingTests(TestCase):
         self.expire(camera)
         owner_b = repository.claim(camera.pk, "worker-b:runtime-b", 30)
 
-        outcome = scheduler.cancel(attempt.attempt_id)
+        outcome = scheduler.cancel(attempt.attempt_id, producer_terminated=True)
 
         state = EstadoMonitoramento.objects.get(camera=camera)
         self.assertEqual(outcome.disposition, CompletionDisposition.CANCELLED)
@@ -231,12 +231,13 @@ class MonitoringOwnershipFencingTests(TestCase):
         scheduler = self.scheduler(repository, service="worker-a")
         attempt = scheduler.tick(START, [self.candidate(camera)]).attempts[0]
 
-        outcome = scheduler.complete(attempt.attempt_id, self.result(), START)
+        outcome = scheduler.complete(attempt.attempt_id, self.result(), START, producer_terminated=True)
 
         state = EstadoMonitoramento.objects.get(camera=camera)
         self.assertEqual(outcome.disposition, CompletionDisposition.OPERATIONAL_FAILURE)
         self.assertEqual(state.estado_estavel, TechnicalState.UNKNOWN.value)
         self.assertIsNone(state.ultima_evidencia_util_em)
-        self.assertIsNone(state.monitoring_owner_id)
+        self.assertEqual(state.monitoring_owner_id, attempt.ownership.owner_id)
+        self.assertEqual(scheduler.active_count, 1)
         self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 0)
         self.assertEqual(Indisponibilidade.objects.count(), 0)

@@ -189,3 +189,16 @@ P5-0 não depende de backend implementado para iniciar o trabalho visual que
 não consome essas capacidades. Nenhuma UI é implementada neste checkpoint.
 `SECURITY_REMEDIATION = DEFERRED_TO_FINAL_SECURITY_GATE`; os invariantes de
 segredo, autorização, allowlist e egress continuam obrigatórios.
+
+## MON-RUNTIME-V1 — status contratual (2026-10-10)
+
+```text
+BASELINE = BC-02 / ccc0267527da7cac0a139a68c11982100f627147 / preserved
+MON_WORKER_CONTRACT = CLOSED / LOCAL V1
+MON_WORKER_IMPLEMENTATION = NOT_STARTED
+IMPLEMENTATION_READINESS = PASS / documentary contract baseline reconciled
+DAG = UNCHANGED / MON-OBS + CAM-INT-05 + CAM-HEALTH + core MON -> MON-WORKER
+PRODUCTION_AND_OPERATIONAL_GATES = FUTURE / PostgreSQL, multi-worker, real network/cameras, capacity, deploy
+```
+
+A prontidão aqui registrada é a prontidão factual do contrato local reconciliado; não declara worker implementado ou operacional. A ordem, waves, ownership e contagens BC-02 acima permanecem como publicadas.

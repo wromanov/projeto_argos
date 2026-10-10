@@ -6,6 +6,7 @@ probes e não altera os campos legados ``Camera.status``, ``status_em`` ou
 """
 
 from collections.abc import Callable, Iterable
+from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone as datetime_timezone
 
 from django.db import transaction
@@ -25,6 +26,13 @@ from cameras.models import (
 from .confirmation import ConfirmationMemory, ConfirmationPolicy, ProcessingDisposition, TechnicalDecision, TechnicalState
 from .contracts import ProbeResult
 from .schemas import CompletionDisposition, OwnershipLease, ScheduleCandidate
+
+
+@dataclass(frozen=True, slots=True)
+class DueCandidatePage:
+    candidates: tuple[ScheduleCandidate, ...]
+    next_camera_id: int
+    has_more: bool
 
 
 class DjangoMonitoringRepository:
@@ -65,18 +73,39 @@ class DjangoMonitoringRepository:
             policy_version=state.versao_politica_confirmacao,
         )
 
-    def list_due(self, now: datetime, limit: int) -> Iterable[ScheduleCandidate]:
-        """Carrega no máximo ``limit`` candidatos sem histórico por leitura."""
+    def list_due_page(
+        self,
+        now: datetime,
+        limit: int,
+        *,
+        after_camera_id: int = 0,
+        exclude_camera_ids: Iterable[int] = (),
+    ) -> DueCandidatePage:
+        """Read one bounded keyset page, advancing even across incomplete records."""
 
-        if limit <= 0:
+        if isinstance(limit, bool) or not isinstance(limit, int) or limit <= 0:
             raise ValueError("limit must be positive")
-        cameras = (
+        if isinstance(after_camera_id, bool) or not isinstance(after_camera_id, int) or after_camera_id < 0:
+            raise ValueError("after_camera_id must be non-negative")
+        excluded = tuple(exclude_camera_ids)
+        query = (
             Camera.objects.select_related("estado_monitoramento")
-            .filter(situacao_operacional=Camera.SituacaoOperacional.PRODUCAO)
-            .order_by("estado_monitoramento__proximo_vencimento_em", "pk")
+            .filter(
+                situacao_operacional=Camera.SituacaoOperacional.PRODUCAO,
+                pk__gt=after_camera_id,
+            )
+            .filter(
+                Q(estado_monitoramento__proximo_vencimento_em__isnull=True)
+                | Q(estado_monitoramento__proximo_vencimento_em__lte=now)
+            )
+            .order_by("pk")
         )
+        if excluded:
+            query = query.exclude(pk__in=excluded)
+        rows = tuple(query[:limit])
+        next_camera_id = rows[-1].pk if rows else after_camera_id
         candidates: list[ScheduleCandidate] = []
-        for camera in cameras:
+        for camera in rows:
             if not self._eligible(camera):
                 continue
             state = getattr(camera, "estado_monitoramento", None)
@@ -85,9 +114,21 @@ class DjangoMonitoringRepository:
                 state.refresh_from_db()
             due_at = state.proximo_vencimento_em if state and state.proximo_vencimento_em else now
             candidates.append(ScheduleCandidate(camera.pk, due_at, config_generation=(state.ultima_geracao_configuracao if state else 1)))
-            if len(candidates) == limit:
-                break
-        return tuple(candidates)
+        return DueCandidatePage(tuple(candidates), next_camera_id, len(rows) == limit)
+
+    def list_due(
+        self,
+        now: datetime,
+        limit: int,
+        *,
+        after_camera_id: int = 0,
+        exclude_camera_ids: Iterable[int] = (),
+    ) -> Iterable[ScheduleCandidate]:
+        """Compatibility wrapper for the bounded one-page query."""
+
+        return self.list_due_page(
+            now, limit, after_camera_id=after_camera_id, exclude_camera_ids=exclude_camera_ids,
+        ).candidates
 
     def current_generation(self, camera_id: int) -> int:
         state = EstadoMonitoramento.objects.filter(camera_id=camera_id).only("ultima_geracao_configuracao").first()

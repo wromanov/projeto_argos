@@ -4124,3 +4124,70 @@ NEXT_RECOMMENDED_ACTIVITY = BC-02-INTEGRATION-GIT-CHECKPOINT
 ```
 
 A revisão integrada confirmou que o scheduler mantém a confirmação MON, o snapshot diagnóstico CAM-INT-05 sob o mesmo fencing e transação, e os eventos/métricas MON-OBS com falha de sink isolada do resultado de domínio. Cancelamento segue neutro; completion stale não grava estado. O heartbeat de ciclo é informativo e não implementa a cadência independente do worker. A validação combinada não acessou câmera real nem banco operacional. O merge MON-OBS permanece no index com `MERGE_HEAD`; nenhum commit foi criado.
+
+## 70. MON-RUNTIME-V1-CONTRACT-BASELINE-RECONCILIATION (2026-10-10)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-V1-CONTRACT-BASELINE-RECONCILIATION
+STATUS = COMPLETE / reconciliacao documental V1
+ACTIVITY_COMPLETION_PERCENT = 100%
+ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+BRANCH = codex/mon-runtime-v1-implementation
+BASELINE_HEAD = ccc0267527da7cac0a139a68c11982100f627147
+CURRENT_HEAD = ccc0267527da7cac0a139a68c11982100f627147
+WORKTREE = DOCUMENTS_MODIFIED / only authorized contract, registry, order and continuity files
+STAGING = EMPTY
+SOURCE_DECISION_SHA = 22c9e3a59fe2be44dd17c2fd2cc90fc63f6059c4
+BC_02_BASELINE = PRESERVED
+MON_WORKER_IMPLEMENTATION = NOT_STARTED
+MON_WORKER_CONTRACT = CLOSED / LOCAL V1
+HEARTBEAT_OWNER = WORKER_RUNTIME
+HEARTBEAT_CADENCE = INDEPENDENT_OF_SCHEDULER_CYCLES
+IMPLEMENTATION_READINESS = PASS / local contract baseline reconciled
+OPERATIONAL_PRODUCTION_READINESS = NOT_ESTABLISHED
+MATERIAL_DECISIONS_PENDING = NONE_FOR_LOCAL_V1
+VALIDATION = PASS / static document, scope, invariant and diff review; tests not run
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES
+```
+
+A decisão material V1 é a consolidação documental aprovada na fonte indicada e na matriz do contrato MON-OBS. BC-02 e seus contadores históricos permanecem preservados; o DAG de backend não foi alterado. A formulação anterior de heartbeat/renovação foi substituída pela regra V1: não há renovação explícita; heartbeat independente do worker é telemetria. Expiry sem takeover não invalida por si só a completion atual; takeover com novo epoch bloqueia writer antigo. Release exige término comprovado do produtor; fencing não encerra I/O.
+
+O runtime V1 reusa as interfaces/repository existentes e a completion atômica. `W=C+Q`; tentativas totais são limitadas por `2(C+Q)`; callbacks evicted falham antes de load/claim/store. Recovery é serial bounded, sem `RECOVERING`; config futura adiciona somente os três campos constantes da matriz V1. Falhas operacionais/cancelamento são neutros e não produzem `OFFLINE`.
+
+PostgreSQL, multi-worker, rede/câmera reais, capacidade, deploy e deadlines operacionais continuam gates externos futuros. Nenhum teste foi executado; os critérios DC-01..07 são requisitos de aceitação para implementação futura. `PROJECT_STATE_UPDATE = PASS` foi registrado após a verificação estática final deste checkpoint.
+
+## 71. MON-RUNTIME-V1-IMPLEMENTATION (2026-10-10)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-V1-IMPLEMENTATION
+STATUS = COMPLETE / LOCAL IMPLEMENTATION AND VALIDATION
+ACTIVITY_COMPLETION_PERCENT = 100%
+ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+BRANCH = codex/mon-runtime-v1-implementation
+BASELINE_HEAD = ccc0267527da7cac0a139a68c11982100f627147
+CURRENT_HEAD = ccc0267527da7cac0a139a68c11982100f627147
+STAGING = EMPTY
+MON_WORKER_IMPLEMENTATION = PRESENT / local command and runtime
+MON_WORKER_CONTRACT = CLOSED / LOCAL V1 / unchanged
+CONFIG_DEFAULTS = db_operation_deadline_seconds=5.0; recovery_max_attempts=5; recovery_max_elapsed_seconds=900.0
+VALIDATION = PASS / 921 tests in 1299.244 seconds; Django check; migration check; Bandit focal; detect-secrets focal zero findings; diff check
+TEST_DATABASE = temporary SQLite only
+REAL_CAMERA_OR_OPERATIONAL_DATABASE = NOT_USED
+POSTGRESQL_OR_MULTI_WORKER = NOT_VALIDATED
+OPERATIONAL_PRODUCTION_READINESS = NOT_ESTABLISHED
+PROJECT_STATE_UPDATE = PASS / final factual snapshot
+ACTIVITY_COMPLETE = YES / local implementation and validation scope
+MON_WORKER_BRANCH_PUBLICATION = PENDING_UNTIL_REMOTE_CONFIRMATION
+MON_WORKER_MASTER_INTEGRATION = PENDING
+```
+
+O runtime local foi implementado em `cameras/monitoramento/runtime.py`, com comando isolado `python manage.py run_monitoring_worker` em `cameras/management/commands/run_monitoring_worker.py`. Ele reutiliza `DueScheduler`, `DjangoMonitoringRepository`, política de confirmação e diagnóstico automático existentes; a consulta de candidatos usa paginação keyset limitada. Heartbeat é responsabilidade independente do runtime. Shutdown mantém tentativas/leases enquanto produtores ou operações ORM ainda podem estar ativos; deadline não é tratado como prova de término. Completion transacional incerta mantém o attempt pinned e degrada o scheduler.
+
+A extensão de configuração usa os três campos previstos pela matriz V1, com defaults acima. A inicialização falha fechada quando políticas/alvos, banco ou dependências de diagnóstico não podem ser validados. Nenhuma migration, tabela, contrato normativo, DAG BC-02 ou fonte de decisão foi alterada. Os checkpoints locais implementam e exercitam DC-01..07 por testes de runtime, scheduler, repositório, diagnóstico, observabilidade, ownership e recuperação; não equivalem a homologação de produção.
+
+Validação: a regressão completa passou com 921 testes em 1.299,244 segundos, incluindo o fixture idempotente do perfil canônico no `TransactionTestCase`. `manage.py check`, `makemigrations --check --dry-run`, Bandit focal, detect-secrets focal (zero achados) e `git diff --check` passaram. Os ensaios MON-08C usaram 2.300 registros simulados. Nenhuma câmera, credencial real ou banco operacional foi acessado.
+
+O conteúdo pré-existente dos nove documentos WIP foi preservado; este snapshot final foi atualizado somente nos documentos de continuidade autorizados. Branch e HEAD seguem iguais à baseline, index vazio e sem commit/push. A atividade local está concluída. PostgreSQL, multi-worker, credenciais/adaptadores reais, rede/câmeras, deploy e prontidão operacional permanecem gates externos.

@@ -26,7 +26,7 @@ _EVENT_FIELDS = {
         "concurrency", "cycle_interval_seconds", "probe_timeout_seconds",
         "connect_timeout_seconds", "queue_bound", "shutdown_timeout_seconds",
         "jitter_ratio", "stale_after_seconds", "heartbeat_seconds",
-        "ownership_lease_seconds", "policy_status", "policy_version",
+        "ownership_lease_seconds", "db_operation_deadline_seconds", "recovery_max_attempts", "recovery_max_elapsed_seconds", "policy_status", "policy_version",
     }),
     "monitoring.cycle.started": frozenset({"timestamp"}),
     "monitoring.cycle.completed": frozenset({"timestamp", "eligible", "due", "admitted", "deferred", "queued", "active", "duration_seconds"}),
@@ -90,8 +90,8 @@ def _validate_event(name: object, fields: object) -> tuple[str, dict[str, bool |
     allowed = _EVENT_FIELDS[name]
     if any(not isinstance(key, str) or key not in allowed for key in fields):
         raise ValueError("event field is not allowlisted")
-    integer_fields = {"concurrency", "queue_capacity", "cycle_interval_seconds", "queue_bound", "shutdown_timeout_seconds", "stale_after_seconds", "heartbeat_seconds", "ownership_lease_seconds", "eligible", "due", "admitted", "deferred", "queued", "active"}
-    numeric_fields = {"probe_timeout_seconds", "connect_timeout_seconds", "jitter_ratio", "duration_seconds"}
+    integer_fields = {"concurrency", "queue_capacity", "cycle_interval_seconds", "queue_bound", "shutdown_timeout_seconds", "stale_after_seconds", "heartbeat_seconds", "ownership_lease_seconds", "recovery_max_attempts", "eligible", "due", "admitted", "deferred", "queued", "active"}
+    numeric_fields = {"probe_timeout_seconds", "connect_timeout_seconds", "jitter_ratio", "duration_seconds", "db_operation_deadline_seconds", "recovery_max_elapsed_seconds"}
     clean = {}
     for key, value in fields.items():
         if key == "timestamp":
@@ -262,7 +262,8 @@ def config_snapshot(
             "concurrency", "cycle_interval_seconds", "probe_timeout_seconds",
             "connect_timeout_seconds", "queue_bound", "shutdown_timeout_seconds",
             "jitter_ratio", "stale_after_seconds", "heartbeat_seconds",
-            "ownership_lease_seconds",
+            "ownership_lease_seconds", "db_operation_deadline_seconds",
+            "recovery_max_attempts", "recovery_max_elapsed_seconds",
         )
     }
     snapshot["policy_status"] = "CONFIGURED" if policy is not None else "UNCONFIGURED"

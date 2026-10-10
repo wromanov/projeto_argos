@@ -139,7 +139,7 @@ class ObservabilityProviderTests(unittest.TestCase):
         self.assertIn("monitoring.cycle.started", names)
         self.assertIn("monitoring.cycle.completed", names)
         self.assertIn("monitoring.config.snapshot", names)
-        self.assertIn("monitoring.worker.heartbeat", names)
+        self.assertNotIn("monitoring.worker.heartbeat", names)
         self.assertTrue(any(name == "monitoring.probe.outcomes" and labels == {"outcome": "SUCCESS"} for name, labels in telemetry.counters))
         self.assertTrue(any(name == "monitoring.probe.duration_seconds" for name, _value, _labels in telemetry.observations))
         self.assertIn(("monitoring.attempts.started", {}), telemetry.counters)

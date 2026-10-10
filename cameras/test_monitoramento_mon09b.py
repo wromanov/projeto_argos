@@ -119,7 +119,7 @@ class MonitoringOperationalFailureTests(TestCase):
         self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 0)
         self.assertEqual(Indisponibilidade.objects.count(), 0)
 
-    def test_database_failure_rolls_back_and_allows_a_new_execution_to_recover(self):
+    def test_database_failure_rolls_back_and_keeps_the_uncertain_attempt_pinned(self):
         camera = self.camera()
         repository = DjangoMonitoringRepository()
         initial_scheduler = self.scheduler(repository)
@@ -173,21 +173,17 @@ class MonitoringOperationalFailureTests(TestCase):
         self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 1)
         self.assertEqual(Indisponibilidade.objects.count(), 0)
 
-        self.assertEqual(scheduler.start(), SchedulerLifecycle.RUNNING)
         recovery_at = failed_at + timedelta(seconds=1)
         recovery_attempts = scheduler.tick(
             recovery_at,
             [self.candidate(camera, failed_at)],
         ).attempts
-        recovery = scheduler.complete(
-            recovery_attempts[0].attempt_id,
-            self.result(ProbeResultCode.SUCCESS, recovery_at),
-            recovery_at,
-        )
+        self.assertEqual(recovery_attempts, ())
+        self.assertEqual(scheduler.active_count, 1)
+        self.assertEqual(scheduler.lifecycle, SchedulerLifecycle.DEGRADED)
 
         state.refresh_from_db()
-        self.assertEqual(recovery.disposition, CompletionDisposition.ACCEPTED)
         self.assertEqual(state.estado_estavel, TechnicalState.ONLINE.value)
-        self.assertEqual(state.sequencia_negativa, 0)
+        self.assertEqual(state.sequencia_negativa, 1)
         self.assertEqual(TransicaoEstadoMonitoramento.objects.count(), 1)
         self.assertEqual(Indisponibilidade.objects.count(), 0)

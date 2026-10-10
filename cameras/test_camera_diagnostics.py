@@ -117,7 +117,7 @@ class CameraDiagnosticTests(TestCase):
         )
         attempt = scheduler.tick(NOW, [ScheduleCandidate(self.camera.pk, NOW, 1)]).attempts[0]
         outcome = scheduler.complete(
-            attempt.attempt_id, diagnostic.probe_result, NOW, diagnostic=diagnostic,
+            attempt.attempt_id, diagnostic.probe_result, NOW, diagnostic=diagnostic, producer_terminated=True,
         )
         self.assertEqual(outcome.disposition, CompletionDisposition.CONFIG_CHANGED)
         self.assertFalse(CameraHealthSnapshot.objects.filter(camera=self.camera).exists())
@@ -152,7 +152,7 @@ class CameraDiagnosticTests(TestCase):
         )
         attempt = scheduler.tick(NOW, [ScheduleCandidate(self.camera.pk, NOW, 1)]).attempts[0]
         outcome = scheduler.complete(
-            attempt.attempt_id, diagnostic.probe_result, NOW, diagnostic=diagnostic,
+            attempt.attempt_id, diagnostic.probe_result, NOW, diagnostic=diagnostic, producer_terminated=True,
         )
         self.assertEqual(outcome.disposition, CompletionDisposition.ACCEPTED)
         state = EstadoMonitoramento.objects.get(camera=self.camera)
@@ -201,7 +201,7 @@ class CameraDiagnosticTests(TestCase):
         )
         attempt = scheduler.tick(NOW, [ScheduleCandidate(self.camera.pk, NOW, 1)]).attempts[0]
         outcome = scheduler.complete(
-            attempt.attempt_id, diagnostic.probe_result, NOW, diagnostic=diagnostic,
+            attempt.attempt_id, diagnostic.probe_result, NOW, diagnostic=diagnostic, producer_terminated=True,
         )
         self.assertEqual(outcome.disposition, CompletionDisposition.OPERATIONAL_FAILURE)
         self.assertFalse(CameraHealthSnapshot.objects.filter(camera=self.camera).exists())
@@ -221,7 +221,7 @@ class CameraDiagnosticTests(TestCase):
                 ownership_port=repository, service_instance_id="test-worker",
             )
             attempt = scheduler.tick(now, [ScheduleCandidate(self.camera.pk, now, 1)]).attempts[0]
-            return scheduler.complete(attempt.attempt_id, diagnostic.probe_result, now, diagnostic=diagnostic)
+            return scheduler.complete(attempt.attempt_id, diagnostic.probe_result, now, diagnostic=diagnostic, producer_terminated=True)
 
         self.assertEqual(complete(newer, NOW + timedelta(seconds=10)).disposition, CompletionDisposition.ACCEPTED)
         self.assertEqual(complete(older, NOW + timedelta(seconds=20)).disposition, CompletionDisposition.ACCEPTED)

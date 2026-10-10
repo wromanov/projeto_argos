@@ -1,4 +1,4 @@
-"""Scheduler due-based bounded e determinístico do laboratório MON-05B."""
+"""Scheduler due-based bounded e determinÃ­stico do laboratÃ³rio MON-05B."""
 
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
@@ -60,7 +60,7 @@ def _finite_real(value: object, field_name: str) -> float:
 
 
 def deterministic_jitter_seconds(camera_id: int, schedule_epoch: int, *, interval_seconds: Real, jitter_ratio: Real) -> float:
-    """Jitter estável para uma câmera e uma época de agendamento."""
+    """Jitter estÃ¡vel para uma cÃ¢mera e uma Ã©poca de agendamento."""
 
     _positive_integer(camera_id, "camera_id")
     if isinstance(schedule_epoch, bool) or not isinstance(schedule_epoch, int) or schedule_epoch < 0:
@@ -127,9 +127,12 @@ class BoundedDueQueue:
         raise IndexError("pop from empty BoundedDueQueue")
 
     def discard(self, camera_id: int) -> None:
-        """Remove um item queued sem transformar cancelamento em probe."""
+        """Remove também a entrada física do heap para manter o bound real."""
 
-        self._items.pop(camera_id, None)
+        if self._items.pop(camera_id, None) is None:
+            return
+        self._heap = [item for item in self._heap if item[1] != camera_id]
+        heapq.heapify(self._heap)
 
     def snapshot(self) -> tuple[ScheduleCandidate, ...]:
         return tuple(
@@ -184,6 +187,10 @@ class DueScheduler:
         self._lifecycle = SchedulerLifecycle.STARTING
         self._queue = BoundedDueQueue(config.queue_bound)
         self._attempts: dict[UUID, Attempt] = {}
+        self._terminal_order: deque[UUID] = deque()
+        self._terminal_window = config.concurrency + config.queue_bound
+        self._incomplete_shutdown = False
+        self._producer_terminated: set[UUID] = set()
         self._active_by_camera: dict[int, UUID] = {}
         self._current_by_camera: dict[int, UUID] = {}
         self._candidate_by_attempt: dict[UUID, ScheduleCandidate] = {}
@@ -215,6 +222,25 @@ class DueScheduler:
     @property
     def queued_count(self) -> int:
         return len(self._queue)
+
+    @property
+    def incomplete_shutdown(self) -> bool:
+        return self._incomplete_shutdown
+
+    def mark_shutdown_incomplete(self) -> None:
+        self._incomplete_shutdown = True
+
+    def finish_shutdown_if_quiescent(self) -> bool:
+        if self._lifecycle is SchedulerLifecycle.DRAINING and not self._active_by_camera:
+            for attempt_id in self._queued_ids():
+                self.cancel(attempt_id)
+            self._mark_stopped()
+            return True
+        return self._lifecycle is SchedulerLifecycle.STOPPED
+
+    @property
+    def pending_camera_ids(self) -> frozenset[int]:
+        return frozenset(self._current_by_camera)
 
     @property
     def active_attempts(self) -> tuple[Attempt, ...]:
@@ -286,6 +312,16 @@ class DueScheduler:
         self._candidate_by_attempt[attempt_id] = candidate
         self._current_by_camera[candidate.camera_id] = attempt_id
         return attempt
+
+    def _record_terminal(self, attempt_id: UUID) -> None:
+        self._candidate_by_attempt.pop(attempt_id, None)
+        self._producer_terminated.discard(attempt_id)
+        self._terminal_order.append(attempt_id)
+        while len(self._terminal_order) > self._terminal_window:
+            expired = self._terminal_order.popleft()
+            attempt = self._attempts.get(expired)
+            if attempt is not None and attempt.state in (AttemptState.COMPLETED, AttemptState.CANCELLED):
+                self._attempts.pop(expired, None)
 
     def _replace_attempt(self, attempt: Attempt, *, state: AttemptState, started_at: datetime | None = None) -> Attempt:
         updated = Attempt(
@@ -421,15 +457,13 @@ class DueScheduler:
         self._gauge("monitoring.work.deferred", report.deferred)
         self._gauge("monitoring.queue.depth", report.queued)
         self._gauge("monitoring.attempts.active", report.active)
-        self._emit_event("monitoring.worker.heartbeat", {"timestamp": report.now, "state": self._lifecycle.value, "active": report.active, "queued": report.queued})
-        self._gauge("monitoring.worker.heartbeat_age_seconds", 0)
         logger.info(
             "MONITORING_CYCLE_COMPLETED eligible=%s due=%s admitted=%s deferred=%s queued=%s in_flight=%s",
             report.eligible, report.due, report.admitted, report.deferred, report.queued, report.active,
         )
         return report
 
-    def complete(self, attempt_id: UUID, result: ProbeResult, now: datetime | None = None, *, diagnostic=None) -> CompletionOutcome:
+    def complete(self, attempt_id: UUID, result: ProbeResult, now: datetime | None = None, *, diagnostic=None, producer_terminated: bool = False) -> CompletionOutcome:
         if not isinstance(attempt_id, UUID):
             raise TypeError("attempt_id must be a UUID")
         if not isinstance(result, ProbeResult):
@@ -458,6 +492,10 @@ class DueScheduler:
             return CompletionOutcome(attempt, CompletionDisposition.OLD_ATTEMPT)
         if attempt.state is not AttemptState.ACTIVE:
             return CompletionOutcome(attempt, CompletionDisposition.CANCELLED)
+        if attempt.ownership is not None and producer_terminated is not True:
+            raise RuntimeError("owned attempt completion requires confirmed producer termination")
+        if producer_terminated:
+            self._producer_terminated.add(attempt_id)
         self._emit_event("monitoring.probe.completed", {"outcome": result.code.value, "duration_seconds": result.duration_seconds})
         self._increment("monitoring.probe.outcomes", {"outcome": result.code.value})
         self._observe_seconds("monitoring.probe.duration_seconds", result.duration_seconds, {"outcome": result.code.value})
@@ -466,7 +504,8 @@ class DueScheduler:
             eligible = self._is_eligible(attempt.camera_id)
         except Exception as exc:
             self.report_repository_failure(type(exc).__name__)
-            return self._discard(attempt, CompletionDisposition.OPERATIONAL_FAILURE, now)
+            # Repository outcome is uncertain; keep the attempt and lease pinned.
+            return CompletionOutcome(attempt, CompletionDisposition.OPERATIONAL_FAILURE)
         if current_generation != attempt.config_generation:
             return self._discard(attempt, CompletionDisposition.CONFIG_CHANGED, now)
         if not eligible:
@@ -510,12 +549,16 @@ class DueScheduler:
                     return self._discard(attempt, CompletionDisposition.OWNERSHIP_LOST, now)
             except Exception as exc:
                 self.report_repository_failure(type(exc).__name__)
-                return self._discard(attempt, CompletionDisposition.OPERATIONAL_FAILURE, now)
+                # A failed transaction may have an uncertain commit outcome.
+                # Do not release ownership or admit a replacement attempt.
+                return CompletionOutcome(attempt, CompletionDisposition.OPERATIONAL_FAILURE)
         completed = self._replace_attempt(attempt, state=AttemptState.COMPLETED)
+        self._record_terminal(attempt_id)
         self._active_by_camera.pop(attempt.camera_id, None)
         self._current_by_camera.pop(attempt.camera_id, None)
         self._schedule_epoch[attempt.camera_id] = epoch
         self._next_due[attempt.camera_id] = scheduled_next
+        self._trim_schedule_cache()
         self._attempts_completed += 1
         self._increment("monitoring.attempts.completed")
         logger.info("MONITORING_ATTEMPT_COMPLETED camera_id=%s disposition=%s", attempt.camera_id, CompletionDisposition.ACCEPTED)
@@ -524,7 +567,10 @@ class DueScheduler:
         return CompletionOutcome(completed, CompletionDisposition.ACCEPTED, scheduled_next, decision)
 
     def _discard(self, attempt: Attempt, disposition: CompletionDisposition, now: datetime) -> CompletionOutcome:
+        if attempt.ownership is not None and attempt.state is AttemptState.ACTIVE and not self._producer_done(attempt.attempt_id):
+            raise RuntimeError("cannot discard an owned active attempt before producer termination")
         cancelled = self._replace_attempt(attempt, state=AttemptState.CANCELLED)
+        self._record_terminal(attempt.attempt_id)
         if attempt.state is AttemptState.QUEUED:
             self._queue.discard(attempt.camera_id)
         self._active_by_camera.pop(attempt.camera_id, None)
@@ -537,11 +583,19 @@ class DueScheduler:
         self._finish_shutdown_if_due(now)
         return CompletionOutcome(cancelled, disposition)
 
-    def cancel(self, attempt_id: UUID) -> CompletionOutcome:
+    def _producer_done(self, attempt_id: UUID) -> bool:
+        return attempt_id in self._producer_terminated
+
+    def cancel(self, attempt_id: UUID, *, producer_terminated: bool = False) -> CompletionOutcome:
         attempt = self._attempts[attempt_id]
+        if attempt.state is AttemptState.ACTIVE and attempt.ownership is not None and producer_terminated is not True:
+            return CompletionOutcome(attempt, CompletionDisposition.OPERATIONAL_FAILURE)
+        if attempt.state is AttemptState.ACTIVE and producer_terminated:
+            self._producer_terminated.add(attempt_id)
         if attempt.state is AttemptState.CANCELLED:
             return CompletionOutcome(attempt, CompletionDisposition.DUPLICATE)
         cancelled = self._replace_attempt(attempt, state=AttemptState.CANCELLED)
+        self._record_terminal(attempt_id)
         if attempt.state is AttemptState.QUEUED:
             self._queue.discard(attempt.camera_id)
         self._active_by_camera.pop(attempt.camera_id, None)
@@ -585,11 +639,10 @@ class DueScheduler:
             self._mark_stopped()
             return
         if self._draining_since is not None and now >= self._draining_since + timedelta(seconds=self._config.shutdown_timeout_seconds):
-            for attempt_id in tuple(self._active_by_camera.values()):
-                self.cancel(attempt_id)
+            # A deadline is not proof that an adapter/ORM producer stopped.
+            self._incomplete_shutdown = True
             for attempt_id in self._queued_ids():
                 self.cancel(attempt_id)
-            self._mark_stopped()
 
     def _mark_stopped(self) -> None:
         if self._lifecycle is not SchedulerLifecycle.STOPPED:
@@ -626,6 +679,18 @@ class DueScheduler:
         except Exception:
             self._telemetry_failed()
 
+    def _trim_schedule_cache(self) -> None:
+        bound = self._config.concurrency + self._config.queue_bound
+        if len(self._next_due) <= bound:
+            return
+        pinned = self.pending_camera_ids
+        for camera_id in tuple(self._next_due):
+            if len(self._next_due) <= bound:
+                break
+            if camera_id not in pinned:
+                self._next_due.pop(camera_id, None)
+                self._schedule_epoch.pop(camera_id, None)
+
     def report_repository_failure(self, error_code: str) -> SchedulerLifecycle:
         if not isinstance(error_code, str) or not _SAFE_OPERATIONAL_ERROR_CODE.fullmatch(error_code):
             raise ValueError("error_code must be a short machine-safe code")
@@ -644,6 +709,9 @@ class DueScheduler:
             raise RuntimeError("restart requires STOPPED scheduler")
         self._queue = BoundedDueQueue(self._config.queue_bound)
         self._attempts.clear()
+        self._terminal_order.clear()
+        self._producer_terminated.clear()
+        self._incomplete_shutdown = False
         self._active_by_camera.clear()
         self._current_by_camera.clear()
         self._candidate_by_attempt.clear()
@@ -668,7 +736,7 @@ R = TypeVar("R")
 
 
 async def execute_bounded(items: Iterable[T], handler: Callable[[T], Awaitable[R]], *, concurrency: int) -> tuple[R, ...]:
-    """Executa trabalho já admitido sem criar uma task por candidato."""
+    """Executa trabalho jÃ¡ admitido sem criar uma task por candidato."""
 
     concurrency = _positive_integer(concurrency, "concurrency")
     item_list = tuple(items)

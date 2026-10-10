@@ -61,6 +61,9 @@ def get_monitoring_config_from_environment():
             stale_after_seconds=get_env_optional_int("ARGOS_MONITORING_STALE_AFTER_SECONDS"),
             heartbeat_seconds=get_env_int("ARGOS_MONITORING_HEARTBEAT_SECONDS", defaults.heartbeat_seconds),
             ownership_lease_seconds=get_env_optional_int("ARGOS_MONITORING_OWNERSHIP_LEASE_SECONDS"),
+            db_operation_deadline_seconds=get_env_float("ARGOS_MONITORING_DB_OPERATION_DEADLINE_SECONDS", defaults.db_operation_deadline_seconds),
+            recovery_max_attempts=get_env_int("ARGOS_MONITORING_RECOVERY_MAX_ATTEMPTS", defaults.recovery_max_attempts),
+            recovery_max_elapsed_seconds=get_env_float("ARGOS_MONITORING_RECOVERY_MAX_ELAPSED_SECONDS", defaults.recovery_max_elapsed_seconds),
         )
     except (TypeError, ValueError) as exc:
         raise ImproperlyConfigured(f"Configuração de monitoramento inválida: {exc}") from None

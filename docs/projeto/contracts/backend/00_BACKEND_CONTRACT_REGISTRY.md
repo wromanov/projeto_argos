@@ -139,3 +139,15 @@ API/input/output/failures, autorização externa versus resolução interna,
 invariantes, ownership, testes e critérios de aceite no contrato especializado.
 Consumers retomam seu gate apenas após implementação, integração, validação e
 publicação de R1, sob suas autorizações próprias. Homologação continua pendente.
+
+## MON-RUNTIME-V1 — overlay factual sobre BC-02 (2026-10-10)
+
+```text
+BC_02_BASELINE = PRESERVED / published at ccc0267527da7cac0a139a68c11982100f627147
+MON_WORKER_CONTRACT = CLOSED / LOCAL V1
+MON_WORKER_IMPLEMENTATION = NOT_STARTED
+IMPLEMENTATION_READINESS = PASS / contract baseline reconciled; implementation not started
+OPERATIONAL_PRODUCTION_READINESS = NOT_ESTABLISHED / external gates remain
+```
+
+Este overlay atualiza apenas o status de MON-WORKER. A classificação e os totais BC-02 acima permanecem fotografia histórica da fila; o DAG e suas waves não mudam. PostgreSQL, multi-worker, rede/câmera reais, capacidade e deploy seguem gates futuros.
