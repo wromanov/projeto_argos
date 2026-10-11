@@ -4236,3 +4236,60 @@ NEXT_RECOMMENDED_ACTIVITY = review and authorize local Git checkpoint; track cry
 ```
 
 A verificação da atividade paralela encontrou a mesma correção pretendida para o job de testes do CI. O diff final converge em uma única linha de `ARGOS_ALLOWED_HOSTS`; não houve conflito de conteúdo. O precheck inicial registrou WIP em `scheduler.py` e `requirements.txt`, preservados. As verificações completas passaram no checkout indicado. Os sete registros do audit representam quatro advisories distintos, com três repetições por aliases entre fontes. O audit geral de segurança permanece sem PASS até a resolução desses findings. Nenhum commit, push, merge, migration ou acesso operacional foi realizado.
+
+
+## 73. ARGOS-CRYPTOGRAPHY-SECURITY-REMEDIATION (2026-10-10)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = ARGOS-CRYPTOGRAPHY-SECURITY-REMEDIATION
+STATUS = COMPLETE / LOCAL SECURITY REMEDIATION AND VALIDATION
+ACTIVITY_COMPLETION_PERCENT = 100%
+ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+BRANCH = codex/mon-runtime-v1-implementation
+INITIAL_HEAD = 9d5ac5debec3710212f5331a41201c43cb63ced9
+FINAL_HEAD = 9d5ac5debec3710212f5331a41201c43cb63ced9
+INITIAL_WORKTREE = CLEAN
+PYTHON = 3.14.7 / repository .venv / Windows x64
+DJANGO = 5.2.18 / unchanged
+CRYPTOGRAPHY_BEFORE = 46.0.7
+CRYPTOGRAPHY_AFTER = 50.0.2
+WINDOWS_WHEEL = PASS / cp311-abi3-win_amd64
+SECURITY_ADVISORIES_BEFORE = 7 pip-audit records / 4 distinct advisories
+SECURITY_ADVISORIES_AFTER = 0 known findings
+REMEDIATED = CVE-2026-69248; CVE-2026-69247; CVE-2026-69249; CVE-2026-34180
+CRYPTOGRAPHY_USAGE = Fernet only in credential lifecycle and key provider
+FOCUSED_TESTS = PASS / 68 tests: credentials, credential resolution, RTSP adapter/runtime, CAM-INT-05 diagnostics and MON worker integration
+LEGACY_DECRYPTION = PASS / synthetic Fernet token written with 46.0.7 and read with 50.0.2
+CREDENTIAL_INTEGRITY = PASS / round-trip, invalid keys, tampered ciphertext and malformed payload fail closed
+ERROR_SANITIZATION = PASS / focused tests confirm no secrets in errors or captured logs
+RTSP_CREDENTIAL_FLOW = PASS / active credential resolved in memory for diagnostic execution
+FULL_REGRESSION = PASS / 921 tests / 1277.672 seconds / temporary SQLite
+PIP_CHECK = PASS
+PIP_AUDIT = PASS / no known vulnerabilities
+DJANGO_CHECK = PASS
+MIGRATION_CHECK = PASS / no changes detected
+DIFF_CHECK = PASS
+SECRET_SCAN = PASS / requirements.txt / zero findings
+FILES_CHANGED = requirements.txt; PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md
+MIGRATIONS_CHANGED = NO
+MON_RUNTIME_WORKER_SOURCE_CHANGED = NO
+OPERATIONAL_CREDENTIALS_OR_DATABASE = NOT_ACCESSED
+REAL_CAMERA = NOT_USED
+CI_REMOTE = NOT_VERIFIED
+STAGING = EMPTY
+WORKTREE_STATUS = DIRTY / only the four files listed above
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MASTER_UNCHANGED = YES
+READY_FOR_GIT_CHECKPOINT = YES
+NEXT_RECOMMENDED_ACTIVITY = ARGOS-CRYPTOGRAPHY-GIT-CHECKPOINT
+PROJECT_STATE_UPDATE = PASS / local facts and cross-references verified
+ACTIVITY_COMPLETE = YES / local remediation and validation scope
+```
+
+O pin direto foi atualizado isoladamente em `requirements.txt`. A versão 50.0.2 está publicada no PyPI, requer Python >=3.9 (exceto 3.9.0 e 3.9.1) e forneceu wheel Windows x64 `cp311-abi3`, instalado no mesmo venv usado pelos testes. Os advisories oficiais indicam 49.0.0 para CVE-2026-69248 e CVE-2026-69249, 50.0.0 para CVE-2026-69247 e 48.0.1 para CVE-2026-34180; portanto 50.0.2 atende o piso combinado. O `pip-audit` local passou de sete registros (quatro advisories distintos, incluindo aliases repetidos) para nenhum finding conhecido.
+
+A superfície de aplicação usa `Fernet.encrypt/decrypt` e validação de chaves. Testes sintéticos confirmaram criação/leitura, compatibilidade de ciphertext anterior, integridade e rejeição fail-closed de chaves inválidas/ciphertext corrompido. O fluxo de resolução RTSP permaneceu em memória e os testes CAM-INT-05/MON foram executados sem câmera ou banco operacional. A regressão de 921 testes passou. Nenhuma outra dependência direta, Django, migration ou fonte do MON Runtime Worker foi alterada.
+
+A validação é local em Python 3.14.7/Windows x64; CI remoto não foi verificado. Nenhuma credencial operacional ou chave real foi acessada ou regenerada e nenhum dado persistido foi modificado. Não houve commit nem push; o checkpoint Git requer atividade separada.

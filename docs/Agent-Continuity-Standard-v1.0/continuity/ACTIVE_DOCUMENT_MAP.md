@@ -844,3 +844,25 @@ REAL_CAMERA_HOMOLOGATION = PENDING
 TESTS = 921 PASS / temporary SQLite / 1299.244 seconds
 NEXT = separate operational homologation only if authorized
 ```
+
+
+## 41. ARGOS-CRYPTOGRAPHY-SECURITY-REMEDIATION (2026-10-10)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `requirements.txt` | Pin direto de cryptography | CURRENT / 50.0.2 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 73 | Baseline, advisories, compatibilidade, validação e limitações | CURRENT / LOCAL REMEDIATION COMPLETE |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.37 | Handoff e estado do checkpoint | CURRENT / READY_FOR_GIT_CHECKPOINT |
+
+```text
+BRANCH = codex/mon-runtime-v1-implementation
+INITIAL_HEAD = 9d5ac5debec3710212f5331a41201c43cb63ced9
+FINAL_HEAD = 9d5ac5debec3710212f5331a41201c43cb63ced9
+CRYPTOGRAPHY = 46.0.7 → 50.0.2
+PIP_AUDIT = 0 known findings after remediation
+FULL_REGRESSION = 921 PASS
+CI_REMOTE = NOT_VERIFIED
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+NEXT_ACTIVITY = ARGOS-CRYPTOGRAPHY-GIT-CHECKPOINT
+```

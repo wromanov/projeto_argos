@@ -1655,3 +1655,36 @@ NEXT_ACTIVITY = review and authorize local Git checkpoint; cryptography remediat
 ```
 
 A atividade paralela foi reconciliada: a alteração dos hosts do CI convergiu para uma única linha e não produziu conflito de conteúdo. Os testes usaram apenas SQLite temporário; nenhum acesso a câmera ou banco operacional ocorreu. `cryptography` continua como dependência direta em `requirements.txt` e no código de credenciais. Os sete registros do audit incluem quatro advisories distintos e continuam sem resolução; não declarar a auditoria geral de segurança como PASS.
+
+
+### 20.37 ARGOS-CRYPTOGRAPHY-SECURITY-REMEDIATION (2026-10-10)
+
+```text
+ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+BRANCH = codex/mon-runtime-v1-implementation
+INITIAL_HEAD = 9d5ac5debec3710212f5331a41201c43cb63ced9
+FINAL_HEAD = 9d5ac5debec3710212f5331a41201c43cb63ced9
+INITIAL_WORKTREE = CLEAN
+CRYPTOGRAPHY = 46.0.7 → 50.0.2
+PIP_AUDIT = 7 records / 4 distinct advisories → 0 known findings
+REMEDIATED = CVE-2026-69248; CVE-2026-69247; CVE-2026-69249; CVE-2026-34180
+FOCUSED_TESTS = 68 PASS
+LEGACY_FERNET_DECRYPTION = PASS / synthetic token from 46.0.7 read by 50.0.2
+FULL_REGRESSION = 921 PASS / 1277.672 seconds
+PIP_CHECK = PASS
+DJANGO_CHECK = PASS
+MIGRATION_CHECK = PASS / no changes
+DIFF_CHECK = PASS
+SECRET_SCAN = PASS / zero findings
+CI_REMOTE = NOT_VERIFIED
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MASTER_UNCHANGED = YES
+READY_FOR_GIT_CHECKPOINT = YES
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE section 73
+NEXT_ACTIVITY = ARGOS-CRYPTOGRAPHY-GIT-CHECKPOINT
+```
+
+A única alteração de dependência foi o pin direto em `requirements.txt`; Django permaneceu em 5.2.18. A compatibilidade foi exercitada por round-trip, token legado sintético, chave/ciphertext inválido, sanitização de erros e resolução em memória no fluxo de diagnóstico RTSP. Testes CAM-INT-05 e MON Runtime relevantes passaram e a regressão integral de 921 testes passou em SQLite temporário.
+
+O pacote publicado no PyPI oferece wheel Windows x64 `cp311-abi3` compatível com CPython 3.14.7. Os quatro advisories conhecidos não aparecem após a atualização; `pip-audit` não encontrou outros findings conhecidos. Nenhuma migration, fonte do MON Runtime Worker, credencial operacional, banco operacional ou câmera real foi alterada/acessada. A validação é local; CI remoto permanece não verificado. O worktree contém somente o pin e os três documentos de continuidade; staging permanece vazio, sem commit/push. Próxima atividade: revisar e autorizar checkpoint Git local.
