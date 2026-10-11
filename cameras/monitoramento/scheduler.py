@@ -1,4 +1,4 @@
-"""Scheduler due-based bounded e determinÃ­stico do laboratÃ³rio MON-05B."""
+"""Scheduler due-based bounded e determinístico do laboratório MON-05B."""
 
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
@@ -60,7 +60,7 @@ def _finite_real(value: object, field_name: str) -> float:
 
 
 def deterministic_jitter_seconds(camera_id: int, schedule_epoch: int, *, interval_seconds: Real, jitter_ratio: Real) -> float:
-    """Jitter estÃ¡vel para uma cÃ¢mera e uma Ã©poca de agendamento."""
+    """Jitter estável para uma câmera e uma época de agendamento."""
 
     _positive_integer(camera_id, "camera_id")
     if isinstance(schedule_epoch, bool) or not isinstance(schedule_epoch, int) or schedule_epoch < 0:
@@ -736,7 +736,7 @@ R = TypeVar("R")
 
 
 async def execute_bounded(items: Iterable[T], handler: Callable[[T], Awaitable[R]], *, concurrency: int) -> tuple[R, ...]:
-    """Executa trabalho jÃ¡ admitido sem criar uma task por candidato."""
+    """Executa trabalho já admitido sem criar uma task por candidato."""
 
     concurrency = _positive_integer(concurrency, "concurrency")
     item_list = tuple(items)

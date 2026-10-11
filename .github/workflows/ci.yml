@@ -16,7 +16,7 @@ jobs:
     env:
       ARGOS_SECRET_KEY: ci-only-validation-key-with-sufficient-length-and-diversity-4A3-X9
       ARGOS_DEBUG: "false"
-      ARGOS_ALLOWED_HOSTS: testserver,localhost
+      ARGOS_ALLOWED_HOSTS: testserver,localhost,127.0.0.1,::1,[::1]
       ARGOS_CSRF_TRUSTED_ORIGINS: https://testserver
       DJANGO_SETTINGS_MODULE: config.settings
     steps:

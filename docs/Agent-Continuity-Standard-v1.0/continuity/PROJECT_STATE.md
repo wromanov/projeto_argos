@@ -4191,3 +4191,48 @@ A extensão de configuração usa os três campos previstos pela matriz V1, com 
 Validação: a regressão completa passou com 921 testes em 1.299,244 segundos, incluindo o fixture idempotente do perfil canônico no `TransactionTestCase`. `manage.py check`, `makemigrations --check --dry-run`, Bandit focal, detect-secrets focal (zero achados) e `git diff --check` passaram. Os ensaios MON-08C usaram 2.300 registros simulados. Nenhuma câmera, credencial real ou banco operacional foi acessado.
 
 O conteúdo pré-existente dos nove documentos WIP foi preservado; este snapshot final foi atualizado somente nos documentos de continuidade autorizados. Branch e HEAD seguem iguais à baseline, index vazio e sem commit/push. A atividade local está concluída. PostgreSQL, multi-worker, credenciais/adaptadores reais, rede/câmeras, deploy e prontidão operacional permanecem gates externos.
+
+
+## 72. ARGOS-DJANGO-PATCH-VALIDATION (2026-10-10)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = ARGOS-DJANGO-PATCH-VALIDATION
+STATUS = READY_FOR_GIT_CHECKPOINT / PASS_WITH_FINDINGS
+ACTIVITY_COMPLETION_PERCENT = 100%
+ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+BRANCH = codex/mon-runtime-v1-implementation
+EXPECTED_HEAD = 89fac4a19f831fdcf7af496c64c617f3d6e37d62
+FINAL_HEAD = 89fac4a19f831fdcf7af496c64c617f3d6e37d62
+PYTHON = 3.14.7 / repository .venv
+DJANGO_INSTALLED_VERSION = 5.2.18
+TEST_HOSTS_CONFIGURATION = PASS / CI test job allows testserver, localhost, 127.0.0.1, ::1 and [::1]; production settings unchanged
+TEST_HOSTS_ROOT_CAUSE = Django validates [::1] including brackets from HTTP_HOST=[::1]:8000; the prior CI override omitted loopback hosts
+FOCUSED_TESTS = PASS / 160 tests, including loopback, MON Runtime, integrations, authorization, Auth and SSR
+FULL_REGRESSION = PASS / 921 tests in 1275.335 seconds; exit code 0
+DJANGO_CHECK = PASS
+PRODUCTION_DEPLOY_CHECK = PASS / production CI host remains argos.example.internal
+MIGRATION_CHECK = PASS / makemigrations --check --dry-run; no changes
+PIP_CHECK = PASS
+PIP_AUDIT = FINDINGS / 7 records in direct dependency cryptography==46.0.7; 3 records repeat aliases; 4 distinct advisories
+CRYPTOGRAPHY_FINDINGS = PYSEC-2026-3554 / CVE-2026-69248 / GHSA-m2h6-j472-rp4c / LOW / fixed 49.0.0; PYSEC-2026-3552 / CVE-2026-69247 / GHSA-g6cj-pr64-35w5 / MODERATE upstream, HIGH GitHub Advisory Database / fixed 50.0.0; PYSEC-2026-3553 / CVE-2026-69249 / GHSA-jwv3-5hgf-82ww / LOW / fixed 49.0.0; GHSA-537c-gmf6-5ccf / CVE-2026-34180 / MODERATE upstream / fixed 48.0.1
+CRYPTOGRAPHY_USAGE = DIRECT / requirements.txt, cameras/integracao/credentials.py, cameras/integracao/key_provider.py; cffi is a transitive dependency and has no finding
+CRYPTOGRAPHY_UPDATED = NO
+GENERAL_SECURITY_AUDIT = NOT_PASS / unresolved cryptography findings remain
+DIFF_CHECK = PASS
+TEST_DATABASE = temporary SQLite only; destroyed by runner
+REAL_CAMERA_OR_OPERATIONAL_DATABASE = NOT_USED
+FILES_CHANGED = .github/workflows/ci.yml; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md
+PREEXISTING_WIP_PRESERVED = cameras/monitoramento/scheduler.py; requirements.txt (Django pin 5.2.18)
+MIGRATIONS_CHANGED = NO
+STAGING = EMPTY
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+READY_FOR_GIT_CHECKPOINT = YES_WITH_FINDINGS_RECORDED
+PROJECT_STATE_UPDATE = PASS / section 72
+ACTIVITY_COMPLETE = YES / local validation and checkpoint preparation
+NEXT_RECOMMENDED_ACTIVITY = review and authorize local Git checkpoint; track cryptography remediation in a separate activity
+```
+
+A verificação da atividade paralela encontrou a mesma correção pretendida para o job de testes do CI. O diff final converge em uma única linha de `ARGOS_ALLOWED_HOSTS`; não houve conflito de conteúdo. O precheck inicial registrou WIP em `scheduler.py` e `requirements.txt`, preservados. As verificações completas passaram no checkout indicado. Os sete registros do audit representam quatro advisories distintos, com três repetições por aliases entre fontes. O audit geral de segurança permanece sem PASS até a resolução desses findings. Nenhum commit, push, merge, migration ou acesso operacional foi realizado.

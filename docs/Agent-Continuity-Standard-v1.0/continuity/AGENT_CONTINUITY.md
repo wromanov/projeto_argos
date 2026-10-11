@@ -1624,3 +1624,34 @@ ACTIVITY_COMPLETE = YES / local implementation and validation scope
 ```
 
 O fixture de integração recria de forma idempotente o perfil canônico quando uma `TransactionTestCase` já fez flush da seed da migration. Os dois ajustes aos testes preservam o contrato: falha transacional mantém a tentativa ativa/degradada; o harness MON-08C rastreia candidatos por camera_id para não depender da ordem de admissão. Os 2.300 registros da prova de escala são dados de teste SQLite. Config adiciona somente `db_operation_deadline_seconds=5.0`, `recovery_max_attempts=5` e `recovery_max_elapsed_seconds=900.0`. Nove documentos WIP preexistentes mantêm conteúdo; somente checkpoints de continuidade receberam adições. Não houve commit/push. A suíte completa passou com 921 testes em 1.299,244 segundos; PostgreSQL, multi-worker, ambiente real e operação/deploy continuam pendentes.
+
+
+### 20.36 ARGOS-DJANGO-PATCH-VALIDATION (2026-10-10)
+
+```text
+ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+BRANCH = codex/mon-runtime-v1-implementation
+HEAD = 89fac4a19f831fdcf7af496c64c617f3d6e37d62
+DJANGO = 5.2.18 / Python 3.14.7 / repository .venv
+CI_TEST_HOSTS = PASS / testserver, localhost, 127.0.0.1, ::1, [::1]
+PRODUCTION_HOSTS = UNCHANGED / check --deploy PASS
+FOCUSED_TESTS = 160 PASS
+FULL_REGRESSION = 921 PASS / 1275.335 seconds
+DJANGO_CHECK = PASS
+MIGRATION_CHECK = PASS
+PIP_CHECK = PASS
+PIP_AUDIT = 7 records / 4 distinct cryptography advisories / FINDINGS
+GENERAL_SECURITY_AUDIT = NOT_PASS
+WIP_PRESERVED = cameras/monitoramento/scheduler.py; requirements.txt
+FILES_CHANGED = .github/workflows/ci.yml; PROJECT_STATE.md; AGENT_CONTINUITY.md
+STAGING = EMPTY
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+READY_FOR_GIT_CHECKPOINT = YES_WITH_FINDINGS_RECORDED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE section 72
+ACTIVITY_COMPLETE = YES / local validation scope
+NEXT_ACTIVITY = review and authorize local Git checkpoint; cryptography remediation is separate
+```
+
+A atividade paralela foi reconciliada: a alteração dos hosts do CI convergiu para uma única linha e não produziu conflito de conteúdo. Os testes usaram apenas SQLite temporário; nenhum acesso a câmera ou banco operacional ocorreu. `cryptography` continua como dependência direta em `requirements.txt` e no código de credenciais. Os sete registros do audit incluem quatro advisories distintos e continuam sem resolução; não declarar a auditoria geral de segurança como PASS.
