@@ -64,3 +64,26 @@ Para mudanças futuras pós-freeze, usar registro curto com CHANGE, REASON, AFFE
 ## Versionamento
 
 Versão aprovada e pinada: 2.0.0, após aprovação humana explícita. Esta decisão fecha P2 e não inicia P3 nem libera integração de UI em templates produtivos.
+
+## Reconciliação para homologação progressiva (2026-10-11)
+
+```text
+BASELINE = DS 2.0.2
+P5_IMPLEMENTED_VERSION = DS 2.4.0
+DS_2_4_0 = RECOMMENDED_TARGET / CANONICAL_ADJUDICATION_PENDING
+COMPATIBILITY_GATE = REQUIRED
+DESIGN_QA = MANDATORY
+```
+
+DS 2.4.0 da fonte P5 é a versão-alvo recomendada para HOM-01, condicionada à
+adjudicação canônica, compatibilidade com o baseline de integração escolhido e
+Design QA. Esta recomendação não declara 2.4.0 canônica ou aprovada. Não
+substituir tokens, estilos ou componentes silenciosamente; aplicar a mudança
+somente por decisão registrada e preservar a baseline visual aprovada e
+protegida do Quick Detail.
+
+O Design QA obrigatório para homologação está detalhado na seção 20 de
+`ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`. Ele exige comparação visual
+com referência aprovada, renderização real, registro das diferenças,
+correções materiais e aprovação visual humana. Este adendo é um gate futuro;
+nenhuma execução de Design QA é afirmada aqui.

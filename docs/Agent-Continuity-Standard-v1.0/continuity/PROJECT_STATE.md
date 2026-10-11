@@ -1,8 +1,10 @@
 # ARGOS — Project State
 
-Estado corrente CAM-INT-03: seção 59, revisão final publicada; runtime
-homologado e implementação publicada. Ver continuidade §20.26. As seções
-anteriores preservam os snapshots históricos de cada atividade.
+Estado corrente ARGOS-HOM-00: seção 84. Baseline Runtime V1 confirmada;
+classificação Git de P3/P5 reconciliada; integração ainda não iniciada.
+Próxima atividade: `ARGOS-HOM-00-INTEGRATION-FOUNDATION`, planejada e sem
+autorização de execução. Ver continuidade §20.48. As seções anteriores
+preservam snapshots históricos.
 
 ## UI-V2-P1 — seleção visual e fechamento (2026-09-27)
 
@@ -4293,3 +4295,628 @@ O pin direto foi atualizado isoladamente em `requirements.txt`. A versão 50.0.2
 A superfície de aplicação usa `Fernet.encrypt/decrypt` e validação de chaves. Testes sintéticos confirmaram criação/leitura, compatibilidade de ciphertext anterior, integridade e rejeição fail-closed de chaves inválidas/ciphertext corrompido. O fluxo de resolução RTSP permaneceu em memória e os testes CAM-INT-05/MON foram executados sem câmera ou banco operacional. A regressão de 921 testes passou. Nenhuma outra dependência direta, Django, migration ou fonte do MON Runtime Worker foi alterada.
 
 A validação é local em Python 3.14.7/Windows x64; CI remoto não foi verificado. Nenhuma credencial operacional ou chave real foi acessada ou regenerada e nenhum dado persistido foi modificado. Não houve commit nem push; o checkpoint Git requer atividade separada.
+
+
+## 74. MON-RUNTIME-V1-H1-PREFLIGHT-VALIDATION (2026-10-10)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-V1-H1-PREFLIGHT-VALIDATION
+STATUS = PARTIAL / H1 ACCEPTANCE NOT MET
+ACTIVITY_COMPLETION_PERCENT = 80%
+ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+BRANCH = codex/mon-runtime-v1-implementation
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+FINAL_HEAD = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+INITIAL_WORKTREE = CLEAN
+FINAL_WORKTREE = DOCUMENTATION_ONLY / continuity checkpoint
+STAGING = EMPTY
+BASELINE_FACTS = PASS
+ISOLATION = PARTIAL / test runner announced in-memory SQLite file:memorydb_default; no worker command or operational database connection was started
+SYNC_SCHEDULER_VALIDATION = PASS / 18 tests including bounds/scales, due ordering, attempt identity, duplicate/stale callbacks, cancellation, retention, shutdown fencing and restart
+OBSERVABILITY_VALIDATION = PASS / 10 tests including sink failure neutrality, heartbeat, structured signals and secret/URI rejection
+RUNTIME_CONFIG_UNIT_VALIDATION = PASS / 2 tests
+ASYNC_RUNTIME_VALIDATION = NOT_COMPLETED / IsolatedAsyncioTestCase and direct asyncio loop execution did not return in this host session
+DJANGO_INTEGRATION_TEST = NOT_COMPLETED / test database setup did not reach test discovery/summary; process interrupted
+PREFLIGHT = NOT_VALIDATED / config/key/credential/adapter/database/command preflight matrix not completed
+SYNTHETIC_RUNTIME_CYCLE = NOT_VALIDATED / async runtime cycle not completed
+ATOMIC_COMPLETION = NOT_VALIDATED IN THIS ACTIVITY / existing full regression from section 71 is historical evidence only
+RECOVERY = NOT_VALIDATED / async recovery scenarios not completed
+NATIVE_RUNTIME_VALIDATION = NOT_PERFORMED / GStreamer not installed or invoked
+TESTS_EXECUTED = 30 completed tests across direct unittest modules
+TESTS_PASSED = 30
+TESTS_FAILED = 0 completed tests; grouped/integration runs interrupted without final result
+REAL_CAMERA_OR_OPERATIONAL_DATABASE = NOT_ACCESSED
+SECRETS = NOT_ACCESSED / no secret values emitted
+FILES_CHANGED = PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md
+SOURCE_OR_TEST_FILES_CHANGED = NO
+MIGRATIONS_CHANGED = NO
+CI_REMOTE = NOT_VERIFIED
+H2_POSTGRESQL = PENDING
+H3_REAL_CAMERAS = PENDING
+PRODUCTION_READINESS = NOT_ESTABLISHED
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MASTER_UNCHANGED = YES
+PROJECT_STATE_UPDATE = PASS / factual H1 checkpoint recorded
+ACTIVITY_COMPLETE = NO / H1 remains incomplete
+NEXT_RECOMMENDED_ACTIVITY = MON-RUNTIME-V1-H1-RESUME-ISOLATED-TEST-RUNNER
+```
+
+Preflight factual não encontrou divergência no repo root, branch, SHA esperado ou limpeza inicial. A bateria síncrona concluída cobriu limites C/Q, paginação/ordenação local, identidade/duplicação/stale attempt, retenção finita, rejeição de callback evicted, cancelamento neutro e shutdown mantendo ownership ativo após deadline. Os testes de observabilidade cobriram serialização estruturada, sinais, heartbeat e neutralidade do sink indisponível. Os 30 testes concluídos passaram.
+
+Os testes integrados autorizados não foram comprovados nesta atividade: o test runner iniciou configuração de banco de teste em memória em uma tentativa, mas os processos seguintes não concluíram a criação do DB/test discovery; casos `IsolatedAsyncioTestCase` e uma chamada direta de loop asyncio também não retornaram. A causa do comportamento do host permanece não determinada; o executável Python emitiu `Failed to find real location of ...python.exe`, embora o caminho exista, e isso não foi confirmado como causa. Não usar esse resultado como evidência de defeito funcional nem declarar H1_PASS. A cobertura de preflight com ausência de chave, credencial inválida, policy/CIDR/portas e dependência técnica permanece NOT_VALIDATED.
+
+O comando real do worker não foi invocado. `db.sqlite3` operacional não foi aberto; não houve câmera/rede externa, segredo real, instalação de GStreamer, alteração produtiva, migration ou mudança de teste/código. A regressão de 921 testes registrada na seção 71 é evidência da implementação anterior, não substitui a aceitação H1 desta atividade. PostgreSQL/H2, câmeras reais/H3 e readiness de produção permanecem pendentes.
+
+## 75. MON-RUNTIME-V1-H1-EXECUTION-RECOVERY (2026-10-10)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-V1-H1-EXECUTION-RECOVERY
+ACTIVITY_COMPLETION_PERCENT = 16%
+STATUS = PARTIAL / aguardando smoke e runners no PowerShell externo
+ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+BRANCH = codex/mon-runtime-v1-implementation
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+INITIAL_WIP = preservado / somente os três documentos de continuidade
+INITIAL_STAGING = EMPTY
+PYTHON = 3.14.7 / repository .venv / .venv\Scripts\python.exe
+DJANGO = 5.2.18
+DJANGO_SETTINGS_MODULE = config.settings (efetivamente carregado no diagnóstico)
+DATABASES_DEFAULT = SQLite / <repo>\db.sqlite3 no config.settings
+DB_OPERATIONAL_FILE_OPENED = NO
+ALLOWED_TESTSERVER = YES
+PYTHON_SIMPLE_PROCESS = PASS / exit 0
+ASYNCIO_TRIVIAL_SMOKE = TIMEOUT / 12s / exit 124 / processo encerrado
+PYTHON_BASE_REPORTED_BY_VENV = C:\Users\walac\AppData\Local\Python\pythoncore-3.14-64\python.exe
+PYTHON_BASE_LOCATION_WARNING = "Failed to find real location" (stderr)
+DJANGO_TEST_DB_SMOKE = NOT_RUN / aguarda asyncio smoke externo
+ASYNC_UNIT_TESTS = NOT_RUN
+H1_INTEGRATION_TEST = NOT_RUN
+RUNNER_ROOT_CAUSE = UNDETERMINED / forte suspeita ambiental sem comparação externa
+CLASSIFICATION = UNDETERMINED
+ISOLATION = NÃO COMPROVADA PARA UM RUNNER / testes não iniciados; banco operacional não aberto
+ACTIVE_PYTHON_TEST_PROCESSES = NONE OBSERVED / Get-Process após os smokes
+H1_PASS = NO
+H2_POSTGRESQL = NOT_STARTED
+H3_REAL_CAMERAS = NOT_STARTED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+SOURCE_OR_TEST_FILES_CHANGED = NO
+FILES_CHANGED_THIS_ACTIVITY = PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MASTER_UNCHANGED = YES
+PROJECT_STATE_UPDATE = PASS / evidência local e dependência externa registradas
+ACTIVITY_COMPLETE = NO
+NEXT_ACTION = executar sequência PowerShell externa com settings temporários e runners seriais
+```
+
+Evidências locais com limite: processo simples `print("python-process-ok")` terminou em exit 0; o smoke de asyncio `asyncio.run(asyncio.sleep(0, result="asyncio-ok"))` não retornou em 12 segundos e foi encerrado como exit 124. A importação de Django/settings terminou em exit 0 sem abrir conexão e reportou Python 3.14.7, Django 5.2.18, `DJANGO_SETTINGS_MODULE=config.settings`, SQLite em `<repo>\db.sqlite3` e `testserver` permitido. `.venv\pyvenv.cfg` referencia um Python-base cuja localização o executável reporta não encontrar. Não foi estabelecida causalidade entre esse aviso e o bloqueio assíncrono. Os processos Python próprios usados nos smokes não permaneceram ativos.
+
+Por segurança, nenhum teste foi iniciado: as settings padrão apontam `DATABASES.default.NAME` para `db.sqlite3`, e um runner que carregue essa configuração sem override não está autorizado nesta atividade. A sequência externa preparada usa módulo de settings temporário em `%TEMP%`, define explicitamente SQLite de teste sob `%TEMP%`, imprime e valida ambos os caminhos antes de cada runner, executa os runners em série e aplica timeout a cada processo. O smoke asyncio precisa passar antes de qualquer teste. A causa fica `UNDETERMINED` até receber os resultados comparativos; timeout não demonstra defeito funcional do Worker.
+
+## 76. MON-RUNTIME-V1-H1-EXTERNAL-POWERSHELL-RETRY (2026-10-10)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-V1-H1-EXECUTION-RECOVERY
+STATUS = PARTIAL / runners não iniciados
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+EXTERNAL_ROOT_BRANCH_HEAD = PASS / root e branch esperados; HEAD esperado
+EXTERNAL_PYTHON_PROCESSES = 2 OBSERVED / PID 17352 e 39204 / início 2026-10-10 22:59:59 / ownership UNKNOWN
+PROCESS_17352_PATH = C:\Users\walac\AppData\Local\Python\pythoncore-3.14-64\python.exe
+PROCESS_39204_PATH = repository .venv\Scripts\python.exe (display path truncated)
+RESIDUAL_PROCESS_POLICY = PRESERVED / não encerrados; identificar command line e parent antes de nova execução
+PYTHON_SMOKE_EXTERNAL = NOT_RUN
+ASYNCIO_SMOKE_EXTERNAL = NOT_RUN
+SETTINGS_ISOLATION_EXTERNAL = NOT_VALIDATED
+DJANGO_TEST_DB_SMOKE = NOT_RUN
+ASYNC_UNIT_TESTS = NOT_RUN
+H1_INTEGRATION_TEST = NOT_RUN
+POWERSHELL_VERSION_COMPATIBILITY = FAILURE CONFIRMED / ProcessStartInfo.ArgumentList was null
+INTERACTIVE_STOP_SEMANTICS = FAILURE CONFIRMED / pasted commands continued after thrown errors
+FALSE_SUCCESS_LINE = printed by a later interactive command / no runner evidence
+TEST_COUNT = 0
+RUNNER_ROOT_CAUSE = UNDETERMINED / async/root cause not reached
+ATTEMPT_FAILURE_CLASS = TEST_RUNNER_OR_CONFIGURATION_ISSUE / PowerShell argument API incompatible
+ISOLATION = NOT_PROVEN
+WORKER_PRODUCT_DEFECT = NOT_ESTABLISHED
+H1_PASS = NO
+H2_POSTGRESQL = NOT_STARTED
+H3_REAL_CAMERAS = NOT_STARTED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+FILES_CHANGED_THIS_ACTIVITY = PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md
+SOURCE_OR_TEST_FILES_CHANGED = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MASTER_UNCHANGED = YES
+PROJECT_STATE_UPDATE = PASS / external attempt factual checkpoint recorded
+ACTIVITY_COMPLETE = NO
+NEXT_ACTION = identify both process command lines/parents, then rerun a PS 5.1-compatible script as a single .ps1 file
+```
+
+O transcript externo mostra que a guarda inicial encontrou os dois processos e lançou erro antes dos smokes. Como os comandos foram colados diretamente no prompt interativo, linhas posteriores continuaram sendo executadas; o helper também falhou ao acessar `ProcessStartInfo.ArgumentList`, inexistente/nulo nessa versão do PowerShell. Não há saída de comando Python, teste Django ou resumo de runner. A linha `RESULT = todos os smokes e runners acima terminaram com exit 0` foi emitida depois dos erros sem verificação e não é evidência de sucesso. Nenhum teste ou banco foi acessado. O PowerShell do transcript criou um diretório temporário e um arquivo settings, sem evidência de conexão ao banco.
+
+Antes de qualquer runner, obter `CommandLine`, `ExecutablePath` e `ParentProcessId` dos PIDs 17352 e 39204, preservando-os até confirmar a propriedade. Corrigir o harness para Windows PowerShell 5.1 (usar argumentos corretamente citados em `ProcessStartInfo.Arguments` ou executar um `.ps1` sequencial com checagem de `$LASTEXITCODE` e `exit` em erro). Não enviar sequência para paste interativo que continue após falha. Depois, repetir smoke Python, asyncio e isolamento; somente se todos passarem iniciar os três runners seriais com SQLite explícito em `%TEMP%`.
+
+## 77. MON-RUNTIME-V1-H1-RESIDUAL-RUNNER-IDENTIFIED (2026-10-10)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-V1-H1-EXECUTION-RECOVERY
+STATUS = PARTIAL / runner residual identificado; aguardando encerramento seguro e retry compatível
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+EXTERNAL_PROCESS_39204 = Django test runner / repository .venv / full H1 focus suite
+EXTERNAL_PROCESS_17352 = Python base child / ParentProcessId 39204
+PROCESS_START = 2026-10-10 22:59:59 (transcript local time)
+PROCESS_COMMAND = manage.py test cameras.test_monitoramento_worker_runtime, scheduler_laboratorio, observability, ownership, camera_target_policy, camera_rtsp_runtime, camera_credentials, camera_credential_resolution / verbosity 2
+PROCESS_OWNER = PRIOR ARGOS TEST RUNNER / proven by command line and parent relation
+PROCESS_TERMINATED = NO / sandbox cannot access external CIM process table
+UNRELATED_PROCESSES = PRESERVED
+ASYNC_SMOKE_EXTERNAL = NOT_RUN
+TEST_RUNS_IN_THIS_RETRY = 0
+TEST_COUNT_IN_THIS_RETRY = 0
+RUNNER_ROOT_CAUSE = TEST_RUNNER_OR_CONFIGURATION_ISSUE / a prior grouped runner remained alive; underlying hang point/output still unavailable
+CLASSIFICATION = TEST_RUNNER_OR_CONFIGURATION_ISSUE for the residual-runner conflict; no product defect established
+ISOLATION = NOT_VALIDATED
+H1_PASS = NO
+H2_POSTGRESQL = NOT_STARTED
+H3_REAL_CAMERAS = NOT_STARTED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+FILES_CHANGED_THIS_ACTIVITY = PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md
+SOURCE_OR_TEST_FILES_CHANGED = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MASTER_UNCHANGED = YES
+PROJECT_STATE_UPDATE = PASS / external PID ownership reconciled
+ACTIVITY_COMPLETE = NO
+NEXT_ACTION = conditionally stop PID 17352 and 39204 only after rechecking executable paths, suite command, and parent-child identity; then verify absence and rerun using a PS 5.1-compatible .ps1 file
+```
+
+A consulta externa prova que PID 39204 executa `manage.py test` sobre as oito suites focais H1/CAM indicadas e que PID 17352 é seu filho. Ambos são, portanto, resíduos da execução de teste anterior, não processos alheios. Eles ainda não foram encerrados: a consulta CIM deste ambiente é indisponível, e nenhum PID será terminado sem uma nova validação de identidade. O processo ativo explica por que o precheck externo impediu uma nova execução e cria risco de concorrência no banco temporário.
+
+O transcript não contém saída do runner antigo, etapa atual ou caminho do banco de teste resolvido; logo não prova se ele está travado em discovery, setup, teste ou teardown. Classificação do conflito de retry: `TEST_RUNNER_OR_CONFIGURATION_ISSUE`. Causa interna do hang do processo antigo permanece sem evidência suficiente. Encerrar somente após conferir novamente PID, caminho, comando da suíte e relação pai/filho. Após o término, conferir ausência dos dois PIDs e só então executar os smokes e runners, em arquivo PowerShell compatível com a versão instalada.
+
+## 78. MON-RUNTIME-V1-H1-POWERSHELL51-HARNESS-READY (2026-10-10)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-V1-H1-EXECUTION-RECOVERY
+STATUS = PARTIAL / harness externo pronto; aguardando resultado terminal
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+RESIDUAL_PIDS = REPORTED_ABSENT / user result after conditional exact-process check
+PS_HARNESS = run_mon_runtime_v1_h1_isolated_tests.ps1 / created
+POWERSHELL_SYNTAX_PARSE = PASS
+PS51_RUNTIME_EXECUTION = NOT_RUN
+PYTHON_SMOKE_EXTERNAL = NOT_RUN
+ASYNCIO_SMOKE_EXTERNAL = NOT_RUN
+TEST_SETTINGS = temporary module under %TEMP%; explicit SQLite default and test paths under same root
+DATABASE_ISOLATION_PROBE = prepared / read-only settings inspection before every runner
+RUN_ORDER = Python; asyncio; settings isolation; WorkerRuntimeTests; WorkerConfigTests; WorkerRuntimeIntegrationTests; focused H1/CAM suites
+PER_COMMAND_TIMEOUTS = 15s; 15s; 15s; 120s; 180s; 180s; 600s
+TESTS_EXECUTED_THIS_STEP = 0
+RUNNER_ROOT_CAUSE = UNDETERMINED / waiting for terminal results from corrected harness
+WORKER_PRODUCT_DEFECT = NOT_ESTABLISHED
+H1_PASS = NO
+SOURCE_PRODUCTION_CHANGED = NO
+TEST_SOURCE_CHANGED = NO
+FILES_CHANGED_THIS_ACTIVITY = run_mon_runtime_v1_h1_isolated_tests.ps1; PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MASTER_UNCHANGED = YES
+PROJECT_STATE_UPDATE = PASS / harness and remaining external gate recorded
+ACTIVITY_COMPLETE = NO
+NEXT_ACTION = run the .ps1 file in normal Windows PowerShell and return its per-command records
+```
+
+O script foi criado como harness temporário de validação para superar a incompatibilidade de `ProcessStartInfo.ArgumentList` com Windows PowerShell 5.1. Usa `ProcessStartInfo.Arguments` com quoting explícito, executa um arquivo completo (sem paste interativo), interrompe na primeira falha, limita cada processo, redige logs antes de gravá-los, e verifica settings e DB paths antes de cada runner. O timeout encerra somente a árvore do processo Python que o próprio harness iniciou. O runner agregado repete os oito módulos focais do comando identificado nos resíduos, agora sob settings temporários explícitos; não roda a regressão de 921 testes.
+
+A análise sintática PowerShell no host Codex passou; o runtime Windows PowerShell 5.1 externo ainda precisa executar o script. Nenhum smoke ou teste foi iniciado nesta etapa. Mesmo com os PIDs anteriores ausentes, o precheck revalida concorrência e isolamento antes de prosseguir. PostgreSQL/H2, câmeras reais/H3 e prontidão de produção seguem fora do escopo e não iniciados.
+
+## 79. MON-RUNTIME-V1-H1-TEST-DB-TEARDOWN-RECOVERY (2026-10-11)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-V1-H1-EXECUTION-RECOVERY
+STATUS = PARTIAL / runtime unit and config pass; integration body passes; aggregate suite pending
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+RESIDUAL_PIDS = REPORTED_ABSENT
+PYTHON_SMOKE = PASS / exit 0
+ASYNCIO_SMOKE = PASS / exit 0
+ISOLATION = PASS / temp settings; operational db not opened
+WORKER_RUNTIME_TESTS = PASS / 7 tests / exit 0
+WORKER_CONFIG_TESTS = PASS / 1 test / exit 0
+INTEGRATION_TEST_BODY = PASS / 1 test / assertions passed
+INTEGRATION_RUNNER_EXIT = 1 / Django teardown raised WinError 32 deleting h1-test.sqlite3
+FAILURE_CLASS = TEST_HARNESS_OR_CONFIGURATION_ISSUE / test DB file remained open at Windows cleanup
+WORKER_PRODUCT_DEFECT = NOT_ESTABLISHED
+H1_FOCUSED_AGGREGATE = NOT_RUN / sequential harness stopped after integration runner exit 1
+TEST_DB_RECOVERY = harness changed to Django shared in-memory SQLite test DB; default DB remains explicit under unique %TEMP% root
+SOURCE_OR_TEST_PRODUCT_FILES_CHANGED = NO
+HARNESS_CHANGED = run_mon_runtime_v1_h1_isolated_tests.ps1 / TEST.NAME=:memory: and isolation probe asserts Django's shared-memory URI
+H1_PASS = NO
+H2_POSTGRESQL = NOT_STARTED
+H3_REAL_CAMERAS = NOT_STARTED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS / runner result and bounded harness recovery recorded
+ACTIVITY_COMPLETE = NO
+NEXT_ACTION = rerun the updated .ps1 in normal Windows PowerShell; inspect per-command output through the focused aggregate and verify exit 0
+```
+
+The user-provided transcript proves that the Python process, trivial asyncio smoke, settings isolation, seven `WorkerRuntimeTests`, and one `WorkerConfigTests` all exited 0. The isolated `WorkerRuntimeIntegrationTests` body reported `ok` and Django reported `Ran 1 test ... OK`; then teardown alone raised `PermissionError: [WinError 32]` while deleting the explicit `%TEMP%` file `h1-test.sqlite3`. Consequently the runner returned 1 and the script correctly stopped before the focused aggregate. No operational repository database was opened and no product assertion failed. The exact thread retaining the file handle has not been identified, so classify the observed failure as test harness/configuration cleanup, not a Worker defect.
+
+The harness now keeps `DATABASES.default.NAME` on a unique `%TEMP%` path and sets only `DATABASES.default.TEST.NAME` to `:memory:`. Django 5.2 maps that test setting to `file:memorydb_default?mode=memory&cache=shared`, allowing thread-local connections to share the temporary test DB without a filesystem deletion during teardown. Its read-only pre-run isolation probe asserts the configured value and effective URI without opening a DB connection. The external Windows PowerShell rerun is still required to prove integration teardown and the complete focused suite; H1 remains partial until all gates pass.
+
+## 80. MON-RUNTIME-V1-H1-AGGREGATE-MODULE-CORRECTION (2026-10-11)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-V1-H1-EXECUTION-RECOVERY
+STATUS = PARTIAL / smoke, unit, config and integration pass; aggregate has one invalid import label
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+PYTHON_SMOKE = PASS / exit 0
+ASYNCIO_SMOKE = PASS / exit 0
+ISOLATION = PASS / default DB under unique %TEMP%; TEST.NAME=:memory:; operational db not opened
+WORKER_RUNTIME_TESTS = PASS / 7 tests
+WORKER_CONFIG_TESTS = PASS / 1 test
+WORKER_RUNTIME_INTEGRATION = PASS / 1 test / memory DB teardown completed
+FOCUSED_AGGREGATE = 95 tests discovered and run / no assertion failures shown / exit 1
+AGGREGATE_ERROR = ImportError / ModuleNotFoundError: cameras.test_monitoramento_ownership does not exist
+OWNERSHIP_TEST_MODULES = cameras.test_monitoramento_mon09c and cameras.test_monitoramento_mon09d / both present in repository
+FAILURE_CLASS = TEST_HARNESS_CONFIGURATION_ISSUE / nonexistent module label
+WORKER_PRODUCT_DEFECT = NOT_ESTABLISHED
+HARNESS_CHANGED = aggregate now points to existing MON-09C and MON-09D modules for lease/fencing and ownership observability
+PRODUCT_OR_TEST_SOURCE_CHANGED = NO
+H1_PASS = NO
+H2_POSTGRESQL = NOT_STARTED
+H3_REAL_CAMERAS = NOT_STARTED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS / suite result and module correction recorded
+ACTIVITY_COMPLETE = NO
+NEXT_ACTION = rerun the updated .ps1; confirm all existing H1/CAM/ownership modules finish with exit 0
+```
+
+The external report on 2026-10-11 confirms the shared-memory DB resolved the Windows teardown issue: the isolated integration test and its Django DB destruction both exited normally. All smokes and the individual runtime/config tests again passed. The focused aggregate found and ran 95 tests, then returned 1 solely because the label `cameras.test_monitoramento_ownership` cannot be imported. Repository inventory found no such file. Ownership/fencing coverage is in the existing `cameras/test_monitoramento_mon09c.py`; operational configuration and ownership event coverage is in `cameras/test_monitoramento_mon09d.py`. No assertion failures appear in the reported aggregate output. The PowerShell harness now includes both existing modules in place of the nonexistent label. This is a test harness target correction; no production or test source was edited. H1 remains partial pending one clean external run of the corrected aggregate.
+
+## 81. MON-RUNTIME-V1-H1-EXECUTION-RECOVERY-COMPLETE (2026-10-11)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-V1-H1-EXECUTION-RECOVERY
+STATUS = COMPLETE / H1 isolated execution gates passed
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+BRANCH = codex/mon-runtime-v1-implementation
+PYTHON_SMOKE = PASS / exit 0
+ASYNCIO_SMOKE = PASS / exit 0
+ISOLATION = PASS / unique %TEMP% default DB; Django shared-memory test DB; operational DB not opened
+WORKER_RUNTIME_TESTS = PASS / 7 tests
+WORKER_CONFIG_TESTS = PASS / 1 test
+WORKER_RUNTIME_INTEGRATION = PASS / 1 test / test DB teardown completed
+H1_FOCUSED_AGGREGATE = PASS / 110 tests / Ran 110 tests in 56.676s / OK / exit 0
+ALL_RUNNERS = PASS / user report RESULT confirms all smokes and runners exit 0
+H1_PASS = YES
+WORKER_PRODUCT_DEFECT = NOT_FOUND_IN_VALIDATED_H1_TESTS
+HARNESS_TELEMETRY = LAST_COMPLETED_STEP in this run showed the previous step due to update order; script corrected to update before reporting
+POST_RUN_VERIFICATION = PowerShell syntax PASS; git diff --check PASS
+FULL_TEST_RERUN_AFTER_TELEMETRY_ONLY_FIX = NOT_REQUIRED / behavior-only reporting order change
+H2_POSTGRESQL = NOT_STARTED
+H3_REAL_CAMERAS = NOT_STARTED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+PRODUCT_OR_TEST_SOURCE_CHANGED = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS / H1 result and telemetry correction recorded
+ACTIVITY_COMPLETE = YES / execution recovery and isolated H1 test gates
+NEXT_ACTION = none for this H1 execution-recovery activity
+```
+
+The user-provided final PowerShell report shows the focused aggregate ran 110 tests in 56.676 seconds and ended `OK`, followed by normal destruction of the shared-memory test database and the success summary stating every smoke and runner exited 0. Together with the preceding transcript (Python/asyncio/isolation pass; seven runtime tests; one config test; one integrated test and teardown pass), this satisfies the isolated H1 execution-recovery gates. The repository's operational `db.sqlite3` was never opened. This does not validate PostgreSQL, real cameras, or production readiness.
+
+The final report's `LAST_COMPLETED_STEP` label lagged because the helper updated the variable after printing. The PowerShell harness was corrected to update the successful step before emitting its report. This was a telemetry-order-only edit; PowerShell parsing and `git diff --check` passed afterward. No tests were rerun after that reporting-only correction.
+
+## 82. MON-RUNTIME-V1-H2-POSTGRESQL-PREPARATION (2026-10-11)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = MON-RUNTIME-V1-H2-POSTGRESQL-PREPARATION
+STATUS = BLOCKED / no disposable PostgreSQL infrastructure available locally
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+BRANCH = codex/mon-runtime-v1-implementation
+H1_STATUS = PASS / 110 focused tests (prior user-provided evidence)
+WORKTREE = preserved WIP: three continuity documents modified; H1 harness untracked
+PYTHON = repository .venv / 3.14.7
+DJANGO = 5.2.18
+DATABASES = config.settings uses only SQLite / repository db.sqlite3 path; not opened
+DOCKER = NOT_AVAILABLE / docker and docker-compose not found; Docker install paths absent
+POSTGRESQL_SERVER_AND_CLIENT = NOT_FOUND_ON_PATH_OR_STANDARD_INSTALL_PATH
+POSTGRESQL_SERVICE_QUERY = UNAVAILABLE / sandbox service query raised InvalidOperationException
+POSTGRESQL_DRIVER = NOT_INSTALLED / psycopg and psycopg2 absent from .venv
+LOCAL_RESOURCES = 54.03 GB free on C:; RAM UNKNOWN / CIM unavailable
+CONFIGURATION_INSPECTION = PASS / completed before any resource creation
+DATABASE_ISOLATION = NOT_CREATED / no host, database, user, or port configured
+OPERATIONAL_INFRASTRUCTURE_ACCESSED = NO
+DB_SQLITE_OPENED_OR_MODIFIED = NO
+ENVIRONMENT_OR_DEPENDENCIES_INSTALLED = NO
+MIGRATIONS = NOT_RUN
+SCHEMA_VALIDATION = NOT_RUN
+CONCURRENCY_AND_FENCING = NOT_RUN
+ATOMICITY_AND_ROLLBACK = NOT_RUN
+DUE_PAGINATION = NOT_RUN
+RESTART_AND_RECOVERY = NOT_RUN
+H2_PASS = NO
+H2_TESTS_EXECUTED = 0
+STATIC_INSPECTION = Django ORM repository uses transaction.atomic, select_for_update and F expressions; this is not PostgreSQL evidence
+MATERIAL_BLOCKER = provision Docker/daemon or a local disposable PostgreSQL service; then install a compatible psycopg driver into .venv only
+FILES_CHANGED = continuity PROJECT_STATE, ACTIVE_DOCUMENT_MAP, AGENT_CONTINUITY only
+PRODUCT_SOURCE_TESTS_MIGRATIONS_REQUIREMENTS_CHANGED = NO
+H3_REAL_CAMERA_PILOT = NOT_STARTED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+CI_REMOTE = NOT_VERIFIED
+PROJECT_STATE_UPDATE = PASS / section 82 records the observed block and minimum remediation
+ACTIVITY_COMPLETE = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MASTER_UNCHANGED = YES
+NEXT_RECOMMENDED_ACTIVITY = resume MON-RUNTIME-V1-H2-POSTGRESQL-PREPARATION after a disposable local PostgreSQL runtime is available
+```
+
+The H2 prompt was completed by the user after its first message was truncated. It explicitly requires an isolated temporary instance with synthetic data, temporary credentials, loopback-only access and disposable storage; it prohibits automatic Docker/permanent-service installation and requires stopping with the minimum remediation when infrastructure or driver is absent. Precheck confirmed the requested branch and HEAD. Django is available in `.venv`, but default settings point to SQLite at the repository path, so no Django database command was run. Docker, Docker Compose, PostgreSQL client/server executables and the psycopg drivers are absent; the Windows service table and RAM could not be queried in this sandbox. Only free disk space was confirmed (54.03 GB). No resource, connection, package or test was created or used. Static source inspection is not counted as compatibility evidence. H2 remains blocked until local disposable PostgreSQL infrastructure is made available; H3 remains not started.
+
+## 83. ARGOS-HOM-ROADMAP-REBASE-01 (2026-10-11)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = ARGOS-HOM-ROADMAP-REBASE-01
+MODE = DOCUMENTATION_ONLY
+STATUS = COMPLETE / ROADMAP AND READINESS GATE RECORDED; HOM-00 RECONCILIATION REMAINS OPEN
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+BRANCH = codex/mon-runtime-v1-implementation
+UPSTREAM = origin/codex/mon-runtime-v1-implementation
+DIVERGENCE = 0 / 0
+ORIGIN_MASTER = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9 / baseline is 7 ahead, 0 behind
+WORKTREE_PRESERVED = YES / preexisting continuity edits; untracked persistence audit; untracked H1 harness
+P3_ROOT_AND_FAMILY_FEATURES = SEPARATE_BRANCHES / NOT_ANCESTORS_OF_CURRENT_ORIGIN_MASTER
+P5_SOURCE = SEPARATE_BRANCHES / NOT_ANCESTORS_OF_CURRENT_ORIGIN_MASTER
+PUBLICATION_CHECKPOINT_CONFLICT = OPEN / textual state says published; observed Git ancestry does not prove integration
+ROADMAP_UPDATED = docs/projeto/ROADMAP_ARGOS_V5.md §23
+SPRINT_MAP_UPDATED = docs/projeto/SPRINTS_ARGOS_V5.md §20
+HOMOLOGATION = PROGRESSIVE / NOT_PRODUCTION
+HOMOLOGATION_GATE = DEFINED / BLOCKED
+HOM_00 = PARTIAL / CANONICAL_BRANCH_AND_PUBLICATION_RECONCILIATION_OPEN
+HOM_01 = BLOCKED / CANONICAL_UI_INTEGRATION_NOT_PROVEN
+HOM_02 = NOT_IMPLEMENTED / XLSX_SCHEMA_NOT_HOMOLOGATED
+HOM_03 = NOT_STARTED / VM_READINESS_UNVERIFIED
+HOM_04 = BLOCKED / PRE_HOMOLOGATION_GATES_OPEN
+HOM_05 = PLANNED / NON_BLOCKING
+H1 = PASS / 110 FOCUSED TESTS / TEMPORARY SQLITE
+H2 = BLOCKED / NO LOCAL DISPOSABLE POSTGRESQL RUNTIME OR DRIVER
+H3 = NOT_STARTED / REAL CAMERA VALIDATION REQUIRES SEPARATE AUTHORIZATION
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_ACTIVITY
+LIVE_AUTHORIZED = NO
+PRODUCTION_READINESS = NOT_ESTABLISHED
+PROJECT_STATE_UPDATE = PASS / THIS SECTION
+ACTIVITY_COMPLETE = YES / DOCUMENTATION REBASE ONLY
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+NEXT_RECOMMENDED_ACTIVITY = HOM-00 BASELINE RECONCILIATION
+```
+
+O roadmap e o mapa de sprints agora registram HOM-00..HOM-05, critérios
+blockers/não blockers, dependências, evidências, aceite, backlog e cargas de
+homologação. A entrada inicial fica limitada a Inventário/UI; não é go-live. Os
+contratos de persistência/topologia, Worker, autorização, imagens e CAM-INT-04
+foram vinculados. A auditoria de persistência já presente no worktree foi lida
+como finding documental e não foi modificada.
+
+Há conflito entre os checkpoints de publicação de P3/P5 e o estado atual das
+refs. A branch atual está 7 commits adiante de `origin/master`, mas os commits
+da família UI P3 root/P3-A/B/C/D e da fonte P5 em branches próprias não são
+ancestrais da branch atual nem de `origin/master`; o `origin/master` aqui
+observado contém o checkpoint documental 5bd22b0, mas não prova a integração da
+fonte P5. Não corrigir os registros históricos silenciosamente. HOM-00 deve
+adjudicar o alvo canônico, comparar conteúdo/ancestry/migrations, reconciliar
+checkpoints e atualizar as authorities antes de HOM-01. O WIP preexistente
+permaneceu no lugar; nenhum teste, deployment, acesso operacional, commit, push
+ou merge foi executado nesta atividade.
+
+## 84. ARGOS-HOM-00-ROADMAP-FINAL-RECONCILIATION (2026-10-11)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = ARGOS-HOM-00-ROADMAP-FINAL-RECONCILIATION
+MODE = DOCUMENTATION_ONLY / DIRECT
+STATUS = DOCUMENTARY_RECONCILIATION_COMPLETE / INTEGRATION_FOUNDATION_PENDING
+ACTIVITY_COMPLETION_PERCENT = 100%
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+BRANCH = codex/mon-runtime-v1-implementation
+UPSTREAM_DIVERGENCE = 0 AHEAD / 0 BEHIND
+MASTER = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9 / baseline 7 ahead, 0 behind
+WORKTREE_PRESERVED = YES
+P3_ROOT = codex/ui-v2-p3-root-reconciliation / e381df04f59ce146bf53fc6929fb7ca272c26e2c
+P5 = codex/ui-v2-p5-production / 4676a32c78cecab33a157a0a9d4fd2cabbc90a87
+P5_CAMERA_DETAIL_CONFORMANCE = codex/p5-camera-detail-production-conformance / 4a2d40da502ea4dafd8bc78202e707416695bee3
+P3_P5_ANCESTRY_TO_BASELINE = NO
+P3_P5_WORKTREE_WIP = UNVERIFIED
+P3_STATUS = PROTOTYPE / VISUAL_REFERENCE
+P5_STATUS = PRODUCTION_UI_SOURCE / NOT_INTEGRATED
+DS_BASELINE = 2.0.2
+DS_TARGET = 2.4.0 / RECOMMENDED / CANONICAL_ADJUDICATION_PENDING
+DESIGN_QA = MANDATORY / NOT_RUN
+QUICK_DETAIL_IMAGE = LATEST_ACTIVE_IMAGE / CAPTURA_CAMERA OR UPLOAD_MANUAL
+LATEST_CAMERA_CAPTURE = DISTINCT TECHNICAL CONCEPT / CAPTURA_CAMERA ONLY
+IMPORT_XLSX = REQUIRED_BEFORE_HOM / NOT_IMPLEMENTED / SCHEMA VERIFICATION PENDING
+EXPORT_XLSX = APPROVED / NON_BLOCKING
+HOM_00 = DOCUMENTED / INTEGRATION_FOUNDATION_PENDING
+HOM_01 = BLOCKED / INTEGRATION AND DESIGN_QA PENDING
+HOM_02 = NOT_IMPLEMENTED / TEMPLATE AND SCHEMA PENDING
+HOM_03 = NOT_STARTED / VM READINESS UNVERIFIED
+HOM_04 = BLOCKED / ENTRY GATES OPEN
+H1 = PASS / INHERITED / 110 FOCUSED TESTS / TEMPORARY SQLITE
+H2 = BLOCKED_BY_INFRASTRUCTURE
+H3 = NOT_STARTED
+G1_INTEGRATION = BLOCKED
+G2_DESIGN_QA = BLOCKED
+G3_HOMOLOGATION_ENTRY = BLOCKED
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_ACTIVITY
+LIVE_AUTHORIZED = NO
+PRODUCTION_READINESS = NOT_ESTABLISHED
+PROJECT_STATE_UPDATE = PASS / SECTION 84
+ACTIVITY_COMPLETE = YES / DOCUMENTARY RECONCILIATION ONLY
+ROADMAP_RECONCILED = YES / SECTION 23
+SPRINTS_RECONCILED = YES / SECTION 20
+CONTINUITY_UPDATE = PASS / AGENT_CONTINUITY §20.48; ACTIVE_DOCUMENT_MAP §52
+DESIGN_QA_GATE = MANDATORY / NOT_RUN
+IMAGE_AUTHORITY_RECONCILED = YES / ARGOS_IMAGE_DOMAIN_CONTRACT §26
+XLSX_POLICY_RECONCILED = YES / TEMPLATE AND SCHEMA VERIFICATION PENDING
+GIT_DIFF_CHECK = PASS
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+NEXT_RECOMMENDED_ACTIVITY = ARGOS-HOM-00-INTEGRATION-FOUNDATION
+```
+
+O contrato de imagem, seção 26, registra a decisão aprovada para o Quick
+Detail: imagem ativa mais recente de qualquer proveniência por
+`recorded_at DESC, immutable_id DESC`; Camera Detail pode exibir até três
+imagens ativas em ordem crescente, com captura e upload manuais. Isso não
+implementa galeria, captura, rotação ou expurgo e não altera
+`LATEST_CAMERA_CAPTURE` técnico. O template e schema oficial XLSX continuam
+`PENDING_SCHEMA_VERIFICATION`; importador não está implementado. A estratégia
+recomendada preserva `master`, prevê branch isolada candidata
+`codex/hom-v1-integration` (não criada), Runtime V1 e integração seletiva de
+P5, P3 como referência, regressões, Design QA, XLSX, VM e promoção após gates.
+
+OPEN_DECISIONS = adjudicação canônica de DS 2.4.0 e compatibilidade; schema/template XLSX oficial; escopo exato da integração seletiva P5 conforme diff e gates
+OPEN_BLOCKERS = branch de integração não criada; G1/G2/G3 não aprovados; H2 PostgreSQL bloqueado por infraestrutura; H3 não iniciado
+DOCUMENTS_RECONCILED = ROADMAP §23; SPRINTS §20; image contract §26; UI integration spec §20; visual contract homologation addendum; continuity and active document map
+TESTS_EXECUTED = NONE / documentation-only activity
+PRODUCTION_CODE_CHANGED = NO
+MIGRATIONS_CHANGED = NO
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_ACTIVITY
+
+## 85. ARGOS-HOM-00-CONTINUITY-RECOVERY-01 (2026-10-11)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = ARGOS-HOM-00-CONTINUITY-RECOVERY-01
+MODE = DOCUMENTATION_RECONCILIATION / DIRECT
+STATUS = COMPLETE / DOCUMENTARY WIP RECOVERED; HOM-00 INTEGRATION FOUNDATION PENDING
+ACTIVITY_COMPLETION_PERCENT = 100%
+SOURCE_ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+SOURCE_BRANCH = codex/mon-runtime-v1-implementation
+SOURCE_HEAD = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+SOURCE_WIP_PRESERVED = YES / tracked documentary WIP and two untracked files left untouched
+TARGET_ROOT = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+TARGET_BRANCH = codex/hom-v1-integration
+TARGET_HEAD = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+TARGET_DOCUMENTS_RECONCILED = YES / only verified source diff hunks applied
+DOCUMENTS_CHANGED = ROADMAP §23; SPRINTS §20; PROJECT_STATE §83-84 and this section; AGENT_CONTINUITY §20.47-20.48 and §20.49; ACTIVE_DOCUMENT_MAP §51-52 and §53; image contract §26; UI integration spec §20; UI V2 visual contract homologation addendum
+UNTRACKED_PERSISTENCE_AUDIT = PRESERVED_AT_SOURCE / candidate future documentary and readiness evidence; review scope and authority before baseline incorporation
+UNTRACKED_H1_HARNESS = PRESERVED_AT_SOURCE / candidate future test/evidence artifact; verify provenance, reproducibility, dependencies, scope and cleanup before baseline incorporation
+PRODUCTION_CODE_CHANGED = NO
+UI_CODE_CHANGED = NO
+MIGRATIONS_CHANGED = NO
+PROJECT_STATE_UPDATE = PASS / THIS SECTION
+CONTINUITY_UPDATE = PASS / AGENT_CONTINUITY §20.49; ACTIVE_DOCUMENT_MAP §53
+HOMOLOGATION_GATE = BLOCKED
+H1 = PASS / INHERITED
+H2 = PENDING / BLOCKED BY INFRASTRUCTURE
+H3 = NOT_STARTED
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_ACTIVITY
+LIVE_AUTHORIZED = NO
+PRODUCTION_READINESS = NOT_ESTABLISHED
+GIT_DIFF_CHECK = PASS
+TESTS_EXECUTED = NONE / no application or Django-dependent tests run
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+NEXT_RECOMMENDED_ACTIVITY = ARGOS-HOM-00-INTEGRATION-FOUNDATION
+```
+
+O preflight confirmou a origem na branch `codex/mon-runtime-v1-implementation`
+e no HEAD `4ff2a9260a438a61f3a23e753dfdc3d5c166424a`, com oito documentos
+rastreados modificados e dois arquivos não rastreados. O destino estava limpo no
+HEAD esperado, igual à base da origem; portanto não havia delta concorrente a
+sobrescrever. Foram aplicados somente os hunks verificados dos oito documentos,
+sem copiar documentos completos. A origem não foi escrita.
+
+O estado documental preserva HOM-00..HOM-05 e o gate de homologação bloqueado.
+Design QA é obrigatório e exige comparação da referência visual aprovada com a
+renderização real. O Design System 2.4.0 é alvo recomendado, ainda sujeito à
+adjudicação. Quick Detail usa `LATEST_ACTIVE_IMAGE`, sem depender da proveniência;
+`LATEST_CAMERA_CAPTURE` continua conceito técnico distinto. O escopo XLSX não
+inclui ID ARGOS manual, resolve atualização por patrimônio/serial único, reutiliza
+validações canônicas Django, exige prévia e confirmação, atomicidade total e
+rollback; exportação permanece não bloqueante. A composição atual e a UI funcional
+existente permanecem preservadas; Camera Detail e a baseline visual protegida de
+Quick Detail não foram alterados nesta atividade documental. Nada neste checkpoint declara
+funcionalidade pendente implementada.
+
+A auditoria de persistência permanece WIP não rastreado na origem e é classificada
+como possível evidência/documentação de readiness após revisão. O harness H1
+permanece WIP não rastreado na origem e é classificado como possível artefato de
+teste/evidência após verificação de proveniência e reprodutibilidade. Nenhum dos
+dois foi copiado, descartado ou alterado.
+
+## 86. ARGOS-HOM-00-INTEGRATION-CHECKPOINT-01 (2026-10-11)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = ARGOS-HOM-00-INTEGRATION-CHECKPOINT-01
+MODE = CONTROLLED_DOCUMENTATION_CHECKPOINT / DIRECT
+STATUS = COMPLETE / DOCUMENTARY BASELINE COMMITTED LOCALLY
+WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+BRANCH = codex/hom-v1-integration
+HEAD_BEFORE = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+DOCUMENTS_COMMITTED = 8 AUTHORIZED DOCUMENTS / ROADMAP, SPRINTS, PROJECT_STATE, CONTINUITY, ACTIVE DOCUMENT MAP, IMAGE CONTRACT, UI INTEGRATION SPEC, UI V2 VISUAL CONTRACT
+RUNTIME_V1 = INTEGRATED_IN_ISOLATED_BASELINE / OPERATIONAL_HOMOLOGATION_NOT_DECLARED
+P3 = PROTOTYPE / VISUAL_REFERENCE
+P5 = SELECTIVE_SOURCE / NOT_WHOLESALE_INTEGRATION
+CAMERA_DETAIL_P5 = ALREADY_PRESENT_IN_TARGET / FOUNDATION EVIDENCE
+DS_BASELINE = 2.0.2
+DS_TARGET = 2.4.0 / RECOMMENDED / CANONICAL_ADJUDICATION_PENDING
+DESIGN_QA = MANDATORY / NOT_RUN
+QUICK_DETAIL_IMAGE = LATEST_ACTIVE_IMAGE
+IMPORT_XLSX = NO_ARGOS_ID_COLUMN / CANONICAL_DJANGO_VALIDATION / PREVIEW / CONFIRMATION / ATOMIC_ALL_OR_NOTHING
+EXPORT_XLSX = APPROVED / NON_BLOCKING
+H1 = PASS / INHERITED
+H2 = BLOCKED_BY_INFRASTRUCTURE
+H3 = NOT_STARTED
+HOMOLOGATION_ENTRY_GATE = BLOCKED
+UI_CODE_CHANGED = NO
+BACKEND_CODE_CHANGED = NO
+MIGRATIONS_CHANGED = NO
+SOURCE_WORKTREES_PRESERVED = YES / NOT WRITTEN BY THIS ACTIVITY; DIRECT STATUS INSPECTION BLOCKED BY FILESYSTEM PERMISSIONS
+GIT_DIFF_CHECK = PASS
+STAGED_DIFF_VALIDATED = PASS / AUTHORIZED DOCUMENTS ONLY
+PROJECT_STATE_UPDATE = PASS / THIS SECTION
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_ACTIVITY
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+NEXT_RECOMMENDED_ACTIVITY = ARGOS-HOM-01-UI-V2-SELECTIVE-INTEGRATION / PLANNED / NOT_AUTHORIZED_BY_THIS_ACTIVITY
+```
+
+HOM-00..HOM-05 permanecem registrados. O baseline Runtime V1 está isolado e
+integrado nesta branch, sem declarar homologação operacional. P3 continua
+protótipo/referência; P5 permanece fonte para integração seletiva. A evidência
+da Foundation registra Camera Detail P5 já presente no target, preservado por
+este checkpoint. Quick Detail continua usando `LATEST_ACTIVE_IMAGE`; isso não
+altera o conceito técnico `LATEST_CAMERA_CAPTURE`. Exportação XLSX permanece
+aprovada e não bloqueante. A entrada de homologação permanece bloqueada por
+integração, Design QA e prontidão de infraestrutura/evidências pendentes.
+
+HOM-01 é a próxima atividade planejada, não autorizada por este registro. Seu
+escopo previsto é comparar a fonte P5 e o UI WIP principal, integrar somente
+mudanças selecionadas, preservar Camera Detail existente, Quick Detail
+protegido, dados reais, permissões, filtros e paginação; avaliar manter cinco
+câmeras recentes ou propor composição sem perda de dados; reconciliar CSS e
+seletores da topbar; executar regressões, Design QA obrigatório e obter aprovação
+visual humana. Nenhuma integração de UI foi executada neste checkpoint.

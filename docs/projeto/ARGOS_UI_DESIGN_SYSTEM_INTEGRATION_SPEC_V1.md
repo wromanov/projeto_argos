@@ -1197,3 +1197,37 @@ sem duplicar seu conteúdo integral:
 
 Esses documentos registram existência, path, dependências e próximo passo. Esta
 specification permanece a authority detalhada.
+
+## 20. Reconciliação de homologação UI V2 (2026-10-11)
+
+### Regra funcional de imagem
+
+Para o conteúdo do Quick Detail, prevalece a decisão de produto registrada em
+`ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`, seção 26: mostrar a imagem ativa mais
+recente entre `CAPTURA_CAMERA` e `UPLOAD_MANUAL`, por `recorded_at DESC` e
+desempate estável. Isso reconcilia a seleção visual do painel e não redefine
+`LATEST_CAMERA_CAPTURE`, que permanece exclusivamente técnico e restrito à
+captura. A baseline visual protegida do Quick Detail não ganha redesign por
+esta decisão.
+
+### Gate visual para HOM-01
+
+```text
+DESIGN_QA = MANDATORY
+```
+
+Cada tela integrada ou alterada visualmente deve ser comparada com sua
+referência visual aprovada. O gate cobre Dashboard, Inventário, Camera Detail,
+Quick Detail, shell/navegação, Page Headers e a interface de importação XLSX,
+além de telas visuais futuras. Avaliar hierarquia, tipografia, espaçamento,
+alinhamento/grid, cores/tokens, componentes/estados, overflow, densidade,
+responsividade, acessibilidade, navegação/interações e regressões funcionais.
+
+Evidências exigidas: `REFERENCE_SCREENSHOT`, `RENDERED_SCREENSHOT`,
+`VISUAL_DIFFERENCE_REPORT`, `CORRECTION_EVIDENCE` e
+`HUMAN_VISUAL_APPROVAL`, com viewport, zoom, conteúdo e estado equivalentes.
+Sem referência aprovada ou renderização real comprovada, resultado é
+`BLOCKED`; diferença visual material ou regressão funcional é `FAIL`.
+Aceitação de HOM-01 requer `DESIGN_QA = PASS`,
+`FUNCTIONAL_REGRESSION = PASS` e `HUMAN_VISUAL_APPROVAL = PASS`. Nenhum QA é
+executado por este registro documental.

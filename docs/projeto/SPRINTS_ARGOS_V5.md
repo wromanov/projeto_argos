@@ -11,14 +11,14 @@ REFERENCE_PACKAGE_EXTERNAL_PATH = C:\Users\walacedelgado\Downloads\camera-invent
 REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-v1.0.1.zip
 REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08B06854073CE16FE028DA14
-CURRENT_PHASE = FASE C — Captura manual e gestão de imagens
-CURRENT_PHASE_STATUS = FASE C EM_ANDAMENTO; UI V2 DOCUMENTED as a parallel track; Phase 0 and Batch A closed; pending visual scopes flow through approved prototypes
+CURRENT_PHASE = PREPARAÇÃO PARA HOMOLOGAÇÃO PROGRESSIVA
+CURRENT_PHASE_STATUS = HOM-00 DOCUMENTAL RECONCILIADA; integração, HOM-01..03 e gates de homologação pendentes
 IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
-CURRENT_ACTIVITY = UI-V2-P1 — VISUAL STYLE LAB / NOT_STARTED / NOT_AUTHORIZED
-LAST_COMPLETED_ACTIVITY = UI-V2-P0 — SCREEN CENSUS / CLOSED_PASS
-LAST_COMPLETED_ACTIVITY_STATUS = CLOSED / DOCUMENTARY / PROJECT_STATE_UPDATE PASS
-NEXT_CANDIDATES = UI-V2-P1 — VISUAL STYLE LAB; IMG-04; MON-AVAIL-02 (recommendation)
-NEXT_CANDIDATES_STATUS = UI-V2-P1 NOT_STARTED / NOT_AUTHORIZED; IMG-04 NOT_AUTHORIZED; MON-AVAIL-02 RECOMMENDED / NOT_AUTHORIZED; Quick Detail visual baseline approved
+CURRENT_ACTIVITY = ARGOS-HOM-00-INTEGRATION-FOUNDATION / PLANNED / NOT_AUTHORIZED
+LAST_COMPLETED_ACTIVITY = ARGOS-HOM-00-ROADMAP-FINAL-RECONCILIATION / DOCUMENTARY
+LAST_COMPLETED_ACTIVITY_STATUS = PROJECT_STATE_UPDATE PASS; HOM-00 integration foundation remains pending
+NEXT_CANDIDATES = ARGOS-HOM-00-INTEGRATION-FOUNDATION
+NEXT_CANDIDATES_STATUS = PLANNED / NOT_AUTHORIZED; Quick Detail visual baseline remains approved and protected
 IMG02_IMPLEMENTATION_AUTHORIZATION = GRANTED_BY_EXPLICIT_USER_INSTRUCTION_FOR_THIS_SLICE_ONLY
 IMG-01 = COMPLETE após o checkpoint documental; contrato canônico:
 docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
@@ -41,6 +41,7 @@ UI-3_VISUAL_ACCEPTANCE = PASS / current Quick Detail visual baseline explicitly 
 UI-3_PRODUCT_ACCEPTANCE = PENDING
 UI-3_OVERALL_STATUS = INTEGRATED / VISUAL_ACCEPTANCE_PASS / PRODUCT_ACCEPTANCE_PENDING
 UI_VISUAL_ACCEPTANCE_GATE = MANDATORY
+DESIGN_QA = MANDATORY / HOM-01
 ```
 
 Este é o documento canônico de execução de slices para as atividades futuras
@@ -536,3 +537,323 @@ Uma lane pode terminar sobre baseline X mesmo se master avançar para Y: não re
 ### Git e continuidade
 
 Lane de implementação faz validação local e não publica por padrão. Após PASS_LOCAL, source checkpoint/commit depende de adjudicação e authority; push não é automático. Integration gate integra, valida, atualiza continuidade e publica somente com autorização apropriada. `PASS_LOCAL` pode fechar o trabalho técnico de uma lane sem alterar PROJECT_STATE. Fechamento formal exige `PROJECT_STATE_UPDATE = PASS`; nenhuma activity formal é `ACTIVITY_COMPLETE = YES` antes disso. Cada publicação dispara DAG recheck; não esperar wave inteira. Implementação backend e frontend P5 são paralelas quando dependências/ownership permitem.
+
+## 20. Rebase de atividades para homologação progressiva (2026-10-11)
+
+Esta sequência foi aprovada pelo usuário para a entrada progressiva em
+homologação. Ela preserva os IDs e históricos deste mapa. Os status abaixo são
+da branch e do worktree verificados nesta atividade; presença em outra branch
+não equivale a integração. Homologação é ambiente controlado pré-produção e não
+declara produção pronta.
+
+### HOM-00 — Reconciliação documental e preparação de integração
+
+```text
+STATUS = DOCUMENTED / BASELINE AND P3/P5 CLASSIFICATION RECONCILED
+BLOCKING = YES
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_ACTIVITY
+```
+
+- **Objetivo:** recuperar baseline, WIP e authorities; reconciliar os snapshots
+  de integração/publicação com Git; fixar o conjunto canônico de código e
+  documentos que servirá à homologação.
+- **Escopo mínimo:** confirmar root, branch, HEAD, upstream, divergência,
+  worktree e staging; preservar WIP; mapear dependências e diferenças entre
+  branches; classificar P3/P5 sem big-bang merge; registrar estratégia e gates
+  de integração.
+- **Dependências:** nenhuma além do checkout e das refs de Git disponíveis.
+- **Estado comprovado:** branch `codex/mon-runtime-v1-implementation`, HEAD
+  `4ff2a9260a438a61f3a23e753dfdc3d5c166424a`; P3 root
+  `e381df04f59ce146bf53fc6929fb7ca272c26e2c`; P5 production
+  `4676a32c78cecab33a157a0a9d4fd2cabbc90a87`; P5 conformance
+  `4a2d40da502ea4dafd8bc78202e707416695bee3`. Os três SHAs de fonte não são
+  ancestrais do baseline nem de `master`. P3 = `PROTOTYPE / VISUAL_REFERENCE`;
+  P5 = `PRODUCTION_UI_SOURCE / NOT_INTEGRATED`. WIP dos worktrees P3/P5 segue
+  `UNVERIFIED`. No checkout corrente, três continuity docs e roadmap/sprints
+  já estavam modificados; auditoria de persistência e harness H1 estavam não
+  rastreados; tudo foi preservado.
+- **Evidências de conclusão documental:** baseline e relações de ancestry
+  registrados; estados P3/P5 distinguidos; estratégia, dependências, decisões
+  abertas e gates documentados; inventário de WIP preservado; diff documental
+  revisado. A branch de integração não foi criada.
+- **Aceite:** nenhum arquivo WIP descartado; fatos de integração reconciliados;
+  decisões de autoridade/compatibilidade que ainda dependem de adjudicação
+  ficam abertas com gate; baseline Runtime V1 identificada como proposta para
+  a branch isolada `codex/hom-v1-integration` (não criada). `git diff --check`
+  sem erros.
+- **Estratégia recomendada (planejamento):** preservar `master`; após preflight
+  de segurança, preparar branch de integração isolada; integrar MON Runtime
+  V1, integrar seletivamente P5 e preservar P3 como referência visual; validar
+  regressões; passar Design QA; implementar importação XLSX; preparar VM; e só
+  promover para `master` após os gates aplicáveis. Esta sequência não autoriza
+  criar branch, fazer merge ou promover.
+- **Critérios mínimos por etapa:** integração exige ancestry/diff e migrations
+  coerentes, dependências resolvidas e regressões funcionais PASS; UI exige
+  contrato e referência aprovados mais Design QA; XLSX exige schema/template
+  adjudicados, preview, confirmação, validação canônica e atomicidade; VM exige
+  owner/autorização, configuração segregada, banco/migrations, acesso,
+  recuperação e worker controlado; promoção exige todos os gates de
+  homologação aplicáveis e aprovação humana.
+- **Reaproveitar:** P3 prototype harness, P3-A/B/C/D, checkpoints P5, contratos
+  UI V2 e WIP de H1/H2; confirmar conteúdo exato antes de integrar.
+
+### HOM-01 — Finalização UI V2
+
+```text
+STATUS = BLOCKED / P3 AND P5 CANONICAL INTEGRATION NOT PROVEN
+BLOCKING = YES
+```
+
+- **Objetivo:** concluir e validar o frontend inicial necessário para cadastro,
+  navegação pelo inventário e consulta de câmera na homologação.
+- **Escopo mínimo:** reconciliar/integrar sob gate as superfícies UI V2 de
+  shell/portal, dashboard, inventário, Camera Detail, cadastro/edição/login
+  aplicáveis; validar estados, permissões, responsividade e consultas. Quick
+  Detail conserva baseline aprovada e protegida; sem redesign implícito.
+- **Dependências:** HOM-00; approvals de protótipo já exigidas pelas authorities
+  UI V2; adjudicação do alvo DS 2.4.0 e compatibilidade; capabilities backend
+  existentes ou fechamento explícito da dependência. HOM-01 e HOM-02 podem
+  avançar parcialmente em paralelo depois da definição das interfaces e do
+  baseline de integração. Não introduzir comportamento ou endpoint fictício.
+- **Estado comprovado:** UI-V2-P0/P1/P2 e P3-0 têm registros de fechamento; o
+  master do coverage ainda mostra superfícies como `PLANNED`, enquanto branches
+  de família e P5 têm entregas próprias. O estado do runtime dessas telas na
+  baseline canônica permanece NÃO COMPROVADO. O UI P5 source branch
+  `codex/ui-v2-p5-production` e `codex/p5-camera-detail-production-conformance`
+  não devem ser tratados como integrados sem diff e gate.
+- **Evidências de conclusão:** refs/código integrados no baseline escolhido;
+  validação funcional do Django para os fluxos iniciais; evidências de QA visual
+  e acessibilidade nos viewports contratados; estados de coverage atualizados;
+  autorização/permissão dos fluxos comprovadas.
+- **Aceite:** telas iniciais integradas, rotas/consultas reais, cadastro/edição e
+  inventário utilizáveis; Quick Detail visual preservado; sem regressões
+  funcionais; `DESIGN_QA = PASS`, `FUNCTIONAL_REGRESSION = PASS` e
+  `HUMAN_VISUAL_APPROVAL = PASS`; PROJECT_STATE e coverage atualizados após o
+  gate integrado. Sem referência aprovada ou renderização comprovada, Design QA
+  fica `BLOCKED`; diferença visual material ou regressão funcional resulta em
+  `FAIL`.
+- **Reaproveitar:** código/QA disponível nas branches P3-A e P3-D, shell
+  aprovado, design system pinado, Camera Detail P5, `ARGOS_UI_V2_MASTER_PLAN.md`,
+  `ARGOS_UI_V2_SCREEN_CENSUS.md`, coverage e contratos de detalhe/Quick Detail.
+
+### HOM-02 — Importação XLSX de inventário
+
+```text
+STATUS = NOT_IMPLEMENTED / SCHEMA AND FINAL XLSX TEMPLATE NOT HOMOLOGATED
+BLOCKING = YES
+```
+
+- **Objetivo:** importar cadastro em lote com prévia compreensível, resolução
+  inequívoca de atualização e nenhuma gravação parcial.
+- **Escopo mínimo:** planilha XLSX sem coluna de ID ARGOS; novos registros usam
+  ID interno gerado pelo banco. Atualizar somente por patrimônio ou serial
+  único, inequívoco e sem conflito; nome/IP isolados não identificam update.
+  Reusar `CameraCriacaoForm`, `CameraEdicaoForm`, models, validators e business
+  services Django aplicáveis, respeitando obrigatoriedade, normalização,
+  unicidade, choices, permissões e regras administrativas. Exigir
+  prévia, confirmação explícita, lote `ALL_OR_NOTHING`, erro em qualquer linha
+  impede confirmação e rollback integral em falha transacional. Não tocar o
+  estado técnico MON.
+- **Dependências:** HOM-00; validar schema/migrations e constraints no branch
+  canônico; contrato de autorização/auditoria; modelo e colunas XLSX
+  adjudicados antes da homologação da planilha definitiva.
+- **Estado comprovado:** não foi localizado importador XLSX no código
+  inspecionado. O model atual declara unicidade em `patrimonio` e `serial`,
+  nomes ativos sem distinção de caixa e MAC não nulo sem distinção de caixa;
+  isso não determina sozinho a regra de matching completa nem o template.
+- **Evidências de conclusão:** template/versionamento homologados após schema
+  review; matriz de criação/atualização/conflitos; testes de preview,
+  confirmação, validação de linha, autorização/auditoria, atomicidade e rollback
+  no banco alvo; relatório de importação auditável sem segredos.
+- **Aceite:** import válido só grava após confirmação; uma linha inválida ou
+  conflito bloqueia o lote inteiro; erro no commit não deixa efeitos parciais;
+  nenhuma coluna ID manual; nenhuma transição MON causada pela importação.
+- **Reaproveitar:** `Camera`, forms/services/validators e auditoria existentes,
+  após comprovar a origem canônica e cobertura real. Não criar modelo de campos
+  por suposição.
+
+Exportação está aprovada, mas continua `NON-BLOCKING`; não exige ID manual nem
+autoriza reintroduzir coluna ID na planilha.
+
+### HOM-03 — Preparação da VM
+
+```text
+STATUS = NOT_STARTED / VM READINESS UNVERIFIED
+BLOCKING = YES
+```
+
+- **Objetivo:** preparar ambiente de homologação isolado, repetível e
+  recuperável, sem chamá-lo de produção.
+- **Escopo mínimo:** confirmar ownership/acesso da VM; separar configuração e
+  secrets; database/schema e migrations; usuário/login/permissões; serviço web
+  e controle explícito da execução do worker; logs/diagnósticos; backup/restore
+  ou rollback básico; smoke tests mínimos e instruções de recuperação.
+- **Dependências:** HOM-00; escolhas de topologia e persistência conforme
+  `RUNTIME_TOPOLOGY_CONTRACT.md` e `PRODUCTION_PERSISTENCE_CONTRACT.md`;
+  infrastructure owner e autorização operacional apropriada. A preparação da
+  VM pode avançar parcialmente em paralelo, isoladamente, sem antecipar deploy.
+- **Estado comprovado:** não existe evidência inspecionada nesta atividade de
+  VM preparada, banco de homologação, migrations aplicadas, login, permissões,
+  recuperação ou smoke na VM. Configuração local usa SQLite; H1 local não prova
+  PostgreSQL. O H2 de PostgreSQL está bloqueado no host local por runtime e
+  driver ausentes; executar H2 assim que infraestrutura isolada permitir.
+- **Evidências de conclusão:** registro da configuração não secreta, alvo de
+  banco isolado, migrations e schema verificados, contas/roles testadas, smoke
+  de aplicação, prova de rollback/restore e prova de worker sem autoexecução
+  inadvertida.
+- **Aceite:** configuração segregada; mínimo privilégio; login e permissões
+  validados; migrations aplicáveis/consistentes; restore/rollback executável;
+  workers/probes não disparam automaticamente em massa; monitoramento inicia
+  somente por autorização explícita e progressiva.
+- **Reaproveitar:** contracts backend de autorização, persistência, topologia,
+  runtime Worker e observabilidade; H1 local PASS como evidência limitada a
+  SQLite sintético.
+
+### HOM-04 — Abertura de homologação progressiva
+
+```text
+STATUS = BLOCKED / READINESS EVIDENCE NOT PRESENT
+BLOCKING = GATE
+```
+
+Abrir somente com HOM-00 a HOM-03 aceitos e evidência arquivada. Gate bloqueante
+inclui: UI inicial integrada e validada; cadastro/inventário utilizáveis;
+importação XLSX e modelo homologado; matching/validação cadastral consistente;
+prévia/confirmação/atomicidade; autorização e auditoria; banco e migrations;
+VM isolada; login/permissões; smoke mínimo; recuperação/rollback; controle
+explícito da execução automática do monitoramento. H2/PostgreSQL deve ser
+executado quando infraestrutura isolada permitir e é requisito de evidência para
+persistência PostgreSQL; H1 (110 testes SQLite temporário) não o substitui.
+
+H3 de câmeras reais, credenciais reais, rede/firewall/VLAN e protocolos exige
+autorização e plano de teste próprios; não é pré-condição para abrir a primeira
+rodada de Inventário/UI. `HOMOLOGATION_OPEN != PRODUCTION_READY`; qualquer uso
+externo ou carga real obedece aos gates de operação e aprovação próprios.
+
+### Gates para entrada progressiva
+
+| Gate | Critérios mínimos | Estado neste checkpoint |
+|---|---|---|
+| **G1 — INTEGRATION_GATE** | Branch isolada integrada; código e migrations coerentes; dependências resolvidas; regressões funcionais PASS. | `BLOCKED` / integração não executada |
+| **G2 — DESIGN_QA_GATE** | Referência aprovada; screenshot renderizado sob condições equivalentes; comparação visual; correções materiais; aprovação humana. | `BLOCKED` / Design QA obrigatório, não executado |
+| **G3 — HOMOLOGATION_ENTRY_GATE** | Frontend inicial funcional; importador XLSX validado; banco operacional na VM; login/permissões; logs e observabilidade mínima; backup/rollback; deploy verificável; monitoramento automático controlado. | `BLOCKED` / HOM-01..03 e evidências pendentes |
+
+Para G2, registrar `REFERENCE_SCREENSHOT`, `RENDERED_SCREENSHOT`,
+`VISUAL_DIFFERENCE_REPORT`, `CORRECTION_EVIDENCE` e
+`HUMAN_VISUAL_APPROVAL`. Sem referência aprovada ou renderização real, o
+resultado é `BLOCKED`; diferença visual material ou regressão funcional é
+`FAIL`. Aprovação de HOM-01 exige Design QA, regressão funcional e aprovação
+visual humana em `PASS`. G3 não depende de validação com câmeras reais (H3),
+mas isso não autoriza monitoramento real ou produção.
+
+Deploy integrado requer validação prévia do conjunto aplicável de HOM-01, HOM-02
+e HOM-03, além dos gates de segurança e operação correspondentes.
+
+```text
+H1 = PASS / HERDADO / 110 TESTES / SQLITE TEMPORÁRIO
+H2 = BLOCKED_BY_INFRASTRUCTURE / POSTGRESQL DESCARTÁVEL E DRIVER AUSENTES
+H3 = NOT_STARTED / AUTORIZAÇÃO E PLANO PRÓPRIOS
+```
+
+### HOM-05 — Evolução funcional durante homologação
+
+```text
+STATUS = PLANNED / BACKLOG PRESERVED
+BLOCKING_FOR_HOM_04 = NO
+```
+
+- **Objetivo:** implementar capabilities restantes e remediar achados enquanto
+  a homologação progride, com cada alteração submetida aos contratos, gates e
+  autorização próprios.
+- **Escopo mínimo:** backlog abaixo, resultados de homologação, métricas de
+  performance e problemas de integração; sem transformar evidência de
+  homologação em autorização de produção.
+- **Dependências:** HOM-04 aberto; priorização/adjudicação por atividade; dados
+  de teste autorizados e controle de mudança.
+- **Evidências/aceite:** cada slice com baseline, contrato, teste, gate integrado
+  e atualização de continuidade; medir e classificar achados antes de mudar
+  targets ou promover ambiente.
+- **Reaproveitar:** contratos e código de branches pendentes somente depois de
+  confirmar ancestor, diff, migration lineage e validation no baseline escolhido.
+
+Backlog não bloqueante da abertura inicial: exportação; galeria de até três
+imagens em ordem cronológica crescente no Camera Detail; ações manuais de captura
+e importação de imagens; CAM-INT-04; rotação, holds/proteção e expurgo auditado
+(contrato/validações pendentes); Central de Alertas interna, lifecycle e
+deduplicação; detector de Worker independente; retenção MON de 24 meses após
+encerramento; alertas resolvidos por 12 meses; logs técnicos por 30 dias;
+imagens sob política de 12 meses com preservação e condições de expurgo;
+integrações das branches restantes; performance observada durante a
+homologação; auditoria e pendências corporativas. Nada disso fica marcado como
+concluído por este plano. Quick Detail consome a última imagem ativa registrada
+independentemente de proveniência. Rotação, holds, lifecycle de alertas e
+expurgo permanecem sem autorização/contrato fechado; nenhum expurgo está incluído
+nesta atividade.
+
+### Cargas e medições da homologação
+
+Planejar etapas de **50**, **500** e **2.300 câmeras**, avançando somente após
+revisão dos resultados e autorização para a etapa seguinte. Para cada lote
+registrar tempo de importação; latência da listagem; filtros/paginação; resposta
+de Camera Detail; CPU/memória; banco; erros/logs; estabilidade. Fixtures são
+sintéticas ou formalmente autorizadas. Não iniciar milhares de probes, não
+habilitar autoexecução em massa e não acessar câmeras reais como efeito de carga
+de inventário.
+
+### Reconciliações contratuais requeridas
+
+As seguintes decisões funcionais foram aprovadas pelo usuário para esta
+sequência. Elas ainda precisam ser incorporadas pelas authorities especializadas
+antes das atividades de implementação correspondentes; este mapa não substitui
+esses contratos:
+
+- **Retenção MON:** a decisão aprovada é 24 meses após `closed_at` para
+  indisponibilidades encerradas. O contrato MON-HIST/auditoria registra lacuna
+  de retenção; reconciliar prazo, transições vinculadas e elegibilidade antes
+  de planejar expurgo. Sem expurgo nesta atividade.
+- **Alertas e logs:** decisões aprovadas: alertas internos, 12 meses após
+  resolução e logs técnicos por 30 dias. Lifecycle/contrato de alertas e destino
+  efetivo/lifecycle de logs ainda faltam ou estão sem comprovação; formalizar
+  regras antes de implementação/limpeza.
+- **Imagens:** decisão aprovada de política de 12 meses deve ser reconciliada
+  com IMG Domain/IMG-CAP e auditoria de persistência, incluindo holds,
+  preservação, rotação, autoridade, elegibilidade e prova do expurgo físico.
+  `retirada lógica` não é autorização para apagar bytes.
+- **UI P3/P5:** a reconciliação Git registra P3 como `PROTOTYPE /
+  VISUAL_REFERENCE` e P5 como `PRODUCTION_UI_SOURCE / NOT_INTEGRATED`; publicação
+  ou aprovação em branch não prova integração. Histórico preservado; integrar
+  seletivamente após diff, compatibilidade e gates.
+
+As condições acima são decisões/requisitos, não evidência de implementação nem
+autorização de expurgo. Para abertura inicial HOM-04, alertas, lifecycle de
+imagens e retenção histórica permanecem não blockers, desde que controles de
+segurança, preservação e operação não sejam comprometidos.
+
+### Autoridades e próximo passo
+
+- UI: `ARGOS_UI_V2_MASTER_PLAN.md`, `ARGOS_UI_V2_SCREEN_CENSUS.md`,
+  `prototype/ui-v2/contracts/SCREEN_COVERAGE.md`, `SPRINTS_ARGOS_V5.md`,
+  `ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` e contrato Camera Detail da
+  branch conforme adjudicação HOM-00.
+- Importação/acesso: model/forms/validators correntes, contrato de
+  autorização `contracts/backend/01_ACCESS_ROLES_AUTHORIZATION_CONTRACT.md` e
+  trilha de auditoria; o modelo XLSX ainda não tem authority específica.
+- Persistência/topologia/worker/imagens: `contracts/backend/production/`,
+  `contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md`,
+  `contracts/backend/camera/CAM-INT-04_HTTP_SNAPSHOT_CONTRACT.md`,
+  `contracts/backend/images/IMAGE_CAPTURE_INTEGRATION_CONTRACT.md` e
+  `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`.
+- Auditoria de dados: `docs/auditoria/ARGOS-DATA-PERSISTENCE-CONTRACT-AUDIT.md`
+  (WIP preexistente, manter como finding/source de reconciliação; não editar nem
+  tratar como implementação ou nova autorização).
+
+```text
+H1 = PASS / 110 TESTS / ISOLATED TEMPORARY SQLITE
+H2 = BLOCKED / DISPOSABLE POSTGRESQL RUNTIME AND DRIVER UNAVAILABLE LOCALLY
+H3 = NOT_STARTED / REAL CAMERAS; OWN AUTHORIZATION REQUIRED
+NEXT_ACTIVITY = ARGOS-HOM-00-INTEGRATION-FOUNDATION / PLANNED / NOT_AUTHORIZED
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_ACTIVITY
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+```

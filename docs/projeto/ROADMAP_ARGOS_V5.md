@@ -1640,3 +1640,69 @@ CONTRACT BASELINE -> DEPENDENCY DAG -> BACKEND A / BACKEND B / FRONTEND
                   -> CONTROLLED INTEGRATION GATES -> DAG RE-EVALUATION
                   -> NEXT READY SLICE
 ```
+
+## 23. Reconciliação vigente — homologação progressiva (2026-10-11)
+
+Esta seção supersede somente a sequência operacional futura incompatível com o
+estado verificado; não apaga sprints, IDs ou checkpoints anteriores. A direção
+aprovada é concluir o escopo inicial de UI, implementar importação XLSX,
+preparar uma VM isolada, realizar cargas controladas e abrir homologação
+progressiva. Homologação não equivale a produção.
+
+Baseline local: `codex/mon-runtime-v1-implementation`, HEAD
+`4ff2a9260a438a61f3a23e753dfdc3d5c166424a`. WIP documental e dois arquivos não
+rastreados foram preservados. Os SHAs de P3 root (`e381df04…`), P5 production
+(`4676a32c…`) e P5 Camera Detail conformance (`4a2d40da…`) foram conferidos nas
+refs locais; nenhum é ancestral do baseline Runtime V1 ou de `master`
+(`5bd22b0…`). Os worktrees P3/P5 mantêm WIP `UNVERIFIED` conforme HOM-00
+anterior. Classificação reconciliada: P3 é `PROTOTYPE / VISUAL_REFERENCE`; P5
+é `PRODUCTION_UI_SOURCE / NOT_INTEGRATED`. Publicação, aprovação,
+implementação, integração, validação e homologação são estados distintos. A
+branch Runtime V1 é a baseline proposta para preparar a integração; a
+adjudicação canônica de compatibilidade e design system segue como pré-requisito
+da integração, sem merge nesta atividade.
+
+| Marco | Estado verificado | Blocking para HOM-04 | Direção |
+|---|---|---:|---|
+| HOM-00 — Preparação da integração | Baseline e status P3/P5 reconciliados documentalmente; integração ainda não iniciada | Sim | Resolver adjudicação de compatibilidade/DS, preparar branch isolada e critérios de integração |
+| HOM-01 — Finalização UI V2 | Bloqueado; integração e Design QA obrigatório pendentes | Sim | Integrar seletivamente P5, preservar P3 como referência e validar regressões e Design QA |
+| HOM-02 — Importação XLSX de inventário | Não implementada; formato final depende da inspeção do schema alvo | Sim | Aprovar modelo XLSX e implementar prévia, confirmação e transação `ALL_OR_NOTHING` em atividade autorizada própria |
+| HOM-03 — Preparação da VM | Não iniciada / estado da VM não comprovado | Sim | Isolar configuração, banco, migrations, acesso, execução do worker e recuperação |
+| HOM-04 — Abertura da homologação progressiva | Não pronta / gate definido no mapa de sprints | Marco | Abrir somente após todos os bloqueadores de entrada passarem |
+| HOM-05 — Evolução durante a homologação | Planejada | Não bloqueia abertura inicial | Evoluir backlog com autorização, controle de mudança e revalidação dos gates afetados |
+
+Inventário/UI são a primeira superfície da homologação. Exportação, galeria de
+imagens, captura, alertas e retenções permanecem backlog sem descarte e não
+bloqueiam a entrada inicial, ressalvadas dependências de segurança ou
+estabilidade encontradas nos gates. O H1 local do Worker (110 testes em SQLite
+temporário) passou conforme evidência registrada; PostgreSQL/H2 permanece
+bloqueado por falta de infraestrutura local descartável e driver. Nenhum desses
+fatos estabelece VM pronta ou produção pronta. H3 com câmeras reais requer
+autorização e validações próprias, mas não bloqueia a abertura da homologação de
+Inventário/UI.
+
+Detalhes de objetivos, escopo mínimo, dependências, evidências, critérios de
+aceite, blocking e reaproveitamento constam em
+[`SPRINTS_ARGOS_V5.md`](SPRINTS_ARGOS_V5.md), seção 20. `DS 2.4.0` é somente a
+versão-alvo recomendada da fonte P5, condicionada a adjudicação canônica,
+compatibilidade e Design QA; o baseline deste checkout é `DS 2.0.2`. O Design
+QA é gate obrigatório de HOM-01, ainda não executado. A regra de imagem do Quick
+Detail está reconciliada no contrato de imagem, seção 26; não altera
+`LATEST_CAMERA_CAPTURE` técnico. Importação XLSX é requisito para homologação,
+sem coluna de ID ARGOS; template e schema continuam pendentes de verificação.
+Esta seção não altera código, schema, migrations, retenção ou autorização de
+implementação.
+
+```text
+ROADMAP_REBASE = CURRENT / DOCUMENTATION_ONLY
+HOMOLOGATION = PROGRESSIVE / NOT_PRODUCTION
+HOM_00 = DOCUMENTED / INTEGRATION_FOUNDATION_PENDING
+HOM_01 = BLOCKED / CANONICAL_UI_INTEGRATION_NOT_PROVEN
+HOM_02 = NOT_IMPLEMENTED / XLSX_SCHEMA_NOT_HOMOLOGATED
+HOM_03 = NOT_STARTED / VM_READINESS_UNVERIFIED
+HOM_04 = BLOCKED / PRE_HOMOLOGATION_GATES_OPEN
+HOM_05 = PLANNED / NON_BLOCKING_BACKLOG
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_ACTIVITY
+PRODUCTION_READINESS = NOT_ESTABLISHED
+NEXT_RECOMMENDED_ACTIVITY = ARGOS-HOM-00-INTEGRATION-FOUNDATION
+```

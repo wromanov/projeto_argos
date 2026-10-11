@@ -638,3 +638,46 @@ Inventário e CameraQuickDetailPanel consomem DISPLAY_IMAGE e a rota separada
 subseção registra o estado atual sem mudar a semântica normativa de
 LATEST_CAMERA_CAPTURE, PRIMARY_IMAGE, provenance ou monitoramento. Esta
 atualização documental não reexecutou a validação de IMG-DISPLAY-01.
+
+## 26. Reconciliação de apresentação do Quick Detail (2026-10-11)
+
+Esta decisão de produto, aprovada pelo usuário, supersede somente a seleção de
+imagem exibida pelo CameraQuickDetailPanel descrita nas seções 18 e 25. Não
+altera `LATEST_CAMERA_CAPTURE`, sua consulta, estado, rota ou consumidores
+técnicos. Inventário e demais consumidores não herdam esta regra sem decisão
+própria.
+
+```text
+QUICK_DETAIL_IMAGE = LATEST_ACTIVE_IMAGE
+PROVENANCE = CAPTURA_CAMERA | UPLOAD_MANUAL
+ORDER = recorded_at DESC, immutable_id DESC
+MAX_ACTIVE_IMAGES_CAMERA_DETAIL = 3
+CAMERA_DETAIL_GALLERY_ORDER = recorded_at ASC, immutable_id ASC
+CAPTURE = MANUAL_ONLY
+UPLOAD = MANUAL_ONLY
+```
+
+`LATEST_ACTIVE_IMAGE` seleciona entre os registros ativos da câmera consultada,
+independentemente da proveniência, ordenando por `recorded_at DESC` e pelo
+desempate estável `immutable_id DESC`. A imagem manual ativa registrada mais
+recentemente pode, portanto, ser apresentada no Quick Detail no lugar de uma
+captura anterior. A disponibilidade/integridade é avaliada após selecionar o
+registro mais recente; não se escolhe um registro anterior como fallback
+silencioso. O Quick Detail identifica a proveniência e não cria evento de
+captura nem altera monitoramento.
+
+`LATEST_CAMERA_CAPTURE` continua sendo o conceito técnico distinto, restrito a
+`CAPTURA_CAMERA`, com a ordenação e semântica da seção 7. Nenhum endpoint,
+serviço ou consumidor técnico de captura passa a aceitar upload manual por esta
+decisão. Camera Detail pode exibir até três imagens ativas em ordem crescente;
+captura e upload são ações exclusivamente manuais. Implementação de galeria,
+captura, rotação ou expurgo não está incluída nesta reconciliação.
+
+```text
+DECISION_APPROVED = YES / USER
+DOCUMENTED = YES
+IMPLEMENTED = NOT_ESTABLISHED
+INTEGRATED = NO
+VALIDATED = NO
+HOMOLOGATED = NO
+```

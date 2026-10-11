@@ -866,3 +866,309 @@ COMMIT = NOT_PERFORMED
 PUSH = NOT_PERFORMED
 NEXT_ACTIVITY = ARGOS-CRYPTOGRAPHY-GIT-CHECKPOINT
 ```
+
+
+## 42. MON-RUNTIME-V1-H1-PREFLIGHT-VALIDATION (2026-10-10)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md` e contracts MON-OWN/MON-REC/MON-OBS, MON Core, CAM-INT-05/CAM-HEALTH/Target Policy | Critérios normativos H1 e invariantes | CURRENT / V1; não alterados |
+| `cameras/monitoramento/runtime.py`; `cameras/management/commands/run_monitoring_worker.py` | Runtime local e entrypoint sob validação H1 | IMPLEMENTED / LOCAL; command real não executado nesta atividade |
+| `cameras/test_monitoramento_worker_runtime.py`; `cameras/test_monitoramento_scheduler_laboratorio.py`; observabilidade e suites CAM associadas | Evidências focais H1 | PARTIAL / 30 testes síncronos pass; async/integration NOT_VALIDATED |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 74 | Evidência, limites e status H1 | CURRENT / PARTIAL; PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.38 | Handoff de retomada H1 | CURRENT / H1 incompleta |
+
+```text
+BRANCH = codex/mon-runtime-v1-implementation
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+STATUS = PARTIAL / H1 ACCEPTANCE NOT MET
+ISOLATION = PARTIAL / test runner announced in-memory SQLite; no operational DB or worker command accessed
+ASYNC_RUNTIME_AND_PREFLIGHT = NOT_VALIDATED
+NATIVE_RUNTIME = NOT_PERFORMED
+H2_POSTGRESQL = PENDING
+H3_REAL_CAMERAS = PENDING
+PRODUCTION_READINESS = NOT_ESTABLISHED
+NEXT = MON-RUNTIME-V1-H1-RESUME-ISOLATED-TEST-RUNNER
+```
+
+## 43. MON-RUNTIME-V1-H1-EXECUTION-RECOVERY (2026-10-10)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `cameras/test_monitoramento_worker_runtime.py` | Alvos focais async, configuração Django transacional e composição H1 | NOT_RUN / bloqueados até smoke externo |
+| `config/settings.py`; `.venv/pyvenv.cfg` | Settings padrão e proveniência do interpretador | INSPECTED / configuração padrão aponta a `<repo>\db.sqlite3` |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 75 | Evidência de diagnóstico e dependência externa | CURRENT / PARTIAL |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.39 | Handoff de execução H1 | CURRENT / aguarda PowerShell externo |
+
+```text
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+PYTHON = 3.14.7 / repository .venv
+DJANGO = 5.2.18
+PYTHON_SIMPLE_PROCESS = PASS
+ASYNCIO_TRIVIAL_SMOKE = TIMEOUT / 12s / EXIT 124
+DEFAULT_DATABASE = <repo>\db.sqlite3 / not opened
+TEST_RUNNERS = NOT_STARTED
+RUNNER_ROOT_CAUSE = UNDETERMINED
+STATUS = PARTIAL / external PowerShell comparison required
+ISOLATION = NOT_YET_PROVEN_BY_TEST_RUNNER
+H2_POSTGRESQL = NOT_STARTED
+H3_REAL_CAMERAS = NOT_STARTED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+```
+
+Continuar com o script PowerShell temporário fornecido ao usuário. Não usar `config.settings` sem override do banco; não avançar a runners se `asyncio.run` não terminar; preservar execução serial e artefatos de log em `%TEMP%`.
+
+## 44. MON-RUNTIME-V1-H1-EXTERNAL-POWERSHELL-RETRY (2026-10-10)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| Transcript PowerShell fornecido pelo usuário | Evidência de tentativa externa | PRECHECK BLOCKED / dois processos encontrados; helpers não executados |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 76 | Resultado da tentativa e próximos gates | CURRENT / PARTIAL |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.40 | Handoff para retry seguro | CURRENT / requer identificação read-only dos processos |
+
+```text
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+EXTERNAL_PYTHON_PROCESSES = PID 17352; PID 39204; ownership UNKNOWN / preserved
+POWERSHELL_ARGUMENT_API = INCOMPATIBLE / ArgumentList unavailable
+TESTS_STARTED = NO
+TEST_COUNT = 0
+FALSE_SUCCESS_OUTPUT = DISREGARDED
+RUNNER_ROOT_CAUSE = UNDETERMINED
+STATUS = PARTIAL
+ISOLATION = NOT_PROVEN
+H2_POSTGRESQL = NOT_STARTED
+H3_REAL_CAMERAS = NOT_STARTED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+```
+
+Obter dados read-only de processo antes de nova execução. Usar script `.ps1` compatível com Windows PowerShell 5.1, não paste interativo; manter banco temporário explícito em `%TEMP%` e exigir smokes aprovados antes dos runners.
+
+## 45. MON-RUNTIME-V1-H1-RESIDUAL-RUNNER-IDENTIFIED (2026-10-10)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| Transcript CIM do usuário | Identificação da execução residual | CURRENT EVIDENCE / suite H1/CAM ativa, parent/child provados |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 77 | Ownership dos PIDs e causa do conflito de retry | CURRENT / aguardando encerramento condicional |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.41 | Próximo passo seguro | CURRENT / interromper runner anterior antes de novo runner |
+
+```text
+PID_39204 = prior Django H1/CAM suite runner
+PID_17352 = its Python child
+OWNER = PRIOR TEST EXECUTION / not unrelated
+TERMINATED = NO
+HANG_STAGE = UNDETERMINED
+RETRY_BLOCKED = YES / processes remain active
+CLASSIFICATION = TEST_RUNNER_OR_CONFIGURATION_ISSUE for retry blockage
+H1_STATUS = PARTIAL
+```
+
+Revalidate and terminate only these identified test processes in the external PowerShell session; verify exit before starting any test. The Codex sandbox cannot access the external CIM process table.
+
+## 46. MON-RUNTIME-V1-H1-POWERSHELL51-HARNESS-READY (2026-10-10)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `run_mon_runtime_v1_h1_isolated_tests.ps1` | Harness externo PS 5.1 com timeouts, isolamento temporário e runners H1 seriais | PREPARED / syntax PASS / runtime NOT_RUN |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 78 | Estado factual após identificação/ausência dos PIDs e preparação do harness | CURRENT / PARTIAL |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.42 | Próximo passo externo | CURRENT / aguarda execução do `.ps1` |
+
+```text
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+RESIDUAL_PIDS = REPORTED_ABSENT
+HARNESS_SYNTAX = PASS
+HARNESS_RUNTIME = NOT_RUN
+TESTS = NOT_RUN
+STATUS = PARTIAL
+ISOLATION = NOT_YET_PROVEN_BY_TEST_RUNNER
+H2_POSTGRESQL = NOT_STARTED
+H3_REAL_CAMERAS = NOT_STARTED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+```
+
+Executar o arquivo `.ps1` como unidade, não colar os comandos no prompt. A própria sequência para no primeiro erro e não imprime sucesso antecipado.
+
+## 47. MON-RUNTIME-V1-H1-TEST-DB-TEARDOWN-RECOVERY (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `run_mon_runtime_v1_h1_isolated_tests.ps1` | Harness H1 com test DB SQLite compartilhado em memória e default temporário em `%TEMP%` | UPDATED / aguarda nova execução PS 5.1 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 79 | Resultado dos gates unit/config/integration e falha de teardown | CURRENT / H1 partial |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.43 | Diagnóstico restrito ao teardown e próximo passo | CURRENT / rerun externo pendente |
+
+```text
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+PYTHON_AND_ASYNCIO_SMOKES = PASS
+RUNTIME_UNIT_AND_CONFIG = PASS / 8 tests
+INTEGRATION_BODY = PASS / 1 test
+INTEGRATION_TEARDOWN = FAIL / WinError 32 deleting temporary file DB
+RECOVERY = TEST.NAME=:memory: / shared cache URI asserted by isolation probe
+FOCUSED_AGGREGATE = NOT_RUN
+H1_STATUS = PARTIAL
+H2_POSTGRESQL = NOT_STARTED
+H3_REAL_CAMERAS = NOT_STARTED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+```
+
+Run the updated `.ps1` as a file in normal Windows PowerShell. It now uses Django shared-memory SQLite for test DB teardown while keeping the default DB path under the unique `%TEMP%` root; the script must reach the focused aggregate with all commands at exit 0 before H1 is complete.
+
+## 48. MON-RUNTIME-V1-H1-AGGREGATE-MODULE-CORRECTION (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `run_mon_runtime_v1_h1_isolated_tests.ps1` | Runner focal corrigido para importar módulos ownership reais MON-09C/MON-09D | UPDATED / aguardando rerun |
+| `cameras/test_monitoramento_mon09c.py`; `cameras/test_monitoramento_mon09d.py` | Cobertura existente de lease/fencing e ownership operacional | SOURCE INVENTORY / alvo do próximo agregado |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 80 | Saída agregada parcial e correção do label | CURRENT / H1 partial |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.44 | Próxima ação e classificação do import inválido | CURRENT / rerun externo pendente |
+
+```text
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+INTEGRATION_AND_DB_TEARDOWN = PASS
+FOCUSED_AGGREGATE = 95 tests / 1 import error / invalid cameras.test_monitoramento_ownership label
+REPLACEMENT_MODULES = cameras.test_monitoramento_mon09c; cameras.test_monitoramento_mon09d
+ASSERTION_FAILURES_REPORTED = NO
+H1_STATUS = PARTIAL
+```
+
+Rerun `& .\run_mon_runtime_v1_h1_isolated_tests.ps1` em Windows PowerShell normal; aguardar exit 0 da suíte focal corrigida para avançar o gate H1.
+
+## 49. MON-RUNTIME-V1-H1-EXECUTION-RECOVERY-COMPLETE (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `run_mon_runtime_v1_h1_isolated_tests.ps1` | Harness H1 com DB de teste em memória e telemetria de etapa corrigida | H1 AGGREGATE PASS / 110 testes; telemetria ajustada após o run |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 81 | Resultado final da recuperação de execução e gates H1 | CURRENT / COMPLETE para a atividade H1 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.45 | Fechamento e limites da evidência | CURRENT / H1_PASS |
+
+```text
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+H1_FOCUSED_AGGREGATE = PASS / 110 tests / exit 0
+ALL_SMOKES_AND_RUNNERS = PASS
+H1_STATUS = COMPLETE
+H2_POSTGRESQL = NOT_STARTED
+H3_REAL_CAMERAS = NOT_STARTED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+```
+
+A atividade de recuperação H1 está concluída. A suíte focal cobriu runtime, scheduler, observabilidade, ownership/fencing e alvos/credenciais de câmera sob banco temporário; a execução não abriu o DB operacional. Os gates H2 PostgreSQL, H3 câmeras reais e produção permanecem fora desta validação.
+
+## 50. MON-RUNTIME-V1-H2-POSTGRESQL-PREPARATION (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md`; contracts MON-OWN/MON-REC/MON-OBS | Invariantes locais V1, ownership/fencing e limites do worker | CURRENT / PostgreSQL remains an external validation gate |
+| `config/settings.py`; `.venv` | Database engine and local Python/Django/driver availability | INSPECTED / SQLite only; Django 5.2.18; psycopg drivers absent |
+| `cameras/monitoramento/repository.py`; migrations MON; `cameras/test_monitoramento_worker_runtime.py` | Static compatibility surface and candidate transactional validation | INSPECTED / dynamic H2 validation NOT_RUN |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, section 82 | H2 precheck, evidence boundary and remediation | CURRENT / BLOCKED; PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, section 20.46 | H2 block and safe resume condition | CURRENT / BLOCKED |
+
+```text
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+BRANCH = codex/mon-runtime-v1-implementation
+H1 = PASS / 110 TESTS
+DOCKER = NOT_AVAILABLE
+LOCAL_POSTGRESQL = NOT_FOUND
+PSYCOPG_DRIVER = NOT_INSTALLED
+CONFIGURATION_INSPECTION = PASS / before resource creation
+DATABASE_ISOLATION = NOT_CREATED
+MIGRATIONS_AND_H2_TESTS = NOT_RUN
+H2_STATUS = BLOCKED / infrastructure and driver unavailable
+H3_REAL_CAMERAS = NOT_STARTED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+```
+
+Resume only after a local disposable PostgreSQL runtime is available. Install any required PostgreSQL driver only into `.venv`; do not change requirements files. Revalidate host/database/user/loopback isolation before connecting, then apply migrations and execute the bounded H2 transactional scenarios. No operational infrastructure, SQLite file, product/test source, migration or dependency declaration was touched in this blocked attempt.
+
+## 51. ARGOS-HOM-ROADMAP-REBASE-01 (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/ROADMAP_ARGOS_V5.md`, seção 23 | Sequência macro HOM-00..HOM-05 e status | CURRENT / DOCUMENTARY REBASE |
+| `docs/projeto/SPRINTS_ARGOS_V5.md`, seção 20 | Critérios, dependências, evidências, readiness gate, cargas e backlog | CURRENT / HOMOLOGATION PLAN |
+| `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md`; `ARGOS_UI_V2_SCREEN_CENSUS.md`; `prototype/ui-v2/contracts/SCREEN_COVERAGE.md`; P3/P5 branch authorities | Escopo UI V2 e evidência de integração | CURRENT AUTHORITIES / publication lineage conflict open in HOM-00 |
+| `docs/projeto/contracts/backend/01_ACCESS_ROLES_AUTHORIZATION_CONTRACT.md`; `production/PRODUCTION_PERSISTENCE_CONTRACT.md`; `production/RUNTIME_TOPOLOGY_CONTRACT.md` | Permissões, persistência e topologia de homologação | CURRENT / decisions to validate on canonical target |
+| `docs/projeto/contracts/backend/monitoring/MONITORING_WORKER_RUNTIME_CONTRACT.md`; `camera/CAM-INT-04_HTTP_SNAPSHOT_CONTRACT.md`; `images/IMAGE_CAPTURE_INTEGRATION_CONTRACT.md`; `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Worker, CAM-INT-04, captura, leitura e lifecycle de imagens | CURRENT / specialized authorities |
+| `docs/auditoria/ARGOS-DATA-PERSISTENCE-CONTRACT-AUDIT.md` | Gaps e retenção que afetam readiness | PREEXISTING WIP / preserve; not implementation authority |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 83 | Baseline, branch conflict, H1/H2/H3, status e autorização | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.47 | Handoff e próxima atividade | CURRENT / HOM-00 required |
+
+```text
+ACTIVITY = ARGOS-HOM-ROADMAP-REBASE-01
+STATUS = COMPLETE / DOCUMENTATION_ONLY
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+BRANCH = codex/mon-runtime-v1-implementation
+WORKTREE_PRESERVED = YES
+ROADMAP = HOM-00..HOM-05 / CURRENT
+HOMOLOGATION_GATE = DEFINED / BLOCKED
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+NEXT = HOM-00 BASELINE RECONCILIATION
+```
+
+## 52. ARGOS-HOM-00-ROADMAP-FINAL-RECONCILIATION (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/ROADMAP_ARGOS_V5.md`, seção 23 | Sequência e status macro HOM-00..05 | CURRENT / HOM-00 documentary reconciliation |
+| `docs/projeto/SPRINTS_ARGOS_V5.md`, seção 20 | Estratégia de integração, critérios, dependências e gates | CURRENT / HOM-00 integration foundation pending |
+| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`, seção 26 | Seleção visual do Quick Detail e galeria Camera Detail | CANONICAL / decision documented; implementation not established |
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`, seção 20 | Regra de imagem Quick Detail e Design QA de HOM-01 | CANONICAL / Design QA mandatory, not run |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md`, adendo de 2026-10-11 | Baseline DS e target recomendado | CURRENT / DS 2.4.0 adjudication pending |
+| `docs/auditoria/ARGOS-DATA-PERSISTENCE-CONTRACT-AUDIT.md` | Findings de persistência/readiness | PREEXISTING WIP / preserve; not implementation authority |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 84 | Snapshot, status, gates, blockers e próxima atividade | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.48 | Handoff e resumo de retomada | CURRENT |
+
+```text
+ACTIVITY = ARGOS-HOM-00-ROADMAP-FINAL-RECONCILIATION
+STATUS = DOCUMENTARY_RECONCILIATION_COMPLETE
+BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+BRANCH = codex/mon-runtime-v1-implementation
+WORKTREE_PRESERVED = YES
+P3 = PROTOTYPE / VISUAL_REFERENCE / WIP UNVERIFIED
+P5 = PRODUCTION_UI_SOURCE / NOT_INTEGRATED / WIP UNVERIFIED
+DESIGN_SYSTEM_BASELINE = 2.0.2
+DESIGN_SYSTEM_TARGET = 2.4.0 / RECOMMENDED / ADJUDICATION PENDING
+DESIGN_QA = MANDATORY / NOT_RUN
+IMAGE_AUTHORITY = QUICK_DETAIL LATEST_ACTIVE_IMAGE / LATEST_CAMERA_CAPTURE DISTINCT
+IMPORT_XLSX = REQUIRED_BEFORE_HOM / SCHEMA AND TEMPLATE PENDING
+H1 = PASS / INHERITED; H2 = BLOCKED_BY_INFRASTRUCTURE; H3 = NOT_STARTED
+HOM_00 = INTEGRATION_FOUNDATION_PENDING / NOT PASS
+HOM_01 = BLOCKED; HOM_02 = NOT_IMPLEMENTED; HOM_03 = NOT_STARTED
+HOM_04 = BLOCKED; HOM_05 = PLANNED / NON_BLOCKING
+NEXT = ARGOS-HOM-00-INTEGRATION-FOUNDATION / PLANNED / NOT_AUTHORIZED
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED
+COMMIT = NOT_PERFORMED; PUSH = NOT_PERFORMED; MERGE = NOT_PERFORMED
+```
+
+## 53. ARGOS-HOM-00-CONTINUITY-RECOVERY-01 (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/ROADMAP_ARGOS_V5.md`, seção 23 | Sequência HOM-00..HOM-05 e status | CURRENT / reconciled to integration target |
+| `docs/projeto/SPRINTS_ARGOS_V5.md`, seção 20 | Critérios, dependências, evidências e gate | CURRENT / HOM-00 foundation pending |
+| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`, seção 26 | Imagem do Quick Detail | CANONICAL / `LATEST_ACTIVE_IMAGE`; no implementation claim |
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`, seção 20 | Design QA de HOM-01 | CANONICAL / mandatory, not run |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md` | Baseline e adjudicação DS | CURRENT / DS 2.4.0 recommended, adjudication pending |
+| `docs/auditoria/ARGOS-DATA-PERSISTENCE-CONTRACT-AUDIT.md` | Findings de persistência/readiness | SOURCE UNTRACKED WIP / preserved; candidate documentary evidence after review |
+| `run_mon_runtime_v1_h1_isolated_tests.ps1` | Harness H1 | SOURCE UNTRACKED WIP / preserved; candidate test/evidence artifact after provenance and reproducibility review |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 85 | Snapshot desta recuperação | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.49 | Handoff desta recuperação | CURRENT / continuity update PASS |
+
+```text
+SOURCE_BRANCH = codex/mon-runtime-v1-implementation
+SOURCE_HEAD = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+TARGET_BRANCH = codex/hom-v1-integration
+TARGET_HEAD = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
+SOURCE_WIP_PRESERVED = YES
+TARGET_DOCUMENTS_RECONCILED = YES
+HOMOLOGATION_GATE = BLOCKED
+H1 = PASS / INHERITED; H2 = PENDING / BLOCKED_BY_INFRASTRUCTURE; H3 = NOT_STARTED
+PRODUCTION_CODE_CHANGED = NO
+UI_CODE_CHANGED = NO
+MIGRATIONS_CHANGED = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+```
