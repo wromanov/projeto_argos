@@ -1,0 +1,92 @@
+/* ARGOS UI V2 · 2.4.0 · shared primitives and components */
+@layer components {
+  .argos-skip-link {
+    position: absolute; z-index: 2; top: var(--argos-space-2); left: var(--argos-space-2);
+    padding: var(--argos-space-2) var(--argos-space-3); transform: translateY(-180%);
+    border-radius: var(--argos-radius-control); background: var(--argos-color-surface); color: var(--argos-color-ink);
+  }
+  .argos-skip-link:focus { transform: translateY(0); }
+  .argos-brand { display: flex; align-items: center; gap: var(--argos-space-3); color: inherit; text-decoration: none; }
+  .argos-brand img { width: 34px; height: 34px; }
+  .argos-brand__name { display: block; font-size: var(--argos-text-body); font-weight: var(--argos-weight-bold); }
+  .argos-brand__meta { display: block; color: var(--argos-color-ink-muted); font-size: var(--argos-text-caption); }
+  .argos-button, .argos-icon-button {
+    display: inline-flex; min-height: var(--argos-control-height); align-items: center; justify-content: center;
+    gap: var(--argos-space-2); border: var(--argos-border-width) solid transparent;
+    border-radius: var(--argos-radius-control); cursor: pointer; font-size: var(--argos-text-secondary);
+    font-weight: var(--argos-weight-semibold); line-height: 1.25; text-decoration: none;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  }
+  .argos-button { padding: 0 var(--argos-space-4); }
+  .argos-button--primary { background: var(--argos-color-action); color: var(--argos-color-action-contrast); }
+  .argos-button--primary:hover { background: var(--argos-color-action-hover); color: var(--argos-color-action-contrast); }
+  .argos-button--danger { background: var(--argos-status-danger-fg); color: var(--argos-color-ink-inverse); }
+  .argos-button--danger:hover:not(:disabled) { filter: brightness(.9); color: var(--argos-color-ink-inverse); }
+  .argos-button--secondary { border-color: var(--argos-color-border-strong); background: var(--argos-color-surface); color: var(--argos-color-ink); }
+  .argos-button--secondary:hover { background: var(--argos-color-surface-subtle); }
+  .argos-button:not(:disabled):active, .argos-icon-button:not(:disabled):active { transform: translateY(1px); }
+  .argos-icon-button:not(:disabled):hover { background: var(--argos-color-surface-subtle); }
+  .argos-button--compact { min-height: var(--argos-control-height-compact); padding-inline: var(--argos-space-3); }
+  .argos-button:disabled, .argos-icon-button:disabled { cursor: not-allowed; border-color: var(--argos-color-border); background: var(--argos-color-surface-subtle); color: var(--argos-color-ink-muted); opacity: 1; }
+  .argos-icon-button svg { width: 18px; height: 18px; fill: currentColor; }
+  .argos-icon-button {
+    width: var(--argos-control-height); padding: 0; background: var(--argos-color-surface);
+    border-color: var(--argos-color-border); color: var(--argos-color-ink);
+  }
+  .argos-field { display: grid; gap: var(--argos-space-1); min-width: 0; }
+  .argos-field__label { color: var(--argos-color-ink); font-size: var(--argos-text-label); font-weight: var(--argos-weight-semibold); }
+  .argos-input, .argos-select {
+    width: 100%; min-width: 0; min-height: var(--argos-control-height); padding: 0 var(--argos-space-3);
+    border: var(--argos-border-width) solid var(--argos-color-border-strong); border-radius: var(--argos-radius-control);
+    background: var(--argos-color-surface); color: var(--argos-color-ink); font-size: var(--argos-text-secondary);
+  }
+  .argos-input::placeholder { color: var(--argos-color-ink-muted); opacity: 1; }
+  .argos-input:disabled, .argos-select:disabled { background: var(--argos-color-surface-subtle); color: var(--argos-color-ink-muted); cursor: not-allowed; }
+  .argos-checkbox { width: 18px; height: 18px; accent-color: var(--argos-color-action); }
+  .argos-card {
+    min-width: 0; overflow: hidden; border: var(--argos-border-width) solid var(--argos-color-border);
+    border-radius: var(--argos-radius-surface); background: var(--argos-color-surface); box-shadow: var(--argos-shadow-card);
+  }
+  .argos-card__header, .argos-card__body, .argos-card__footer { padding: var(--argos-space-4) var(--argos-space-5); }
+  .argos-card__header, .argos-card__footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--argos-space-3); }
+  .argos-card__header { border-bottom: var(--argos-border-width) solid var(--argos-color-border); }
+  .argos-card__footer { border-top: var(--argos-border-width) solid var(--argos-color-border); }
+  .argos-card__title { font-size: var(--argos-text-section); }
+  .argos-data-pair { display: grid; align-content: start; gap: var(--argos-space-1); min-width: 0; margin: 0; }
+  .argos-data-pair dt { margin: 0; color: var(--argos-color-ink-muted); font-size: var(--argos-text-label); font-weight: var(--argos-weight-medium); line-height: 1.25; overflow-wrap: anywhere; }
+  .argos-data-pair dd { min-width: 0; margin: 0; color: var(--argos-color-ink); font-size: var(--argos-text-body); line-height: var(--argos-line-base); overflow-wrap: anywhere; }
+  .argos-data-pair code { font-family: var(--argos-font-mono); }
+  .argos-badge, .argos-status-badge {
+    display: inline-flex; min-height: 22px; align-items: center; gap: var(--argos-space-1); padding: 2px var(--argos-space-2);
+    border: var(--argos-border-width) solid transparent; border-radius: var(--argos-radius-control);
+    font-size: var(--argos-text-caption); font-weight: var(--argos-weight-semibold); line-height: 1.25; overflow-wrap: anywhere;
+  }
+  .argos-badge--neutral, .argos-status-badge--neutral { border-color: var(--argos-status-neutral-border); background: var(--argos-status-neutral-bg); color: var(--argos-status-neutral-fg); }
+  .argos-badge--success, .argos-status-badge--success { border-color: var(--argos-status-success-border); background: var(--argos-status-success-bg); color: var(--argos-status-success-fg); }
+  .argos-badge--warning, .argos-status-badge--warning { border-color: var(--argos-status-warning-border); background: var(--argos-status-warning-bg); color: var(--argos-status-warning-fg); }
+  .argos-badge--danger, .argos-status-badge--danger { border-color: var(--argos-status-danger-border); background: var(--argos-status-danger-bg); color: var(--argos-status-danger-fg); }
+  .argos-badge--info { border-color: var(--argos-status-info-border); background: var(--argos-status-info-bg); color: var(--argos-status-info-fg); }
+  .argos-alert {
+    display: flex; align-items: flex-start; gap: var(--argos-space-3); padding: var(--argos-space-3) var(--argos-space-4);
+    border: var(--argos-border-width) solid var(--argos-color-border); border-radius: var(--argos-radius-control); background: var(--argos-color-surface);
+  }
+  .argos-alert--info { border-color: var(--argos-status-info-border); background: var(--argos-status-info-bg); color: var(--argos-color-ink); }
+  .argos-alert--warning { border-color: var(--argos-status-warning-border); background: var(--argos-status-warning-bg); color: var(--argos-color-ink); }
+  .argos-alert--danger { border-color: var(--argos-status-danger-border); background: var(--argos-status-danger-bg); color: var(--argos-color-ink); }
+  .argos-spinner {
+    display: inline-block; width: 18px; height: 18px; flex: 0 0 auto; border: 2px solid var(--argos-status-neutral-border);
+    border-top-color: var(--argos-color-action); border-radius: 50%; animation: argos-spin 800ms linear infinite;
+  }
+  @keyframes argos-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .argos-button, .argos-icon-button { transition: none; }
+    .argos-spinner { animation: none; }
+  }
+  @media (max-width: 600px) {
+    .argos-button, .argos-icon-button { min-height: var(--argos-touch-target-min); }
+    .argos-input, .argos-select { min-height: var(--argos-touch-target-min); }
+    .argos-checkbox-field { min-height: var(--argos-touch-target-min); }
+    .argos-icon-button { width: var(--argos-touch-target-min); }
+    .argos-card__header, .argos-card__body, .argos-card__footer { padding: var(--argos-space-4); }
+  }
+}

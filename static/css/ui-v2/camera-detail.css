@@ -1,3 +1,9 @@
+@layer reset, tokens, base, components, patterns, pages, overrides;
+@import url("./tokens.css");
+@import url("./base.css");
+@import url("./components.css");
+@import url("./patterns.css");
+
 /* SCR-CAM-DETAIL-001 composition; shared controls and surfaces remain DS-owned. */
 @layer pages {
   .argos-camera-detail {
@@ -27,9 +33,19 @@
 
   .argos-camera-detail__back { width: fit-content; }
 
+  .argos-camera-detail .argos-back-link {
+    color: var(--argos-color-action);
+    font-size: var(--argos-text-secondary);
+    font-weight: var(--argos-weight-medium);
+  }
+
   .argos-camera-detail__record-surface,
   .argos-camera-detail__history-surface {
     min-width: 0;
+    border: var(--argos-border-width) solid var(--argos-color-border);
+    border-radius: var(--argos-radius-surface);
+    background: var(--argos-color-surface);
+    padding: var(--argos-space-6);
     box-shadow: none;
   }
 
@@ -124,6 +140,92 @@
 
   .argos-camera-detail__statuses { justify-content: flex-end; }
 
+  .argos-camera-detail .argos-camera-detail__monitoring-summary {
+    display: grid;
+    justify-items: start;
+    gap: var(--argos-space-1);
+    min-width: 0;
+  }
+
+  .argos-camera-detail .argos-data-group {
+    display: grid;
+    gap: var(--argos-space-4);
+    min-width: 0;
+    margin: 0;
+  }
+
+  .argos-camera-detail .argos-data-pair {
+    display: grid;
+    align-content: start;
+    gap: var(--argos-space-1);
+    min-width: 0;
+    margin: 0;
+  }
+
+  .argos-camera-detail .argos-data-pair dt {
+    margin: 0;
+    color: var(--argos-color-ink-muted);
+    font-size: var(--argos-text-label);
+    font-weight: var(--argos-weight-medium);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .argos-camera-detail .argos-data-pair dd {
+    min-width: 0;
+    margin: 0;
+    color: var(--argos-color-ink);
+    font-size: var(--argos-text-body);
+    line-height: var(--argos-line-base);
+    overflow-wrap: anywhere;
+  }
+
+  .argos-camera-detail .argos-data-pair code { font-family: var(--argos-font-mono); }
+
+  .argos-camera-detail .argos-button--danger {
+    background: var(--argos-status-danger-fg);
+    color: var(--argos-color-ink-inverse);
+  }
+
+  .argos-camera-detail .argos-button--danger:hover:not(:disabled) {
+    filter: brightness(.9);
+    color: var(--argos-color-ink-inverse);
+  }
+
+  .argos-camera-detail .argos-state--compact {
+    gap: var(--argos-space-1);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .argos-camera-detail .argos-data-table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: var(--argos-text-secondary);
+    text-align: left;
+  }
+
+  .argos-camera-detail .argos-data-table th,
+  .argos-camera-detail .argos-data-table td {
+    padding: var(--argos-space-2) var(--argos-space-3);
+    border-bottom: var(--argos-border-width) solid var(--argos-color-border);
+    vertical-align: top;
+    overflow-wrap: anywhere;
+  }
+
+  .argos-camera-detail .argos-data-table th {
+    background: var(--argos-color-surface-subtle);
+    color: var(--argos-color-ink-muted);
+    font-size: var(--argos-text-caption);
+    font-weight: var(--argos-weight-bold);
+    text-align: left;
+  }
+
   .argos-camera-detail__status-support {
     display: block;
     width: fit-content;
@@ -195,7 +297,7 @@
     font-weight: var(--argos-weight-semibold);
   }
 
-  .argos-camera-detail__pairs {
+  .argos-camera-detail .argos-camera-detail__pairs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--argos-space-2) var(--argos-space-4);
     min-width: 0;
@@ -401,6 +503,9 @@
   }
 
   @media (max-width: 680px) {
+    .argos-camera-detail__record-surface,
+    .argos-camera-detail__history-surface { padding: var(--argos-space-4); }
+
     .argos-camera-detail__hero { padding-top: 0; }
     .argos-camera-detail__hero-side { gap: var(--argos-space-3); }
     .argos-camera-detail__hero-main { gap: var(--argos-space-4); }

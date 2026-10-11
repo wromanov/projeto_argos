@@ -1,55 +1,71 @@
 {% extends "base.html" %}
-
 {% block titulo %}Dashboard — ARGOS{% endblock %}
-
 {% block conteudo %}
-<section class="portal-hero dashboard-heading dashboard-hero">
-  <div>
-    <span class="page-heading__eyebrow">Visão operacional</span>
-    <h1 class="page-heading__title">Dashboard</h1>
-    <p>Situação operacional, monitoramento técnico e qualidade do inventário.</p>
+<header class="argos-page-header dashboard-page-header">
+  <div class="argos-page-header__copy">
+    <p class="argos-eyebrow page-heading__eyebrow">Visão operacional</p>
+    <h1 class="argos-page-title page-heading__title">Dashboard</h1>
+    <p class="argos-lead">Resumo do inventário, do monitoramento e da atividade recente.</p>
   </div>
-  <div class="dashboard-actions">
-    <a class="button button--secondary" href="{% url 'cameras:lista' %}">Abrir inventário</a>
-    {% if perms.cameras.add_camera %}<a class="button button--primary" href="{% url 'cameras:criar' %}">Nova câmera</a>{% endif %}
+  <div class="argos-page-header__actions">
+    <a class="argos-button argos-button--secondary" href="{% url 'cameras:lista' %}">Abrir inventário</a>
+    {% if perms.cameras.add_camera %}<a class="argos-button argos-button--primary" href="{% url 'cameras:criar' %}">Nova câmera</a>{% endif %}
   </div>
-</section>
-
-<section class="dashboard-section dashboard-section--inventory" aria-labelledby="inventario-heading">
-  <div class="dashboard-section__heading"><div><span class="section-heading__eyebrow">Visão patrimonial</span><h2 class="section-heading__title" id="inventario-heading">Inventário</h2></div></div>
-  <div class="metric-grid dashboard-metric-grid dashboard-metric-grid--inventory">
-    <article class="metric-card dashboard-metric"><span>Total de câmeras</span><strong>{{ total_cameras }}</strong></article>
-    <a class="metric-card metric-card--link dashboard-metric" href="{% url 'cameras:lista' %}?situacao_operacional=PRODUCAO"><span>Produção</span><strong>{{ cameras_producao }}</strong><small>Ver câmeras em produção</small></a>
-    <a class="metric-card metric-card--link dashboard-metric" href="{% url 'cameras:lista' %}?situacao_operacional=ESTOQUE"><span>Estoque</span><strong>{{ cameras_estoque }}</strong><small>Ver câmeras em estoque</small></a>
-    <a class="metric-card metric-card--link dashboard-metric" href="{% url 'cameras:lista' %}?situacao_operacional=DESATIVADA"><span>Desativadas</span><strong>{{ cameras_desativadas }}</strong><small>Ver câmeras desativadas</small></a>
-    <article class="metric-card dashboard-metric"><span>Substituições</span><strong>{{ total_substituicoes }}</strong></article>
-  </div>
-</section>
-
-<section class="dashboard-section dashboard-section--monitoring" aria-labelledby="monitoramento-heading">
-  <div class="dashboard-section__heading"><div><span class="section-heading__eyebrow">Disponibilidade técnica</span><h2 class="section-heading__title" id="monitoramento-heading">Monitoramento técnico</h2></div></div>
-  <div class="metric-grid dashboard-metric-grid dashboard-metric-grid--monitoring">
-    <article class="metric-card dashboard-metric"><span>Online</span><strong>{{ monitoring.online }}</strong><small>Estado técnico efetivo</small></article>
-    <article class="metric-card dashboard-metric{% if monitoring.offline %} dashboard-metric--alert{% endif %}"><span>Offline</span><strong>{{ monitoring.offline }}</strong><small>{% if monitoring.offline %}Indisponibilidades efetivas{% else %}Nenhuma indisponibilidade{% endif %}</small></article>
-    <article class="metric-card dashboard-metric{% if monitoring.unknown %} dashboard-metric--warning{% endif %}"><span>Unknown</span><strong>{{ monitoring.unknown }}</strong><small>{{ monitoring.stale }} com dados desatualizados</small></article>
-    <article class="metric-card dashboard-metric"><span>Não monitoradas</span><strong>{{ monitoring.out_of_scope }}</strong><small>Fora do escopo técnico</small></article>
-  </div>
-</section>
-
-<section class="dashboard-section dashboard-section--quality" aria-labelledby="qualidade-heading">
-  <div class="dashboard-section__heading"><div><span class="section-heading__eyebrow">Consistência do inventário</span><h2 class="section-heading__title" id="qualidade-heading">Qualidade cadastral</h2></div></div>
-  <div class="metric-grid dashboard-metric-grid dashboard-metric-grid--quality">
-    <a class="metric-card metric-card--link dashboard-metric" href="{% url 'cameras:lista' %}?completude=COMPLETO"><span>Cadastro completo</span><strong>{{ cameras_completas }}</strong><small>Ver cadastros completos</small></a>
-        <a class="metric-card metric-card--link dashboard-metric{% if cameras_incompletas %} dashboard-metric--warning{% endif %}" href="{% url 'cameras:lista' %}?completude=INCOMPLETO"><span>Cadastro incompleto</span><strong>{{ cameras_incompletas }}</strong><small>{% if cameras_incompletas %}Ver cadastros incompletos{% else %}Nenhuma pendência cadastral{% endif %}</small></a>
-        <article class="metric-card dashboard-metric{% if cameras_com_ip_duplicado %} dashboard-metric--alert{% endif %}"><span>Câmeras com IP duplicado</span><strong>{{ cameras_com_ip_duplicado }}</strong><small>{% if cameras_com_ip_duplicado %}Conflito de endereçamento detectado{% else %}Nenhum conflito identificado{% endif %}</small></article>
-  </div>
-</section>
-
-<section class="dashboard-section dashboard-section--activity" aria-labelledby="atividade-heading">
-  <div class="dashboard-section__heading"><div><span class="section-heading__eyebrow">Acompanhamento recente</span><h2 class="section-heading__title" id="atividade-heading">Atividade</h2></div><article class="metric-card dashboard-metric dashboard-metric--compact"><span>Atividades registradas</span><strong>{{ total_atividades }}</strong></article></div>
-  <div class="dashboard-grid">
-    <section class="portal-panel"><h3>Últimas atividades</h3>{% for atividade in atividades_recentes %}<a class="recent-item" href="{% url 'cameras:detalhe' atividade.camera.pk %}"><strong>{{ atividade.titulo }}</strong><span>{{ atividade.camera.nome }} · {{ atividade.ocorrida_em|date:"d/m/Y H:i" }}</span></a>{% empty %}<p class="portal-empty">Nenhuma atividade registrada.</p>{% endfor %}</section>
-    <section class="portal-panel"><h3>Câmeras atualizadas recentemente</h3>{% for camera in cameras_recentes %}<a class="recent-item" href="{% url 'cameras:detalhe' camera.pk %}"><strong>{{ camera.nome }}</strong><span>{{ camera.get_situacao_operacional_display }} · {{ camera.atualizado_em|date:"d/m/Y H:i" }}</span></a>{% empty %}<p class="portal-empty">Nenhuma câmera cadastrada.</p>{% endfor %}</section>
-  </div>
-</section>
+</header>
+<div class="argos-stack dashboard-content">
+  <section aria-labelledby="inventario-heading">
+    <div class="argos-section-header"><h2 class="section-heading__title" id="inventario-heading">Resumo do inventário</h2></div>
+    <div class="argos-kpi-grid argos-kpi-grid--contained">
+      <article class="argos-kpi-card"><strong>{{ total_cameras }}</strong><span>Total de câmeras</span></article>
+      <a class="argos-kpi-card dashboard-kpi-link" href="{% url 'cameras:lista' %}?situacao_operacional=PRODUCAO"><strong>{{ cameras_producao }}</strong><span>Em produção</span><small>Ver câmeras em produção</small></a>
+      <a class="argos-kpi-card dashboard-kpi-link" href="{% url 'cameras:lista' %}?situacao_operacional=ESTOQUE"><strong>{{ cameras_estoque }}</strong><span>Em estoque</span><small>Ver câmeras em estoque</small></a>
+    </div>
+  </section>
+  <section class="dashboard-panels" aria-label="Situação e atividade">
+    <article class="argos-card dashboard-panel dashboard-panel--operational" aria-labelledby="dashboard-operational-title">
+      <div class="argos-card__header"><h2 class="argos-card__title" id="dashboard-operational-title">Situação operacional</h2></div>
+      <div class="argos-card__body">
+        <dl class="dashboard-stat-list">
+          <div><dt>Em produção</dt><dd>{{ cameras_producao }}</dd></div>
+          <div><dt>Em estoque</dt><dd>{{ cameras_estoque }}</dd></div>
+          <div><dt>Desativadas</dt><dd><a class="dashboard-stat-link" href="{% url 'cameras:lista' %}?situacao_operacional=DESATIVADA">{{ cameras_desativadas }}</a></dd></div>
+          <div><dt>Substituições</dt><dd>{{ total_substituicoes }}</dd></div>
+        </dl>
+      </div>
+    </article>
+    <article class="argos-card dashboard-panel dashboard-panel--monitoring" aria-labelledby="dashboard-monitoring-title">
+      <div class="argos-card__header"><h2 class="argos-card__title" id="dashboard-monitoring-title">Monitoramento e completude</h2></div>
+      <div class="argos-card__body">
+        <dl class="dashboard-stat-list dashboard-stat-list--monitoring">
+          <div><dt>Online</dt><dd>{{ monitoring.online }}</dd></div>
+          <div><dt>Offline</dt><dd>{{ monitoring.offline }}</dd></div>
+          <div><dt>Desconhecido</dt><dd>{{ monitoring.unknown }}</dd></div>
+          <div><dt>Não monitoradas</dt><dd>{{ monitoring.out_of_scope }}</dd></div>
+          <div><dt>Cadastro completo</dt><dd><a class="dashboard-stat-link" href="{% url 'cameras:lista' %}?completude=COMPLETO">{{ cameras_completas }}</a></dd></div>
+          <div><dt>Cadastro incompleto</dt><dd><a class="dashboard-stat-link" href="{% url 'cameras:lista' %}?completude=INCOMPLETO">{{ cameras_incompletas }}</a></dd></div>
+          <div><dt>Dados desatualizados</dt><dd>{{ monitoring.stale }}</dd></div>
+          <div><dt>IPs duplicados</dt><dd>{{ cameras_com_ip_duplicado }}</dd></div>
+        </dl>
+      </div>
+    </article>
+    <article class="argos-card dashboard-panel dashboard-panel--activity" aria-labelledby="dashboard-activity-title">
+      <div class="argos-card__header"><h2 class="argos-card__title" id="dashboard-activity-title">Atividade recente</h2><span class="argos-badge argos-badge--neutral">{{ total_atividades }} registro{{ total_atividades|pluralize:"s" }}</span></div>
+      <div class="argos-card__body dashboard-recent-list">
+        {% for atividade in atividades_recentes %}
+          <a class="dashboard-recent-item" href="{% url 'cameras:detalhe' atividade.camera.pk %}"><strong>{{ atividade.titulo }}</strong><span>{{ atividade.camera.nome }} · {{ atividade.ocorrida_em|date:"d/m/Y H:i" }}</span></a>
+        {% empty %}<p class="argos-state__copy">Nenhuma atividade registrada.</p>{% endfor %}
+      </div>
+    </article>
+    <article class="argos-card dashboard-panel dashboard-panel--featured" aria-labelledby="dashboard-featured-title">
+      <div class="argos-card__header"><h2 class="argos-card__title" id="dashboard-featured-title">Câmeras atualizadas recentemente</h2></div>
+      <div class="argos-card__body dashboard-recent-list">
+        {% for camera in cameras_recentes %}
+          <a class="dashboard-recent-item" href="{% url 'cameras:detalhe' camera.pk %}"><strong>{{ camera.nome }}</strong><span>{{ camera.get_situacao_operacional_display }} · {{ camera.atualizado_em|date:"d/m/Y H:i" }}</span></a>
+        {% empty %}
+          <div class="argos-state"><h3 class="argos-state__title">Nenhuma câmera cadastrada</h3><p class="argos-state__copy">Não há câmeras para apresentar neste momento.</p>{% if perms.cameras.add_camera %}<a class="argos-button argos-button--primary" href="{% url 'cameras:criar' %}">Cadastrar câmera</a>{% endif %}</div>
+        {% endfor %}
+      </div>
+    </article>
+  </section>
+</div>
 {% endblock %}

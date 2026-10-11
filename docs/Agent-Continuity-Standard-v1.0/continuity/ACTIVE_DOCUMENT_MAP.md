@@ -1172,3 +1172,236 @@ PUSH = NOT_PERFORMED
 MERGE = NOT_PERFORMED
 DEPLOY = NOT_PERFORMED
 ```
+
+## 54. ARGOS-HOM-01-UI-V2-SELECTIVE-INTEGRATION — preflight (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 87 | Fatos Git, WIP, comparação de fontes e gates HOM-01 | CURRENT / preflight complete; implementation awaits DS adjudication |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.50 | Handoff e blockers de HOM-01 | CURRENT / no application files integrated |
+| `docs/projeto/SPRINTS_ARGOS_V5.md`, seção 20 | Aceite funcional e visual de HOM-01 | CANONICAL / mandatory gates |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md` | DS baseline and target adjudication | CURRENT / 2.4.0 recommended, adjudication pending |
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`, seção 20 | Evidências de Design QA | CANONICAL / Inventory reference approval pending |
+
+```text
+TARGET_BRANCH = codex/hom-v1-integration
+TARGET_HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+SOURCE_WIP_VERIFICATION = PASS / untracked items preserved
+SOURCE_FILES_SELECTED = NONE
+DS_ADJUDICATION = PASS / additive, route-scoped adoption; DS 2.0.2 remains canonical
+FUNCTIONAL_REGRESSION = NOT_RUN
+DESIGN_QA = BLOCKED
+HUMAN_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = PASS / section 87
+HOMOLOGATION_ENTRY_GATE = BLOCKED
+```
+
+## 56. ARGOS-HOM-01-DESIGN-QA-EVIDENCE-01 (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 89 | Registro desta tentativa, referências, bloqueio de renderização e gates | CURRENT / blocked by loopback socket permission |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.52 | Handoff e estado resumido | CURRENT / Design QA blocked |
+| `docs/prototype/ui-v2/evidence/hom-01-visual-qa-2026-10-11/README.md` | Matriz de referências e evidências esperadas | CURRENT / renders not captured; Inventory approval conflict recorded |
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`, seção 20 | Contrato normativo do gate visual HOM-01 | CANONICAL / mandatory |
+| `C:/Users/walac/desenvolvimento/projeto_argos_ui_v2_p3_root/docs/prototype/ui-v2/screens/p3-a/coverage.md` | Aprovações e capturas P3-A | SOURCE WORKTREE / conflict for Inventory approval |
+| `C:/Users/walac/desenvolvimento/projeto_argos_ui_p5/docs/prototype/ui-v2/evidence/screenshots/` | Capturas P5 de referência visual | SOURCE WORKTREE / not copied |
+
+```text
+BRANCH = codex/hom-v1-integration
+HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+SOURCE_WIP_PRESERVED = YES
+RENDERED_SCREENSHOTS = NONE
+INVENTORY_REFERENCE = CANDIDATE / approval status conflict unresolved; QUICK_DETAIL_REFERENCE_SCREENSHOT = MISSING
+DESIGN_QA = BLOCKED
+PROJECT_STATE_UPDATE = PASS / section 89
+CONTINUITY_UPDATE = PASS / AGENT_CONTINUITY.md section 20.52 and this section
+```
+
+## 55. ARGOS-HOM-01-UI-V2-SELECTIVE-INTEGRATION — integração parcial (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 88 | Snapshot da integração, seleção de fontes, testes e bloqueios | CURRENT / partial implementation; Design QA and human approval pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.51 | Handoff HOM-01 | CURRENT / Shell, Dashboard and Inventory integrated; approval gates remain |
+| `docs/projeto/SPRINTS_ARGOS_V5.md`, seção 20 | Aceite funcional e visual HOM-01 | CANONICAL / all required QA gates remain mandatory |
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`, seção 20 | Contrato e evidências de Design QA | CANONICAL / Inventory reference approval and matching screenshots pending |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md` | Baseline e adjudicação DS | CURRENT / DS 2.0.2 canonical; additive 2.4.0 authorized only for HOM-01 routes |
+
+```text
+TARGET_BRANCH = codex/hom-v1-integration
+HEAD_BEFORE = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+HEAD_AFTER = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+SHELL = INTEGRATED / FUNCTIONALLY VALIDATED
+DASHBOARD = INTEGRATED / FUNCTIONALLY VALIDATED / HUMAN APPROVAL PENDING
+INVENTORY = INTEGRATED / FUNCTIONALLY VALIDATED / APPROVED REFERENCE PENDING
+CAMERA_DETAIL = PRESERVED
+QUICK_DETAIL = PRESERVED / LATEST_ACTIVE_IMAGE PENDING
+DS_ADJUDICATION = PASS / DS 2.4.0 route-scoped; DS 2.0.2 remains canonical
+FUNCTIONAL_REGRESSION = PASS / 77 TESTS
+DESIGN_QA = BLOCKED / Inventory reference missing; matching render evidence and human approval pending
+QA_TEMP_ARTIFACTS = hom01-qa-server.log; hom01-qa-server.err / OS-locked local request logs pending cleanup
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md section 88
+CONTINUITY_UPDATE = PASS / AGENT_CONTINUITY.md section 20.51 and this section
+HOMOLOGATION_ENTRY_GATE = BLOCKED
+COMMIT = NOT_PERFORMED; PUSH = NOT_PERFORMED; MERGE = NOT_PERFORMED; DEPLOY = NOT_PERFORMED
+```
+
+## 57. ARGOS-HOM-01-HOST-VISUAL-QA-01 — bloqueio ambiental (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 90 | Tentativa no host, resultado, gates e estado do WIP | CURRENT / loopback blocked; no rendered screenshots |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.53 | Handoff e blockers de captura | CURRENT / HOM-01 remains IN_PROGRESS |
+| `docs/prototype/ui-v2/evidence/hom-01-visual-qa-2026-10-11/README.md` | Tentativa no host e procedimento Windows reproduzível | CURRENT / render blocked; human approvals pending |
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md`, seção 20 | Contrato normativo de Design QA | CANONICAL / mandatory |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md` | Baseline visual, viewport/condições equivalentes e gates | CURRENT / DS 2.0.2 canonical |
+
+```text
+ACTIVITY = ARGOS-HOM-01-HOST-VISUAL-QA-01
+BRANCH = codex/hom-v1-integration
+HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+SOURCE_WIP_PRESERVED = YES
+HOST_BROWSER_ACCESS = BLOCKED / loopback timeout
+SYNTHETIC_DATABASE = CREATED, MIGRATED, SEEDED, THEN REMOVED
+RENDERED_SCREENSHOTS = NONE
+DESIGN_QA = BLOCKED
+INVENTORY_HUMAN_APPROVAL = PENDING
+QUICK_DETAIL_BASELINE_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = PASS / section 90
+CONTINUITY_UPDATE = PASS / AGENT_CONTINUITY.md §20.53 and this section
+HOMOLOGATION_GATE = BLOCKED
+```
+
+## 58. ARGOS-HOM-01-ONE-CLICK-RUNTIME-SETUP (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 91 | Resultado, validações e limites do launcher | CURRENT / static validation pass; runtime and browser not verified |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.54 | Handoff e instrução de retomada | CURRENT / HOM-01 remains IN_PROGRESS |
+| `INICIAR_ARGOS_QA.cmd` | Entrada local de uso único | CURRENT / starts isolated QA and local server |
+| `scripts/localqa/settings.py` | Settings exclusivo do QA local | CURRENT / loopback and dedicated SQLite |
+| `scripts/localqa/prepare_qa.py` | Owner marker, migrations, existing identity provisioning and checks | CURRENT / refuses unrecognized database |
+| `scripts/localqa/seed_qa.py` | Idempotent fictional camera data | CURRENT / five synthetic records |
+| `scripts/localqa/start_argos_qa.ps1` | Python selection, port guard, HTTP wait and browser launch | CURRENT / not runtime-tested here |
+| `docs/prototype/ui-v2/evidence/hom-01-visual-qa-2026-10-11/README.md` | Uso do launcher e status das evidências visuais | CURRENT / browser render pending |
+| `docs/projeto/SPRINTS_ARGOS_V5.md`, seção 20 | Gates de aceite HOM-01 | CANONICAL / unchanged |
+
+```text
+ACTIVITY = ARGOS-HOM-01-ONE-CLICK-RUNTIME-SETUP
+BRANCH = codex/hom-v1-integration
+HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+SOURCE_WIP_PRESERVED = YES
+QA_DATABASE = .local/qa/argos_visual_qa.sqlite3 / launcher-owned marker
+QA_SEED = PASS / 5 records / idempotent
+QA_USER = PASS / five minimum view/form permissions / non-admin
+WINDOWS_RUNTIME_VERIFIED = NOT_VERIFIED
+BROWSER_RENDER_VERIFIED = NOT_VERIFIED
+DESIGN_QA = PENDING
+HOMOLOGATION_GATE = BLOCKED
+PROJECT_STATE_UPDATE = PASS / section 91
+CONTINUITY_UPDATE = PASS / AGENT_CONTINUITY.md §20.54 and this section
+```
+
+## 59. ARGOS-HOM-01-CAMERA-DETAIL-APPROVED-FIXES-RECOVERY (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 92 | Implementação, regressão e gates atuais da Camera Detail | CURRENT / partial; implementation pass; visual blocked |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.55 | Handoff e próximo passo | CURRENT / HOM-01 remains in progress |
+| `docs/prototype/ui-v2/contracts/STATE_MATRIX.md` | Tratamento visual atualizado de OUT_OF_SCOPE | CURRENT / Option A recorded |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md` | Decisão aprovada e limite DS 2.0.2 | CURRENT / Option A addendum; 2.4.0 not canonical |
+| `docs/prototype/ui-v2/evidence/hom-01-camera-detail-recovery-2026-10-11/VISUAL_DIFFERENCE_REPORT.md` | Evidência de bloqueio visual e itens faltantes | CURRENT / blocked; screenshots unavailable |
+
+```text
+ACTIVITY = ARGOS-HOM-01-CAMERA-DETAIL-APPROVED-FIXES-RECOVERY
+BRANCH = codex/hom-v1-integration
+HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+OUT_OF_SCOPE_PRESENTATION = OPTION_A / USER_APPROVED
+DS_CANONICAL = 2.0.2
+REGRESSION_TEST_TOTAL = 98 PASS
+DESIGN_QA = BLOCKED
+HUMAN_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = PASS / section 92
+CONTINUITY_UPDATE = PASS / AGENT_CONTINUITY.md §20.55 and this section
+HOMOLOGATION_GATE = BLOCKED
+```
+
+## 60. ARGOS-HOM-01-CAMERA-EDIT-RECOVERY (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 93 | Resultado técnico, regressões e gates pendentes | CURRENT / implementation pass; visual blocked |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.56 | Handoff e próximo passo de review | CURRENT / HOM-01 remains in progress |
+| `cameras/templates/cameras/formulario.html` | Template SSR compartilhado de criação e edição | CURRENT / P3-D composition adapted to Django Forms |
+| `cameras/templates/cameras/includes/campo_formulario_p3d.html` | Labels, required markers and linked field errors | CURRENT / camera forms only |
+| `cameras/templates/cameras/includes/resumo_erros_formulario_p3d.html` | Django error summary with links to controls | CURRENT / camera forms only |
+| `static/css/ui-v2/camera-form.css` | Route-specific adaptation using canonical DS 2.0.2 tokens/primitives | CURRENT / no global route changes |
+| `cameras/test_camera_form_ui_recovery.py` | Render, field coverage, CSRF, permission and error-state checks | CURRENT / included in 177 passing tests |
+| `docs/prototype/ui-v2/evidence/argos-hom-01-camera-edit-recovery-2026-10-11/VISUAL_DIFFERENCE_REPORT.md` | P3-D reference provenance, known adaptations and visual blocker | CURRENT / target render and human approval pending |
+| `docs/prototype/ui-v2/evidence/argos-hom-01-camera-edit-recovery-2026-10-11/reference/` | 18 P3-D create/edit reference screenshots, hash-verified from P3 ROOT | CURRENT / reference only; no target captures |
+
+```text
+ACTIVITY = ARGOS-HOM-01-CAMERA-EDIT-RECOVERY
+BRANCH = codex/hom-v1-integration
+HEAD_BEFORE = HEAD_AFTER = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+P3_D_APPROVAL = f5dd0308f46705e03c79609077ed1ec7a12bc766
+DS_CANONICAL = 2.0.2
+DJANGO_CHECK = PASS
+FUNCTIONAL_REGRESSION = PASS / 177 tests
+REFERENCE_SCREENSHOTS = 18 / verified
+TARGET_SCREENSHOTS = NONE
+DESIGN_QA = BLOCKED
+HUMAN_VISUAL_APPROVAL = PENDING
+HOM_01_STATUS = IN_PROGRESS
+COMMIT = NOT_PERFORMED; PUSH = NOT_PERFORMED; MERGE = NOT_PERFORMED; DEPLOY = NOT_PERFORMED
+```
+
+## 61. ARGOS-HOM-01-OPERATIONAL-QA-PROVISIONING (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 94 | Resultado do provisionamento e testes | CURRENT / account and automated authorization PASS; Design QA blocked |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.57 | Handoff e estado resumido | CURRENT / HOM-01 remains IN_PROGRESS |
+| `scripts/localqa/provisioning.py` | Validação sem escrita do perfil visual e seed controlado do operacional | CURRENT / refuses unmarked username collisions |
+| `scripts/localqa/prepare_qa.py` | Isolamento, preflight, migrations, seed e provisionamento | CURRENT / visual account is never rewritten |
+| `scripts/localqa/start_argos_qa.ps1` | Geração/exibição da senha operacional rotativa | CURRENT / terminal only, no persistence |
+| `cameras/test_operational_qa_provisioning.py` | Provisionamento, autorização HTTP e produção/desativada | CURRENT / included in 101 passing tests |
+| `scripts/localqa/test_settings.py` | Banco e mídia efêmeros sob `.local/qa/test-runs` | CURRENT / used for targeted regression |
+| `docs/prototype/ui-v2/evidence/hom-01-visual-qa-2026-10-11/README.md` | Instrução de acesso dos dois perfis e evidência visual pendente | CURRENT |
+
+```text
+ACTIVITY = ARGOS-HOM-01-OPERATIONAL-QA-PROVISIONING
+BRANCH = codex/hom-v1-integration
+HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+VISUAL_QA_USER = PRESERVED / password hash unchanged
+OPERATIONAL_QA_USER = CREATED / exactly seven permissions / password rotates per launcher run
+TARGETED_TESTS = 101 PASS
+DESIGN_QA = BLOCKED / no rendered captures
+HUMAN_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = PASS / section 94
+CONTINUITY_UPDATE = PASS / AGENT_CONTINUITY.md §20.57 and this section
+HOMOLOGATION_GATE = BLOCKED
+```
+
+## 62. ARGOS-HOM-01-OPERATIONAL-QA-PROVISIONING — aprovação do botão de upload (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, seção 95 | Checkpoint informado pelo usuário, aprovação visual do botão e critérios ainda pendentes | CURRENT |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, seção 20.58 | Handoff do QA operacional após validação visual restrita | CURRENT / HOM-01 remains in progress |
+
+```text
+ACTIVITY = ARGOS-HOM-01-OPERATIONAL-QA-PROVISIONING
+OPERATIONAL_QA_USER = qa-operacional-hom01
+OPERATIONAL_QA_PERMISSION_VALIDATION = PASS / user-reported
+UPLOAD_BUTTON_RENDERING = PASS
+UPLOAD_BUTTON_HUMAN_VISUAL_APPROVAL = APPROVED / button rendering only
+BROWSER_UPLOAD_SUBMISSION = NOT_VERIFIED
+RESPONSIVE_QA = PENDING
+KEYBOARD_FOCUS_QA = PENDING
+PROVISIONING = NOT_REPEATED
+CODE_AND_PERMISSIONS = PRESERVED
+HOM_01_STATUS = IN_PROGRESS
+HOMOLOGATION_GATE = BLOCKED
+```

@@ -14,6 +14,7 @@ from django.urls import reverse
 from django.test import RequestFactory, SimpleTestCase, TestCase
 from django.utils.html import format_html
 
+from cameras.models import Camera
 from core.templatetags.ui_extras import querystring
 
 
@@ -221,6 +222,22 @@ class BaseAndPortalFrontendTests(TestCase):
         self.assertIn(".main-navigation", css)
         self.assertIn("overflow-x: auto", css)
 
+    def test_ui_v2_hom_01_e_carregado_somente_nas_rotas_autorizadas(self):
+        self.login_monitoramento()
+        inicio = self.client.get(reverse("core:inicio"))
+        dashboard = self.client.get(reverse("core:dashboard"))
+        inventario = self.client.get(reverse("cameras:lista"))
+
+        for response in (dashboard, inventario):
+            self.assertContains(response, 'class="app-shell argos-ui-v2-production"')
+            self.assertContains(response, 'href="/static/css/ui-v2/hom-01-2.4.0/production.css"')
+            self.assertContains(response, 'aria-describedby="argos-nav-scroll-hint"')
+        for response in (inicio,):
+            self.assertContains(response, 'class="app-shell"')
+            self.assertNotContains(response, "argos-ui-v2-production")
+            self.assertNotContains(response, "/static/css/ui-v2/production.css")
+            self.assertNotContains(response, "argos-nav-scroll-hint")
+
     def test_inicio_exibe_cartoes_permitidos_com_links_unicos_e_acessiveis(self):
         self.login_monitoramento()
         response = self.client.get(reverse("core:inicio"))
@@ -235,16 +252,27 @@ class BaseAndPortalFrontendTests(TestCase):
     def test_dashboard_separa_inventario_monitoramento_e_qualidade(self):
         self.login_monitoramento()
         response = self.client.get(reverse("core:dashboard"))
-        self.assertContains(response, 'class="page-heading__title"')
-        self.assertContains(response, 'class="page-heading__eyebrow"')
-        self.assertEqual(response.content.count(b'class="section-heading__eyebrow"'), 4)
-        self.assertEqual(response.content.count(b'class="section-heading__title"'), 4)
+        self.assertContains(response, 'class="argos-page-title page-heading__title"')
+        self.assertContains(response, 'class="argos-eyebrow page-heading__eyebrow"')
         self.assertContains(response, 'id="inventario-heading"')
-        self.assertContains(response, "Monitoramento técnico")
-        self.assertContains(response, "Qualidade cadastral")
-        self.assertContains(response, "Produção")
+        self.assertContains(response, 'id="dashboard-operational-title"')
+        self.assertContains(response, 'id="dashboard-monitoring-title"')
+        self.assertContains(response, 'id="inventario-heading"')
+        self.assertContains(response, "Monitoramento e completude")
+        self.assertContains(response, "Em produção")
         self.assertContains(response, "Online")
         self.assertContains(response, "Cadastro completo")
+        self.assertContains(response, "Cadastro incompleto")
+
+    def test_dashboard_mantem_as_cinco_cameras_recentes(self):
+        self.login_monitoramento()
+        for index in range(6):
+            Camera.objects.create(nome=f"CAM-RECENTE-{index}", fabricante="Axis", modelo="QA")
+
+        response = self.client.get(reverse("core:dashboard"))
+
+        self.assertEqual(response.content.count(b'class="dashboard-recent-item"'), 5)
+        self.assertContains(response, "Câmeras atualizadas recentemente")
 
     def test_cards_dashboard_usam_filtros_existentes(self):
         self.login_monitoramento()
@@ -257,7 +285,7 @@ class BaseAndPortalFrontendTests(TestCase):
             "completude=INCOMPLETO",
         ):
             self.assertContains(response, parametro)
-        for label in ("Monitoramento técnico", "Online", "Offline", "Unknown", "Não monitoradas"):
+        for label in ("Monitoramento e completude", "Online", "Offline", "Desconhecido", "Não monitoradas"):
             self.assertContains(response, label)
         self.assertNotContains(response, 'href="/cameras/?ip_duplicado=')
 
@@ -309,7 +337,7 @@ class BaseAndPortalFrontendTests(TestCase):
         self.login_monitoramento()
         response = self.client.get(reverse("core:dashboard"))
         html = response.content.decode()
-        self.assertIn('class="metric-card metric-card--link dashboard-metric"', html)
-        self.assertIn('<article class="metric-card dashboard-metric"><span>Total de câmeras</span>', html)
-        self.assertIn('<article class="metric-card dashboard-metric"><span>Câmeras com IP duplicado</span>', html)
-        self.assertNotIn('<a class="metric-card metric-card--link dashboard-metric"><a ', html)
+        self.assertIn('class="argos-kpi-card dashboard-kpi-link"', html)
+        self.assertIn('<article class="argos-kpi-card"><strong>0</strong><span>Total de câmeras</span></article>', html)
+        self.assertIn("<dt>IPs duplicados</dt><dd>0</dd>", html)
+        self.assertNotIn('<a class="argos-kpi-card dashboard-kpi-link"><a ', html)

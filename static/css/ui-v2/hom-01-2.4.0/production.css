@@ -1,0 +1,478 @@
+/* Route gated by base.html: P3-B pages do not load UI V2 or this stylesheet. */
+body.argos-ui-v2-production .app-layout.argos-docs-layout {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 232px minmax(0, 1fr);
+  background: var(--argos-color-canvas);
+}
+body.argos-ui-v2-production .app-sidebar.argos-docs-sidebar {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  padding: var(--argos-space-5) var(--argos-space-4);
+  background: var(--argos-color-surface-inverse);
+  color: var(--argos-color-ink-inverse);
+}
+body.argos-ui-v2-production .app-sidebar__content {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  gap: var(--argos-space-6);
+}
+body.argos-ui-v2-production .argos-nav-scroll-hint { display: none; }
+body.argos-ui-v2-production .app-workspace.argos-docs-main { min-width: 0; }
+body.argos-ui-v2-production .page-container.argos-docs-content {
+  width: min(100%, var(--argos-content-max));
+  margin-inline: auto;
+  padding: 28px var(--argos-page-inline) 44px;
+}
+body.argos-ui-v2-production .app-footer {
+  border-top: 1px solid var(--argos-color-border);
+  color: var(--argos-color-ink-muted);
+}
+body.argos-ui-v2-production .app-topbar {
+  min-height: 54px;
+  padding-inline: var(--argos-page-inline);
+  border-bottom: 1px solid var(--argos-color-border);
+  background: var(--argos-color-surface);
+  color: var(--argos-color-ink-muted);
+}
+body.argos-ui-v2-production .app-topbar a { color: var(--argos-color-action); }
+body.argos-ui-v2-production .main-navigation.argos-docs-nav {
+  display: grid;
+  align-content: start;
+  gap: var(--argos-space-1);
+}
+body.argos-ui-v2-production .main-navigation.argos-docs-nav > a {
+  min-height: 40px;
+  padding: var(--argos-space-2) var(--argos-space-3);
+  border-radius: var(--argos-radius-control);
+  color: var(--argos-color-ink-inverse-muted);
+  text-decoration: none;
+}
+body.argos-ui-v2-production .main-navigation.argos-docs-nav > a:hover {
+  background: var(--argos-color-overlay-hover);
+  color: var(--argos-color-ink-inverse);
+}
+body.argos-ui-v2-production .main-navigation.argos-docs-nav > a[aria-current="page"] {
+  background: var(--argos-color-action);
+  color: var(--argos-color-action-contrast);
+}
+body.argos-ui-v2-production .main-navigation.argos-docs-nav > a:focus-visible {
+  outline: var(--argos-focus-width) solid var(--argos-color-action-contrast);
+  outline-offset: var(--argos-focus-offset);
+}
+body.argos-ui-v2-production .page-heading__eyebrow,
+body.argos-ui-v2-production .section-heading__eyebrow,
+body.argos-ui-v2-production .inventory-eyebrow {
+  color: var(--argos-color-action);
+  font-size: var(--argos-text-label);
+  font-weight: var(--argos-weight-bold);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+body.argos-ui-v2-production .page-heading__title {
+  color: var(--argos-color-ink);
+  font-size: clamp(27px, 3vw, var(--argos-text-page-title));
+  line-height: var(--argos-line-tight);
+}
+body.argos-ui-v2-production .portal-hero,
+body.argos-ui-v2-production .inventory-hero,
+body.argos-ui-v2-production .event-hero,
+body.argos-ui-v2-production .governance-hero,
+body.argos-ui-v2-production .replacement-hero,
+body.argos-ui-v2-production .profile-header {
+  border: 1px solid var(--argos-color-border);
+  border-radius: var(--argos-radius-surface);
+  background: var(--argos-color-surface);
+  box-shadow: var(--argos-shadow-card);
+}
+body.argos-ui-v2-production .inventory-hero__actions,
+body.argos-ui-v2-production .dashboard-actions,
+body.argos-ui-v2-production .form-actions,
+body.argos-ui-v2-production .governance-actions,
+body.argos-ui-v2-production .profile-actions,
+body.argos-ui-v2-production .profile-footer-actions {
+  align-items: center;
+  gap: var(--argos-space-2);
+}
+body.argos-ui-v2-production .inventory-filters-card,
+body.argos-ui-v2-production .inventory-panel,
+body.argos-ui-v2-production .portal-panel,
+body.argos-ui-v2-production .info-card,
+body.argos-ui-v2-production .metric-card,
+body.argos-ui-v2-production .module-card,
+body.argos-ui-v2-production .event-panel,
+body.argos-ui-v2-production .event-card,
+body.argos-ui-v2-production .activity-card,
+body.argos-ui-v2-production .profile-card,
+body.argos-ui-v2-production .governance-form-card,
+body.argos-ui-v2-production .replacement-card {
+  border-color: var(--argos-color-border);
+  border-radius: var(--argos-radius-surface);
+  background: var(--argos-color-surface);
+  box-shadow: var(--argos-shadow-card);
+}
+body.argos-ui-v2-production .inventory-panel__header { border-bottom: 1px solid var(--argos-color-border); }
+body.argos-ui-v2-production .inventory-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--argos-space-4);
+}
+body.argos-ui-v2-production .inventory-result-count { min-width: 110px; }
+body.argos-ui-v2-production .inventory-result-count strong { font-size: var(--argos-text-section); }
+body.argos-ui-v2-production .inventory-filter-form { align-items: end; }
+body.argos-ui-v2-production .inventory-filter-form > .form-field--search { flex: 1 1 260px; }
+body.argos-ui-v2-production .inventory-advanced-filters { flex: 0 0 auto; }
+body.argos-ui-v2-production .inventory-advanced-filters > summary { list-style: none; }
+body.argos-ui-v2-production .inventory-advanced-filters > summary::-webkit-details-marker { display: none; }
+body.argos-ui-v2-production .inventory-advanced-filters[open] { flex: 1 0 100%; }
+body.argos-ui-v2-production .inventory-advanced-filters__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--argos-space-3);
+  padding-top: var(--argos-space-3);
+}
+body.argos-ui-v2-production .filter-multiselect-field { min-width: 0; }
+body.argos-ui-v2-production .filter-multiselect-field .form-label {
+  color: var(--argos-color-ink);
+  font-weight: var(--argos-weight-semibold);
+}
+body.argos-ui-v2-production .filter-multiselect__summary {
+  min-height: var(--argos-control-height);
+  border-color: var(--argos-color-border-strong);
+  border-radius: var(--argos-radius-control);
+  background: var(--argos-color-surface);
+}
+body.argos-ui-v2-production .inventory-filter-actions { align-items: center; }
+body.argos-ui-v2-production .inventory-filter-actions > .argos-button { min-height: var(--argos-control-height); }
+body.argos-ui-v2-production .inventory-panel .table-region {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+@container inventory-results (max-width: 56rem) {
+  body.argos-ui-v2-production .inventory-panel > .inventory-camera-table-region {
+    overflow: visible;
+  }
+  body.argos-ui-v2-production .inventory-panel .camera-table.data-table tbody tr {
+    height: auto;
+  }
+}
+body.argos-ui-v2-production .inventory-table-hint {
+  display: none;
+  margin: 0 var(--argos-space-4) var(--argos-space-2);
+  color: var(--argos-color-ink-muted);
+  font-size: var(--argos-text-caption);
+}
+body.argos-ui-v2-production .inventory-panel .camera-table__cell--governance { min-width: 10.5rem; }
+body.argos-ui-v2-production .inventory-panel .camera-table.data-table td { overflow-wrap: break-word; }
+body.argos-ui-v2-production .inventory-panel .camera-table.data-table td .badge {
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+body.argos-ui-v2-production .inventory-panel .inventory-governance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--argos-space-1);
+}
+
+body.argos-ui-v2-production .inventory-panel .table-actions .argos-button { min-height: 40px; }
+body.argos-ui-v2-production .inventory-panel .camera-table .camera-name-link:focus-visible {
+  outline: var(--argos-focus-width) solid var(--argos-color-action);
+  outline-offset: var(--argos-focus-offset);
+}
+body.argos-ui-v2-production .inventory-panel .badge,
+body.argos-ui-v2-production .detail-card .badge,
+body.argos-ui-v2-production .event-card .event-badge,
+body.argos-ui-v2-production .activity-card .activity-badge {
+  border-radius: var(--argos-radius-control);
+  font-weight: var(--argos-weight-semibold);
+}
+body.argos-ui-v2-production .form-container,
+body.argos-ui-v2-production .form-section,
+body.argos-ui-v2-production .profile-form,
+body.argos-ui-v2-production .governance-form-card {
+  border-color: var(--argos-color-border);
+  border-radius: var(--argos-radius-surface);
+  background: var(--argos-color-surface);
+}
+body.argos-ui-v2-production .form-container .form-label,
+body.argos-ui-v2-production .profile-form .form-label,
+body.argos-ui-v2-production .form-section legend,
+body.argos-ui-v2-production .filter-multiselect-field legend {
+  color: var(--argos-color-ink);
+  font-weight: var(--argos-weight-semibold);
+}
+body.argos-ui-v2-production .form-container input:not([type="checkbox"]):not([type="radio"]),
+body.argos-ui-v2-production .form-container select,
+body.argos-ui-v2-production .form-container textarea,
+body.argos-ui-v2-production .profile-form input:not([type="checkbox"]):not([type="radio"]),
+body.argos-ui-v2-production .profile-form select,
+body.argos-ui-v2-production .profile-form textarea {
+  border-color: var(--argos-color-border-strong);
+  border-radius: var(--argos-radius-control);
+}
+body.argos-ui-v2-production .form-container input:focus-visible,
+body.argos-ui-v2-production .form-container select:focus-visible,
+body.argos-ui-v2-production .form-container textarea:focus-visible,
+body.argos-ui-v2-production .profile-form input:focus-visible,
+body.argos-ui-v2-production .profile-form select:focus-visible,
+body.argos-ui-v2-production .profile-form textarea:focus-visible {
+  outline: var(--argos-focus-width) solid var(--argos-color-action);
+  outline-offset: var(--argos-focus-offset);
+}
+body.argos-ui-v2-production .form-field,
+body.argos-ui-v2-production .camera-form-field,
+body.argos-ui-v2-production .profile-form .form-field { min-width: 0; }
+body.argos-ui-v2-production .form-field__error,
+body.argos-ui-v2-production .field-error,
+body.argos-ui-v2-production .errorlist { color: var(--argos-status-danger-fg); }
+body.argos-ui-v2-production .form-actions > .button,
+body.argos-ui-v2-production .governance-actions > .button,
+body.argos-ui-v2-production .profile-actions > .button,
+body.argos-ui-v2-production .profile-footer-actions > .button,
+body.argos-ui-v2-production .dashboard-actions > .button,
+body.argos-ui-v2-production .inventory-hero__actions > .button,
+body.argos-ui-v2-production .inventory-filter-actions > .button {
+  min-height: var(--argos-control-height);
+  border-radius: var(--argos-radius-control);
+  font-weight: var(--argos-weight-semibold);
+}
+body.argos-ui-v2-production .detail-layout { align-items: start; gap: var(--argos-space-4); }
+body.argos-ui-v2-production .detail-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--argos-color-border);
+  border-radius: var(--argos-radius-surface);
+  background: var(--argos-color-surface);
+  box-shadow: var(--argos-shadow-card);
+}
+body.argos-ui-v2-production .detail-card--full { grid-column: 1 / -1; }
+body.argos-ui-v2-production .detail-card .inventory-panel__header { border-bottom: 1px solid var(--argos-color-border); }
+body.argos-ui-v2-production .detail-grid dt,
+body.argos-ui-v2-production .camera-detail-summary__item dt {
+  color: var(--argos-color-ink-muted);
+  font-size: var(--argos-text-label);
+}
+body.argos-ui-v2-production .detail-grid dd,
+body.argos-ui-v2-production .camera-detail-summary__item dd { overflow-wrap: break-word; }
+body.argos-ui-v2-production .event-table-wrap,
+body.argos-ui-v2-production .table-region {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+body.argos-ui-v2-production .event-table { min-width: 760px; border-collapse: collapse; }
+body.argos-ui-v2-production .event-table th {
+  background: var(--argos-color-surface-subtle);
+  color: var(--argos-color-ink-muted);
+}
+body.argos-ui-v2-production .event-table th,
+body.argos-ui-v2-production .event-table td { border-color: var(--argos-color-border); }
+body.argos-ui-v2-production .event-alert,
+body.argos-ui-v2-production .governance-notice {
+  border-color: var(--argos-status-warning-border);
+  border-radius: var(--argos-radius-control);
+  background: var(--argos-status-warning-bg);
+  color: var(--argos-color-ink);
+}
+body.argos-ui-v2-production .event-empty,
+body.argos-ui-v2-production .portal-empty,
+body.argos-ui-v2-production .detail-empty-state {
+  border-radius: var(--argos-radius-surface);
+  background: var(--argos-color-surface-subtle);
+  color: var(--argos-color-ink-muted);
+}
+body.argos-ui-v2-production .activity-card { padding: var(--argos-space-4); }
+body.argos-ui-v2-production .activity-card__title { font-size: var(--argos-text-body); }
+body.argos-ui-v2-production .activity-card__description { color: var(--argos-color-ink-muted); }
+body.argos-ui-v2-production .activity-card__meta dt,
+body.argos-ui-v2-production .activity-card__preview-meta dt {
+  color: var(--argos-color-ink-muted);
+  font-size: var(--argos-text-caption);
+}
+body.argos-ui-v2-production .profile-card { padding: var(--argos-space-5); }
+body.argos-ui-v2-production .profile-card h2 { margin-bottom: var(--argos-space-3); font-size: var(--argos-text-section); }
+body.argos-ui-v2-production .profile-card dd { overflow-wrap: break-word; }
+body.argos-ui-v2-production .auth-page { background: var(--argos-color-canvas); }
+body.argos-ui-v2-production .auth-panel {
+  border: 1px solid var(--argos-color-border);
+  border-radius: var(--argos-radius-surface);
+  background: var(--argos-color-surface);
+  box-shadow: var(--argos-shadow-card);
+}
+body.argos-ui-v2-production .auth-panel h1 {
+  color: var(--argos-color-ink);
+  font-size: var(--argos-text-page-title);
+}
+body.argos-ui-v2-production .auth-description,
+body.argos-ui-v2-production .auth-notice { color: var(--argos-color-ink-muted); }
+body.argos-ui-v2-production .auth-notice {
+  border-color: var(--argos-status-info-border);
+  border-radius: var(--argos-radius-control);
+  background: var(--argos-status-info-bg);
+}
+body.argos-ui-v2-production .auth-form input {
+  min-height: var(--argos-touch-target-min);
+  border-color: var(--argos-color-border-strong);
+  border-radius: var(--argos-radius-control);
+}
+body.argos-ui-v2-production .auth-form .button { min-height: var(--argos-touch-target-min); }
+body.argos-ui-v2-production :where(.module-card, .recent-item, .metric-card--link, .camera-name-link):focus-visible {
+  outline: var(--argos-focus-width) solid var(--argos-color-action);
+  outline-offset: var(--argos-focus-offset);
+}
+
+/* P3-A dashboard: desktop row-major visual order matches the template/keyboard order. */
+body.argos-ui-v2-production .dashboard-page-header { margin-bottom: var(--argos-section-gap); }
+body.argos-ui-v2-production .dashboard-content { --argos-section-gap: 24px; }
+body.argos-ui-v2-production .dashboard-kpi-link {
+  color: var(--argos-color-ink);
+  text-decoration: none;
+}
+body.argos-ui-v2-production .dashboard-kpi-link:hover { background: var(--argos-color-surface-subtle); }
+body.argos-ui-v2-production .dashboard-kpi-link:focus-visible,
+body.argos-ui-v2-production .dashboard-stat-link:focus-visible {
+  outline: var(--argos-focus-width) solid var(--argos-color-action);
+  outline-offset: var(--argos-focus-offset);
+}
+body.argos-ui-v2-production .dashboard-kpi-link small {
+  color: var(--argos-color-ink-muted);
+  font-size: var(--argos-text-caption);
+  font-weight: var(--argos-weight-medium);
+}
+body.argos-ui-v2-production .dashboard-stat-link { color: inherit; text-underline-offset: .16em; }
+body.argos-ui-v2-production .dashboard-stat-link:hover { color: var(--argos-color-action-hover); }
+body.argos-ui-v2-production .dashboard-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--argos-space-4);
+}
+body.argos-ui-v2-production .dashboard-panel { min-width: 0; }
+body.argos-ui-v2-production .dashboard-panel--operational { grid-column: 1; grid-row: 1; }
+body.argos-ui-v2-production .dashboard-panel--monitoring { grid-column: 2; grid-row: 1; }
+body.argos-ui-v2-production .dashboard-panel--activity { grid-column: 1; grid-row: 2; }
+body.argos-ui-v2-production .dashboard-panel--featured { grid-column: 2; grid-row: 2; }
+body.argos-ui-v2-production .dashboard-stat-list { display: grid; gap: 0; margin: 0; }
+body.argos-ui-v2-production .dashboard-stat-list > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--argos-space-3);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--argos-color-border);
+}
+body.argos-ui-v2-production .dashboard-stat-list > div:last-child { border-bottom: 0; }
+body.argos-ui-v2-production .dashboard-stat-list dt { color: var(--argos-color-ink-muted); }
+body.argos-ui-v2-production .dashboard-stat-list dd {
+  margin: 0;
+  font-size: var(--argos-text-section);
+  font-weight: var(--argos-weight-bold);
+  font-variant-numeric: tabular-nums;
+}
+body.argos-ui-v2-production .dashboard-stat-list--monitoring {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--argos-space-4);
+}
+body.argos-ui-v2-production .dashboard-recent-list { display: grid; gap: var(--argos-space-3); }
+body.argos-ui-v2-production .dashboard-recent-item {
+  display: grid;
+  gap: var(--argos-space-1);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--argos-color-border);
+  color: var(--argos-color-ink);
+  text-decoration: none;
+}
+body.argos-ui-v2-production .dashboard-recent-item:last-child { border-bottom: 0; }
+body.argos-ui-v2-production .dashboard-recent-item span,
+body.argos-ui-v2-production .dashboard-featured-camera > p {
+  color: var(--argos-color-ink-muted);
+  font-size: var(--argos-text-secondary);
+}
+body.argos-ui-v2-production .dashboard-featured-camera { display: grid; justify-items: start; gap: var(--argos-space-3); }
+body.argos-ui-v2-production .dashboard-featured-camera h3 { font-size: var(--argos-text-body); }
+body.argos-ui-v2-production .dashboard-featured-camera .dashboard-stat-list { width: 100%; }
+body.argos-ui-v2-production .dashboard-duplicate-ip { margin-top: var(--argos-space-3); }
+
+@media (max-width: 1100px) and (min-width: 761px) {
+  body.argos-ui-v2-production .inventory-table-hint { display: block; }
+}
+@media (max-width: 900px) {
+  body.argos-ui-v2-production .inventory-advanced-filters__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.argos-ui-v2-production .app-layout.argos-docs-layout { grid-template-columns: 190px minmax(0, 1fr); }
+}
+@media (max-width: 680px) {
+  body.argos-ui-v2-production .page-container.argos-docs-content { padding: var(--argos-space-5) var(--argos-page-inline-mobile) 35px; }
+  body.argos-ui-v2-production .app-sidebar.argos-docs-sidebar {
+    min-height: 0;
+    gap: var(--argos-space-3);
+    padding: var(--argos-space-3) var(--argos-page-inline-mobile);
+  }
+  body.argos-ui-v2-production .app-sidebar__content { gap: var(--argos-space-3); }
+  body.argos-ui-v2-production .app-layout.argos-docs-layout { grid-template-columns: minmax(0, 1fr); }
+  body.argos-ui-v2-production .app-topbar {
+    min-height: 44px;
+    padding-inline: var(--argos-page-inline-mobile);
+  }
+  body.argos-ui-v2-production .main-navigation.argos-docs-nav {
+    display: flex;
+    min-width: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-behavior: smooth;
+    scroll-padding-inline: var(--argos-space-2);
+    padding: 0 var(--argos-space-2) var(--argos-space-2) 0;
+    scrollbar-width: auto;
+    scrollbar-color: var(--argos-color-action) var(--argos-color-surface-inverse);
+  }
+  body.argos-ui-v2-production .main-navigation.argos-docs-nav::-webkit-scrollbar { height: 7px; }
+  body.argos-ui-v2-production .main-navigation.argos-docs-nav::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: var(--argos-color-action);
+  }
+  body.argos-ui-v2-production .main-navigation.argos-docs-nav::-webkit-scrollbar-track {
+    border-radius: 999px;
+    background: var(--argos-color-surface-inverse);
+  }
+  body.argos-ui-v2-production .main-navigation.argos-docs-nav > a {
+    flex: 0 0 auto;
+    min-height: var(--argos-touch-target-min);
+    padding: var(--argos-space-3);
+    scroll-margin-inline: var(--argos-space-2);
+  }
+  body.argos-ui-v2-production .argos-nav-scroll-hint {
+    display: block;
+    margin: 0;
+    color: var(--argos-color-ink-inverse-muted);
+    font-size: var(--argos-text-caption);
+  }
+  body.argos-ui-v2-production .inventory-advanced-filters,
+  body.argos-ui-v2-production .inventory-advanced-filters[open] { flex: 1 1 100%; }
+  body.argos-ui-v2-production .inventory-advanced-filters__grid { grid-template-columns: minmax(0, 1fr); }
+  body.argos-ui-v2-production .inventory-filter-actions { width: 100%; }
+  body.argos-ui-v2-production .inventory-filter-actions > * { flex: 1 1 auto; }
+  body.argos-ui-v2-production .inventory-panel .camera-table__cell--governance { min-width: 0; }
+  body.argos-ui-v2-production .inventory-panel .camera-table__cell--actions .table-actions .argos-button {
+    width: 100%;
+    min-height: var(--argos-touch-target-min);
+  }
+  body.argos-ui-v2-production .dashboard-panels { grid-template-columns: minmax(0, 1fr); }
+  body.argos-ui-v2-production .dashboard-panel--operational,
+  body.argos-ui-v2-production .dashboard-panel--monitoring,
+  body.argos-ui-v2-production .dashboard-panel--activity,
+  body.argos-ui-v2-production .dashboard-panel--featured { grid-column: 1; grid-row: auto; }
+  body.argos-ui-v2-production .dashboard-stat-list--monitoring { grid-template-columns: minmax(0, 1fr); }
+  body.argos-ui-v2-production .dashboard-stat-list dd { font-size: var(--argos-text-body); }
+  body.argos-ui-v2-production .form-actions > *,
+  body.argos-ui-v2-production .profile-actions > * { flex: 1 1 auto; }
+  body.argos-ui-v2-production .detail-layout { grid-template-columns: minmax(0, 1fr); }
+  body.argos-ui-v2-production .detail-card--full { grid-column: 1; }
+  body.argos-ui-v2-production .detail-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.argos-ui-v2-production .main-navigation.argos-docs-nav { scroll-behavior: auto; }
+}

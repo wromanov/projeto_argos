@@ -1,0 +1,25 @@
+{% if form.errors %}
+  <section
+    class="argos-alert argos-alert--danger camera-form-errors"
+    role="alert"
+    aria-labelledby="camera-form-errors-title"
+    tabindex="-1"
+  >
+    <div>
+      <h2 id="camera-form-errors-title">Revise os dados da câmera</h2>
+      <p>Há campos obrigatórios ou valores que precisam de correção.</p>
+      {% if form.non_field_errors %}
+        <div class="camera-form-errors__general">{{ form.non_field_errors }}</div>
+      {% endif %}
+      <ul>
+        {% for field in form %}
+          {% if field.errors %}
+            <li>
+              {% if field.id_for_label %}<a href="#{{ field.id_for_label }}">{{ field.label }}</a>{% else %}{{ field.label }}{% endif %}: {{ field.errors|join:", " }}
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+{% endif %}

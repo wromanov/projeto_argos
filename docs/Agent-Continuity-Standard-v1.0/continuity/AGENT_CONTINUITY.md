@@ -2029,3 +2029,325 @@ NEXT_ACTIVITY = ARGOS-HOM-00-INTEGRATION-FOUNDATION
 P3/P5 permanecem sem integração nesta atividade; nenhum merge ou cherry-pick P5/P3
 foi realizado. Consulte `PROJECT_STATE.md` seção 85 para preflight, requisitos
 reconciliados, classificação dos não rastreados e validação final.
+
+### 20.50 ARGOS-HOM-01-UI-V2-SELECTIVE-INTEGRATION — preflight (2026-10-11)
+
+O snapshot corrente está em `PROJECT_STATE.md`, seção 87. O destino
+`codex/hom-v1-integration` foi confirmado no HEAD esperado
+`d1fd9491692afb57da9dcfe0a27964efdb2d19e0`, com worktree limpa. O status das
+origens foi verificado por leitura Git; WIP não rastreado em P5 e no branch UI
+principal foi identificado e preservado. Nenhum arquivo de aplicação foi
+alterado.
+
+```text
+ACTIVITY = ARGOS-HOM-01-UI-V2-SELECTIVE-INTEGRATION
+STATUS = IN_PROGRESS / IMPLEMENTATION AUTHORIZED; VALIDATION PENDING
+SOURCE_WIP_VERIFICATION = PASS / three requested worktrees checked
+SOURCE_FILES_SELECTED = NONE
+P5_DASHBOARD = METRICS_RETAINED / five-recent-camera list not retained in source composition
+MAIN_UI_POST_ADJUSTMENTS = PRESENT / Shell, Inventory, CSS; reconcile before selection
+DASHBOARD_REFERENCE = P3-A USER_APPROVED / frozen
+INVENTORY_REFERENCE = P3-A USER_VISUAL_APPROVAL_PENDING
+DS_BASELINE = 2.0.2
+DS_TARGET = 2.4.0 / USER-AUTHORIZED ROUTE-SCOPED ADOPTION / NOT CANONICAL
+CAMERA_DETAIL = PRESERVED / no change
+QUICK_DETAIL = PROTECTED / no change; LATEST_ACTIVE_IMAGE correction remains pending
+FUNCTIONAL_REGRESSION = NOT_RUN
+DESIGN_QA = BLOCKED / no integrated rendering; approved Inventory reference pending
+HUMAN_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE section 87
+CONTINUITY_UPDATE = PASS / this section and ACTIVE_DOCUMENT_MAP section 54
+HOMOLOGATION_GATE = BLOCKED
+IMPLEMENTATION_AUTHORIZATION = USER-REQUESTED CONTROLLED IMPLEMENTATION / DS ADJUDICATION PENDING
+COMMIT = NOT_PERFORMED; PUSH = NOT_PERFORMED; MERGE = NOT_PERFORMED; DEPLOY = NOT_PERFORMED
+```
+
+### 20.52 ARGOS-HOM-01-DESIGN-QA-EVIDENCE-01 — preparação bloqueada (2026-10-11)
+
+Consultar `PROJECT_STATE.md`, seção 89, e a matriz
+`docs/prototype/ui-v2/evidence/hom-01-visual-qa-2026-10-11/README.md`.
+Branch e HEAD permanecem `codex/hom-v1-integration` e
+`d1fd9491692afb57da9dcfe0a27964efdb2d19e0`. WIP pré-existente foi preservado.
+
+As referências de Shell, Dashboard, Camera Detail e Quick Detail estão
+identificadas como aprovadas; Quick Detail permanece protegido, mas sua captura
+de referência não foi encontrada no diretório temporário registrado. A
+referência do Inventário tem conflito documental: a cobertura P3-A §41 declara
+aprovação e os snapshots HOM-01 §§87-88 mantêm `PENDING`. Manter como candidata
+até adjudicação humana. Playwright não está disponível no ambiente ativo e no
+venv P5; os venvs P3 e principal não abriram por caminho de interpretador
+ausente. O sandbox negou a conexão de loopback,
+impedindo capturas da aplicação real. Não há screenshots integradas, comparação
+visual nem divergências avaliadas. A tentativa usou apenas banco temporário
+isolado e dados sintéticos, removidos ao encerrar; nenhum teste foi repetido e
+nenhum código de UI/backend/migração mudou.
+
+```text
+ACTIVITY = ARGOS-HOM-01-DESIGN-QA-EVIDENCE-01
+STATUS = BLOCKED / LOCAL RENDERING UNAVAILABLE
+ACTIVITY_COMPLETION_PERCENT = 36%
+DESIGN_QA = BLOCKED
+INVENTORY_REFERENCE_CANDIDATE = NOT_CAPTURED / loopback blocked
+INVENTORY_HUMAN_APPROVAL = PENDING
+FUNCTIONAL_REGRESSION = PRIOR_77_TESTS_PASS / NOT_REEXECUTED
+SOURCE_WIP_PRESERVED = YES
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §89
+CONTINUITY_UPDATE = PASS / this section and ACTIVE_DOCUMENT_MAP.md §56
+HOMOLOGATION_GATE = BLOCKED
+NEXT_RECOMMENDED_ACTIVITY = ARGOS-HOM-01-VISUAL-APPROVAL-AND-REMEDIATION
+COMMIT = NOT_PERFORMED; PUSH = NOT_PERFORMED; MERGE = NOT_PERFORMED; DEPLOY = NOT_PERFORMED
+```
+
+O usuário autorizou a adoção aditiva do DS 2.4.0 limitada a Shell, Dashboard e
+Inventário, mantendo DS 2.0.2 canônico e as superfícies protegidas. Essa decisão
+permite avançar na implementação, mas não substitui regressão funcional,
+referência aprovada do Inventário, Design QA ou aprovação visual humana. Não
+inferir aceitação do protótipo Inventory nem declarar esses gates como PASS.
+
+### 20.51 ARGOS-HOM-01-UI-V2-SELECTIVE-INTEGRATION — integração parcial (2026-10-11)
+
+O snapshot atual está em `PROJECT_STATE.md`, seção 88. Shell, Dashboard e
+Inventário receberam integração seletiva no target autorizado, branch
+`codex/hom-v1-integration`, sem novo commit. Os testes de frontend, rotas
+Visual QA, Camera Detail e Quick Detail passaram: 77 testes; `manage.py check`
+sem erros. A referência P3-A do Dashboard está aprovada, mas a aprovação humana
+do resultado integrado ainda não ocorreu. A referência de Inventário continua
+`PENDING`; seu Design QA está `BLOCKED`.
+
+DS 2.4.0 reside sob `static/css/ui-v2/hom-01-2.4.0/` e só é carregado nas
+rotas Dashboard e Inventário. DS 2.0.2 permanece canônico; Camera Detail e seu
+CSS original não foram alterados. Quick Detail mantém o contrato funcional e
+visual; `LATEST_ACTIVE_IMAGE` segue registrada como pendência funcional.
+Próxima ação: obter uma referência aprovada do Inventário, guardar screenshots
+integradas nos mesmos viewport/zoom/estado das referências, produzir relatório
+de diferenças e obter aprovação visual humana. Até esses gates e a conformidade
+final passarem, não marcar a atividade completa nem abrir a entrada de
+homologação. WIP das origens continua preservado. O banco e os módulos locais
+temporários foram removidos e a porta do servidor está fechada; dois logs da
+instância de QA permanecem bloqueados pelo sistema operacional para limpeza
+posterior, conforme registrado em `PROJECT_STATE.md`, seção 88.
+
+```text
+ACTIVITY = ARGOS-HOM-01-UI-V2-SELECTIVE-INTEGRATION
+STATUS = IN_PROGRESS / PARTIAL INTEGRATION; DESIGN QA BLOCKED
+SHELL = INTEGRATED / FUNCTIONALLY VALIDATED
+DASHBOARD = INTEGRATED / FUNCTIONALLY VALIDATED; HUMAN APPROVAL PENDING
+INVENTORY = INTEGRATED / FUNCTIONALLY VALIDATED; REFERENCE AND DESIGN QA BLOCKED
+CAMERA_DETAIL = PRESERVED
+QUICK_DETAIL = PRESERVED / LATEST_ACTIVE_IMAGE PENDING
+FUNCTIONAL_REGRESSION = PASS / 77 TESTS
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md section 88
+CONTINUITY_UPDATE = PASS / this section and ACTIVE_DOCUMENT_MAP.md section 55
+HOMOLOGATION_ENTRY_GATE = BLOCKED
+COMMIT = NOT_PERFORMED; PUSH = NOT_PERFORMED; MERGE = NOT_PERFORMED; DEPLOY = NOT_PERFORMED
+```
+
+### 20.53 ARGOS-HOM-01-HOST-VISUAL-QA-01 — loopback continua bloqueado (2026-10-11)
+
+Consultar `PROJECT_STATE.md` seção 90 e o README de evidências
+`docs/prototype/ui-v2/evidence/hom-01-visual-qa-2026-10-11/README.md`.
+
+```text
+ACTIVITY = ARGOS-HOM-01-HOST-VISUAL-QA-01
+STATUS = BLOCKED_BY_EXECUTION_ENVIRONMENT
+BRANCH = codex/hom-v1-integration
+HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+SOURCE_WIP_PRESERVED = YES
+HOST_CHROME = AVAILABLE
+HOST_BROWSER_ACCESS = BLOCKED / net::ERR_CONNECTION_TIMED_OUT at 127.0.0.1:8765
+DJANGO_RENDERING = BLOCKED
+SYNTHETIC_DATABASE = CREATED, MIGRATED, SEEDED, THEN REMOVED
+RENDERED_SCREENSHOTS = NONE
+P3_P5_REFERENCE_WORKTREES = INACCESSIBLE / host filesystem permission denied
+QUICK_DETAIL_REFERENCE_SCREENSHOT = MISSING
+INVENTORY_REFERENCE = CANDIDATE / approval conflict unresolved
+DESIGN_QA = BLOCKED
+FUNCTIONAL_REGRESSION = PRIOR_77_TESTS_PASS / NOT_REEXECUTED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §90
+CONTINUITY_UPDATE = PASS / this section and ACTIVE_DOCUMENT_MAP.md §57
+HOM_01_STATUS = IN_PROGRESS
+HOMOLOGATION_GATE = BLOCKED
+```
+
+Foi testado um único acesso pelo Chrome do host à aplicação integrada em
+`127.0.0.1:8765`; a navegação expirou. O servidor e o SQLite temporário foram
+encerrados/removidos. Não repetir tentativas equivalentes nem alterar código
+para contornar a restrição. Os logs da tentativa anterior permanecem intactos.
+Sem renderização real, não há screenshots integrados, comparação, resultado de
+Design QA ou aprovação visual humana. Preservar as referências existentes; não
+promover a referência de Inventário nem substituir a captura ausente de Quick
+Detail por protótipo. O runbook Windows está no README de evidências.
+
+### 20.54 ARGOS-HOM-01-ONE-CLICK-RUNTIME-SETUP — launcher implementado (2026-10-11)
+
+Consultar `PROJECT_STATE.md` seção 91, `ACTIVE_DOCUMENT_MAP.md` seção 58 e o
+README de evidências HOM-01. A entrada de uso normal é `INICIAR_ARGOS_QA.cmd`.
+
+```text
+ACTIVITY = ARGOS-HOM-01-ONE-CLICK-RUNTIME-SETUP
+STATUS = IMPLEMENTED / STATIC_VALIDATION_PASS
+BRANCH = codex/hom-v1-integration
+HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+WIP_PRESERVED = YES
+LAUNCHER_PATH = INICIAR_ARGOS_QA.cmd
+QA_SETTINGS_PATH = scripts/localqa/settings.py
+QA_DATABASE_PATH = .local/qa/argos_visual_qa.sqlite3
+QA_SEED_STATUS = PASS / 5 fictional cameras / repeated preparation idempotent
+QA_USER_STATUS = PASS / qa-visual-hom01 / five minimum view/form permissions / non-admin / ephemeral password
+LAUNCHER_STATIC_VALIDATION = PASS
+WINDOWS_RUNTIME_VERIFIED = NOT_VERIFIED
+RUNTIME_HOST_TEST = NOT_VERIFIED
+BROWSER_RENDER_VERIFIED = NOT_VERIFIED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §91
+CONTINUITY_UPDATE = PASS / this section and ACTIVE_DOCUMENT_MAP.md §58
+HOM_01_STATUS = IN_PROGRESS
+DESIGN_QA = PENDING
+HOMOLOGATION_GATE = BLOCKED
+```
+
+O novo settings exige uma variável que somente o launcher define, restringe
+hosts ao loopback, força SQLite dedicado e não inicia worker/scheduler. O
+SQLite existente na raiz e os logs QA anteriores foram preservados. O usuário
+deve executar o CMD no Windows para receber a senha temporária e verificar
+disponibilidade HTTP e renderização; não repetir o teste de loopback bloqueado
+neste ambiente.
+
+### 20.55 ARGOS-HOM-01-CAMERA-DETAIL-APPROVED-FIXES-RECOVERY (2026-10-11)
+
+Consultar `PROJECT_STATE.md` seção 92, `ACTIVE_DOCUMENT_MAP.md` seção 59, o
+adendo de apresentação no `ARGOS_UI_V2_VISUAL_CONTRACT.md` e o relatório de
+diferença visual da atividade.
+
+```text
+ACTIVITY = ARGOS-HOM-01-CAMERA-DETAIL-APPROVED-FIXES-RECOVERY
+EXECUTION_MODE = DIRECT / CONTROLLED_IMPLEMENTATION
+STATUS = PARTIAL / IMPLEMENTATION_GATE PASS / VISUAL_GATE BLOCKED
+BRANCH = codex/hom-v1-integration
+HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+OUT_OF_SCOPE_PRESENTATION = OPTION_A / USER_APPROVED
+DS_CANONICAL = 2.0.2
+FUNCTIONAL_REGRESSION = PASS / 98 targeted tests
+RECOVERING = NOT_A_MON_EFFECTIVE_STATE / OFFLINE to ONLINE recovery transition tests pass
+DESIGN_QA = BLOCKED / no local listeners or comparable screenshots
+HUMAN_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §92
+CONTINUITY_UPDATE = PASS / this section and ACTIVE_DOCUMENT_MAP.md §59
+HOM_01_STATUS = IN_PROGRESS
+HOMOLOGATION_GATE = BLOCKED
+```
+
+Camera Detail importa os módulos CSS 2.0.2 de forma restrita à rota e repõe
+localmente os helpers ausentes. Opção A suprime `monitoring.contexto` somente
+para `scope_reason=OUT_OF_SCOPE`; a projeção MON, o partial compartilhado, o
+campo Escopo, a configuração incompleta e o aviso stale permanecem preservados.
+O contrato MON atual não projeta `RECOVERING` como estado efetivo; dois testes
+focados confirmam a recuperação OFFLINE→ONLINE no reducer e no histórico de
+indisponibilidade. Não houve mudança de backend, migrations, processo Worker,
+commit ou push.
+
+Os ports 8765 e 8766 não tinham listeners. A captura aprovada P5 da Camera
+Detail não está na árvore disponível, e a continuidade registra não repetir
+acesso de loopback equivalente neste ambiente. Screenshots e comparação visual
+não foram produzidos; seguir para Design QA após a obtenção de referência e
+render reais e então aguardar aprovação visual humana.
+
+### 20.56 ARGOS-HOM-01-CAMERA-EDIT-RECOVERY — integração técnica (2026-10-11)
+
+Consultar `PROJECT_STATE.md` seção 93, `ACTIVE_DOCUMENT_MAP.md` seção 60 e
+`docs/prototype/ui-v2/evidence/argos-hom-01-camera-edit-recovery-2026-10-11/VISUAL_DIFFERENCE_REPORT.md`.
+
+```text
+ACTIVITY = ARGOS-HOM-01-CAMERA-EDIT-RECOVERY
+STATUS = PARTIAL / IMPLEMENTATION_GATE PASS / DESIGN_QA BLOCKED
+BRANCH = codex/hom-v1-integration
+HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+P3_D_APPROVAL = f5dd0308f46705e03c79609077ed1ec7a12bc766 / APPROVED
+DS_CANONICAL = 2.0.2
+CREATE_EDIT_FORMS = INTEGRATED / backend contracts preserved
+FUNCTIONAL_REGRESSION = PASS / 177 targeted tests
+REFERENCE_SCREENSHOTS = 18 / P3 ROOT blobs copied and hash verified
+TARGET_SCREENSHOTS = NONE
+DESIGN_QA = BLOCKED / no real integrated render
+HUMAN_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = PASS / section 93
+CONTINUITY_UPDATE = PASS / this section and ACTIVE_DOCUMENT_MAP.md §60
+HOM_01_STATUS = IN_PROGRESS
+COMMIT = NOT_PERFORMED; PUSH = NOT_PERFORMED; MERGE = NOT_PERFORMED; DEPLOY = NOT_PERFORMED
+```
+
+A adaptação recupera header, cinco cards, grids de duas colunas, labels,
+indicadores reais de obrigatoriedade, erros Django, ações e regras responsivas
+por CSS restrito às duas rotas. Os wrappers/data attributes de Farm, Codec e
+Retenção e o `camera-form.js` atual foram mantidos. Fluxos de criação/edição,
+permissões, auditoria, mudança de IP, catálogo e upload em Camera Detail não
+foram substituídos nem movidos. Não houve alteração de backend ou Shell.
+
+O ambiente não recebeu um render integrado. Como os checkpoints 90 e 92 já
+registram bloqueio de loopback e vedam repetição equivalente neste host,
+`DESIGN_QA` permanece `BLOCKED`. As screenshots disponíveis são exclusivamente
+as referências P3-D; não inferir equivalência visual nem aprovação. Próxima
+etapa: usar o launcher/runbook local, capturar as duas páginas nos quatro
+viewports, produzir comparação e obter aprovação visual humana explícita.
+
+### 20.57 ARGOS-HOM-01-OPERATIONAL-QA-PROVISIONING (2026-10-11)
+
+Consultar `PROJECT_STATE.md` seção 94, `ACTIVE_DOCUMENT_MAP.md` seção 61 e o
+README de uso do launcher HOM-01.
+
+```text
+ACTIVITY = ARGOS-HOM-01-OPERATIONAL-QA-PROVISIONING
+IMPLEMENTATION_AUTHORIZATION = GRANTED / user request
+STATUS = PASS / operational account and 101 targeted tests
+BRANCH = codex/hom-v1-integration
+HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
+QA_DATABASE = .local/qa/argos_visual_qa.sqlite3 / owner marker verified
+VISUAL_QA_ACCOUNT = PRESERVED / five explicit permissions and password hash unchanged
+OPERATIONAL_QA_ACCOUNT = qa-operacional-hom01 / active / non-staff / non-superuser / no groups
+OPERATIONAL_QA_PERMISSIONS = exactly seven explicit user permissions
+OPERATIONAL_PASSWORD = random per launcher run / prior password invalidated / displayed in terminal only
+PROVISIONING_IDEMPOTENT = PASS / no duplicate user or camera; existing seed rows preserved
+FUNCTIONAL_TESTS = 101 PASS / temporary DB and media isolated under workspace
+MON_RUNTIME = PRESERVED / no worker, scheduler or probe started
+CAMERA_DETAIL_SOURCE = PRESERVED / no template, view or CSS edits in this activity
+DESIGN_QA = BLOCKED / browser render not performed
+HUMAN_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §94
+CONTINUITY_UPDATE = PASS / this section and ACTIVE_DOCUMENT_MAP.md §61
+HOM_01_STATUS = IN_PROGRESS
+HOMOLOGATION_GATE = BLOCKED
+```
+
+O launcher agora valida a conta visual em modo somente leitura e provisiona
+somente o perfil operacional. Colisões de nome sem marcador de propriedade
+falham antes da reconciliação do seed. A senha visual não é lida ou alterada
+pelo provisionador. O primeiro teste com o TEMP do sistema falhou por
+permissão; a bateria repetida usou diretório exclusivo sob o workspace e
+passou. Design QA aguarda render real dos dois perfis e aprovação humana.
+
+### 20.58 ARGOS-HOM-01-OPERATIONAL-QA-PROVISIONING — checkpoint visual (2026-10-11)
+
+Consultar `PROJECT_STATE.md` seção 95 e `ACTIVE_DOCUMENT_MAP.md` seção 62.
+
+```text
+ACTIVITY = ARGOS-HOM-01-OPERATIONAL-QA-PROVISIONING
+IMPLEMENTATION_GATE = PASS
+AUTOMATED_TESTS = 101/101 PASS
+OPERATIONAL_QA_USER = qa-operacional-hom01
+OPERATIONAL_QA_PERMISSION_VALIDATION = PASS / user-reported
+UPLOAD_BUTTON_RENDERING = PASS / user-reported
+UPLOAD_BUTTON_HUMAN_VISUAL_APPROVAL = APPROVED / button rendering only
+BROWSER_UPLOAD_SUBMISSION = NOT_VERIFIED
+RESPONSIVE_QA = PENDING
+KEYBOARD_FOCUS_QA = PENDING
+PROVISIONING = NOT_REPEATED
+CODE_AND_PERMISSIONS = PRESERVED
+HOM_01_STATUS = IN_PROGRESS
+HOMOLOGATION_GATE = BLOCKED / remaining browser and responsive/keyboard QA
+COMMIT = NOT_PERFORMED; PUSH = NOT_PERFORMED
+```
+
+O usuário confirmou o acesso com a conta operacional e aprovou a renderização
+do botão de upload após validar as permissões. A confirmação é evidência
+relatada pelo usuário e tem escopo visual limitado ao botão. Não registra
+senha. Envio de arquivo no navegador, responsividade e foco de teclado seguem
+pendentes; não inferir aprovação desses critérios nem repetir o provisionamento.

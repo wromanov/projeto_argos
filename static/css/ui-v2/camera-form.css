@@ -1,0 +1,359 @@
+/* Formulários de câmeras: adaptação de tela do DS 2.0.2. */
+.camera-form-page {
+  display: grid;
+  min-width: 0;
+  gap: var(--argos-space-5);
+  color: var(--argos-color-ink);
+  font-family: var(--argos-font-sans);
+  line-height: var(--argos-line-base);
+}
+
+.camera-form-page .argos-page-header {
+  display: flex;
+  min-width: 0;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--argos-space-5);
+  margin: 0;
+}
+
+.camera-form-page .argos-page-header__copy {
+  display: grid;
+  min-width: 0;
+  gap: var(--argos-space-2);
+}
+
+.camera-form-page .argos-eyebrow {
+  margin: 0;
+  color: var(--argos-color-action);
+  font-size: var(--argos-text-label);
+  font-weight: var(--argos-weight-bold);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.camera-form-page .argos-page-title {
+  margin: 0;
+  color: var(--argos-color-ink);
+  font-size: clamp(27px, 3vw, var(--argos-text-page-title));
+  font-weight: var(--argos-weight-bold);
+  line-height: var(--argos-line-tight);
+}
+
+.camera-form-page .argos-lead {
+  max-width: 72ch;
+  margin: 0;
+  color: var(--argos-color-ink-muted);
+  font-size: var(--argos-text-body);
+}
+
+.camera-form-page .argos-page-header__actions,
+.camera-form-page .camera-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--argos-space-2);
+}
+
+.camera-form-page .argos-stack,
+.camera-form-page .camera-form {
+  display: grid;
+  min-width: 0;
+  gap: var(--argos-section-gap);
+}
+
+.camera-form-page .argos-alert {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: var(--argos-space-3);
+  padding: var(--argos-space-3) var(--argos-space-4);
+  border: var(--argos-border-width) solid var(--argos-color-border);
+  border-radius: var(--argos-radius-control);
+}
+
+.camera-form-page .argos-alert--info {
+  border-color: var(--argos-status-info-border);
+  background: var(--argos-status-info-bg);
+}
+
+.camera-form-page .argos-alert--danger {
+  border-color: var(--argos-status-danger-border);
+  background: var(--argos-status-danger-bg);
+}
+
+.camera-form-page .argos-alert > div {
+  display: grid;
+  min-width: 0;
+  gap: var(--argos-space-2);
+}
+
+.camera-form-page .argos-alert h2,
+.camera-form-page .argos-alert p {
+  margin: 0;
+}
+
+.camera-form-page .argos-alert h2 {
+  color: var(--argos-color-ink);
+  font-size: var(--argos-text-body);
+  font-weight: var(--argos-weight-bold);
+}
+
+.camera-form-page .argos-alert ul {
+  display: grid;
+  gap: var(--argos-space-1);
+  margin: 0;
+  padding-inline-start: var(--argos-space-5);
+  overflow-wrap: anywhere;
+}
+
+.camera-form-page .argos-alert a {
+  color: var(--argos-color-action);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.camera-form-page .argos-card {
+  min-width: 0;
+  overflow: hidden;
+  border: var(--argos-border-width) solid var(--argos-color-border);
+  border-radius: var(--argos-radius-surface);
+  background: var(--argos-color-surface);
+  box-shadow: var(--argos-shadow-card);
+}
+
+.camera-form-page .argos-card__header,
+.camera-form-page .argos-card__body,
+.camera-form-page .argos-card__footer {
+  min-width: 0;
+  padding: var(--argos-space-4) var(--argos-space-5);
+}
+
+.camera-form-page .argos-card__header,
+.camera-form-page .argos-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--argos-space-3);
+}
+
+.camera-form-page .argos-card__header {
+  border-bottom: var(--argos-border-width) solid var(--argos-color-border);
+}
+
+.camera-form-page .argos-card__header > div {
+  display: grid;
+  min-width: 0;
+  gap: var(--argos-space-1);
+}
+
+.camera-form-page .argos-card__header p,
+.camera-form-page .camera-form-actions__note {
+  margin: 0;
+  color: var(--argos-color-ink-muted);
+  font-size: var(--argos-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.camera-form-page .argos-card__title {
+  margin: 0;
+  color: var(--argos-color-ink);
+  font-size: var(--argos-text-section);
+  font-weight: var(--argos-weight-semibold);
+}
+
+.camera-form-page .argos-card__footer {
+  border-top: var(--argos-border-width) solid var(--argos-color-border);
+}
+
+.camera-form-page .argos-two-column {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--argos-space-4);
+}
+
+.camera-form-page .camera-form-field-group {
+  display: grid;
+  min-width: 0;
+  gap: var(--argos-space-4);
+}
+
+.camera-form-page .argos-field {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: var(--argos-space-1);
+}
+
+.camera-form-page .argos-field[hidden],
+.camera-form-page .camera-form-conditional[hidden] {
+  display: none;
+}
+
+.camera-form-page .argos-field__label {
+  min-width: 0;
+  color: var(--argos-color-ink);
+  font-size: var(--argos-text-label);
+  font-weight: var(--argos-weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.camera-form-page .field__label {
+  display: block;
+  margin: 0;
+}
+
+.camera-form-page .camera-form-required-marker {
+  color: var(--argos-status-danger-fg);
+}
+
+.camera-form-page .argos-field :is(input:not([type="hidden"]), select, textarea) {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--argos-control-height);
+  padding: var(--argos-space-2) var(--argos-space-3);
+  border: var(--argos-border-width) solid var(--argos-color-border-strong);
+  border-radius: var(--argos-radius-control);
+  background: var(--argos-color-surface);
+  color: var(--argos-color-ink);
+  font: inherit;
+  font-size: var(--argos-text-secondary);
+}
+
+.camera-form-page .argos-field textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.camera-form-page .argos-field :is(input, select, textarea)::placeholder {
+  color: var(--argos-color-ink-muted);
+  opacity: 1;
+}
+
+.camera-form-page .argos-field :is(input, select, textarea):disabled {
+  background: var(--argos-color-surface-subtle);
+  color: var(--argos-color-ink-muted);
+  cursor: not-allowed;
+}
+
+.camera-form-page .argos-field :is(input, select, textarea)[aria-invalid="true"] {
+  border-color: var(--argos-status-danger-border);
+  background: var(--argos-status-danger-bg);
+}
+
+.camera-form-page .argos-field :is(input, select, textarea):focus-visible,
+.camera-form-page .argos-button:focus-visible {
+  outline: var(--argos-focus-width) solid var(--argos-color-action);
+  outline-offset: var(--argos-focus-offset);
+}
+
+.camera-form-page .argos-field :is(input, select, textarea)[aria-invalid="true"]:focus-visible {
+  outline-color: var(--argos-status-danger-fg);
+}
+
+.camera-form-page .argos-field__help,
+.camera-form-page .argos-field__errors,
+.camera-form-page .camera-form-errors__general {
+  margin: 0;
+  font-size: var(--argos-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.camera-form-page .argos-field__help {
+  color: var(--argos-color-ink-muted);
+}
+
+.camera-form-page .argos-field__errors,
+.camera-form-page .camera-form-errors__general {
+  color: var(--argos-status-danger-fg);
+}
+
+.camera-form-page .argos-field__errors .errorlist,
+.camera-form-page .camera-form-errors__general .errorlist {
+  display: grid;
+  gap: var(--argos-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.camera-form-page .argos-button {
+  display: inline-flex;
+  min-height: var(--argos-control-height);
+  align-items: center;
+  justify-content: center;
+  gap: var(--argos-space-2);
+  padding: 0 var(--argos-space-4);
+  border: var(--argos-border-width) solid transparent;
+  border-radius: var(--argos-radius-control);
+  font-size: var(--argos-text-secondary);
+  font-weight: var(--argos-weight-semibold);
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.camera-form-page .argos-button--primary {
+  background: var(--argos-color-action);
+  color: var(--argos-color-action-contrast);
+}
+
+.camera-form-page .argos-button--primary:hover {
+  background: var(--argos-color-action-hover);
+  color: var(--argos-color-action-contrast);
+}
+
+.camera-form-page .argos-button--secondary {
+  border-color: var(--argos-color-border-strong);
+  background: var(--argos-color-surface);
+  color: var(--argos-color-ink);
+}
+
+.camera-form-page .argos-button--secondary:hover {
+  background: var(--argos-color-surface-subtle);
+}
+
+@media (max-width: 680px) {
+  .camera-form-page .argos-page-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .camera-form-page .argos-page-header__actions,
+  .camera-form-page .camera-form-actions {
+    width: 100%;
+  }
+
+  .camera-form-page .argos-two-column {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .camera-form-page .argos-card__header,
+  .camera-form-page .argos-card__body,
+  .camera-form-page .argos-card__footer {
+    padding: var(--argos-space-4);
+  }
+
+  .camera-form-page .camera-form-actions__note {
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .camera-form-page .argos-button,
+  .camera-form-page .argos-field :is(input:not([type="hidden"]), select, textarea) {
+    min-height: var(--argos-touch-target-min);
+  }
+
+  .camera-form-page .camera-form-actions .argos-button {
+    flex: 1 1 auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .camera-form-page .argos-button {
+    transition: none;
+  }
+}

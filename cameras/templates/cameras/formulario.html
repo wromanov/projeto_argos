@@ -6,14 +6,10 @@
 {% endblock %}
 
 {% block extra_css %}
-  <link
-    rel="stylesheet"
-    href="{% static 'css/inventario.css' %}"
-  >
-  <link
-    rel="stylesheet"
-    href="{% static 'css/governanca.css' %}"
-  >
+  <link rel="stylesheet" href="{% static 'css/ui-v2/tokens.css' %}">
+  <link rel="stylesheet" href="{% static 'css/ui-v2/components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/ui-v2/patterns.css' %}">
+  <link rel="stylesheet" href="{% static 'css/ui-v2/camera-form.css' %}">
 {% endblock %}
 
 {% block conteudo %}
@@ -24,324 +20,187 @@
   {% endif %}
 
   <div class="camera-form-page">
-    <section
-      class="inventory-hero camera-form-hero"
-      aria-labelledby="camera-form-title"
-    >
-      <a
-        class="camera-form-hero__back"
-        href="{{ retorno_url }}"
-      >
-        ←
+    <header class="argos-page-header" aria-labelledby="camera-form-title">
+      <div class="argos-page-header__copy">
+        <p class="argos-eyebrow">Inventário CFTV</p>
+        <h1 class="argos-page-title" id="camera-form-title">{{ titulo_pagina }}</h1>
         {% if camera %}
-          Voltar aos detalhes
+          <p class="argos-lead">Atualize os dados cadastrais de <strong>{{ camera.nome }}</strong>.</p>
         {% else %}
-          Voltar ao inventário
+          <p class="argos-lead">Cadastre a identificação, a localização e os parâmetros de rede e gravação do equipamento.</p>
         {% endif %}
-      </a>
-
-      <div class="camera-form-hero__content">
-        <div class="camera-form-hero__heading">
-          <span class="inventory-eyebrow">
-            Inventário CFTV
-          </span>
-
-          <h1 id="camera-form-title">
-            {{ titulo_pagina }}
-          </h1>
-
-          {% if camera %}
-            <p>
-              Atualize os dados cadastrais e técnicos desta
-              câmera. Mudanças de situação operacional
-              continuam sendo realizadas pelos fluxos de governança.
-            </p>
-          {% else %}
-            <p>
-              Cadastre uma nova câmera no inventário.
-              Informações complementares poderão ser
-              atualizadas posteriormente.
-            </p>
-          {% endif %}
-        </div>
-
-        <aside
-          class="camera-form-hero__aside"
-          aria-label="{% if camera %}Contexto da edição{% else %}Contexto do cadastro{% endif %}"
-        >
-          {% if camera %}
-            <span class="camera-form-hero__mode">
-              Edição
-            </span>
-
-            <strong class="camera-form-hero__camera">
-              {{ camera.nome }}
-            </strong>
-
-            <span
-              class="
-                camera-form-hero__status
-                camera-form-hero__status--{{ camera.situacao_operacional|lower }}
-              "
-            >
-              {{ camera.get_situacao_operacional_display }}
-            </span>
-          {% else %}
-            <span class="camera-form-hero__mode">
-              Novo registro
-            </span>
-
-            <strong class="camera-form-hero__camera">
-              Nova câmera
-            </strong>
-
-            <span class="camera-form-hero__hint">
-              Preencha os dados iniciais do equipamento.
-            </span>
-          {% endif %}
-        </aside>
       </div>
-    </section>
 
-    <form
-      class="inventory-form camera-form"
-      method="post"
-      novalidate
-    >
-      {% csrf_token %}
+      <div class="argos-page-header__actions">
+        <a class="argos-button argos-button--secondary" href="{{ retorno_url }}">
+          {% if camera %}Voltar aos detalhes{% else %}Voltar ao inventário{% endif %}
+        </a>
+      </div>
+    </header>
 
-{% include "components/resumo_erros_formulario.html" with errors_title="Revise os campos destacados antes de salvar." %}
-
-<p class="camera-form-required-note">
-  <span
-    class="required-marker"
-    aria-hidden="true"
-  >*</span>
-  Campos obrigat?rios
-</p>
-
-      {% if form.situacao_operacional %}
-        <fieldset
-          class="
-            inventory-panel
-            form-section
-            camera-form-section
-            camera-form-initial-state
-          "
-        >
-          <legend>Situação inicial</legend>
-
-          <p class="camera-form-section__description">
-            Defina em qual situação operacional a câmera
-            iniciará seu ciclo no inventário.
-          </p>
-
-          <div
-            class="
-              form-grid
-              camera-form-initial-state__grid
-            "
-          >
-            {% include "components/campo_formulario.html" with field=form.situacao_operacional %}
-          </div>
-        </fieldset>
+    <div class="argos-stack">
+      {% if camera %}
+        <p class="argos-alert argos-alert--info">
+          Câmera existente · situação operacional:
+          <strong>{{ camera.get_situacao_operacional_display }}</strong>.
+          Mudanças de situação seguem o fluxo de governança; este formulário não as modifica.
+        </p>
       {% endif %}
 
-            <fieldset
-        class="
-          inventory-panel
-          form-section
-          camera-form-section
-          camera-form-section--identity
-        "
-      >
-        <legend>Identificação</legend>
+      {% include "cameras/includes/resumo_erros_formulario_p3d.html" %}
 
-        <p class="camera-form-section__description">
-          Dados que identificam o equipamento dentro do
-          inventário e permitem sua rastreabilidade.
-        </p>
+      <form class="camera-form" id="camera-form" aria-labelledby="camera-form-title" method="post" novalidate>
+        {% csrf_token %}
 
-        <div class="form-grid camera-form-grid">
-          {% include "components/campo_formulario.html" with field=form.patrimonio %}
+        {% if form.farm or form.codec or form.retencao_esperada_dias %}
+          <script src="{% static 'js/camera-form.js' %}" defer></script>
+        {% endif %}
 
-          {% include "components/campo_formulario.html" with field=form.nome %}
-
-          {% include "components/campo_formulario.html" with field=form.fabricante %}
-
-          {% include "components/campo_formulario.html" with field=form.modelo %}
-
-          {% include "components/campo_formulario.html" with field=form.serial field_class="camera-form-field--technical" %}
-
-          {% include "components/campo_formulario.html" with field=form.mac field_class="camera-form-field--technical" %}
-
-          {% include "components/campo_formulario.html" with field=form.tipo %}
-        </div>
-      </fieldset>
-
-      <fieldset
-        class="
-          inventory-panel
-          form-section
-          camera-form-section
-          camera-form-section--location
-        "
-      >
-        <legend>Localização</legend>
-
-        <p class="camera-form-section__description">
-          Informe onde a câmera está instalada para facilitar
-          identificação, atendimento e manutenção.
-        </p>
-
-        <div class="form-grid camera-form-grid">
-          {% include "components/campo_formulario.html" with field=form.terminal %}
-
-          {% include "components/campo_formulario.html" with field=form.pavimento %}
-
-          {% include "components/campo_formulario.html" with field=form.setor %}
-
-          {% include "components/campo_formulario.html" with field=form.ambiente %}
-
-          {% include "components/campo_formulario.html" with field=form.descricao_detalhada field_class="form-field--wide" %}
-
-          {% include "components/campo_formulario.html" with field=form.ponto_referencia field_class="form-field--wide" %}
-        </div>
-      </fieldset>
-
-      <fieldset
-        class="
-          inventory-panel
-          form-section
-          camera-form-section
-          camera-form-section--network
-        "
-      >
-        <legend>Rede</legend>
-
-        <p class="camera-form-section__description">
-          Parâmetros de endereçamento utilizados para
-          comunicação e identificação da câmera na rede.
-        </p>
-
-        <div class="form-grid camera-form-grid">
-          {% include "components/campo_formulario.html" with field=form.ip field_class="camera-form-field--technical" %}
-
-          {% include "components/campo_formulario.html" with field=form.mascara_subrede field_class="camera-form-field--technical" %}
-
-          {% include "components/campo_formulario.html" with field=form.gateway field_class="camera-form-field--technical" %}
-
-          {% include "components/campo_formulario.html" with field=form.vlan field_class="camera-form-field--technical" %}
-        </div>
-      </fieldset>
-
-      <fieldset
-        class="
-          inventory-panel
-          form-section
-          camera-form-section
-          camera-form-section--recording
-        "
-      >
-        <legend>Gravação</legend>
-
-        <p class="camera-form-section__description">
-          Dados relacionados ao ambiente de gravação,
-          retenção esperada e codec do equipamento.
-        </p>
-
-        <script src="{% static 'js/camera-form.js' %}" defer></script>
-
-        <div
-          class="
-            form-grid
-            camera-form-grid
-            camera-form-grid--three
-          "
-        >
-          <div class="camera-form-field-group" data-recording-group="farm">
-            {% include "components/campo_formulario.html" with field=form.farm field_class="camera-form-field--technical" %}
-
-            <div id="farm-personalizado-container" data-farm-personalizado {% if form.farm.value != "__PERSONALIZADO__" %}hidden{% endif %}>
-              {% include "components/campo_formulario.html" with field=form.farm_personalizado %}
+        <section class="argos-card" aria-labelledby="camera-identity-title">
+          <header class="argos-card__header">
+            <div>
+              <h2 class="argos-card__title" id="camera-identity-title">Identificação</h2>
+              {% if camera %}
+                <p>Valores existentes preservados para edição.</p>
+              {% else %}
+                <p>Informe os dados que identificam o equipamento.</p>
+              {% endif %}
+            </div>
+            <span class="argos-badge argos-badge--neutral">
+              {% if camera %}7{% else %}8{% endif %} campos
+            </span>
+          </header>
+          <div class="argos-card__body">
+            <div class="argos-two-column">
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.nome %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.fabricante %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.modelo %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.tipo %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.patrimonio %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.serial %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.mac %}
+              {% if form.situacao_operacional %}
+                {% include "cameras/includes/campo_formulario_p3d.html" with field=form.situacao_operacional %}
+              {% endif %}
             </div>
           </div>
+        </section>
 
-          <div class="camera-form-field-group" data-recording-group="retencao">
-            {% include "components/campo_formulario.html" with field=form.retencao_esperada_dias field_class="camera-form-field--technical" %}
-
-            <div
-              id="retencao-personalizada-container"
-              data-retencao-personalizada
-              {% if form.retencao_esperada_dias.value != "__PERSONALIZADO__" %}hidden{% endif %}
-            >
-              {% include "components/campo_formulario.html" with field=form.retencao_personalizada_dias field_class="camera-form-field--technical" %}
+        <section class="argos-card" aria-labelledby="camera-location-title">
+          <header class="argos-card__header">
+            <div>
+              <h2 class="argos-card__title" id="camera-location-title">Localização</h2>
+              {% if camera %}
+                <p>Local de instalação já cadastrado.</p>
+              {% else %}
+                <p>Descreva onde o equipamento está instalado.</p>
+              {% endif %}
+            </div>
+          </header>
+          <div class="argos-card__body">
+            <div class="argos-two-column">
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.terminal %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.pavimento %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.setor %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.ambiente %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.descricao_detalhada %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.ponto_referencia %}
             </div>
           </div>
+        </section>
 
-          <div class="camera-form-field-group" data-recording-group="codec">
-            {% include "components/campo_formulario.html" with field=form.codec field_class="camera-form-field--technical" %}
-
-            <div
-              id="codec-personalizado-container"
-              data-codec-personalizado
-              {% if form.codec.value != "__PERSONALIZADO__" %}hidden{% endif %}
-            >
-              {% include "components/campo_formulario.html" with field=form.codec_personalizado %}
+        <section class="argos-card" aria-labelledby="camera-network-title">
+          <header class="argos-card__header">
+            <div>
+              <h2 class="argos-card__title" id="camera-network-title">Rede</h2>
+              {% if camera %}
+                <p>Configuração existente.</p>
+              {% else %}
+                <p>Parâmetros de conexão conhecidos.</p>
+              {% endif %}
+            </div>
+          </header>
+          <div class="argos-card__body">
+            <div class="argos-two-column">
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.ip %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.mascara_subrede %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.gateway %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.vlan %}
             </div>
           </div>
-        </div>
-      </fieldset>
+        </section>
 
-      <fieldset
-        class="
-          inventory-panel
-          form-section
-          camera-form-section
-          camera-form-section--metadata
-        "
-      >
-        <legend>Cadastro e observações</legend>
+        <section class="argos-card" aria-labelledby="camera-recording-title">
+          <header class="argos-card__header">
+            <div>
+              <h2 class="argos-card__title" id="camera-recording-title">Gravação</h2>
+              {% if camera %}
+                <p>Valores atuais preservados; campos personalizados aparecem quando aplicável.</p>
+              {% else %}
+                <p>Use os catálogos existentes ou informe um valor personalizado.</p>
+              {% endif %}
+            </div>
+          </header>
+          <div class="argos-card__body">
+            <div class="argos-two-column">
+              <div class="camera-form-field-group" data-recording-group="farm">
+                {% include "cameras/includes/campo_formulario_p3d.html" with field=form.farm %}
+                <div id="farm-personalizado-container" data-farm-personalizado class="camera-form-conditional" {% if form.farm.value != "__PERSONALIZADO__" %}hidden{% endif %}>
+                  {% include "cameras/includes/campo_formulario_p3d.html" with field=form.farm_personalizado %}
+                </div>
+              </div>
 
-        <p class="camera-form-section__description">
-          Registre a origem da informação e observações
-          complementares relevantes para a operação.
-        </p>
+              <div class="camera-form-field-group" data-recording-group="retencao">
+                {% include "cameras/includes/campo_formulario_p3d.html" with field=form.retencao_esperada_dias %}
+                <div id="retencao-personalizada-container" data-retencao-personalizada class="camera-form-conditional" {% if form.retencao_esperada_dias.value != "__PERSONALIZADO__" %}hidden{% endif %}>
+                  {% include "cameras/includes/campo_formulario_p3d.html" with field=form.retencao_personalizada_dias %}
+                </div>
+              </div>
 
-        <div class="form-grid camera-form-grid">
-          {% include "components/campo_formulario.html" with field=form.origem_cadastro %}
+              <div class="camera-form-field-group" data-recording-group="codec">
+                {% include "cameras/includes/campo_formulario_p3d.html" with field=form.codec %}
+                <div id="codec-personalizado-container" data-codec-personalizado class="camera-form-conditional" {% if form.codec.value != "__PERSONALIZADO__" %}hidden{% endif %}>
+                  {% include "cameras/includes/campo_formulario_p3d.html" with field=form.codec_personalizado %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-          {% include "components/campo_formulario.html" with field=form.observacoes field_class="form-field--wide" %}
-        </div>
-      </fieldset>
-
-      <div class="form-actions camera-form-actions">
-        <p class="camera-form-actions__note">
-          {% if camera %}
-            As alterações salvas serão registradas
-            no histórico de auditoria.
-          {% else %}
-            Ao salvar, a câmera será adicionada ao
-            inventário do ARGOS.
-          {% endif %}
-        </p>
-
-        <div class="camera-form-actions__buttons">
-          <a
-            class="button button--secondary"
-            href="{{ retorno_url }}"
-          >
-            Cancelar
-          </a>
-
-          <button
-            class="button button--primary"
-            type="submit"
-          >
-            Salvar câmera
-          </button>
-        </div>
-      </div>
-    </form>
+        <section class="argos-card" aria-labelledby="camera-registration-title">
+          <header class="argos-card__header">
+            <div>
+              <h2 class="argos-card__title" id="camera-registration-title">Cadastro e observações</h2>
+              {% if camera %}
+                <p>Origem registrada e observações existentes.</p>
+              {% else %}
+                <p>Registre a origem e informações complementares.</p>
+              {% endif %}
+            </div>
+          </header>
+          <div class="argos-card__body">
+            <div class="argos-two-column">
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.origem_cadastro %}
+              {% include "cameras/includes/campo_formulario_p3d.html" with field=form.observacoes %}
+            </div>
+          </div>
+          <footer class="argos-card__footer">
+            <p class="camera-form-actions__note">
+              {% if camera %}
+                As alterações salvas serão registradas no histórico de auditoria.
+              {% else %}
+                Ao salvar, a câmera será adicionada ao inventário do ARGOS.
+              {% endif %}
+            </p>
+            <div class="camera-form-actions">
+              <a class="argos-button argos-button--secondary" href="{{ retorno_url }}">Cancelar</a>
+              <button class="argos-button argos-button--primary" type="submit">
+                {% if camera %}Salvar alterações{% else %}Cadastrar câmera{% endif %}
+              </button>
+            </div>
+          </footer>
+        </section>
+      </form>
+    </div>
   </div>
 {% endblock %}

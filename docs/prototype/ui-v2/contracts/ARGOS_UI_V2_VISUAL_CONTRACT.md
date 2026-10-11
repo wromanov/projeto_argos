@@ -87,3 +87,23 @@ O Design QA obrigatório para homologação está detalhado na seção 20 de
 com referência aprovada, renderização real, registro das diferenças,
 correções materiais e aprovação visual humana. Este adendo é um gate futuro;
 nenhuma execução de Design QA é afirmada aqui.
+
+## Adendo Camera Detail — apresentação OUT_OF_SCOPE (2026-10-11)
+
+```text
+DECISION_ID = ARGOS-CAMERA-DETAIL-OUT-OF-SCOPE-A
+USER_APPROVAL = APPROVED
+OUT_OF_SCOPE_PRESENTATION = OPTION_A
+DS_CANONICAL = 2.0.2
+```
+
+Na Camera Detail, o cabeçalho e “Estado atual” exibem o badge técnico
+“NÃO MONITORADA” sem contexto auxiliar quando `scope_reason=OUT_OF_SCOPE`.
+“Fora do escopo” continua visível no campo semântico “Escopo”. A regra afeta
+somente essa apresentação da Camera Detail; payload, projeção MON e
+`monitoring.contexto` permanecem intactos. `INCOMPLETE_CONFIGURATION` mantém
+seu contexto próprio, e o aviso stale continua único no local já aprovado.
+
+Esta decisão substitui a repetição visual da referência P5 nesse estado, sem
+reabrir sua composição nem promover DS 2.4.0 a canônico. A validação visual
+integrada e a aprovação humana permanecem gates separados.

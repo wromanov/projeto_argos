@@ -44,11 +44,11 @@ class ListaCamerasFrontendTests(TestCase):
     def test_lista_camera_possui_filtros_e_tabela_acessiveis(self):
         response = self.client.get(reverse("cameras:lista"))
         self.assertNotContains(response, 'aria-label="Navegação estrutural"')
-        self.assertContains(response, 'class="page-heading__title"')
-        self.assertContains(response, 'class="page-heading__eyebrow"')
-        self.assertContains(response, 'class="form-container filter-panel inventory-filters-card"')
-        self.assertContains(response, 'class="filter-panel__grid inventory-filter-form"')
-        self.assertContains(response, 'class="filter-panel__actions inventory-filter-actions"')
+        self.assertContains(response, 'class="argos-page-title"')
+        self.assertContains(response, 'class="argos-eyebrow"')
+        self.assertContains(response, 'class="argos-card inventory-filters-card"')
+        self.assertContains(response, 'class="argos-filter-bar inventory-filter-form"')
+        self.assertContains(response, 'class="argos-inline inventory-filter-actions"')
         self.assertContains(response, 'role="search"')
         self.assertContains(response, 'aria-label="Filtros do inventário de câmeras"')
         self.assertContains(response, 'data-filter-multiselect', count=8)
@@ -64,7 +64,7 @@ class ListaCamerasFrontendTests(TestCase):
         ):
             self.assertContains(response, f'name="{parametro}"')
         self.assertContains(response, "js/filtros.js")
-        self.assertContains(response, 'role="region" aria-label="Câmeras encontradas" tabindex="0"')
+        self.assertContains(response, 'role="region" aria-label="Câmeras encontradas" aria-describedby="inventory-table-hint" tabindex="0"')
         self.assertContains(response, "Relação de câmeras encontradas no inventário")
         self.assertContains(response, 'scope="col"')
 
@@ -557,6 +557,14 @@ class CameraDetailFrontendTests(TestCase):
             codec="H.264",
         )
 
+    def test_camera_detail_fica_fora_do_escopo_ds_24_hom_01(self):
+        response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
+
+        self.assertContains(response, 'class="app-shell"')
+        self.assertNotContains(response, "argos-ui-v2-production")
+        self.assertNotContains(response, "/static/css/ui-v2/hom-01-2.4.0/")
+        self.assertContains(response, "/static/css/ui-v2/camera-detail.css")
+
     def test_detail_uses_canonical_regions_and_removes_legacy_presentational_classes(self):
         response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
         self.assertEqual(response.status_code, 200)
@@ -691,15 +699,61 @@ class CameraDetailFrontendTests(TestCase):
             monitoring.index("Dados desatualizados"),
         )
 
-    def test_nonstale_scope_context_keeps_existing_detail_badge_composition(self):
+    def test_out_of_scope_option_a_shows_context_only_in_scope_field(self):
         self.camera.situacao_operacional = Camera.SituacaoOperacional.ESTOQUE
         self.camera.save(update_fields=("situacao_operacional",))
 
         response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
         html = response.content.decode("utf-8")
-        self.assertContains(response, "Fora do escopo")
-        self.assertContains(response, 'class="argos-camera-detail__monitoring-summary"')
+        self.assertEqual(html.count("Fora do escopo"), 1)
+        self.assertEqual(html.count("NÃO MONITORADA"), 2)
+
+        hero_start = html.index('class="argos-camera-detail__status-cluster"')
+        hero = html[hero_start:html.index("</header>", hero_start)]
+        self.assertNotIn("Fora do escopo", hero)
+        self.assertNotIn("argos-camera-detail__monitoring-summary", hero)
+
+        state_start = html.index("<dt>Estado atual</dt>")
+        scope_start = html.index("<dt>Escopo</dt>", state_start)
+        state_row = html[state_start:scope_start]
+        scope_row = html[scope_start:html.index("</div>", scope_start)]
+        self.assertIn("NÃO MONITORADA", state_row)
+        self.assertNotIn("Fora do escopo", state_row)
+        self.assertIn("Fora do escopo", scope_row)
         self.assertNotIn('class="argos-camera-detail__status-support"', html)
+
+    def test_incomplete_configuration_context_remains_visible(self):
+        self.camera.ip = ""
+        self.camera.save(update_fields=("ip",))
+
+        response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
+        html = response.content.decode("utf-8")
+        self.assertGreaterEqual(html.count("Configuração incompleta"), 3)
+        self.assertIn('class="argos-camera-detail__monitoring-summary"', html)
+
+    def test_monitoring_state_badges_remain_semantic_on_detail(self):
+        now = timezone.now()
+        self.camera.pavimento = "TÉRREO"
+        self.camera.setor = "SETOR DE TESTE"
+        self.camera.save(update_fields=("pavimento", "setor"))
+        for state, label, badge_class in (
+            (EstadoMonitoramento.EstadoEstavel.ONLINE, "ONLINE", "argos-status-badge--success"),
+            (EstadoMonitoramento.EstadoEstavel.OFFLINE, "OFFLINE", "argos-status-badge--danger"),
+            (EstadoMonitoramento.EstadoEstavel.UNKNOWN, "UNKNOWN", "argos-status-badge--neutral"),
+        ):
+            with self.subTest(state=state):
+                EstadoMonitoramento.objects.update_or_create(
+                    camera=self.camera,
+                    defaults={
+                        "estado_estavel": state,
+                        "estado_alterado_em": now,
+                        "ultima_evidencia_util_em": now,
+                        "em_escopo": True,
+                    },
+                )
+                response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
+                self.assertContains(response, label)
+                self.assertContains(response, badge_class)
 
 
 class GovernancaActionShellFrontendTests(TestCase):

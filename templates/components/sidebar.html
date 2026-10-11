@@ -1,8 +1,11 @@
-<aside class="app-sidebar" aria-label="Navegação da aplicação">
+<aside class="app-sidebar{% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' %} argos-docs-sidebar{% endif %}" aria-label="Navegação da aplicação">
   <div class="app-sidebar__content">
     {% url 'core:inicio' as brand_href %}
     {% include "components/brand.html" with href=brand_href subtitle="Central operacional" %}
 
+    {% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' %}
+      <p class="argos-nav-scroll-hint" id="argos-nav-scroll-hint">Deslize horizontalmente para ver todos os itens.</p>
+    {% endif %}
     {% include "components/navegacao_principal.html" %}
   </div>
 </aside>

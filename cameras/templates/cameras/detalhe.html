@@ -20,7 +20,9 @@
         <div class="argos-camera-detail__hero-side">
           <div class="argos-camera-detail__status-cluster" role="group" aria-label="Estados da câmera">
             <div class="argos-camera-detail__statuses">
-              {% if monitoring.is_stale and monitoring.effective_state == "UNKNOWN" %}
+              {% if monitoring.scope_reason == "OUT_OF_SCOPE" %}
+                {% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring ui_v2_status_only=True %}
+              {% elif monitoring.is_stale and monitoring.effective_state == "UNKNOWN" %}
                 {% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring ui_v2_status_only=True %}
               {% else %}
                 {% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring ui_v2_badges=True %}
@@ -50,7 +52,7 @@
         <section class="argos-camera-detail__record-section" aria-labelledby="camera-detail-monitoring-heading">
           <header class="argos-section-header"><h2 id="camera-detail-monitoring-heading">Monitoramento técnico</h2></header>
           <dl class="argos-data-group argos-camera-detail__pairs">
-            <div class="argos-data-pair argos-camera-detail__pair--full"><dt>Estado atual</dt><dd>{% if monitoring.is_stale and monitoring.effective_state == "UNKNOWN" %}<div class="argos-camera-detail__monitoring-status">{% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring ui_v2_status_only=True %}<small class="argos-camera-detail__status-support">Dados desatualizados</small></div>{% else %}{% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring ui_v2_badges=True %}{% endif %}</dd></div>
+            <div class="argos-data-pair argos-camera-detail__pair--full"><dt>Estado atual</dt><dd>{% if monitoring.is_stale and monitoring.effective_state == "UNKNOWN" %}<div class="argos-camera-detail__monitoring-status">{% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring ui_v2_status_only=True %}<small class="argos-camera-detail__status-support">Dados desatualizados</small></div>{% elif monitoring.scope_reason == "OUT_OF_SCOPE" %}{% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring ui_v2_status_only=True %}{% else %}{% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring ui_v2_badges=True %}{% endif %}</dd></div>
             <div class="argos-data-pair"><dt>Escopo</dt><dd>{% if monitoring.em_escopo %}Em escopo{% elif monitoring.scope_reason == "INCOMPLETE_CONFIGURATION" %}Configuração incompleta{% else %}Fora do escopo{% endif %}</dd></div>
             <div class="argos-data-pair"><dt>Último estado confirmado</dt><dd><span{% if not monitoring.stable_label %} class="argos-state__copy"{% endif %}>{{ monitoring.stable_label|default:"—" }}</span></dd></div>
             <div class="argos-data-pair"><dt>Última evidência útil</dt><dd><span{% if not monitoring.evidence_at|date:"d/m/Y H:i" %} class="argos-state__copy"{% endif %}>{{ monitoring.evidence_at|date:"d/m/Y H:i"|default:"—" }}</span></dd></div>

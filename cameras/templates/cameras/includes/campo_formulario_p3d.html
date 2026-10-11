@@ -1,0 +1,24 @@
+{% load formulario_extras %}
+
+<div class="argos-field{% if field.errors %} argos-field--invalid{% endif %}">
+  <label class="field__label" for="{{ field.id_for_label }}">
+    <span class="argos-field__label">
+      {{ field.label }}
+      {% if field.field.required %}
+        <span class="camera-form-required-marker" aria-hidden="true" title="Campo obrigatório">*</span>
+      {% endif %}
+    </span>
+  </label>
+
+  {{ field|campo_com_attrs }}
+
+  {% if field.help_text %}
+    <p class="argos-field__help" id="{{ field.id_for_label }}_help">{{ field.help_text }}</p>
+  {% endif %}
+
+  {% if field.errors %}
+    <div class="argos-field__errors" id="{{ field.id_for_label }}_errors">
+      {{ field.errors }}
+    </div>
+  {% endif %}
+</div>
