@@ -239,3 +239,24 @@ DOCUMENT_QUALITY_GATE = PASS
 As respostas `YES` exigem referências e fatos recuperáveis no checkout, não
 apenas um status afirmado sem fonte. A revisão não substitui a reconciliação
 entre authorities nem os gates de segurança e autorização.
+
+## 13. Reconciliar antes de criar branch de desenvolvimento
+
+```text
+POLICY_ID = ARGOS-RECONCILE-BEFORE-BRANCH
+BRANCH_CREATION_DEFAULT = BLOCKED
+USER_DECISION = APPROVED
+```
+
+Antes de criar uma branch de desenvolvimento, reconciliar a frente anterior
+proporcionalmente ao risco: identificar WIP e seu destino, preservar correções
+aprovadas, executar testes e gates pertinentes, atualizar o baseline documental
+e consolidar o checkpoint Git. A criação ainda exige autorização explícita do
+usuário para a atividade correspondente.
+
+Não exigir merge de branches históricas que não contenham mudanças necessárias;
+não promover protótipo como implementação; não fazer merge ou cherry-pick
+indiscriminado. Quando WIP ou divergência material estiver inacessível ou sem
+classificação suficiente, registrar `UNVERIFIED` e bloquear somente o gate
+afetado. Não apagar, sobrescrever ou arquivar worktrees históricos como parte
+da reconciliação.

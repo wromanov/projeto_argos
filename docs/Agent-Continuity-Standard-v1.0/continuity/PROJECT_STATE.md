@@ -1,10 +1,13 @@
 # ARGOS — Project State
 
-Estado corrente ARGOS-HOM-00: seção 84. Baseline Runtime V1 confirmada;
-classificação Git de P3/P5 reconciliada; integração ainda não iniciada.
-Próxima atividade: `ARGOS-HOM-00-INTEGRATION-FOUNDATION`, planejada e sem
-autorização de execução. Ver continuidade §20.48. As seções anteriores
-preservam snapshots históricos.
+Estado corrente ARGOS-HOM-01: consulte a seção 96. Baseline de código
+`188afda5470e252fa8cf6fed5556a404073ee4fc` na branch
+`codex/hom-v1-integration`; checkpoint documental em
+`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`. HOM-01 permanece
+`IN_PROGRESS`: check Django aprovado, uma falha na regressão dirigida, suíte
+global inconclusiva, QA visual integrado incompleto e WIP de worktrees P3/P5
+inacessível. Publicação não pronta; HOM-02 bloqueada e sem autorização. As
+seções anteriores preservam snapshots históricos.
 
 ## UI-V2-P1 — seleção visual e fechamento (2026-09-27)
 
@@ -5482,3 +5485,68 @@ restrita à presença/apresentação do botão e à validação de permissões r
 ela não comprova envio de arquivo pelo navegador, responsividade ou foco de
 teclado. Nenhum segredo foi incluído neste registro. O provisionamento não foi
 repetido; código e permissões existentes foram preservados.
+
+## 96. ARGOS-HOM-01-FINAL-BASELINE-CHECKPOINT (2026-10-11)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = ARGOS-HOM-01-FINAL-BASELINE-CHECKPOINT
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_STATUS = COMPLETED / DOCUMENTARY CHECKPOINT PARTIAL
+PROJECT_STATE_UPDATE = PASS
+BRANCH = codex/hom-v1-integration
+START_HEAD = 188afda5470e252fa8cf6fed5556a404073ee4fc
+CODE_BASELINE_COMMIT = 188afda5470e252fa8cf6fed5556a404073ee4fc
+DOCUMENT_CHECKPOINT_COMMIT = to be filled after commit
+BRANCH_UPSTREAM = NONE
+LOCAL_REMOTE_TRACKING_DIVERGENCE = origin/master ahead 0 / behind 9
+LOCAL_ORIGIN_HOM_REF = NOT FOUND
+LIVE_REMOTE_LOOKUP = BLOCKED / DNS could not resolve github.com
+WORKTREE_BEFORE_DOCS = CLEAN
+STAGING_BEFORE_DOCS = EMPTY
+MANAGE_PY_CHECK = PASS
+TARGETED_REGRESSION = 405 PASS / 1 FAIL of 406
+TARGETED_FAILURE = cameras.test_governanca_views.GovernancaViewsPermissoesTests.test_dashboard_exibe_situacoes_completude_e_ips_duplicados / expected singular "IP duplicado", rendered "IPs duplicados"
+GLOBAL_SUITE = INCONCLUSIVE / stopped after two failure markers and no active Python process; no final summary
+GIT_DIFF_CHECK = PASS before docs; re-run after checkpoint edits
+QA_SECURITY_REVIEW = PASS / launcher static review, operational provisioning tests, and read-only local DB validation; exact seven permissions; non-admin; no secret read; no provisioning repeated
+CAMERA_DETAIL_USER_APPROVAL = APPROVED / recovered composition; no viewport scope inferred
+CAMERA_CREATE_EDIT_USER_APPROVAL = APPROVED / integrated composition; no viewport scope inferred
+UPLOAD_BUTTON_USER_APPROVAL = APPROVED / button presentation only; browser submission NOT_VERIFIED
+DASHBOARD_VISUAL_QA = NOT_VERIFIED / functional finding open
+INVENTORY_VISUAL_QA = NOT_VERIFIED / reference approval conflict open
+QUICK_DETAIL_VISUAL_QA = NOT_VERIFIED / protected; reference screenshot missing
+SHELL_VISUAL_QA = NOT_VERIFIED / reference exists
+RESPONSIVE_QA = NOT_VERIFIED
+KEYBOARD_FOCUS_QA = NOT_VERIFIED
+VISUAL_MANIFEST = docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md, §6
+EVIDENCE_STATUS = reference artifacts indexed; no integrated screenshots captured
+APPROVED_FIXES_RECONCILED = PARTIAL / identified versioned sources; P3-D forms selectively integrated; V01–V10 mapping and external WIP UNVERIFIED
+MISSING_APPROVED_FIXES = NONE PROVEN LOST; V01–V10 AND UNCOMMITTED EXTERNAL WIP UNVERIFIED
+WORKTREES_RECONCILED = PARTIAL / P3/P5 worktree directories denied by host; Git refs preserved
+TECHNICAL_GATE = FAIL / 1 directed functional test failure; global suite inconclusive
+VISUAL_GATE = BLOCKED / integrated render, comparisons, responsive and keyboard/focus evidence pending
+DOCUMENTATION_GATE = PASS after authorized documentation commit
+GIT_RECONCILIATION_GATE = PARTIAL / external WIP inaccessible
+PUBLISH_READY = NO / no upstream; 9 commits ahead of local origin/master ref; live remote lookup blocked by DNS
+HOM01_CLOSURE_READINESS = FAIL / HOM-01 remains IN_PROGRESS
+BRANCH_CREATION_GATE = BLOCKED_BY_DEFAULT / ARGOS-RECONCILE-BEFORE-BRANCH approved and recorded in authority §13
+HOM02_START_AUTHORIZATION = NOT_GRANTED
+OPEN_FINDINGS = dashboard text contract test mismatch; full suite incomplete; external worktree WIP unknown; visual QA incomplete
+OPEN_BLOCKERS = functional regression; integrated rendered evidence; P3 inventory adjudication; Quick Detail reference; remote publication destination
+NEXT_ACTIVITY = HOM-01 finding resolution and remaining visual QA, separately authorized
+CODE_CHANGED = NO
+MIGRATIONS_CHANGED = NO
+NEW_BRANCH = NO
+DOCUMENTATION_COMMIT = AUTHORIZED / pending SHA
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+```
+
+O checkpoint completo e o manifesto estão em
+`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`. A política de branch está
+na authority `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`, §13.
+O roteiro de captura humana está no README do diretório de evidências HOM-01.
+Este checkpoint conclui somente a atividade documental; não declara HOM-01
+fechada, não autoriza publicação e não inicia HOM-02.

@@ -1405,3 +1405,27 @@ CODE_AND_PERMISSIONS = PRESERVED
 HOM_01_STATUS = IN_PROGRESS
 HOMOLOGATION_GATE = BLOCKED
 ```
+
+## 63. ARGOS-HOM-01-FINAL-BASELINE-CHECKPOINT (2026-10-11)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md` | Baseline integrada, classificação Git, gates, aceite visual e manifesto | CURRENT / `188afda`; HOM-01 remains IN_PROGRESS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §96 | Snapshot técnico e próximos gates | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.59 | Handoff para retomada | CURRENT / publication and HOM-02 blocked |
+| `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`, §13 | Política `ARGOS-RECONCILE-BEFORE-BRANCH` | CANONICAL / user approved; default branch creation blocked |
+| `docs/prototype/ui-v2/evidence/hom-01-visual-qa-2026-10-11/README.md` | Runbook e limitações de captura humana | CURRENT / integrated screenshots pending |
+
+```text
+ACTIVITY = ARGOS-HOM-01-FINAL-BASELINE-CHECKPOINT
+CODE_BASELINE = 188afda5470e252fa8cf6fed5556a404073ee4fc
+DOCUMENT_CHECKPOINT_COMMIT = pending commit
+TECHNICAL_GATE = FAIL / directed suites 405/406, global run inconclusive
+VISUAL_GATE = BLOCKED / partial human approvals, integrated evidence pending
+GIT_RECONCILIATION_GATE = PARTIAL / external worktree WIP inaccessible
+PUBLISH_READY = NO
+LIVE_REMOTE_LOOKUP = BLOCKED / DNS
+HOM01_STATUS = IN_PROGRESS
+HOM02_START_AUTHORIZATION = NOT_GRANTED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §96
+```

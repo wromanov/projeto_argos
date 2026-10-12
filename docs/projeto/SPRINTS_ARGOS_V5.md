@@ -600,7 +600,7 @@ IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_ACTIVITY
 ### HOM-01 — Finalização UI V2
 
 ```text
-STATUS = BLOCKED / P3 AND P5 CANONICAL INTEGRATION NOT PROVEN
+STATUS = IN_PROGRESS / SELECTIVE BASELINE INTEGRATED; CLOSURE GATES OPEN
 BLOCKING = YES
 ```
 
@@ -615,12 +615,15 @@ BLOCKING = YES
   existentes ou fechamento explícito da dependência. HOM-01 e HOM-02 podem
   avançar parcialmente em paralelo depois da definição das interfaces e do
   baseline de integração. Não introduzir comportamento ou endpoint fictício.
-- **Estado comprovado:** UI-V2-P0/P1/P2 e P3-0 têm registros de fechamento; o
-  master do coverage ainda mostra superfícies como `PLANNED`, enquanto branches
-  de família e P5 têm entregas próprias. O estado do runtime dessas telas na
-  baseline canônica permanece NÃO COMPROVADO. O UI P5 source branch
-  `codex/ui-v2-p5-production` e `codex/p5-camera-detail-production-conformance`
-  não devem ser tratados como integrados sem diff e gate.
+- **Estado comprovado em 2026-10-11:** o baseline integrado é
+  `codex/hom-v1-integration` em `188afda5470e252fa8cf6fed5556a404073ee4fc`;
+  Shell, Dashboard, Inventário, Camera Detail e Camera Create/Edit estão na
+  árvore integrada e possuem regressão funcional dirigida, com um finding de
+  texto Dashboard aberto. Aceites humanos de Camera Detail, Create/Edit e do
+  botão de upload têm escopo limitado no checkpoint
+  `docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`. Design QA integrado,
+  responsividade, teclado/foco e reconciliação de WIP externo seguem pendentes.
+  P3/P5 permanecem fontes de referência seletivas; não fazer merge integral.
 - **Evidências de conclusão:** refs/código integrados no baseline escolhido;
   validação funcional do Django para os fluxos iniciais; evidências de QA visual
   e acessibilidade nos viewports contratados; estados de coverage atualizados;

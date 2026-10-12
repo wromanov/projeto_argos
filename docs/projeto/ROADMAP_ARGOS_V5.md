@@ -1649,7 +1649,16 @@ aprovada é concluir o escopo inicial de UI, implementar importação XLSX,
 preparar uma VM isolada, realizar cargas controladas e abrir homologação
 progressiva. Homologação não equivale a produção.
 
-Baseline local: `codex/mon-runtime-v1-implementation`, HEAD
+Atualização de baseline em `ARGOS-HOM-01-FINAL-BASELINE-CHECKPOINT`:
+`codex/hom-v1-integration` em `188afda5470e252fa8cf6fed5556a404073ee4fc`,
+nove commits à frente da ref local `origin/master`, sem upstream local. A
+consulta ao remoto real falhou por DNS; existência e estado atuais da branch
+remota permanecem `UNVERIFIED`.
+P3/P5 seguem como fontes seletivas; o worktree não versionado permanece
+`UNVERIFIED` porque os diretórios históricos não estão acessíveis neste host.
+Consulte `HOM_01_UI_V2_BASELINE_CHECKPOINT.md` para a classificação detalhada.
+
+Snapshot histórico de HOM-00 antes da integração UI: `codex/mon-runtime-v1-implementation`, HEAD
 `4ff2a9260a438a61f3a23e753dfdc3d5c166424a`. WIP documental e dois arquivos não
 rastreados foram preservados. Os SHAs de P3 root (`e381df04…`), P5 production
 (`4676a32c…`) e P5 Camera Detail conformance (`4a2d40da…`) foram conferidos nas
@@ -1664,8 +1673,8 @@ da integração, sem merge nesta atividade.
 
 | Marco | Estado verificado | Blocking para HOM-04 | Direção |
 |---|---|---:|---|
-| HOM-00 — Preparação da integração | Baseline e status P3/P5 reconciliados documentalmente; integração ainda não iniciada | Sim | Resolver adjudicação de compatibilidade/DS, preparar branch isolada e critérios de integração |
-| HOM-01 — Finalização UI V2 | Bloqueado; integração e Design QA obrigatório pendentes | Sim | Integrar seletivamente P5, preservar P3 como referência e validar regressões e Design QA |
+| HOM-00 — Preparação da integração | Preparação documental concluída; baseline HOM-01 estabelecida em `188afda` | Sim | Acompanhar a resolução dos gates HOM-01 antes da HOM-02 |
+| HOM-01 — Finalização UI V2 | Em andamento; baseline seletiva em `188afda`; regressão funcional e Design QA ainda abertos | Sim | Resolver finding da regressão, reconciliar WIP inacessível, concluir evidências e Design QA integrados |
 | HOM-02 — Importação XLSX de inventário | Não implementada; formato final depende da inspeção do schema alvo | Sim | Aprovar modelo XLSX e implementar prévia, confirmação e transação `ALL_OR_NOTHING` em atividade autorizada própria |
 | HOM-03 — Preparação da VM | Não iniciada / estado da VM não comprovado | Sim | Isolar configuração, banco, migrations, acesso, execução do worker e recuperação |
 | HOM-04 — Abertura da homologação progressiva | Não pronta / gate definido no mapa de sprints | Marco | Abrir somente após todos os bloqueadores de entrada passarem |
@@ -1683,10 +1692,14 @@ Inventário/UI.
 
 Detalhes de objetivos, escopo mínimo, dependências, evidências, critérios de
 aceite, blocking e reaproveitamento constam em
-[`SPRINTS_ARGOS_V5.md`](SPRINTS_ARGOS_V5.md), seção 20. `DS 2.4.0` é somente a
+[`SPRINTS_ARGOS_V5.md`](SPRINTS_ARGOS_V5.md), seção 20. O checkpoint HOM-01
+atual está em `HOM_01_UI_V2_BASELINE_CHECKPOINT.md`; ele não fecha a fase.
+`DS 2.4.0` é somente a
 versão-alvo recomendada da fonte P5, condicionada a adjudicação canônica,
 compatibilidade e Design QA; o baseline deste checkout é `DS 2.0.2`. O Design
-QA é gate obrigatório de HOM-01, ainda não executado. A regra de imagem do Quick
+QA é gate obrigatório de HOM-01 e segue incompleto: há aceites humanos
+restritos, mas faltam capturas integradas, responsividade e foco/teclado. A
+regra de imagem do Quick
 Detail está reconciliada no contrato de imagem, seção 26; não altera
 `LATEST_CAMERA_CAPTURE` técnico. Importação XLSX é requisito para homologação,
 sem coluna de ID ARGOS; template e schema continuam pendentes de verificação.
@@ -1696,8 +1709,8 @@ implementação.
 ```text
 ROADMAP_REBASE = CURRENT / DOCUMENTATION_ONLY
 HOMOLOGATION = PROGRESSIVE / NOT_PRODUCTION
-HOM_00 = DOCUMENTED / INTEGRATION_FOUNDATION_PENDING
-HOM_01 = BLOCKED / CANONICAL_UI_INTEGRATION_NOT_PROVEN
+HOM_00 = DOCUMENTED / BASELINE_ESTABLISHED; HISTORICAL_PRE_INTEGRATION_SNAPSHOT_RETAINED
+HOM_01 = IN_PROGRESS / SELECTIVE_BASELINE_188afda / REGRESSION_AND_DESIGN_QA_OPEN
 HOM_02 = NOT_IMPLEMENTED / XLSX_SCHEMA_NOT_HOMOLOGATED
 HOM_03 = NOT_STARTED / VM_READINESS_UNVERIFIED
 HOM_04 = BLOCKED / PRE_HOMOLOGATION_GATES_OPEN

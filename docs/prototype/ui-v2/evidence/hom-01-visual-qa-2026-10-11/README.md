@@ -282,3 +282,18 @@ the restricted local Visual QA identity, then capture each named route at
 approved references and rendered pages separately. For Inventory, obtain
 human adjudication of the conflicting P3 approval record before treating its
 reference as canonical. Do not use production credentials or sensitive data.
+
+## Adendo de aceite humano e baseline — 2026-10-11
+
+O usuário aprovou a composição integrada recuperada da Camera Detail e o
+resultado integrado de Camera Create/Edit. Esses aceites não registram viewport
+ou estado inspecionado e não aprovam os quatro tamanhos. O usuário também
+aprovou a apresentação do botão de upload na conta QA operacional; isso não
+comprova submissão interativa de arquivo. Permanecem sem aprovação visual
+integrada documentada Shell, Dashboard, Inventário e Quick Detail aberto.
+
+O manifesto e o resultado de reconciliação estão em
+`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`. As 18 referências P3-D
+existentes foram mantidas no lugar e não foram duplicadas. Este adendo não
+substitui os registros históricos de tentativas de captura nem altera seus
+resultados.

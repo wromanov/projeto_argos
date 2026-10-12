@@ -10,12 +10,15 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-HOM-00-CONTINUITY-RECOVERY-01: consultar PROJECT_STATE seção 85 e seção 20.49
-abaixo. O destino corrente é `codex/hom-v1-integration` em
-`4ff2a9260a438a61f3a23e753dfdc3d5c166424a`; a origem Runtime V1 permanece
-preservada. P3/P5 seguem sem integração. Próxima atividade planejada:
-`ARGOS-HOM-00-INTEGRATION-FOUNDATION`,
-sem autorização de execução.
+RETOMADA ATUAL ARGOS-HOM-01-FINAL-BASELINE-CHECKPOINT: consultar
+`PROJECT_STATE.md` seção 96 e o checkpoint
+`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`. O destino é
+`codex/hom-v1-integration`, baseline de código
+`188afda5470e252fa8cf6fed5556a404073ee4fc`. HOM-01 segue `IN_PROGRESS` por
+uma falha de teste, Design QA integrado pendente e worktrees históricos
+inacessíveis; não publicar nem iniciar HOM-02. Aplicar a política
+`ARGOS-RECONCILE-BEFORE-BRANCH` da authority
+`docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`.
 
 ## UI-V2-P1 — seleção visual e fechamento (2026-09-27)
 
@@ -2351,3 +2354,17 @@ do botão de upload após validar as permissões. A confirmação é evidência
 relatada pelo usuário e tem escopo visual limitado ao botão. Não registra
 senha. Envio de arquivo no navegador, responsividade e foco de teclado seguem
 pendentes; não inferir aprovação desses critérios nem repetir o provisionamento.
+
+### 20.59 ARGOS-HOM-01 final baseline checkpoint (2026-10-11)
+
+Consultar `PROJECT_STATE.md` §96 e
+`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`. Código-base:
+`188afda5470e252fa8cf6fed5556a404073ee4fc`. O check Django passou; a
+regressão direcionada tem uma falha de contrato de texto no Dashboard e a
+suíte global ficou inconclusiva. Camera Detail e Create/Edit têm aceite humano
+da composição integrada, sem aprovação de viewports inferida. O botão de
+upload foi aprovado somente quanto à apresentação. Capturas integradas,
+responsividade e teclado/foco continuam pendentes. P3/P5 refs foram
+preservadas; WIP não versionado nos worktrees externos segue `UNVERIFIED`
+porque o host negou acesso. `PUBLISH_READY = NO`; HOM-02 não autorizada.
+Aplicar `ARGOS-RECONCILE-BEFORE-BRANCH` na authority de continuidade, §13.
