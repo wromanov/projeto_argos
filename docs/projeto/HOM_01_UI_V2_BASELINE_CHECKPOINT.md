@@ -7,7 +7,7 @@ BASELINE_NAME = ARGOS_HOM_01_UI_V2_INTEGRATED_BASELINE
 BASELINE_BRANCH = codex/hom-v1-integration
 BASELINE_CODE_COMMIT = 188afda5470e252fa8cf6fed5556a404073ee4fc
 PREVIOUS_DOCUMENT_CHECKPOINT = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
-DOCUMENT_CHECKPOINT_COMMIT = PENDING / fill after authorized documentation commit
+DOCUMENT_CHECKPOINT_COMMIT = 6e3550077bf682a11889f3a554875c62d115ee00 / primary checkpoint commit
 CANONICAL_DS_VERSION = 2.0.2
 WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
 CHECK_DATE = 2026-10-11 / America-Sao_Paulo
@@ -25,13 +25,19 @@ ref `origin/master` local. A branch não tem upstream nem remote-tracking ref
 por DNS; o estado remoto atual não foi confirmado. O worktree e o staging
 estavam limpos antes deste checkpoint.
 
+O commit documental principal é `6e3550077bf682a11889f3a554875c62d115ee00`.
+Este follow-up registra sua identidade. A ref local `origin/master` fica 10
+commits atrás de `6e35500` e ficará 11 atrás após este commit de metadados;
+ambos os valores são comparações locais, não confirmação do estado remoto ao
+vivo.
+
 | Gate | Resultado em 2026-10-11 | Evidência / pendência |
 |---|---|---|
 | `TECHNICAL_GATE` | `FAIL / PARTIAL` | `manage.py check` PASS; regressões dirigidas 405/406, com falha em `cameras.test_governanca_views.GovernancaViewsPermissoesTests.test_dashboard_exibe_situacoes_completude_e_ips_duplicados`; suíte global interrompida sem resumo após duas falhas sinalizadas. |
 | `VISUAL_GATE` | `BLOCKED / PARTIAL APPROVALS` | Aceites humanos restritos abaixo; sem renderização integrada arquivada, comparação suficiente ou QA integrado nos quatro viewports. |
 | `DOCUMENTATION_GATE` | `PASS` após commit deste checkpoint | Este documento, `PROJECT_STATE.md`, continuidade, mapa de documentos e authority de branches atualizados. |
 | `GIT_RECONCILIATION_GATE` | `PARTIAL / UNVERIFIED WIP` | Ancestry e refs Git examinados; acesso de leitura aos diretórios de worktree P3/P5 negado pelo host. Não houve merge ou cherry-pick. |
-| `PUBLICATION_GATE` | `NO` | Não há upstream/ref remota HOM local; branch está 9 commits à frente da ref local `origin/master`. Consulta remota ao vivo falhou por DNS e WIP externo está UNVERIFIED. Nenhum push executado. |
+| `PUBLICATION_GATE` | `NO` | Sem upstream/ref remota HOM local; `6e35500` está 10 commits à frente da ref local `origin/master`; após este follow-up serão 11. Consulta remota ao vivo falhou por DNS e WIP externo está UNVERIFIED. Nenhum push executado. |
 
 ```text
 HOM01_STATUS = IN_PROGRESS
