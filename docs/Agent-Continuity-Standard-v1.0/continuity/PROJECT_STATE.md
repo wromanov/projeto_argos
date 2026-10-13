@@ -6228,10 +6228,11 @@ DEPLOY = NO
 DASHBOARD_V7_VISUAL_QA = PENDING
 HOM01_STATUS = IN_PROGRESS
 HOM02_START = BLOCKED
-COMMIT = THIS_DOCUMENTATION_COMMIT / resolve with git after commit
-PUSH = AUTHORIZED NORMAL PUSH / same branch
-LOCAL_REMOTE_SHA_MATCH = PENDING / verify after push
-WORKTREE_CLEAN = PENDING / verify after push
+COMMIT = 48756c2057d58440992f86faaaf7293ffec44c5e / initial closure record
+FINAL_DOCUMENTATION_COMMIT = THIS_VERIFICATION_RECORD / resolve with Git
+PUSH = PASS / normal push on the same branch
+LOCAL_REMOTE_SHA_MATCH = YES / verified after publication
+WORKTREE_CLEAN = YES / verified after publication
 ```
 
 A recuperação técnica no computador do trabalho foi concluída antes desta
