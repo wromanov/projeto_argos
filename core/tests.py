@@ -27,9 +27,51 @@ class CoreTests(TestCase):
         self.client.force_login(self.user); response=self.client.get("/"); [self.assertNotContains(response,nome) for nome in ("Eventos","Credenciais","Snapshots","RTSP")]
     def test_dashboard_retorna_200_com_permissao(self): self.login_grupo("Monitoramento ARGOS"); self.assertEqual(self.client.get("/dashboard/").status_code,200)
     def test_dashboard_exibe_contadores_de_camera(self): self.login_grupo("Monitoramento ARGOS"); response=self.client.get("/dashboard/"); self.assertContains(response,"Total"); self.assertContains(response,"Produção")
-    def test_dashboard_exibe_status_de_monitoramento(self): self.login_grupo("Monitoramento ARGOS"); response=self.client.get("/dashboard/"); [self.assertContains(response, label) for label in ("Monitoramento técnico", "Online", "Offline", "Unknown", "Não monitoradas")]
+    def test_dashboard_exibe_status_de_monitoramento(self): self.login_grupo("Monitoramento ARGOS"); response=self.client.get("/dashboard/"); [self.assertContains(response, label) for label in ("Monitoramento e completude", "Online", "Offline", "Desconhecido", "Não monitorada", "Estados técnicos das câmeras")]; self.assertEqual(response.context["monitoring_state_labels"]["OUT_OF_SCOPE"], "Não monitorada")
     def test_dashboard_exibe_atividades_recentes(self): self.login_grupo("Monitoramento ARGOS"); self.assertContains(self.client.get("/dashboard/"),"Inspeção")
     def test_dashboard_exibe_cameras_atualizadas(self): self.login_grupo("Monitoramento ARGOS"); self.assertContains(self.client.get("/dashboard/"),"CAM-PORTAL")
+    def test_dashboard_conta_cameras_afetadas_por_ip_duplicado(self):
+        self.login_grupo("Monitoramento ARGOS")
+        Camera.objects.create(nome="CAM-PORTAL-2", fabricante="Axis", modelo="M2", ip="10.1.1.1", mascara_subrede="255.255.255.0", vlan=100)
+
+        response = self.client.get(reverse("core:dashboard"))
+
+        self.assertEqual(response.context["cameras_com_ip_duplicado"], 2)
+        self.assertContains(response, "Câmeras com IP duplicado")
+    def test_dashboard_renderiza_estado_vazio(self):
+        self.login_grupo("Monitoramento ARGOS")
+        self.atividade.delete()
+        Camera.objects.all().delete()
+
+        response = self.client.get(reverse("core:dashboard"))
+
+        self.assertEqual(response.context["total_cameras"], 0)
+        self.assertContains(response, "Nenhuma atividade registrada.")
+        self.assertContains(response, "Nenhuma câmera cadastrada.")
+    def test_dashboard_preserva_nome_longo_nas_listas_recentes(self):
+        self.login_grupo("Monitoramento ARGOS")
+        nome_longo = "CÂMERA QA — " + "TERMINAL LESTE — ÁREA DE CONTROLE " * 3
+        self.camera.nome = nome_longo[:150]
+        self.camera.save(update_fields=["nome"])
+
+        response = self.client.get(reverse("core:dashboard"))
+
+        self.assertContains(response, nome_longo[:150])
+    def test_dashboard_renderiza_agregados_com_2300_cameras_sinteticas(self):
+        self.login_grupo("Monitoramento ARGOS")
+        Camera.objects.bulk_create(
+            [
+                Camera(nome=f"CAM-ESCALA-{index:04}", fabricante="QA fictício", modelo="ESCALA")
+                for index in range(2299)
+            ],
+            batch_size=500,
+        )
+
+        response = self.client.get(reverse("core:dashboard"))
+
+        self.assertEqual(response.context["total_cameras"], 2300)
+        self.assertEqual(len(response.context["cameras_recentes"]), 5)
+        self.assertContains(response, "Câmeras exibidas <strong>5</strong>")
     def test_monitoramento_possui_acesso_somente_leitura(self):
         self.login_grupo("Monitoramento ARGOS"); self.assertEqual(self.client.get(reverse("cameras:lista")).status_code,200); self.assertEqual(self.client.get(reverse("cameras:detalhe",args=[self.camera.pk])).status_code,200); self.assertEqual(self.client.get(reverse("cameras:criar")).status_code,403); self.assertEqual(self.client.get(reverse("cameras:editar",args=[self.camera.pk])).status_code,403); self.assertEqual(self.client.post(reverse("cameras:desativar",args=[self.camera.pk]), {"motivo": "Motivo operacional valido"}).status_code,403); self.assertEqual(self.client.get(reverse("cameras:criar_atividade",args=[self.camera.pk])).status_code,403)
     def test_operador_possui_acesso_operacional(self):

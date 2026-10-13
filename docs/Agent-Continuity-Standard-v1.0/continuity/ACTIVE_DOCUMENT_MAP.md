@@ -11,8 +11,8 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; CAM-INT-03 post-publication reconciliation section 60 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; CAM-INT-03 post-publication reconciliation section 20.27 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; HOM-01 Dashboard V7 fidelity round 2 approval section 105 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; HOM-01 Dashboard V7 fidelity round 2 approval section 20.67 |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; CAM-INT-03 post-publication reconciliation section 32; UI V2 authority mapped in section 16 |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
@@ -1428,4 +1428,90 @@ LIVE_REMOTE_LOOKUP = BLOCKED / DNS
 HOM01_STATUS = IN_PROGRESS
 HOM02_START_AUTHORIZATION = NOT_GRANTED
 PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §96
+```
+
+## 67. HOM-01-DASHBOARD-V7-VISUAL-CONFORMANCE-RECOVERY (2026-10-12)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §103 | Causas, alterações, validação e estado de aceite | CURRENT / visual QA partial; human approval pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.65 | Retomada e limites da atividade | CURRENT / HOM-01 remains IN_PROGRESS |
+| `core/templates/core/dashboard.html` | Composição da atividade recente em uma superfície | CURRENT / two internal panels retained |
+| `static/css/dashboard-v7.css` | Geometria responsiva do Dashboard V7 | CURRENT / desktop and mobile matrix inspected |
+| `core/test_frontend.py` | Asserções estruturais da atividade recente | CURRENT / included in 88 passing targeted tests |
+
+```text
+ACTIVITY = HOM-01-DASHBOARD-V7-VISUAL-CONFORMANCE-RECOVERY
+VIEWPORTS = 1920x1080; 1440x900; 1366x768; 390x844
+DJANGO_CHECK = PASS
+TARGETED_TESTS = 88 PASS
+HUMAN_VISUAL_APPROVAL = PENDING
+ACTIVITY_COMPLETE = NO
+HOM_01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+PROJECT_STATE_UPDATE = PASS / section 103
+```
+
+## 68. HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2 (2026-10-12)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §104 | Findings, alterações, capturas e gates | CURRENT / integrated captures and tests recorded; human approval pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.66 | Handoff da rodada 2 | CURRENT / HOM-01 remains IN_PROGRESS |
+| `docs/prototype/new_ui_dashboard/handoff/VISUAL_CONTRACT_V7.md`, §4 | Precedência das nomenclaturas do Dashboard | CANONICAL / later approved title protected |
+| `C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_1440x900.png` | Captura principal integrada desktop | CURRENT / exact 1440x900, DPR 1, zoom 100% |
+| `C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_1440x900_ATIVIDADE.jpg` | Captura suplementar da atividade desktop | CURRENT / 1440x900; all five camera rows and activity retained |
+| `C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_390x844.png` | Captura principal integrada mobile | CURRENT / exact 390x844, DPR 1, zoom 100%, no horizontal overflow |
+| `C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_390x844_MONITORAMENTO.png` | Detalhe da faixa de frescor mobile | CURRENT / exact 390x844 |
+| `C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_390x844_ATIVIDADE.jpg` | Captura suplementar da atividade mobile | CURRENT / 375x812 crop from 390x844 viewport; all five camera rows and activity retained |
+| `C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_CADASTRO_1440x900.png` | Captura da ação e formulário de cadastro | CURRENT / 1440x900; create action visible; GET form loaded without submission |
+| `C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_LINKS_1440x900.jpg` | Captura dos links “Ver câmeras” | CURRENT / exact 1440x900; production, stock and deactivated filters |
+| `C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_LINKS_390x844.jpg` | Captura mobile dos links “Ver câmeras” | CURRENT / 375x812 crop from 390x844 viewport; all three links visible |
+| `http://127.0.0.1:8768/dashboard/` | Prévia local para revisar ação/formulário de cadastro condicionado por permissão | CURRENT / isolated cloned SQLite; original read-only QA profile preserved; no form submission |
+
+```text
+ACTIVITY = HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2
+F01_F02_F03_F05_F06_F07 = FIXED / see PROJECT_STATE §104
+F04 = PARTIAL_BY_AUTHORITY / later approved monitoring title preserved; V7 aside restored
+DJANGO_CHECK = PASS
+TARGETED_TESTS = 88 PASS
+VISUAL_CAPTURE = PASS / integrated desktop and mobile files listed above
+PIXEL_DIFF = NOT_PRODUCED
+FULL_PAGE_CAPTURE = NOT_PRODUCED
+ROLE_ROUTING = ROOT: analysis/diagnosis/reconciliation/review; MECHANICAL: code; SCRIBE: documentary materialization
+RUNTIME_REVIEW = PASS / old :8767 listener stopped; new :8768 preview showed “Nova Câmera” and opened the registration form without submission; five synthetic cameras retained
+CADASTRO_CAPTURE = CAPTURED / DASHBOARD_CADASTRO_1440x900.png; viewport 1440x900; no overflow; no submission
+QUICK_LINKS = PASS / three auxiliary “Ver câmeras” links restored for PRODUCAO, ESTOQUE and DESATIVADA; numeric links/values retained; no clipping or overflow at desktop/mobile
+HUMAN_VISUAL_APPROVAL = PENDING
+ACTIVITY_COMPLETE = NO
+HOM_01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+PROJECT_STATE_UPDATE = PASS / section 104
+```
+
+## 69. HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2 — aprovação e stage/commit autorizado (2026-10-12)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §105 | Registro da aprovação, encerramento limitado e autorização Git | CURRENT / bounded Dashboard activity approved; Git operation pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.67 | Handoff da aprovação e limites do commit autorizado | CURRENT / HOM-01 remains IN_PROGRESS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`, §69 | Este mapa | CURRENT |
+| `C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_1440x900.png` | Composição principal integrada | APPROVED / composition-level capture |
+| `C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_CADASTRO_1440x900.png` | Ação Nova Câmera e formulário GET | APPROVED / shown without submission |
+| `C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_LINKS_1440x900.jpg` | Links de Produção, Estoque e Desativadas | APPROVED / category shortcuts visible |
+| `C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_TOTAL_REGISTRADO.jpg` | Caption e contadores do Inventário | APPROVED / support text and values visible |
+| `C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_390x844.png` | Composição principal mobile | Included in composition-level presentation; individual viewport acceptance not inferred |
+
+```text
+ACTIVITY = HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2
+USER_APPROVAL = APPROVED / “perfeito autorizo stage e commit”
+APPROVAL_SCOPE = Dashboard V7 integrated composition, latest captures; not independent approval of every requested viewport
+DASHBOARD_ACTIVITY_COMPLETE = YES / bounded activity
+HOM_01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+COMMIT_AUTHORIZED = YES
+COMMIT_STAGE = PREPARED / root to inspect bounded index and pre-commit Git snapshot
+COMMIT_REFERENCE = PENDING / resolve actual commit using Git after execution
+PUSH_AUTHORIZED = NO
+PROJECT_STATE_UPDATE = PASS / section 105
 ```

@@ -5,6 +5,7 @@ from django.shortcuts import render
 from cameras.governanca import q_camera_completa, q_camera_incompleta
 from cameras.models import AtividadeCamera, Camera, SubstituicaoCamera
 from cameras.monitoramento.read_service import MonitoringReadService
+from cameras.monitoramento.presentation import MONITORING_STATE_LABELS
 
 
 def inicio(request):
@@ -17,7 +18,7 @@ def inicio(request):
 def dashboard(request):
     cameras = Camera.objects.all()
     monitoring = MonitoringReadService().aggregate(cameras)
-    ips_duplicados = cameras.exclude(ip__isnull=True).exclude(ip="").values("ip").annotate(total=Count("pk")).filter(total__gt=1)
+    ips_duplicados = cameras.exclude(ip__isnull=True).order_by().values("ip").annotate(total=Count("pk")).filter(total__gt=1)
     cameras_com_ip_duplicado = sum(item["total"] for item in ips_duplicados)
     contexto = {
         "total_cameras": cameras.count(),
@@ -27,6 +28,7 @@ def dashboard(request):
         "cameras_completas": cameras.filter(q_camera_completa()).count(),
         "cameras_incompletas": cameras.filter(q_camera_incompleta()).count(),
         "monitoring": monitoring,
+        "monitoring_state_labels": dict(MONITORING_STATE_LABELS),
         "cameras_com_ip_duplicado": cameras_com_ip_duplicado,
         "total_substituicoes": SubstituicaoCamera.objects.count(),
         "total_atividades": AtividadeCamera.objects.count(),

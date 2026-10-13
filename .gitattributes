@@ -1,0 +1,2 @@
+# Preserve the approved V7 reference package and its checksums.
+docs/prototype/new_ui_dashboard/** -text

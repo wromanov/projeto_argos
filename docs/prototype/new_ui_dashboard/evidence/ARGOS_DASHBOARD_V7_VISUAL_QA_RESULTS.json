@@ -1,0 +1,258 @@
+[
+  {
+    "viewport": 1920,
+    "fixture": "default",
+    "scroll": 1920,
+    "body": 1920,
+    "total": "1",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 1920,
+    "fixture": "scale",
+    "scroll": 1920,
+    "body": 1920,
+    "total": "2.300",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 1920,
+    "fixture": "long",
+    "scroll": 1920,
+    "body": 1920,
+    "total": "2.300",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 1920,
+    "fixture": "empty",
+    "scroll": 1920,
+    "body": 1920,
+    "total": "0",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 1440,
+    "fixture": "default",
+    "scroll": 1440,
+    "body": 1440,
+    "total": "1",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 1440,
+    "fixture": "scale",
+    "scroll": 1440,
+    "body": 1440,
+    "total": "2.300",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 1440,
+    "fixture": "long",
+    "scroll": 1440,
+    "body": 1440,
+    "total": "2.300",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 1440,
+    "fixture": "empty",
+    "scroll": 1440,
+    "body": 1440,
+    "total": "0",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 1366,
+    "fixture": "default",
+    "scroll": 1366,
+    "body": 1366,
+    "total": "1",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 1366,
+    "fixture": "scale",
+    "scroll": 1366,
+    "body": 1366,
+    "total": "2.300",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 1366,
+    "fixture": "long",
+    "scroll": 1366,
+    "body": 1366,
+    "total": "2.300",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 1366,
+    "fixture": "empty",
+    "scroll": 1366,
+    "body": 1366,
+    "total": "0",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 390,
+    "fixture": "default",
+    "scroll": 390,
+    "body": 390,
+    "total": "1",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 390,
+    "fixture": "scale",
+    "scroll": 390,
+    "body": 390,
+    "total": "2.300",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 390,
+    "fixture": "long",
+    "scroll": 390,
+    "body": 390,
+    "total": "2.300",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  },
+  {
+    "viewport": 390,
+    "fixture": "empty",
+    "scroll": 390,
+    "body": 390,
+    "total": "0",
+    "titles": [
+      "Incompletos",
+      "IPs duplicados"
+    ],
+    "missing": true,
+    "focusBadge": "Desconhecido",
+    "sidebarActive": "Dashboard",
+    "pageErrors": [],
+    "horizontalOverflow": false
+  }
+]

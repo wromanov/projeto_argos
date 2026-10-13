@@ -10,15 +10,39 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-HOM-01-FINAL-BASELINE-CHECKPOINT: consultar
-`PROJECT_STATE.md` seção 96 e o checkpoint
-`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`. O destino é
-`codex/hom-v1-integration`, baseline de código
-`188afda5470e252fa8cf6fed5556a404073ee4fc`. HOM-01 segue `IN_PROGRESS` por
-uma falha de teste, Design QA integrado pendente e worktrees históricos
-inacessíveis; não publicar nem iniciar HOM-02. Aplicar a política
-`ARGOS-RECONCILE-BEFORE-BRANCH` da authority
-`docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`.
+RETOMADA ATUAL HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2: consultar
+`PROJECT_STATE.md` §105 (aprovação e stage/commit autorizado), §104 (evidências
+e follow-ups) e §103 (recuperação-base), além do contrato em
+`docs/prototype/new_ui_dashboard/handoff/VISUAL_CONTRACT_V7.md` §4. Branch
+`codex/hom-v1-integration`, HEAD antes da etapa autorizada
+`11dcf7db0095416c125f8863ab89a2eef7fb278f`. O usuário aprovou a composição
+integrada do Dashboard com “perfeito autorizo stage e commit”. O aceite cobre
+a composição mostrada nas capturas mais recentes; não implica aceite individual
+de cada viewport da matriz. Stage/commit autorizados apenas para o escopo
+bounded do Dashboard, ainda aguardando snapshot e revisão do índice pelo root;
+push não autorizado. HOME-01 permanece `IN_PROGRESS`, HOM-02 bloqueada.
+
+Foram alinhados Inventário/Qualidade, restaurados textos de suporte e frescor,
+compactada Atividade, preservados os títulos protegidos pelo contrato, incluídos
+os três links “Ver câmeras”, o caption “Total registrado” e a ação “Nova Câmera”
+condicionada por permissão. Capturas e runtime local estão em `ACTIVE_DOCUMENT_MAP.md`
+§69; a prévia atual é `http://127.0.0.1:8768/dashboard/`. O ambiente QA usa banco
+SQLite clonado e dados sintéticos; as telas foram inspecionadas sem submeter
+cadastro. Não registrar credenciais, sessão ou cookies. Não declarar SHA de
+commit até confirmação pelo Git. A atividade delimitada do Dashboard está
+completa; isso não encerra HOM-01.
+
+O runtime read-only anterior em `http://127.0.0.1:8767/dashboard/` foi encerrado
+e não deixou listener. Para inspecionar os botões condicionados à permissão,
+use `http://127.0.0.1:8768/dashboard/`, servido com banco SQLite clonado e
+isolado e um segundo perfil de QA sem staff/superuser, com a permissão de
+cadastro adicionada ao grupo de leitura. O Dashboard mostrou “Nova Câmera”; a
+navegação abriu o formulário em `/cameras/nova/`, sem submissão, mantendo cinco
+câmeras sintéticas. O perfil read-only original e seus acessos foram
+preservados. Não guardar nem registrar dados de sessão ou credenciais.
+Captura `DASHBOARD_CADASTRO_1440x900.png` (1440x900) mostra o botão e o
+formulário carregado sem submissão; a prévia permanece disponível em
+`http://127.0.0.1:8768/dashboard/`. O aceite visual continua pendente.
 
 ## UI-V2-P1 — seleção visual e fechamento (2026-09-27)
 
@@ -2368,3 +2392,84 @@ responsividade e teclado/foco continuam pendentes. P3/P5 refs foram
 preservadas; WIP não versionado nos worktrees externos segue `UNVERIFIED`
 porque o host negou acesso. `PUBLISH_READY = NO`; HOM-02 não autorizada.
 Aplicar `ARGOS-RECONCILE-BEFORE-BRANCH` na authority de continuidade, §13.
+
+### 20.60 ARGOS-HOM-01-DASHBOARD-CONTRACT-RECONCILIATION (2026-10-12)
+
+Consultar `PROJECT_STATE.md` §97 e `HOM_01_UI_V2_BASELINE_CHECKPOINT.md` §9.
+O rótulo aprovado é `Câmeras com IP duplicado`: a métrica soma câmeras em
+grupos de IP repetido. A consulta foi corrigida para não filtrar todos os IPs
+válidos no SQLite; soma e regra de domínio foram preservadas. As expectativas
+legadas usam `Monitoramento e completude` e `Desconhecido`, com estado interno
+`UNKNOWN` intacto. Os 28 testes direcionados e os 937 testes globais passaram;
+o run global usou SQLite descartável e loopback local para o event loop do
+Windows. Não houve câmera real, worker operacional ou probe real. Somente o
+texto autorizado do Dashboard e a consulta técnica necessária foram alterados;
+layout, CSS, componentes e aprovações visuais anteriores foram preservados.
+Design QA humano integrado segue pendente, portanto HOM-01 continua
+`IN_PROGRESS`; HOM-02 permanece bloqueada.
+
+### 20.65 HOM-01-DASHBOARD-V7-VISUAL-CONFORMANCE-RECOVERY (2026-10-12)
+
+Consultar `PROJECT_STATE.md` §103. A recuperação corrigiu a grade desktop e o
+empilhamento mobile do overview, a hierarquia/divisores da qualidade cadastral
+e a superfície única de atividade recente. O template e o CSS são locais ao
+Dashboard; sidebar, topbar, domínio, views e consultas permaneceram intactos.
+O Django check e 88 testes direcionados passaram. A inspeção integrada cobriu
+1920x1080, 1440x900, 1366x768 e 390x844, em zoom 100%/DPR 1, sem overflow
+horizontal; as capturas foram exibidas inline nesta conversa. A QA usa a base
+temporária sintética já existente e a prévia local está em
+`http://127.0.0.1:8767/dashboard/`.
+
+O finding conhecido é a quebra em duas linhas de “Câmeras com IP duplicado”
+na coluna secundária estreita; a terminologia aprovada foi preservada. O estado
+vazio passou nos testes, mas não foi capturado no browser. Não foi produzido
+diff pixel a pixel salvo. A aprovação visual humana permanece pendente; a
+atividade não está completa, HOM-01 segue `IN_PROGRESS` e HOM-02 permanece
+bloqueada. Sem branch nova, commit, push, merge, rebase ou deploy.
+
+### 20.66 HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2 (2026-10-12)
+
+Consultar `PROJECT_STATE.md` §104 e `ACTIVE_DOCUMENT_MAP.md` §68. Nesta rodada,
+Inventário e Qualidade cadastral passaram a ter títulos e superfícies alinhados
+e alturas iguais; os três textos auxiliares do Monitoramento e a faixa inferior
+de frescor foram restaurados. Atividade recente foi compactada sem ocultar os
+cinco links de câmeras nem o registro de atividade. A convenção de meta usa
+`total_atividades` e `cameras_recentes|length` do contexto SSR.
+
+O contrato visual V7 §4 protege a nomenclatura posterior aprovada “Monitoramento
+e completude”; portanto, o título antigo “Monitoramento técnico” não foi
+reintroduzido. O aside “Estados técnicos das câmeras” foi restaurado. As
+capturas integradas estão em
+`C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/`
+para 1440x900 e 390x844. `manage.py check` e 88 testes direcionados passaram.
+Não há diff pixel a pixel; o aceite visual humano continua pendente. WIP
+preservado, sem commit ou push. A atividade não está completa, HOM-01 segue
+`IN_PROGRESS` e HOM-02 permanece bloqueada.
+
+Capturas principais são `DASHBOARD_1440x900.png` (1440x900) e
+`DASHBOARD_390x844.png` (390x844); `DASHBOARD_390x844_ATIVIDADE.jpg` mede
+375x812 e é um recorte da viewport 390x844. `DASHBOARD_390x844_MONITORAMENTO.png`
+é detalhe da faixa de frescor em 390x844. A imagem completa da página não foi
+produzida. Roteamento desta atividade: root em análise/diagnóstico/reconciliação/
+revisão, mechanical em código e scribe em materialização documental.
+
+Follow-up de links auxiliares: as capturas `DASHBOARD_LINKS_1440x900.jpg` e
+`DASHBOARD_LINKS_390x844.jpg` registram os três links “Ver câmeras” nos cartões
+de Produção, Estoque e Desativadas. A captura mobile é crop 375x812 da viewport
+390x844. Os dados e filtros de situação foram preservados; não houve mudança
+de sidebar/topbar ou submissão de formulário. `manage.py check` e os 88 testes
+direcionados passaram. A aprovação visual humana continua pendente.
+
+### 20.67 HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2 — aprovação (2026-10-12)
+
+Consultar `PROJECT_STATE.md` §105 e `ACTIVE_DOCUMENT_MAP.md` §69. O usuário
+respondeu “perfeito autorizo stage e commit”, aprovando a composição integrada
+do Dashboard mostrada nas capturas recentes e autorizando stage/commit somente
+do escopo Dashboard bounded. A aprovação é da composição; não registra aceite
+independente para cada viewport da matriz. A atividade limitada do Dashboard
+está completa, mas HOM-01 permanece `IN_PROGRESS` e HOM-02 bloqueada.
+
+O root fará o snapshot pré-commit, revisará os paths do índice e preparará o
+stage. `HEAD_BEFORE` é `11dcf7db0095416c125f8863ab89a2eef7fb278f`; o commit SHA
+deve ser consultado no Git depois da execução. Push não foi autorizado. WIP
+fora do Dashboard permanece fora do escopo. Nenhum SHA futuro é presumido.

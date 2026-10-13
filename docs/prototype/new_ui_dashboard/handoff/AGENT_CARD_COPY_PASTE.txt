@@ -1,0 +1,29 @@
+PROJECT = projeto_argos
+ACTIVITY = HOM-01-DASHBOARD-V7-INTEGRATION
+MODE = DIRECT
+
+TASK = Integrar à aplicação Django atual a composição aprovada do Dashboard V7 usando o pacote ARGOS_DASHBOARD_V7_FINAL_PACKAGE.zip como referência visual. Não criar novas ideias de layout: CONFORMANCE ONLY.
+
+BASELINE = prototype/ARGOS_DASHBOARD_AJUSTADO_V7.html
+READ = handoff/VISUAL_CONTRACT_V7.md; handoff/IMPLEMENTATION_HANDOFF.md; handoff/DESIGN_QA_V7.md
+REPO = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+EXPECTED_BRANCH = codex/hom-v1-integration
+
+PREFLIGHT = ler AGENTS.md, autoridades de HOM-01 e status/diff do Git. Preservar WIP não commitado. Confirmar runtime Django e CSS realmente carregado.
+
+PROTECTED = SIDEBAR, TOPBAR, outros apps, Design System global, funcionalidades de Dashboard, classes de status MON, permissões, dados e consultas.
+
+INTEGRATION = Corrigir somente o conteúdo Dashboard por alterações mínimas nos templates/CSS responsáveis. Usar estado Django existente, não mocks JS ou CSS global do protótipo. Preservar nomenclaturas já aprovadas no Django ('Monitoramento e completude'; 'Câmeras com IP duplicado') e semântica das contagens. Declarar conflitos antes de alterar o sentido funcional.
+
+QA = screenshots do Django integrado em 1920x1080, 1440x900, 1366x768, 390x844 @100%; regressão visual de sidebar/topbar; estados vazios, longos, escala; verificações direcionadas de Django e permissões. Não substituir capturas Django por imagens do protótipo.
+
+FORBIDDEN = branch, commit, merge, rebase, reset, stash, push, deploy; mudanças em serviços MON, migrations ou banco operacional.
+
+DELIVER = lista de arquivos alterados, antes/depois, testes executados, findings, divergências aprovadas, status de WIP e evidência visual. Solicitar aprovação humana do Django integrado. Retornar relatório ao consultor anterior para checkpoint e conclusão formal da HOM-01.
+
+ACTIVITY_COMPLETION_PERCENT = real
+STATUS = factual
+V7_VISUAL_PROTOTYPE_APPROVAL = PASS
+DJANGO_INTEGRATION_STATUS = PENDING until implemented
+HUMAN_DJANGO_VISUAL_APPROVAL = PENDING
+HOM01_STATUS = IN_PROGRESS

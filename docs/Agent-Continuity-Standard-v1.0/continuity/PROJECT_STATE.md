@@ -1,13 +1,17 @@
 # ARGOS — Project State
 
-Estado corrente ARGOS-HOM-01: consulte a seção 96. Baseline de código
-`188afda5470e252fa8cf6fed5556a404073ee4fc` na branch
-`codex/hom-v1-integration`; checkpoint documental em
-`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`. HOM-01 permanece
-`IN_PROGRESS`: check Django aprovado, uma falha na regressão dirigida, suíte
-global inconclusiva, QA visual integrado incompleto e WIP de worktrees P3/P5
-inacessível. Publicação não pronta; HOM-02 bloqueada e sem autorização. As
-seções anteriores preservam snapshots históricos.
+Estado corrente ARGOS-HOM-01: consulte a seção 105 para a aprovação da atividade
+limitada HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2 e a autorização de stage/commit.
+O usuário aprovou a composição apresentada com “perfeito autorizo stage e
+commit”. Branch `codex/hom-v1-integration`; HEAD corrente deve ser confirmado
+diretamente no Git. A baseline de entrada desta etapa era
+`11dcf7db0095416c125f8863ab89a2eef7fb278f`. WIP de outras atividades deve ser
+preservado fora do escopo de stage. O stage/commit autorizado está em preparação
+para o escopo bounded do Dashboard; não há SHA pós-commit registrado. Push não
+autorizado. A atividade limitada do Dashboard está completa, mas HOM-01 permanece
+`IN_PROGRESS`; HOM-02 segue bloqueada. Checkpoint em
+`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`; seções seguintes são
+snapshots históricos salvo ponteiro mais recente.
 
 ## UI-V2-P1 — seleção visual e fechamento (2026-09-27)
 
@@ -5553,3 +5557,289 @@ na authority `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md`, §13.
 O roteiro de captura humana está no README do diretório de evidências HOM-01.
 Este checkpoint conclui somente a atividade documental; não declara HOM-01
 fechada, não autoriza publicação e não inicia HOM-02.
+
+## 97. ARGOS-HOM-01-DASHBOARD-CONTRACT-RECONCILIATION (2026-10-12)
+
+```text
+PROJECT = ARGOS
+ACTIVITY = ARGOS-HOM-01-DASHBOARD-CONTRACT-RECONCILIATION
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES / implementation, regression and documentation gates
+STATUS = PASS / Dashboard contract reconciled; HOM-01 remains IN_PROGRESS
+BRANCH = codex/hom-v1-integration
+HEAD_BEFORE = 11dcf7db0095416c125f8863ab89a2eef7fb278f
+HEAD_AFTER = 11dcf7db0095416c125f8863ab89a2eef7fb278f
+WORKTREE = MODIFIED / five source files; no staging
+IMPLEMENTATION_AUTHORIZATION = GRANTED / user request
+IP_DUPLICATION_METRIC_SEMANTICS = NUMBER_OF_AFFECTED_CAMERAS / sum of camera counts in repeated-IP groups
+IP_DUPLICATION_LABEL_FINAL = Câmeras com IP duplicado
+IP_QUERY_CORRECTION = removed redundant empty-string exclusion for nullable GenericIPAddressField; cleared model default ordering before grouping; domain sum unchanged
+MONITORING_SECTION_LABEL = Monitoramento e completude
+UNKNOWN_DISPLAY_LABEL = Desconhecido / internal UNKNOWN unchanged
+LEGACY_TESTS = corrected / both named Dashboard tests; frontend label assertion aligned; count assertion distinguishes 2 cameras from 1 repeated IP
+TARGETED_TESTS = PASS / 28 of 28
+GLOBAL_SUITE = PASS / 937 of 937; 1104.507 seconds; isolated SQLite; loopback enabled for Windows asyncio internal socketpair
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS / after documentation update
+REAL_OPERATIONAL_DATA = NOT_ACCESSED
+REAL_WORKER_OR_PROBE = NOT_STARTED
+APPROVED_UI = PRESERVED / only approved Dashboard wording changed; no layout, CSS or component change
+DESIGN_QA = PENDING / integrated human visual approval remains required
+PROJECT_STATE_UPDATE = PASS / this section
+CONTINUITY_UPDATE = PASS / AGENT_CONTINUITY.md §20.60
+CHECKPOINT_UPDATE = PASS / HOM_01_UI_V2_BASELINE_CHECKPOINT.md §9
+HOM_01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+NEW_BRANCH = NO
+NEXT_RECOMMENDED_ACTIVITY = ARGOS-HOM-01-FINAL-DESIGN-QA
+```
+
+A revisão confirmou que a consulta soma o número de câmeras afetadas por IPs
+repetidos. O teste com duas câmeras no mesmo endereço retorna `2`, sem alterar
+a regra de domínio. A falha anterior vinha do filtro `ip=""` em um campo
+`GenericIPAddressField` anulável, que o SQLite compilava para uma comparação
+com `NULL` e eliminava endereços válidos; a ordenação padrão também foi
+removida do agrupamento. Os testes direcionados e a suíte global terminaram
+com resumo verificável. A primeira execução global sob sandbox parou ao criar
+o socket interno do event loop Windows; a execução final recebeu acesso
+restrito de loopback, usou somente o banco temporário e terminou `937/937 OK`.
+O gate visual integrado, responsividade e teclado/foco não foram inferidos por
+testes automatizados e continuam pendentes; este registro não fecha HOM-01.
+
+## 102. ARGOS-HOM-01-DASHBOARD-V7-INTEGRATION (2026-10-12)
+
+```text
+ACTIVITY = HOM-01-DASHBOARD-V7-INTEGRATION
+USER_AUTHORIZATION = GRANTED / direct pasted request and continuation
+IMPLEMENTATION_OWNER = ARGOS_MAIN_AGENT
+STRATEGY = VISUAL_CONFORMANCE_ONLY
+BRANCH = codex/hom-v1-integration
+HEAD_BEFORE = 11dcf7db0095416c125f8863ab89a2eef7fb278f
+HEAD_AFTER = 11dcf7db0095416c125f8863ab89a2eef7fb278f
+SOURCE_PACKAGE = VERIFIED / SHA256SUMS.txt all 11 entries match; approved HTML SHA-256 3f9e0d140295a6bfa9f76054c51f7e38ebaea1b06041f2b6bfe4c22984138f67
+PREEXISTING_WIP = PRESERVED / edits were limited to Dashboard template, local Dashboard CSS, and Dashboard assertions/tests; no shell, shared Design System, view/query, MON service, model, migration, or route changes
+FILES_CHANGED_BY_ACTIVITY = core/templates/core/dashboard.html; static/css/dashboard-v7.css; core/test_frontend.py; core/tests.py; docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md; docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md
+HEADER_V7 = INTEGRATED / existing routes and add-camera permission preserved
+MONITORING_V7 = INTEGRATED / UNKNOWN lead KPI; ONLINE/OFFLINE/OUT_OF_SCOPE secondary; STALE freshness displayed separately
+INVENTORY_V7 = INTEGRATED / total anchor plus production, stock, deactivated and replacement indicators
+REGISTRATION_QUALITY_V7 = INTEGRATED / complete anchor; incomplete and duplicate-affected camera counts secondary
+RECENT_ACTIVITY_V7 = INTEGRATED / current activity query and five recently updated cameras retained; no demo KPI
+METRIC_SEMANTICS_PRESERVED = YES / view aggregations unchanged; duplicate IP counts affected cameras; UNKNOWN != STALE
+APPROVED_TERMINOLOGY_PRESERVED = YES
+SIDEBAR_PRESERVED = YES / no source edits; visible in integrated page
+TOPBAR_PRESERVED = YES / no source edits; visible in integrated page
+DESIGN_SYSTEM_PRESERVED = YES / no shared tokens, components, or global CSS edits; dashboard CSS is linked only by its template
+OTHER_PAGES_PRESERVED = YES / no source edits outside Dashboard, its tests, and continuity records
+DJANGO_CHECK = PASS / scripts.localqa.test_settings
+TARGETED_TESTS = PASS / 88 across core.tests, core.test_frontend, core.test_sidebar_navigation, cameras.test_monitoramento_ui, cameras.test_frontend
+TEST_SCENARIOS = PASS / empty data; long camera name; 2,300 synthetic cameras; duplicate-IP affected-camera count; five-item recent limit; routes, labels, permissions, shell and navigation
+REGRESSION_TESTS = PASS / targeted shell and monitoring UI coverage; global suite not run
+GIT_DIFF_CHECK = PASS
+INTEGRATED_RUNTIME = PASS / real Django branch source, temporary test_settings SQLite database and synthetic fixtures; existing QA launcher/database and credentials were not reset or rotated
+VISUAL_CAPTURE = AVAILABLE IN LIVE BROWSER / desktop capture of dashboard composition and second capture of recent panels; screenshots not saved to repository
+CAPTURE_VIEWPORT = NOT_VERIFIED / browser viewport controls unavailable in current CUA surface; requested 1920x1080, 1440x900, 1366x768 and 390x844 not validated
+ZOOM_DPR = NOT_VERIFIED
+COMPUTED_STYLES = NOT_VERIFIED / CSS inclusion and rendered result observed; computed-style inspection unavailable
+KEYBOARD_FOCUS_QA = PARTIAL PASS / visible focus verified on skip link and inventory production-count link
+REFERENCE_SCREENSHOTS = PRESENT / package-provided prototype captures; not represented as integrated output
+HUMAN_DJANGO_VISUAL_APPROVAL = PENDING
+INTEGRATED_DESIGN_QA = PARTIAL / one desktop composition and synthetic 5-camera/1-activity state observed; required viewport matrix and computed styles remain open
+OPEN_FINDINGS = exact viewport matrix and DPR/zoom; computed styles; visual comparison for scale and zero-data browser states; human approval
+OPEN_BLOCKERS = viewport emulation not exposed by the current browser control surface; do not rerun scripts/localqa/start_argos_qa.ps1 because it repeats seeding and rotates QA operational credentials
+PROJECT_STATE_UPDATE = PASS / this section
+CONTINUITY_UPDATE = PASS / AGENT_CONTINUITY.md and ACTIVE_DOCUMENT_MAP.md
+ACTIVITY_COMPLETE = NO / human integrated approval and full visual gates pending
+HOM_01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+NEW_BRANCH = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+REBASE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+NEXT_ACTION = present the live Dashboard for human review; continue the remaining viewport and computed-style QA before claiming the integrated visual gate complete
+```
+
+The approved V7 HTML package remains immutable and every checksum listed in
+its manifest matched. The Django template now composes monitoring, inventory,
+registration quality and the two recent-activity panels using the existing
+server-rendered context. Dashboard-owned CSS is loaded through that page's
+`extra_css` block and does not change the application shell or shared design
+system. All pre-existing repository WIP outside the bounded Dashboard surface
+was left untouched.
+
+The directional test suite passed with an isolated SQLite database. The
+2,300-camera test uses synthetic records and verifies the total and five-item
+recent-camera cap. The duplicate-IP test verifies two affected cameras are
+counted when two records share one address. An actual page was rendered in the
+browser from this checkout against a separate temporary `test_settings`
+database with five synthetic cameras and one activity. The server-side QA
+launcher was not run because its documented workflow repeats seed and rotates
+the operational QA account. Keyboard focus was visibly checked. The CUA
+browser surface did not provide an exact viewport override or computed-style
+inspection; therefore the contracted four-size responsive QA and those
+findings remain open. No prototype screenshot is claimed as an integrated
+capture, and no human approval or HOM-01 closure is inferred.
+
+## 103. HOM-01-DASHBOARD-V7-VISUAL-CONFORMANCE-RECOVERY (2026-10-12)
+
+```text
+ACTIVITY = HOM-01-DASHBOARD-V7-VISUAL-CONFORMANCE-RECOVERY
+STATUS = CHANGES_APPLIED / DESIGN_QA_PARTIAL / HUMAN_APPROVAL_PENDING
+MODE = DIRECT
+DESIGN_MODE = CLOSED
+BRANCH = codex/hom-v1-integration
+HEAD = 11dcf7db0095416c125f8863ab89a2eef7fb278f
+PREEXISTING_WIP = PRESERVED
+ROOT_CAUSE_F01 = .dashboard-v7__sections had one auto-sized desktop column; child placement persisted below 950px by higher selector specificity and created an implicit grid column. Corrected to 1.18fr/.82fr, 18px column gap, equal headings and an explicit one-column breakpoint.
+ROOT_CAUSE_F02 = .dashboard-v7__quality used .9fr/1.5fr and its secondary indicators used two columns. Corrected to 1.1fr/.9fr with anchor spanning two rows, vertical divider, stacked secondary indicators and horizontal divider.
+ROOT_CAUSE_F03 = two article surfaces were siblings in a two-column grid with a 16px gap. Corrected to one outer surface with two inner sections and a central divider; mobile stacks the panels with a horizontal divider.
+ROOT_CAUSE_F04 = dashboard-only KPI and freshness spacing/type sizes diverged from V7. Adjusted within dashboard-v7.css; monitoring data and UNKNOWN/STALE semantics unchanged.
+ROOT_CAUSE_F05 = at 1440x900, incorrect section stacking and panel spacing produced 1482px document height. Corrected page measured 1171px with the same five cameras and one activity; 390x844 measured 1944px because the page correctly stacks and retains all recent rows.
+FILES_CHANGED = core/templates/core/dashboard.html; static/css/dashboard-v7.css; core/test_frontend.py; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md; docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md
+DESKTOP_GRID_RESTORED = PASS / viewport widths 1920, 1440 and 1366; headings align; measured columns 803.6/558.4 at 1920, 657.8/457.1 at 1440, 614.2/426.8 at 1366; 18px gap; 1.18/.82 ratio.
+QUALITY_LAYOUT_RESTORED = PASS / anchor on left, incomplete and duplicate-camera metrics stacked on right; vertical main divider and horizontal inner divider.
+ACTIVITY_SURFACE_RESTORED = PASS / one integrated surface; 2 centered internal panels with desktop vertical divider and mobile horizontal divider; one activity and all five recently updated cameras retained.
+MONITORING_CONFORMANCE = PASS / integrated values observed as UNKNOWN 2, ONLINE 0, OFFLINE 0, OUT_OF_SCOPE 3, STALE 2; freshness remains separate.
+VIEWPORTS = PASS / 1920x1080, 1440x900, 1366x768, 390x844; zoom 100%; DPR 1.
+HORIZONTAL_OVERFLOW = NONE / all four integrated viewport captures.
+PERMISSIONS = PASS / read-only browser user has no create-camera action; conditional action stays hidden.
+EMPTY_STATES = PASS / targeted Django test verifies empty activity and camera states; not separately browser-captured.
+SHELL_REGRESSION = NONE_OBSERVED / sidebar and topbar were not edited and remain visible.
+DJANGO_CHECK = PASS / scripts.localqa.test_settings
+TARGETED_TESTS = PASS / 88 tests across core.tests, core.test_frontend, core.test_sidebar_navigation, cameras.test_monitoramento_ui, cameras.test_frontend; includes empty, long-name, 2300-camera and duplicate-IP scenarios.
+GIT_DIFF_CHECK = PASS
+SCREENSHOTS_1920 = CAPTURED_INLINE / integrated Django page
+SCREENSHOTS_1440 = CAPTURED_INLINE / integrated Django page
+SCREENSHOTS_1366 = CAPTURED_INLINE / integrated Django page; viewport and activity-panel captures
+SCREENSHOTS_390 = CAPTURED_INLINE / integrated Django page; top and overview/activity captures
+REFERENCE_COMPARISON = PARTIAL / approved HTML/CSS source and integrated computed geometry compared; no saved pixel-diff artifact.
+REMAINING_DIFFERENCES = “Câmeras com IP duplicado” wraps to two lines in the narrow secondary column; approved current terminology preserved. Browser empty state was tested but not captured.
+SIDEBAR_PRESERVED = YES
+TOPBAR_PRESERVED = YES
+FUNCTIONALITY_PRESERVED = YES / values, routes, event/camera links and permission-conditioned actions retained; no view, query or MON changes.
+HUMAN_DJANGO_VISUAL_APPROVAL = PENDING
+DESIGN_QA = PARTIAL / integrated viewport evidence and DOM/CSS structure pass; human approval and pixel-diff comparison remain open.
+OPEN_FINDINGS = human composition approval; direct saved reference-vs-integrated pixel comparison; browser screenshot of empty state if required by the acceptance gate.
+PROJECT_STATE_UPDATE = PASS / this section
+ACTIVITY_COMPLETE = NO
+HOM01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+NEW_BRANCH = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+REBASE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+NEXT_ACTION = inspect the live integrated Dashboard and approve the corrected composition or report remaining visual changes.
+```
+
+The recovery corrected the three reported structural findings and the monitor/freshness rhythm inside the Dashboard-owned stylesheet. The integrated Django page was measured at all four exact viewport sizes using zoom 100% and DPR 1. Desktop shows the approved overview split; mobile stacks the overview sections and activity panels without horizontal overflow. The QA browser used the pre-existing isolated synthetic database and its existing read-only session; persistent QA credentials and seed state were not changed. Empty state behavior is covered by targeted tests rather than a browser screenshot. No reference image was substituted for an integrated capture. The implementation awaits human visual acceptance; HOM-01 remains open.
+
+## 104. HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2 (2026-10-12)
+
+```text
+ACTIVITY = HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2
+STATUS = CHANGES_APPLIED / INTEGRATED_VISUAL_EVIDENCE_CAPTURED / HUMAN_APPROVAL_PENDING
+MODE = DIRECT
+DESIGN_MODE = CLOSED
+BRANCH = codex/hom-v1-integration
+HEAD = 11dcf7db0095416c125f8863ab89a2eef7fb278f
+PREEXISTING_WIP = PRESERVED
+F01_FIXED = YES / headings and surfaces begin at the same y-coordinate at 1440x900; flex and grid rows equalize inventory and quality cards to 174px.
+F02_FIXED = YES / support labels “Estado técnico efetivo”, “Indisponibilidade detectada” and “Fora do escopo técnico” are rendered in their respective columns; support text is not clipped or hidden.
+F03_FIXED = YES / “Frescor dos dados” and highlighted yellow badge are restored in the independent bottom band; the badge displays the current SSR value.
+F04_FIXED = PARTIAL_BY_AUTHORITY / “Estados técnicos das câmeras” is restored. “Monitoramento e completude” remains because later approved terminology is protected by V7 visual contract §4; the older “Monitoramento técnico” title was not restored over that approval.
+F05_FIXED = YES / quality anchor remains on the left; incomplete and duplicate-affected-camera indicators stack on the right with vertical main divider, inset horizontal divider and centered primary KPI.
+F06_FIXED = YES / recent rows compacted with vertical record padding 9px and list gap 5px removed, list gap 9px, and title/meta spacing 2px; all five camera records and the activity record remain visible.
+F07_FIXED = YES / recent activity header metadata follows the V7 convention using the real `total_atividades` and `cameras_recentes|length` values; no new KPI or fabricated count.
+FILES_CHANGED = core/templates/core/dashboard.html; static/css/dashboard-v7.css; core/test_frontend.py; core/tests.py; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md; docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md
+SIDEBAR_PRESERVED = YES / no sidebar or shell source was changed in this round.
+TOPBAR_PRESERVED = YES / no topbar or shell source was changed in this round.
+DATA_PRESERVED = YES / SSR context, records, values, links and product permission rules unchanged; QA used existing isolated synthetic records, with five cameras and one activity; no record was hidden or removed.
+DJANGO_CHECK = PASS / scripts.localqa.test_settings
+TARGETED_TESTS = PASS / 88 tests in 5.653s across core.tests, core.test_frontend, core.test_sidebar_navigation, cameras.test_monitoramento_ui and cameras.test_frontend.
+DESKTOP_1440x900 = CAPTURED / DPR 1, zoom 100%; inventory and quality headings y=464.6875; both card surfaces y=495.84375 and height=174px; recent-activity section height=256.078px versus 343.687px before; document height=1097px versus 1171px before; five camera links; freshness badge RGB(255,240,215); support labels 11px.
+MOBILE_390x844 = CAPTURED / DPR 1, zoom 100%; one-column grid width 347px; document height=1887px; recent-activity section height=340.844px; five camera links; support labels 10px; no horizontal overflow.
+SCREENSHOT_FILES = C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_1440x900.png (1440x900); DASHBOARD_CADASTRO_1440x900.png (1440x900, create action and form); DASHBOARD_LINKS_1440x900.jpg (1440x900); DASHBOARD_390x844.png (390x844); DASHBOARD_390x844_MONITORAMENTO.png (390x844); DASHBOARD_1440x900_ATIVIDADE.jpg (1440x900); DASHBOARD_390x844_ATIVIDADE.jpg (375x812 crop from 390x844 viewport); DASHBOARD_LINKS_390x844.jpg (375x812 crop from 390x844 viewport)
+FULL_PAGE_CAPTURE = NOT_PRODUCED
+REFERENCE_COMPARISON = SOURCE_AND_GEOMETRY_REVIEWED / approved V7 HTML/CSS and reference 1440 image compared; no pixel-diff artifact produced.
+REMAINING_DIFFERENCES = “Monitoramento e completude” differs from the older V7 title under the later approved-copy exception in contract §4; “Desconhecido”, “Câmeras com IP duplicado” and “Não monitorada” remain per approved terminology; duplicate-IP label wraps to two lines in the narrow column; recent-activity height exceeds the one-camera reference because all five actual QA camera rows are preserved.
+VISUAL_CONFORMANCE = IMPLEMENTED_AND_CAPTURED / human integrated visual approval remains pending; no pixel-level diff claimed.
+HUMAN_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = PASS / this section
+ACTIVITY_COMPLETE = NO / human approval remains pending
+HOM_01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+NEW_BRANCH = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+REBASE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+NEXT_ACTION = inspect the saved desktop and mobile integrated captures and provide bounded visual approval or report remaining corrections.
+ROLE_ROUTING = ROOT: analysis, diagnosis, reconciliation and review; MECHANICAL: code; SCRIBE: documentary materialization.
+PREVIOUS_PREVIEW_8767 = STOPPED / process exited after Ctrl+C; no listener remained on port 8767.
+CURRENT_PREVIEW = http://127.0.0.1:8768/dashboard/ / isolated cloned SQLite QA database; synthetic five-camera, one-activity state.
+QA_PREVIEW_ACCESS_PROFILE = existing read-only profile preserved; separate local profile is nonstaff/nonsuperuser with original read group plus only cameras.add_camera; no credentials/session/cookie material recorded.
+RUNTIME_VISUAL_CHECK = PASS / authenticated Dashboard showed “Nova Câmera”; opening it loaded /cameras/nova/ with heading, form fields and “Cadastrar Câmera” button; form was not submitted and all five camera records remained.
+PRODUCT_SOURCE_CHANGED_FOR_RUNTIME = NO
+CADASTRO_CAPTURE = CAPTURED / DASHBOARD_CADASTRO_1440x900.png; clip 1440x900; DOM viewport 1440x900; button visible; no horizontal overflow; registration GET loaded without submit.
+CURRENT_PREVIEW_URL = http://127.0.0.1:8768/dashboard/
+BUTTON_SCREENSHOT = AVAILABLE / permission-conditioned action shown in Dashboard capture
+QUICK_LINKS = PASS / “Ver câmeras” links are present for Produção, Estoque and Desativadas; href filters remain PRODUCAO, ESTOQUE and DESATIVADA; numerical links and values preserved.
+QUICK_LINKS_DESKTOP = CAPTURED / 1440x900 exact viewport; both overview cards y=495.84375 and 174px high; three link labels 10px; no horizontal overflow.
+QUICK_LINKS_MOBILE = CAPTURED / viewport 390x844, image crop 375x812; all three links visible without clipping or horizontal overflow; product composition and substitutions unchanged.
+QUICK_LINKS_CSS = ROW_GAP_3PX_AND_ACTION_GAP_10PX / existing focus rule retained.
+QUICK_LINKS_SCREENSHOTS = DASHBOARD_LINKS_1440x900.jpg; DASHBOARD_LINKS_390x844.jpg
+QUICK_LINKS_RUNTIME_DATA = FIVE_SYNTHETIC_CAMERAS_RETAINED
+SUBSTITUTIONS_SUPPORT = FIXED / “Total registrado” appears immediately after the SSR substitutions value, using the existing dashboard metric-caption style; it is not a link.
+SUBSTITUTIONS_RENDER_CHECK = PASS / browser-rendered text visible at 10px, color RGB(96,116,133); screenshot crop includes the “Ver câmeras” links, inventory values and the support caption.
+SUBSTITUTIONS_CAPTURE = C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_TOTAL_REGISTRADO.jpg
+SUBSTITUTIONS_DATA_PRESERVED = YES / existing SSR value, query, permissions, links and shell unchanged.
+SUBSTITUTIONS_TESTS = NOT_RERUN / this copy-only addition was browser-rendered; the previously recorded 88-test run predates it.
+```
+
+The round-two changes correct equal card heights, restore the three monitoring support labels and the freshness band, and compact recent activity while retaining all visible records. The newer approved monitoring title remains under the precedence rule in the V7 visual contract §4; the reference aside was restored. Final integrated evidence covers 1440×900 and 390×844 at DPR 1 and 100% zoom. The primary desktop and mobile captures are exact-size PNGs; the supplemental mobile activity image is a 375×812 crop from the 390×844 viewport. No complete-page capture was produced. Captures are saved outside the repository in the listed visualization evidence directory. The test database used existing isolated synthetic QA records; no product data, queries, permission rules, or shell components were changed. For visual review of permission-conditioned actions, the earlier read-only runtime on port 8767 was stopped and checked for no remaining listener; a separate local preview is active on port 8768 using a cloned isolated SQLite database. The original read-only QA profile was preserved. A second nonstaff/nonsuperuser profile retained the read group and added only `cameras.add_camera`. Its Dashboard rendered the “Nova Câmera” action; opening it showed the registration page and submit button without submitting. Five synthetic camera records remained. No product source was changed for this runtime review. The three supplemental “Ver câmeras” links for Produção, Estoque and Desativadas were restored with their original situation filters; their capture and mobile crop are listed in §68. Human visual approval and HOM-01 completion remain pending.
+
+Em follow-up, a etiqueta “Total registrado” foi incluída após o valor SSR de
+substituições usando o estilo de caption já existente; permanece texto de apoio,
+sem link. O browser renderizou a etiqueta a 10px, cor RGB(96,116,133), e a
+captura crop `DASHBOARD_TOTAL_REGISTRADO.jpg` registra o caption, os links de
+categoria e os valores do Inventário. Nenhuma query, dado, permissão ou elemento
+do shell foi alterado. Não houve nova execução de testes para essa adição de
+copy; a última execução de 88 testes é anterior a ela. O runtime de QA atual
+permanece em `http://127.0.0.1:8768/dashboard/`; o aceite humano segue pendente.
+
+PROJECT_STATE_FOLLOWUP_UPDATE = PASS
+
+## 105. HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2 — aprovação e stage/commit autorizado (2026-10-12)
+
+```text
+ACTIVITY = HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2
+USER_CONFIRMATION = “perfeito autorizo stage e commit”
+HUMAN_VISUAL_APPROVAL = APPROVED / bounded Dashboard V7 integrated composition, based on the latest presented captures.
+APPROVAL_SCOPE = composition-level; desktop evidence includes the create action, three “Ver câmeras” links and “Total registrado”; no independent approval is inferred for each of the four originally requested viewport sizes.
+DASHBOARD_ACTIVITY_COMPLETE = YES / bounded Dashboard V7 fidelity activity after PROJECT_STATE_UPDATE PASS.
+SIDEBAR_PRESERVED = YES
+TOPBAR_PRESERVED = YES
+HOM_01_STATUS = IN_PROGRESS / remaining HOM-01 gates are not closed by this approval.
+HOM02_START = BLOCKED
+COMMIT_AUTHORIZED = YES / explicit user confirmation.
+PUSH_AUTHORIZED = NO
+HEAD_BEFORE = 11dcf7db0095416c125f8863ab89a2eef7fb278f
+COMMIT_REFERENCE = PENDING / resolve by querying Git after commit; this checkpoint is intended to be included.
+COMMIT_STAGE = PREPARED / root owns the bounded Git snapshot, final path review and staging; Git status/index is the source of truth for the resulting state.
+REFERENCE_MANIFEST_CHECK = PASS / 12 SHA-256 entries in `docs/prototype/new_ui_dashboard/SHA256SUMS.txt` matched before staging; approved HTML hash `3f9e0d140295a6bfa9f76054c51f7e38ebaea1b06041f2b6bfe4c22984138f67` unchanged.
+INTEGRATED_EVIDENCE_IN_REPOSITORY = `docs/projeto/evidence/dashboard-v7-approved/README.md`; byte-identical captures: `DASHBOARD_LINKS_1440x900.jpg` (1440x900), `DASHBOARD_LINKS_390x844.jpg` (375x812 crop from 390x844 viewport), `DASHBOARD_TOTAL_REGISTRADO.jpg` (658x226 crop).
+BOUNDED_COMMIT_SCOPE = Dashboard-owned template/CSS/tests and minimal Dashboard view/query/map-label changes, approved V7 package and Dashboard-only continuity records; unrelated WIP is outside this scope.
+NEW_BRANCH = NO
+PUSH = NOT_AUTHORIZED
+PROJECT_STATE_UPDATE = PASS / this section
+ACTIVITY_COMPLETE = YES / bounded Dashboard fidelity round only
+```
+
+The user approved the presented Dashboard composition and explicitly authorized stage and commit with “perfeito autorizo stage e commit”. Approval covers the bounded composition represented by the latest captures, including the desktop views of the permission-conditioned create action, the three category shortcuts and the replacement caption. It does not independently approve every viewport in the original matrix and does not close HOM-01. The authorized commit scope is limited to Dashboard-owned work and its approved V7 package/checkpoint; unrelated sidebar, camera detail, inventory and domain WIP must remain outside the commit. Root will take the final Git snapshot, inspect the exact index and stage only the authorized scope. No commit SHA or post-commit HEAD is recorded until Git confirms it. Push is not authorized.

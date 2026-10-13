@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARGOS • Dashboard — Proposta V5 (KPI centralizado e divisórias consistentes)</title>
+<style>
+/* Standalone VISUAL PROPOSAL. Values mirror historical ARGOS UI V2 foundation;
+   this file does not replace static/css/ui-v2 or define a new global Design System. */
+:root {
+  --canvas:#f4f7fa;--surface:#fafcfe;--white:#fff;--ink:#172b3a;
+  --muted:#607485;--border:#d8e2ea;--strong:#afc1cf;--blue:#2563a6;
+  --navy:#172b3a;--blue-muted:#1d4f86;--blue-bg:#e8f2fa;
+  --success:#145e42;--success-bg:#dff3e8;--danger:#922c3e;
+  --danger-bg:#f9e5e8;--amber:#80500b;--amber-bg:#fff0d7;
+  --radius:6px;--container:1440px;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--canvas);font:14px/1.48 'Segoe UI',Inter,system-ui,sans-serif;color:var(--ink)}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+a:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+button{font:inherit}
+.layout{display:grid;grid-template-columns:192px minmax(0,1fr);min-height:100vh}
+.sidebar{background:var(--navy);padding:25px 12px;color:#fff}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px 29px}
+.brand-symbol{width:31px;height:31px;display:grid;place-items:center;background:var(--surface);color:var(--blue);font-size:19px;font-weight:850;border-radius:5px}
+.brand-name{font-size:13px;font-weight:800;letter-spacing:.02em}.brand-detail{font-size:10px;color:#b9cbd8;line-height:1.2}
+.nav{display:grid;gap:3px}.nav a{display:block;padding:9px 12px;color:#d8e7f1;border-radius:4px;font-weight:550;font-size:12px}
+.nav a:hover{background:#274155;text-decoration:none}
+.nav a.active{background:var(--blue);color:#fff;font-weight:700}
+.workspace{min-width:0;display:flex;flex-direction:column}
+.topbar{height:49px;flex:none;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,3.1vw,44px);gap:12px}
+.topbar-heading{font-size:12px;line-height:1.25;font-weight:700}
+.topbar-heading small{display:block;font-size:9px;font-weight:750;letter-spacing:.08em;color:var(--muted)}
+.account{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:650;white-space:nowrap}
+.avatar{border:1px solid #a8cbe9;background:var(--blue-bg);color:var(--blue-muted);border-radius:50%;display:grid;place-items:center;height:26px;width:26px;font-size:10px;font-weight:700}
+.main{flex:1;width:100%;max-width:var(--container);margin:0 auto;padding:32px clamp(18px,3.2vw,40px) 46px}
+.page-header{display:flex;align-items:end;justify-content:space-between;gap:16px 24px;margin-bottom:24px}
+.kicker{margin:0 0 5px;color:var(--blue);font-weight:800;font-size:10px;letter-spacing:.083em;text-transform:uppercase}
+h1,h2,h3,p{margin-top:0}h1{font-size:29px;line-height:1.2;margin-bottom:7px;letter-spacing:-.025em}p{margin-bottom:0}
+.page-desc{font-size:12px;color:var(--muted)}
+.page-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{min-height:36px;display:inline-flex;align-items:center;justify-content:center;padding:8px 13px;border:1px solid var(--border);border-radius:5px;font-size:11px;font-weight:700;white-space:nowrap;background:var(--surface);color:var(--blue)}
+.btn:hover{text-decoration:none;background:#edf4fa}.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}.btn-primary:hover{background:#205991;color:#fff}
+.section{margin-bottom:24px}
+.section-heading{display:flex;gap:12px;align-items:end;justify-content:space-between;margin:0 0 11px}
+.section-heading h2{font-size:16px;line-height:1.26;letter-spacing:-.01em;margin:0;font-weight:700}
+.section-overline{font-size:9px;letter-spacing:.077em;text-transform:uppercase;color:var(--muted);font-weight:800;margin:0 0 4px}
+.section-aside{font-size:11px;color:var(--muted)}
+.surface{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:none;min-width:0}
+/* Monitoring KPIs: center the indicator core, not the dashboard's headings. */
+.monitor{overflow:hidden}
+.monitor-grid{display:grid;grid-template-columns:minmax(0,0.88fr) minmax(0,1.7fr)}
+.monitor-focus{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 18px;border-right:1px solid var(--border);min-width:0}
+.focus-label{display:block;font-size:11px;font-weight:650;color:var(--muted);margin-bottom:5px}
+.focus-value{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;margin:0 0 7px}
+.focus-number{font-size:41px;line-height:1.05;letter-spacing:-.04em;font-weight:750;font-variant-numeric:tabular-nums;color:var(--ink)}
+.status-badge{display:inline-flex;align-items:center;justify-content:center;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;color:var(--blue-muted);background:var(--blue-bg);line-height:1.25}
+.status-badge--success{color:var(--success);background:var(--success-bg)}
+.status-badge--danger{color:var(--danger);background:var(--danger-bg)}
+/* O status já informa o significado; sem descrição redundante abaixo. */
+.monitor-other{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;padding:17px 6px}
+.ministat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3px 12px;min-width:0;border-left:1px solid var(--border)}.ministat:first-child{border-left:0}
+.ministat-title{font-size:12px;color:var(--muted);font-weight:650;line-height:1.35}
+.ministat-number{display:block;font-size:31px;line-height:1.1;font-weight:750;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin:10px 0 9px}
+.ministat-support{font-size:11px;color:var(--muted);max-width:170px;line-height:1.4;overflow-wrap:anywhere}
+.freshness{display:flex;justify-content:space-between;align-items:center;gap:8px 18px;border-top:1px solid var(--border);padding:10px 24px;flex-wrap:wrap}
+.freshness-status{font-size:11px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.freshness-flag{border-radius:4px;color:var(--amber);background:var(--amber-bg);padding:3px 7px;font-size:10px;font-weight:700}
+.freshness-expl{font-size:10px;color:var(--muted)}
+/* Secondary overview: dense data sheets, not grids of individually ornamented cards. */
+.overview-grid{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr);gap:18px}
+.overview-grid > section{display:flex;flex-direction:column;min-width:0}
+.overview-grid > section > .overview-surface{flex:1}
+.group-header{font-size:16px;font-weight:700;margin-bottom:3px}
+.overview-surface{padding:20px 21px;min-height:174px}
+.inventory-inner{display:grid;grid-template-columns:minmax(0,165px) minmax(0,1fr);gap:21px}
+.total-block{border-right:1px solid var(--border);padding-right:18px}
+.total-label{font-size:11px;color:var(--muted);font-weight:650}
+.total-value{display:block;font-size:41px;line-height:1.16;font-weight:750;letter-spacing:-.035em;font-variant-numeric:tabular-nums;margin:7px 0}
+.total-support{font-size:10px;color:var(--muted)}
+.distribution-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 20px}
+.dist-item{min-width:0;display:flex;align-items:baseline;justify-content:space-between;gap:8px;border-bottom:1px solid var(--border);padding-bottom:10px}
+.dist-item:nth-last-child(-n+2){border-bottom:0;padding-bottom:0}
+.dist-name{font-size:11px;color:var(--muted);line-height:1.35}.dist-number{font-size:20px;line-height:1.2;font-weight:700;flex:none;font-variant-numeric:tabular-nums}
+.dist-link{display:inline-block;font-size:10px;margin-top:3px;white-space:normal}
+.quality-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:12px 22px}
+.quality-primary{padding:0 18px;border-right:1px solid var(--border);grid-row:span 2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:5px}
+.quality-primary .total-value{font-size:35px;color:var(--ink);margin:1px 0}
+.quality-item{display:flex;align-items:baseline;justify-content:space-between;gap:8px;border-bottom:1px solid var(--border);padding:0 0 9px}
+.quality-item:last-child{border-bottom:0;padding:0}
+.quality-label{font-size:11px;color:var(--muted);line-height:1.35}.quality-value{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+/* Activity: compact aligned columns. Summary shows existing total and exact list length, not new domain metrics. */
+.activity-box{display:grid;grid-template-columns:1fr 1fr;min-width:0}
+.activity-column{padding:13px 18px 14px;min-width:0;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}
+.activity-column + .activity-column{border-left:1px solid var(--border)}
+.activity-heading{font-size:12px;font-weight:750;margin:0;max-width:100%}
+.empty-state{font-size:12px;color:var(--muted);padding:0;line-height:1.4}
+.record-list{margin:0;padding:0;list-style:none;display:grid;gap:9px;justify-items:center;width:100%;max-width:54ch}
+.record-title{font-size:12px;font-weight:700;margin-bottom:2px;overflow-wrap:anywhere;text-align:center}
+.record-meta{font-size:11px;color:var(--muted);overflow-wrap:anywhere;text-align:center}
+.activity-summary{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted)}.activity-summary strong{font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}.activity-summary > span+span{padding-left:12px;border-left:1px solid var(--border)}
+.prototype-foot{margin-top:22px;padding-top:14px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;color:var(--muted);font-size:10px}
+.fixture-links{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.fixture-links a{font-size:10px;text-decoration:underline;text-underline-offset:2px}
+.fixture-links a[aria-current="true"]{font-weight:800;color:var(--ink);text-decoration:none}
+/* Medium and mobile must preserve meanings and control reachability. */
+@media(max-width:1190px){.inventory-inner{grid-template-columns:minmax(0,140px) minmax(0,1fr);gap:13px}.overview-grid{grid-template-columns:1fr 1fr}.overview-surface{padding:17px}.quality-grid{gap:9px}.dist-name{font-size:10.5px}}
+@media(max-width:950px){.overview-grid{grid-template-columns:1fr}.overview-surface{min-height:0}.main{padding-top:24px}.inventory-inner{grid-template-columns:175px minmax(0,1fr)}.monitor-grid{grid-template-columns:minmax(0,1fr)}.monitor-focus{border-right:0;border-bottom:1px solid var(--border);padding:16px 20px}.monitor-other{padding:14px 5px}.monitor-focus .focus-expl{max-width:none}.freshness{padding-inline:20px}.quality-grid{grid-template-columns:minmax(0,200px) minmax(0,1fr)}}
+@media(max-width:640px){.layout{display:block}.sidebar{padding:10px 12px 7px}.brand{padding:2px 4px 9px}.brand-name{font-size:12px}.brand-symbol{width:27px;height:27px;font-size:16px}.nav{display:flex;overflow-x:auto;white-space:nowrap;scrollbar-width:thin;padding-bottom:3px}.nav a{font-size:11px;padding:9px 12px;flex:none}.topbar{height:45px;padding:0 14px}.topbar-heading{font-size:11px}.account{font-size:10px}.main{padding:21px 14px 30px}.page-header{display:block;margin-bottom:20px}h1{font-size:26px}.page-desc{font-size:12px}.page-actions{margin-top:15px}.btn{min-height:44px}.section{margin-bottom:21px}.section-heading{align-items:start}.section-heading h2{font-size:16px}.monitor-focus{padding:16px}.focus-number{font-size:41px}.monitor-other{grid-template-columns:repeat(3,minmax(0,1fr));padding:15px 2px}.ministat{padding:4px 7px}.ministat-title{font-size:10px}.ministat-number{font-size:26px;margin:8px 0}.ministat-support{font-size:10px}.ministat-support{font-size:10px}.freshness{padding:10px 15px}.inventory-inner{grid-template-columns:1fr;gap:15px}.total-block{border-right:0;border-bottom:1px solid var(--border);padding:0 0 12px}.total-value{font-size:37px;margin:4px 0}.overview-surface{padding:16px}.distribution-grid{gap:13px 12px}.quality-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.quality-primary{padding-right:14px}.activity-box{grid-template-columns:1fr}.activity-column{padding:13px 14px}.activity-column + .activity-column{border-left:0;border-top:1px solid var(--border)}.activity-summary{justify-content:flex-start;gap:8px}.activity-summary > span+span{padding-left:8px}}
+@media(max-width:640px){.section-heading--activity{flex-wrap:wrap}.section-heading--activity > .activity-summary{width:100%;justify-content:flex-start}}
+@media(max-width:365px){.monitor-other{grid-template-columns:1fr;gap:0}.ministat{padding:12px 14px;border-left:0;border-top:1px solid var(--border)}.ministat:first-child{border-top:0}.ministat-number{margin:7px 0}.ministat-title{display:block;margin-right:0}.ministat-number{display:block}.ministat-support{display:block}.distribution-grid{gap:11px}.quality-grid{grid-template-columns:1fr}.quality-primary{grid-row:auto;border-right:0;border-bottom:1px solid var(--border);padding:0 0 11px}.quality-item{padding-bottom:8px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* ===========================================================
+   V4/V5 • Dashboard-only visual refinements.
+   Sidebar, topbar, data fixtures, semantics and actions unchanged.
+   All internal KPI separators use the same open-ended grammar.
+   =========================================================== */
+.main{--dash-divider-inset:14px;--dash-divider-color:var(--border)}
+/* Monitoring: four equal-height open separators, one before each subsequent KPI. */
+.monitor-focus{position:relative;border-right:0}
+.monitor-focus::after{content:"";position:absolute;right:0;top:var(--dash-divider-inset);bottom:var(--dash-divider-inset);width:1px;background:var(--dash-divider-color);pointer-events:none}
+.monitor-other{padding:0}
+.ministat{position:relative;border-left:0;padding:17px 12px}
+.ministat:not(:first-child)::before{content:"";position:absolute;left:0;top:var(--dash-divider-inset);bottom:var(--dash-divider-inset);width:1px;background:var(--dash-divider-color);pointer-events:none}
+/* Inventory: anchor label and number share the horizontal center; supporting copy stays left-aligned. */
+.total-block{position:relative;border-right:0}
+.total-block > .total-label{display:block;width:calc(100% + 18px);text-align:center}
+.total-block > .total-value{display:block;width:calc(100% + 18px);text-align:center}
+.total-block > .total-support{display:block;width:calc(100% + 18px);text-align:center}
+.total-block::after{content:"";position:absolute;right:0;top:10px;bottom:10px;width:1px;background:var(--dash-divider-color);pointer-events:none}
+/* Inventory distribution: a symmetrical 2x2 data grid with inset open rules. */
+.distribution-grid{position:relative;column-gap:0;row-gap:0}
+.distribution-grid::before{content:"";position:absolute;left:50%;top:10px;bottom:10px;width:1px;background:var(--dash-divider-color);pointer-events:none}
+.dist-item,.dist-item:nth-last-child(-n+2){position:relative;border-bottom:0;padding:0 12px;min-width:0}
+.dist-item:nth-child(-n+2){padding-bottom:12px}
+.dist-item:nth-child(n+3){padding-top:12px}
+.dist-item:nth-child(-n+2)::after{content:"";position:absolute;bottom:0;left:12px;right:12px;height:1px;background:var(--dash-divider-color);pointer-events:none}
+/* Quality: same anchor/divider rhythm as Inventory. */
+.quality-primary{position:relative;border-right:0;gap:0}
+.quality-primary > .total-label{margin-bottom:12px}
+.quality-primary > .total-value{margin:0 0 12px}
+.quality-primary::after{content:"";position:absolute;right:-11px;top:10px;bottom:10px;width:1px;background:var(--dash-divider-color);pointer-events:none}
+/* Center the label relative to the FULL cell (not the remaining width to the left of its number). */
+.quality-item,.quality-item:last-child{position:relative;border-bottom:0;padding:0 10px;min-width:0;display:grid;grid-template-columns:minmax(0,1fr);align-items:center}
+.quality-item .quality-label{grid-column:1;grid-row:1;justify-self:center;text-align:center;max-width:calc(100% - 42px)}
+.quality-item .quality-value{grid-column:1;grid-row:1;justify-self:end}
+.quality-item:nth-child(2){padding-bottom:12px}
+.quality-item:nth-child(3){padding-top:12px}
+.quality-item:nth-child(2)::after{content:"";position:absolute;bottom:0;left:10px;right:10px;height:1px;background:var(--dash-divider-color);pointer-events:none}
+@media(max-width:950px){
+  /* Stack monitor rows: the separator changes orientation, remaining inset. */
+  .monitor-focus{border-bottom:0}
+  .monitor-focus::after{top:auto;left:var(--dash-divider-inset);right:var(--dash-divider-inset);bottom:0;width:auto;height:1px}
+}
+@media(max-width:640px){
+  .total-block{border-bottom:0}
+  .total-block > .total-label,
+  .total-block > .total-value,
+  .total-block > .total-support{width:100%}
+  .total-block::after{left:12px;right:12px;top:auto;bottom:0;width:auto;height:1px}
+}
+@media(max-width:365px){
+  .ministat:not(:first-child){border-top:0}
+  .ministat:not(:first-child)::before{left:var(--dash-divider-inset);right:var(--dash-divider-inset);top:0;bottom:auto;width:auto;height:1px}
+  .quality-primary{border-bottom:0}
+  .quality-primary::after{left:10px;right:10px;top:auto;bottom:0;width:auto;height:1px}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" aria-label="Navegação principal">
+    <div class="brand"><span class="brand-symbol" aria-hidden="true">A</span><div><div class="brand-name">ARGOS</div><div class="brand-detail">Central operacional</div></div></div>
+    <nav class="nav" aria-label="Seções do ARGOS">
+      <a href="#" data-demo-link>Início</a><a href="#dashboard" aria-current="page" class="active">Dashboard</a><a href="#" data-demo-link>Inventário</a><a href="#" data-demo-link>Governança</a><a href="#" data-demo-link>Eventos</a>
+    </nav>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><div class="topbar-heading"><small>CENTRAL OPERACIONAL</small>Dashboard</div><div class="account"><span class="avatar">WA</span>Usuário de demonstração</div></header>
+    <main id="dashboard" class="main">
+      <header class="page-header"><div><p class="kicker">VISÃO OPERACIONAL</p><h1>Dashboard</h1><p class="page-desc">Panorama do monitoramento, inventário e qualidade cadastral.</p></div><div class="page-actions"><a href="#" data-demo-link class="btn">Abrir inventário</a><a href="#" data-demo-link class="btn btn-primary">Nova câmera</a></div></header>
+      <section class="section" aria-labelledby="monitor-title">
+        <header class="section-heading"><div><p class="section-overline">DISPONIBILIDADE TÉCNICA</p><h2 id="monitor-title">Monitoramento técnico</h2></div><span class="section-aside">Estados técnicos das câmeras</span></header>
+        <div class="surface monitor">
+          <div class="monitor-grid">
+            <div class="monitor-focus"><span class="focus-label">Estado não confirmado</span><div class="focus-value"><strong class="focus-number" data-value="unknown">1</strong><span class="status-badge">Desconhecido</span></div></div>
+            <div class="monitor-other" aria-label="Demais estados técnicos">
+              <div class="ministat"><div class="ministat-title">Online</div><strong class="ministat-number" data-value="online">0</strong><div class="ministat-support">Estado técnico efetivo</div></div>
+              <div class="ministat"><div class="ministat-title">Offline</div><strong class="ministat-number" data-value="offline">0</strong><div class="ministat-support">Indisponibilidade detectada</div></div>
+              <div class="ministat"><div class="ministat-title">Não monitoradas</div><strong class="ministat-number" data-value="unmonitored">0</strong><div class="ministat-support">Fora do escopo técnico</div></div>
+            </div>
+          </div>
+          <div class="freshness"><div class="freshness-status"><strong>Frescor dos dados</strong><span class="freshness-flag" data-freshness>1 câmera com dados desatualizados</span></div><span class="freshness-expl">Indicador independente do estado técnico</span></div>
+        </div>
+      </section>
+      <div class="overview-grid section">
+        <section aria-labelledby="inventory-title"><header class="section-heading"><div><p class="section-overline">VISÃO PATRIMONIAL</p><h2 id="inventory-title">Inventário</h2></div></header>
+          <div class="surface overview-surface inventory-inner">
+            <div class="total-block"><span class="total-label">Total de câmeras</span><strong class="total-value" data-value="total">1</strong><span class="total-support">Equipamentos cadastrados</span></div>
+            <div class="distribution-grid" aria-label="Distribuição do inventário">
+              <div class="dist-item"><div><span class="dist-name">Em produção</span><div><a href="#" data-demo-link class="dist-link">Ver câmeras</a></div></div><strong class="dist-number" data-value="production">1</strong></div>
+              <div class="dist-item"><div><span class="dist-name">Em estoque</span><div><a href="#" data-demo-link class="dist-link">Ver câmeras</a></div></div><strong class="dist-number" data-value="stock">0</strong></div>
+              <div class="dist-item"><div><span class="dist-name">Desativadas</span><div><a href="#" data-demo-link class="dist-link">Ver câmeras</a></div></div><strong class="dist-number" data-value="inactive">0</strong></div>
+              <div class="dist-item"><div><span class="dist-name">Substituições</span><div><span class="total-support">Total registrado</span></div></div><strong class="dist-number" data-value="replacements">0</strong></div>
+            </div>
+          </div>
+        </section>
+        <section aria-labelledby="quality-title"><header class="section-heading"><div><p class="section-overline">CONSISTÊNCIA DO INVENTÁRIO</p><h2 id="quality-title">Qualidade cadastral</h2></div></header>
+          <div class="surface overview-surface quality-grid">
+            <div class="quality-primary"><span class="total-label">Cadastros completos</span><strong class="total-value" data-value="complete">1</strong><a href="#" data-demo-link class="dist-link">Ver cadastros</a></div>
+            <div class="quality-item"><span class="quality-label">Incompletos</span><strong class="quality-value" data-value="incomplete">0</strong></div>
+            <div class="quality-item"><span class="quality-label">IPs duplicados</span><strong class="quality-value" data-value="duplicate">0</strong></div>
+          </div>
+        </section>
+      </div>
+      <section class="section" aria-labelledby="activity-title"><header class="section-heading section-heading--activity"><div><p class="section-overline">ACOMPANHAMENTO RECENTE</p><h2 id="activity-title">Atividade recente</h2></div><div class="activity-summary" aria-label="Resumo da atividade recente"><span>Atividades registradas <strong data-value="activityCount">0</strong></span><span>Câmeras exibidas <strong data-visible-cameras>1</strong></span></div></header>
+        <div class="surface activity-box">
+          <div class="activity-column"><h3 class="activity-heading">Últimas atividades</h3><p class="empty-state" data-empty-activities>Nenhuma atividade registrada.</p><ul class="record-list" data-activities hidden></ul></div>
+          <div class="activity-column"><h3 class="activity-heading">Câmeras atualizadas recentemente</h3><ul class="record-list" data-recent-cameras><li class="record"><div class="record-title">TESTE01</div><span class="record-meta">Produção · 25/09/2026 19:31</span></li></ul><p class="empty-state" data-empty-cameras hidden>Nenhuma câmera atualizada recentemente.</p></div>
+        </div>
+      </section>
+      <footer class="prototype-foot"><div>Protótipo visual independente · dados demonstrativos · sem integração Django</div><div class="fixture-links"><strong>Amostras:</strong><a href="?fixture=default" data-fixture="default">Captura</a><a href="?fixture=scale" data-fixture="scale">Escala</a><a href="?fixture=long" data-fixture="long">Texto longo</a><a href="?fixture=empty" data-fixture="empty">Vazio</a></div></footer>
+    </main>
+  </div>
+</div>
+<script>
+// Prototype-only fixture switcher. Invented values below are explicitly synthetic scale tests.
+const demoData={
+ default:{total:1,production:1,stock:0,inactive:0,replacements:0,online:0,offline:0,unknown:1,unmonitored:0,stale:1,complete:1,incomplete:0,duplicate:0,activityCount:0,cameras:[['TESTE01','Produção · 25/09/2026 19:31']],activities:[]},
+ scale:{total:2300,production:2050,stock:180,inactive:70,replacements:96,online:1960,offline:44,unknown:46,unmonitored:250,stale:28,complete:2124,incomplete:176,duplicate:12,activityCount:1846,cameras:[['P5 DEV — Corredor Leste','Produção · 06/10/2026 09:42'],['TERMINAL LESTE — ACESSO 07','Estoque · 06/10/2026 08:11']],activities:[['Conferência cadastral demonstrativa','06/10/2026 09:42'],['Atualização de registro demonstrativa','06/10/2026 08:11']]},
+ long:{total:2300,production:2050,stock:180,inactive:70,replacements:96,online:1960,offline:44,unknown:46,unmonitored:250,stale:28,complete:2124,incomplete:176,duplicate:12,activityCount:1846,cameras:[['CÂMERA DO TERMINAL LESTE — ÁREA DE ALFANDEGAMENTO E DESEMBARQUE INTERNACIONAL — CORREDOR COMPLEMENTAR MUITO EXTENSO','Produção · 06/10/2026 09:42'],['EQUIPAMENTO DE CONTROLE DE ACESSO DO SETOR DE CIRCULAÇÃO','Estoque · 06/10/2026 08:11']],activities:[['Registro de manutenção corretiva com descrição excepcionalmente longa para testar quebra natural e leitura das informações operacionais','06/10/2026 09:42'],['Conferência de integridade de inventário','06/10/2026 08:11']]},
+ empty:{total:0,production:0,stock:0,inactive:0,replacements:0,online:0,offline:0,unknown:0,unmonitored:0,stale:0,complete:0,incomplete:0,duplicate:0,activityCount:0,cameras:[],activities:[]}
+};
+function safeText(s){return String(s??'')}
+function applyFixture(){
+ const id=new URLSearchParams(window.location.search).get('fixture')||'default';
+ const d=demoData[id]||demoData.default;
+ const nf=new Intl.NumberFormat('pt-BR');
+ document.querySelectorAll('[data-value]').forEach(e=>e.textContent=nf.format(d[e.dataset.value]));
+ const countText=d.stale===1?'1 câmera com dados desatualizados':nf.format(d.stale)+' câmeras com dados desatualizados';
+ document.querySelector('[data-freshness]').textContent=d.stale===0?'Nenhuma câmera com dados desatualizados':countText;
+ document.querySelectorAll('[data-fixture]').forEach(a=>a.setAttribute('aria-current',String(a.dataset.fixture===id)));
+ const acts=document.querySelector('[data-activities]');const actEmpty=document.querySelector('[data-empty-activities]');
+ acts.replaceChildren();acts.hidden=!d.activities.length;actEmpty.hidden=!!d.activities.length;
+ for(const [name,meta] of d.activities){const li=document.createElement('li');li.className='record';const strong=document.createElement('div');strong.className='record-title';strong.textContent=safeText(name);const sub=document.createElement('span');sub.className='record-meta';sub.textContent=safeText(meta);li.append(strong,sub);acts.append(li)}
+ document.querySelector('[data-visible-cameras]').textContent=nf.format(d.cameras.length);
+ const cams=document.querySelector('[data-recent-cameras]');const camEmpty=document.querySelector('[data-empty-cameras]');
+ cams.replaceChildren();cams.hidden=!d.cameras.length;camEmpty.hidden=!!d.cameras.length;
+ for(const [name,meta] of d.cameras){const li=document.createElement('li');li.className='record';const strong=document.createElement('div');strong.className='record-title';strong.textContent=safeText(name);const sub=document.createElement('span');sub.className='record-meta';sub.textContent=safeText(meta);li.append(strong,sub);cams.append(li)}
+}
+applyFixture();document.querySelectorAll('a[data-demo-link]').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
+</script>
+</body>
+</html>

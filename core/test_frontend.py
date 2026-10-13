@@ -237,6 +237,8 @@ class BaseAndPortalFrontendTests(TestCase):
             self.assertNotContains(response, "argos-ui-v2-production")
             self.assertNotContains(response, "/static/css/ui-v2/production.css")
             self.assertNotContains(response, "argos-nav-scroll-hint")
+        self.assertContains(dashboard, 'href="/static/css/dashboard-v7.css"')
+        self.assertNotContains(inventario, "/static/css/dashboard-v7.css")
 
     def test_inicio_exibe_cartoes_permitidos_com_links_unicos_e_acessiveis(self):
         self.login_monitoramento()
@@ -255,14 +257,19 @@ class BaseAndPortalFrontendTests(TestCase):
         self.assertContains(response, 'class="argos-page-title page-heading__title"')
         self.assertContains(response, 'class="argos-eyebrow page-heading__eyebrow"')
         self.assertContains(response, 'id="inventario-heading"')
-        self.assertContains(response, 'id="dashboard-operational-title"')
         self.assertContains(response, 'id="dashboard-monitoring-title"')
-        self.assertContains(response, 'id="inventario-heading"')
+        self.assertContains(response, 'id="dashboard-quality-title"')
         self.assertContains(response, "Monitoramento e completude")
-        self.assertContains(response, "Em produção")
+        self.assertContains(response, "Total de câmeras")
+        self.assertContains(response, "Cadastros completos")
         self.assertContains(response, "Online")
-        self.assertContains(response, "Cadastro completo")
-        self.assertContains(response, "Cadastro incompleto")
+        self.assertContains(response, "Frescor dos dados")
+        for label in ("Estado técnico efetivo", "Indisponibilidade detectada", "Fora do escopo técnico", "Estados técnicos das câmeras", "Câmeras exibidas"):
+            self.assertContains(response, label)
+        self.assertContains(response, "Câmeras com IP duplicado")
+        self.assertEqual(response.content.count(b'class="dashboard-v7__surface dashboard-v7__activity-grid"'), 1)
+        self.assertEqual(response.content.count(b'class="dashboard-v7__activity-panel"'), 2)
+        self.assertNotContains(response, 'class="dashboard-v7__surface dashboard-v7__activity-panel"')
 
     def test_dashboard_mantem_as_cinco_cameras_recentes(self):
         self.login_monitoramento()
@@ -271,8 +278,9 @@ class BaseAndPortalFrontendTests(TestCase):
 
         response = self.client.get(reverse("core:dashboard"))
 
-        self.assertEqual(response.content.count(b'class="dashboard-recent-item"'), 5)
+        self.assertEqual(response.content.count(b'class="dashboard-v7__recent-item"'), 5)
         self.assertContains(response, "Câmeras atualizadas recentemente")
+        self.assertEqual(len(response.context["cameras_recentes"]), 5)
 
     def test_cards_dashboard_usam_filtros_existentes(self):
         self.login_monitoramento()
@@ -285,7 +293,8 @@ class BaseAndPortalFrontendTests(TestCase):
             "completude=INCOMPLETO",
         ):
             self.assertContains(response, parametro)
-        for label in ("Monitoramento e completude", "Online", "Offline", "Desconhecido", "Não monitoradas"):
+        self.assertContains(response, "Ver câmeras", count=3)
+        for label in ("Monitoramento e completude", "Online", "Offline", "Desconhecido", "Não monitorada"):
             self.assertContains(response, label)
         self.assertNotContains(response, 'href="/cameras/?ip_duplicado=')
 
@@ -337,7 +346,12 @@ class BaseAndPortalFrontendTests(TestCase):
         self.login_monitoramento()
         response = self.client.get(reverse("core:dashboard"))
         html = response.content.decode()
-        self.assertIn('class="argos-kpi-card dashboard-kpi-link"', html)
-        self.assertIn('<article class="argos-kpi-card"><strong>0</strong><span>Total de câmeras</span></article>', html)
-        self.assertIn("<dt>IPs duplicados</dt><dd>0</dd>", html)
-        self.assertNotIn('<a class="argos-kpi-card dashboard-kpi-link"><a ', html)
+        self.assertIn('class="dashboard-v7__inventory-total"', html)
+        self.assertIn('<strong>0</strong><span class="dashboard-v7__metric-caption">Câmeras cadastradas</span>', html)
+        self.assertIn('href="/cameras/?situacao_operacional=PRODUCAO"', html)
+        self.assertIn('href="/cameras/?situacao_operacional=ESTOQUE"', html)
+        self.assertIn("<dt>Câmeras com IP duplicado</dt><dd>0</dd>", html)
+        self.assertIn("Câmeras exibidas <strong>0</strong>", html)
+        self.assertIn("Frescor dos dados", html)
+        self.assertIn("0 câmeras com dados desatualizados", html)
+        self.assertNotIn('href="/cameras/?ip_duplicado=', html)
