@@ -236,7 +236,9 @@ class BaseAndPortalFrontendTests(TestCase):
             self.assertContains(response, 'class="app-shell"')
             self.assertNotContains(response, "argos-ui-v2-production")
             self.assertNotContains(response, "/static/css/ui-v2/production.css")
-            self.assertNotContains(response, "argos-nav-scroll-hint")
+            self.assertContains(response, 'data-argos-sidebar-visual="hom-01"')
+            self.assertContains(response, 'aria-describedby="argos-nav-scroll-hint"')
+            self.assertContains(response, "argos-nav-scroll-hint")
         self.assertContains(dashboard, 'href="/static/css/dashboard-v7.css"')
         self.assertNotContains(inventario, "/static/css/dashboard-v7.css")
 

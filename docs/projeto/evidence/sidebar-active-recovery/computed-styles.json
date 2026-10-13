@@ -1,0 +1,469 @@
+{
+  "after": {
+    "Início": {
+      "bodyAttr": "hom-01",
+      "content": {
+        "gap": "24px",
+        "minHeight": "100%",
+        "padding": "20px 8px",
+        "width": 200
+      },
+      "dpr": 1,
+      "links": [
+        {
+          "active": "page",
+          "align": "center",
+          "bg": "rgb(37, 99, 166)",
+          "color": "rgb(255, 255, 255)",
+          "height": 40,
+          "icon": "rgb(255, 255, 255)",
+          "label": "Início",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "750",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Dashboard",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Inventário",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Governança",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Eventos",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        }
+      ],
+      "scale": 1,
+      "sidebar": {
+        "bg": "rgb(24, 44, 58)",
+        "color": "rgb(255, 255, 255)",
+        "display": "flex",
+        "height": 866,
+        "minHeight": "866px",
+        "padding": "20px 16px",
+        "position": "sticky",
+        "width": 232
+      },
+      "url": "http://127.0.0.1:8765/",
+      "viewport": [
+        2552,
+        866
+      ]
+    },
+    "Dashboard": {
+      "bodyAttr": null,
+      "content": {
+        "gap": "24px",
+        "minHeight": "100%",
+        "padding": "20px 8px",
+        "width": 200
+      },
+      "dpr": 1,
+      "links": [
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Início",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": "page",
+          "align": "center",
+          "bg": "rgb(37, 99, 166)",
+          "color": "rgb(255, 255, 255)",
+          "height": 40,
+          "icon": "rgb(255, 255, 255)",
+          "label": "Dashboard",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "750",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Inventário",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Governança",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Eventos",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        }
+      ],
+      "scale": 1,
+      "sidebar": {
+        "bg": "rgb(24, 44, 58)",
+        "color": "rgb(255, 255, 255)",
+        "display": "flex",
+        "height": 866,
+        "minHeight": "866px",
+        "padding": "20px 16px",
+        "position": "sticky",
+        "width": 232
+      },
+      "url": "http://127.0.0.1:8765/dashboard/",
+      "viewport": [
+        2552,
+        866
+      ]
+    },
+    "Inventário": {
+      "bodyAttr": null,
+      "content": {
+        "gap": "24px",
+        "minHeight": "100%",
+        "padding": "20px 8px",
+        "width": 200
+      },
+      "dpr": 1,
+      "links": [
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Início",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Dashboard",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": "page",
+          "align": "center",
+          "bg": "rgb(37, 99, 166)",
+          "color": "rgb(255, 255, 255)",
+          "height": 40,
+          "icon": "rgb(255, 255, 255)",
+          "label": "Inventário",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "750",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Governança",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Eventos",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        }
+      ],
+      "scale": 1,
+      "sidebar": {
+        "bg": "rgb(24, 44, 58)",
+        "color": "rgb(255, 255, 255)",
+        "display": "flex",
+        "height": 866,
+        "minHeight": "866px",
+        "padding": "20px 16px",
+        "position": "sticky",
+        "width": 232
+      },
+      "url": "http://127.0.0.1:8765/cameras/",
+      "viewport": [
+        2552,
+        866
+      ]
+    },
+    "Governança": {
+      "bodyAttr": "hom-01",
+      "content": {
+        "gap": "24px",
+        "minHeight": "100%",
+        "padding": "20px 8px",
+        "width": 200
+      },
+      "dpr": 1,
+      "links": [
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Início",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Dashboard",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Inventário",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": "page",
+          "align": "center",
+          "bg": "rgb(37, 99, 166)",
+          "color": "rgb(255, 255, 255)",
+          "height": 40,
+          "icon": "rgb(255, 255, 255)",
+          "label": "Governança",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "750",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Eventos",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        }
+      ],
+      "scale": 1,
+      "sidebar": {
+        "bg": "rgb(24, 44, 58)",
+        "color": "rgb(255, 255, 255)",
+        "display": "flex",
+        "height": 866,
+        "minHeight": "866px",
+        "padding": "20px 16px",
+        "position": "sticky",
+        "width": 232
+      },
+      "url": "http://127.0.0.1:8765/cameras/substituicoes/",
+      "viewport": [
+        2552,
+        866
+      ]
+    },
+    "Eventos": {
+      "bodyAttr": "hom-01",
+      "content": {
+        "gap": "24px",
+        "minHeight": "100%",
+        "padding": "20px 8px",
+        "width": 200
+      },
+      "dpr": 1,
+      "links": [
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Início",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Dashboard",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Inventário",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": null,
+          "align": "center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "color": "rgb(208, 219, 227)",
+          "height": 40,
+          "icon": "rgb(208, 219, 227)",
+          "label": "Governança",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "650",
+          "width": 184
+        },
+        {
+          "active": "page",
+          "align": "center",
+          "bg": "rgb(37, 99, 166)",
+          "color": "rgb(255, 255, 255)",
+          "height": 40,
+          "icon": "rgb(255, 255, 255)",
+          "label": "Eventos",
+          "padding": "8px 12px",
+          "radius": "5px",
+          "weight": "750",
+          "width": 184
+        }
+      ],
+      "scale": 1,
+      "sidebar": {
+        "bg": "rgb(24, 44, 58)",
+        "color": "rgb(255, 255, 255)",
+        "display": "flex",
+        "height": 866,
+        "minHeight": "866px",
+        "padding": "20px 16px",
+        "position": "sticky",
+        "width": 232
+      },
+      "url": "http://127.0.0.1:8765/eventos/",
+      "viewport": [
+        2552,
+        866
+      ]
+    }
+  }
+}

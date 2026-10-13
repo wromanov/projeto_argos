@@ -1,0 +1,126 @@
+/*
+ * HOM-01 sidebar recovery for Início, Governança and Eventos.
+ * Match the sidebar/navigation rules in UI V2 2.4.0 production.css while
+ * keeping the global UI V2 stylesheet gate and its assets unchanged.
+ * Token fallbacks repeat the canonical tokens.css values because that asset
+ * is intentionally not loaded on these routes.
+ */
+body[data-argos-sidebar-visual="hom-01"] .app-layout {
+    display: grid;
+    min-height: 100vh;
+    grid-template-columns: 232px minmax(0, 1fr);
+}
+
+body[data-argos-sidebar-visual="hom-01"] .app-sidebar {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    padding: 20px 16px;
+    background: var(--argos-color-surface-inverse, #182c3a);
+    color: var(--argos-color-ink-inverse, #ffffff);
+}
+
+body[data-argos-sidebar-visual="hom-01"] .app-sidebar__content {
+    min-height: 100%;
+    gap: 24px;
+}
+
+body[data-argos-sidebar-visual="hom-01"] .main-navigation {
+    display: grid;
+    align-content: start;
+    gap: 4px;
+}
+
+body[data-argos-sidebar-visual="hom-01"] .main-navigation > .main-navigation__link {
+    min-height: 40px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    color: var(--argos-color-ink-inverse-muted, #d0dbe3);
+}
+
+body[data-argos-sidebar-visual="hom-01"] .main-navigation > .main-navigation__link:hover {
+    background: var(--argos-color-overlay-hover, rgb(255 255 255 / 9%));
+    color: var(--argos-color-ink-inverse, #ffffff);
+}
+
+body[data-argos-sidebar-visual="hom-01"] .main-navigation > .main-navigation__link[aria-current="page"] {
+    background: var(--argos-color-action, #2563a6);
+    color: var(--argos-color-action-contrast, #ffffff);
+}
+
+body[data-argos-sidebar-visual="hom-01"] .main-navigation > .main-navigation__link:focus-visible {
+    outline: 3px solid var(--argos-color-ink-inverse, #ffffff);
+    outline-offset: 2px;
+}
+
+body[data-argos-sidebar-visual="hom-01"] .argos-nav-scroll-hint {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    body[data-argos-sidebar-visual="hom-01"] .app-layout {
+        grid-template-columns: 190px minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 680px) {
+    body[data-argos-sidebar-visual="hom-01"] .app-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    body[data-argos-sidebar-visual="hom-01"] .app-sidebar {
+        min-height: 0;
+        gap: 12px;
+        padding: 12px 14px;
+    }
+
+    body[data-argos-sidebar-visual="hom-01"] .app-sidebar__content {
+        gap: 12px;
+    }
+
+    body[data-argos-sidebar-visual="hom-01"] .main-navigation {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scroll-behavior: smooth;
+        scroll-padding-inline: 8px;
+        padding: 0 8px 8px 0;
+        scrollbar-width: auto;
+        scrollbar-color: var(--argos-color-action, #2563a6) var(--argos-color-surface-inverse, #182c3a);
+    }
+
+    body[data-argos-sidebar-visual="hom-01"] .main-navigation::-webkit-scrollbar {
+        height: 7px;
+    }
+
+    body[data-argos-sidebar-visual="hom-01"] .main-navigation::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: var(--argos-color-action, #2563a6);
+    }
+
+    body[data-argos-sidebar-visual="hom-01"] .main-navigation::-webkit-scrollbar-track {
+        border-radius: 999px;
+        background: var(--argos-color-surface-inverse, #182c3a);
+    }
+
+    body[data-argos-sidebar-visual="hom-01"] .main-navigation > .main-navigation__link {
+        flex: 0 0 auto;
+        min-height: 44px;
+        padding: 12px;
+        scroll-margin-inline: 8px;
+    }
+
+    body[data-argos-sidebar-visual="hom-01"] .argos-nav-scroll-hint {
+        display: block;
+        margin: 0;
+        color: var(--argos-color-ink-inverse-muted, #d0dbe3);
+        font-size: 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body[data-argos-sidebar-visual="hom-01"] .main-navigation {
+        scroll-behavior: auto;
+    }
+}
