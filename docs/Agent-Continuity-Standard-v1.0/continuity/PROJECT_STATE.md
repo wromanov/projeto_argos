@@ -1,17 +1,12 @@
 # ARGOS — Project State
 
-Estado corrente ARGOS-HOM-01: consulte a seção 105 para a aprovação da atividade
-limitada HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2 e a autorização de stage/commit.
-O usuário aprovou a composição apresentada com “perfeito autorizo stage e
-commit”. Branch `codex/hom-v1-integration`; HEAD corrente deve ser confirmado
-diretamente no Git. A baseline de entrada desta etapa era
-`11dcf7db0095416c125f8863ab89a2eef7fb278f`. WIP de outras atividades deve ser
-preservado fora do escopo de stage. O stage/commit autorizado está em preparação
-para o escopo bounded do Dashboard; não há SHA pós-commit registrado. Push não
-autorizado. A atividade limitada do Dashboard está completa, mas HOM-01 permanece
-`IN_PROGRESS`; HOM-02 segue bloqueada. Checkpoint em
-`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`; seções seguintes são
-snapshots históricos salvo ponteiro mais recente.
+Estado corrente ARGOS-HOM-01: consulte a seção 107 para o encerramento da
+recuperação no computador do trabalho. A branch publicada é
+`codex/hom-v1-integration`; o SHA corrente deve ser confirmado diretamente no
+Git. O ambiente local está preparado para continuar HOM-01. HOM-01 permanece
+`IN_PROGRESS`, o aceite visual geral do Dashboard V7 segue `PENDING` e o início
+de HOM-02 segue `BLOCKED`. A seção 106 e as anteriores são checkpoints
+históricos; este ponteiro identifica o snapshot mais recente.
 
 ## UI-V2-P1 — seleção visual e fechamento (2026-09-27)
 
@@ -6195,3 +6190,64 @@ propriedade esperado, o launcher para sem alterá-lo; preserve-o e reconcilie
 antes de qualquer ação. A verificação do Dashboard V7 é abrir
 `http://127.0.0.1:8765/dashboard/` e confirmar a página sob o usuário visual QA,
 sem executar monitoramento real ou submeter formulários.
+
+## 107. HOM-01-WORK-PC-QA-BOOTSTRAP-CLOSURE (2026-10-13)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-01-WORK-PC-QA-BOOTSTRAP-CLOSURE
+MODE = DIRECT
+WORK_PC_RECOVERY = COMPLETE
+ACTIVITY_COMPLETION_PERCENT = 100%
+PROJECT_STATE_UPDATE = PASS / this section
+PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+REMOTE_URL = https://github.com/wromanov/projeto_argos.git
+BRANCH = codex/hom-v1-integration
+HEAD_BEFORE_DOCUMENTATION_COMMIT = 1583785825a2aa71ea5f4d3298b6a8ac5826612f
+EXPECTED_PUBLISHED_BASELINE = 1583785825a2aa71ea5f4d3298b6a8ac5826612f
+GIT_SYNC = PASS / branch and baseline confirmed before closure
+WORKTREE_BEFORE_DOCUMENTATION_COMMIT = CLEAN
+DJANGO_CHECK = PASS / work computer .venv interpreter
+QA_DATABASE_ISOLATION = PASS / local QA SQLite and local settings
+QA_VISUAL_USER = PASS / local QA contract, five permissions
+QA_OPERATIONAL_USER = PASS / launcher-created QA account; no credentials recorded
+DASHBOARD_HTTP = 200
+INVENTORY_HTTP = 200
+QA_BOOTSTRAP = PASS / previously completed; not repeated in this closure
+PROVISIONING_PERMISSION_DIFFERENCE = RECORDED
+GENERIC_PROVISION_VISUAL_QA_PERMISSIONS = 9
+LOCAL_QA_LAUNCHER_VISUAL_CONTRACT_PERMISSIONS = 5
+LOCAL_QA_PROVISIONING_METHOD = LOCAL ORM / honored the launcher's five-permission contract
+PROVISIONING_FIX = NOT_IN_SCOPE / no source-code or contract changes
+SOURCE_CODE_CHANGE = NO
+QA_DATABASE_CHANGE_DURING_CLOSURE = NO
+NEW_BRANCH = NO
+MERGE_TO_MASTER = NO
+FORCE_PUSH = NO
+DEPLOY = NO
+DASHBOARD_V7_VISUAL_QA = PENDING
+HOM01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+COMMIT = THIS_DOCUMENTATION_COMMIT / resolve with git after commit
+PUSH = AUTHORIZED NORMAL PUSH / same branch
+LOCAL_REMOTE_SHA_MATCH = PENDING / verify after push
+WORKTREE_CLEAN = PENDING / verify after push
+```
+
+A recuperação técnica no computador do trabalho foi concluída antes desta
+atividade de fechamento. A branch e o HEAD publicados foram confirmados no
+baseline indicado acima; a worktree estava limpa. O ambiente QA local está
+segregado e pronto para retomada de HOM-01. O check do Django, o isolamento do
+banco QA, os usuários QA visual e operacional e as respostas HTTP 200 do
+Dashboard e Inventário já haviam passado. Este fechamento não repetiu
+provisionamento, sincronização Git ou smoke tests.
+
+Foi identificada uma diferença entre o comando genérico `provision_visual_qa`,
+que declara nove permissões, e o contrato de cinco permissões do launcher QA
+visual. O provisionamento local foi feito via ORM e respeitou o contrato do
+launcher. Nenhuma correção de provisionamento foi feita nesta atividade.
+
+Nenhuma senha, sessão ou outro dado sensível foi registrado. Nenhum código-fonte,
+banco QA, branch diferente ou ambiente de produção foi alterado. Após o commit
+documental, resolver o SHA final com Git, confirmar o SHA remoto da mesma branch
+e verificar a worktree limpa.

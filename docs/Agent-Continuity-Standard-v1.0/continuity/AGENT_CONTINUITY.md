@@ -10,8 +10,12 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL HOM-01-SAFE-CHECKPOINT-AND-PUSH (2026-10-13): consultar
-`PROJECT_STATE.md` §106, `ACTIVE_DOCUMENT_MAP.md` §70, o follow-up §14 de
+RETOMADA ATUAL HOM-01-WORK-PC-QA-BOOTSTRAP-CLOSURE (2026-10-13): consultar
+`PROJECT_STATE.md` §107 e `ACTIVE_DOCUMENT_MAP.md` §71 para o fechamento da
+recuperação QA no computador do trabalho. O ambiente está preparado para
+continuar HOM-01; `DASHBOARD_V7_VISUAL_QA=PENDING`, `HOM01_STATUS=IN_PROGRESS`
+e `HOM02_START=BLOCKED`. A seção 106 contém o checkpoint publicado anterior.
+Para contexto de produto, consultar o follow-up §14 de
 `docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md` e o relatório
 `docs/projeto/ARGOS_HOM_01_SIDEBAR_ACTIVE_STATE_RECOVERY.md`. Repositório
 `https://github.com/wromanov/projeto_argos.git`, branch

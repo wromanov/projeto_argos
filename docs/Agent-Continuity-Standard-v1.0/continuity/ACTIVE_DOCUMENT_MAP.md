@@ -1622,3 +1622,21 @@ Para a recuperação em outra máquina, leia primeiro `PROJECT_STATE.md` §106,
 inspecione origem, worktree, branch e ancestralidade antes do checkout/fast-
 forward e recrie localmente o ambiente `.venv`/`.local/qa`. Não copie
 configuração, banco, sessão ou credenciais do computador de origem.
+
+## 71. HOM-01-WORK-PC-QA-BOOTSTRAP-CLOSURE (2026-10-13)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §107 | Fechamento factual da recuperação QA no computador do trabalho e estado de HOM-01 | CURRENT / work environment prepared; HOM-01 remains in progress |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Ponto de retomada e instruções de handoff | CURRENT / points to PROJECT_STATE §107 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`, §71 | Este índice de continuidade | CURRENT |
+
+```text
+ACTIVITY = HOM-01-WORK-PC-QA-BOOTSTRAP-CLOSURE
+WORK_PC_RECOVERY = COMPLETE
+QA_ENVIRONMENT = PREPARED / isolated local environment
+DASHBOARD_V7_VISUAL_QA = PENDING
+HOM01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §107
+```
