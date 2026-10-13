@@ -539,3 +539,31 @@ apresentada; aceite global da matriz continua pendente. Permanecem o finding
 de quebra do cabeçalho MONITORAMENTO a 1366px, QA responsivo da sidebar não
 reivindicado e revisão visual mais ampla da Camera Detail. HOM-01 segue aberta;
 HOM-02 continua bloqueada.
+
+## 15. Aceite visual do Dashboard V7 — matriz integrada (2026-10-13)
+
+Consultar `PROJECT_STATE.md` §108, `AGENT_CONTINUITY.md` §20.68 e
+`docs/projeto/evidence/dashboard-v7-integrated-qa/REPORT.md`.
+
+```text
+ACTIVITY = HOM-01-DASHBOARD-V7-VISUAL-ACCEPTANCE
+USER_DECISION = APPROVED / “Eu validei e está ok.”
+DASHBOARD_V7_HUMAN_VISUAL_APPROVAL = PASS
+APPROVED_VIEWPORTS = 1920x1080, 1440x900, 1366x768, 390x844
+DPR_OBSERVED = 0.9
+ZOOM_100_PERCENT = NOT_VERIFIED
+PIXEL_PERFECT_COMPARISON = NOT_CLAIMED
+VISUAL_COMPOSITION = PRESERVE / no new visual adjustments
+AUDIT = NOT_REPEATED
+SOURCE_CODE_CHANGE = NO
+ACTIVITY_COMPLETION_PERCENT = 100%
+HOM01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §108
+```
+
+O aceite humano cobre as quatro capturas existentes da página Django integrada.
+O DPR foi observado em 0,9; não houve verificação de zoom a 100% nem comparação
+pixel a pixel. A atividade de aceite visual está completa, mas HOM-01 permanece
+em andamento para seus demais gates e HOM-02 continua bloqueada. A composição
+V7 deve ser preservada; a auditoria aceita não deve ser repetida.

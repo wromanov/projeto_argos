@@ -2564,3 +2564,34 @@ O root fará o snapshot pré-commit, revisará os paths do índice e preparará 
 stage. `HEAD_BEFORE` é `11dcf7db0095416c125f8863ab89a2eef7fb278f`; o commit SHA
 deve ser consultado no Git depois da execução. Push não foi autorizado. WIP
 fora do Dashboard permanece fora do escopo. Nenhum SHA futuro é presumido.
+
+### 20.68 HOM-01-DASHBOARD-V7-VISUAL-ACCEPTANCE (2026-10-13)
+
+Consultar `PROJECT_STATE.md` §108, `ACTIVE_DOCUMENT_MAP.md` §72 e
+`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md` §15. O usuário aprovou a
+composição Dashboard V7 nas capturas integradas de 1920×1080, 1440×900,
+1366×768 e 390×844, com o feedback “Eu validei e está ok.” DPR observado:
+0,9. Zoom 100% não verificado; comparação pixel a pixel não reivindicada.
+
+Preservar a composição atual, sem novos ajustes visuais e sem repetir a
+auditoria aceita. Este aceite conclui somente a atividade delimitada de
+aprovação visual. HOM-01 continua `IN_PROGRESS`; HOM-02 continua bloqueada.
+Nenhuma alteração de código-fonte, branch nova ou merge para master foi feita.
+
+### 20.69 HOM-01-CAMERA-DETAIL-RESIDUAL-QA-CLOSURE (2026-10-13)
+
+Consultar `PROJECT_STATE.md` §109, `ACTIVE_DOCUMENT_MAP.md` §73 e
+`docs/projeto/evidence/camera-detail-residual-qa/REPORT.md`. A busca em
+`docs/projeto/evidence/` não encontrou a pasta nem capturas de Camera Detail;
+por isso não se repetiu automação do navegador nem captura. O usuário aprovou
+formalmente encerrar a auditoria residual com limitações aceitas. Os aceites
+anteriores da composição Camera Detail e do Diagnóstico A–D foram preservados;
+nenhuma regressão material foi comprovada.
+
+Permanecem `NOT_VERIFIED` a matriz atual dos quatro viewports, teclado/foco,
+renderização atual por perfil e comparação visual integral com P5. A validação
+histórica de permissões em `PROJECT_STATE.md` §94 continua limitada aos seus
+conjuntos e testes de renderização. Nenhum finding P1/P2/P3 foi comprovado;
+`DESIGN_QA_GLOBAL = NOT_DECLARED_PASS`. A atividade está
+`CLOSED_WITH_LIMITATIONS`; HOM-01 continua `IN_PROGRESS` e HOM-02 permanece
+bloqueada. Nenhum código-fonte foi alterado.

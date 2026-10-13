@@ -1,5 +1,7 @@
 # ARGOS — Project State
 
+Retomada desta atividade: seção 110 — HOM-01-CHECKPOINT-SANITIZATION. Os aceites humanos vigentes estão nas seções 108 (Dashboard V7) e 109 (Camera Detail CLOSED_WITH_LIMITATIONS). HOM-01 permanece IN_PROGRESS e HOM-02 permanece BLOCKED. O parágrafo anterior à seção UI-V2-P1, preservado abaixo, é o ponteiro histórico do checkpoint §107.
+
 Estado corrente ARGOS-HOM-01: consulte a seção 107 para o encerramento da
 recuperação no computador do trabalho. A branch publicada é
 `codex/hom-v1-integration`; o SHA corrente deve ser confirmado diretamente no
@@ -19,7 +21,7 @@ ACTIVITY_COMPLETION_PERCENT = 100%
 ACTIVITY_COMPLETE = YES
 BASELINE_HEAD = 4306fd53dda7f1e13229ced1a1ade37b87351757
 BRANCH = codex/ui-v2-p1-style-lab
-WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_style_lab
+WORKTREE = .local/qa/historical-worktrees/projeto_argos_style_lab
 STYLE_LAB = docs/prototype/ui-v2/style-lab/
 DIRECTIONS = A_SHADCN_CORPORATE / B_PATTERNFLY_ENTERPRISE / C_ARGOS_HYBRID
 SAME_SKELETON_AND_DATA = YES
@@ -81,7 +83,7 @@ PROGRESS_BASIS = Percentuais históricos preservados sem interpretação como es
 
 ## 2. Git baseline snapshot — before MON-09 documentary commit
 
-REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+REPOSITORY_ROOT = .
 BRANCH = master
 HEAD = 850efd2381d7f5b7df27e528dc3374ea58e507b3
 ORIGIN_MASTER = 850efd2381d7f5b7df27e528dc3374ea58e507b3
@@ -94,7 +96,7 @@ REVALIDATE_AFTER_DOCUMENTARY_COMMIT = REQUIRED; Git posterior é a fonte de verd
 
 ## 2.1 Git baseline snapshot — before current continuity/handoff documentary checkpoint
 
-REPOSITORY_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+REPOSITORY_ROOT = .
 BRANCH = master
 HEAD = f4e88146c1146cdf04d657eb6e3cefa560639b61
 ORIGIN_MASTER = f4e88146c1146cdf04d657eb6e3cefa560639b61
@@ -108,7 +110,7 @@ REVALIDATE_AFTER_DOCUMENTARY_COMMIT = REQUIRED; Git posterior é a fonte de verd
 UI_DS_CANONICAL_SPEC = docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md
 UI_DS_CANONICAL_SPRINT_MAP = docs/projeto/SPRINTS_ARGOS_V5.md
 REFERENCE_DESIGN_SYSTEM = camera-inventory-design-system-v1.0.1
-REFERENCE_PACKAGE_EXTERNAL_PATH = C:\Users\walacedelgado\Downloads\camera-inventory-design-system-v1.0.1.zip
+REFERENCE_PACKAGE_EXTERNAL_PATH = docs/projeto/camera-inventory-design-system-v1.0.1.zip
 REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-v1.0.1.zip
 REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 
@@ -392,7 +394,7 @@ SPRINT_ORDER_AUTHORITY = docs/projeto/SPRINTS_ARGOS_V5.md
 ARGOS_CONTINUITY_PRINCIPLE = ACTIVE
 AGENT_HANDOFF_GATE = ACTIVE
 CONTINUITY_AUTHORITY = docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md
-PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+PROJECT_ROOT = .
 BASELINE_VERIFIED_AT = 2026-09-25
 BRANCH = master
 HEAD = d5f1f54bea518496d7e8c8b64487cfea459372f6
@@ -428,7 +430,7 @@ como candidatas ainda não integradas. Git foi validado no início desta
 reconciliação; o estado pós-edição é listado abaixo. Os gates técnicos abaixo
 foram fornecidos como evidência para esta atividade e não foram reexecutados.
 
-PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+PROJECT_ROOT = .
 BASELINE_VERIFIED_AT = 2026-09-25
 BRANCH = master
 HEAD = c79fa06775ccb707b6753f2a8ed0e988e8a9c86d
@@ -527,7 +529,7 @@ reexecutado nesta atividade documental.
 
 ```text
 BASELINE_VALIDATED = YES
-PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+PROJECT_ROOT = .
 BRANCH = master
 HEAD = 7ca5f7c9c7dda8d66754406be4d351071612aa92
 ORIGIN_MASTER = c32ccc2836313fcb58a31f096f71aa9502cbc7f9
@@ -594,7 +596,7 @@ fornecida para esta reconciliação documental; os testes não foram reexecutado
 
 ```text
 BASELINE_VALIDATED = YES
-PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+PROJECT_ROOT = .
 BRANCH = master
 HEAD = 1015a8f0d7b6165ab057d81afb22007c3ae5e91b
 ORIGIN_MASTER = 20be98d48ccfc19d458e393189168d9ecc93f309
@@ -662,7 +664,7 @@ A aceitação visual do usuário continua pendente; a seção 17 permanece como
 histórico e seus bloqueios de UI-4 foram supersedidos apenas para UI-4A.
 
 ```text
-PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+PROJECT_ROOT = .
 BRANCH = master
 HEAD = cad076099258e96b13f9e5ef11b301fc68891c4d
 ORIGIN_MASTER = 47c6965f3a60c0026117584dae21ca8a280986a5
@@ -779,12 +781,12 @@ realizada no worktree dedicado abaixo, sem reutilizar ou alterar o worktree
 `codex/ui-03-visual-completion`. A implementação técnica foi registrada no commit `7b938a33b3c6192b8294da98decd7b245c27d8db`; o estado Git abaixo é o checkpoint anterior a esta reconciliação documental.
 
 ```text
-CANONICAL_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos
-PHASE0_WORKTREE = C:\Users\walac\.codex\worktrees\argos-ui-remediation-phase-0\projeto_argos
+CANONICAL_WORKTREE = .
+PHASE0_WORKTREE = .local/qa/historical-worktrees/argos-ui-remediation-phase-0/projeto_argos
 BRANCH = codex/ui-remediation-phase-0
 HEAD = 7b938a33b3c6192b8294da98decd7b245c27d8db (pré-reconciliação documental)
 UPSTREAM = NONE
-DJANGO_BASE_DIR = C:\Users\walac\.codex\worktrees\argos-ui-remediation-phase-0\projeto_argos
+DJANGO_BASE_DIR = .local/qa/historical-worktrees/argos-ui-remediation-phase-0/projeto_argos
 RUNTIME_SOURCE = PHASE0_WORKTREE / http://127.0.0.1:8010
 RUNTIME_PROVENANCE = PASS; SHA-256 do inventario.css servido coincidiu com o arquivo do worktree em todos os viewports
 BROWSER = Microsoft Edge headless; zoom/deviceScaleFactor 100%/1
@@ -973,10 +975,10 @@ fase e commit documental, sem push, merge ou início do Batch B.
 
 ```text
 BASELINE_HEAD = be1adfb523c958d754e97f2dbf002aac65700b13
-CANONICAL_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos
+CANONICAL_WORKTREE = .
 CANONICAL_BRANCH = master
 CANONICAL_HEAD_AT_START = be1adfb523c958d754e97f2dbf002aac65700b13
-BATCH_A_WORKTREE = C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-a\projeto_argos
+BATCH_A_WORKTREE = .local/qa/historical-worktrees/argos-ui-remediation-batch-a/projeto_argos
 BATCH_A_BRANCH = codex/ui-remediation-batch-a
 BATCH_A_START_HEAD = be1adfb523c958d754e97f2dbf002aac65700b13
 PHASE1_TECHNICAL = PASS
@@ -1026,7 +1028,7 @@ NEXT_ACTIVITY = ARGOS UI REMEDIATION — FAST TRACK BATCH A / CANONICAL INTEGRAT
 ### Validação e proveniência
 
 ```text
-DJANGO_BASE_DIR = C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-a\projeto_argos
+DJANGO_BASE_DIR = .local/qa/historical-worktrees/argos-ui-remediation-batch-a/projeto_argos
 RUNTIME_SOURCE = Django source, templates, static assets and SQLite QA database from the Batch A worktree; HTML/JSON snapshots generated via Django test client from that same worktree and served on loopback for browser inspection
 RUNTIME_BRANCH = codex/ui-remediation-batch-a
 RUNTIME_HEAD_AT_FINAL_TECHNICAL_VALIDATION = 5fdf371
@@ -1099,7 +1101,7 @@ ACTIVITY = ARGOS UI V2 — CONTINUITY AND ROADMAP RECONCILIATION
 ACTIVITY_STATUS = PASS_WITH_FINDINGS
 ACTIVITY_COMPLETION_PERCENT = 100%
 COMPLETION_BASIS = plano UI V2 criado; state, continuity, map, bootstrap, roadmap, sprint map e UI authority reconciliados; finding de fonte/sequenciamento backend preservado; P0 não executado
-REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+REPOSITORY_ROOT = .
 BRANCH = master
 BASELINE_HEAD = 323bfb0856a0bedc2b1b17cb07cb60dbcdd7c816
 UPSTREAM = origin/master @ 47c6965f3a60c0026117584dae21ca8a280986a5
@@ -1175,7 +1177,7 @@ instrução própria antes de iniciar P0.
 ## 24. Implementação técnica do Batch B — Fases 4–6 (2026-09-27)
 
 As três fases foram implementadas em commits locais separados no worktree
-`C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-b\projeto_argos`,
+`.local/qa/historical-worktrees/argos-ui-remediation-batch-b/projeto_argos`,
 branch `codex/ui-remediation-batch-b`, iniciado no checkpoint documental
 `323bfb0856a0bedc2b1b17cb07cb60dbcdd7c816`. A branch canônica `master` não
 recebeu mudanças de implementação. O trabalho não foi enviado nem integrado.
@@ -1242,7 +1244,7 @@ viewports.
 ### Validação e proveniência do navegador
 
 ```text
-RUNTIME_WORKTREE = C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-b\projeto_argos
+RUNTIME_WORKTREE = .local/qa/historical-worktrees/argos-ui-remediation-batch-b/projeto_argos
 RUNTIME_BRANCH = codex/ui-remediation-batch-b
 RUNTIME_HEAD_AT_FINAL_TECHNICAL_VALIDATION = 660904937c94fa2af5fbefa023f87340bfb03c88
 RUNTIME_SERVER = Django runserver on 127.0.0.1:8012 from Batch B worktree
@@ -1262,7 +1264,7 @@ QUICK_DETAIL_FIELD_GROUPS = 4 in each of the three cards
 QUICK_DETAIL_KEYBOARD_CLOSE_AND_FOCUS_RETURN = PASS at all seven viewports
 QUICK_DETAIL_ACTION_TARGETS = 44px after asynchronous detail content is visible
 SCREENSHOTS = 28 after-state viewport captures; before-state inventory/dashboard captures and a before-state drawer measurement also saved locally
-SCREENSHOT_DIRECTORY = C:\Users\walac\AppData\Local\Temp\argos-batch-b-visual
+SCREENSHOT_DIRECTORY = .local/qa/historical-evidence/argos-batch-b-visual
 ```
 
 As capturas foram feitas com o servidor Django e banco SQLite ignorado do
@@ -1353,7 +1355,7 @@ mediu 665px requeridos para 909px disponíveis, sem scroll interno.
 ### Gates e proveniência
 
 ```text
-RUNTIME_SOURCE = C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-b\projeto_argos
+RUNTIME_SOURCE = .local/qa/historical-worktrees/argos-ui-remediation-batch-b/projeto_argos
 RUNTIME_BRANCH = codex/ui-remediation-batch-b
 RUNTIME_HEAD = 7d38d0b6b43b1434e815f8fe8eb242753d5a502a
 RUNTIME = Django server live from this worktree; authenticated requests and asynchronous Quick Detail JSON
@@ -1384,7 +1386,7 @@ GIT_DIFF_CHECK = PASS
 SCREENSHOTS = six live-runtime Quick Detail viewport captures
 SYNTHETIC_IMAGE_SCREENSHOT = corrective-synthetic-image-2048x741.png; image injected in browser DOM only
 MOBILE_END_STATE_SCREENSHOT = corrective-final-quick-detail-390x844-viewport.png
-SCREENSHOT_DIRECTORY = C:\Users\walac\AppData\Local\Temp\argos-batch-b-visual
+SCREENSHOT_DIRECTORY = .local/qa/historical-evidence/argos-batch-b-visual
 ```
 
 O teste móvel rolou o corpo até o fim e confirmou o último cartão visível e
@@ -1465,13 +1467,13 @@ os pixels já removidos do derivado. Portanto:
 
 Nenhuma alteração foi feita em backend, JavaScript funcional, rotas, contratos,
 dados ou outros produtos. As capturas finais dos seis viewports estão em
-C:\Users\walac\AppData\Local\Temp\argos-batch-b-visual, com nomes
+.local/qa/historical-evidence/argos-batch-b-visual, com nomes
 polish-final-<largura>x<altura>.png.
 
 ### Gates e proveniência
 
 ```text
-RUNTIME_WORKTREE = C:\Users\walac\.codex\worktrees\argos-ui-remediation-batch-b\projeto_argos
+RUNTIME_WORKTREE = .local/qa/historical-worktrees/argos-ui-remediation-batch-b/projeto_argos
 RUNTIME_BRANCH = codex/ui-remediation-batch-b
 RUNTIME_HEAD = 63cf54c81755f5371d98512d38dad1d00bf9b725
 RUNTIME_DATA = ignored local SQLite database with synthetic QA user/camera; manual image asset
@@ -1552,7 +1554,7 @@ pós-integração permanece pendente de revisão explícita do usuário.
 
 ```text
 ACTIVITY = CONTROLLED INTEGRATION OF APPROVED UI REMEDIATION BATCH B
-REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+REPOSITORY_ROOT = .
 MASTER_BASELINE_HEAD = 3ec11897fcc8a2e5f405165951cb44eb8e6c04dd
 ORIGIN_MASTER_AT_PREFLIGHT = 47c6965f3a60c0026117584dae21ca8a280986a5
 BATCH_B_BRANCH = codex/ui-remediation-batch-b
@@ -1592,7 +1594,7 @@ ACTIVITY = UI-V2-P0 CLOSURE CHECKPOINT
 ACTIVITY_STATUS = CLOSED_PASS
 ACTIVITY_COMPLETION_PERCENT = 100%
 COMPLETION_BASIS = censo revisado; estado, continuidade e authorities de UI V2 reconciliados; validação documental e escopo staged PASS; commit documental local concluído; sem push e sem início de P1
-REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+REPOSITORY_ROOT = .
 BRANCH = master
 BASELINE_HEAD = b35b766076ac62955be6bf52cdb4c5fdd5098780
 UPSTREAM = origin/master @ 47c6965f3a60c0026117584dae21ca8a280986a5
@@ -1635,10 +1637,10 @@ visual integrada do Batch B.
 ACTIVITY = UI-V2-P2 — VISUAL FOUNDATION
 ACTIVITY_STATUS = IN_PROGRESS / PASS_WITH_FINDINGS
 ACTIVITY_COMPLETION_PERCENT = 86%
-REPOSITORY_ROOT = C:/Users/walac/.codex/worktrees/ui-v2-p2-visual-foundation/projeto_argos
+REPOSITORY_ROOT = .local/qa/historical-worktrees/ui-v2-p2-visual-foundation/projeto_argos
 BASELINE_HEAD = 6de91063526ab9e323114ad69f0967cc2849145a
 BRANCH = codex/ui-v2-p2-visual-foundation
-WORKTREE = C:/Users/walac/.codex/worktrees/ui-v2-p2-visual-foundation/projeto_argos
+WORKTREE = .local/qa/historical-worktrees/ui-v2-p2-visual-foundation/projeto_argos
 FINAL_HEAD = 6de91063526ab9e323114ad69f0967cc2849145a / no commit yet
 DESIGN_STRATEGY = CODE_FIRST / STACK_NATIVE / PROTOTYPE_DRIVEN
 SELECTED_DIRECTION = C — ARGOS HYBRID
@@ -1707,7 +1709,7 @@ Este checkpoint supersede, apenas para o status técnico de revisão visual, os 
 ACTIVITY = UI-V2-P2 — VISUAL FOUNDATION
 ACTIVITY_STATUS = PASS / READY_FOR_USER_FOUNDATION_REVIEW
 ACTIVITY_COMPLETION_PERCENT = 98%
-REPOSITORY_ROOT = C:/Users/walac/.codex/worktrees/ui-v2-p2-visual-foundation/projeto_argos
+REPOSITORY_ROOT = .local/qa/historical-worktrees/ui-v2-p2-visual-foundation/projeto_argos
 BRANCH = codex/ui-v2-p2-visual-foundation
 BASELINE_HEAD = 6de91063526ab9e323114ad69f0967cc2849145a
 FINAL_HEAD = 6de91063526ab9e323114ad69f0967cc2849145a / review handoff, no commit
@@ -1896,7 +1898,7 @@ Este checkpoint registra a execução autorizada pelo Card B. P2 permanece fecha
 ACTIVITY = UI-V2-P3-0 / PROTOTYPE HARNESS & COMPOSITION CONTRACT
 ACTIVITY_STATUS = COMPLETE / PASS / PUBLISHED / FAN-OUT READY
 ACTIVITY_COMPLETION_PERCENT = 100%
-CANONICAL_REPOSITORY_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+CANONICAL_REPOSITORY_ROOT = .
 P3_0_BASELINE_HEAD = 7702b4c14cac6f7338625ccd08730e8d89fb9495
 BRANCH = codex/ui-v2-p3-0-prototype-harness
 DESIGN_SYSTEM_VERSION = 2.0.0 / PINNED
@@ -1941,14 +1943,14 @@ Este checkpoint é a fonte atual para a atividade ROOT do Design System. Ele com
 ACTIVITY = UI-V2 ROOT — HOME SYNCHRONIZATION + DSCR-UIV2-001-HIDDEN-SEMANTICS
 ACTIVITY_STATUS = COMPLETE / PASS / PUBLISHED
 ACTIVITY_COMPLETION_PERCENT = 100%
-CANONICAL_REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+CANONICAL_REPOSITORY_ROOT = .
 BRANCH = master
 LOCAL_HEAD_BEFORE_ACTIVITY = 7702b4c14cac6f7338625ccd08730e8d89fb9495
 ORIGIN_MASTER_BEFORE_FETCH = 7702b4c14cac6f7338625ccd08730e8d89fb9495
 HOME_SYNC = PASS / FF_ONLY
 ROOT_PATCH_BASE = 9943e20d9b1e04159e067c72aa4dd70eab2bdb36
 ROOT_PATCH_BRANCH = codex/ui-v2-ds-2.0.1-hidden-semantics
-ROOT_PATCH_WORKTREE = C:\Users\walac\.codex\worktrees\ui-v2-ds-2-0-1-hidden-semantics\projeto_argos
+ROOT_PATCH_WORKTREE = .local/qa/historical-worktrees/ui-v2-ds-2-0-1-hidden-semantics/projeto_argos
 DESIGN_SYSTEM_VERSION = 2.0.1
 DS_PATCH_WORK_COMMIT = 8121ed38cc15e1ff6e72cb46bbb2ca865100bce0
 DS_PATCH_INTEGRATION_COMMIT = 70e996f5e25d9c9b5d0f4ec0a256c44efcec6274 / NO_FF
@@ -2015,7 +2017,7 @@ Este checkpoint supersede a seção 37 somente quanto à atividade ROOT corrente
 ACTIVITY = UI-V2 ROOT — DSCR-UIV2-002 MOBILE TABLE READABILITY + EVIDENCE CAPTURE
 ACTIVITY_STATUS = COMPLETE / PASS_WITH_FINDINGS / ADJUDICATED
 ACTIVITY_COMPLETION_PERCENT = 100%
-CANONICAL_REPOSITORY_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+CANONICAL_REPOSITORY_ROOT = .
 BASELINE_HEAD = ebf14c83e75188bc01cc6d23d99c6356f595edef
 ORIGIN_MASTER_AT_PREFLIGHT = ebf14c83e75188bc01cc6d23d99c6356f595edef
 MASTER_DIVERGENCE_AT_PREFLIGHT = 0 / 0
@@ -2033,7 +2035,7 @@ REFERENCED_BY_REPOSITORY = NO
 UNIQUE_UNPRESERVED_CONTENT = YES / the P3-C results are now preserved remotely, but the generating script itself is not in the family branch or handoff
 P3_C_REMOTE_HEAD_AT_REVIEW = c26840e8c9c21b9105b7c3bb42c96bc5186c9227
 P3_C_POST_DS_2_0_1_REPORT = PASS / 75 measurements; 20 screenshots; 0 failures
-RECOVERY_COPY_PATH = C:\Users\walac\desenvolvimento\_argos_local_recovery\tmp-p3c-ds-regression__20260929T004215Z__.cjs
+RECOVERY_COPY_PATH = .local/qa/historical-recovery/tmp-p3c-ds-regression__20260929T004215Z__.cjs
 RECOVERY_COPY_SHA256 = AEB976B2BDAD76DF684F84906D63F3BF44EBAB974BC36B6F76C9C8455C656991
 BYTE_PRESERVATION = PASS
 ORIGINAL_FILE_REMOVED = YES / only the authorized path
@@ -2254,7 +2256,7 @@ ACTIVITY_COMPLETION_PERCENT = 100% / local implementation and validation scope
 ACTIVITY_COMPLETE = YES / local slice only; integration and publication remain separate
 BASE_SHA = 29242953d17988c0d4e14612dbb12fdc40b6f530
 BRANCH = codex/bc-auth-implementation
-WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_bc_auth
+WORKTREE = .local/qa/historical-worktrees/projeto_argos_bc_auth
 HEAD = 29242953d17988c0d4e14612dbb12fdc40b6f530 / changes remain uncommitted
 MASTER_STATUS = unchanged at BASE_SHA; clean at activity start
 IMPLEMENTATION_AUTHORIZED = YES / explicit BC-AUTH-01 activity request; consumed
@@ -2296,7 +2298,7 @@ ACTIVITY = BC-AUTH-02 — INTEGRATION CHECKPOINT
 STATUS = COMPLETE / PASS / PUBLISHED
 ACTIVITY_COMPLETION_PERCENT = 100%
 SOURCE_BRANCH = codex/bc-auth-implementation
-SOURCE_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_bc_auth
+SOURCE_WORKTREE = .local/qa/historical-worktrees/projeto_argos_bc_auth
 SOURCE_BASE_SHA = 29242953d17988c0d4e14612dbb12fdc40b6f530
 SOURCE_IMPLEMENTATION_COMMIT = 55651d22a97e19fa342320b15a4f5276beadcf4a
 SOURCE_WORKTREE_STATUS = CLEAN / staging empty after commit
@@ -2418,19 +2420,19 @@ CURRENT_RUNNING = CAM-INT-07; MON-OBS; P5
 CURRENT_PASS_LOCAL = CAM-INT-02 / source checkpointed at e4a2167; integration pending
 PRIMARY_NEXT_ACTION = CAM-INT-02 source checkpoint -> integration gate -> integrated validation -> continuity -> authorized publication -> DAG recheck
 CAM_INT_02_BRANCH = codex/cam-int-02-camera-credentials
-CAM_INT_02_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_cam_int_02
+CAM_INT_02_WORKTREE = .local/qa/historical-worktrees/projeto_argos_cam_int_02
 CAM_INT_02_HEAD = e4a216722911b8434c68ceb882f6f4cf8e4c8ecc
 CAM_INT_02_STATUS = CLEAN / source commit present
 CAM_INT_07_BRANCH = codex/cam-int-07-target-hardening
-CAM_INT_07_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_cam_int_07
+CAM_INT_07_WORKTREE = .local/qa/historical-worktrees/projeto_argos_cam_int_07
 CAM_INT_07_BASE_SHA = 80c458581944401510b62d1ba35febf7ddadc0d5
 CAM_INT_07_STATUS = RUNNING / untracked implementation and test files observed
 MON_OBS_BRANCH = codex/mon-obs-observability
-MON_OBS_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_mon_obs
+MON_OBS_WORKTREE = .local/qa/historical-worktrees/projeto_argos_mon_obs
 MON_OBS_BASE_SHA = 80c458581944401510b62d1ba35febf7ddadc0d5
 MON_OBS_STATUS = RUNNING / modified implementation and untracked implementation/test files observed
 P5_BRANCH = codex/ui-v2-p5-production
-P5_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_ui_p5
+P5_WORKTREE = .local/qa/historical-worktrees/projeto_argos_ui_p5
 P5_BASE_SHA = 80c458581944401510b62d1ba35febf7ddadc0d5
 P5_STATUS = RUNNING / modified templates and untracked production CSS observed
 P3_B = WAITING_VISUAL_APPROVAL / HOLD
@@ -2796,7 +2798,7 @@ STATUS = COMPLETE / PASS / DOCUMENTARY / PUBLISHED
 ACTIVITY_COMPLETION_PERCENT = 100% / authorized documentary scope
 COMPLETION_BASIS = API, input/output, failures, authorization split, invariants,
   ownership, tests, acceptance, consumer contracts, registry, DAG and continuity reconciled
-PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+PROJECT_ROOT = .
 BRANCH = master
 BASELINE_HEAD = c0e5a954d8a2e290acb5ce86a1b699a10c02b190
 ORIGIN_MASTER_AFTER_FETCH = c0e5a954d8a2e290acb5ce86a1b699a10c02b190
@@ -2883,7 +2885,7 @@ ACTIVITY = CAM-INT-02-R1-INT-R1 — COMMIT-BASED RECOVERY INTEGRATION / PUBLICAT
 ACTIVITY_STATUS = COMPLETE / PASS / PUBLISHED
 ACTIVITY_COMPLETION_PERCENT = 100%
 COMPLETION_BASIS = source commit validated; fast-forward integrated; local static, Django, migration, focused and integrated regression gates passed; continuity recorded; push and direct post-push remote verification passed
-PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+PROJECT_ROOT = .
 BRANCH = master
 MASTER_PRE_INTEGRATION_HEAD = 795dc565da40c8ff087da97c1e55bdda5e15ace4
 SOURCE_COMMIT = 80739e5fa961ecbb27d1fa42a9fbcbe02bc82add
@@ -2971,7 +2973,7 @@ ACTIVITY = CAM-INT-03-INT — RTSP ADAPTER INTEGRATION / PUBLICATION GATE
 ACTIVITY_STATUS = INTEGRATED / VALIDATED_LOCAL / PUBLISHED
 ACTIVITY_COMPLETION_PERCENT = 100%
 COMPLETION_BASIS = source and lineage gates passed; fast-forward integration and all local validation passed; fast-forward publication and post-push remote verification passed
-PROJECT_ROOT = C:\Users\walac\desenvolvimento\projeto_argos
+PROJECT_ROOT = .
 BRANCH = master
 MASTER_PRE_INTEGRATION_HEAD = 0b6692e86b92d9239df92104f4d08bd55a30ba51
 REMOTE_MASTER_PRE_INTEGRATION = 0b6692e86b92d9239df92104f4d08bd55a30ba51 / verified by retry before publication
@@ -3052,7 +3054,7 @@ continuam pendentes.
 ACTIVITY = CAM-INT-03-RUNTIME-02 / REAL RTSP HOMOLOGATION
 ACTIVITY_STATUS = BLOCKED / CODE_DEFECT
 ACTIVITY_COMPLETION_PERCENT = 75% / estimativa, não conclusão
-PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+PROJECT_ROOT = .
 BRANCH = master
 BASELINE_HEAD_BEFORE_DOCUMENTARY_COMMIT = ae8199e019c8f1c9331da919e7807d23d7f7210f
 ORIGIN_MASTER_AT_PREFLIGHT = ae8199e019c8f1c9331da919e7807d23d7f7210f
@@ -3127,7 +3129,7 @@ ACTIVITY = CAM-INT-03-REAL-RTSP-RUNTIME-HOMOLOGATION
 CLASSIFICATION = REAL_RUNTIME_INTEGRATION_HOMOLOGATION
 ACTIVITY_STATUS = BLOCKED_AT_POLICY_GATE / NOT_HOMOLOGATED
 ACTIVITY_COMPLETION_PERCENT = 60 / early stop required before socket, key or credential operations
-PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+PROJECT_ROOT = .
 BRANCH = master
 HEAD = 0483f3bbca8108bc45b78b70d39577b1e30b96df
 ORIGIN_MASTER = 0483f3bbca8108bc45b78b70d39577b1e30b96df
@@ -3143,7 +3145,7 @@ PIPELINE_CONSTRUCTION = PASS / real local GStreamer; no RTSP connection attempte
 DYNAMIC_PAD_SMOKE = PASS / synthetic videotestsrc -> decodebin pad-added -> appsink; sample received; no RTSP
 TARGET_POLICY_BOOTSTRAP = PASS / exact process-local CIDR and rtsp:554 policy loaded
 TARGET_POLICY_NEGATIVE_CHECKS = PASS / alternate IP denied; port 5555 denied
-CAMERA_RESOLUTION = PASS / CAMERA_ID=1, CAM-TESTE, 10.143.36.33
+CAMERA_RESOLUTION = PASS / CAMERA_ID=1, CAM-TESTE, IP privado do alvo RTSP autorizado (original preservado em evidência privada)
 CONNECTION_CONFIG_RESOLUTION = PASS / enabled RTSP profile, port 554; compatibility UNVERIFIED
 PROFILE_DEFAULT_PATH = EMPTY
 AUTHORIZED_TARGET = FAIL / MISCONFIGURED_POLICY: Target policy path is missing
@@ -3207,7 +3209,7 @@ Snapshot histórico anterior à autorização de implementação; consultar a se
 ACTIVITY = CAM-INT-03-TARGET-POLICY-CONFIGURATION-CONTRACT
 CLASSIFICATION = ARCHITECTURAL_ADJUDICATION / IMPLEMENTATION_CONTRACT
 ACTIVITY_STATUS = CONTRACT_PROPOSED / ARCHITECTURE_CONFIRMED
-PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+PROJECT_ROOT = .
 BRANCH = master
 HEAD = 0483f3bbca8108bc45b78b70d39577b1e30b96df
 ORIGIN_MASTER_LOCAL_REF = 0483f3bbca8108bc45b78b70d39577b1e30b96df
@@ -3274,7 +3276,7 @@ ACTIVITY = CAM-INT-03-TARGET-POLICY-CONFIGURATION-IMPLEMENTATION
 CLASSIFICATION = CONTRACT_IMPLEMENTATION
 STATUS = IMPLEMENTED_LOCALLY / TECHNICAL_PASS
 ACTIVITY_COMPLETION_PERCENT = 100
-PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+PROJECT_ROOT = .
 BRANCH = master
 HEAD = 0483f3bbca8108bc45b78b70d39577b1e30b96df
 ORIGIN_MASTER_LOCAL_REF = 0483f3bbca8108bc45b78b70d39577b1e30b96df
@@ -3352,7 +3354,7 @@ Relatório completo, evidências, matriz de hipóteses e plano de correção:
 ```text
 ACTIVITY = CAM-INT-03-INDEPENDENT-END-TO-END-TECHNICAL-AUDIT
 STATUS = AUDIT_COMPLETE / ROOT_CAUSE_PROVEN
-PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+PROJECT_ROOT = .
 BRANCH = master
 HEAD = 0483f3bbca8108bc45b78b70d39577b1e30b96df
 ORIGIN_MASTER_LOCAL_REF = 0483f3bbca8108bc45b78b70d39577b1e30b96df
@@ -3417,7 +3419,7 @@ global, suporte modelo/firmware, homologação ou outras lanes pelo experimento.
 PROJECT = ARGOS
 ACTIVITY = CAM-INT-03-DYNAMIC-DEPAYLOADER-STATE-FIX-AND-REAL-RUNTIME-REVALIDATION
 STATUS = LOCAL_FIX_AND_VALIDATION_PASS / REAL_RUNTIME_NOT_EXECUTED
-PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+PROJECT_ROOT = .
 BRANCH = master
 HEAD = 0483f3bbca8108bc45b78b70d39577b1e30b96df
 ORIGIN_MASTER_LOCAL_REF = 0483f3bbca8108bc45b78b70d39577b1e30b96df
@@ -3856,7 +3858,7 @@ CONTRACT = docs/projeto/contracts/backend/camera/CAM-INT-05_TECHNICAL_DIAGNOSTIC
 CONTRACT_CONFORMANCE = PASS / A-D, D-ONLY SUCCESS, MANUAL ISOLATION, SANITIZED OUTPUT
 IMPLEMENTATION_STATUS = COMPLETE / LOCAL WIP / NOT PUBLISHED
 VALIDATION_GATE = PASS
-ROOT = C:\Users\walac\desenvolvimento\projeto_argos_cam_int_05
+ROOT = .local/qa/historical-worktrees/projeto_argos_cam_int_05
 BRANCH = codex/cam-int-05-implementation
 BASELINE_HEAD = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
 HEAD = 5bd22b06891a9cfa3886aa2dd2fbe0bf97e125c9
@@ -3933,7 +3935,7 @@ PROJECT = ARGOS
 ACTIVITY = CAM-HEALTH-IMPLEMENTATION
 STATUS = COMPLETE / LOCAL / NOT PUBLISHED
 ACTIVITY_COMPLETION_PERCENT = 100%
-ROOT = C:\Users\walac\desenvolvimento\projeto_argos_cam_health
+ROOT = .local/qa/historical-worktrees/projeto_argos_cam_health
 BRANCH = codex/cam-health-implementation
 INITIAL_HEAD = 68d593d88b84b218210dac0fe8ddf16c08fd413a
 FINAL_HEAD = 68d593d88b84b218210dac0fe8ddf16c08fd413a
@@ -4010,12 +4012,12 @@ O provider local instrumenta o scheduler existente e mantém dados de câmera se
 ```text
 ACTIVITY = MON-OBS-DJANGO-ENVIRONMENT-VALIDATION
 STATUS = COMPLETE / critérios funcionais e de ambiente aprovados; findings independentes registrados
-EXECUTION_ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_obs
+EXECUTION_ROOT = .local/qa/historical-worktrees/projeto_argos_mon_obs
 GIT_BRANCH = codex/mon-obs-observability
 GIT_HEAD = 80c458581944401510b62d1ba35febf7ddadc0d5
 PYTHON_VERSION = 3.14.7
-PYTHON_EXECUTABLE = C:\Users\walac\.cache\argos\venvs\projeto_argos_mon_obs-py3.14\Scripts\python.exe
-VENV_PATH = C:\Users\walac\.cache\argos\venvs\projeto_argos_mon_obs-py3.14
+PYTHON_EXECUTABLE = .venv/Scripts/python.exe
+VENV_PATH = .venv
 DEPENDENCY_SOURCE = requirements-dev.txt -> requirements.txt / sem alterações aos manifestos
 DJANGO_VERSION = 5.2.16 / pin declarado
 PILLOW_VERSION = 12.3.0 / satisfeito por Pillow>=11,<13
@@ -4054,7 +4056,7 @@ O ambiente usa Python 3.14.7, compatível oficialmente com Django 5.2; a compati
 ```text
 ACTIVITY = MON-OBS-FINAL-GIT-CHECKPOINT
 STATUS = PARTIAL / commit local autorizado; publicação pendente de conectividade remota
-EXECUTION_ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_obs
+EXECUTION_ROOT = .local/qa/historical-worktrees/projeto_argos_mon_obs
 BRANCH = codex/mon-obs-observability
 INITIAL_HEAD = 80c458581944401510b62d1ba35febf7ddadc0d5
 MON_OBS_IMPLEMENTATION = COMPLETE
@@ -4097,7 +4099,7 @@ MON_OBS_SHA = 6fc4f708778210c617cf4b5bca6cca441bdb0705 / PUBLICATION PASS
 CAM_INT_05_SHA = 68d593d88b84b218210dac0fe8ddf16c08fd413a / PUBLICATION PASS; ancestor
 CAM_HEALTH_SHA = 6ef2f7035dae858282eeae76ff5fefff160443bd / PUBLICATION PASS
 INTEGRATION_BRANCH = codex/bc-02-integration
-INTEGRATION_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_bc_02_integration
+INTEGRATION_WORKTREE = .local/qa/historical-worktrees/projeto_argos_bc_02_integration
 FINAL_HEAD = 6ef2f7035dae858282eeae76ff5fefff160443bd
 MERGE_HEAD = 6fc4f708778210c617cf4b5bca6cca441bdb0705
 FAST_FORWARD_RESULT = PASS / master baseline → CAM-HEALTH; CAM-INT-05 ancestor present
@@ -4136,7 +4138,7 @@ PROJECT = ARGOS
 ACTIVITY = MON-RUNTIME-V1-CONTRACT-BASELINE-RECONCILIATION
 STATUS = COMPLETE / reconciliacao documental V1
 ACTIVITY_COMPLETION_PERCENT = 100%
-ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+ROOT = .local/qa/historical-worktrees/projeto_argos_mon_runtime_v1
 BRANCH = codex/mon-runtime-v1-implementation
 BASELINE_HEAD = ccc0267527da7cac0a139a68c11982100f627147
 CURRENT_HEAD = ccc0267527da7cac0a139a68c11982100f627147
@@ -4169,7 +4171,7 @@ PROJECT = ARGOS
 ACTIVITY = MON-RUNTIME-V1-IMPLEMENTATION
 STATUS = COMPLETE / LOCAL IMPLEMENTATION AND VALIDATION
 ACTIVITY_COMPLETION_PERCENT = 100%
-ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+ROOT = .local/qa/historical-worktrees/projeto_argos_mon_runtime_v1
 BRANCH = codex/mon-runtime-v1-implementation
 BASELINE_HEAD = ccc0267527da7cac0a139a68c11982100f627147
 CURRENT_HEAD = ccc0267527da7cac0a139a68c11982100f627147
@@ -4204,7 +4206,7 @@ PROJECT = ARGOS
 ACTIVITY = ARGOS-DJANGO-PATCH-VALIDATION
 STATUS = READY_FOR_GIT_CHECKPOINT / PASS_WITH_FINDINGS
 ACTIVITY_COMPLETION_PERCENT = 100%
-ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+ROOT = .local/qa/historical-worktrees/projeto_argos_mon_runtime_v1
 BRANCH = codex/mon-runtime-v1-implementation
 EXPECTED_HEAD = 89fac4a19f831fdcf7af496c64c617f3d6e37d62
 FINAL_HEAD = 89fac4a19f831fdcf7af496c64c617f3d6e37d62
@@ -4249,7 +4251,7 @@ PROJECT = ARGOS
 ACTIVITY = ARGOS-CRYPTOGRAPHY-SECURITY-REMEDIATION
 STATUS = COMPLETE / LOCAL SECURITY REMEDIATION AND VALIDATION
 ACTIVITY_COMPLETION_PERCENT = 100%
-ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+ROOT = .local/qa/historical-worktrees/projeto_argos_mon_runtime_v1
 BRANCH = codex/mon-runtime-v1-implementation
 INITIAL_HEAD = 9d5ac5debec3710212f5331a41201c43cb63ced9
 FINAL_HEAD = 9d5ac5debec3710212f5331a41201c43cb63ced9
@@ -4306,7 +4308,7 @@ PROJECT = ARGOS
 ACTIVITY = MON-RUNTIME-V1-H1-PREFLIGHT-VALIDATION
 STATUS = PARTIAL / H1 ACCEPTANCE NOT MET
 ACTIVITY_COMPLETION_PERCENT = 80%
-ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+ROOT = .local/qa/historical-worktrees/projeto_argos_mon_runtime_v1
 BRANCH = codex/mon-runtime-v1-implementation
 BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
 FINAL_HEAD = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
@@ -4358,7 +4360,7 @@ PROJECT = ARGOS
 ACTIVITY = MON-RUNTIME-V1-H1-EXECUTION-RECOVERY
 ACTIVITY_COMPLETION_PERCENT = 16%
 STATUS = PARTIAL / aguardando smoke e runners no PowerShell externo
-ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+ROOT = .local/qa/historical-worktrees/projeto_argos_mon_runtime_v1
 BRANCH = codex/mon-runtime-v1-implementation
 BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
 INITIAL_WIP = preservado / somente os três documentos de continuidade
@@ -4371,7 +4373,7 @@ DB_OPERATIONAL_FILE_OPENED = NO
 ALLOWED_TESTSERVER = YES
 PYTHON_SIMPLE_PROCESS = PASS / exit 0
 ASYNCIO_TRIVIAL_SMOKE = TIMEOUT / 12s / exit 124 / processo encerrado
-PYTHON_BASE_REPORTED_BY_VENV = C:\Users\walac\AppData\Local\Python\pythoncore-3.14-64\python.exe
+PYTHON_BASE_REPORTED_BY_VENV = .local/qa/historical-runtime/pythoncore-3.14-64/python.exe
 PYTHON_BASE_LOCATION_WARNING = "Failed to find real location" (stderr)
 DJANGO_TEST_DB_SMOKE = NOT_RUN / aguarda asyncio smoke externo
 ASYNC_UNIT_TESTS = NOT_RUN
@@ -4407,7 +4409,7 @@ STATUS = PARTIAL / runners não iniciados
 BASELINE_SHA = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
 EXTERNAL_ROOT_BRANCH_HEAD = PASS / root e branch esperados; HEAD esperado
 EXTERNAL_PYTHON_PROCESSES = 2 OBSERVED / PID 17352 e 39204 / início 2026-10-10 22:59:59 / ownership UNKNOWN
-PROCESS_17352_PATH = C:\Users\walac\AppData\Local\Python\pythoncore-3.14-64\python.exe
+PROCESS_17352_PATH = .local/qa/historical-runtime/pythoncore-3.14-64/python.exe
 PROCESS_39204_PATH = repository .venv\Scripts\python.exe (display path truncated)
 RESIDUAL_PROCESS_POLICY = PRESERVED / não encerrados; identificar command line e parent antes de nova execução
 PYTHON_SMOKE_EXTERNAL = NOT_RUN
@@ -4810,11 +4812,11 @@ ACTIVITY = ARGOS-HOM-00-CONTINUITY-RECOVERY-01
 MODE = DOCUMENTATION_RECONCILIATION / DIRECT
 STATUS = COMPLETE / DOCUMENTARY WIP RECOVERED; HOM-00 INTEGRATION FOUNDATION PENDING
 ACTIVITY_COMPLETION_PERCENT = 100%
-SOURCE_ROOT = C:\Users\walac\desenvolvimento\projeto_argos_mon_runtime_v1
+SOURCE_ROOT = .local/qa/historical-worktrees/projeto_argos_mon_runtime_v1
 SOURCE_BRANCH = codex/mon-runtime-v1-implementation
 SOURCE_HEAD = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
 SOURCE_WIP_PRESERVED = YES / tracked documentary WIP and two untracked files left untouched
-TARGET_ROOT = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+TARGET_ROOT = .local/qa/historical-worktrees/projeto_argos_hom_integration
 TARGET_BRANCH = codex/hom-v1-integration
 TARGET_HEAD = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
 TARGET_DOCUMENTS_RECONCILED = YES / only verified source diff hunks applied
@@ -4874,7 +4876,7 @@ PROJECT = ARGOS
 ACTIVITY = ARGOS-HOM-00-INTEGRATION-CHECKPOINT-01
 MODE = CONTROLLED_DOCUMENTATION_CHECKPOINT / DIRECT
 STATUS = COMPLETE / DOCUMENTARY BASELINE COMMITTED LOCALLY
-WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+WORKTREE = .local/qa/historical-worktrees/projeto_argos_hom_integration
 BRANCH = codex/hom-v1-integration
 HEAD_BEFORE = 4ff2a9260a438a61f3a23e753dfdc3d5c166424a
 DOCUMENTS_COMMITTED = 8 AUTHORIZED DOCUMENTS / ROADMAP, SPRINTS, PROJECT_STATE, CONTINUITY, ACTIVE DOCUMENT MAP, IMAGE CONTRACT, UI INTEGRATION SPEC, UI V2 VISUAL CONTRACT
@@ -4931,7 +4933,7 @@ ACTIVITY = ARGOS-HOM-01-UI-V2-SELECTIVE-INTEGRATION
 MODE = CONTROLLED_IMPLEMENTATION / DIRECT
 STATUS = IN_PROGRESS / CONTROLLED IMPLEMENTATION AUTHORIZED; VALIDATION PENDING
 ACTIVITY_COMPLETION_PERCENT = 20%
-WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+WORKTREE = .local/qa/historical-worktrees/projeto_argos_hom_integration
 BRANCH = codex/hom-v1-integration
 EXPECTED_HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
 HEAD_BEFORE = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
@@ -4997,7 +4999,7 @@ ACTIVITY = ARGOS-HOM-01-UI-V2-SELECTIVE-INTEGRATION
 MODE = CONTROLLED_IMPLEMENTATION / DIRECT
 STATUS = IN_PROGRESS / SELECTED SLICES INTEGRATED; DESIGN QA AND HUMAN APPROVAL PENDING
 ACTIVITY_COMPLETION_PERCENT = 68%
-WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+WORKTREE = .local/qa/historical-worktrees/projeto_argos_hom_integration
 BRANCH = codex/hom-v1-integration
 HEAD_BEFORE = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
 HEAD_AFTER = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
@@ -5066,7 +5068,7 @@ ACTIVITY = ARGOS-HOM-01-DESIGN-QA-EVIDENCE-01
 EXECUTION_MODE = DIRECT / EVIDENCE_AND_QA_PREPARATION
 STATUS = BLOCKED / LOCAL RENDERING UNAVAILABLE IN SANDBOX
 ACTIVITY_COMPLETION_PERCENT = 36%
-WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+WORKTREE = .local/qa/historical-worktrees/projeto_argos_hom_integration
 BRANCH = codex/hom-v1-integration
 HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
 SOURCE_WIP_PRESERVED = YES / pre-existing tracked and untracked changes retained
@@ -5130,7 +5132,7 @@ ACTIVITY = ARGOS-HOM-01-HOST-VISUAL-QA-01
 EXECUTION_MODE = DIRECT / VISUAL_QA_EVIDENCE
 ACTIVITY_COMPLETION_PERCENT = 36%
 STATUS = BLOCKED_BY_EXECUTION_ENVIRONMENT
-WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+WORKTREE = .local/qa/historical-worktrees/projeto_argos_hom_integration
 BRANCH = codex/hom-v1-integration
 HEAD = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
 SOURCE_WIP_PRESERVED = YES
@@ -5199,7 +5201,7 @@ LAUNCHER_PATH = INICIAR_ARGOS_QA.cmd
 QA_SETTINGS_PATH = scripts/localqa/settings.py
 QA_DATABASE_PATH = .local/qa/argos_visual_qa.sqlite3 / launcher-owned marker required
 QA_SEED_STATUS = PASS / five synthetic cameras; prepare executed twice without duplicates
-QA_USER_STATUS = PASS / qa-visual-hom01; five minimum view/form permissions; non-admin; password generated per launch and not persisted
+QA_USER_STATUS = PASS / Perfil QA visual; five minimum view/form permissions; non-admin; password generated per launch and not persisted
 LAUNCHER_STATIC_VALIDATION = PASS / Python syntax, PowerShell parse, Django system check, migrations, isolated DB assertion and git diff --check
 WINDOWS_RUNTIME_VERIFIED = NOT_VERIFIED / launcher HTTP startup not run in this environment
 RUNTIME_HOST_TEST = NOT_VERIFIED / loopback was not retried
@@ -5237,7 +5239,7 @@ ACTIVITY = ARGOS-HOM-01-CAMERA-DETAIL-APPROVED-FIXES-RECOVERY
 EXECUTION_MODE = DIRECT / CONTROLLED_IMPLEMENTATION
 ACTIVITY_COMPLETION_PERCENT = 88%
 STATUS = PARTIAL / IMPLEMENTATION_GATE PASS / VISUAL_GATE BLOCKED
-WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+WORKTREE = .local/qa/historical-worktrees/projeto_argos_hom_integration
 BRANCH = codex/hom-v1-integration
 HEAD_BEFORE = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
 HEAD_AFTER = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
@@ -5316,7 +5318,7 @@ ACTIVITY = ARGOS-HOM-01-CAMERA-EDIT-RECOVERY
 EXECUTION_MODE = DIRECT / CONTROLLED_IMPLEMENTATION
 ACTIVITY_COMPLETION_PERCENT = 84%
 STATUS = PARTIAL / IMPLEMENTATION_GATE PASS / DESIGN_QA BLOCKED
-TARGET_WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+TARGET_WORKTREE = .local/qa/historical-worktrees/projeto_argos_hom_integration
 TARGET_BRANCH = codex/hom-v1-integration
 HEAD_BEFORE = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
 HEAD_AFTER = d1fd9491692afb57da9dcfe0a27964efdb2d19e0
@@ -5406,7 +5408,7 @@ LOCAL_QA_DATABASE_ISOLATED = PASS / marker-owned .local/qa/argos_visual_qa.sqlit
 LAUNCHER_UPDATED = YES / operational user prepared before runserver
 VISUAL_QA_USER_PRESERVED = PASS / identity, exact five permissions and password hash unchanged
 VISUAL_QA_PERMISSIONS = view_camera, add_camera, change_camera, consultar_eventos, consultar_substituicoescamera
-OPERATIONAL_QA_USER_CREATED = PASS / qa-operacional-hom01 / one record
+OPERATIONAL_QA_USER_CREATED = PASS / Perfil QA operacional / one record
 OPERATIONAL_QA_PERMISSIONS = view_camera, add_camera, change_camera, consultar_eventos, consultar_substituicoescamera, add_cameraimagerecord, add_atividadecamera / exact seven
 OPERATIONAL_QA_IS_STAFF = FALSE
 OPERATIONAL_QA_IS_SUPERUSER = FALSE
@@ -5460,7 +5462,7 @@ ACTIVITY = ARGOS-HOM-01-OPERATIONAL-QA-PROVISIONING
 RECORD_TYPE = user-reported operational QA checkpoint
 IMPLEMENTATION_GATE = PASS
 AUTOMATED_TESTS = 101/101 PASS
-OPERATIONAL_QA_USER = qa-operacional-hom01
+OPERATIONAL_QA_USER = Perfil QA operacional
 OPERATIONAL_QA_PERMISSION_VALIDATION = PASS / user-reported
 UPLOAD_BUTTON_RENDERING = PASS / user-reported
 UPLOAD_BUTTON_HUMAN_VISUAL_APPROVAL = APPROVED / limited to button rendering
@@ -5978,7 +5980,7 @@ DJANGO_CHECK = PASS / scripts.localqa.test_settings
 TARGETED_TESTS = PASS / 88 tests in 5.653s across core.tests, core.test_frontend, core.test_sidebar_navigation, cameras.test_monitoramento_ui and cameras.test_frontend.
 DESKTOP_1440x900 = CAPTURED / DPR 1, zoom 100%; inventory and quality headings y=464.6875; both card surfaces y=495.84375 and height=174px; recent-activity section height=256.078px versus 343.687px before; document height=1097px versus 1171px before; five camera links; freshness badge RGB(255,240,215); support labels 11px.
 MOBILE_390x844 = CAPTURED / DPR 1, zoom 100%; one-column grid width 347px; document height=1887px; recent-activity section height=340.844px; five camera links; support labels 10px; no horizontal overflow.
-SCREENSHOT_FILES = C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_1440x900.png (1440x900); DASHBOARD_CADASTRO_1440x900.png (1440x900, create action and form); DASHBOARD_LINKS_1440x900.jpg (1440x900); DASHBOARD_390x844.png (390x844); DASHBOARD_390x844_MONITORAMENTO.png (390x844); DASHBOARD_1440x900_ATIVIDADE.jpg (1440x900); DASHBOARD_390x844_ATIVIDADE.jpg (375x812 crop from 390x844 viewport); DASHBOARD_LINKS_390x844.jpg (375x812 crop from 390x844 viewport)
+SCREENSHOT_FILES = .local/qa/historical-evidence/dashboard-v7-round2/DASHBOARD_1440x900.png (1440x900); DASHBOARD_CADASTRO_1440x900.png (1440x900, create action and form); DASHBOARD_LINKS_1440x900.jpg (1440x900); DASHBOARD_390x844.png (390x844); DASHBOARD_390x844_MONITORAMENTO.png (390x844); DASHBOARD_1440x900_ATIVIDADE.jpg (1440x900); DASHBOARD_390x844_ATIVIDADE.jpg (375x812 crop from 390x844 viewport); DASHBOARD_LINKS_390x844.jpg (375x812 crop from 390x844 viewport)
 FULL_PAGE_CAPTURE = NOT_PRODUCED
 REFERENCE_COMPARISON = SOURCE_AND_GEOMETRY_REVIEWED / approved V7 HTML/CSS and reference 1440 image compared; no pixel-diff artifact produced.
 REMAINING_DIFFERENCES = “Monitoramento e completude” differs from the older V7 title under the later approved-copy exception in contract §4; “Desconhecido”, “Câmeras com IP duplicado” and “Não monitorada” remain per approved terminology; duplicate-IP label wraps to two lines in the narrow column; recent-activity height exceeds the one-camera reference because all five actual QA camera rows are preserved.
@@ -6012,7 +6014,7 @@ QUICK_LINKS_SCREENSHOTS = DASHBOARD_LINKS_1440x900.jpg; DASHBOARD_LINKS_390x844.
 QUICK_LINKS_RUNTIME_DATA = FIVE_SYNTHETIC_CAMERAS_RETAINED
 SUBSTITUTIONS_SUPPORT = FIXED / “Total registrado” appears immediately after the SSR substitutions value, using the existing dashboard metric-caption style; it is not a link.
 SUBSTITUTIONS_RENDER_CHECK = PASS / browser-rendered text visible at 10px, color RGB(96,116,133); screenshot crop includes the “Ver câmeras” links, inventory values and the support caption.
-SUBSTITUTIONS_CAPTURE = C:/Users/walac/.codex/visualizations/2026/10/12/01a1326d-bc56-7602-beca-3c0751a5db43/evidence/dashboard-v7-round2/DASHBOARD_TOTAL_REGISTRADO.jpg
+SUBSTITUTIONS_CAPTURE = .local/qa/historical-evidence/dashboard-v7-round2/DASHBOARD_TOTAL_REGISTRADO.jpg
 SUBSTITUTIONS_DATA_PRESERVED = YES / existing SSR value, query, permissions, links and shell unchanged.
 SUBSTITUTIONS_TESTS = NOT_RERUN / this copy-only addition was browser-rendered; the previously recorded 88-test run predates it.
 ```
@@ -6200,7 +6202,7 @@ MODE = DIRECT
 WORK_PC_RECOVERY = COMPLETE
 ACTIVITY_COMPLETION_PERCENT = 100%
 PROJECT_STATE_UPDATE = PASS / this section
-PROJECT_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+PROJECT_ROOT = .
 REMOTE_URL = https://github.com/wromanov/projeto_argos.git
 BRANCH = codex/hom-v1-integration
 HEAD_BEFORE_DOCUMENTATION_COMMIT = 1583785825a2aa71ea5f4d3298b6a8ac5826612f
@@ -6252,3 +6254,148 @@ Nenhuma senha, sessão ou outro dado sensível foi registrado. Nenhum código-fo
 banco QA, branch diferente ou ambiente de produção foi alterado. Após o commit
 documental, resolver o SHA final com Git, confirmar o SHA remoto da mesma branch
 e verificar a worktree limpa.
+
+## 108. HOM-01-DASHBOARD-V7-VISUAL-ACCEPTANCE (2026-10-13)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-01-DASHBOARD-V7-VISUAL-ACCEPTANCE
+USER_DECISION = APPROVED
+USER_FEEDBACK = "Eu validei e está ok."
+DASHBOARD_V7_HUMAN_VISUAL_APPROVAL = PASS / user-approved current integrated Dashboard V7 captures
+APPROVAL_SCOPE = 1920x1080, 1440x900, 1366x768, 390x844
+DPR_OBSERVED = 0.9
+ZOOM_100_PERCENT = NOT_VERIFIED
+PIXEL_PERFECT_COMPARISON = NOT_CLAIMED
+EVIDENCE = docs/projeto/evidence/dashboard-v7-integrated-qa/current-{1920x1080,1440x900,1366x768,390x844}.png
+VISUAL_COMPOSITION = PRESERVE / no new visual adjustments
+AUDIT = NOT_REPEATED / existing accepted audit record retained
+SOURCE_CODE_CHANGE = NO
+NEW_BRANCH = NO
+MERGE_TO_MASTER = NO
+ACTIVITY_COMPLETION_PERCENT = 100%
+PROJECT_STATE_UPDATE = PASS / this section
+ACTIVITY_COMPLETE = YES / bounded visual-acceptance record only
+HOM01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+CONTINUITY_UPDATE = PASS / AGENT_CONTINUITY.md §20.68; ACTIVE_DOCUMENT_MAP.md §72
+```
+
+O usuário aprovou explicitamente as capturas integradas atuais nos quatro
+viewports listados. O aceite é humano e limita-se a essas composições. O DPR
+observado foi 0,9; zoom 100% não foi verificado e não se reivindica comparação
+pixel a pixel. Preservar a composição do Dashboard V7 e não repetir a auditoria
+já aceita. Este registro encerra somente a atividade delimitada de aceite
+visual; não fecha HOM-01 nem libera HOM-02.
+
+## 109. HOM-01-CAMERA-DETAIL-RESIDUAL-QA-CLOSURE (2026-10-13)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-01-CAMERA-DETAIL-RESIDUAL-QA-CLOSURE
+MODE = DIRECT
+SCOPE = EVIDENCE_REVIEW_ONLY
+ACTIVITY_STATUS = CLOSED_WITH_LIMITATIONS
+ACTIVITY_COMPLETION_PERCENT = 100%
+USER_DECISION = APPROVED
+RESIDUAL_QA_DISPOSITION = ACCEPTED_WITH_LIMITATIONS
+CAMERA_DETAIL_PRIOR_APPROVAL = PRESERVED / composition and Diagnostic A-D
+RESIDUAL_QA_STATUS = CLOSED_WITH_LIMITATIONS
+HUMAN_LIMITATION_ACCEPTANCE = APPROVED
+PROJECT_STATE_UPDATE = PASS / closure with accepted limitations recorded
+GIT_DIFF_CHECK = PASS
+ACTIVITY_COMPLETE = YES / bounded residual QA closure with limitations
+WORKSPACE = .
+BRANCH = codex/hom-v1-integration
+HEAD_AT_REVIEW = e91e4499d43211722b7eadba9adab842e3c75aeb
+CAPTURE_DIRECTORY = docs/projeto/evidence/camera-detail-residual-qa/
+CAPTURE_DIRECTORY_AT_PREFLIGHT = NOT_FOUND
+CAMERA_DETAIL_CAPTURE_FILES = NONE_FOUND under docs/projeto/evidence/
+VIEWPORTS_1920x1080_1440x900_1366x768_390x844 = NOT_VERIFIED / no Camera Detail captures
+CAMERA_DETAIL_RESIDUAL_CONFORMANCE = NO_MATERIAL_REGRESSION_PROVEN / bounded by accepted limitations
+OUT_OF_SCOPE_SCOPE_FIELD_ONLY = NOT_VERIFIED in current render / prior approved decision preserved (§92)
+DIAGNOSTIC_A_D = NOT_VERIFIED in current render / prior label approval preserved (§99)
+IMAGES_OPERATIONS_HISTORY = NOT_VERIFIED
+KEYBOARD_FOCUS = NOT_VERIFIED
+PERMISSIONS_VALIDATION = HISTORICAL PASS / §94 records exact 5 visual and 7 operational permissions and gated rendering tests; current manual rendering not captured
+P1_FINDINGS = NONE_PROVEN
+P2_FINDINGS = NONE_PROVEN
+P3_FINDINGS = NONE_PROVEN
+NOT_VERIFIED = current four-viewport matrix; keyboard/focus; current rendering by profile; full visual comparison with P5
+SCREENSHOTS_SAVED = NONE
+HUMAN_APPROVAL = APPROVED / user accepted closure with the stated limitations
+SOURCE_CODE_CHANGE = NO
+NEW_BRANCH = NO
+MERGE_TO_MASTER = NO
+WIP_PRESERVED = YES / pre-existing modified and untracked files retained
+HOM01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+DESIGN_QA_GLOBAL = NOT_DECLARED_PASS
+NEXT_RECOMMENDED_ACTION = continue HOM-01 with remaining global gates; no further Camera Detail residual capture required by this accepted disposition
+REPORT = docs/projeto/evidence/camera-detail-residual-qa/REPORT.md
+CONTINUITY_UPDATE = PASS / AGENT_CONTINUITY.md §20.69; ACTIVE_DOCUMENT_MAP.md §73
+```
+
+A busca completa em `docs/projeto/evidence/` não encontrou a pasta solicitada
+nem capturas de Camera Detail. As capturas listadas pertencem às atividades
+Dashboard V7 e sidebar. Nenhuma automação de navegador foi repetida e nenhuma
+imagem foi apresentada como evidência desta revisão. O usuário aprovou
+explicitamente encerrar a atividade com essas limitações: a matriz atual dos
+quatro viewports, teclado/foco, renderização atual por perfil e comparação
+visual integral com P5 permanecem `NOT_VERIFIED`. Nenhuma regressão material
+foi comprovada; a ausência de evidência não é tratada como regressão nem como
+finding P1/P2/P3.
+
+Os registros anteriores em §92 e §99 e os aceites humanos da composição e do
+Diagnóstico A–D permanecem válidos no escopo originalmente aprovado. §94
+registra validação histórica dos conjuntos de permissões (cinco do perfil
+visual e sete do operacional) e dos testes de apresentação condicionada; isso
+não substitui capturas manuais atuais. Não se exige comparação pixel a pixel
+com screenshot P5 indisponível. Esta disposição não aprova o gate global de
+DESIGN QA. HOM-01 segue `IN_PROGRESS` e HOM-02 permanece bloqueada.
+
+## 110. HOM-01-CHECKPOINT-SANITIZATION (2026-10-14)
+
+```text
+ACTIVITY = HOM-01-CHECKPOINT-SANITIZATION
+ACTIVITY_STATUS = COMPLETE / conteúdo sanitizado, validado e commit local substituído
+ACTIVITY_COMPLETION_PERCENT = 100%
+PROJECT_STATE_UPDATE = PASS / esta seção e ponteiro de retomada
+HEAD_BEFORE = 38c40fb506927a15cf9424560589067461d5aec7
+COMMIT_PARENT = e91e4499d43211722b7eadba9adab842e3c75aeb
+BRANCH = codex/hom-v1-integration
+WORKSPACE = .
+ORIGINAL_EVIDENCE_PRESERVED = PASS / 11 originais privados, excluídos do Git, hashes SHA-256 iguais
+DOCUMENT_SANITIZATION = APPLIED / caminhos pessoais e identificadores QA substituídos; endereço privado de RTSP omitido
+FILES_SANITIZED = 8 / três documentos e cinco PNGs
+PNG_SANITIZATION = PASS / cinco máscaras opacas no identificador QA; dimensões preservadas; todos os pixels externos idênticos aos originais
+SECURITY_REVIEW = PASS / alterações dos 11 arquivos deste commit reinspecionadas; três peças anteriormente SAFE_TO_PUBLISH mantidas byte a byte
+HISTORICAL_FINDINGS = REPORTED_SEPARATELY / caminhos pessoais, IDs QA e um endereço IP privado anteriores permanecem nas três peças protegidas
+COMMIT_REPLACEMENT_AUTHORIZATION = YES / somente após todas as validações PASS e revalidação do preflight
+COMMIT_REPLACEMENT = PASS / substituído localmente por amend após revalidar HEAD e upstream do preflight
+HEAD_AFTER = THIS_COMMIT / resolver com Git
+WORKTREE_CLEAN = YES / após substituição do commit
+PUSH_EXECUTED = NO
+PUSH_AUTHORIZATION = PENDING
+CORPORATE_PUBLICATION_AUTHORIZATION = NOT_VERIFIED
+DASHBOARD_V7_HUMAN_VISUAL_APPROVAL = PRESERVED / §108
+CAMERA_DETAIL_RESIDUAL_QA = CLOSED_WITH_LIMITATIONS / §109 preservada
+HOM01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+SOURCE_CODE_CHANGE = NO
+NEXT_RECOMMENDED_ACTION = prosseguir os gates restantes de HOM-01; HOM-02 permanece bloqueada
+```
+
+Os caminhos pessoais deste documento foram substituídos por referências relativas.
+`.` identifica a raiz do checkout; o ZIP usa sua cópia canônica em `docs/projeto/`.
+Referências em `.local/qa/historical-*` são aliases documentais para evidências,
+worktrees e runtimes históricos externos; não afirmam que esses itens foram movidos
+ou existem nesses paths. A correspondência literal permanece somente no registro
+privado excluído do Git, junto dos originais integrais e seus hashes.
+
+As decisões humanas, o histórico de HOM-01, os viewports, as limitações técnicas
+e a rastreabilidade dos aceites §§108–109 foram preservados. O endereço privado
+do alvo RTSP histórico foi substituído por uma descrição, preservando o resultado
+do gate e a evidência literal privada. Nenhum estado de homologação foi alterado.
+Esta atividade não repete auditoria visual, não inicia HOM-02 e não autoriza
+publicação corporativa, push, merge ou deploy.

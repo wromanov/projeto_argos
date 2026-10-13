@@ -11,8 +11,8 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; HOM-01 Dashboard V7 fidelity round 2 approval section 105 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; HOM-01 Dashboard V7 fidelity round 2 approval section 20.67 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; HOM-01 Dashboard V7 visual acceptance section 108 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; HOM-01 Dashboard V7 visual acceptance section 20.68 |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; CAM-INT-03 post-publication reconciliation section 32; UI V2 authority mapped in section 16 |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
@@ -1639,4 +1639,53 @@ DASHBOARD_V7_VISUAL_QA = PENDING
 HOM01_STATUS = IN_PROGRESS
 HOM02_START = BLOCKED
 PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §107
+```
+
+## 72. HOM-01-DASHBOARD-V7-VISUAL-ACCEPTANCE (2026-10-13)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §108 | Registro do aceite visual humano e escopo da atividade | CURRENT / four approved viewports; HOM-01 remains in progress |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.68 | Handoff, restrições visuais e estado de HOM-01 | CURRENT / preserve V7; no repeat audit |
+| `docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`, §15 | Checkpoint de aceite do Dashboard V7 | CURRENT / bounded visual acceptance |
+| `docs/projeto/evidence/dashboard-v7-integrated-qa/REPORT.md` | Capturas e métricas da inspeção integrada | CURRENT / user approval appended; DPR 0.9; zoom unverified |
+| `docs/projeto/evidence/dashboard-v7-integrated-qa/current-1920x1080.png` | Captura integrada aprovada | APPROVED / user visual acceptance |
+| `docs/projeto/evidence/dashboard-v7-integrated-qa/current-1440x900.png` | Captura integrada aprovada | APPROVED / user visual acceptance |
+| `docs/projeto/evidence/dashboard-v7-integrated-qa/current-1366x768.png` | Captura integrada aprovada | APPROVED / user visual acceptance |
+| `docs/projeto/evidence/dashboard-v7-integrated-qa/current-390x844.png` | Captura integrada aprovada | APPROVED / user visual acceptance |
+
+```text
+ACTIVITY = HOM-01-DASHBOARD-V7-VISUAL-ACCEPTANCE
+APPROVED_VIEWPORTS = 1920x1080, 1440x900, 1366x768, 390x844
+DPR_OBSERVED = 0.9
+ZOOM_100_PERCENT = NOT_VERIFIED
+PIXEL_PERFECT_COMPARISON = NOT_CLAIMED
+SOURCE_CODE_CHANGE = NO
+HOM01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §108
+```
+
+## 73. HOM-01-CAMERA-DETAIL-RESIDUAL-QA-CLOSURE (2026-10-13)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §109 | Resultado factual da revisão residual e disposição humana | CURRENT / closed with accepted limitations; no material regression proven |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.69 | Handoff, aceites anteriores, limitações e estado dos gates | CURRENT / prior approvals preserved; global QA not passed |
+| `docs/projeto/evidence/camera-detail-residual-qa/REPORT.md` | Inventário de evidências, matriz residual e findings | CURRENT / accepted limitations; no Camera Detail captures |
+
+```text
+ACTIVITY = HOM-01-CAMERA-DETAIL-RESIDUAL-QA-CLOSURE
+CAPTURES_FOUND = NO
+CAMERA_DETAIL_PRIOR_APPROVAL = PRESERVED
+RESIDUAL_QA_STATUS = CLOSED_WITH_LIMITATIONS
+HUMAN_LIMITATION_ACCEPTANCE = APPROVED
+NOT_VERIFIED = four viewports; keyboard/focus; current rendering by profile; full P5 visual comparison
+DESIGN_QA_GLOBAL = NOT_DECLARED_PASS
+P1_FINDINGS = NONE_PROVEN
+P2_FINDINGS = NONE_PROVEN
+P3_FINDINGS = NONE_PROVEN
+HOM01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §109
 ```
