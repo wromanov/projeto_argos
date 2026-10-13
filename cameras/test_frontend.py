@@ -82,8 +82,8 @@ class ListaCamerasFrontendTests(TestCase):
         incompleta = self.criar_camera(2, nome="CAM-INCOMPLETA", ip="", status=Camera.StatusCamera.OFFLINE)
         response = self.client.get(reverse("cameras:lista"))
         self.assertContains(response, "Produção")
-        self.assertContains(response, "UNKNOWN")
-        self.assertContains(response, "NÃO MONITORADA")
+        self.assertContains(response, "Desconhecido")
+        self.assertContains(response, "Não monitorada")
         self.assertContains(response, "Cadastro completo")
         self.assertContains(response, "Cadastro incompleto")
         self.assertContains(response, 'badge badge--producao')
@@ -668,7 +668,7 @@ class CameraDetailFrontendTests(TestCase):
         inventory = self.client.get(reverse("cameras:lista"))
         self.assertRegex(inventory.content.decode("utf-8"), r'class="badge badge--[^\"]+"')
 
-    def test_stale_unknown_context_stacks_below_compact_badges_and_keeps_confirmed_state(self):
+    def test_stale_unknown_context_stacks_below_compact_badges_without_claiming_confirmation(self):
         stale_at = timezone.now() - timedelta(days=1)
         self.camera.pavimento = "1º PAVIMENTO"
         self.camera.setor = "SEGURANÇA"
@@ -685,8 +685,8 @@ class CameraDetailFrontendTests(TestCase):
         self.assertEqual(response.status_code, 200)
         html = response.content.decode("utf-8")
         self.assertEqual(html.count("Dados desatualizados"), 1)
-        self.assertNotIn("Dados desatualizados · último estado UNKNOWN", html)
-        self.assertRegex(html, r'<dt>Último estado confirmado</dt><dd><span>UNKNOWN</span></dd>')
+        self.assertNotIn("Dados desatualizados · último estado Desconhecido", html)
+        self.assertNotIn("Último estado confirmado", html)
 
         hero = html[html.index('class="argos-camera-detail__status-cluster"'):html.index("</header>", html.index('class="argos-camera-detail__status-cluster"'))]
         self.assertIn('role="group" aria-label="Estados da câmera"', hero)
@@ -695,7 +695,7 @@ class CameraDetailFrontendTests(TestCase):
         monitoring_start = html.index('class="argos-camera-detail__monitoring-status"')
         monitoring = html[monitoring_start:html.index("</dd>", monitoring_start)]
         self.assertLess(
-            monitoring.index("UNKNOWN"),
+            monitoring.index("Desconhecido"),
             monitoring.index("Dados desatualizados"),
         )
 
@@ -706,7 +706,7 @@ class CameraDetailFrontendTests(TestCase):
         response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
         html = response.content.decode("utf-8")
         self.assertEqual(html.count("Fora do escopo"), 1)
-        self.assertEqual(html.count("NÃO MONITORADA"), 2)
+        self.assertEqual(html.count("Não monitorada"), 2)
 
         hero_start = html.index('class="argos-camera-detail__status-cluster"')
         hero = html[hero_start:html.index("</header>", hero_start)]
@@ -717,7 +717,7 @@ class CameraDetailFrontendTests(TestCase):
         scope_start = html.index("<dt>Escopo</dt>", state_start)
         state_row = html[state_start:scope_start]
         scope_row = html[scope_start:html.index("</div>", scope_start)]
-        self.assertIn("NÃO MONITORADA", state_row)
+        self.assertIn("Não monitorada", state_row)
         self.assertNotIn("Fora do escopo", state_row)
         self.assertIn("Fora do escopo", scope_row)
         self.assertNotIn('class="argos-camera-detail__status-support"', html)
@@ -737,9 +737,9 @@ class CameraDetailFrontendTests(TestCase):
         self.camera.setor = "SETOR DE TESTE"
         self.camera.save(update_fields=("pavimento", "setor"))
         for state, label, badge_class in (
-            (EstadoMonitoramento.EstadoEstavel.ONLINE, "ONLINE", "argos-status-badge--success"),
-            (EstadoMonitoramento.EstadoEstavel.OFFLINE, "OFFLINE", "argos-status-badge--danger"),
-            (EstadoMonitoramento.EstadoEstavel.UNKNOWN, "UNKNOWN", "argos-status-badge--neutral"),
+            (EstadoMonitoramento.EstadoEstavel.ONLINE, "Online", "argos-status-badge--success"),
+            (EstadoMonitoramento.EstadoEstavel.OFFLINE, "Offline", "argos-status-badge--danger"),
+            (EstadoMonitoramento.EstadoEstavel.UNKNOWN, "Desconhecido", "argos-status-badge--neutral"),
         ):
             with self.subTest(state=state):
                 EstadoMonitoramento.objects.update_or_create(

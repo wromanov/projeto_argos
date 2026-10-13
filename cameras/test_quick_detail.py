@@ -49,6 +49,10 @@ class QuickDetailTests(TestCase):
         self.assertEqual(data["location"]["breadcrumb"], f"{self.camera.terminal} > {self.camera.setor}")
         self.assertIsNone(data["location"]["pavimento"])
         self.assertEqual(data["monitoring"]["state"], "OUT_OF_SCOPE")
+        self.assertEqual(
+            set(data["monitoring"]),
+            {"state", "stable_state", "freshness", "evidence_at", "state_since", "scope_reason"},
+        )
         self.assertEqual(data["monitoring"]["state"], str(MonitoringReadService().current(self.camera.pk).effective_state))
         self.assertEqual(EstadoMonitoramento.objects.count(), before_monitoring)
         self.assertEqual(data["image"], {"state": "NO_IMAGE_AVAILABLE", "source": "NONE",
@@ -98,6 +102,14 @@ class QuickDetailTests(TestCase):
         self.assertContains(response, "Disponibilidade (30 dias)")
         self.assertNotContains(response, "Ponto de referência")
         self.assertContains(response, 'data-quick-detail-value="location.ambiente"')
+        self.assertContains(response, 'id="monitoring-state-labels" type="application/json"')
+        labels = response.context["monitoring_state_labels"]
+        self.assertEqual(labels, {
+            "ONLINE": "Online",
+            "OFFLINE": "Offline",
+            "UNKNOWN": "Desconhecido",
+            "OUT_OF_SCOPE": "Não monitorada",
+        })
         self.assertEqual(response.content.decode().count("camera-quick-detail.js"), 1)
         self.assertNotContains(response, "data-quick-detail-edit-link")
         self.assertEqual(self.client.get(reverse("cameras:editar", args=[self.camera.pk])).status_code, 403)

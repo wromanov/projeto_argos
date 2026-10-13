@@ -22,6 +22,11 @@ from .governanca import (
 )
 from .models import AtividadeCamera, Camera, EventoAuditoria, SubstituicaoCamera
 from .monitoramento.read_service import MonitoringReadService
+from .monitoramento.presentation import (
+    MONITORING_STATE_LABELS,
+    camera_health_presentation_labels,
+    monitoring_state_label,
+)
 from .imagens.upload_service import aceitar_upload_manual
 from .imagens.display_service import DisplayImageReadService
 from .imagens.preview_service import CameraImagePreviewService, DisplayImagePreviewService, PreviewState, CONTENT_TYPE, VARIANTS
@@ -45,18 +50,19 @@ def _duracao_textual(inicio, fim=None):
 
 def _monitoramento_ui(projecao):
     """Adapta o contrato MON-07B a texto seguro para os templates."""
-    labels = {"ONLINE": "ONLINE", "OFFLINE": "OFFLINE", "UNKNOWN": "UNKNOWN", "OUT_OF_SCOPE": "NÃO MONITORADA"}
     efetivo = str(projecao.effective_state)
     stable = str(projecao.stable_state)
     if efetivo == "OUT_OF_SCOPE":
         contexto = "Configuração incompleta" if str(projecao.scope_reason) == "INCOMPLETE_CONFIGURATION" else "Fora do escopo"
     elif projecao.is_stale:
-        contexto = f"Dados desatualizados · último estado {labels.get(stable, stable)}"
+        contexto = f"Dados desatualizados · último estado {monitoring_state_label(stable)}"
     elif projecao.open_outage and efetivo == "OFFLINE":
         contexto = f"Offline há {_duracao_textual(projecao.open_outage.opened_at)}"
     else:
         contexto = ""
-    return {"label": labels[efetivo], "effective_state": efetivo, "stable_label": labels.get(stable, stable),
+    return {"label": monitoring_state_label(efetivo), "effective_state": efetivo,
+            "stable_label": monitoring_state_label(stable),
+            "has_confirmed_state": stable in {"ONLINE", "OFFLINE"},
             "freshness": str(projecao.freshness), "is_stale": projecao.is_stale, "em_escopo": projecao.em_escopo,
             "contexto": contexto, "evidence_at": projecao.evidence_at, "state_since": projecao.state_since,
             "scope_reason": str(projecao.scope_reason or ""), "open_outage": projecao.open_outage,
@@ -240,8 +246,8 @@ def lista_cameras(request):
         status_selecionados,
         "Status técnico",
         {
-            "ONLINE": "Online",
-            "OFFLINE": "Offline",
+            "ONLINE": monitoring_state_label("ONLINE"),
+            "OFFLINE": monitoring_state_label("OFFLINE"),
             "NAO_VERIFICADO": "Não verificado",
         },
     )
@@ -323,8 +329,8 @@ def lista_cameras(request):
         "farms_selecionadas": farms_selecionadas,
         "filtros_ativos": filtros_ativos,
         "status_filtro_opcoes": [
-            ("ONLINE", "Online"),
-            ("OFFLINE", "Offline"),
+            ("ONLINE", monitoring_state_label("ONLINE")),
+            ("OFFLINE", monitoring_state_label("OFFLINE")),
             ("NAO_VERIFICADO", "Não verificado"),
         ],
         "completude_filtro_opcoes": [
@@ -369,6 +375,7 @@ def lista_cameras(request):
         "possui_cameras_cadastradas": Camera.objects.exists(),
         "ordenacao": ordenacao,
         "query_params": query_params,
+        "monitoring_state_labels": dict(MONITORING_STATE_LABELS),
     })
 
 
@@ -421,6 +428,9 @@ def detalhe_camera(request, pk):
     history = service.history_page(camera.pk, limit=5)
     outage_preview = tuple(_historico_indisponibilidade_ui(item) for item in history.items)
     contexto = {"camera": camera, "monitoring": monitoring, "camera_health": camera_health,
+                "camera_health_labels": camera_health_presentation_labels(
+                    camera_health.evidence_state, camera_health.freshness
+                ),
                 "outage_preview": outage_preview,
                 "atividades": camera.atividades.select_related("criado_por", "atualizado_por")[:10]}
     if request.user.has_perm("cameras.consultar_eventos"):

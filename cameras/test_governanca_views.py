@@ -584,6 +584,14 @@ class GovernancaViewsPermissoesTests(TestCase):
         )
 
     def test_admin_substituicao_nao_permite_adicionar_editar_ou_excluir(self): a=SubstituicaoCameraAdmin(SubstituicaoCamera,admin.site); req=RequestFactory().get("/"); req.user=self.superuser; self.assertFalse(a.has_add_permission(req)); self.assertFalse(a.has_change_permission(req)); self.assertFalse(a.has_delete_permission(req))
-    def test_dashboard_exibe_situacoes_completude_e_ips_duplicados(self): self.criar(3,"ESTOQUE",ip=self.camera.ip); self.client.force_login(self.superuser); r=self.client.get(reverse("core:dashboard")); self.assertContains(r,"Produção"); self.assertContains(r,"Cadastro completo"); self.assertContains(r,"IP duplicado")
+    def test_dashboard_exibe_situacoes_completude_e_ips_duplicados(self):
+        self.criar(3,"ESTOQUE",ip=self.camera.ip)
+        self.assertEqual(Camera.objects.filter(ip=self.camera.ip).count(),2)
+        self.client.force_login(self.superuser)
+        r=self.client.get(reverse("core:dashboard"))
+        self.assertContains(r,"Produção")
+        self.assertContains(r,"Cadastros completos")
+        self.assertEqual(r.context["cameras_com_ip_duplicado"],2)
+        self.assertContains(r,"<dt>Câmeras com IP duplicado</dt><dd>2</dd>",html=True)
     def test_grupos_possuem_matriz_de_governanca_sem_delete(self):
         op=Group.objects.get(name="Operador ARGOS"); cod=set(op.permissions.filter(content_type__app_label="cameras").values_list("codename",flat=True)); self.assertIn("registrar_substituicao_camera",cod); self.assertFalse(any(x.startswith("delete_") for x in cod))

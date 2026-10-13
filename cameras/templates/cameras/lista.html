@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block conteudo %}
+{{ monitoring_state_labels|json_script:"monitoring-state-labels" }}
 {% url 'cameras:lista' as lista_url %}
 {% url 'cameras:criar' as criar_url %}
 <section class="argos-page-header inventory-hero inventory-page-header">

@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from cameras.models import Camera, EstadoMonitoramento, Indisponibilidade, TransicaoEstadoMonitoramento
+from cameras.monitoramento.presentation import camera_health_presentation_labels
 
 
 class MonitoringUITests(TestCase):
@@ -50,7 +51,7 @@ class MonitoringUITests(TestCase):
         self.assertNotContains(response, "Status técnico</th>")
         detail = self.client.get(reverse("cameras:detalhe", args=[camera.pk]))
         self.assertContains(detail, "Estado atual")
-        self.assertContains(detail, "OFFLINE")
+        self.assertContains(detail, "Offline")
         self.assertNotContains(detail, "Última verificação")
 
     def test_stale_and_out_of_scope_are_not_rendered_as_current_offline(self):
@@ -61,8 +62,77 @@ class MonitoringUITests(TestCase):
         self.state(scoped_out, stable="OFFLINE", evidence=self.now)
         response = self.client.get(reverse("cameras:lista"))
         self.assertContains(response, "Dados desatualizados")
-        self.assertContains(response, "NÃO MONITORADA")
+        self.assertContains(response, "Desconhecido")
+        self.assertContains(response, "Não monitorada")
+        self.assertContains(response, "Dados desatualizados · último estado Offline")
         self.assertNotContains(response, "Offline há")
+
+    def test_inventory_uses_canonical_labels_for_every_effective_state(self):
+        online = self.camera(4)
+        offline = self.camera(5)
+        stale = self.camera(6)
+        out_of_scope = self.camera(7, situacao_operacional=Camera.SituacaoOperacional.ESTOQUE)
+        self.state(online, stable="ONLINE", evidence=self.now)
+        self.state(offline, stable="OFFLINE", evidence=self.now)
+        self.state(stale, stable="OFFLINE", evidence=self.now - timedelta(days=1))
+        self.state(out_of_scope, stable="ONLINE", evidence=self.now)
+
+        response = self.client.get(reverse("cameras:lista"))
+        html = response.content.decode("utf-8")
+        for label in ("Online", "Offline", "Desconhecido", "Não monitorada"):
+            self.assertIn(label, html)
+        for variant in ("badge--online", "badge--offline", "badge--unknown", "badge--out_of_scope"):
+            self.assertIn(variant, html)
+        self.assertIn('data-label="Monitoramento"', html)
+        self.assertIn("Dados desatualizados · último estado Offline", html)
+        self.assertEqual(response.context["monitoring_state_labels"]["UNKNOWN"], "Desconhecido")
+        self.assertEqual(response.context["monitoring_state_labels"]["OUT_OF_SCOPE"], "Não monitorada")
+
+    def test_camera_health_summary_localizes_values_without_changing_technical_projection(self):
+        camera = self.camera(8)
+        response = self.client.get(reverse("cameras:detalhe", args=[camera.pk]))
+
+        self.assertEqual(
+            response.context["camera_health_labels"],
+            {"evidence_state": "Não determinada", "freshness": "Não determinado"},
+        )
+        self.assertEqual(response.context["camera_health"].evidence_state, "UNKNOWN")
+        self.assertEqual(response.context["camera_health"].freshness, "UNKNOWN")
+        self.assertContains(response, "Não determinada")
+        self.assertContains(response, "Não determinado")
+        for code in ("UNKNOWN", "CURRENT", "FRESH", "STALE"):
+            self.assertNotContains(response, code)
+        self.assertEqual(
+            camera_health_presentation_labels("CURRENT", "FRESH"),
+            {"evidence_state": "Atual", "freshness": "Atualizado"},
+        )
+        self.assertEqual(
+            camera_health_presentation_labels("UNKNOWN", "STALE"),
+            {"evidence_state": "Não determinada", "freshness": "Desatualizado"},
+        )
+
+    def test_unknown_is_not_presented_as_a_confirmed_last_state(self):
+        camera = self.camera(9)
+        self.state(camera, stable="UNKNOWN", evidence=self.now - timedelta(days=1))
+
+        response = self.client.get(reverse("cameras:detalhe", args=[camera.pk]))
+
+        self.assertFalse(response.context["monitoring"]["has_confirmed_state"])
+        self.assertNotContains(response, "Último estado confirmado")
+        self.assertContains(response, "Estado atual")
+        self.assertContains(response, "Desconhecido")
+
+    def test_last_confirmed_state_remains_for_confirmed_online_or_offline_values(self):
+        for index, stable in enumerate(("ONLINE", "OFFLINE"), start=10):
+            with self.subTest(stable=stable):
+                camera = self.camera(index)
+                self.state(camera, stable=stable, evidence=self.now - timedelta(days=1))
+
+                response = self.client.get(reverse("cameras:detalhe", args=[camera.pk]))
+
+                self.assertTrue(response.context["monitoring"]["has_confirmed_state"])
+                self.assertContains(response, "Último estado confirmado")
+                self.assertContains(response, "Online" if stable == "ONLINE" else "Offline")
 
     def test_detail_preview_and_paginated_history_are_technical_only(self):
         camera = self.camera()

@@ -54,7 +54,7 @@
           <dl class="argos-data-group argos-camera-detail__pairs">
             <div class="argos-data-pair argos-camera-detail__pair--full"><dt>Estado atual</dt><dd>{% if monitoring.is_stale and monitoring.effective_state == "UNKNOWN" %}<div class="argos-camera-detail__monitoring-status">{% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring ui_v2_status_only=True %}<small class="argos-camera-detail__status-support">Dados desatualizados</small></div>{% elif monitoring.scope_reason == "OUT_OF_SCOPE" %}{% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring ui_v2_status_only=True %}{% else %}{% include "cameras/partials/_monitoring_badge.html" with monitoring=monitoring ui_v2_badges=True %}{% endif %}</dd></div>
             <div class="argos-data-pair"><dt>Escopo</dt><dd>{% if monitoring.em_escopo %}Em escopo{% elif monitoring.scope_reason == "INCOMPLETE_CONFIGURATION" %}Configuração incompleta{% else %}Fora do escopo{% endif %}</dd></div>
-            <div class="argos-data-pair"><dt>Último estado confirmado</dt><dd><span{% if not monitoring.stable_label %} class="argos-state__copy"{% endif %}>{{ monitoring.stable_label|default:"—" }}</span></dd></div>
+            {% if monitoring.has_confirmed_state %}<div class="argos-data-pair"><dt>Último estado confirmado</dt><dd>{{ monitoring.stable_label }}</dd></div>{% endif %}
             <div class="argos-data-pair"><dt>Última evidência útil</dt><dd><span{% if not monitoring.evidence_at|date:"d/m/Y H:i" %} class="argos-state__copy"{% endif %}>{{ monitoring.evidence_at|date:"d/m/Y H:i"|default:"—" }}</span></dd></div>
             <div class="argos-data-pair"><dt>Estado desde</dt><dd><span{% if not monitoring.state_since|date:"d/m/Y H:i" %} class="argos-state__copy"{% endif %}>{{ monitoring.state_since|date:"d/m/Y H:i"|default:"—" }}</span></dd></div>
             {% if monitoring.open_outage %}<div class="argos-data-pair argos-camera-detail__pair--full"><dt>Indisponibilidade aberta</dt><dd>Desde {{ monitoring.open_outage.opened_at|date:"d/m/Y H:i" }} · {{ monitoring.outage_duration }}</dd></div>{% endif %}
@@ -63,8 +63,8 @@
         <section class="argos-camera-detail__record-section" aria-labelledby="camera-detail-health-heading">
           <header class="argos-section-header"><h2 id="camera-detail-health-heading">Diagnóstico técnico A–D</h2></header>
           <dl class="argos-data-group argos-camera-detail__pairs">
-            <div class="argos-data-pair"><dt>Evidência automática</dt><dd>{{ camera_health.evidence_state }}</dd></div>
-            <div class="argos-data-pair"><dt>Frescor</dt><dd>{{ camera_health.freshness }}</dd></div>
+            <div class="argos-data-pair"><dt>Evidência automática</dt><dd>{{ camera_health_labels.evidence_state }}</dd></div>
+            <div class="argos-data-pair"><dt>Frescor</dt><dd>{{ camera_health_labels.freshness }}</dd></div>
             <div class="argos-data-pair"><dt>Observada em</dt><dd>{{ camera_health.evidence_at|date:"d/m/Y H:i:s T"|default:"—" }}</dd></div>
           </dl>
           {% if camera_health.stages %}

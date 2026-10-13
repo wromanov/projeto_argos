@@ -1296,17 +1296,21 @@
     overflow-wrap: anywhere;
 }
 
+.camera-table.data-table thead th:first-child {
+    white-space: nowrap;
+}
+
 .camera-table.data-table td {
     font-size: .8125rem;
     line-height: 1.35;
 }
 
 .camera-table__col--status {
-    width: 13%;
+    width: 15%;
 }
 
 .camera-table__col--camera {
-    width: 16%;
+    width: 15%;
 }
 
 .camera-table__col--location {
@@ -1318,7 +1322,7 @@
 }
 
 .camera-table__col--equipment {
-    width: 16%;
+    width: 15%;
 }
 
 .camera-table__col--governance {

@@ -28,7 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const parsed = new Date(item);
     return Number.isNaN(parsed.getTime()) ? "—" : new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short" }).format(parsed);
   };
-  const statusLabels = { ONLINE: "Online", OFFLINE: "Offline", UNKNOWN: "Desconhecido", OUT_OF_SCOPE: "Não monitorada" };
+  const statusLabelsElement = document.getElementById("monitoring-state-labels");
+  const statusLabels = (statusLabelsElement ? JSON.parse(statusLabelsElement.textContent) : null) || {};
   const imageLabels = {
     NO_IMAGE_AVAILABLE: "Nenhuma imagem disponível",
     UNAVAILABLE: "Imagem indisponível",
@@ -60,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const state = data.monitoring.state;
     headerSubtitle.textContent = [value(data.camera.patrimonio), value(data.camera.nome)].filter((part) => part !== "—").join(" · ") || "Inventário de câmeras";
     const badge = dialog.querySelector("[data-quick-detail-status]");
-    badge.textContent = statusLabels[state] || "Desconhecido";
+    badge.textContent = Object.prototype.hasOwnProperty.call(statusLabels, state) ? statusLabels[state] : String(state);
     badge.className = `badge badge--${["ONLINE", "OFFLINE", "UNKNOWN", "OUT_OF_SCOPE"].includes(state) ? state.toLowerCase() : "unknown"}`;
     dialog.querySelector('[data-quick-detail-monitoring="state"]').textContent = badge.textContent;
     dialog.querySelector('[data-quick-detail-monitoring="evidence"]').textContent = date(data.monitoring.evidence_at);
