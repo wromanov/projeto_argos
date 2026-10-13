@@ -1430,6 +1430,78 @@ HOM02_START_AUTHORIZATION = NOT_GRANTED
 PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §96
 ```
 
+## 64. ARGOS-HOM-01-INVENTORY-UNKNOWN-PRESENTATION-FIX (2026-10-12)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §98 | Implementação da nomenclatura e evidência de testes | CURRENT / 82 targeted PASS; visual review pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.61 | Handoff da correção e blocker de render integrado | CURRENT / HOM-01 remains IN_PROGRESS |
+| `docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`, §10 | Follow-up do checkpoint HOM-01 | CURRENT / no human visual approval inferred |
+| `cameras/monitoramento/presentation.py` | Mapeamento compartilhado para estados efetivos | CURRENT / ONLINE, OFFLINE, UNKNOWN, OUT_OF_SCOPE |
+| `cameras/test_monitoramento_ui.py` | Verificação dos rótulos, stale e fora de escopo | CURRENT / included in 82 passing tests |
+| `C:\Users\walac\.codex\visualizations\2026\10\12\01a1317f-9dc2-73a1-8c9a-d85e80e64126\evidence\CURRENT\ARGOS_INVENTARIO_CURRENT_1366x768.png` | Captura integrada previamente recuperada | PARTIAL / only physical CURRENT screenshot; reference P3-A is separate |
+| `C:\Users\walac\.codex\visualizations\2026\10\12\01a1317f-9dc2-73a1-8c9a-d85e80e64126\evidence\VISUAL_DIFFERENCE_REPORT.md` | Proveniência das capturas e findings | CURRENT / human approval pending |
+
+```text
+ACTIVITY = ARGOS-HOM-01-INVENTORY-UNKNOWN-PRESENTATION-FIX
+TARGETED_TESTS = 82 PASS
+HUMAN_VISUAL_APPROVAL = PENDING
+DESIGN_QA = PENDING
+HOM_01_STATUS = IN_PROGRESS
+PROJECT_STATE_UPDATE = PASS / section 98
+```
+
+## 65. ARGOS-HOM-01-DIAGNOSTIC-A-D-LABEL-RECONCILIATION (2026-10-12)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §99 | Investigação, mapeamentos, testes e renderização desktop/mobile | CURRENT / 65 targeted PASS; bounded A–D approval recorded |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.62 | Handoff da localização e validação do diagnóstico A–D | CURRENT / visual render PASS |
+| `docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`, §11 | Follow-up do checkpoint HOM-01 | CURRENT / bounded A–D approval recorded; broader Design QA pending |
+| `cameras/monitoramento/presentation.py` | Rótulos de apresentação para a projeção de saúde | CURRENT / UNKNOWN separado dos estados MON |
+| `cameras/templates/cameras/detalhe.html` | Exibição localizada de Evidência automática e Frescor | CURRENT / rendered in integrated Edge at desktop and mobile |
+| `cameras/test_monitoramento_ui.py` | Cobertura de todos os valores da projeção e da linha de estado confirmado | CURRENT / included in 65 passing tests |
+
+```text
+ACTIVITY = ARGOS-HOM-01-DIAGNOSTIC-A-D-LABEL-RECONCILIATION
+EVIDENCE_UNKNOWN_LABEL = Não determinada
+FRESHNESS_UNKNOWN_LABEL = Não determinado
+INTERNAL_CODES_AND_CONTRACTS = PRESERVED
+TARGETED_TESTS = 65 PASS
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+INTEGRATED_RENDER = PASS / actual Django Camera Detail reloaded by user
+VISUAL_VIEWPORTS = PASS / 1366x768 and 390x844; Edge; zoom 100%; DPR 1
+MOBILE_PAGE_OVERFLOW = NO / navigation scroll stays within its component
+SCREENSHOT_FILES = NONE / inline capture only
+HUMAN_APPROVAL = APPROVED / bounded A–D labels and UNKNOWN last-confirmed-row behavior at 1366x768 and 390x844 only; user reply: “certo”
+DESIGN_QA = PENDING / broader HOM-01 gates remain
+HOM_01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+PROJECT_STATE_UPDATE = PASS / section 99
+```
+
+## 66. ARGOS-HOM-01-INVENTORY-VISUAL-ACCEPTANCE (2026-10-12)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §100 | Registro do aceite da composição e do finding de cabeçalho | CURRENT / composition approved; viewport-specific approval not inferred |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.63 | Continuidade do aceite visual do Inventário | CURRENT / known 1366px header-wrap finding remains open |
+| `docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`, §12 | Checkpoint documental HOM-01 | CURRENT / Inventory composition accepted |
+
+```text
+ACTIVITY = ARGOS-HOM-01-INVENTORY-VISUAL-ACCEPTANCE
+USER_FEEDBACK = “O inventário para mim está legal.”
+INVENTORY_HUMAN_VISUAL_APPROVAL = APPROVED / integrated composition
+VIEWPORT_APPROVAL_SCOPE = COMPOSITION_LEVEL / individual viewport approval not inferred
+KNOWN_HEADER_WRAP_FINDING = OPEN / MONITORAMENTO at 1366px; cross-viewport resolution not established
+CODE_CHANGED = NO / this activity
+WIP_PRESERVED = YES
+HOM_01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+PROJECT_STATE_UPDATE = PASS / section 100
+```
+
 ## 67. HOM-01-DASHBOARD-V7-VISUAL-CONFORMANCE-RECOVERY (2026-10-12)
 
 | Path | Papel | Vigência |
@@ -1515,3 +1587,38 @@ COMMIT_REFERENCE = PENDING / resolve actual commit using Git after execution
 PUSH_AUTHORIZED = NO
 PROJECT_STATE_UPDATE = PASS / section 105
 ```
+
+## 70. HOM-01-SAFE-CHECKPOINT-AND-PUSH (2026-10-13)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §106 | Estado Git publicado, resultados de validação, aprovações e instruções cross-PC | CURRENT / checkpoint published; HOM-01 remains in progress |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Resumo atual de retomada | CURRENT / aponta para §106 e registra a branch publicada |
+| `docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`, §14 | Resumo de continuidade HOM-01 e limites dos aceites | CURRENT / no HOM-01 closure |
+| `docs/projeto/ARGOS_HOM_01_SIDEBAR_ACTIVE_STATE_RECOVERY.md` | Causa, correção, aprovações e evidências da sidebar | CURRENT / accepted desktop scope |
+| `docs/projeto/evidence/sidebar-active-recovery/` | Capturas integradas e estilos computados das cinco páginas | CURRENT / synthetic QA; 2552x866 CSS px desktop |
+| `https://github.com/wromanov/projeto_argos/tree/codex/hom-v1-integration` | Checkout remoto de continuidade para outro computador | CURRENT / branch published and SHA verified against local HEAD |
+
+```text
+ACTIVITY = HOM-01-SAFE-CHECKPOINT-AND-PUSH
+BRANCH = codex/hom-v1-integration
+V7_COMMIT = b122ece404c3b67afdbd1acf9087e340d1c07d2c / preserved
+IMPLEMENTATION_COMMITS = 7c4fac3a81ba6311ecaf9bad2e080240759cfd0c; d0b4c2f5bef8d4533834898a67e4d2f03b0e2d1e
+TEST_HARDENING_COMMIT = db0b10bc2a11ec6a20b8b8f9b36ba43573919814
+TARGETED_TESTS = 105 PASS / six modules; isolated temporary SQLite
+DJANGO_CHECK = PASS
+REMOTE_BRANCH = origin/codex/hom-v1-integration
+PUSH = NORMAL / SHA equality verified after publication
+WORKTREE = CLEAN / index empty / no relevant untracked files
+DASHBOARD_V7_OVERALL_HUMAN_APPROVAL = PENDING / composition-level approval in PROJECT_STATE §105 remains valid
+SIDEBAR_DESKTOP_APPROVAL = PASS / five pages; no responsive approval inferred
+OPEN_FINDING = Inventory MONITORAMENTO header wrap at 1366px
+HOM_01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §106
+```
+
+Para a recuperação em outra máquina, leia primeiro `PROJECT_STATE.md` §106,
+inspecione origem, worktree, branch e ancestralidade antes do checkout/fast-
+forward e recrie localmente o ambiente `.venv`/`.local/qa`. Não copie
+configuração, banco, sessão ou credenciais do computador de origem.

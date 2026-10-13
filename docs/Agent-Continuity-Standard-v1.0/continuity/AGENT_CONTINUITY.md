@@ -10,39 +10,42 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL HOM-01-DASHBOARD-V7-FIDELITY-ROUND-2: consultar
-`PROJECT_STATE.md` §105 (aprovação e stage/commit autorizado), §104 (evidências
-e follow-ups) e §103 (recuperação-base), além do contrato em
-`docs/prototype/new_ui_dashboard/handoff/VISUAL_CONTRACT_V7.md` §4. Branch
-`codex/hom-v1-integration`, HEAD antes da etapa autorizada
-`11dcf7db0095416c125f8863ab89a2eef7fb278f`. O usuário aprovou a composição
-integrada do Dashboard com “perfeito autorizo stage e commit”. O aceite cobre
-a composição mostrada nas capturas mais recentes; não implica aceite individual
-de cada viewport da matriz. Stage/commit autorizados apenas para o escopo
-bounded do Dashboard, ainda aguardando snapshot e revisão do índice pelo root;
-push não autorizado. HOME-01 permanece `IN_PROGRESS`, HOM-02 bloqueada.
+RETOMADA ATUAL HOM-01-SAFE-CHECKPOINT-AND-PUSH (2026-10-13): consultar
+`PROJECT_STATE.md` §106, `ACTIVE_DOCUMENT_MAP.md` §70, o follow-up §14 de
+`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md` e o relatório
+`docs/projeto/ARGOS_HOM_01_SIDEBAR_ACTIVE_STATE_RECOVERY.md`. Repositório
+`https://github.com/wromanov/projeto_argos.git`, branch
+`codex/hom-v1-integration`. HEAD inicial deste checkpoint:
+`b122ece404c3b67afdbd1acf9087e340d1c07d2c`; o commit V7 foi preservado. Os
+commits de implementação são `7c4fac3a81ba6311ecaf9bad2e080240759cfd0c`
+(sidebar e evidências) e `d0b4c2f5bef8d4533834898a67e4d2f03b0e2d1e`
+(monitoramento/A–D, Inventário e Quick Detail). O registro documental deste
+checkpoint identifica o HEAD final como o próprio commit que o contém; use
+`git rev-parse HEAD` para resolver seu SHA. O push normal para a branch remota
+e a igualdade exata dos SHAs foram verificados após a publicação.
 
-Foram alinhados Inventário/Qualidade, restaurados textos de suporte e frescor,
-compactada Atividade, preservados os títulos protegidos pelo contrato, incluídos
-os três links “Ver câmeras”, o caption “Total registrado” e a ação “Nova Câmera”
-condicionada por permissão. Capturas e runtime local estão em `ACTIVE_DOCUMENT_MAP.md`
-§69; a prévia atual é `http://127.0.0.1:8768/dashboard/`. O ambiente QA usa banco
-SQLite clonado e dados sintéticos; as telas foram inspecionadas sem submeter
-cadastro. Não registrar credenciais, sessão ou cookies. Não declarar SHA de
-commit até confirmação pelo Git. A atividade delimitada do Dashboard está
-completa; isso não encerra HOM-01.
+`manage.py check` passou pelo Python do `.venv`; 105 testes direcionados
+passaram com `scripts.localqa.test_settings`, banco SQLite temporário e
+sintético; `git diff --check` passou. A suíte global de 937 testes não foi
+executada nesta atividade. O Dashboard V7 tem aceite humano limitado à
+composição registrada em `PROJECT_STATE.md` §105; a sidebar tem aprovação
+desktop das cinco páginas em §101; A–D tem aprovação limitada aos rótulos e à
+omissão da linha para UNKNOWN em §99. Esses aceites não encerram HOM-01. O
+finding do cabeçalho MONITORAMENTO em 1366px segue aberto; responsividade da
+sidebar e aceite da composição completa da Camera Detail não foram inferidos.
 
-O runtime read-only anterior em `http://127.0.0.1:8767/dashboard/` foi encerrado
-e não deixou listener. Para inspecionar os botões condicionados à permissão,
-use `http://127.0.0.1:8768/dashboard/`, servido com banco SQLite clonado e
-isolado e um segundo perfil de QA sem staff/superuser, com a permissão de
-cadastro adicionada ao grupo de leitura. O Dashboard mostrou “Nova Câmera”; a
-navegação abriu o formulário em `/cameras/nova/`, sem submissão, mantendo cinco
-câmeras sintéticas. O perfil read-only original e seus acessos foram
-preservados. Não guardar nem registrar dados de sessão ou credenciais.
-Captura `DASHBOARD_CADASTRO_1440x900.png` (1440x900) mostra o botão e o
-formulário carregado sem submissão; a prévia permanece disponível em
-`http://127.0.0.1:8768/dashboard/`. O aceite visual continua pendente.
+Para continuar em outro computador, primeiro confirme `git status --branch`,
+`git status --porcelain=v1 -uall`, `git rev-parse HEAD` e a URL de `origin`.
+Preserve e reconcilie qualquer alteração local antes de trocar de branch ou
+atualizar. Só com worktree limpa, execute `git fetch origin
+codex/hom-v1-integration`; confirme a relação de ancestralidade e então faça
+checkout/fast-forward conforme §106. Nunca use reset, clean, stash ou force
+push como recuperação. Para QA, recrie `.venv` e `.local/qa` localmente; não
+copie bancos, venv, `.env`, sessão ou credenciais entre máquinas. O launcher
+`INICIAR_ARGOS_QA.cmd` prepara um SQLite sintético isolado e inicia Django em
+`http://127.0.0.1:8765/`; confira Dashboard em `/dashboard/`. HOM-01 segue
+`IN_PROGRESS`, HOM-02 segue `BLOCKED`, e esta autorização de push se limitou
+ao checkpoint concluído.
 
 ## UI-V2-P1 — seleção visual e fechamento (2026-09-27)
 
@@ -2407,6 +2410,90 @@ texto autorizado do Dashboard e a consulta técnica necessária foram alterados;
 layout, CSS, componentes e aprovações visuais anteriores foram preservados.
 Design QA humano integrado segue pendente, portanto HOM-01 continua
 `IN_PROGRESS`; HOM-02 permanece bloqueada.
+
+### 20.61 ARGOS-HOM-01-INVENTORY-UNKNOWN-PRESENTATION-FIX (2026-10-12)
+
+Consultar `PROJECT_STATE.md` §98 e
+`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md` §10. O mapa compartilhado
+apresenta ONLINE como “Online”, OFFLINE como “Offline”, UNKNOWN como
+“Desconhecido” e a classificação de escopo OUT_OF_SCOPE como “Não monitorada”.
+Os três códigos técnicos permanecem intactos; OUT_OF_SCOPE continua distinto
+de UNKNOWN. Inventário, Dashboard, Quick Detail e Camera Detail foram cobertos
+sem alterar o payload técnico, cores, CSS ou Design System.
+
+Os 82 testes direcionados, Django check e sintaxe JavaScript passaram. A
+instância local permanece em código anterior porque o launcher usa
+`runserver --noreload`; não reiniciar evitou repetir preparação/seed e rotação
+da senha QA operacional. Renderização visual atualizada, viewport móvel e
+aprovação humana seguem pendentes. WIP anterior preservado; HOM-01 continua
+`IN_PROGRESS`; nenhuma branch, commit ou push foi feito.
+
+### 20.62 ARGOS-HOM-01-DIAGNOSTIC-A-D-LABEL-RECONCILIATION (2026-10-12)
+
+Consultar `PROJECT_STATE.md` §99 e
+`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md` §11. Os campos
+`evidence_state` e `freshness` são valores derivados da projeção de saúde da
+câmera, separados dos estados MON e dos enums persistidos. A UI da Camera
+Detail apresenta `CURRENT`/`FRESH` como “Atual”/“Atualizado”, `STALE` como
+“Desatualizado” e `UNKNOWN` como “Não determinada”/“Não determinado”. Os
+códigos técnicos são preservados. “Último estado confirmado” aparece apenas
+para estado estável ONLINE ou OFFLINE; UNKNOWN continua apresentado como
+“Desconhecido” no estado atual, sem alegar confirmação.
+
+Os 65 testes direcionados, `manage.py check` e `git diff --check` passaram.
+Após o usuário recarregar o Django, a Camera Detail real foi conferida no Edge
+em 1366x768 e 390x844, zoom 100%, DPR 1 e escala visual 1. Os rótulos “Não
+determinada” e “Não determinado” foram renderizados; os códigos A–D crus não
+aparecem no resumo, a linha de último estado confirmado não aparece para MON
+UNKNOWN, e não há overflow horizontal no documento mobile. A navegação
+horizontal interna permanece limitada ao próprio componente. Capturas foram
+mostradas inline, sem arquivos persistidos. O usuário aprovou explicitamente
+somente os rótulos A–D e a omissão da linha para MON UNKNOWN nesses dois
+viewports, em resposta “certo”. Os demais viewports, a composição completa da
+Camera Detail e os gates gerais de DESIGN QA continuam pendentes; HOM-01 segue
+`IN_PROGRESS` e HOM-02 bloqueada. WIP preservado; sem branch, commit ou push.
+
+### 20.63 ARGOS-HOM-01-INVENTORY-VISUAL-ACCEPTANCE (2026-10-12)
+
+Consultar `PROJECT_STATE.md` §100 e
+`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md` §12. O usuário aprovou a
+composição integrada do Inventário com o feedback “O inventário para mim está
+legal.” O aceite é da composição como um todo; não deve ser convertido em
+aprovação individual de cada viewport nem em evidência de cobertura técnica
+completa.
+
+Preservar a tabela desktop, os cards mobile, filtros, ações, paginação, Design
+System e funcionalidades. O finding conhecido de quebra do cabeçalho
+MONITORAMENTO em 1366px continua aberto: uma observação posterior o mostrou
+em uma linha, mas não comprovou a resolução nos quatro viewports. Não fazer
+novos ajustes visuais sem finding material ou autorização explícita. Nenhum
+código foi alterado nesta atividade; WIP preservado. HOM-01 continua
+`IN_PROGRESS` e HOM-02 bloqueada.
+
+### 20.64 ARGOS-HOM-01-SIDEBAR-ACTIVE-STATE-RECOVERY — aprovação (2026-10-12)
+
+Consultar `PROJECT_STATE.md` §101, `docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`
+§13 e `docs/projeto/ARGOS_HOM_01_SIDEBAR_ACTIVE_STATE_RECOVERY.md`. O usuário
+aprovou explicitamente, com a resposta “aprovo”, o padrão visual das cinco
+páginas nas capturas atuais e na contact sheet de
+`docs/projeto/evidence/sidebar-active-recovery/`.
+
+```text
+ACTIVITY = ARGOS-HOM-01-SIDEBAR-ACTIVE-STATE-RECOVERY
+HUMAN_VISUAL_APPROVAL = APPROVED / user reply: “aprovo”
+APPROVAL_SCOPE = five integrated desktop pages, 2552x866 CSS pixels
+RESPONSIVE_MOBILE_APPROVAL = NOT_INFERRED
+ACTIVITY_COMPLETE = YES / bounded activity
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §101
+HOM_01_STATUS = IN_PROGRESS / remaining gates
+HOM02_START = BLOCKED
+```
+
+O aceite cobre a evidência integrada desktop em 2552×866 CSS pixels. Não
+estende aprovação a visualização mobile ou responsiva. A atividade delimitada
+ARGOS-HOM-01-SIDEBAR-ACTIVE-STATE-RECOVERY está completa após a aprovação e as
+validações documentadas. HOM-01 continua `IN_PROGRESS` para os demais gates;
+este aceite não fecha HOM-01 nem libera HOM-02. Sem commit ou push.
 
 ### 20.65 HOM-01-DASHBOARD-V7-VISUAL-CONFORMANCE-RECOVERY (2026-10-12)
 

@@ -255,3 +255,287 @@ os testes afetados; liberar acesso autorizado às evidências/worktrees ou
 classificar o WIP não versionado; concluir capturas e review visual integrado;
 atualizar este documento e PROJECT_STATE; então solicitar decisão humana sobre
 publicação e HOM-02.
+
+## 9. Follow-up — reconciliação do contrato do Dashboard (2026-10-12)
+
+```text
+ACTIVITY = ARGOS-HOM-01-DASHBOARD-CONTRACT-RECONCILIATION
+BASELINE_BRANCH = codex/hom-v1-integration
+HEAD_BEFORE = 11dcf7db0095416c125f8863ab89a2eef7fb278f
+HEAD_AFTER = 11dcf7db0095416c125f8863ab89a2eef7fb278f
+IP_DUPLICATION_METRIC = NUMBER_OF_AFFECTED_CAMERAS
+IP_DUPLICATION_LABEL = Câmeras com IP duplicado
+MONITORING_SECTION_LABEL = Monitoramento e completude
+UNKNOWN_DISPLAY_LABEL = Desconhecido / internal UNKNOWN unchanged
+TARGETED_TESTS = PASS / 28 of 28
+GLOBAL_SUITE = PASS / 937 of 937 / 1104.507 seconds
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS / after documentation update
+CODE_FILES_CHANGED = core/views.py; core/templates/core/dashboard.html; core/tests.py; core/test_frontend.py; cameras/test_governanca_views.py
+DESIGN_QA = PENDING / human integrated review remains required
+HOM_01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+NEW_BRANCH = NO
+```
+
+O cálculo real soma os totais de câmeras em cada grupo cujo IP aparece mais
+de uma vez. O teste dirigido diferencia duas câmeras com um único IP repetido
+e confirma o valor `2`. A implementação manteve essa regra; limpou a ordenação
+padrão do modelo antes do agrupamento e removeu o filtro `ip=""`, que em
+`GenericIPAddressField` anulável era compilado pelo SQLite como comparação
+com `NULL` e excluía endereços válidos. A mudança visível limita-se ao rótulo
+aprovado; não houve alteração de layout, CSS ou componentes.
+
+As duas falhas de texto reproduzidas foram corrigidas nas expectativas dos
+testes, e a asserção do contrato frontend foi alinhada. A regressão direcionada
+executou 28 testes e terminou `OK`. O `manage.py check` terminou sem problemas.
+O primeiro run global em sandbox encontrou o limite do socket interno do
+asyncio no Windows; o run final usou `scripts.localqa.test_settings`, banco
+SQLite temporário e loopback local para esse socket, terminou `Ran 937 tests`
+e `OK`. Nenhum dado operacional real foi acessado; os cenários de escala
+registraram que não usaram rede, câmera ou credenciais reais. Logs de ambas as
+tentativas e dos segmentos estão sob `.local/qa/test-runs/`.
+
+Este follow-up supersede os achados técnicos do checkpoint de 2026-10-11 sobre
+a falha textual e a suíte inconclusiva. As aprovações anteriores de Camera
+Detail, Create/Edit e botão de upload permanecem intactas. QA visual integrado,
+responsividade e teclado/foco seguem pendentes; HOM-01 permanece em andamento
+e HOM-02 bloqueada.
+
+## 10. Follow-up — padronização dos rótulos de monitoramento (2026-10-12)
+
+```text
+ACTIVITY = ARGOS-HOM-01-INVENTORY-UNKNOWN-PRESENTATION-FIX
+BRANCH = codex/hom-v1-integration
+HEAD = 11dcf7db0095416c125f8863ab89a2eef7fb278f
+PRESENTATION_MAP = cameras/monitoramento/presentation.py
+LABELS = ONLINE: Online; OFFLINE: Offline; UNKNOWN: Desconhecido; OUT_OF_SCOPE: Não monitorada
+ALL_SUPPORTED_STATES_VERIFIED = YES / 82 targeted tests, including stale and out-of-scope
+QUICK_DETAIL_TECHNICAL_PAYLOAD = PRESERVED
+INTERNAL_MON_CONTRACT_CHANGED = NO
+DESIGN_SYSTEM_CHANGED = NO
+CSS_CHANGED_BY_ACTIVITY = NO
+TARGETED_TESTS = PASS / 82 of 82
+DJANGO_CHECK = PASS
+JAVASCRIPT_SYNTAX = PASS
+LIVE_RENDER = STALE / launcher starts runserver with --noreload
+DESKTOP_MOBILE_VISUAL_QA = PENDING / need current render; 390px capture unavailable
+HUMAN_VISUAL_APPROVAL = PENDING
+HOM_01_STATUS = IN_PROGRESS
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §98
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+NEW_BRANCH = NO
+```
+
+O mapa único traduz os estados efetivos e trata `OUT_OF_SCOPE` como
+classificação de escopo, distinta de `UNKNOWN`. Inventário, dashboard, Quick
+Detail e Camera Detail usam os rótulos aprovados, sem alterar códigos técnicos,
+payloads, transições ou variantes visuais. Os cenários cobrem os quatro estados
+apresentados, dados stale e saída de escopo.
+
+A aplicação integrada aberta foi iniciada com `--noreload`, então continuou
+servindo as views anteriores após as alterações. Não se repetiu o launcher,
+pois ele executa preparação/seed e rotaciona a senha operacional QA. O
+checkpoint humano em viewport real continua pendente; este follow-up não fecha
+HOM-01.
+
+## 11. Follow-up — rótulos do diagnóstico técnico A–D (2026-10-12)
+
+```text
+ACTIVITY = ARGOS-HOM-01-DIAGNOSTIC-A-D-LABEL-RECONCILIATION
+BRANCH = codex/hom-v1-integration
+HEAD = 11dcf7db0095416c125f8863ab89a2eef7fb278f
+EVIDENCE_STATE_VALUES = CURRENT, UNKNOWN
+FRESHNESS_VALUES = FRESH, STALE, UNKNOWN
+EVIDENCE_LABELS = Atual, Não determinada
+FRESHNESS_LABELS = Atualizado, Desatualizado, Não determinado
+UNKNOWN_IS_MON_STATE = NO / diagnostic projection strings are separate
+LAST_CONFIRMED_ROW = only ONLINE or OFFLINE; omitted for UNKNOWN
+INTERNAL_CONTRACTS_CHANGED = NO
+TARGETED_TESTS = PASS / 65
+DJANGO_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+INTEGRATED_RENDER_AFTER_EDIT = PASS / actual Django page reloaded by user
+VISUAL_VIEWPORTS = PASS / 1366x768 desktop; 390x844 mobile
+BROWSER = Edge; ZOOM = 100%; DPR = 1; VISUAL_VIEWPORT_SCALE = 1
+MOBILE_DOCUMENT_OVERFLOW = NO / horizontal scrolling confined to navigation
+SCREENSHOT_FILES = NONE / actual captures displayed inline only
+DESIGN_QA = PENDING
+HUMAN_APPROVAL = APPROVED / bounded A–D labels and UNKNOWN last-confirmed-row behavior at 1366x768 and 390x844 only; user reply: “certo”
+HOM01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+NEW_BRANCH = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+```
+
+Na projeção `CameraHealthProjection`, `evidence_state` assume `CURRENT` para
+snapshot válido e atual ou `UNKNOWN` quando o timestamp não permite afirmar
+atualidade. `freshness` assume `FRESH`, `STALE` ou `UNKNOWN` para dados atuais,
+antigos ou com timestamp futuro/inválido. O rótulo “Não determinada” não
+afirma ausência de evidência; indica que o estado não pode ser determinado.
+O código de cada projeção permanece técnico e intacto.
+
+“Último estado confirmado” era semanticamente incorreto quando o estado MON
+estável era `UNKNOWN`; a linha fica omitida nesse caso. O badge “Estado atual:
+Desconhecido” permanece. Para ONLINE/OFFLINE confirmados, a linha continua
+disponível. Mudanças restritas à camada de apresentação, sem alteração das
+regras A–D, serviços MON, persistência, APIs, histórico, permissões, layout,
+CSS ou Design System.
+
+Os 65 testes dirigidos, `manage.py check` e `git diff --check` passaram. Após
+o usuário recarregar o Django, a Camera Detail real foi conferida com o
+registro sintético QA em 1366x768 e 390x844, zoom 100%, DPR 1 e escala visual
+1. Os dois rótulos indeterminados aparecem sem quebrar o layout; em mobile,
+cabem lado a lado e a largura do documento coincide com a área útil (375px).
+A barra horizontal visível pertence à navegação responsiva, cujo conteúdo
+continua rolável dentro do componente.
+
+As capturas da tela integrada foram exibidas inline, mas a interface de captura
+disponível não as salvou em arquivos. O usuário aprovou explicitamente, em
+resposta “certo”, apenas os rótulos A–D e a omissão da linha de último estado
+confirmado para MON UNKNOWN, nos viewports 1366x768 e 390x844. Essa aprovação
+não cobre outros viewports, a composição completa da Camera Detail ou os demais
+gates de HOM-01. DESIGN_QA permanece pendente; este follow-up não fecha HOM-01.
+
+## 12. Aceite visual da composição integrada do Inventário (2026-10-12)
+
+```text
+ACTIVITY = ARGOS-HOM-01-INVENTORY-VISUAL-ACCEPTANCE
+USER_DECISION = APPROVED / “O inventário para mim está legal.”
+INVENTORY_HUMAN_VISUAL_APPROVAL = APPROVED / integrated composition
+VIEWPORT_APPROVAL_SCOPE = COMPOSITION_LEVEL / no individual viewport approval inferred
+KNOWN_HEADER_WRAP_FINDING = OPEN / 1366px wrap previously reported; later one-line observation does not prove resolution across all required viewports
+CODE_CHANGED = NO / this activity
+WIP_PRESERVED = YES
+NEW_BRANCH = NO
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+HOM_01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+```
+
+O aceite cobre a composição integrada do Inventário. Ele não certifica
+individualmente 1920×1080, 1440×900, 1366×768 e 390×844. O finding de quebra
+do cabeçalho MONITORAMENTO em 1366px permanece aberto, pois uma observação
+posterior em uma linha não comprova sua resolução na cobertura responsiva
+completa. Tabela desktop, cards mobile, filtros, ações, paginação, Design
+System e funcionalidades ficam preservados. Nenhum ajuste visual foi feito
+nesta atividade; não realizar novos ajustes sem finding material ou autorização.
+
+## 13. Follow-up — recuperação do estado ativo da sidebar (2026-10-12)
+
+Consultar também `PROJECT_STATE.md` seção 101 e o relatório
+`docs/projeto/ARGOS_HOM_01_SIDEBAR_ACTIVE_STATE_RECOVERY.md`.
+
+```text
+ACTIVITY = ARGOS-HOM-01-SIDEBAR-ACTIVE-STATE-RECOVERY
+BRANCH = codex/hom-v1-integration
+HEAD = 11dcf7db0095416c125f8863ab89a2eef7fb278f
+ROOT_CAUSE = Início, Governança and Eventos were outside the HOM-01 visual flag and inherited the legacy shell; active-link-only matching left the panel and surrounding layout divergent
+FIX = scoped HOM-01 visual opt-in and full sidebar adapter for the three affected areas
+SCOPED_FILES = templates/base.html; templates/components/sidebar.html; templates/components/navegacao_principal.html; static/css/sidebar-active-recovery.css; core/test_sidebar_navigation.py; core/test_frontend.py / activity hunks only
+FIVE_PAGE_ACTIVE_LINK_CHECK = PASS / exactly one matching aria-current="page" on each real page
+ACTIVE_STYLE = PASS / background #2563a6; white text/icon; 40px; 8px 12px; 5px radius; centered; weight 750
+SHELL_STYLE = PASS / 232px panel; #182c3a; padding 20px 16px; content gap 24px; inactive links #d0dbe3
+DASHBOARD_INVENTORY_REGRESSION = PASS / canonical pages preserved
+DJANGO_CHECK = PASS / manage.py check --settings=scripts.localqa.test_settings
+FOCUSED_TESTS = PASS / 90 across four modules
+GIT_DIFF_CHECK = PASS
+INTEGRATED_VISUAL_QA = PASS / five real routes in Edge at localhost:8765 after user-confirmed Django restart
+CAPTURES = docs/projeto/evidence/sidebar-active-recovery/{inicio,dashboard,inventario,governanca,eventos}-current.png; contact-sheet.jpg
+COMPUTED_STYLES = docs/projeto/evidence/sidebar-active-recovery/computed-styles.json
+CAPTURE_VIEWPORT = 2552x866 CSS pixels; DPR 1; visualViewport.scale 1
+RESPONSIVE_VISUAL_QA = NOT_CLAIMED
+HUMAN_VISUAL_APPROVAL = APPROVED / user reply: “aprovo” / five current sidebar captures and contact sheet
+APPROVAL_SCOPE = integrated desktop at 2552x866 CSS pixels; no responsive/mobile approval inferred
+ACTIVITY_COMPLETE = YES / this bounded activity's gates are satisfied
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §101
+HOM_01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+NEXT_ACTION = continue remaining HOM-01 gates; do not close HOM-01 or release HOM-02 before they pass
+```
+
+O usuário rejeitou a primeira correção porque ela alinhava apenas o link ativo
+e deixava o painel lateral e a composição circundante no shell legado. A causa
+era a ausência da flag visual HOM-01 em Início, Governança e Eventos; a seleção
+de rota do partial já estava correta. A nova correção aplica o shell HOM-01
+completo nas três áreas, com escopo local e sem ampliar a carga global do UI V2.
+`templates/components/sidebar.html` disponibiliza o hint de rolagem nas rotas
+escopadas e `templates/components/navegacao_principal.html` o vincula à nav
+com `aria-describedby`. `core/test_frontend.py` verifica a presença do opt-in e
+hint acessível mantendo as asserções de ausência das folhas globais; somente
+esses hunks pertencem a esta atividade, e outras alterações no arquivo são
+WIP preexistente.
+
+Após o usuário confirmar a reinicialização do Django, as cinco rotas reais
+foram inspecionadas no Edge. O JSON de estilos computados registra um único
+item ativo correspondente por rota e valores iguais entre as cinco páginas
+para painel, fundo, padding, espaçamento, links inativos e estado ativo.
+Dashboard e Inventário preservam a composição de referência. Os testes
+direcionados, `manage.py check` e `git diff --check` passaram segundo a
+validação mechanical.
+
+A evidência visual atual cobre desktop em 2552×866 CSS pixels, DPR 1 e escala
+visual 1. O usuário aprovou explicitamente as cinco páginas e a contact sheet
+na resposta “aprovo”. O aceite não cobre validação mobile ou responsiva. Esta
+atividade está completa; HOM-01 permanece em andamento para os demais gates e
+este follow-up não encerra HOM-01 nem libera HOM-02.
+
+## 14. HOM-01-SAFE-CHECKPOINT-AND-PUSH (2026-10-13)
+
+```text
+ACTIVITY = HOM-01-SAFE-CHECKPOINT-AND-PUSH
+BRANCH = codex/hom-v1-integration
+HEAD_BEFORE = b122ece404c3b67afdbd1acf9087e340d1c07d2c
+HEAD_FINAL = THIS_CHECKPOINT_COMMIT / resolve with git rev-parse HEAD
+V7_COMMIT = b122ece404c3b67afdbd1acf9087e340d1c07d2c / preserved
+SIDEBAR_RECOVERY = PRESERVED / approved integrated desktop scope and evidence committed
+MONITORING_A-D = PRESERVED / approved label behavior bounded to prior acceptance
+INVENTORY_QUICK_DETAIL_DASHBOARD = PRESERVED / WIP committed; open visual findings remain explicit
+COMMITS = 7c4fac3a81ba6311ecaf9bad2e080240759cfd0c; d0b4c2f5bef8d4533834898a67e4d2f03b0e2d1e; db0b10bc2a11ec6a20b8b8f9b36ba43573919814; this documentation checkpoint
+DJANGO_CHECK = PASS / project virtual environment
+TARGETED_TESTS = PASS / 105
+GIT_DIFF_CHECK = PASS
+REMOTE = https://github.com/wromanov/projeto_argos.git
+REMOTE_BRANCH = codex/hom-v1-integration
+PUSH = COMPLETED / normal push; exact SHA equality verified
+WORKTREE_CLEAN = YES / staging empty / no relevant untracked files
+DASHBOARD_V7_OVERALL_HUMAN_APPROVAL = PENDING / bounded composition approval from §105 remains preserved
+SIDEBAR_DESKTOP_APPROVAL = PASS / five pages at 2552x866 CSS px; no mobile inference
+HOM01_STATUS = IN_PROGRESS
+HOM02_START = BLOCKED
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §106
+```
+
+O primeiro commit (`7c4fac3`) preserva a recuperação integrada da sidebar,
+seus testes, relatório e capturas. O segundo (`d0b4c2f`) preserva a
+localização dos estados MON e do resumo A–D, a semântica de UNKNOWN, Quick
+Detail, o CSS de Inventário e a cobertura de regressão do Dashboard. O terceiro
+(`db0b10b`) removeu uma senha fixa desnecessária do teste da sidebar. O quarto
+commit é este registro documental. Todos foram revisados por staging explícito;
+nenhum arquivo sensível/local foi publicado.
+
+O teste do Dashboard falhou inicialmente porque ainda procurava o texto antigo
+“Cadastro completo”; a asserção foi alinhada ao texto V7 “Cadastros completos”.
+Depois da correção e do hardening do teste da sidebar, a bateria dirigida
+completa passou com 105 testes e Django check sem issues, usando a configuração
+isolada de testes. A suíte global histórica não foi executada neste checkpoint.
+
+O remoto não possuía a branch antes da publicação. Foi publicado o mesmo nome
+da branch local, sem merge, rebase ou force push, e o SHA remoto foi conferido
+por `git ls-remote` e coincidiu com `git rev-parse HEAD`. Em outro computador,
+inspecione a worktree antes do fetch; só faça checkout/fast-forward com estado
+limpo e ancestralidade confirmada. Recrie `.venv` e o SQLite de QA sintético
+localmente pelo fluxo de `INICIAR_ARGOS_QA.cmd`; não copie banco, venv, sessão ou
+credenciais. Dashboard V7 é verificado em `http://127.0.0.1:8765/dashboard/`.
+
+O aceite prévio do Dashboard V7 em §105 permanece limitado à composição
+apresentada; aceite global da matriz continua pendente. Permanecem o finding
+de quebra do cabeçalho MONITORAMENTO a 1366px, QA responsivo da sidebar não
+reivindicado e revisão visual mais ampla da Camera Detail. HOM-01 segue aberta;
+HOM-02 continua bloqueada.
