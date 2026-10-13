@@ -13,7 +13,7 @@ class SidebarActiveStateTests(TestCase):
 
     def setUp(self):
         user = get_user_model().objects.create_superuser(
-            username="sidebar-qa", password="test-only-password"
+            username="sidebar-qa", password=None
         )
         self.client.force_login(user)
         anterior = Camera.objects.create(nome="Anterior", fabricante="Teste", modelo="A")
