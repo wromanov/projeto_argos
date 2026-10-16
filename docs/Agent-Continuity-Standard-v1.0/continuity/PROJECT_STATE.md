@@ -7254,3 +7254,48 @@ formal de readiness; HOM-04 não foi aberta e HOM-05 aguarda HOM-04. As etapas
 E0–E8 e a trilha H estão em Roadmap §25, Sprints §22 e no plano operacional.
 Próximo gate formal de continuidade: revisão do usuário deste plano; próxima
 atividade de produto permanece ARGOS-QA-01 sob autorização e gates próprios.
+
+## 130. ARGOS-E0-FINAL-CONSOLIDATION-01 (2026-10-16)
+
+Este registro sucede §129 quanto ao estado de E0 e preserva os fatos HOM-03/04/05.
+ARGOS-QA-01 está tecnicamente concluída com a correção focal e as evidências
+aprovadas fornecidas para esta atividade. O fechamento técnico é distinto da
+publicação Git, ainda pendente até o push autorizado e confirmação de igualdade
+entre HEAD local e remoto.
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-E0-FINAL-CONSOLIDATION-01
+BRANCH = codex/hom-v1-integration
+BASE_HEAD = 5c798bb37285d8cf7f42b9197dfc81057f472e09
+COMMIT_1_SHA = 149e315 (roadmap e continuidade)
+COMMIT_2_SHA = THIS_COMMIT (correção QA e fechamento E0)
+ARGOS-QA-01 = TECHNICALLY_COMPLETE
+TARGETED_TESTS = PASS (3/3 classe; 6/6 módulo de provisionamento)
+DJANGO_SYSTEM_CHECK = PASS
+FULL_REGRESSION = PASS
+TEST_COUNT = 727
+FAILURES = 0
+ERRORS = 0
+EXIT_CODE = 0
+DURATION_SECONDS = 1067.440
+AC_05 = PASS
+TESTS_RERUN_IN_THIS_ACTIVITY = NO
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS
+ROADMAP_STAGE_E0 = READY_FOR_CLOSURE
+ACTIVE_SLICE = ARGOS-QA-01
+SLICE_STATUS = TECHNICALLY_COMPLETE / PUBLICATION_PENDING
+NEXT_STAGE = E1
+NEXT_SLICE = ARGOS-CRED-UI-01
+GIT_PUBLICATION = PENDING
+VM_DEPLOY = NOT_PERFORMED
+MIGRATIONS = NOT_PERFORMED
+```
+
+A alteração funcional restringe-se a `cameras/test_operational_qa_provisioning.py`:
+define `VISUAL_QA_USERNAME` como `qa-visual-hom01` no escopo do teste e valida
+a mensagem específica do marcador inválido. Nenhum backend operacional,
+serviço de provisionamento ou migration foi alterado. As evidências da regressão
+completa são aprovadas e foram reutilizadas sem nova execução. E1 é somente o
+próximo handoff; esta atividade não iniciou `ARGOS-CRED-UI-01`.

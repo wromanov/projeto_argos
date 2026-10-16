@@ -2995,3 +2995,31 @@ Manter solicitações de continuidade no formato curto exigido pelo plano; avan�
 status somente com evidência. Preservar WIP e confirmar estado Git ao retomar em
 outra máquina. Esta atividade foi documental: sem testes, mudanças de código,
 VM, migration, deploy, commit ou push.
+
+### 20.89 ARGOS-E0-FINAL-CONSOLIDATION-01 (2026-10-16)
+
+Consultar `PROJECT_STATE.md` §130, `ACTIVE_DOCUMENT_MAP.md` §93 e o plano
+operacional em `docs/projeto/ARGOS_DELIVERY_EXECUTION_PLAN_V1.md`. ARGOS-QA-01
+está tecnicamente concluída: correção focal aplicada, evidências direcionadas e
+regressão completa aprovadas. Não repetir os testes aprovados. O fechamento
+técnico não significa publicação; confirmar os dois commits autorizados, push
+fast-forward e igualdade exata dos SHAs local/remoto antes de declarar sync.
+
+```text
+PROJECT_ID = projeto_argos
+ROADMAP_STAGE = E0 — Estabilização para entrega
+ACTIVE_SLICE = ARGOS-QA-01
+SLICE_STATUS = TECHNICALLY_COMPLETE / PUBLICATION_PENDING
+NEXT_STAGE = E1
+NEXT_SLICE = ARGOS-CRED-UI-01
+NEXT_SLICE_STATUS = HANDOFF_ONLY / NOT_STARTED
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS
+REMOTE_SYNC = PENDING
+VM_DEPLOY = NOT_PERFORMED
+MIGRATIONS = NOT_PERFORMED
+```
+
+E1 não está iniciada por este handoff. Preservar os estados formais HOM-03,
+HOM-04 e HOM-05; não inferir readiness, homologação ou deploy a partir do relato
+operacional da VM. Em retomada, confirmar branch, HEAD, upstream, staging e WIP.

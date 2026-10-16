@@ -34,6 +34,7 @@ def synthetic_image():
     return SimpleUploadedFile("qa-synthetic.png", stream.getvalue(), content_type="image/png")
 
 
+@override_settings(VISUAL_QA_USERNAME="qa-visual-hom01")
 class OperationalQAProvisioningTests(TestCase):
     def setUp(self):
         self.user_model = get_user_model()
@@ -92,7 +93,7 @@ class OperationalQAProvisioningTests(TestCase):
         self.visual.save(update_fields=("email",))
         original_hash = self.visual.password
 
-        with self.assertRaises(ImproperlyConfigured):
+        with self.assertRaisesMessage(ImproperlyConfigured, "não tem o marcador reconhecido"):
             validate_visual_qa_user()
 
         self.visual.refresh_from_db()

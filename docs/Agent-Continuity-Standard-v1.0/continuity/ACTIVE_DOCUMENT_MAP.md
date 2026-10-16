@@ -2098,3 +2098,23 @@ operacional segundo relato do usuário, mas sem verificação independente; HOM-
 continua sem fechamento formal, HOM-04 sem abertura formal e HOM-05 não aberta
 antes de HOM-04. O novo plano não substitui authorities especializadas nem
 autoriza execução/deploy.
+
+## 93. ARGOS-E0-FINAL-CONSOLIDATION-01 (2026-10-16)
+
+Estado atual de E0 e handoff para E1: `PROJECT_STATE.md` §130 e
+`AGENT_CONTINUITY.md` §20.89. ARGOS-QA-01 está tecnicamente concluída; a
+publicação Git permanece pendente até confirmação do push e sincronização exata.
+O plano operacional, Roadmap §25 e Sprints §22 permanecem authorities da
+sequência E0–E8 e dos gates de homologação.
+
+```text
+ROADMAP_STAGE = E0
+ACTIVE_SLICE = ARGOS-QA-01
+SLICE_STATUS = TECHNICALLY_COMPLETE / PUBLICATION_PENDING
+NEXT_STAGE = E1
+NEXT_SLICE = ARGOS-CRED-UI-01
+NEXT_SLICE_STATUS = HANDOFF_ONLY / NOT_STARTED
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS
+REMOTE_SYNC = PENDING
+```
