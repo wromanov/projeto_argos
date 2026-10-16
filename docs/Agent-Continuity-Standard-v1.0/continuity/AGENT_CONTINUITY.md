@@ -2935,6 +2935,21 @@ ACTIVITY_COMPLETE = NO
 STATUS = READY_FOR_PUBLICATION
 ```
 
+### 20.87 ARGOS-FULL-CONTINUITY-CHECKPOINT-01 — payload sincronizado (2026-10-16)
+
+O checkpoint até `c51b35e01104c12cb94b0a97abbd8e56a884a4fd` foi publicado e o
+SHA remoto foi igual ao HEAD local na verificação pós-push. O recibo atual
+registra essa evidência. Após seu push, compare novamente os SHAs e use o HEAD
+confirmado no relatório final como SHA de retomada.
+
+```text
+PROJECT_STATE_UPDATE = PASS
+CHECKPOINT_PAYLOAD_REMOTE_SYNC = PASS
+FINAL_RECEIPT_PUSH = PENDING
+ACTIVITY_COMPLETE = NO
+STATUS = RECEIPT_PUSH_PENDING
+```
+
 Próxima recomendação: retomar HOM-03 após chave SSH autorizada; em seguida
 reavaliar gates HOM-04; backlog de capabilities HOM-05 exige autorização
 separada. Esta reconciliação alterou somente os cinco documentos listados em

@@ -1,8 +1,9 @@
 # ARGOS — recuperação do checkpoint global de continuidade
 
-**Status:** commits B/C concluídos; commit final e sincronização ainda pendentes
-em 2026-10-16. Este guia só representa transferência concluída após confirmar
-que o SHA remoto da branch é igual ao HEAD local.
+**Status:** checkpoint principal publicado; recibo deste resultado está em
+preparação em 2026-10-16. O push principal foi confirmado com SHA local/remoto
+idênticos. Após publicar este recibo, confira o HEAD atual com o procedimento
+PowerShell abaixo.
 
 ## Identificação e estado Git
 
@@ -13,17 +14,22 @@ SOURCE_BRANCH = codex/hom-v1-integration
 HEAD_BEFORE = 5a1d9e63c97712b9ee5ddbdf8f26b802eded801e
 HEAD_BEFORE_FINAL_DOC = 7cb8ec306c78dec6acd054d655568a1a12b390b4
 HEAD_BEFORE_FINAL_VALIDATION_RECEIPT = aaa88092e71e29141c7fa0ce41bb4aac91eca884
-FINAL_HEAD = o commit final deste checkpoint; consulte `git rev-parse HEAD` e o relatório da atividade
+HEAD_BEFORE_POST_PUSH_RECEIPT = c51b35e01104c12cb94b0a97abbd8e56a884a4fd
+FINAL_HEAD = commit final deste recibo; consulte `git rev-parse HEAD` e o relatório da atividade
 REMOTE_URL = https://github.com/wromanov/projeto_argos.git
 REMOTE_BRANCH = codex/hom-v1-integration
-REMOTE_SHA_OBSERVED = e91e4499d43211722b7eadba9adab842e3c75aeb
-REMOTE_SYNC = PENDING_FINAL_DOC_COMMIT_AND_PUSH
-LOCAL_COMMITS_UNPUBLISHED = 97c7d47c4c47761d205a7d41262bf067c56c403d; 5a1d9e63c97712b9ee5ddbdf8f26b802eded801e; 06bc2c17628ba2cb11a01a8647fb04d2ca00608c; 7cb8ec306c78dec6acd054d655568a1a12b390b4; aaa88092e71e29141c7fa0ce41bb4aac91eca884
+REMOTE_SHA_BEFORE_PUSH = e91e4499d43211722b7eadba9adab842e3c75aeb
+CHECKPOINT_PAYLOAD_REMOTE_SHA = c51b35e01104c12cb94b0a97abbd8e56a884a4fd
+CHECKPOINT_PAYLOAD_REMOTE_SYNC = PASS (SHA remoto igual ao HEAD local após o push principal)
+REMOTE_SYNC = PASS for c51b35e; verify the final receipt SHA against HEAD
+COMMITS_PUBLISHED = 97c7d47c4c47761d205a7d41262bf067c56c403d; 5a1d9e63c97712b9ee5ddbdf8f26b802eded801e; 06bc2c17628ba2cb11a01a8647fb04d2ca00608c; 7cb8ec306c78dec6acd054d655568a1a12b390b4; aaa88092e71e29141c7fa0ce41bb4aac91eca884; c51b35e01104c12cb94b0a97abbd8e56a884a4fd
+LOCAL_COMMITS_UNPUBLISHED = none as of c51b35e; post-push receipt changes are pending in working tree
 COMMIT_B = 7cb8ec306c78dec6acd054d655568a1a12b390b4
 COMMIT_C = 06bc2c17628ba2cb11a01a8647fb04d2ca00608c
 COMMIT_D = aaa88092e71e29141c7fa0ce41bb4aac91eca884
-FINAL_SCAN_RECEIPT = this document's final commit; SHA in the completion report
-PUSH = not executed
+FINAL_SCAN_RECEIPT = c51b35e01104c12cb94b0a97abbd8e56a884a4fd
+POST_PUSH_RECEIPT = this document's containing commit; SHA in the completion report
+PUSH = checkpoint principal concluído; recibo pós-push pendente
 ```
 
 O HEAD local observado antes do commit documental final estava quatro commits
@@ -41,9 +47,9 @@ Campos solicitados para transporte:
 DATE = 2026-10-16
 SOURCE_BRANCH = codex/hom-v1-integration
 SOURCE_HEAD = 5a1d9e63c97712b9ee5ddbdf8f26b802eded801e
-FINAL_HEAD = commit final deste checkpoint; SHA exato no relatório final e via `git rev-parse HEAD`
-REMOTE_SHA = SHA da branch remota após push; comparar com `git rev-parse HEAD`
-FILES_COMMITTED = commits locais 97c7d47 (HOM-01), 5a1d9e6 (HOM-02), 06bc2c1 (HOM-03/Commit C), 7cb8ec3 (roadmap/continuidade/Commit B), aaa8809 (checkpoint) e o recibo de validação documental que contém este arquivo
+FINAL_HEAD = SHA do recibo final, confirmado pelo relatório e `git rev-parse HEAD`
+REMOTE_SHA = c51b35e01104c12cb94b0a97abbd8e56a884a4fd para o payload já publicado; o recibo deve ser comparado ao HEAD depois do próximo push
+FILES_COMMITTED = commits 97c7d47 (HOM-01), 5a1d9e6 (HOM-02), 06bc2c1 (HOM-03/Commit C), 7cb8ec3 (Roadmap/continuidade/Commit B), aaa8809 (checkpoint) e c51b35e (validação/recibo principal); este recibo pós-push será publicado separadamente
 FILES_EXCLUDED = modificação local do checkpoint HOM-01, `.local/`, bancos, helper e ZIPs não inspecionados
 UNTRACKED_REMAINING = `.local/`; `docs/projeto.zip`; `docs/Agent-Continuity-Standard-v1.0/continuity.zip`
 UNTRANSFERRED_REQUIRED_FILES = conteúdo do pacote/helper HOM-03 em `.local/` não foi revalidado; necessidade de transferência não confirmada. Configuração operacional e credenciais devem ser provisionadas separadamente
@@ -57,9 +63,9 @@ HOM_STATES = HOM-01 CLOSED/APPROVED; HOM-02 aceite funcional/commit local; HOM-0
 UI_PENDING_ITEMS = P3-P7 exigem reconciliação/cobertura por escopo; sem conclusão global
 BACKEND_PENDING_ITEMS = BC-02 por fatias; branches isoladas não integradas
 IMAGE_PENDING_ITEMS = UI captura manual, galeria, retenção/rotação/proteção/purge e conformidade §26 pendentes
-VALIDATION_RESULTS = ancestry/fast-forward possível; diff checks PASS; scans de segurança sem padrões; worktrees limpos; testes técnicos atuais NONE
-NEXT_ACTIVITY = publicar o commit documental final e validar o clone no outro computador
-NEXT_GATE = fast-forward autorizado; REMOTE_SYNC só PASS após igualdade exata do SHA local e remoto
+VALIDATION_RESULTS = payload c51b35e sincronizado com igualdade exata; único padrão sintético de teste classificado; worktrees limpos; testes técnicos atuais NONE
+NEXT_ACTIVITY = publicar este recibo pós-push e validar o clone no outro computador
+NEXT_GATE = fast-forward e igualdade exata do SHA remoto e HEAD local após o recibo
 ```
 
 Os commits anteriores contêm estes arquivos, ainda não publicados. `97c7d47`
@@ -163,15 +169,15 @@ HISTORICAL_TESTS = HOM-01: 948 pass; HOM-02: evidências históricas acima; HOM-
 TESTS_NOT_EXECUTED = todos os testes técnicos nesta atividade
 PROJECT_STATE_UPDATE = PASS
 AGENT_HANDOFF_GATE = PENDING
-CHECKPOINT_ACTIVITY_COMPLETION_PERCENT = 64%
-COMMIT_COUNT = 4 criados nesta atividade: B, C, documento de checkpoint e recibo de validação; seis commits locais a publicar no total
+CHECKPOINT_ACTIVITY_COMPLETION_PERCENT = 76%
+COMMIT_COUNT = 5 criados nesta atividade: B, C, checkpoint e dois recibos documentais; sete commits totais após publicar este recibo
 OUTGOING_SECRET_PATTERN_MATCHES = 1; fixture sintética efêmera em cameras/test_xlsx_import.py, sem credencial operacional
 OUTGOING_OPERATIONAL_SECRETS = 0
 OUTGOING_PRIVATE_KEYS_OR_TOKENS = 0
 OUTGOING_EXTERNAL_IPS = 0
-STATUS = READY_FOR_PUBLICATION
-NEXT_ACTIVITY = concluir o commit documental, publicar a branch autorizada e verificar o clone
-NEXT_GATE = fast-forward; igualdade exata do SHA remoto e HEAD local para REMOTE_SYNC=PASS
+STATUS = RECEIPT_PUSH_PENDING
+NEXT_ACTIVITY = publicar o recibo documental e verificar o clone
+NEXT_GATE = fast-forward; comparar o SHA remoto e HEAD local após o recibo
 ```
 
 ## PowerShell para o outro PC

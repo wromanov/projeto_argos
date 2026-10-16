@@ -2048,6 +2048,21 @@ ACTIVITY_COMPLETE = NO
 STATUS = READY_FOR_PUBLICATION
 ```
 
+## 91. ARGOS-FULL-CONTINUITY-CHECKPOINT-01 — push principal confirmado (2026-10-16)
+
+O commit de checkpoint `c51b35e01104c12cb94b0a97abbd8e56a884a4fd` foi
+publicado e comparado com o HEAD local com igualdade exata. Este registro de
+publicação ainda requer fast-forward e checagem do seu próprio SHA antes de
+declarar a atividade completa.
+
+```text
+PROJECT_STATE_UPDATE = PASS
+CHECKPOINT_PAYLOAD_REMOTE_SYNC = PASS
+FINAL_RECEIPT_PUSH = PENDING
+ACTIVITY_COMPLETE = NO
+STATUS = RECEIPT_PUSH_PENDING
+```
+
 ## 90. ARGOS-FULL-CONTINUITY-CHECKPOINT-01 — revisão da faixa de saída (2026-10-16)
 
 O único padrão parecido com credencial na faixa de saída é um valor sintético

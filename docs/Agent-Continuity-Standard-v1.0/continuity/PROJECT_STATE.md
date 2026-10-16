@@ -7195,3 +7195,22 @@ ACTIVITY_COMPLETE = NO
 STATUS = READY_FOR_PUBLICATION
 NEXT_GATE = fast-forward and exact remote/local SHA equality
 ```
+
+## 128. ARGOS-FULL-CONTINUITY-CHECKPOINT-01 — payload publicado (2026-10-16)
+
+O push do checkpoint foi concluído por fast-forward em
+`codex/hom-v1-integration`. A leitura remota pós-push retornou
+`c51b35e01104c12cb94b0a97abbd8e56a884a4fd`, igual ao HEAD local naquele momento.
+Este commit de recibo documenta a confirmação; seu próprio SHA será conferido
+com `git rev-parse HEAD` no teste final do push.
+
+```text
+CHECKPOINT_PAYLOAD_SHA = c51b35e01104c12cb94b0a97abbd8e56a884a4fd
+CHECKPOINT_PAYLOAD_REMOTE_SHA = c51b35e01104c12cb94b0a97abbd8e56a884a4fd
+CHECKPOINT_PAYLOAD_REMOTE_SYNC = PASS
+FINAL_RECEIPT_PUSH = PENDING
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO (aguarda publicação deste recibo e conferência do SHA final)
+STATUS = RECEIPT_PUSH_PENDING
+NEXT_GATE = publicar este recibo por fast-forward e confirmar SHA remoto igual ao HEAD local
+```
