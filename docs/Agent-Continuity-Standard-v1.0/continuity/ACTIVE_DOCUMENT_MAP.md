@@ -2014,3 +2014,36 @@ acesso a banco, purge ou operações de Git. O root validou o delta e confirmou
 transversais permanece o identificado na seção 3 deste mapa: PM-02 R2.6,
 PM-03 R2.3, PM-04 v1.2 e Independence v1. PM-01/PM-05 não foram adicionadas
 como authorities.
+
+## 88. ARGOS-FULL-CONTINUITY-CHECKPOINT-01 (2026-10-16)
+
+Estado operacional e procedimento de retomada: `PROJECT_STATE.md` §125 e
+`docs/projeto/ARGOS_FULL_CONTINUITY_CHECKPOINT_01_RECOVERY.md`. §125 é o status
+mais recente: commit/push foram bloqueados pela revisão automática porque a
+autorização não era verificável; documentos staged e WIP foram preservados.
+As declarações de staging vazio em seções anteriores descrevem os checkpoints
+históricos nelas citados.
+
+```text
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PENDING
+REMOTE_SYNC = BLOCKED
+ACTIVITY_COMPLETE = NO
+STATUS = BLOCKED
+```
+
+## 89. ARGOS-FULL-CONTINUITY-CHECKPOINT-01 — publicação pendente (2026-10-16)
+
+Consultar `PROJECT_STATE.md` §126, `AGENT_CONTINUITY.md` §20.85 e
+`docs/projeto/ARGOS_FULL_CONTINUITY_CHECKPOINT_01_RECOVERY.md`. Os commits B/C
+foram criados após autorização direta e revisão de escopo; o commit documental
+final está em preparação. Não declarar `REMOTE_SYNC = PASS` até a publicação
+fast-forward e confirmação de igualdade entre o SHA remoto e o HEAD local.
+
+```text
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PENDING
+REMOTE_SYNC = PENDING_FINAL_PUSH
+ACTIVITY_COMPLETE = NO
+STATUS = READY_FOR_PUBLICATION
+```

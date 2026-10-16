@@ -2880,6 +2880,46 @@ físico depende de contrato, autoridade, rastreabilidade e testes; nenhum purge
 ocorreu. Não disparar captura por evento MON nem colapsar
 `LATEST_ACTIVE_IMAGE` e `LATEST_CAMERA_CAPTURE`.
 
+### 20.84 ARGOS-FULL-CONTINUITY-CHECKPOINT-01 — estado bloqueado (2026-10-16)
+
+Consultar `PROJECT_STATE.md` §125 e
+`docs/projeto/ARGOS_FULL_CONTINUITY_CHECKPOINT_01_RECOVERY.md` para inventário e
+instruções PowerShell. Baseline: branch `codex/hom-v1-integration`, HEAD
+`5a1d9e63c97712b9ee5ddbdf8f26b802eded801e`, remoto observado em
+`e91e4499d43211722b7eadba9adab842e3c75aeb`; dois commits locais não publicados.
+Commit B está staged em cinco documentos, mas a tentativa de commit foi
+rejeitada pela revisão automática por falta de autorização explícita verificável.
+Não usar caminho alternativo. Commit C/HOM-03 permanece fora do staging; não
+houve push.
+
+```text
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PENDING
+REMOTE_SYNC = BLOCKED
+ACTIVITY_COMPLETE = NO
+STATUS = BLOCKED
+NEXT_GATE = autorização explícita direta e nova checagem dos gates
+```
+
+### 20.85 ARGOS-FULL-CONTINUITY-CHECKPOINT-01 — commits seletivos (2026-10-16)
+
+Consultar `PROJECT_STATE.md` §126 e
+`docs/projeto/ARGOS_FULL_CONTINUITY_CHECKPOINT_01_RECOVERY.md`. HOM-03/Commit C
+está em `06bc2c17628ba2cb11a01a8647fb04d2ca00608c`; reconciliação
+Roadmap/Sprints/continuidade/Commit B está em
+`7cb8ec306c78dec6acd054d655568a1a12b390b4`. Ambos permanecem locais e seguros
+para publicação após novo fast-forward check. O commit documental final deste
+checkpoint e o push ainda estão pendentes. WIP restante e itens locais são
+descritos no recovery document.
+
+```text
+PROJECT_STATE_UPDATE = PASS
+REMOTE_SYNC = PENDING_FINAL_PUSH
+ACTIVITY_COMPLETE = NO
+STATUS = READY_FOR_PUBLICATION
+NEXT_GATE = fast-forward e confirmação do SHA remoto igual ao HEAD local
+```
+
 Próxima recomendação: retomar HOM-03 após chave SSH autorizada; em seguida
 reavaliar gates HOM-04; backlog de capabilities HOM-05 exige autorização
 separada. Esta reconciliação alterou somente os cinco documentos listados em

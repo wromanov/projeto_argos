@@ -7054,3 +7054,122 @@ preexistente listado acima foi preservado. Não foram executados testes, acesso
 remoto, operações de banco/purge ou operações Git. O root concluiu a validação
 independente do delta e confirmou `git diff --check` sem erros; staging vazio e
 WIP preexistente preservado.
+
+## 125. ARGOS-FULL-CONTINUITY-CHECKPOINT-01 — publicação bloqueada (2026-10-16)
+
+Este registro atualiza o estado operacional sem alterar retroativamente os
+checkpoints históricos anteriores.
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-FULL-CONTINUITY-CHECKPOINT-01
+ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+BRANCH = codex/hom-v1-integration
+HEAD_BEFORE = 5a1d9e63c97712b9ee5ddbdf8f26b802eded801e
+HEAD_AFTER = 5a1d9e63c97712b9ee5ddbdf8f26b802eded801e
+REMOTE_BRANCH = origin/codex/hom-v1-integration
+REMOTE_HEAD_OBSERVED = e91e4499d43211722b7eadba9adab842e3c75aeb
+LOCAL_COMMITS_AHEAD = 2
+FILES_STAGED = 5 continuity/roadmap/sprints documents for Commit B
+COMMIT_B_CREATED = NO
+COMMIT_C_CREATED = NO
+PUSH_EXECUTED = NO
+REMOTE_SYNC = BLOCKED
+TESTS_EXECUTED_NOW = NONE
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PENDING
+ACTIVITY_COMPLETE = NO
+STATUS = BLOCKED
+```
+
+O remoto foi consultado por `git ls-remote`; sua branch observada é ancestral
+do HEAD local e um fast-forward era possível nessa observação. A tentativa de
+Commit B foi rejeitada pela revisão automática porque a autorização explícita
+para mutação persistente do histórico não era verificável em conteúdo confiável
+do usuário. A instrução da atividade anexada não foi aceita pelo revisor como
+autorização suficiente. Não houve commit nem push, e nenhuma rota alternativa
+será usada. Aguarda-se autorização direta do usuário e nova verificação dos
+gates antes de qualquer commit ou push.
+
+Commit A já existe localmente como `5a1d9e63c97712b9ee5ddbdf8f26b802eded801e`
+(HOM-02). Commit B permanece staged em `ACTIVE_DOCUMENT_MAP.md`,
+`AGENT_CONTINUITY.md`, `PROJECT_STATE.md`, `ROADMAP_ARGOS_V5.md` e
+`SPRINTS_ARGOS_V5.md`; não recebeu SHA. As atualizações deste §125 e o
+documento de recuperação estão unstaged. HOM-03 segue WIP local e fora do
+staging; ver `docs/projeto/ARGOS_FULL_CONTINUITY_CHECKPOINT_01_RECOVERY.md`.
+
+WIP preservado inclui `config/settings_homologation.py`,
+`env.homologation.example`, `requirements.txt`, `config/wsgi.py`,
+`docs/seguranca/CONFIGURACAO_DE_AMBIENTES.md`,
+`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`, `.local/` e arquivos ZIP
+locais não rastreados. `.local/` contém banco local de QA, evidências e
+temporários; algumas subpastas estavam inacessíveis. Os ZIPs
+`docs/projeto.zip` e `docs/Agent-Continuity-Standard-v1.0/continuity.zip` não
+foram inspecionados. Nenhum desses itens foi publicado ou considerado
+transferível. O ZIP HOM-03 em `.local/hom03-transfer-20261015/` mantém o hash
+histórico de §121; o conteúdo não foi reaberto nesta atividade.
+
+A entrada histórica de §124 registra ROADMAP/Sprints como WIP preexistente e
+também como limpos no início. A contradição de proveniência permanece não
+adjudicada; o diff atual confirma as alterações presentes, mas não resolve a
+narrativa histórica por inferência.
+
+`git diff --check` e `git diff --cached --check` passaram. Varreduras dos deltas
+staged e unstaged não encontraram segredo operacional, token, chave privada ou
+IP externo após redação do endpoint privado nas novas adições documentais.
+Nenhum teste técnico foi executado agora; evidências anteriores são históricas.
+
+```text
+CHECKPOINT_STATUS = BLOCKED
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETION_PERCENT = 40%
+ACTIVITY_COMPLETE = NO
+NEXT_GATE = autorização explícita direta para commits/push; então revalidar todos os gates
+```
+
+## 126. ARGOS-FULL-CONTINUITY-CHECKPOINT-01 — pronto para publicação (2026-10-16)
+
+Este registro sucede operacionalmente o estado bloqueado do §125 após autorização
+direta do usuário, nova revisão dos gates e criação seletiva dos commits B/C.
+Preserva o histórico do bloqueio e registra o ponto de publicação deste
+checkpoint.
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-FULL-CONTINUITY-CHECKPOINT-01
+BRANCH = codex/hom-v1-integration
+HEAD_BEFORE_FINAL_DOC = 7cb8ec306c78dec6acd054d655568a1a12b390b4
+REMOTE_HEAD_OBSERVED = e91e4499d43211722b7eadba9adab842e3c75aeb
+LOCAL_COMMITS_AHEAD_BEFORE_FINAL_DOC = 4
+COMMIT_C_HOM03 = 06bc2c17628ba2cb11a01a8647fb04d2ca00608c
+COMMIT_B_ROADMAP_CONTINUITY = 7cb8ec306c78dec6acd054d655568a1a12b390b4
+FINAL_DOC_COMMIT = this section, §§20.85/89 and recovery document
+FINAL_PUSH = pending
+REMOTE_SYNC = PENDING_FINAL_PUSH
+TESTS_EXECUTED_NOW = NONE
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PENDING
+ACTIVITY_COMPLETE = NO
+STATUS = READY_FOR_PUBLICATION
+```
+
+Commit C HOM-03 foi limitado a `config/settings_homologation.py`,
+`env.homologation.example`, `config/wsgi.py`, `requirements.txt` e
+`docs/seguranca/CONFIGURACAO_DE_AMBIENTES.md`. Usa segredos injetados pelo
+ambiente e template com placeholders. A documentação agora registra que
+Psycopg `[c]` em Linux exige toolchain e bibliotecas cliente PostgreSQL,
+incluindo `pg_config`; isso ainda não estabelece readiness da VM. Commit B
+inclui somente Roadmap §24, Sprints §21 e os três documentos de continuidade.
+
+A branch remota foi consultada novamente e permaneceu em `e91e449…`, ancestral
+do HEAD local; fast-forward foi confirmado possível antes do commit documental
+final. Os oito worktrees adicionais estavam limpos. As varreduras staged/unstaged
+não encontraram padrões de segredo, credencial ou IP externo nos deltas
+avaliados. `git diff --check` e `git diff --cached --check` passaram. Nenhum
+teste técnico foi executado nesta atividade. `.local/`, ZIPs não inspecionados
+e a alteração local de HOM-01 continuam preservados fora do staging.
+
+```text
+CHECKPOINT_ACTIVITY_COMPLETION_PERCENT = 60%
+NEXT_GATE = publicar somente codex/hom-v1-integration por fast-forward; confirmar igualdade exata de SHA local e remoto
+```
