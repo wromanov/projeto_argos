@@ -2920,6 +2920,21 @@ STATUS = READY_FOR_PUBLICATION
 NEXT_GATE = fast-forward e confirmação do SHA remoto igual ao HEAD local
 ```
 
+### 20.86 ARGOS-FULL-CONTINUITY-CHECKPOINT-01 — revisão final (2026-10-16)
+
+O scan da faixa de saída encontrou somente o argumento `password` do usuário
+sintético em `cameras/test_xlsx_import.py`. É fixture efêmera de teste, sem
+credencial operacional; não foi alterada. Não foram encontrados tokens, chaves
+privadas ou IPs externos. Ver §127 e o relatório de recuperação; aguarda-se
+somente push fast-forward e comparação dos SHAs.
+
+```text
+PROJECT_STATE_UPDATE = PASS
+REMOTE_SYNC = PENDING_FINAL_PUSH
+ACTIVITY_COMPLETE = NO
+STATUS = READY_FOR_PUBLICATION
+```
+
 Próxima recomendação: retomar HOM-03 após chave SSH autorizada; em seguida
 reavaliar gates HOM-04; backlog de capabilities HOM-05 exige autorização
 separada. Esta reconciliação alterou somente os cinco documentos listados em

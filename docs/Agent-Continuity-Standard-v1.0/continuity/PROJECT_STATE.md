@@ -7173,3 +7173,25 @@ e a alteração local de HOM-01 continuam preservados fora do staging.
 CHECKPOINT_ACTIVITY_COMPLETION_PERCENT = 60%
 NEXT_GATE = publicar somente codex/hom-v1-integration por fast-forward; confirmar igualdade exata de SHA local e remoto
 ```
+
+## 127. ARGOS-FULL-CONTINUITY-CHECKPOINT-01 — classificação de varredura de saída (2026-10-16)
+
+Antes do push, uma varredura de padrões na faixa remota→HEAD encontrou uma única
+atribuição com aparência de senha. A inspeção do arquivo e do contexto confirmou
+que ocorre em `cameras/test_xlsx_import.py`, na criação de um usuário sintético
+efêmero para teste. Não é credencial operacional nem dado real; a linha foi
+preservada sem alteração. A faixa não contém outro padrão de credencial, chave
+privada ou IP externo. A evidência visual dos screenshots HOM-01 e o restante
+do escopo já haviam sido revisados; não há achado impeditivo para publicação.
+
+```text
+OUTGOING_SECRET_PATTERN_MATCHES = 1; classified as synthetic test fixture only
+OUTGOING_OPERATIONAL_SECRETS = 0
+OUTGOING_PRIVATE_KEYS_OR_TOKENS = 0
+OUTGOING_EXTERNAL_IPS = 0
+PROJECT_STATE_UPDATE = PASS
+REMOTE_SYNC = PENDING_FINAL_PUSH
+ACTIVITY_COMPLETE = NO
+STATUS = READY_FOR_PUBLICATION
+NEXT_GATE = fast-forward and exact remote/local SHA equality
+```

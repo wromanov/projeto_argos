@@ -2047,3 +2047,18 @@ REMOTE_SYNC = PENDING_FINAL_PUSH
 ACTIVITY_COMPLETE = NO
 STATUS = READY_FOR_PUBLICATION
 ```
+
+## 90. ARGOS-FULL-CONTINUITY-CHECKPOINT-01 — revisão da faixa de saída (2026-10-16)
+
+O único padrão parecido com credencial na faixa de saída é um valor sintético
+do teste `cameras/test_xlsx_import.py`; inspeção confirmou que não é credencial
+operacional. Sem tokens, chaves privadas ou IPs externos. Consultar
+`PROJECT_STATE.md` §127 e o relatório de recuperação. Publicação ainda requer
+fast-forward e confirmação da igualdade do SHA.
+
+```text
+PROJECT_STATE_UPDATE = PASS
+REMOTE_SYNC = PENDING_FINAL_PUSH
+ACTIVITY_COMPLETE = NO
+STATUS = READY_FOR_PUBLICATION
+```
