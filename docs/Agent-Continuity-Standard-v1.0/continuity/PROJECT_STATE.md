@@ -7214,3 +7214,43 @@ ACTIVITY_COMPLETE = NO (aguarda publicação deste recibo e conferência do SHA 
 STATUS = RECEIPT_PUSH_PENDING
 NEXT_GATE = publicar este recibo por fast-forward e confirmar SHA remoto igual ao HEAD local
 ```
+
+## 129. ARGOS-DELIVERY-ROADMAP-CANONICALIZATION-01 (2026-10-16)
+
+Nova decisão operacional aprovada pelo usuário e plano vigente em
+`docs/projeto/ARGOS_DELIVERY_EXECUTION_PLAN_V1.md`. A prioridade passa a ser
+concluir funcionalidades pendentes em ciclos verticais: integração backend/UI,
+testes locais proporcionais, integração controlada no baseline e publicação
+homologada somente sob gates. O plano não modifica contratos técnicos e não
+executa código, testes, deploy ou operações na VM.
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-DELIVERY-ROADMAP-CANONICALIZATION-01
+ROADMAP_STAGE = E0 — Estabilização para entrega
+ACTIVE_SLICE = ARGOS-QA-01
+SLICE_STATUS = PENDING_IMPLEMENTATION
+NEXT_GATE = corrigir fixture VISUAL_QA_USERNAME e validar testes direcionados em atividade própria
+NEXT_SLICE = ARGOS-CRED-UI-01
+VM_OPERATIONAL_USER_REPORT = YES / PostgreSQL e ARGOS reportados em execução
+VM_AGENT_VERIFIED = NO
+HOM03_FORMAL_CLOSURE = NOT_ESTABLISHED
+HOM04_FORMAL_OPENING = NOT_ESTABLISHED
+HOM05_FORMAL_OPENING = NOT_ESTABLISHED
+CODE_OR_VM_CHANGES = NONE
+TESTS_RERUN = NO
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES
+```
+
+A correção de QA visual foi preparada em proposta anterior, mas o usuário
+informou que não a executou; permanece pendente. Evidência histórica: Python
+3.14.7, Django 5.2.18, Django system check PASS, 14 testes XLSX PASS e suíte
+cameras com 727 testes/1 erro, reproduzido isoladamente. Esta atividade não
+reexecutou os testes. A direção de entrega não invalida o estado formal
+HOM-03/04/05 registrado antes: VM operacional segundo relato não é evidência
+formal de readiness; HOM-04 não foi aberta e HOM-05 aguarda HOM-04. As etapas
+E0–E8 e a trilha H estão em Roadmap §25, Sprints §22 e no plano operacional.
+Próximo gate formal de continuidade: revisão do usuário deste plano; próxima
+atividade de produto permanece ARGOS-QA-01 sob autorização e gates próprios.

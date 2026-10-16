@@ -2965,3 +2965,33 @@ GIT_DIFF_CHECK = PASS
 ACTIVITY_COMPLETION_PERCENT = 100%
 ACTIVITY_COMPLETE = YES
 ```
+
+### 20.88 ARGOS-DELIVERY-ROADMAP-CANONICALIZATION-01 (2026-10-16)
+
+Para a sequência operacional vigente, ler `PROJECT_STATE.md` §129,
+`ACTIVE_DOCUMENT_MAP.md` §92,
+`docs/projeto/ARGOS_DELIVERY_EXECUTION_PLAN_V1.md`, Roadmap §25 e Sprints §22.
+O usuário aprovou ciclos verticais para finalizar capacidades pendentes,
+integrar backend/UI, validar localmente e avançar a homologação sob gates.
+
+```text
+PROJECT_ID = projeto_argos
+ROADMAP_STAGE = E0 — Estabilização para entrega
+ACTIVE_SLICE = ARGOS-QA-01
+SLICE_STATUS = PENDING_IMPLEMENTATION
+NEXT_GATE = correção focal da fixture VISUAL_QA_USERNAME e testes direcionados
+NEXT_SLICE = ARGOS-CRED-UI-01
+VM_OPERATIONAL_USER_REPORT = YES
+VM_AGENT_VERIFIED = NO
+HOM03_FORMAL_CLOSURE = NOT_ESTABLISHED
+HOM04_FORMAL_OPENING = NOT_ESTABLISHED
+HOM05_FORMAL_OPENING = NOT_ESTABLISHED
+```
+
+Não tratar o relato de VM operacional como prova de fechamento HOM-03 nem
+repetir implantação/configuração já operacional. Não abrir HOM-04/HOM-05 por
+inferência. A próxima slice continua pendente e não foi iniciada nesta atividade.
+Manter solicitações de continuidade no formato curto exigido pelo plano; avançar
+status somente com evidência. Preservar WIP e confirmar estado Git ao retomar em
+outra máquina. Esta atividade foi documental: sem testes, mudanças de código,
+VM, migration, deploy, commit ou push.

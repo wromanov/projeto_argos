@@ -2077,3 +2077,24 @@ REMOTE_SYNC = PENDING_FINAL_PUSH
 ACTIVITY_COMPLETE = NO
 STATUS = READY_FOR_PUBLICATION
 ```
+
+## 92. ARGOS-DELIVERY-ROADMAP-CANONICALIZATION-01 (2026-10-16)
+
+| Fonte | Authority / uso | Estado |
+|---|---|---|
+| `docs/projeto/ARGOS_DELIVERY_EXECUTION_PLAN_V1.md` | Sequência operacional E0–E8, gates de slice, trilha transversal H e continuidade de entrega | CURRENT / USER-APPROVED OPERATIONAL PLAN |
+| `docs/projeto/ROADMAP_ARGOS_V5.md`, §25 | Ponteiro de roadmap para plano operacional e próximo slice | CURRENT |
+| `docs/projeto/SPRINTS_ARGOS_V5.md`, §22 | Slices planejadas, status e gates de execução/homologação | CURRENT |
+| `PROJECT_STATE.md`, §129 | Decisão, estado reportado da VM e próximo slice | CURRENT STATE |
+| `AGENT_CONTINUITY.md`, §20.88 | Handoff para o próximo agente e protocolo de acompanhamento | CURRENT HANDOFF |
+| `ARGOS_UI_V2_MASTER_PLAN.md` | Authority especializada para UI V2 | CANONICAL; não substituída |
+| `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`, §26 | Seleção de imagem Quick Detail, proveniência e limites de captura/galeria | CANONICAL; implementação segue pendente conforme evidência |
+| `contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md` e contratos CAM-INT-02 | Dependências backend, credenciais, autorização e resolver | CANONICAL; regras de segurança não duplicadas |
+| Contratos HOM, captura, imagens e segurança referenciados em Sprints §22 | Readiness formal, publicação, captura, lifecycle e controles | CANONICAL / precedence preserved |
+
+Status de continuidade: `ROADMAP_STAGE=E0`, `ACTIVE_SLICE=ARGOS-QA-01`,
+`SLICE_STATUS=PENDING_IMPLEMENTATION`, `NEXT_SLICE=ARGOS-CRED-UI-01`. VM está
+operacional segundo relato do usuário, mas sem verificação independente; HOM-03
+continua sem fechamento formal, HOM-04 sem abertura formal e HOM-05 não aberta
+antes de HOM-04. O novo plano não substitui authorities especializadas nem
+autoriza execução/deploy.

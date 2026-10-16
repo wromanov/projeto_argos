@@ -1036,3 +1036,44 @@ ACTIVITY_COMPLETE = YES
 TESTS_RERUN = NO
 CODE_DATABASE_PURGE_OR_GIT_OPERATIONS = NONE
 ```
+
+## 22. ARGOS-DELIVERY-ROADMAP-CANONICALIZATION-01 — programa de execução e gates (2026-10-16)
+
+O plano operacional vigente está em
+[`ARGOS_DELIVERY_EXECUTION_PLAN_V1.md`](ARGOS_DELIVERY_EXECUTION_PLAN_V1.md).
+Ele registra a sequência de entrega aprovada pelo usuário e não altera
+authorities técnicas, IDs de contrato nem os gates formais HOM. O status de cada
+sprint deve avançar somente com evidência.
+Esta seção supersede somente a sequência de próxima atividade de produto em
+§21; preserva os gates formais HOM-03/HOM-04/HOM-05 e suas evidências.
+
+| Etapa | Slice | Status nesta atualização | Próximo gate / dependências |
+|---|---|---|---|
+| E0 — Estabilização para entrega | `ARGOS-QA-01` | `PENDING_IMPLEMENTATION`; correção preparada, não aplicada | Corrigir fixture incompatível com `VISUAL_QA_USERNAME`; testes direcionados e regressão proporcional em atividade própria |
+| E1 — Credenciais por câmera | `ARGOS-CRED-UI-01` | `PLANNED` | UI Editar câmera usando backend existente; CAM-INT-02, autorização, reauth, auditoria e proteção de segredo |
+| E2 — Imagem principal / Quick Detail | `ARGOS-IMG-07-CONFORMANCE` | `PLANNED` | Aplicar contrato de imagem §26 (`LATEST_ACTIVE_IMAGE`); manter `LATEST_CAMERA_CAPTURE` distinto |
+| E3 — Captura manual | `IMG-04` / `IMG-05` / `CAM-INT-04` | `PLANNED` | Reconciliar branch isolada, dependências, migrations e integração; ação humana explícita; nunca disparada por MON |
+| E4 — Galeria | `IMG-06` | `PLANNED` | Até três imagens ativas em ordem crescente conforme contrato |
+| E5 — Segurança e lifecycle | `IMG-08` / `IMG-09` | `PLANNED` | Proteção, rotação, auditoria e retenção padrão de 12 meses; purge físico requer contrato/autorização específicos |
+| E6 — Inventário / exportação | `ARGOS-INV-EXPORT-01` | `PLANNED` | Reusar modelo e regras cadastrais; não reabrir aceite HOM-02 |
+| E7 — UI V2 residual | Slices do master plan | `PLANNED` | Concluir apenas superfícies pendentes; Design QA integrado; HOM-01 não reabre e P7 global não é inferida |
+| E8 — Alertas e capacidades restantes | Slices conforme authorities | `PLANNED` | Alertas internos, lifecycle, deduplicação, observabilidade e backlog contratual |
+
+### Trilha H — Controlled Homologation Delivery
+
+Por slice elegível: implementação; UI integrada quando aplicável; testes
+direcionados e regressão proporcional; segurança/permissões; Design QA/aceite
+visual quando aplicáveis; baseline controlado; revisão de diff e migrations;
+backup/rollback; autorização específica; atualização controlada na VM; smoke e
+testes homologados; registro de findings e aceite. Não executar deploy ou
+migrations na VM nesta atualização, nem habilitar worker/probes reais ou acessar
+câmeras reais sem autorização.
+
+O usuário reporta a VM de homologação operacional, com PostgreSQL e ARGOS em
+execução; isso não foi verificado independentemente e não estabelece fechamento
+formal HOM-03. HOM-04 permanece sem abertura formal, HOM-05 não está aberta antes
+de HOM-04, e a sequência de produto pode avançar em lanes isoladas autorizadas.
+Para continuidade entre casa e trabalho, confirmar Git e preservar WIP; não
+transportar secrets, `.env`, sessões, bancos ou venvs entre máquinas. Em cada
+acompanhamento informar `PROJECT_ID`, `ROADMAP_STAGE`, `ACTIVE_SLICE`,
+`SLICE_STATUS`, `NEXT_GATE` e `NEXT_SLICE` com base em evidência real.

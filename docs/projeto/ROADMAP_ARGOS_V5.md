@@ -1784,3 +1784,46 @@ ROOT_DELTA_VALIDATION = PASS
 GIT_DIFF_CHECK = PASS
 ACTIVITY_COMPLETE = YES
 ```
+
+## 25. Plano operacional de execução e entrega — ARGOS-DELIVERY-ROADMAP-CANONICALIZATION-01 (2026-10-16)
+
+O usuário aprovou a direção operacional de concluir funcionalidades pendentes,
+integrar backend e UI, testar localmente, integrar no baseline e avançar a
+homologação por ciclos incrementais sob autorização e gates. O plano vigente é
+[`ARGOS_DELIVERY_EXECUTION_PLAN_V1.md`](ARGOS_DELIVERY_EXECUTION_PLAN_V1.md).
+Esta seção acrescenta a sequência de produto sem substituir fases HOM, IDs
+contratuais IMG/CAM-INT/BC ou authorities técnicas.
+Ela supersede somente a recomendação de próxima atividade de produto em §24;
+os estados e gates formais HOM registrados ali permanecem vigentes.
+
+```text
+ROADMAP_STAGE = E0 — Estabilização para entrega
+ACTIVE_SLICE = ARGOS-QA-01
+SLICE_STATUS = PENDING_IMPLEMENTATION
+NEXT_GATE = correção focal da fixture VISUAL_QA_USERNAME e testes direcionados
+NEXT_SLICE = ARGOS-CRED-UI-01
+VM_OPERATIONAL_USER_REPORT = YES / PostgreSQL e ARGOS em execução, segundo usuário
+VM_INDEPENDENTLY_VERIFIED = NO
+HOM03_FORMAL_CLOSURE = NOT_ESTABLISHED
+HOM04_FORMAL_OPENING = NOT_ESTABLISHED
+HOM05_FORMAL_OPENING = NOT_ESTABLISHED
+```
+
+Etapas propostas: E0 estabilização QA (`ARGOS-QA-01`); E1 credenciais por câmera
+(`ARGOS-CRED-UI-01`); E2 conformidade de Quick Detail (`ARGOS-IMG-07-CONFORMANCE`);
+E3 captura manual (`IMG-04`/`IMG-05`/`CAM-INT-04`); E4 galeria (`IMG-06`); E5
+segurança e lifecycle (`IMG-08`/`IMG-09`); E6 exportação (`ARGOS-INV-EXPORT-01`);
+E7 UI V2 residual; E8 alertas e demais capacidades pendentes. Todas as etapas
+após E0 estão `PLANNED`. E0 está `PENDING_IMPLEMENTATION`; proposta de correção
+preparada não significa aplicada. A evidência histórica da suíte cameras (727
+testes, 1 erro) e dos 14 testes XLSX não foi reexecutada nesta atividade.
+
+A trilha transversal H — Controlled Homologation Delivery — exige implementação,
+integração UI aplicável, testes proporcionais, segurança/permissões, Design QA
+quando aplicável, baseline controlado, revisão de diff/migrations, rollback,
+autorização específica de publicação, atualização controlada da VM, smoke/testes
+homologados e registro de findings/aceite. O plano não executou deploy ou
+migration na VM, não habilitou worker/probes e não acessou câmeras reais. VM
+operacional reportada não é prontidão formal HOM-03. HOM-04 segue sem abertura
+formal; HOM-05 aguarda seu pré-requisito formal HOM-04. Slices podem avançar em
+lanes isoladas conforme seus contratos e autorizações próprias.
