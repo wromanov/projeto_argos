@@ -6,6 +6,40 @@ Produção usa `config.settings_production` e exige `ARGOS_SECRET_KEY` forte e `
 
 Exemplo PowerShell: defina temporariamente `$env:DJANGO_SETTINGS_MODULE='config.settings_production'` e as variáveis ARGOS necessárias, então execute `python manage.py check --deploy`. Não use `runserver` em produção.
 
+## Homologação PostgreSQL
+
+Use `DJANGO_SETTINGS_MODULE=config.settings_homologation`. O perfil herda as
+proteções web de `config.settings_production`, preserva o SQLite do perfil de
+desenvolvimento e exige as variáveis `ARGOS_DB_NAME`, `ARGOS_DB_USER`,
+`ARGOS_DB_PASSWORD` e `ARGOS_DB_HOST`; `ARGOS_DB_PORT` (5432) e
+`ARGOS_DB_CONN_MAX_AGE` (60) têm defaults. O arquivo
+`env.homologation.example` documenta os nomes e valores não secretos. Ele não
+é carregado automaticamente. Injete `ARGOS_SECRET_KEY` e `ARGOS_DB_PASSWORD`
+por um cofre ou pelo ambiente protegido do serviço.
+
+O perfil aponta `MEDIA_ROOT`, `LOGGING` e `STATIC_ROOT` para
+`/dados/argos/media`, `/dados/argos/logs` e `/dados/argos/static`. Antes de
+iniciar o serviço, o operador deve provisionar esses diretórios com proprietário
+igual ao usuário do serviço; mídia e logs devem permitir acesso somente a esse
+usuário (por exemplo, diretórios `0700` e arquivos `0600`). O destino de estáticos
+deve ser gravável pelo usuário que executa `collectstatic` e publicado pelo
+servidor web conforme a topologia aprovada. O Django não cria nem altera
+permissões desses diretórios durante o carregamento das settings.
+
+Depois de provisionar os diretórios e configurar as variáveis no ambiente do
+serviço, valide com `python manage.py check --deploy` e gere estáticos com
+`python manage.py collectstatic --noinput`. A aplicação usa o backend PostgreSQL
+do Django com Psycopg 3.3.6, declarado em `requirements.txt`: extra `[c]` no
+Linux e `[binary]` no Windows. Esses comandos não
+aplicam migrations. A conectividade, permissões efetivas do sistema de arquivos
+e compatibilidade contra o servidor PostgreSQL devem ser confirmadas no ambiente
+de homologação isolado antes de aceitar a preparação da VM.
+
+No Linux, o extra `[c]` compila a extensão Psycopg durante a instalação e exige
+toolchain de compilação e bibliotecas de desenvolvimento do cliente PostgreSQL
+(incluindo `pg_config`). A imagem da VM deve prover esses pré-requisitos antes
+de instalar `requirements.txt`; eles ainda não foram verificados na VM.
+
 Permanecem pendentes servidor, banco, proxy reverso, HTTPS, DNS, firewall, backup, retenção, observabilidade e armazenamento seguro de futuras credenciais.
 
 ## Visual QA local

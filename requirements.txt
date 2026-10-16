@@ -2,3 +2,5 @@ Django==5.2.18
 Pillow>=11,<13
 cryptography==50.0.2
 openpyxl>=3.1.5,<4
+psycopg[c]==3.3.6; sys_platform == "linux"
+psycopg[binary]==3.3.6; sys_platform == "win32"
