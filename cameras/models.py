@@ -178,6 +178,7 @@ class Camera(models.Model):
             ("capture_camera_image", "Pode executar captura direta da câmera"),
             ("manage_camera_target_policy", "Pode administrar política de destino de câmeras"),
             ("manage_monitoring_runtime", "Pode administrar o runtime de monitoramento"),
+            ("importar_cameras", "Pode importar câmeras por planilha"),
         )
         constraints = [
             models.UniqueConstraint(Lower("nome"), condition=~Q(situacao_operacional="DESATIVADA"), name="uniq_camera_nome_ativa_ci"),
@@ -400,6 +401,19 @@ class EventoAuditoria(models.Model):
 
     def delete(self, *args, **kwargs):
         raise ValidationError("Eventos de auditoria não podem ser excluídos.")
+
+
+class CameraImportPreview(models.Model):
+    """Prévia validada de XLSX, vinculada ao usuário e sem reter o arquivo."""
+
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    file_sha256 = models.CharField(max_length=64)
+    plano = models.JSONField(default=list)
+    resumo = models.JSONField(default=dict)
+    criado_em = models.DateTimeField(auto_now_add=True)
+    expira_em = models.DateTimeField(db_index=True)
+    consumido_em = models.DateTimeField(null=True, blank=True)
 
 class SubstituicaoCameraQuerySet(models.QuerySet):
     def update(self, **kwargs):

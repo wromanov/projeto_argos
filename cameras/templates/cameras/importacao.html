@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}Importar câmeras — ARGOS{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/importacao-xlsx.css' %}?v=hom02-upload-alignment">{% endblock %}
+{% block conteudo %}
+<main class="argos-page import-page">
+  <nav class="argos-breadcrumb" aria-label="Caminho de navegação">
+    <ol><li><a href="{% url 'cameras:lista' %}">Inventário</a></li><li aria-current="page">Importar câmeras</li></ol>
+  </nav>
+
+  <header class="argos-page-header">
+    <div class="argos-page-header__copy">
+      <p class="argos-eyebrow">Inventário</p>
+      <h1 class="argos-page-title">Importar câmeras por XLSX</h1>
+      <p class="argos-lead">Valide a planilha, revise cada operação e confirme o lote completo.</p>
+    </div>
+    <div class="argos-page-header__actions">
+      <a class="argos-button argos-button--secondary" href="{% url 'cameras:lista' %}">Voltar ao inventário</a>
+      <a class="argos-button argos-button--primary" href="{% url 'cameras:importar_template' %}">Baixar template oficial</a>
+    </div>
+  </header>
+
+  {% for error in errors %}<div class="argos-alert argos-alert--danger import-feedback" role="alert">{{ error }}</div>{% endfor %}
+
+  {% if not preview %}
+  <section class="argos-card import-card" aria-labelledby="import-upload-title">
+    <div class="argos-card__header"><div><p class="argos-eyebrow">Arquivo de origem</p><h2 class="argos-card__title" id="import-upload-title">Enviar planilha</h2></div></div>
+    <div class="argos-card__body import-card__body">
+      <p class="import-help">Somente arquivos XLSX, até 10 MB e 5.000 linhas. A prévia expira em 30 minutos e não altera o inventário.</p>
+      <form class="import-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label class="argos-field" for="id_arquivo">
+          <span class="argos-field__label">Arquivo XLSX</span>
+          <input class="argos-input import-file-input" id="id_arquivo" name="arquivo" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
+        </label>
+        <div class="argos-form-actions"><button class="argos-button argos-button--primary" type="submit">Validar e mostrar prévia</button></div>
+      </form>
+    </div>
+  </section>
+  {% else %}
+  <section class="argos-card import-card" aria-labelledby="import-preview-title">
+    <div class="argos-card__header"><div><p class="argos-eyebrow">Revisão do lote</p><h2 class="argos-card__title" id="import-preview-title">Resumo da prévia</h2></div><span class="argos-badge argos-badge--neutral">Não aplicado</span></div>
+    <div class="argos-card__body import-card__body">
+      <dl class="import-summary" aria-label="Resumo da validação">
+        <div><dt>Total</dt><dd>{{ preview.resumo.total }}</dd></div>
+        <div><dt>Criar</dt><dd>{{ preview.resumo.create }}</dd></div>
+        <div><dt>Atualizar</dt><dd>{{ preview.resumo.update }}</dd></div>
+        <div><dt>Campos modificados</dt><dd>{{ preview.resumo.changes }}</dd></div>
+        <div><dt>Linhas inválidas</dt><dd>{{ preview.resumo.invalid }}</dd></div>
+        <div><dt>Linhas com conflito</dt><dd>{{ preview.resumo.conflicts }}</dd></div>
+      </dl>
+      <p class="import-metadata">Válida até {{ preview.expira_em|date:"d/m/Y H:i" }}. Arquivo identificado por SHA-256 <code>{{ preview.file_sha256 }}</code>.</p>
+      {% if preview.resumo.errors %}
+      <div class="argos-alert argos-alert--danger import-feedback" role="alert"><div><h3>O lote não pode ser confirmado</h3><ul>{% for error in preview.resumo.errors %}<li>Linha {{ error.line }}: {{ error.message }}</li>{% endfor %}</ul></div></div>
+      {% endif %}
+      <div class="argos-table-region import-table-region" role="region" aria-label="Prévia de linhas" tabindex="0">
+        <table class="argos-table import-table"><thead><tr><th>Linha</th><th>Operação</th><th>Destino</th><th>Alterações / impedimentos</th></tr></thead><tbody>
+          {% for row in preview.plano %}<tr><td>{{ row.line }}</td><td><span class="argos-badge{% if row.operation == 'CRIAR' %} argos-badge--success{% elif row.operation == 'ATUALIZAR' %} argos-badge--info{% else %} argos-badge--neutral{% endif %}">{{ row.operation }}</span></td><td>{{ row.target_label|default:"Nova câmera" }}</td><td>{% if row.errors %}<span class="import-row-error">{{ row.errors|join:"; " }}</span>{% elif row.changes %}{% for field, change in row.changes.items %}<span class="import-change"><strong>{{ field }}</strong>: {{ change.anterior|default:"—" }} → {{ change.atual|default:"—" }}</span>{% if not forloop.last %}<br>{% endif %}{% endfor %}{% else %}Nenhuma alteração{% endif %}</td></tr>{% endfor %}
+        </tbody></table>
+      </div>
+      {% if preview.resumo.can_confirm %}
+      <form class="import-confirm-form" method="post" action="{% url 'cameras:confirmar_importacao' preview.pk %}">{% csrf_token %}<p>A confirmação aplica o lote completo após esta revisão.</p><button class="argos-button argos-button--primary" type="submit">Confirmar importação completa</button></form>
+      {% endif %}
+    </div>
+  </section>
+  {% endif %}
+</main>
+{% endblock %}

@@ -8,6 +8,9 @@ app_name = "cameras"
 
 urlpatterns = [
     path("", views.lista_cameras, name="lista"),
+    path("importacao/", views.importar_cameras, name="importar"),
+    path("importacao/template.xlsx", views.baixar_template_importacao, name="importar_template"),
+    path("importacao/<uuid:preview_id>/confirmar/", views.confirmar_importacao_cameras, name="confirmar_importacao"),
     path("nova/", views.criar_camera, name="criar"),
     path("substituicoes/", views.lista_substituicoes, name="lista_substituicoes"),
     path("substituicoes/<int:pk>/", views.detalhe_substituicao, name="detalhe_substituicao"),

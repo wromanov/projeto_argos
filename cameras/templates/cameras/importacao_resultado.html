@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}Importação concluída — ARGOS{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/importacao-xlsx.css' %}">{% endblock %}
+{% block conteudo %}
+<main class="argos-page import-page">
+  <nav class="argos-breadcrumb" aria-label="Caminho de navegação"><ol><li><a href="{% url 'cameras:lista' %}">Inventário</a></li><li><a href="{% url 'cameras:importar' %}">Importar câmeras</a></li><li aria-current="page">Resultado</li></ol></nav>
+  <header class="argos-page-header"><div class="argos-page-header__copy"><p class="argos-eyebrow">Importação concluída</p><h1 class="argos-page-title">Lote aplicado integralmente</h1><p class="argos-lead">O inventário foi atualizado com {{ result.created }} câmeras criadas e {{ result.updated }} atualizadas.</p></div><div class="argos-page-header__actions"><a class="argos-button argos-button--secondary" href="{% url 'cameras:lista' %}">Voltar ao inventário</a><a class="argos-button argos-button--primary" href="{% url 'cameras:importar' %}">Nova importação</a></div></header>
+  <section class="argos-card import-card" aria-labelledby="import-result-title"><div class="argos-card__header"><h2 class="argos-card__title" id="import-result-title">Resultado do lote</h2><span class="argos-badge argos-badge--success">Concluído</span></div><div class="argos-card__body"><dl class="import-summary import-result-summary" aria-label="Resultado da importação"><div><dt>Criadas</dt><dd>{{ result.created }}</dd></div><div><dt>Atualizadas</dt><dd>{{ result.updated }}</dd></div><div><dt>Total processado</dt><dd>{{ result.total }}</dd></div></dl><p class="import-metadata">Identificador do lote <code>{{ result.lote_id }}</code></p></div></section>
+</main>
+{% endblock %}

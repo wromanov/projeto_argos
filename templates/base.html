@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="{% static 'css/design-system.css' %}">
   <link rel="stylesheet" href="{% static 'css/argos.css' %}">
   <link rel="stylesheet" href="{% static 'css/portal.css' %}">
-  {% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' %}
+  {% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' or current_namespace == 'cameras' and current_url_name == 'importar' or current_namespace == 'cameras' and current_url_name == 'confirmar_importacao' %}
   <link rel="stylesheet" href="{% static 'css/ui-v2/hom-01-2.4.0/tokens.css' %}">
   <link rel="stylesheet" href="{% static 'css/ui-v2/hom-01-2.4.0/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/ui-v2/hom-01-2.4.0/components.css' %}">
@@ -21,13 +21,13 @@
   {% endif %}
   {% block extra_css %}{% endblock %}
 </head>
-<body class="app-shell{% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' %} argos-ui-v2-production{% endif %}"{% if current_namespace == 'core' and current_url_name == 'inicio' or current_namespace == 'cameras' and current_url_name == 'lista_substituicoes' or current_namespace == 'cameras' and current_url_name == 'detalhe_substituicao' or current_namespace == 'eventos' %} data-argos-sidebar-visual="hom-01"{% endif %}>
-  <a class="skip-link{% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' %} argos-skip-link{% endif %}" href="#conteudo-principal">Pular para o conteúdo principal</a>
-  <div class="app-layout{% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' %} argos-docs-layout{% endif %}">
+<body class="app-shell{% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' or current_namespace == 'cameras' and current_url_name == 'importar' or current_namespace == 'cameras' and current_url_name == 'confirmar_importacao' %} argos-ui-v2-production{% endif %}"{% if current_namespace == 'core' and current_url_name == 'inicio' or current_namespace == 'cameras' and current_url_name == 'lista_substituicoes' or current_namespace == 'cameras' and current_url_name == 'detalhe_substituicao' or current_namespace == 'eventos' %} data-argos-sidebar-visual="hom-01"{% endif %}>
+  <a class="skip-link{% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' or current_namespace == 'cameras' and current_url_name == 'importar' or current_namespace == 'cameras' and current_url_name == 'confirmar_importacao' %} argos-skip-link{% endif %}" href="#conteudo-principal">Pular para o conteúdo principal</a>
+  <div class="app-layout{% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' or current_namespace == 'cameras' and current_url_name == 'importar' or current_namespace == 'cameras' and current_url_name == 'confirmar_importacao' %} argos-docs-layout{% endif %}">
     {% include "components/sidebar.html" %}
-    <div class="app-workspace{% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' %} argos-docs-main{% endif %}">
+    <div class="app-workspace{% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' or current_namespace == 'cameras' and current_url_name == 'importar' or current_namespace == 'cameras' and current_url_name == 'confirmar_importacao' %} argos-docs-main{% endif %}">
       {% include "components/cabecalho.html" %}
-      <main id="conteudo-principal" class="page-container app-shell__main{% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' %} argos-docs-content{% endif %}" tabindex="-1">
+      <main id="conteudo-principal" class="page-container app-shell__main{% if current_namespace == 'core' and current_url_name == 'dashboard' or current_namespace == 'cameras' and current_url_name == 'lista' or current_namespace == 'cameras' and current_url_name == 'importar' or current_namespace == 'cameras' and current_url_name == 'confirmar_importacao' %} argos-docs-content{% endif %}" tabindex="-1">
         {% include "components/mensagens.html" %}
         {% block conteudo %}{% endblock %}
       </main>

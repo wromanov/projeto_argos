@@ -22,6 +22,7 @@
   </div>
   <div class="argos-page-header__actions inventory-hero__actions">
     <article class="argos-kpi-card inventory-result-count"><strong>{{ total_resultados }}</strong><span>câmera{{ total_resultados|pluralize:"s" }}</span></article>
+    {% if can_import_cameras %}<a class="argos-button argos-button--secondary" href="{% url 'cameras:importar' %}">Importar XLSX</a>{% endif %}
     {% if perms.cameras.add_camera %}<a class="argos-button argos-button--primary" href="{{ criar_url }}">Nova câmera</a>{% endif %}
   </div>
 </section>

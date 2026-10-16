@@ -642,7 +642,7 @@ BLOCKING = YES
 ### HOM-02 — Importação XLSX de inventário
 
 ```text
-STATUS = NOT_IMPLEMENTED / SCHEMA AND FINAL XLSX TEMPLATE NOT HOMOLOGATED
+STATUS = IMPLEMENTED / TECHNICAL VALIDATION PASS / HUMAN ACCEPTANCE PENDING
 BLOCKING = YES
 ```
 
@@ -660,10 +660,11 @@ BLOCKING = YES
 - **Dependências:** HOM-00; validar schema/migrations e constraints no branch
   canônico; contrato de autorização/auditoria; modelo e colunas XLSX
   adjudicados antes da homologação da planilha definitiva.
-- **Estado comprovado:** não foi localizado importador XLSX no código
-  inspecionado. O model atual declara unicidade em `patrimonio` e `serial`,
-  nomes ativos sem distinção de caixa e MAC não nulo sem distinção de caixa;
-  isso não determina sozinho a regra de matching completa nem o template.
+- **Estado comprovado:** implementação em `cameras/xlsx_import.py`, rotas SSR
+  e templates de Inventário; template oficial v1 é gerado com aba de instruções.
+  Matching exclusivo por patrimônio/serial, validação por ModelForms canônicos,
+  prévia vinculada ao usuário/hash/conteúdo por 30 minutos e confirmação
+  transacional com auditoria. Limites: 5.000 linhas e 10 MB; `openpyxl`.
 - **Evidências de conclusão:** template/versionamento homologados após schema
   review; matriz de criação/atualização/conflitos; testes de preview,
   confirmação, validação de linha, autorização/auditoria, atomicidade e rollback
@@ -677,6 +678,15 @@ BLOCKING = YES
 
 Exportação está aprovada, mas continua `NON-BLOCKING`; não exige ID manual nem
 autoriza reintroduzir coluna ID na planilha.
+
+**Checkpoint de implementação (2026-10-14):** autorização funcional e técnica
+registrada no pedido `HOM-02-XLSX-IMPORT-IMPLEMENTATION`; implementação e
+validação direcionada concluídas, incluindo regressão de 163 testes e carga
+sintética completa de 2.300 criações. `HOM02_HUMAN_ACCEPTANCE=PENDING`; este
+status não abre homologação HOM-04 nem autoriza deploy. Evidências detalhadas
+em `docs/projeto/HOM_02_XLSX_IMPORT_PREPARATION.md` §§9–10. O provisionamento
+da permissão `importar_cameras` para Operador/Técnico continua pendente de
+adjudicação; o estado técnico não declara prontidão operacional integral.
 
 ### HOM-03 — Preparação da VM
 

@@ -1,8 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_not_required, permission_required
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.paginator import Paginator
-from django.db import transaction
+from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse, QueryDict
 from django.shortcuts import get_object_or_404, redirect, render
@@ -20,7 +20,7 @@ from .governanca import (
     ErroGovernancaCamera, alterar_situacao_camera, desativar_camera,
     q_camera_completa, q_camera_incompleta, reativar_camera, substituir_camera,
 )
-from .models import AtividadeCamera, Camera, EventoAuditoria, SubstituicaoCamera
+from .models import AtividadeCamera, Camera, CameraImportPreview, EventoAuditoria, SubstituicaoCamera
 from .monitoramento.read_service import MonitoringReadService
 from .monitoramento.presentation import (
     MONITORING_STATE_LABELS,
@@ -32,6 +32,7 @@ from .imagens.display_service import DisplayImageReadService
 from .imagens.preview_service import CameraImagePreviewService, DisplayImagePreviewService, PreviewState, CONTENT_TYPE, VARIANTS
 from .quick_detail import camera_quick_detail
 from .validadores import normalizar_texto_cadastral
+from .xlsx_import import ImportFileError, build_template, confirm_preview, preview_xlsx, record_failed_confirmation
 
 ORDENACOES_PERMITIDAS = {"nome", "-nome", "status", "-status", "ip", "-ip", "atualizado_em", "-atualizado_em"}
 
@@ -376,7 +377,60 @@ def lista_cameras(request):
         "ordenacao": ordenacao,
         "query_params": query_params,
         "monitoring_state_labels": dict(MONITORING_STATE_LABELS),
+        "can_import_cameras": request.user.has_perm("cameras.importar_cameras"),
     })
+
+
+@permission_required("cameras.importar_cameras", raise_exception=True)
+def baixar_template_importacao(request):
+    response = HttpResponse(
+        build_template(),
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+    response["Content-Disposition"] = 'attachment; filename="argos-template-importacao-cameras-v1.xlsx"'
+    return response
+
+
+@permission_required("cameras.importar_cameras", raise_exception=True)
+def importar_cameras(request):
+    preview = None
+    errors = []
+    if request.method == "POST":
+        upload = request.FILES.get("arquivo")
+        if not upload:
+            errors.append("Selecione um arquivo XLSX para validar.")
+        else:
+            try:
+                preview = preview_xlsx(upload, request.user)
+            except PermissionError as exc:
+                raise PermissionDenied(str(exc)) from exc
+            except (ImportFileError, ValueError) as exc:
+                errors.append(str(exc))
+    return render(request, "cameras/importacao.html", {"preview": preview, "errors": errors})
+
+
+@permission_required("cameras.importar_cameras", raise_exception=True)
+def confirmar_importacao_cameras(request, preview_id):
+    if request.method != "POST":
+        return HttpResponse(status=405)
+    try:
+        preview = CameraImportPreview.objects.get(pk=preview_id, usuario=request.user)
+    except CameraImportPreview.DoesNotExist as exc:
+        raise PermissionDenied("Prévia inexistente ou pertencente a outro usuário.") from exc
+    operations = {row.get("operation") for row in preview.plano}
+    if "CRIAR" in operations and not request.user.has_perm("cameras.add_camera"):
+        raise PermissionDenied
+    if "ATUALIZAR" in operations and not request.user.has_perm("cameras.change_camera"):
+        raise PermissionDenied
+    try:
+        result = confirm_preview(preview, request.user, request=request)
+    except (TimeoutError, ValueError, IntegrityError) as exc:
+        record_failed_confirmation(preview, request.user)
+        message = str(exc) if not isinstance(exc, IntegrityError) else "Uma restrição cadastral mudou durante a confirmação; nenhuma linha foi gravada. Valide a planilha novamente."
+        messages.error(request, message)
+        return redirect("cameras:importar")
+    messages.success(request, f"Importação concluída: {result['created']} criadas e {result['updated']} atualizadas.")
+    return render(request, "cameras/importacao_resultado.html", {"result": result})
 
 
 @permission_required("cameras.add_camera", raise_exception=True)
