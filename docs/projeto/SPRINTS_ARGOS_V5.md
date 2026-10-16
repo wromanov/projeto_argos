@@ -12,13 +12,13 @@ REFERENCE_PACKAGE_REPOSITORY_PATH = docs/projeto/camera-inventory-design-system-
 REFERENCE_PACKAGE_REPOSITORY_COPY = YES
 REFERENCE_PACKAGE_REPOSITORY_SHA256 = 510D75399A5C2F641DB77EF1AF9C982B8A2B3D9C08B06854073CE16FE028DA14
 CURRENT_PHASE = PREPARAÇÃO PARA HOMOLOGAÇÃO PROGRESSIVA
-CURRENT_PHASE_STATUS = HOM-00 DOCUMENTAL RECONCILIADA; integração, HOM-01..03 e gates de homologação pendentes
+CURRENT_PHASE_STATUS = HOM-00 documental concluída; HOM-01 CLOSED/APPROVED; HOM-02 implementação/validação técnica registradas e aceite funcional confirmado; HOM-03 BLOCKED_PENDING_SSH_AUTHENTICATION; HOM-04 formal opening não estabelecida
 IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_DOCUMENT
-CURRENT_ACTIVITY = ARGOS-HOM-00-INTEGRATION-FOUNDATION / PLANNED / NOT_AUTHORIZED
-LAST_COMPLETED_ACTIVITY = ARGOS-HOM-00-ROADMAP-FINAL-RECONCILIATION / DOCUMENTARY
-LAST_COMPLETED_ACTIVITY_STATUS = PROJECT_STATE_UPDATE PASS; HOM-00 integration foundation remains pending
-NEXT_CANDIDATES = ARGOS-HOM-00-INTEGRATION-FOUNDATION
-NEXT_CANDIDATES_STATUS = PLANNED / NOT_AUTHORIZED; Quick Detail visual baseline remains approved and protected
+CURRENT_ACTIVITY = ARGOS-ROADMAP-SPRINTS-RECONCILIATION / DOCUMENTATION_ONLY / awaiting root delta validation
+LAST_COMPLETED_ACTIVITY = HOM-02 implementation, technical validation and user-confirmed functional acceptance
+LAST_COMPLETED_ACTIVITY_STATUS = recorded in PROJECT_STATE §§115-123; acceptance update supersedes only prior PENDING acceptance
+NEXT_CANDIDATES = resume HOM-03 after authorized SSH key; then reevaluate HOM-04 gates; HOM-05 capability backlog separately authorized
+NEXT_CANDIDATES_STATUS = RECOMMENDED / NOT_EXECUTION_AUTHORIZATION; Quick Detail approved baseline remains protected
 IMG02_IMPLEMENTATION_AUTHORIZATION = GRANTED_BY_EXPLICIT_USER_INSTRUCTION_FOR_THIS_SLICE_ONLY
 IMG-01 = COMPLETE após o checkpoint documental; contrato canônico:
 docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md.
@@ -869,4 +869,170 @@ IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_ACTIVITY
 COMMIT = NOT_PERFORMED
 PUSH = NOT_PERFORMED
 MERGE = NOT_PERFORMED
+```
+
+## 21. Reconciliação documental vigente — ARGOS-ROADMAP-SPRINTS-RECONCILIATION (2026-10-16)
+
+Esta seção atualiza os ponteiros operacionais e a sequência corrente. A seção 20
+e os registros anteriores permanecem snapshots históricos; não são reescritos.
+Status de decisão, aprovação, implementação, integração, validação, aceite e
+homologação são distintos. Evidência histórica continua sendo checkpoint com
+data e escopo, não resultado PASS reexecutado.
+
+```text
+ACTIVITY = ARGOS-ROADMAP-SPRINTS-RECONCILIATION
+HOM-00 = DOCUMENTARY_FOUNDATION_COMPLETE / subsequent HOM-01 integration and closure recorded
+HOM-01 = CLOSED / APPROVED / PROJECT_STATE §113; DO_NOT_REOPEN
+HOM-02 = IMPLEMENTATION_AND_TECHNICAL_VALIDATIONS_RECORDED / FUNCTIONAL_ACCEPTANCE_CONFIRMED_BY_USER
+HOM-02_ACCEPTANCE_UPDATE = supersedes only PENDING acceptance in prior §§116/123; no new validation or readiness claim
+HOM-03 = FORMAL_READINESS_PENDING / BLOCKED_PENDING_SSH_AUTHENTICATION
+HOM-04 = FORMAL_OPENING_NOT_ESTABLISHED / requires HOM-00..03 accepted with evidence
+HOM-05 = FUTURE_EVOLUTION_BACKLOG / NOT_A_HOM-04_ENTRY_BLOCKER; own activity, authorization and gates
+MON-01..09 = TECHNICALLY_COMPLETE / per current explicit user input; no tests rerun
+MON_WORKER = runtime code tracked at current HEAD; SQLite evidence is historical; PostgreSQL, multi-worker and production readiness NOT_ESTABLISHED
+UI_V2_P0 = CLOSED_PASS
+UI_V2_P1 = CLOSED_PASS / selection C
+UI_V2_P2 = CLOSED_PASS / canonical foundation integrated
+UI_V2_P3 = PROTOTYPES_AND_REFERENCE_FAMILIES / selected artifacts only
+UI_V2_P4 = APPROVAL_BY_EXACT_FAMILY_AND_SCOPE
+UI_V2_P5 = SELECTIVE_PRODUCTION_UI_INTEGRATED_AND_PUBLISHED_FOR_CHECKED_IN_BASELINE / branch-only additions separate
+UI_V2_P6 = runtime visual acceptance is scope-specific; accepted HOM-01 remains closed
+UI_V2_P7 = GLOBAL_CANONICALIZATION_NOT_ESTABLISHED
+BC_02 = stage-specific checkpoints only; entire wave-7/production gates not globally PASS
+IMAGES = IMG-01..09 use scoped statuses below; specialized contracts remain authority
+```
+
+### Sequência, dependências e gates vigentes
+
+| Marco/slice | Estado registrado | Dependência e próximo gate | Blocking para HOM-04 |
+|---|---|---|---|
+| HOM-00 | Fundação documental concluída; classificação P3/P5 registrada em PROJECT_STATE §§83–86; integração/fechamento HOM-01 sucederam o checkpoint | Não inferir conclusão de toda integração de branches ou gates de produção | Base documental necessária, estado atendido |
+| HOM-01 | CLOSED/APPROVED, PROJECT_STATE §113 | Preservar aceites e limitações aprovados; não reabrir por backlog futuro | Atendido |
+| HOM-02 | Implementação e validações técnicas §§115–123; aceite funcional confirmado nesta atividade | Próximo gate global é HOM-03; confirmação de aceite não altera estado operacional/deploy | Aceite registrado; gates restantes mantêm HOM-04 não estabelecida |
+| HOM-03 | Configuração local documentada; acesso SSH bloqueado por falta de autenticação utilizável; VM/PostgreSQL/permissões/migrations remotas não verificados nem tocados | Retomar após chave SSH autorizada; completar verificação remota conforme §§121–122 | Sim |
+| HOM-04 | FORMAL_OPENING_NOT_ESTABLISHED | Reavaliar critérios existentes de HOM-00..03 após evidências aceitas; não abrir automaticamente | Gate |
+| HOM-05 | Backlog de evolução posterior | Cada slice requer atividade, autorização e gates próprios | Não, salvo gate de entrada citado aplicável |
+
+O §20 preserva objetivos, entregáveis e critérios do snapshot de 2026-10-11;
+esta tabela registra o estado corrente e remete aos critérios daquele snapshot
+e às authorities. Evidência de teste abaixo é somente o checkpoint datado
+referenciado; nenhum teste foi rerun nesta reconciliação. `NOT_ESTABLISHED`
+indica que a fonte ativa não comprova o campo.
+
+| Atividade/slice | Objetivo e entregáveis | Pré-condições/dependências | Testes/gates e aceite humano | Blocker/backlog, ownership e integração |
+|---|---|---|---|---|
+| HOM-00 | Fundação documental; baseline e classificação P3/P5 (§§83–86) | Checkout e refs disponíveis; critérios detalhados no §20 | Checkpoint documental histórico; não rerun. Fundação registrada como completa; sem declaração de integração geral/produção | Fundação de entrada registrada. Ownership por lane/integration point atual: conforme authorities; detalhe adicional `NOT_ESTABLISHED` |
+| HOM-01 | UI inicial V2 integrada no escopo aprovado | HOM-00 e authorities UI aplicáveis (§20) | CLOSED/APPROVED em PROJECT_STATE §113; não reabrir nem rerun os testes/aceites do checkpoint | Atendido para escopo HOM-01. Backlog de outras famílias não altera o aceite fechado. Integração conforme checkpoint §113; owner adicional `NOT_ESTABLISHED` |
+| HOM-02 | Importação XLSX com prévia, confirmação, atomicidade e auditoria (§20) | HOM-00, schema/modelo, autorização e auditoria conforme §20 | Validações técnicas históricas em PROJECT_STATE §§115–123; testes não rerun. Aceite funcional confirmado pelo usuário nesta atividade; supersede somente PENDING anterior | Aceite funcional registrado; readiness depende dos gates seguintes. Não concede deploy/homologação. Ownership adicional `NOT_ESTABLISHED`; entregável integrado consta dos §§115–123 |
+| HOM-03 | Ambiente isolado de homologação; config, PostgreSQL, permissões, migrations, serviço e recuperação (§20) | Acesso/owner VM, chave SSH autorizada e contratos de persistência/topologia (§20) | Checkpoint local e tentativas de acesso nos §§120–122; remoto bloqueado; sem rerun. Aceite de prontidão `PENDING` | BLOCKER de HOM-04: `BLOCKED_PENDING_SSH_AUTHENTICATION`; VM, PostgreSQL, permissões e migrations não verificados/tocados. Owner da VM `NOT_ESTABLISHED`; integração/alvo é a VM somente após autorização própria |
+| HOM-04 | Abertura formal da homologação progressiva sob gates existentes (§20) | HOM-00..03 aceitos com evidências; critérios de entrada §20 | FORMAL_OPENING_NOT_ESTABLISHED; gates de entrada existentes não executados/aceitos como conjunto. Aceite humano de abertura `NOT_ESTABLISHED` | Gate bloqueante; não abrir automaticamente. Owner/aprovador e ponto de abertura `NOT_ESTABLISHED` nesta fonte |
+| HOM-05 | Evolução funcional durante homologação, por slices próprias (§20) | HOM-04 aberto, priorização/autorização, contrato e gates próprios | Cada slice requer testes e aceite aplicáveis; critérios futuros `NOT_ESTABLISHED` até sua atividade/contrato. Nenhum rerun nesta reconciliação | Backlog não bloqueante da entrada inicial por si só; owner/integration point definidos por cada autorização futura |
+
+### UI V2 P0–P7 — escopo, dependências e gates atuais
+
+O master plan UI V2 e o censo P0 são as authorities de objetivo/entregáveis,
+critérios e sequência. Os status abaixo não declaram repetição de testes nem
+conclusão global da UI V2.
+
+| Atividade/slice | Objetivo e entregável | Pré-condições/dependências | Testes/gates e aceite humano | Blocker/backlog, ownership e integração |
+|---|---|---|---|---|
+| P0 | Censo canônico de superfícies | `ARGOS_UI_V2_SCREEN_CENSUS.md` | CLOSED_PASS histórico; não rerun | Fechado; owner adicional `NOT_ESTABLISHED`; artefato canônico no checkout |
+| P1 | Laboratório/seleção visual; seleção C | Master plan e artefatos de style lab | CLOSED_PASS; seleção C registrada; não rerun | Fechado no escopo; artefatos de referência; owner adicional `NOT_ESTABLISHED` |
+| P2 | Fundação UI V2 canônica | Master plan, decisões UI aprovadas | CLOSED/PASS; integração registrada; não rerun | Fechado; integração canônica conforme checkpoints do master plan; owner adicional `NOT_ESTABLISHED` |
+| P3 | Protótipos e famílias de referência | P2 e gates/approvals do master plan | Não equivale a gate de integração; aprovação/validação por família `NOT_ESTABLISHED` nesta atividade; não rerun | Não declarar integração geral; branches isoladas são referências; integração seletiva depende de gates e autorização por escopo |
+| P4 | Aprovação visual por família/escopo exato | Referência e authority do escopo aplicável | Aceite não global; cada família exige evidência própria; novos resultados `NOT_ESTABLISHED`; não rerun | Approval global não estabelecida; owner por família `NOT_ESTABLISHED` |
+| P5 | UI de produção selecionada | Backend/capabilities existentes e approvals do escopo | Integrado/publicado seletivamente no baseline versionado; status não generaliza a branches; testes não rerun | Branch-only additions permanecem separados. Ponto de integração: baseline versionado no checkout; owner adicional `NOT_ESTABLISHED` |
+| P6 | Aceite visual/runtime do escopo aplicável | Artefato integrado e critérios da família | Aceite é por escopo; HOM-01 aceito permanece fechado. Novo aceite global `NOT_ESTABLISHED`; não rerun | Não é blocker global para reabrir HOM-01; dependências apenas conforme gate citado. Owner adicional `NOT_ESTABLISHED` |
+| P7 | Canonicalização global UI V2 | P0–P6 e authorities/gates aplicáveis | Conclusão global `NOT_ESTABLISHED`; testes/aceites não rerun | Backlog/gate ainda não estabelecido; owner e integration point `NOT_ESTABLISHED` |
+
+### UI V2 e backend — classificação por escopo
+
+P0–P2 estão fechados nos escopos registrados; P3 representa protótipos e
+famílias de referência, não integração geral de produção. P4 é aprovado por
+família/escopo. P5 é seletivamente integrado/publicado no baseline versionado;
+acréscimos apenas em branches permanecem separados. Aceite visual/runtime P6
+não se generaliza entre famílias. A canonicalização global P7 não está
+estabelecida. Nenhuma destas classificações reabre o escopo HOM-01 aceito.
+
+`BACKEND_IMPLEMENTATION_ORDER.md` §2 é a autoridade de DAG, waves, ownership,
+dependências e integração. Os registros abaixo são checkpoints com escopo/data;
+testes citados neles não foram rerun nesta reconciliação. Status histórico de
+branch ou integração local não é promovido a estado integrado no checkout sem
+evidência correspondente.
+
+| Atividade/slice | Objetivo e entregáveis | Pré-condições/dependências | Testes/gates e aceite humano | Blocker/backlog, ownership e integração |
+|---|---|---|---|---|
+| BC-02 / DAG e waves | Ordem e readiness contratual de backend | `BACKEND_IMPLEMENTATION_ORDER.md` §2 e registro BC-02 em PROJECT_STATE §41; dependências variam por slice | Checkpoint de readiness documental, não readiness global de runtime/produção; testes não rerun | Ownership por slice conforme §2. Wave 7 e gates de produção não globalmente PASS; integração por gate controlado |
+| BC-AUTH | Autorização backend | Contrato `01_ACCESS_ROLES_AUTHORIZATION_CONTRACT.md` | §§42–43: validação local e integração/publicação histórica; não rerun | COMPLETE/PUBLISHED conforme checkpoint; ownership conforme DAG; integration point registrado em §43 |
+| CAM-INT-01 | Catálogo/configuração de capability | Dependências conforme DAG §2 | §§44 e 47: validação integrada documentada; não rerun | Checkpoint COMPLETE/PUBLISHED documentado (§47); não inferir testes atuais; ownership conforme DAG |
+| CAM-INT-02 | Lifecycle backend de credenciais por câmera e runtime resolver | CAM-INT-01/BC-AUTH conforme DAG; authorities CAM-INT-02, CAM-INT-02-R1 e access contract | §§46–46.1 e 50: integration/validation checkpoints; não rerun | Implementado/integrado no código atual conforme instrução vigente; UI de credenciais não estabelecida. Ownership/integration order conforme DAG |
+| CAM-INT-06 | Capability/catalog validation | Dependências/ordem conforme DAG §2 | §47: validation checkpoint histórico; não rerun | Checkpoint PUBLISHED; validação de fabricantes/firmware reais continua externa (§47); ownership conforme DAG |
+| CAM-INT-07 | Target policy/hardening | Dependências conforme DAG §2 | §48: integration/validation checkpoint; não rerun | Checkpoint registrado; policy e status de execução real limitam-se à evidência fonte; ownership conforme DAG |
+| CAM-INT-03 | Adapter RTSP e configuração de target policy | CAM-INT-01/02/06/07 conforme DAG | §§51–60: checkpoints locais/integrados e validações históricas; teste de câmera real permanece pending; não rerun | Código/checkpoints técnicos não equivalem a homologação real; dispositivo RTSP real é blocker do gate próprio. Ownership conforme DAG; integração só conforme checkpoint aplicável |
+| CAM-INT-05 / CAM-HEALTH | Diagnóstico e projeção health A–D | CAM-INT-03 e dependências indicadas pelo DAG; conflitos de migration com CAM-INT-04 registrados em §§64–69 | §§64–65: validação local histórica; §69: integração local checkpoint; não rerun | Não inferir publicação/integração canônica ampla a partir de branch/checkpoint; resolver DAG/migration e gate aplicável antes de promover. Ownership conforme DAG |
+| MON-OBS | Telemetria operacional do scheduler | DAG §2 e contratos MON aplicáveis | §§66–68: validação local/documentada; §69: integração execution checkpoint; não rerun | Checkpoints são locais/históricos; não usar como prova de readiness PostgreSQL, multi-worker ou produção. Ownership conforme DAG |
+| MON-WORKER | Runtime worker independente | CAM-INT-05, CAM-HEALTH e MON-OBS conforme DAG §2 | PROJECT_STATE §71: validação local SQLite histórica; não rerun | Código do worker está tracked no HEAD; PostgreSQL, multi-worker e prontidão operacional/produção NOT_ESTABLISHED. Integration point: HEAD atual; ownership conforme DAG |
+| IMG-CAP / CAM-INT-04 | Captura HTTP desacoplada | Predecessores e ownership conforme DAG §2 e contratos de captura/imagem | Validação histórica somente na lane isolada inspecionada; não rerun | Branch/worktree isolado, não integração canônica; câmera/HTTP homologation pending. Integration point conforme gate autorizado; status atual `NOT_ESTABLISHED` |
+
+Para credenciais, consulte `CAM-INT-02_CREDENTIALS_CONTRACT.md`,
+`CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md` e
+`01_ACCESS_ROLES_AUTHORIZATION_CONTRACT.md`; esta tabela não duplica regras
+de segurança. Nenhum status declara o conjunto BC-02 ou qualquer wave de
+produção globalmente PASS.
+
+### Imagens — status registrado sem promoção de evidência
+
+O contrato `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` §26 aprova Quick Detail por
+`LATEST_ACTIVE_IMAGE` entre CAPTURA_CAMERA e UPLOAD_MANUAL, até três imagens
+ativas, galeria crescente e ações de captura/upload somente manuais;
+`LATEST_CAMERA_CAPTURE` permanece somente captura. A seção 26 declara
+`IMPLEMENTED=NOT_ESTABLISHED`, `INTEGRATED=NO`, `VALIDATED=NO` e
+`HOMOLOGATED=NO`. No checkout atual, IMG-03 de upload manual e exibição/preview
+seguro estão integrados, mas o seletor de Quick Detail ainda prioriza captura
+com fallback para upload, conforme regra legada §25; há mismatch com §26. Não
+há no checkout serviço/rota/UI de captura nem ciclo de três imagens/rotação.
+CAM-INT-04/IMG-CAP estão somente no worktree isolado inspecionado: serviço/job
+HTTP de captura, migration e validação histórica de branch; não é integração
+canônica e homologação de câmera/HTTP real permanece pendente. Camera Detail
+exibe apenas envio/upload manual; não há botão de captura, galeria de três
+imagens ou UI de credenciais.
+
+| Atividade/slice | Objetivo e entregáveis | Pré-condições/dependências | Testes/gates e aceite humano | Blocker/backlog, ownership e integração |
+|---|---|---|---|---|
+| IMG-01 | Contrato funcional de imagens/proveniência | `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato canonicalizado; sem teste rerun ou aceite de implementação nesta atividade | Entregável documental presente; owner de implementação `NOT_ESTABLISHED` |
+| IMG-02 | Modelo, storage e proveniência | Contrato de domínio e dependências de storage | Integração/checkpoint histórico; não rerun; aceite atual `NOT_ESTABLISHED` nesta atividade | Modelo/storage integrados conforme checkpoints; owner adicional `NOT_ESTABLISHED` |
+| IMG-03 | Upload manual | IMG-02, UI e preview seguro existentes | Checkpoint integrado; sem teste rerun nem novo aceite humano | Upload/preview presentes no checkout; captura permanece capability distinta; owner adicional `NOT_ESTABLISHED` |
+| IMG-04 | Captura sob demanda | Predecessores conforme DAG §2; `CAM-INT-04_HTTP_SNAPSHOT_CONTRACT.md` / `IMAGE_CAPTURE_INTEGRATION_CONTRACT.md` | Validação de branch histórica somente; câmera/HTTP real pending; não rerun; aceite de homologação `NOT_ESTABLISHED` | Não integrada no checkout; implementation CAM-INT-04/IMG-CAP somente em worktree isolado. Owner conforme contrato/DAG; canonical integration pending |
+| IMG-05 | Processamento independente | Contrato IMG-CAP e separação do worker MON | Status só por runtime/checkpoints documentados; testes não rerun; aceite humano `NOT_ESTABLISHED` | Não inferir readiness operacional; ownership/integration point dependem do DAG/contrato; detalhes além disso `NOT_ESTABLISHED` |
+| IMG-06 | Histórico visual/galeria | `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`; dependências específicas de implementação `NOT_ESTABLISHED` | Galeria não estabelecida; sem validação ou aceite humano nesta atividade | Backlog; limite de até três imagens aprovado em §26, implementation não estabelecida; owner `NOT_ESTABLISHED` |
+| IMG-07 | Seleção de imagem principal/apresentação | Regra Quick Detail `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` §26 | §26 declara implementation/integration/validation/homologation não estabelecidas; sem rerun ou novo aceite | Regra antiga supersedida somente para Quick Detail; seletor atual diverge; não alterar `LATEST_CAMERA_CAPTURE`. Owner `NOT_ESTABLISHED` |
+| IMG-08 | Segurança e auditoria | Upload/preview e contracts de captura, acesso e auditoria | Upload/preview existentes; gate completo de captura/permissões/hold/purge não validado; testes/aceite não rerun | Parcial; política completa pendente. Owner e integração completa `NOT_ESTABLISHED` |
+| IMG-09 | Hardening e lifecycle de imagens | Decisões de retenção/rotação e contrato próprio de purge | Limite, retenção, rotação e purge físico não implementados/validados neste checkpoint; não rerun | Backlog/gates próprios; purge exige contrato, autoridade, rastreabilidade e testes. Owner `NOT_ESTABLISHED` |
+
+Para decisões de ciclo de vida já aprovadas: inclusão de quarta imagem remove a
+mais antiga elegível somente depois que a nova imagem validar; se todas estiverem
+protegidas, inclusão é bloqueada. Retenção padrão é 12 meses; rotação por
+capacidade pode ocorrer antes; preservação especial bloqueia purge. Purge físico
+exige contrato, autoridade, rastreabilidade e testes próprios e não ocorreu
+nesta atividade. Captura nunca parte de evento de monitoramento. Não colapsar
+`LATEST_ACTIVE_IMAGE` com `LATEST_CAMERA_CAPTURE`.
+
+As futuras capacidades de UI de gestão de credenciais em **Editar câmera**,
+botão **Capturar imagem** ao lado de **Importar imagem** na área Imagens,
+galeria máxima de três imagens, conformidade de Quick Detail com §26 e
+retenção/rotação seguem backlog próprio.
+Não reabrem HOM-01 e não bloqueiam automaticamente HOM-04 salvo gate de entrada
+existente que as cite.
+
+```text
+NEXT_RECOMMENDED_ACTIVITY = resume HOM-03 after authorized SSH key; then reevaluate HOM-04 gates; HOM-05 capability backlog separately authorized
+DOCUMENTATION_WRITE = completed in five authorized files; root independently validated the delta
+ACTIVITY_COMPLETION_PERCENT = 100%
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PASS
+ROOT_DELTA_VALIDATION = PASS
+GIT_DIFF_CHECK = PASS
+ACTIVITY_COMPLETE = YES
+TESTS_RERUN = NO
+CODE_DATABASE_PURGE_OR_GIT_OPERATIONS = NONE
 ```

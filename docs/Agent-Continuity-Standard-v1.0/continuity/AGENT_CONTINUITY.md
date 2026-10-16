@@ -10,33 +10,53 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL HOM-01-WORK-PC-QA-BOOTSTRAP-CLOSURE (2026-10-13): consultar
-`PROJECT_STATE.md` §107 e `ACTIVE_DOCUMENT_MAP.md` §71 para o fechamento da
-recuperação QA no computador do trabalho. O ambiente está preparado para
-continuar HOM-01; `DASHBOARD_V7_VISUAL_QA=PENDING`, `HOM01_STATUS=IN_PROGRESS`
-e `HOM02_START=BLOCKED`. A seção 106 contém o checkpoint publicado anterior.
-Para contexto de produto, consultar o follow-up §14 de
-`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md` e o relatório
-`docs/projeto/ARGOS_HOM_01_SIDEBAR_ACTIVE_STATE_RECOVERY.md`. Repositório
-`https://github.com/wromanov/projeto_argos.git`, branch
-`codex/hom-v1-integration`. HEAD inicial deste checkpoint:
-`b122ece404c3b67afdbd1acf9087e340d1c07d2c`; o commit V7 foi preservado. Os
-commits de implementação são `7c4fac3a81ba6311ecaf9bad2e080240759cfd0c`
-(sidebar e evidências) e `d0b4c2f5bef8d4533834898a67e4d2f03b0e2d1e`
-(monitoramento/A–D, Inventário e Quick Detail). O registro documental deste
-checkpoint identifica o HEAD final como o próprio commit que o contém; use
-`git rev-parse HEAD` para resolver seu SHA. O push normal para a branch remota
-e a igualdade exata dos SHAs foram verificados após a publicação.
+RETOMADA ATUAL HOM-02-XLSX-UPDATE-PREVIEW-FIX (2026-10-15): consultar
+`PROJECT_STATE.md` §123 e `ACTIVE_DOCUMENT_MAP.md` §86. A prévia UPDATE agora
+compara com snapshot independente anterior à validação do ModelForm e preserva
+o nome original como destino. Os testes direcionados (14) e a regressão de
+auditoria/compatibilidade/normalização cadastral (31) passaram usando SQLite em
+memória do test runner; Django system check e `git diff --check` passaram. O
+PostgreSQL da VM não foi acessado e a prévia existente não foi confirmada.
+`HOM02_HUMAN_ACCEPTANCE` continua `PENDING`; sem push, merge ou deploy.
 
-`manage.py check` passou pelo Python do `.venv`; 105 testes direcionados
-passaram com `scripts.localqa.test_settings`, banco SQLite temporário e
-sintético; `git diff --check` passou. A suíte global de 937 testes não foi
-executada nesta atividade. O Dashboard V7 tem aceite humano limitado à
-composição registrada em `PROJECT_STATE.md` §105; a sidebar tem aprovação
-desktop das cinco páginas em §101; A–D tem aprovação limitada aos rótulos e à
-omissão da linha para UNKNOWN em §99. Esses aceites não encerram HOM-01. O
-finding do cabeçalho MONITORAMENTO em 1366px segue aberto; responsividade da
-sidebar e aceite da composição completa da Camera Detail não foram inferidos.
+### 20.82 HOM-02-XLSX-CONSOLIDATION-COMMIT (2026-10-15)
+
+O pacote funcional HOM-02 foi consolidado em
+`5a1d9e63c97712b9ee5ddbdf8f26b802eded801e` (`feat(cameras): implementar
+importacao XLSX com preview e auditoria`). O commit inclui 16 arquivos de
+importação, model/migration, rotas/views, telas, testes, dependência `openpyxl`
+e documentação HOM-02. Apenas a linha `openpyxl` entrou em `requirements.txt`;
+Psycopg e ajustes de WSGI da HOM-03, `.local`, pacote de continuidade e WIP de
+HOM-01 ficaram fora do stage e foram preservados.
+
+Os testes direcionados (14) e regressão de auditoria/compatibilidade/normalização
+(31), `manage.py check`, verificação de migrations e integridade do staged diff
+passaram. O branch `codex/hom-v1-integration` está dois commits à frente do
+origin; não houve push. A permissão `cameras.importar_cameras` permanece sem
+grant padrão a Operador/Técnico e aguarda adjudicação; o commit não declara
+prontidão operacional nem aceite humano. A confirmação da prévia existente,
+merge e deploy não foram realizados.
+
+RETOMADA ATUAL HOM-03-POSTGRESQL-VM-VALIDATION (2026-10-15): consultar
+`PROJECT_STATE.md` §122 e `ACTIVE_DOCUMENT_MAP.md` §85. A dependência foi
+reconciliada para Psycopg 3.3.6 C em Linux e binary em Windows. O payload
+seletivo está preparado em `.local/hom03-transfer-20261015/`; não inclui banco,
+secrets nem WIP HOM-01/HOM-02. Um helper OpenSSH sem armazenamento de secrets
+está em `.local/hom03-transfer-20261015/login_vm.py`. A SFTP para
+`[PRIVATE_VM_ENDPOINT_REDACTED]` alcançou o
+host mas foi recusada por falta de autenticação utilizável. A chave autorizada
+precisa ser carregada no agente SSH para validar permissões, configurar o
+ambiente protegido, confirmar PostgreSQL, executar system check e consultar o
+plano de migrations. Nenhuma migration foi executada na VM. A preparação geral
+HOM-03 permanece aberta; aceite humano HOM-02 também permanece pendente. HOM-01 segue `CLOSED`,
+com aceites e limitações preservados em §§99, 101, 108 e 109; Camera Detail
+continua `CLOSED_WITH_LIMITATIONS`. HOM-02 está implementada e passou validação
+técnica direcionada, incluindo 2.300 registros sintéticos; `HOM02_HUMAN_ACCEPTANCE`
+permanece `PENDING`. Branch `codex/hom-v1-integration`, HEAD
+`97c7d47c4c47761d205a7d41262bf067c56c403d`, com alterações locais preexistentes
+da HOM-01/preparação preservadas. Sem push, merge, deploy, reabertura da HOM-01,
+repetição de QA visual ou alteração do MON Runtime. §§20.72–20.73 permanecem
+como registros históricos.
 
 Para continuar em outro computador, primeiro confirme `git status --branch`,
 `git status --porcelain=v1 -uall`, `git rev-parse HEAD` e a URL de `origin`.
@@ -44,12 +64,10 @@ Preserve e reconcilie qualquer alteração local antes de trocar de branch ou
 atualizar. Só com worktree limpa, execute `git fetch origin
 codex/hom-v1-integration`; confirme a relação de ancestralidade e então faça
 checkout/fast-forward conforme §106. Nunca use reset, clean, stash ou force
-push como recuperação. Para QA, recrie `.venv` e `.local/qa` localmente; não
-copie bancos, venv, `.env`, sessão ou credenciais entre máquinas. O launcher
-`INICIAR_ARGOS_QA.cmd` prepara um SQLite sintético isolado e inicia Django em
-`http://127.0.0.1:8765/`; confira Dashboard em `/dashboard/`. HOM-01 segue
-`IN_PROGRESS`, HOM-02 segue `BLOCKED`, e esta autorização de push se limitou
-ao checkpoint concluído.
+push como recuperação. Para QA futura, recrie `.venv` e `.local/qa`
+localmente; não copie bancos, venv, `.env`, sessão ou credenciais entre
+máquinas. A HOM-01 está `CLOSED`; a implementação HOM-02 continua sem
+autorização, conforme §20.73.
 
 ## UI-V2-P1 — seleção visual e fechamento (2026-09-27)
 
@@ -2595,3 +2613,285 @@ conjuntos e testes de renderização. Nenhum finding P1/P2/P3 foi comprovado;
 `DESIGN_QA_GLOBAL = NOT_DECLARED_PASS`. A atividade está
 `CLOSED_WITH_LIMITATIONS`; HOM-01 continua `IN_PROGRESS` e HOM-02 permanece
 bloqueada. Nenhum código-fonte foi alterado.
+
+### 20.70 HOM-01-FINAL-CLOSURE (2026-10-14)
+
+Consultar `PROJECT_STATE.md` §111 e `ACTIVE_DOCUMENT_MAP.md` §74. Os aceites
+humanos de Dashboard V7 (§108), sidebar (§101), Diagnóstico A–D (§99) e Camera
+Detail com limitações aceitas (§109) foram consolidados sem reabertura nem
+repetição de QA visual. A regressão global única executou 948 testes e terminou
+com 42 erros; o system check do Django passou. Os traces observados mostram
+`PermissionError: WinError 5` ao criar diretórios de mídia temporários e ao
+limpá-los em `.local/qa/test-runs`, mas a evidência disponível não atribui
+todos os erros a uma causa única. A regressão permanece `FAIL`; não foi
+repetida. `HOM01_READY=NO`, HOM-01 segue `IN_PROGRESS` e HOM-02 `BLOCKED`.
+Recomendação registrada: aguardar uma regressão global aprovada antes de
+submeter o fechamento formal de HOM-01 para aprovação humana.
+
+### 20.71 HOM-01-REGRESSION-UNBLOCK (2026-10-14)
+
+Consultar `PROJECT_STATE.md` §112 e `ACTIVE_DOCUMENT_MAP.md` §75. A evidência
+diferencial atribuiu os 42 erros da execução global anterior à restrição de
+filesystem do sandbox: `scripts/localqa/test_settings.py` direciona
+`tempfile.tempdir` para `TEST_ROOT`, os traces registraram `WinError 5` ao
+criar `private` sob `MEDIA_ROOT` temporário e ao limpar diretórios temporários,
+e um probe sob `%TEMP%` do sistema também foi negado enquanto o processo
+permanecia no sandbox. Erros semelhantes foram vistos em `.local/qa/test-runs`.
+
+A remediação foi executar uma única regressão global com acesso de filesystem
+fora da restrição, sem alterar código ou configuração. O resultado foi
+`Ran 948 tests in 600.522s`, `OK`; o teste de storage anteriormente falho
+passou e o Django system check não apontou issues. O resultado não atribui
+nomes ou traces específicos aos 42 erros. Não houve segunda rodada nesta
+atividade.
+
+Os aceites de §§99, 101, 108 e 109 e as limitações aceitas da Camera Detail
+foram preservados. HOM-01 está `READY_FOR_USER_APPROVAL`; recomendar o
+encerramento técnico para aprovação do usuário. HOM-02 permanece `BLOCKED`,
+sem autorização. HEAD verificado é
+`97c7d47c4c47761d205a7d41262bf067c56c403d` em `codex/hom-v1-integration`.
+Sem nova QA visual, alteração de código/configuração, branch, push, merge ou
+deploy.
+
+### 20.76 HOM-02-XLSX-UI-CONFORMANCE-FIX (2026-10-14)
+
+Consultar `PROJECT_STATE.md` §117 e `ACTIVE_DOCUMENT_MAP.md` §80. A causa
+visual era o gate do UI V2 em `templates/base.html` e nos componentes
+compartilhados: as rotas XLSX não recebiam o mesmo shell de Dashboard V7 e
+Inventário. O ajuste adiciona somente essas rotas ao gate existente, reutiliza
+logo/navegação/topbar/ativo e acrescenta CSS local para breadcrumb, ações,
+formulário, prévia e resultado, consumindo componentes e tokens ARGOS já
+existentes. Não houve alteração de lógica de importação, permissões, MON
+Runtime, seed ou dados de câmera. Nenhum preview ou confirmação foi executado.
+
+`manage.py check`, 13 testes de `cameras.test_xlsx_import` e `git diff --check`
+passaram. A instância QA foi recarregada no mesmo SQLite sem launcher/reseed;
+isso encerrou a sessão do navegador, não as credenciais. A rota SSR autenticada
+confere no checkout. A janela do browser ficou na tela de login para autenticação
+humana; captura integrada desktop e verificação mobile aguardam essa entrada.
+`HOM02_HUMAN_ACCEPTANCE = PENDING`; não repetir auditorias HOM-01 ou regressão
+global. Sem commit, push, merge ou deploy.
+
+### 20.77 HOM-02-XLSX-FORM-COMPACTNESS (2026-10-14)
+
+Consultar `PROJECT_STATE.md` §118 e `ACTIVE_DOCUMENT_MAP.md` §81. Ajuste
+limitado a `static/css/importacao-xlsx.css` e ao parâmetro de versão do link CSS
+em `cameras/templates/cameras/importacao.html`: card de envio com `max-width:
+800px` e alinhamento à esquerda; `#id_arquivo` com `max-width: 560px` e 44px de
+altura. No breakpoint de 680px ambos usam 100% da largura disponível. Gaps do
+card e formulário usam tokens ARGOS. O markup funcional não mudou. Shell,
+topbar/sidebar, Dashboard, Inventário, backend, validação, permissões e
+dependências permanecem inalterados.
+
+`manage.py check`, 13 testes de `cameras.test_xlsx_import` e `git diff --check`
+passaram. O fluxo de upload/prévia é coberto pela suíte. A tela autenticada foi
+inspecionada em desktop; a regra de largura mobile foi verificada no CSS, sem
+captura de viewport mobile. Aceite visual segue pendente. Nenhum lote foi
+confirmado. `HOM02_HUMAN_ACCEPTANCE = PENDING`.
+
+### 20.72 HOM-01-CLOSE-AND-HOM02-PREPARATION — encerramento aprovado (2026-10-14)
+
+Consultar `PROJECT_STATE.md` §§112–114, `ACTIVE_DOCUMENT_MAP.md` §§75–77 e
+`docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md` §16. O usuário aprovou o
+encerramento formal da HOM-01. A única regressão global consolidada já
+registrada passou com 948 testes em 600.522s; Django system check passou e não
+há impedimentos materiais. Nenhum teste, auditoria ou QA visual foi repetido.
+
+Os aceites anteriores em §§99, 101, 108 e 109 foram preservados, assim como as
+limitações documentadas; Camera Detail permanece `CLOSED_WITH_LIMITATIONS`.
+HEAD registrado: `97c7d47c4c47761d205a7d41262bf067c56c403d`, branch
+`codex/hom-v1-integration`.
+
+```text
+HOM01_FORMAL_CLOSURE = APPROVED
+HOM01_STATUS = CLOSED
+GLOBAL_REGRESSION = PASS / 948 tests / 600.522s
+MATERIAL_BLOCKERS = NONE
+HOM02_PREPARATION = AUTHORIZED
+HOM02_IMPLEMENTATION = NOT_YET_AUTHORIZED
+```
+
+### 20.73 HOM-02-XLSX-IMPORT-PREPARATION (2026-10-14)
+
+A proposta objetiva e a lista de decisões abertas estão em
+`docs/projeto/HOM_02_XLSX_IMPORT_PREPARATION.md`; consulte também `PROJECT_STATE.md`
+§114, `ACTIVE_DOCUMENT_MAP.md` §77 e a seção HOM-02 de
+`docs/projeto/SPRINTS_ARGOS_V5.md`. Já estão aprovados: planilha sem ID ARGOS,
+IDs novos gerados pelo banco, matching por patrimônio/serial único e
+inequívoco, preview sem escrita, confirmação explícita, validação Django
+canônica, lote `ALL_OR_NOTHING` com rollback e nenhuma alteração direta do MON
+Runtime.
+
+A proposta reaproveita `CameraCriacaoForm`, `CameraEdicaoForm`, validações,
+serviços, normalização e auditoria existentes. O model tem patrimônio e serial
+únicos/nullable e proveniência de criação `IMPORTACAO`; a edição atual usa
+transação e auditoria e trata mudança de IP pela invalidação de geração de
+configuração. A enumeração atual de origem de `EventoAuditoria` é
+`WEB/ADMIN/COMANDO/SISTEMA`. Não há importador XLSX ou dependência de parser
+XLSX localizada nas dependências inspecionadas.
+
+Schema/template e regras de conflito, célula vazia, autorização, auditoria,
+limites/formato da planilha, validade da prévia e dependência de parser seguem
+como decisões abertas. Os defaults no documento são recomendações, não aceites.
+A interface deve reutilizar o shell e os componentes existentes sem redesenho.
+`HOM02_IMPLEMENTATION = NOT_YET_AUTHORIZED`; nenhuma implementação,
+teste, migração ou alteração MON foi iniciada nesta atividade.
+
+### 20.74 HOM-02-XLSX-IMPORT-IMPLEMENTATION (2026-10-14)
+
+Consultar `PROJECT_STATE.md` §115 e `ACTIVE_DOCUMENT_MAP.md` §78. O pedido
+explícito mais recente do usuário autorizou o escopo completo e resolveu as
+decisões abertas documentadas em §20.73; aquele registro preparatório é
+histórico e não limita esta implementação. O fluxo SSR integrado ao Inventário
+gera template XLSX v1 com instruções, valida upload com `openpyxl`, oferece
+prévia vinculada ao usuário/hash/conteúdo por 30 minutos e exige confirmação
+explícita. CREATE/UPDATE reutilizam os ModelForms existentes; matching é por
+patrimônio e/ou serial, sem fallback para nome/IP. Conflitos e duplicidades
+bloqueiam o lote. Célula vazia preserva valor em UPDATE e `LIMPAR` remove apenas
+campos opcionais; situação operacional não muda em UPDATE.
+
+A confirmação revalida permissões, snapshot, chaves e constraints dentro de
+transação atômica. Auditoria por registro e lote de sucesso participa da mesma
+transação; falha causa rollback integral. A permissão `importar_cameras` é
+adicional a `add_camera`/`change_camera`. O XLSX exclui campos internos,
+operacionais protegidos e credenciais. Nenhuma alteração no MON Runtime.
+
+Regressão direcionada de integração (163 testes) e a suíte do importador (13
+testes em 40.173s, incluindo 2.300 criações completas), round-trip de
+template/parser e fluxo SSR passaram; Django system check, migrations check e
+verificação de diff passaram. Nenhum push,
+merge, deploy ou alteração de histórico Git. `HOM02_IMPLEMENTATION =
+IMPLEMENTED / TECHNICAL VALIDATION PASS`; `HOM02_HUMAN_ACCEPTANCE = PENDING`.
+HOM-01 permanece `CLOSED`.
+
+### 20.75 HOM-02-HUMAN-ACCEPTANCE — preparação local (2026-10-14)
+
+Consultar `PROJECT_STATE.md` §116 e `ACTIVE_DOCUMENT_MAP.md` §79. O servidor QA
+local está ativo em `http://127.0.0.1:8765/`; a tela de importação fica em
+`/cameras/importacao/`. A conta `qa-operacional-hom01` recebeu
+`view_camera`, `importar_cameras`, `add_camera` e `change_camera`, sem
+privilégios administrativos. O SQLite QA existente foi preservado, a migração
+HOM-02 foi aplicada e os cinco registros sintéticos permaneceram intactos.
+
+O template oficial v1 e o exemplo XLSX com uma linha CREATE e uma linha UPDATE
+estão em `.local/qa/`, fora do Git. A linha UPDATE referencia
+`ARGOS-QA-001`, um registro identificado como sintético. Nenhuma prévia ou
+confirmação foi executada; `HOM02_HUMAN_ACCEPTANCE = PENDING`. Não repetir
+testes, auditorias ou QA visual. Nenhuma alteração de código, push, merge ou
+deploy.
+
+### 20.78 HOM-02-XLSX-IMPORT-UPLOAD-FIELD-VERTICAL-ALIGNMENT (2026-10-15)
+
+Consultar `PROJECT_STATE.md` §119 e `ACTIVE_DOCUMENT_MAP.md` §82. O ajuste
+local foi feito em `static/css/importacao-xlsx.css`, somente para
+`#id_arquivo.import-file-input`: `display:flex`, `align-items:center`, padding
+vertical via token e `line-height:1.25`; a altura do botão nativo foi calculada
+para a área interna do controle de 44px. Larguras aprovadas de 800px/560px
+permanecem. O template mudou somente o parâmetro de versão do CSS. Nenhuma
+lógica, validação, permissão, componente global ou outra tela foi alterada.
+
+Django system check e 13 testes `cameras.test_xlsx_import` passaram. A rota
+local redirecionou à tela de login, então o alinhamento integrado em desktop
+aguarda sessão humana; nenhuma credencial foi acessada. Aceite humano permanece
+pendente e nenhum lote foi confirmado. `PROJECT_STATE_UPDATE = PASS`.
+
+### 20.79 HOM-03-POSTGRESQL-INTEGRATION (2026-10-15)
+
+O perfil `config.settings_homologation` herda as proteções de
+`config.settings_production`, usa PostgreSQL via variáveis `ARGOS_DB_*` e
+mantém SQLite no perfil de desenvolvimento. Mídia, logs e estáticos apontam
+para `/dados/argos/media`, `/dados/argos/logs` e `/dados/argos/static`; o
+operador deve provisionar ownership e modos privados antes de iniciar o serviço.
+`requirements.txt` declara `psycopg[binary]==3.3.6`; `env.homologation.example`
+não contém valores de secrets.
+
+`py_compile`, `manage.py check` sob SQLite e a inspeção de seleção do perfil
+pelo WSGI passaram. O teste WSGI completo e o `manage.py check` com PostgreSQL
+não puderam passar neste checkout Windows: a `.venv` contém Django 5.2.16 e
+não tem Psycopg. Django 5.2 suporta PostgreSQL 14+ e Psycopg 3.1.8+, portanto
+as versões informadas da VM atendem aos mínimos documentados, sem provar
+conectividade ou compatibilidade operacional. Permissões reais de
+`/dados/argos`, PostgreSQL da VM, `collectstatic` no Linux e migrations
+permanecem não verificados; nenhuma migration foi executada.
+
+### 20.80 HOM-03-POSTGRESQL-VM-VALIDATION (2026-10-15)
+
+O dependency spec agora instala Psycopg 3.3.6 com `[c]` em Linux e `[binary]`
+em Windows, ambos por marcador `sys_platform`. O payload seletivo foi preparado
+em `.local/hom03-transfer-20261015/argos-hom03-postgresql-transfer.zip` com
+settings, exemplo sem secrets, patch estreito de requirements, README e hashes.
+A integridade do ZIP passou; não contém banco SQLite, credenciais, venv ou WIP
+HOM-01/HOM-02.
+
+A tentativa SFTP batch-only para `[PRIVATE_VM_ENDPOINT_REDACTED]` recebeu
+`Permission denied (publickey,password)`. Não houve prompt/intercâmbio de senha,
+nem leitura ou escrita remota. O usuário confirmou que não há chave SSH
+utilizável nesta sessão. Não foram configurados secrets/EnvironmentFile, não se
+validou acesso da conta de serviço `argos`, não se executou Django check ou
+conexão PostgreSQL na VM, e o plano de migrations não foi consultado. O perfil
+continua declarando PostgreSQL diretamente e não possui fallback para SQLite;
+isso foi conferido localmente, sem startup real do backend neste host.
+
+Retomar somente quando uma chave autorizada estiver disponível no agente SSH;
+primeiro fazer inventário remoto read-only, confirmar WIP e permissões, e então
+aplicar apenas os arquivos reconciliados. Não executar migrations.
+
+### 20.81 HOM-03-SSH-LOGIN-HELPER (2026-10-15)
+
+O script `.local/hom03-transfer-20261015/login_vm.py` abre somente a sessão
+interativa OpenSSH para `[PRIVATE_VM_ENDPOINT_REDACTED]`. A autenticação e eventual
+prompt de senha são delegados ao OpenSSH; o Python não recebe nem grava segredo.
+Agent forwarding está desabilitado e a confirmação de host key permanece
+interativa. O script não foi executado porque o `ssh` desta sessão é bloqueado
+e não existe chave autorizada carregada. Validar apenas a sintaxe local.
+
+### 20.83 ARGOS-ROADMAP-SPRINTS-RECONCILIATION (2026-10-16)
+
+Estado corrente de roadmap e execução: consultar `PROJECT_STATE.md` §124,
+`ACTIVE_DOCUMENT_MAP.md` §87, `ROADMAP_ARGOS_V5.md` §24 e
+`SPRINTS_ARGOS_V5.md` §21. A fundação documental HOM-00 e classificação P3/P5
+constam dos §§83–86; HOM-01 permanece CLOSED/APPROVED conforme §113. HOM-02
+tem implementação e validações técnicas registradas nos §§115–123 e o usuário
+confirmou o aceite funcional nesta atividade, supersedendo somente o estado
+PENDING anterior; não há nova validação, prontidão operacional, deploy ou
+homologação. HOM-03 segue BLOCKED_PENDING_SSH_AUTHENTICATION (§§121–122), sem
+verificação/acesso a PostgreSQL, permissões ou migrations remotas. HOM-04 não
+foi formalmente aberta e requer gates HOM-00..03 aceitos. HOM-05 é backlog com
+atividade/autorização/gates próprios.
+
+MON-01..09 constam como tecnicamente completos por instrução explícita atual;
+nenhum teste foi repetido. Runtime MON Worker está no HEAD, mas SQLite do §71 é
+evidência histórica e PostgreSQL, múltiplos workers e prontidão de produção não
+estão estabelecidos. UI V2 mantém classificações por escopo e P7 global não
+estabelecido; BC-02 permanece conforme DAG/waves e checkpoints, sem promoção
+global de wave-7/produção a PASS. Consultar `SPRINTS_ARGOS_V5.md` §21.
+
+Para imagens, a autoridade `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` §26 define
+Quick Detail por `LATEST_ACTIVE_IMAGE` (CAPTURA_CAMERA ou UPLOAD_MANUAL), até
+três ativas, galeria crescente e captura/upload manuais; `LATEST_CAMERA_CAPTURE`
+é somente captura. A implementação da §26 não está estabelecida, nem integrada,
+validada ou homologada. Checkout integra upload manual e preview seguro, mas o
+seletor Quick Detail atual diverge da §26. Captura CAM-INT-04/IMG-CAP está em
+worktree isolado, sem integração canônica e homologação real pendente. Lifecycle
+aprovado exige validar a nova imagem antes de remover a mais antiga elegível;
+bloquear inclusão se todas protegidas; retenção padrão de 12 meses, rotação por
+capacidade pode anteceder o prazo e preservação especial impede purge. Purge
+físico depende de contrato, autoridade, rastreabilidade e testes; nenhum purge
+ocorreu. Não disparar captura por evento MON nem colapsar
+`LATEST_ACTIVE_IMAGE` e `LATEST_CAMERA_CAPTURE`.
+
+Próxima recomendação: retomar HOM-03 após chave SSH autorizada; em seguida
+reavaliar gates HOM-04; backlog de capabilities HOM-05 exige autorização
+separada. Esta reconciliação alterou somente os cinco documentos listados em
+`PROJECT_STATE.md` §124. WIP preexistente foi preservado. Nenhum código, teste,
+banco, purge, stage, commit, push, merge ou deploy foi tocado. O root validou o
+delta independentemente e confirmou `git diff --check` sem erros.
+
+```text
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PASS
+ROOT_DELTA_VALIDATION = PASS
+GIT_DIFF_CHECK = PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES
+```

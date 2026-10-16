@@ -4,6 +4,7 @@
 **Data de elaboração:** 11/08/2026
 **Projeto:** ARGOS — Inventário, Governança e Monitoramento de Câmeras
 **Objetivo:** substituir a leitura operacional do roadmap histórico por um mapa aderente ao estado real do produto e às decisões atuais de arquitetura e operação.
+**Ponteiro operacional vigente:** consultar §24 e `SPRINTS_ARGOS_V5.md` §21; registros anteriores permanecem históricos quando assim identificados.
 
 ---
 
@@ -67,13 +68,13 @@ de continuidade define a recuperação do estado e o encerramento de handoff.
 | Multiseleção e filtros ativos | ✅ Entregue |
 | Paginação com estado de filtros | ✅ Entregue |
 | Query string canônica | ✅ Entregue |
-| Design system / modernização visual | 🟡 Avançado |
-| Monitoramento automático de disponibilidade | ⏳ Futuro |
-| Upload manual de imagens (IMG-03) | ✅ COMPLETE / INTEGRATED; captura sob demanda (IMG-04) segue futura |
-| Importação em lote | ⏳ Futuro |
-| Integrações técnicas com câmeras | ⏳ Futuro |
+| Design system / UI V2 | 🟡 P0–P2 fechados; P3 referência seletiva, P4 por família/escopo, P5 seletivo integrado, P6 aceitação por escopo, P7 global não estabelecido |
+| Monitoramento automático de disponibilidade | ✅ MON-01..09 tecnicamente completos; prontidão PostgreSQL/multi-worker/produção não estabelecida |
+| Upload manual de imagens (IMG-03) | ✅ Integrado; Quick Detail ainda diverge de ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md §26; captura sob demanda (IMG-04) não integrada no checkout |
+| Importação em lote | ✅ HOM-02 implementada e validada tecnicamente; aceite funcional confirmado; prontidão operacional depende dos gates HOM-03/04 |
+| Integrações técnicas com câmeras | 🟡 Checkpoints BC-02 por slice; homologação real CAM-INT-03 e integração canônica IMG-04 pendentes |
 | Segurança avançada | 🟡 Parcial |
-| Observabilidade | ⏳ Futuro |
+| Observabilidade (MON-OBS) | ✅ Implementação e checkpoints locais concluídos; prontidão operacional, PostgreSQL, multi-worker e produção não estabelecidos |
 | Arquitetura de produção | ⏳ Futuro |
 
 ### 3.2 Requisito aprovado — exportação configurável do inventário
@@ -1718,4 +1719,68 @@ HOM_05 = PLANNED / NON_BLOCKING_BACKLOG
 IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED_BY_THIS_ACTIVITY
 PRODUCTION_READINESS = NOT_ESTABLISHED
 NEXT_RECOMMENDED_ACTIVITY = ARGOS-HOM-00-INTEGRATION-FOUNDATION
+```
+
+## 24. Reconciliação documental vigente — ARGOS-ROADMAP-SPRINTS-RECONCILIATION (2026-10-16)
+
+Esta atualização é o ponteiro operacional corrente e preserva §§1–23 como
+registros existentes, incluindo snapshots históricos cuja fotografia mudou.
+Estados de decisão, aprovação, implementação, integração, validação, aceite e
+homologação não são intercambiáveis. Checkpoints anteriores mantêm sua data e
+escopo; nenhum teste histórico é declarado reexecutado.
+
+| Trilha/marco | Estado atual registrado | Próxima dependência/marco |
+|---|---|---|
+| HOM-00 | Fundação documental e classificação P3/P5 registradas em PROJECT_STATE §§83–86; integração/fechamento HOM-01 vieram depois | Fundação documental completa; não declara todas as integrações de branches ou gates de produção concluídos |
+| HOM-01 | CLOSED/APPROVED conforme PROJECT_STATE §113 | Preservar escopo e limitações aceitos; não reabrir |
+| HOM-02 | Implementação e validações técnicas em PROJECT_STATE §§115–123; aceite funcional CONFIRMED pelo usuário nesta atividade | O aceite supersede somente o PENDING histórico em §§116/123; sem nova validação, prontidão, deploy ou homologação |
+| HOM-03 | FORMAL_READINESS_PENDING; BLOCKED_PENDING_SSH_AUTHENTICATION conforme §§121–122 | VM PostgreSQL, permissões e migrations remotas não verificadas/não tocadas; retomar com chave SSH autorizada |
+| HOM-04 | FORMAL_OPENING_NOT_ESTABLISHED | Reavaliar gates HOM-00..03 com evidência aceita; não abrir automaticamente |
+| HOM-05 | Backlog de evolução futura; não bloqueia entrada inicial por si só | Cada slice requer atividade, autorização e gates próprios |
+| MON-01..09 | TECHNICALLY_COMPLETE conforme instrução atual do usuário | Sem rerun declarado; readiness operacional separada |
+| UI V2 P0–P7 | P0/P1/P2 CLOSED PASS; P3 referência/protótipos; P4 approval por família/escopo; P5 integração/publicação seletiva no baseline; P6 acceptance escopo-específica; P7 canonicalização global não estabelecida | Não promover a conclusão global P0–P7; manter HOM-01 fechado |
+| BC-02/backend | Status local por slice conforme checkpoints e DAG em `BACKEND_IMPLEMENTATION_ORDER.md` §2 | Não declarar wave-7 inteira ou gates de produção PASS; CAM-INT-03 real continua homologação própria |
+| IMG-01..09 | IMG-01 contrato canonicalizado; IMG-02/03 integrados; IMG-04 não integrado no checkout; IMG-05 status limitado ao runtime/checkpoints; IMG-06 não estabelecido; IMG-07 §26 substitui regra anterior somente no Quick Detail com mismatch de implementação; IMG-08 parcial; IMG-09 lifecycle não estabelecido | Consultar contrato de domínio e de captura; detalhamento de escopo e limites em `SPRINTS_ARGOS_V5.md` §21 |
+
+No código do checkout, a gestão backend de credenciais por câmera/runtime
+resolver de CAM-INT-02 está implementada e integrada; a UI de gestão de
+credenciais não está estabelecida. Upload manual IMG-03 e preview/exibição
+segura estão integrados. A seleção atual do Quick Detail ainda prioriza captura
+e usa upload como fallback, divergindo do `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`
+§26. Não há no checkout serviço/rota/UI de captura nem ciclo de galeria de três
+imagens ou rotação. CAM-INT-04/IMG-CAP existem somente no worktree isolado
+inspecionado, sem integração canônica e com homologação real pendente.
+
+O contrato de domínio §26 define `LATEST_ACTIVE_IMAGE` para Quick Detail,
+incluindo CAPTURA_CAMERA e UPLOAD_MANUAL; máximo de três imagens ativas; galeria
+em ordem crescente; captura/upload exclusivamente manuais. `LATEST_CAMERA_CAPTURE`
+permanece restrito a captura. A própria §26 mantém
+`IMPLEMENTED=NOT_ESTABLISHED`, `INTEGRATED=NO`, `VALIDATED=NO` e
+`HOMOLOGATED=NO`. As decisões de ciclo de vida registradas incluem retenção
+padrão de 12 meses, rotação por capacidade após validação da nova imagem,
+bloqueio quando todas as imagens estiverem protegidas e bloqueio de purge por
+preservação especial. Purge físico requer contrato, autoridade, rastreabilidade
+e testes próprios; não houve purge. A captura não pode ser disparada por evento
+de monitoramento.
+
+Gestão de credenciais em **Editar câmera**, botão **Capturar imagem** ao lado
+de **Importar imagem** na área Imagens, galeria de três itens, aderência Quick
+Detail §26 e controles de retenção/rotação compõem backlog de capacidade sujeito
+a atividades próprias.
+Não reabrem HOM-01 e não são bloqueadores automáticos de HOM-04 sem citação em
+gate de entrada vigente. A próxima prioridade documental/operacional é retomar
+HOM-03 após disponibilização de chave SSH autorizada e, depois, reavaliar os
+gates HOM-04; backlog HOM-05 deve ser autorizado separadamente.
+
+```text
+ROADMAP_RECONCILIATION = ARGOS-ROADMAP-SPRINTS-RECONCILIATION
+NEXT_RECOMMENDED_ACTIVITY = resume HOM-03 after authorized SSH key; then reevaluate HOM-04 gates; HOM-05 capability backlog separately authorized
+IMPLEMENTATION_AUTHORIZATION = NONE_GRANTED_BY_THIS_DOCUMENT
+TESTS_RERUN = NO
+ACTIVITY_COMPLETION_PERCENT = 100%
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE_RESULT = PASS
+ROOT_DELTA_VALIDATION = PASS
+GIT_DIFF_CHECK = PASS
+ACTIVITY_COMPLETE = YES
 ```

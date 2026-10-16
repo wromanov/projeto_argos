@@ -11,20 +11,20 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; HOM-01 Dashboard V7 visual acceptance section 108 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; HOM-01 Dashboard V7 visual acceptance section 20.68 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; CAM-INT-03 post-publication reconciliation section 32; UI V2 authority mapped in section 16 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; reconciliation §124; HOM-03 blocked pending authorized SSH key; HOM-04 opening not established |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff §20.83; resume HOM-03 after authorized SSH key |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; current pointer §87; root validation and diff check PASS |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
 ## 2. Authorities canônicas do projeto
 
 | Path | Role | Authority scope | Status |
 |---|---|---|---|
-| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; UI V2 is parallel and prototype-driven |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; snapshot amplo de P1 preservado; ver PROJECT_STATE section 37 para status atual da UI-V2 |
+| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; current reconciliation §24; preserve earlier snapshots |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; current reconciliation §21; preserve §20 historical snapshot |
 | `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md` | Authority operacional da UI V2 | Escopo, princípios, fluxo P0–P7, gates e próxima atividade visual | PRESENT / CANONICAL; P3-0 é o checkpoint anterior; patch ROOT e próximo gate constam no DCR e em PROJECT_STATE section 37 |
 | `docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md` | Censo factual de superfícies e matrizes UI-V2-P0 | PRESENT / CANONICAL; P0 CLOSED_PASS |
-| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; DISPLAY_IMAGE integrated, deferred production backend decision |
+| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; §26 approves Quick Detail LATEST_ACTIVE_IMAGE; implementation/integration/validation/homologation not established |
 | `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; Quick Detail baseline approved; UI-3 product acceptance pending, section 18 |
 | `docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md` | Registro factual dos findings de UI-0 | Findings do preflight read-only, sem alterar a authority de UI-DS | PRESENT / CURRENT FINDINGS RECORD; NON-BLOCKING |
 | `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | ADR de arquitetura | Arquitetura de monitoramento e relação com gestão de imagens | PRESENT / AUTHORITY; verificar vigência no escopo aplicável |
@@ -1689,3 +1689,328 @@ HOM01_STATUS = IN_PROGRESS
 HOM02_START = BLOCKED
 PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §109
 ```
+
+## 74. HOM-01-FINAL-CLOSURE (2026-10-14)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §111 | Consolidação dos aceites e resultado anterior da regressão sob sandbox | HISTORICAL / superseded by §112 for current regression status |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.70 | Resumo anterior de retomada e bloqueio | HISTORICAL / superseded by §20.71 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`, §74 | Este índice de continuidade | HISTORICAL / superseded by §75 |
+| `docs/projeto/evidence/camera-detail-residual-qa/REPORT.md` | Limitações aceitas da Camera Detail | PRESERVED / closed with limitations; not reopened |
+| `docs/projeto/evidence/dashboard-v7-integrated-qa/REPORT.md` | Escopo e evidências do aceite Dashboard V7 | PRESERVED / visual QA not repeated |
+
+```text
+ACTIVITY = HOM-01-FINAL-CLOSURE
+GLOBAL_DJANGO_REGRESSION = FAIL / 948 tests; 42 errors; Django system check PASS
+REGRESSION_RERUN = NO / single run
+OBSERVED_BLOCKER = WinError 5 while creating/cleaning temporary media directories under .local/qa/test-runs
+HOM01_READY = NO
+HOM01_STATUS = IN_PROGRESS
+HOM02_READINESS = BLOCKED
+CLOSURE_RECOMMENDATION = HOLD until a passing global regression
+VISUAL_QA_REPEATED = NO
+ACCEPTED_LIMITATIONS = PRESERVED / PROJECT_STATE.md §§108–109
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §111 (historical; current state in §112)
+```
+
+## 75. HOM-01-REGRESSION-UNBLOCK (2026-10-14)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §112 | Causa ambiental, remediação, regressão consolidada e decisão técnica de prontidão | CURRENT / regression PASS; HOM-01 ready for user approval |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.71 | Handoff atual, causa, resultado e limites de autorização | CURRENT / points to §112 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`, §75 | Este índice de continuidade | CURRENT |
+| `docs/projeto/evidence/camera-detail-residual-qa/REPORT.md` | Limitações aceitas da Camera Detail | PRESERVED / closed with limitations; not reopened |
+| `docs/projeto/evidence/dashboard-v7-integrated-qa/REPORT.md` | Escopo e evidências do aceite Dashboard V7 | PRESERVED / visual QA not repeated |
+
+```text
+ACTIVITY = HOM-01-REGRESSION-UNBLOCK
+ENVIRONMENT_ISSUE = YES / sandbox filesystem ACL for nested temporary paths
+ERRORS_ROOT_CAUSE = ENVIRONMENTAL / WinError 5 creating/cleaning nested temporary directories
+REMEDIATION = one global regression run with filesystem access outside sandbox restriction; no code/config edits
+REGRESSION_RESULT = PASS / 948 tests; OK; Django system check PASS
+REMAINING_MATERIAL_BLOCKERS = NONE / HOM-01 technical regression
+HOM01_READY = YES / recommend technical closure for user approval
+HOM01_STATUS = READY_FOR_USER_APPROVAL / formal closure subject to user authority
+HOM02_READINESS = BLOCKED / no HOM-02 authorization
+VISUAL_QA_REPEATED = NO
+ACCEPTED_LIMITATIONS = PRESERVED / PROJECT_STATE.md §§108–109
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE.md §112
+```
+
+## 76. HOM-01-CLOSE-AND-HOM02-PREPARATION — encerramento aprovado (2026-10-14)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §113 | Aprovação humana e registro formal de fechamento HOM-01 | CURRENT / CLOSED; regression PASS 948 tests; no material blockers |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.72 | Handoff do fechamento e preservação das limitações | CURRENT / HOM-01 closed; prior acceptances preserved |
+| `docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`, §16 | Checkpoint de fechamento da HOM-01 e abertura preparatória HOM-02 | CURRENT / closure approved; no QA repeated |
+| `docs/projeto/evidence/dashboard-v7-integrated-qa/REPORT.md` | Escopo/evidência do aceite Dashboard V7 | PRESERVED / limitations in PROJECT_STATE §108 |
+| `docs/projeto/evidence/camera-detail-residual-qa/REPORT.md` | Limitações aceitas de Camera Detail | PRESERVED / CLOSED_WITH_LIMITATIONS per PROJECT_STATE §109 |
+
+```text
+HOM01_FORMAL_CLOSURE = APPROVED
+HOM01_STATUS = CLOSED
+GLOBAL_REGRESSION = PASS / 948 tests / 600.522s
+MATERIAL_BLOCKERS = NONE
+VISUAL_QA_REPEATED = NO
+```
+
+## 77. HOM-02-XLSX-IMPORT-PREPARATION (2026-10-14)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/projeto/HOM_02_XLSX_IMPORT_PREPARATION.md` | Proposta funcional, decisões já aprovadas, questões abertas, defaults recomendados e critérios propostos | CURRENT / preparation authorized; implementation not authorized |
+| `docs/projeto/SPRINTS_ARGOS_V5.md`, seção HOM-02 | Decisões-base e gates já aprovados | CANONICAL / reuse; schema/template and homologation pending |
+| `docs/projeto/HOM_01_UI_V2_BASELINE_CHECKPOINT.md`, §16 | Handoff de fechamento HOM-01 e autorização apenas preparatória HOM-02 | CURRENT |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §114 | Estado da preparação e fronteira de autorização | CURRENT / decisions pending; no implementation authority |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.73 | Próximo handoff da proposta HOM-02 | CURRENT / implementation not yet authorized |
+
+A proposta separa aceites existentes de decisões funcionais abertas. Defaults
+recomendados não representam aprovação. Reutilizar shell/componentes existentes;
+nenhum redesenho, alteração de MON Runtime ou implementação fica autorizado por
+este registro.
+
+## 78. HOM-02-XLSX-IMPORT-IMPLEMENTATION (2026-10-14)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §115 | Snapshot de implementação, evidências, validações e status de aceitação | CURRENT / implementation technically complete; human acceptance pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.74 | Handoff atualizado; §20.73 passa a histórico | CURRENT |
+| `docs/projeto/HOM_02_XLSX_IMPORT_PREPARATION.md`, adendo de implementação | Registro da autorização que resolveu decisões abertas e da entrega | CURRENT / preparation history preserved |
+| `docs/projeto/SPRINTS_ARGOS_V5.md`, seção HOM-02 | Status do item de sprint e evidências técnicas | CANONICAL / implemented; human acceptance pending |
+| `cameras/xlsx_import.py`, `cameras/views.py`, `cameras/urls.py` | Parser, template, matching, preview, confirmação, autorização e transação | IMPLEMENTATION |
+| `cameras/models.py`, `cameras/migrations/0019_alter_camera_options_cameraimportpreview.py` | Permissão de importação e armazenamento da prévia expirada/consumida | IMPLEMENTATION |
+| `cameras/templates/cameras/importacao.html`, `importacao_resultado.html`, `cameras/templates/cameras/lista.html` | SSR de envio, prévia, resultado e entrada no Inventário | IMPLEMENTATION / existing Design System reused |
+| `cameras/test_xlsx_import.py` | Cobertura funcional, integração SSR, parser/template, rollback e escala 2.300 | VALIDATION / PASS |
+
+```text
+HOM01_STATUS = CLOSED
+HOM02_IMPLEMENTATION = IMPLEMENTED / TECHNICAL VALIDATION PASS
+HOM02_HUMAN_ACCEPTANCE = PENDING
+MON_RUNTIME_CHANGED = NO
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+```
+
+## 79. HOM-02-HUMAN-ACCEPTANCE — preparação local (2026-10-14)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §116 | Estado do QA local, usuário, artefatos e fronteira sem confirmação | CURRENT / QA running locally; human acceptance pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.75 | Handoff operacional para a validação humana | CURRENT |
+| `.local/qa/argos-template-importacao-cameras-v1.xlsx` | Template oficial v1 gerado pelo produtor da aplicação | LOCAL / ignored by Git |
+| `.local/qa/argos-exemplo-importacao-create-update.xlsx` | Exemplo sintético com uma linha CREATE e uma linha UPDATE | LOCAL / ignored by Git; no preview or confirmation |
+
+```text
+QA_URL = http://127.0.0.1:8765/cameras/importacao/
+OPERATIONAL_USER = qa-operacional-hom01
+OPERATIONAL_PERMISSIONS = view_camera + importar_cameras + add_camera + change_camera
+SYNTHETIC_CAMERA_COUNT = 5 / preserved
+IMPORT_CONFIRMATION = NOT_EXECUTED
+HOM02_HUMAN_ACCEPTANCE = PENDING
+CODE_CHANGED = NO
+TESTS_OR_AUDITS_REPEATED = NO
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE §116 and continuity pointers updated
+```
+
+## 80. HOM-02-XLSX-UI-CONFORMANCE-FIX (2026-10-14)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §117 | Causa raiz, arquivos, checks e limites da conferência integrada | CURRENT / visual fix implemented; authenticated desktop/mobile review pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.76 | Handoff para autenticação e revisão visual humana | CURRENT |
+| `templates/base.html`, `templates/components/sidebar.html`, `templates/components/navegacao_principal.html` | Gate da variante compartilhada do shell somente para rotas XLSX | IMPLEMENTATION / Dashboard e Inventário preservados |
+| `cameras/templates/cameras/importacao.html`, `importacao_resultado.html` | Breadcrumb, ações, upload, resumo, prévia e resultado com componentes ARGOS | IMPLEMENTATION / fluxo preservado |
+| `static/css/importacao-xlsx.css` | Espaçamentos e adaptação responsiva local com tokens existentes | IMPLEMENTATION |
+| `cameras/test_xlsx_import.py` | Fluxo direcionado XLSX | VALIDATION / 13 tests PASS; unchanged by this activity |
+
+```text
+ROOT_CAUSE = XLSX routes omitted from shared UI V2 shell gate
+IMPORTER_LOGIC_CHANGED = NO
+DJANGO_SYSTEM_CHECK = PASS
+TARGETED_XLSX_TESTS = PASS / 13
+GIT_DIFF_CHECK = PASS
+AUTHENTICATED_DESKTOP_SCREEN = PENDING / reauthentication required
+MOBILE_VIEWPORT = PENDING / authenticated review required
+IMPORT_CONFIRMATION = NOT_EXECUTED
+HOM02_HUMAN_ACCEPTANCE = PENDING
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE §117 and continuity pointers updated
+```
+
+## 81. HOM-02-XLSX-FORM-COMPACTNESS (2026-10-14)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §118 | Evidência e estado do ajuste de largura/altura do upload | CURRENT / targeted checks pass; human acceptance pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.77 | Handoff do CSS e validação direcionada | CURRENT |
+| `static/css/importacao-xlsx.css` | Larguras compactas desktop, altura do seletor, gaps e regras mobile | IMPLEMENTATION |
+| `cameras/templates/cameras/importacao.html` | Parâmetro de versão para atualizar o CSS em cache | PRESENTATION / stylesheet link only; form markup unchanged |
+| `cameras/test_xlsx_import.py` | Upload, preview e comportamento funcional XLSX | VALIDATION / 13 tests PASS; unchanged |
+
+```text
+CARD_MAX_WIDTH = 800px / left aligned
+FILE_INPUT_MAX_WIDTH = 560px / 44px height
+RESPONSIVE_RESULT = CSS_RULE_VERIFIED / 100% widths at max-width 680px; no mobile viewport capture
+FUNCTIONAL_RESULT = PASS / targeted XLSX tests
+DJANGO_SYSTEM_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+HOM02_HUMAN_ACCEPTANCE = PENDING
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE §118 and continuity pointers updated
+```
+
+## 82. HOM-02-XLSX-IMPORT-UPLOAD-FIELD-VERTICAL-ALIGNMENT (2026-10-15)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §119 | Implementação, checks e limite da confirmação visual | CURRENT / code and tests PASS; integrated visual pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.78 | Handoff e limites de validação | CURRENT |
+| `static/css/importacao-xlsx.css` | Alinhamento vertical local do campo nativo XLSX | IMPLEMENTATION / `#id_arquivo` only |
+| `cameras/templates/cameras/importacao.html` | Versão de cache da folha XLSX | PRESENTATION / stylesheet query only |
+| `cameras/test_xlsx_import.py` | Fluxo de upload e prévia | VALIDATION / 13 tests PASS; unchanged |
+
+```text
+CARD_MAX_WIDTH = 800px / preserved
+FILE_INPUT_MAX_WIDTH = 560px / preserved
+FILE_INPUT_HEIGHT = 44px / preserved
+VERTICAL_ALIGNMENT = CSS_RULES_APPLIED / integrated visual pending authenticated session
+DJANGO_SYSTEM_CHECK = PASS
+TARGETED_XLSX_TESTS = PASS / 13
+FUNCTIONAL_RESULT = PASS / no importer logic changed
+HOM02_HUMAN_ACCEPTANCE = PENDING
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE §119 and continuity pointers updated
+```
+
+## 83. HOM-03-POSTGRESQL-INTEGRATION (2026-10-15)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §120 | Escopo entregue, checks locais e limites de validação da VM | CURRENT / config slice implemented; real PostgreSQL and filesystem permissions pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.79 | Handoff da configuração e validações restantes | CURRENT |
+| `config/settings_homologation.py` | Perfil seguro de homologação com PostgreSQL, logs, mídia e estáticos em `/dados/argos` | IMPLEMENTATION |
+| `env.homologation.example` | Nomes e valores não secretos das variáveis do serviço | EXAMPLE / secrets omitted |
+| `docs/seguranca/CONFIGURACAO_DE_AMBIENTES.md` | Provisionamento de diretórios, variáveis e comandos de validação/estáticos | OPERATIONAL DOCUMENTATION |
+| `requirements.txt` | Driver Psycopg 3.3.6 | DEPENDENCY |
+
+```text
+DEVELOPMENT_SQLITE = PRESERVED
+WSGI_ENV_SELECTION = PASS
+DJANGO_CHECK = PASS / SQLite profile
+PSYCOPG_LOCAL = ABSENT
+VM_POSTGRESQL_CONNECTION = NOT_TESTED
+VM_FILESYSTEM_PERMISSIONS = NOT_TESTED
+MIGRATIONS_ON_VM = NOT_RUN
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE §120 and continuity pointers updated
+ACTIVITY_COMPLETE = NO / external environment checks pending
+```
+
+## 84. HOM-03-POSTGRESQL-VM-VALIDATION (2026-10-15)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §121 | Tentativa de acesso, dependências, payload e bloqueios de VM | CURRENT / blocked pending SSH key; no remote changes |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.80 | Handoff de retomada após chave autorizada disponível | CURRENT |
+| `.local/hom03-transfer-20261015/argos-hom03-postgresql-transfer.zip` | Payload seletivo de settings/dependencies e checksums | READY / ignored by Git; no secrets/databases/WIP |
+| `requirements.txt` | Psycopg C implementation on Linux and binary implementation on Windows | IMPLEMENTATION / platform markers validated |
+
+```text
+SSH_TARGET = [PRIVATE_VM_ENDPOINT_REDACTED]
+SSH_AUTHENTICATION = BLOCKED / no authorized key available in session
+VM_FILE_CHANGES = NONE
+SYSTEMD_ENVIRONMENT = NOT_CONFIGURED
+SERVICE_ACCOUNT_PERMISSIONS = NOT_VERIFIED
+POSTGRESQL_CONNECTION = NOT_TESTED
+DJANGO_CHECK_ON_VM = NOT_RUN
+MIGRATION_PLAN_ON_VM = NOT_VERIFIED / none executed
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE §121 and continuity pointers updated
+ACTIVITY_COMPLETE = NO
+```
+
+## 85. HOM-03-SSH-LOGIN-HELPER (2026-10-15)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §122 | Helper de login interativo sem persistência de credenciais | CURRENT / script syntax PASS; not executed |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.81 | Uso do helper e limites de autenticação | CURRENT |
+| `.local/hom03-transfer-20261015/login_vm.py` | Inicia OpenSSH interativo para `[PRIVATE_VM_ENDPOINT_REDACTED]`; sem senha/chave no código | LOCAL / ignored by Git; no credentials saved |
+
+```text
+SSH_HELPER = READY
+SSH_EXECUTION = NOT_RUN
+SECRET_PERSISTENCE = NO
+VM_CHANGES = NONE
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE §122 and continuity pointers updated
+ACTIVITY_COMPLETE = NO / SSH access remains blocked
+```
+
+## 86. HOM-02-XLSX-UPDATE-PREVIEW-FIX (2026-10-15)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §123 | Correção da prévia, testes isolados e limites da atividade | CURRENT / bounded fix complete; HOM-02 human acceptance remains pending |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.82 | Handoff e validações da correção | CURRENT |
+| `cameras/xlsx_import.py` | Snapshot original antes do ModelForm para diff e identificação | IMPLEMENTATION |
+| `cameras/test_xlsx_import.py` | Casos de UPDATE renomeado, sem mudança e auditoria persistida | TESTS |
+
+```text
+UPDATE_RENAME_PREVIEW = PASS
+UNCHANGED_UPDATE_PREVIEW = PASS
+CREATE_MATCHING_CONFLICTS_ROLLBACK_AUDIT = PASS
+TARGETED_XLSX_TESTS = PASS / 14
+RELATED_REGRESSION = PASS / 31
+TEST_DATABASE = SQLITE_IN_MEMORY / DESTROYED_AFTER_TESTS
+VM_POSTGRESQL = NOT_ACCESSED
+EXISTING_PREVIEW = NOT_CONFIRMED
+COMMIT_SHA = 5a1d9e63c97712b9ee5ddbdf8f26b802eded801e / 16 HOM-02 files
+WORKTREE_WIP_PRESERVED = YES / no push
+PROJECT_STATE_UPDATE = PASS / PROJECT_STATE §123 and continuity pointers updated
+ACTIVITY_COMPLETE = YES / bounded fix complete; overall HOM-02 acceptance remains pending
+```
+
+## 87. ARGOS-ROADMAP-SPRINTS-RECONCILIATION (2026-10-16)
+
+| Path | Papel | Vigência |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §124 | Baseline, status/gates e limites da reconciliação | CURRENT / root delta validated; `git diff --check` PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.83 | Handoff vigente e recomendação de retomada | CURRENT |
+| `docs/projeto/ROADMAP_ARGOS_V5.md`, §24 | Status macro atualizado e direção de trilhas | CURRENT POINTER / prior snapshots preserved |
+| `docs/projeto/SPRINTS_ARGOS_V5.md`, §21 | Ordem, IDs, gates e status por escopo | CURRENT POINTER / §20 preserved as historical snapshot |
+| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`, §26 | Seleção Quick Detail, provenance e limites aprovados de imagem | CANONICAL AUTHORITY / implementation not established |
+| `docs/projeto/contracts/backend/BACKEND_IMPLEMENTATION_ORDER.md`, §2 | DAG e waves de BC-02 | CANONICAL AUTHORITY |
+| `docs/projeto/contracts/backend/camera/CAM-INT-02_CREDENTIALS_CONTRACT.md`, `CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md`, and `docs/projeto/contracts/backend/01_ACCESS_ROLES_AUTHORIZATION_CONTRACT.md` | Backend credential lifecycle/resolver and access boundaries | CANONICAL REFERENCES / do not duplicate security rules |
+
+```text
+ACTIVITY = ARGOS-ROADMAP-SPRINTS-RECONCILIATION
+HOM-01 = CLOSED / APPROVED / PROJECT_STATE §113
+HOM-02 = implementation and technical validations §§115-123 / user-confirmed functional acceptance in this activity
+HOM-02_ACCEPTANCE = supersedes only prior PENDING acceptance; no new validation/readiness/deploy/homologation
+HOM-03 = FORMAL_READINESS_PENDING / BLOCKED_PENDING_SSH_AUTHENTICATION / §§121-122
+HOM-04 = FORMAL_OPENING_NOT_ESTABLISHED / HOM-00..03 accepted evidence remains required
+HOM-05 = future backlog / independent activity, authorization and gates
+MON-01..09 = TECHNICALLY_COMPLETE / current user input; no tests rerun
+MON_WORKER = code present in HEAD; §71 SQLite evidence historical; PostgreSQL/multi-worker/production readiness NOT_ESTABLISHED
+UI_V2 = P0-P2 CLOSED PASS; P3 references; P4 scope-specific; P5 selective baseline integration; P6 scope-specific; P7 global completion NOT_ESTABLISHED
+BC-02 = stage/checkpoint scoped; do not promote wave-7/production to global PASS
+IMG = IMG-01..09 statuses and evidence boundaries in SPRINTS §21
+NEXT_RECOMMENDATION = resume HOM-03 after authorized SSH key; then reevaluate HOM-04 gates; HOM-05 separately authorized
+AGENT_HANDOFF_GATE_RESULT = PASS / root independently validated the delta
+ROOT_DELTA_VALIDATION = PASS
+GIT_DIFF_CHECK = PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES
+```
+
+Atividade documental apenas. Baseline fornecida: root atual, branch
+`codex/hom-v1-integration`, HEAD
+`5a1d9e63c97712b9ee5ddbdf8f26b802eded801e`, staging vazio. Os worktrees
+CAM-INT-04, IMG-CAP, UI P3-A/B/C/D e P5 foram inspecionados read-only; branches
+isoladas não são integração canônica. WIP pré-existente foi preservado conforme
+`PROJECT_STATE.md` §124. Sem alteração de código/testes, execução de testes,
+acesso a banco, purge ou operações de Git. O root validou o delta e confirmou
+`git diff --check` sem erros; staging vazio. O conjunto ativo de políticas
+transversais permanece o identificado na seção 3 deste mapa: PM-02 R2.6,
+PM-03 R2.3, PM-04 v1.2 e Independence v1. PM-01/PM-05 não foram adicionadas
+como authorities.

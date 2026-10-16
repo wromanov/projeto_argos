@@ -1,14 +1,15 @@
 # ARGOS — Project State
 
-Retomada desta atividade: seção 110 — HOM-01-CHECKPOINT-SANITIZATION. Os aceites humanos vigentes estão nas seções 108 (Dashboard V7) e 109 (Camera Detail CLOSED_WITH_LIMITATIONS). HOM-01 permanece IN_PROGRESS e HOM-02 permanece BLOCKED. O parágrafo anterior à seção UI-V2-P1, preservado abaixo, é o ponteiro histórico do checkpoint §107.
+Retomada desta atividade: §§113–116 — HOM-01 encerrada, HOM-02 implementada e ambiente QA local preparado para aceitação humana. HOM-01 está `CLOSED`; a regressão global registrada em §112 passou (948 testes em 600.522s; Django system check PASS). HOM-02 implementa template, prévia, confirmação atômica, validação cadastral e auditoria; validação direcionada, regressão de integração e carga sintética de 2.300 registros passaram. Os aceites e limitações em §§99, 101, 108 e 109 foram preservados, incluindo Camera Detail `CLOSED_WITH_LIMITATIONS`. Seções anteriores permanecem como histórico.
 
-Estado corrente ARGOS-HOM-01: consulte a seção 107 para o encerramento da
-recuperação no computador do trabalho. A branch publicada é
-`codex/hom-v1-integration`; o SHA corrente deve ser confirmado diretamente no
-Git. O ambiente local está preparado para continuar HOM-01. HOM-01 permanece
-`IN_PROGRESS`, o aceite visual geral do Dashboard V7 segue `PENDING` e o início
-de HOM-02 segue `BLOCKED`. A seção 106 e as anteriores são checkpoints
-históricos; este ponteiro identifica o snapshot mais recente.
+Estado corrente ARGOS: consulte §113 para o encerramento formal da HOM-01,
+§114 para preparação histórica, §115 para implementação da HOM-02 e §116 para
+o ambiente local de aceitação humana. A branch é
+`codex/hom-v1-integration`, HEAD registrado
+`97c7d47c4c47761d205a7d41262bf067c56c403d`. Os aceites Dashboard V7 (§108) e
+Camera Detail com limitações aceitas (§109) permanecem preservados. Nenhuma QA
+visual foi repetida nesta atividade. A regressão HOM-02 foi direcionada e não
+reabriu aceites visuais ou a HOM-01.
 
 ## UI-V2-P1 — seleção visual e fechamento (2026-09-27)
 
@@ -6399,3 +6400,657 @@ do alvo RTSP histórico foi substituído por uma descrição, preservando o resu
 do gate e a evidência literal privada. Nenhum estado de homologação foi alterado.
 Esta atividade não repete auditoria visual, não inicia HOM-02 e não autoriza
 publicação corporativa, push, merge ou deploy.
+
+## 111. HOM-01-FINAL-CLOSURE (2026-10-14)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-01-FINAL-CLOSURE
+MODE = DIRECT
+BRANCH = codex/hom-v1-integration
+EXPECTED_HEAD = 97c7d47
+HEAD_AT_EXECUTION = 97c7d47c4c47761d205a7d41262bf067c56c403d
+WORKTREE_AT_PREFLIGHT = CLEAN / index empty; branch one commit ahead of origin
+ACCEPTANCE_CONSOLIDATION = PASS / existing human acceptances §§99, 101, 108, 109 preserved
+VISUAL_QA_REPEATED = NO
+GLOBAL_DJANGO_REGRESSION = FAIL / 948 tests; 42 errors; 641.915 seconds
+DJANGO_SYSTEM_CHECK = PASS / no issues identified
+REGRESSION_COMMAND = .venv Python manage.py test --settings=scripts.localqa.test_settings --noinput -v 1
+REGRESSION_ERROR_EVIDENCE = observed PermissionError WinError 5 creating temporary media directories under .local/qa/test-runs; temporary-directory cleanup also reported access denied
+REGRESSION_CAUSE = ENVIRONMENTAL_ACCESS_DENIAL_OBSERVED / not enough evidence to attribute all 42 errors to one cause
+REGRESSION_RERUN = NO / single authorized global run completed
+MATERIAL_BLOCKERS = GLOBAL_FUNCTIONAL_REGRESSION_GATE_NOT_PASSED / required regression returned errors
+HOM01_READY = NO
+CLOSURE_RECOMMENDATION = HOLD / do not submit HOM-01 formal closure for approval until global regression passes
+HOM02_READINESS = BLOCKED / HOM-01 closure gate not passed; no HOM-02 start authorized
+ACCEPTED_LIMITATIONS = PRESERVED / Camera Detail residual QA CLOSED_WITH_LIMITATIONS per §109; Dashboard approval scope and measurement limits per §108
+SOURCE_CODE_CHANGE = NO
+VISUAL_AUDIT_REOPENED = NO
+NEW_BRANCH = NO
+PUSH = NO
+MERGE = NO
+DEPLOY = NO
+ACTIVITY_COMPLETION_PERCENT = 100%
+PROJECT_STATE_UPDATE = PASS / this section and continuity pointers
+ACTIVITY_COMPLETE = YES / closure readiness adjudicated and recorded; HOM-01 itself remains open
+NEXT_RECOMMENDED_ACTION = resolve the isolated test-media access denial in an authorized environment, then obtain a passing global Django regression before requesting formal HOM-01 closure
+```
+
+A consolidação preserva os aceites existentes sem nova inspeção visual: o
+Dashboard V7 foi aprovado nas capturas e viewports registrados em §108; a
+aprovação desktop da sidebar e os escopos dos rótulos A–D permanecem nos §§101
+e 99; a revisão residual da Camera Detail foi encerrada com limitações aceitas
+em §109. As limitações de medição e as verificações visuais não realizadas
+continuam explícitas e não foram reabertas. O aceite atual do Dashboard inclui
+1366×768; achados visuais históricos não foram tratados como novos findings.
+
+A única regressão global desta atividade executou 948 testes e terminou com 42
+erros. O Django system check passou. Os traces disponíveis incluem acesso
+negado do Windows ao criar diretórios de mídia temporários sob o isolamento
+QA e falha de limpeza desses temporários. Como não há evidência suficiente para
+atribuir todos os erros a uma causa única, o resultado permanece `FAIL` e o
+gate funcional obrigatório não é considerado satisfeito. A execução não foi
+repetida. HOM-01 permanece `IN_PROGRESS`; HOM-02 permanece `BLOCKED`. Nenhum
+código, branch, remoto ou ambiente de homologação/produção foi alterado.
+
+## 112. HOM-01-REGRESSION-UNBLOCK (2026-10-14)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-01-REGRESSION-UNBLOCK
+MODE = DIRECT
+BRANCH = codex/hom-v1-integration
+EXPECTED_HEAD = 97c7d47
+HEAD_AT_EXECUTION = 97c7d47c4c47761d205a7d41262bf067c56c403d
+PRIOR_WIP = PRESERVED / prior HOM-01-FINAL-CLOSURE documentation changes retained
+ENVIRONMENT_ISSUE = YES / sandbox filesystem ACL prevented nested temporary-directory writes and cleanup
+ERRORS_ROOT_CAUSE = ENVIRONMENTAL / WinError 5 for nested `private` directory under MEDIA_ROOT backed by TemporaryDirectory; similar Python TemporaryDirectory/temp-path errors under `.local/qa/test-runs`
+DIAGNOSTIC_EVIDENCE = `scripts/localqa/test_settings.py` sets `tempfile.tempdir = str(TEST_ROOT)`; a system `%TEMP%` TemporaryDirectory probe also denied nested directory creation and cleanup while process remained sandboxed
+ERRORS_ATTRIBUTION = 42/42 ENVIRONMENTAL / differential evidence: the formerly failing storage test passed when the same suite ran outside the sandbox filesystem restriction; no application regression evidenced by those errors
+REMEDIATION = SINGLE GLOBAL REGRESSION RUN WITH FILESYSTEM ACCESS OUTSIDE SANDBOX RESTRICTION / no code or configuration edits
+REGRESSION_COMMAND = .venv Python manage.py test --settings=scripts.localqa.test_settings --noinput -v 1
+REGRESSION_RESULT = PASS / Ran 948 tests in 600.522s; OK
+DJANGO_SYSTEM_CHECK = PASS / no issues
+REGRESSION_RUNS_IN_THIS_ACTIVITY = 1 / no additional rerun
+REMAINING_MATERIAL_BLOCKERS = NONE / HOM-01 technical regression
+HOM01_READY = YES / technically ready; recommend technical closure for user approval
+HOM01_STATUS = READY_FOR_USER_APPROVAL / formal closure remains subject to user authority
+HOM02_READINESS = BLOCKED / no HOM-02 authorization
+ACCEPTANCES = PRESERVED / §§99, 101, 108, 109
+ACCEPTED_LIMITATIONS = PRESERVED / Camera Detail remains CLOSED_WITH_LIMITATIONS per §109
+VISUAL_QA_REPEATED = NO
+PRODUCTION_CODE_OR_CONFIG_CHANGE = NO
+NEW_BRANCH = NO
+PUSH = NO
+MERGE = NO
+DEPLOY = NO
+PROJECT_STATE_UPDATE = PASS / this section and continuity pointers updated
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES / regression unblock adjudication recorded; formal HOM-01 closure awaits user approval
+NEXT_RECOMMENDED_ACTION = submit technical HOM-01 closure for user approval; do not start HOM-02 without separate authorization
+```
+
+Os 42 erros da execução anterior foram agrupados pela evidência diferencial
+como ambientais: o trace de mídia falhava ao criar `private` sob o
+`TemporaryDirectory` usado como `MEDIA_ROOT`, e também havia falha de limpeza;
+erros similares apareceram em caminhos temporários Python (`TemporaryDirectory`/
+`tmp*`) sob `.local/qa/test-runs`. O settings local fixa `tempfile.tempdir` em `TEST_ROOT`;
+um probe independente sob `%TEMP%` do sistema também falhou para criação de
+subdiretório e limpeza quando o processo permaneceu dentro do sandbox. Na
+única execução global desta atividade, com acesso de filesystem fora dessa
+restrição, o teste de storage anteriormente falho passou e a suíte completa
+terminou `OK`. Não se inferem nomes ou traces individuais para os demais erros.
+
+Esta conclusão preserva o WIP documental da seção 111, os aceites anteriores
+e as limitações já aceitas. Não houve repetição de QA visual nem alteração de
+código de produção ou configuração. A HOM-01 está tecnicamente pronta para
+recomendação de encerramento, sujeita à aprovação formal do usuário; HOM-02
+continua bloqueada e não autorizada.
+
+## 113. HOM-01 — encerramento formal aprovado (2026-10-14)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-01-CLOSE-AND-HOM02-PREPARATION
+USER_DECISION = APPROVED
+HOM01_FORMAL_CLOSURE = APPROVED
+HOM01_STATUS = CLOSED
+BRANCH = codex/hom-v1-integration
+EXPECTED_HEAD = 97c7d47
+HEAD_AT_RECORD = 97c7d47c4c47761d205a7d41262bf067c56c403d
+GLOBAL_REGRESSION = PASS / 948 tests in 600.522s; OK
+DJANGO_SYSTEM_CHECK = PASS / no issues
+MATERIAL_BLOCKERS = NONE
+VISUAL_QA_REPEATED = NO
+ACCEPTANCES = PRESERVED / §§99, 101, 108, 109
+ACCEPTED_LIMITATIONS = PRESERVED / especially §§108–109; Camera Detail CLOSED_WITH_LIMITATIONS
+CODE_OR_CONFIGURATION_CHANGED = NO
+NEW_BRANCH = NO
+PUSH = NO
+MERGE = NO
+DEPLOY = NO
+PROJECT_STATE_UPDATE = PASS / this section
+ACTIVITY_COMPLETE = YES / formal HOM-01 closure recorded
+NEXT = HOM-02 preparation; implementation requires separate authorization
+```
+
+O usuário aprovou formalmente o encerramento da HOM-01 nesta data. O registro
+consolida o resultado técnico já documentado em §112: a única regressão global
+executada para desbloqueio passou com 948 testes em 600.522 segundos, e o
+Django system check passou. Não houve nova execução de testes, auditoria ou QA
+visual nesta atividade. Não há impedimentos materiais registrados para a
+HOM-01.
+
+Os aceites e limites anteriores permanecem como registrados em §§99, 101, 108
+e 109. Em particular, §108 continua limitado às capturas/viewports aceitos,
+com DPR observado de 0,9, zoom 100% não verificado e sem comparação pixel a
+pixel; §109 permanece `CLOSED_WITH_LIMITATIONS`, com as verificações residuais
+explicitamente não verificadas. O fechamento não amplia nem reabre esses
+escopos.
+
+## 114. HOM-02 — preparação da importação XLSX (2026-10-14)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-01-CLOSE-AND-HOM02-PREPARATION
+HOM02_PREPARATION = AUTHORIZED / proposal consolidated
+HOM02_IMPLEMENTATION = NOT_YET_AUTHORIZED
+HOM02_STATUS = PREPARATION_COMPLETE / FUNCTIONAL_DECISIONS_PENDING
+OBJECTIVE = bulk import approximately 2,300 camera records from XLSX
+ARGOS_ID_COLUMN = NO / database-generated IDs for new records
+MATCHING = unique, unambiguous serial or patrimony; name/IP alone are insufficient
+PREVIEW = REQUIRED / no write before explicit confirmation
+VALIDATION = canonical Django forms, models, validators and services
+ATOMICITY = ALL_OR_NOTHING / rollback entire batch on error
+MON_RUNTIME = OUT_OF_SCOPE / no direct runtime-state change
+SCHEMA_AND_TEMPLATE = NOT_HOMOLOGATED
+IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED
+PROJECT_STATE_UPDATE = PASS / this section
+```
+
+As decisões-base já aprovadas estão registradas também na seção HOM-02 de
+`docs/projeto/SPRINTS_ARGOS_V5.md` e no checkpoint HOM-01 §7. A proposta
+preparatória em `docs/projeto/HOM_02_XLSX_IMPORT_PREPARATION.md` separa esses
+aceites das escolhas funcionais ainda abertas, recomenda defaults sem tratá-los
+como aprovados e define o fluxo e os critérios propostos. A evidência de código
+existente inclui os identificadores únicos/nullable `Camera.serial` e
+`Camera.patrimonio`, `origem_cadastro=IMPORTACAO`, formulários Django de
+criação/edição, validações e serviços de auditoria; não foi localizado
+importador XLSX nem dependência de parser XLSX nas dependências inspecionadas.
+
+A preparação não inicia implementação nem autoriza mudanças em código,
+migrações, dependências ou MON Runtime. O início de HOM-02 depende de decisão
+humana sobre os itens em aberto na proposta e de autorização explícita para
+implementação. Não se redesenham componentes visuais aprovados: a interface
+futura deve reutilizar o shell e os componentes existentes, conforme o gate de
+Design QA aplicável.
+
+## 115. HOM-02-XLSX-IMPORT-IMPLEMENTATION (2026-10-14)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-02-XLSX-IMPORT-IMPLEMENTATION
+USER_DECISION = APPROVED
+IMPLEMENTATION_AUTHORIZATION = GRANTED
+HOM01_STATUS = CLOSED
+HOM02_IMPLEMENTATION = IMPLEMENTED / TECHNICAL VALIDATION PASS
+HOM02_HUMAN_ACCEPTANCE = PENDING
+TEMPLATE_XLSX = PASS / generated official v1, schema and field rules documented
+UPLOAD = PASS / openpyxl, 10 MB, 5,000 rows, formulas/macros/external links rejected
+CREATE_UPDATE_MATCHING = PASS / explicit actions, patrimony/serial only, conflicts blocked
+PREVIEW = PASS / no camera writes, actor/hash/validated plan, 30-minute expiry
+CONFIRMATION = PASS / permission and state revalidation under atomic transaction
+ROLLBACK_AUDIT = PASS / camera events and successful batch audit transactional
+PERMISSIONS = PASS / importar_cameras + add_camera/change_camera by operation
+SYNTHETIC_SCALE = PASS / 2,300 creates through preview and confirmation in 40.173s
+XLSX_IMPORT_TESTS = PASS / 13 tests in 40.173s
+TARGETED_INTEGRATION = PASS / 163 tests in 66.871s
+DJANGO_SYSTEM_CHECK = PASS
+MIGRATIONS_CHECK = PASS / no model drift
+TESTS_FAILED = 0
+MON_RUNTIME_CHANGED = NO
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+GIT_BRANCH = codex/hom-v1-integration
+GIT_HEAD = 97c7d47c4c47761d205a7d41262bf067c56c403d
+GIT_STAGING = EMPTY
+PREEXISTING_HOM01_WIP = PRESERVED
+NEXT_RECOMMENDED_ACTION = human acceptance of HOM-02 template and import flow; keep HOM-04 and deploy closed
+PROJECT_STATE_UPDATE = PASS / this section
+```
+
+Implementação em `cameras/xlsx_import.py`, rotas e telas SSR de Inventário,
+permissão e modelo de prévia em `cameras/models.py`, migração `0019`, e
+testes `cameras/test_xlsx_import.py`. Dependência `openpyxl>=3.1.5,<4` foi
+declarada em `requirements.txt` e instalada na `.venv` local para validação.
+O XLSX gerado fornece abas `Cameras` e `Instruções`; a leitura aceita somente
+essas abas, células de dados sem conteúdo ativo, e usa os formulários canônicos
+para validar o registro resultante. A confirmação revalida o snapshot e as
+chaves dentro da transação, registra auditoria por câmera e lote e consome a
+prévia em caso de sucesso. Falha reverte todas as gravações.
+
+Evidência: regressão direcionada de integração (163 testes) e testes isolados
+adicionais de parser/template e upload/confirmação SSR passaram; teste sintético
+de 2.300 CREATEs percorreu prévia e confirmação completos, com 2.300 câmeras e
+auditoria transacional. `manage.py check`, `makemigrations --check --dry-run`,
+compilação Python e `git diff --check` passaram. Não foi repetida a regressão
+global HOM-01 nem o Design QA. A homologação humana do template e do fluxo
+permanece pendente; esta implementação não abre HOM-04 nem autoriza deploy.
+
+## 116. HOM-02-HUMAN-ACCEPTANCE — preparação local (2026-10-14)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-02-HUMAN-ACCEPTANCE
+QA_ENVIRONMENT = RUNNING_LOCAL / 127.0.0.1:8765
+IMPORT_SCREEN = http://127.0.0.1:8765/cameras/importacao/
+QA_DATABASE = .local/qa/argos_visual_qa.sqlite3 / ownership marker validated
+MIGRATION = cameras.0019_alter_camera_options_cameraimportpreview / APPLIED
+SYNTHETIC_CAMERAS = 5 / existing records preserved; seed idempotent
+OPERATIONAL_QA_USER = qa-operacional-hom01
+OPERATIONAL_QA_PERMISSIONS = view_camera + importar_cameras + add_camera + change_camera
+OFFICIAL_TEMPLATE = .local/qa/argos-template-importacao-cameras-v1.xlsx
+SYNTHETIC_SAMPLE = .local/qa/argos-exemplo-importacao-create-update.xlsx / 1 CREATE + 1 UPDATE
+UPDATE_TARGET = ARGOS-QA-001 / explicitly identified synthetic seed record
+UNCONSUMED_PREVIEWS = 0
+IMPORT_CONFIRMATION = NOT_EXECUTED
+HOM02_HUMAN_ACCEPTANCE = PENDING
+TESTS_OR_AUDITS_REPEATED = NO
+CODE_CHANGED = NO
+PUSH = NO
+MERGE = NO
+DEPLOY = NO
+PROJECT_STATE_UPDATE = PASS / §116 and continuity pointers updated
+ACTIVITY_COMPLETE = YES / local QA preparation delivered; human acceptance remains pending
+```
+
+O launcher local oficial iniciou o servidor Django isolado no SQLite QA, aplicou
+a migração pendente da HOM-02 e manteve o conjunto existente de cinco câmeras
+sintéticas. A conta visual permaneceu com sua configuração e senha existentes;
+a conta `qa-operacional-hom01` recebeu somente permissões de visualização,
+importação, criação e edição de câmeras, sem privilégios de staff/superusuário.
+Os arquivos XLSX foram criados dentro da pasta QA ignorada pelo Git. O exemplo
+UPDATE referencia apenas a câmera sintética `ARGOS-QA-001`; nenhum preview foi
+criado, nenhuma câmera foi importada e a confirmação continua reservada à ação
+humana. Não houve execução de testes, auditoria ou confirmação nesta atividade.
+
+## 117. HOM-02-XLSX-UI-CONFORMANCE-FIX (2026-10-14)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-02-XLSX-UI-CONFORMANCE-FIX
+ROOT_CAUSE = XLSX routes omitted from the shared UI V2 shell gate in base.html and shared components
+VISUAL_CHANGE_SCOPE = import templates + route-gated shared shell classes + scoped CSS using existing UI V2 tokens/components
+IMPORTER_LOGIC_CHANGED = NO
+PERMISSIONS_CHANGED = NO
+SIDEBAR_GLOBAL_GEOMETRY_CHANGED = NO
+MON_RUNTIME_CHANGED = NO
+QA_DATABASE = .local/qa/argos_visual_qa.sqlite3 / preserved; no seed, preview, upload, or confirmation executed
+QA_SERVER = restarted on 127.0.0.1:8765 with same SQLite QA; prior browser session invalidated; user credentials and permissions unchanged
+DJANGO_SYSTEM_CHECK = PASS / no issues
+TARGETED_XLSX_TESTS = PASS / 13 tests, including synthetic 2,300-row validation
+GIT_DIFF_CHECK = PASS / git diff --check
+DESKTOP_RENDER = PASS / authenticated request render contains shared shell, active inventory nav, breadcrumb, and XLSX stylesheet
+AUTHENTICATED_SCREENSHOT = PENDING / user sign-in required after QA server restart
+MOBILE_RESPONSIVENESS = PENDING / viewport verification awaits authenticated browser view
+HOM02_HUMAN_ACCEPTANCE = PENDING
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+GIT_STAGING = EMPTY
+PREEXISTING_HOM01_HOM02_WIP = PRESERVED
+PROJECT_STATE_UPDATE = PASS / this section and continuity pointers updated
+ACTIVITY_COMPLETE = NO / authenticated desktop/mobile visual review and human acceptance remain pending
+```
+
+Comparação de `templates/base.html`, navegação compartilhada, Dashboard V7,
+Inventário e telas XLSX identificou o gate de classes/estilos como causa; a
+sidebar global aprovada não foi redesenhada. A importação e o resultado agora
+herdam a variante de shell existente. `importacao-xlsx.css` fica restrito à
+superfície da funcionalidade e consome tokens/componentes UI V2. Breadcrumb,
+hierarquia do cabeçalho, ações espaçadas, formulário, resumo, tabela, conflitos
+e resultado usam os componentes existentes. Nenhuma confirmação foi enviada.
+
+O servidor anterior ainda servia o estado antigo. Ele foi reiniciado sem chamar
+o launcher de preparação, sem migração/reseed e apontando ao mesmo SQLite QA.
+Isso invalidou apenas a sessão do navegador; usuário, senha e permissões não
+foram alterados. O HTML atual foi conferido por render SSR autenticado de
+leitura. O navegador foi deixado na tela de entrada para o usuário autenticar;
+assim, a captura desktop autenticada e a conferência de viewport mobile ficaram
+pendentes para não declarar validação visual que não foi observada. A suíte
+direcionada de 13 testes e `manage.py check` passaram; não foram repetidas
+auditorias HOM-01 ou regressão global.
+
+## 118. HOM-02-XLSX-FORM-COMPACTNESS (2026-10-14)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-02-XLSX-FORM-COMPACTNESS
+ROOT_CAUSE = upload card and file control stretched to the full content width without local max-width constraints
+CSS_SCOPE = static/css/importacao-xlsx.css; import template stylesheet cache-busting query only
+CARD_MAX_WIDTH = 800px / left aligned
+FILE_INPUT_MAX_WIDTH = 560px / height 44px
+RESPONSIVE_RULE = max-width 680px: card and file control use 100% width
+SPACING = reduced upload card and form gaps using existing ARGOS tokens
+TEMPLATE_CHANGED = YES / stylesheet version query only; form markup unchanged
+BACKEND_OR_IMPORT_LOGIC_CHANGED = NO
+PERMISSIONS_CHANGED = NO
+DEPENDENCIES_ADDED = NO
+MON_RUNTIME_CHANGED = NO
+DJANGO_SYSTEM_CHECK = PASS / no issues
+TARGETED_XLSX_TESTS = PASS / 13 tests, including SSR upload/preview and synthetic 2,300-row validation
+FUNCTIONAL_RESULT = PASS / upload/preview behavior covered; no confirmation executed
+RESPONSIVE_RESULT = PASS / scoped mobile width rules present; authenticated visual viewport remains HUMAN_ACCEPTANCE
+GIT_DIFF_CHECK = PASS / git diff --check
+GIT_STAGING = EMPTY
+PREEXISTING_HOM01_HOM02_WIP = PRESERVED
+HOM02_HUMAN_ACCEPTANCE = PENDING
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS / this section and continuity pointers updated
+ACTIVITY_COMPLETE = YES / compactness implementation and targeted validation ready for human review
+```
+
+A tela de upload fica limitada a 800px e alinhada ao início do conteúdo; o
+seletor fica limitado a 560px e 44px de altura. Até 680px, ambos passam a usar
+100% da largura disponível. Os gaps do card e formulário foram reduzidos com
+tokens existentes. O botão e o markup funcional permanecem; o template recebeu
+somente um parâmetro de versão no link CSS para invalidar cache. Backend,
+permissões e validações não mudaram. `manage.py check`, 13 testes
+`cameras.test_xlsx_import` e `git diff --check` passaram. A tela autenticada foi
+inspecionada em desktop após atualização do CSS; a regra mobile foi verificada
+no arquivo, mas não houve captura de viewport mobile. Aceite humano permanece
+pendente. Não houve auditoria HOM-01, regressão global, confirmação de lote ou
+alteração de dados.
+
+## 119. HOM-02-XLSX-IMPORT-UPLOAD-FIELD-VERTICAL-ALIGNMENT (2026-10-15)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-02-XLSX-IMPORT-UPLOAD-FIELD-VERTICAL-ALIGNMENT
+ROOT_CAUSE = XLSX file input fixed at 44px with zero block padding and no internal alignment; native button retained a 36px minimum height
+CSS_CHANGED = static/css/importacao-xlsx.css / #id_arquivo only
+ALIGNMENT = display:flex + align-items:center + 4px block padding + line-height:1.25
+NATIVE_BUTTON = minimum height sized to the 44px control's inner box; block margin 0
+WIDTHS_PRESERVED = CARD 800px / FILE INPUT 560px
+TEMPLATE_CHANGED = stylesheet cache version only
+BACKEND_OR_IMPORT_FLOW_CHANGED = NO
+PERMISSIONS_OR_VALIDATIONS_CHANGED = NO
+DJANGO_SYSTEM_CHECK = PASS / no issues
+TARGETED_XLSX_TESTS = PASS / 13 tests
+INTEGRATED_VISUAL_CHECK = PENDING / local route redirected to login; no credentials used
+FUNCTIONAL_RESULT = PASS / importer tests passed; no import confirmation executed
+GIT_DIFF_CHECK = PASS / scoped patch and whitespace validation
+GIT_STAGING = EMPTY
+PREEXISTING_HOM01_HOM02_WIP = PRESERVED
+HOM02_HUMAN_ACCEPTANCE = PENDING
+PROJECT_STATE_UPDATE = PASS / this section and continuity pointers updated
+ACTIVITY_COMPLETE = NO / integrated visual confirmation remains pending
+```
+
+O controle nativo agora recebe alinhamento flexível central, padding vertical
+pelos tokens existentes e altura da pseudo-parte calculada para caber na caixa
+de 44px. A largura e as regras do fluxo XLSX foram preservadas. O teste visual
+integrado permanece para revisão humana: a sessão local disponível foi
+redirecionada ao login. Não foram usadas credenciais nem alterado qualquer
+registro de câmera.
+
+## 120. HOM-03-POSTGRESQL-INTEGRATION (2026-10-15)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-03-POSTGRESQL-INTEGRATION
+SCOPE = PostgreSQL Django settings slice / no VM operations
+NEW_SETTINGS = config.settings_homologation / inherits config.settings_production
+DEVELOPMENT_DATABASE = SQLite / unchanged
+DATABASE_ENGINE = django.db.backends.postgresql
+DATABASE_ENVIRONMENT_VARIABLES = ARGOS_DB_NAME, ARGOS_DB_USER, ARGOS_DB_PASSWORD, ARGOS_DB_HOST, ARGOS_DB_PORT, ARGOS_DB_CONN_MAX_AGE
+DATABASE_DEFAULTS = port 5432; connection max age 60 seconds
+DATABASE_NAME = argos_hom_db / non-secret environment example
+DATABASE_USER = argos_hom_app / non-secret environment example
+DATABASE_HOST = 127.0.0.1 / non-secret environment example
+PASSWORD_IN_SOURCE_OR_EXAMPLE = NO
+PSYCOPG_DEPENDENCY = psycopg[c]==3.3.6 on Linux; psycopg[binary]==3.3.6 on Windows
+MEDIA_ROOT = /dados/argos/media
+LOG_ROOT = /dados/argos/logs / rotating Django log
+STATIC_ROOT = /dados/argos/static
+COLLECTSTATIC = DOCUMENTED / python manage.py collectstatic --noinput
+WSGI_ENV_SELECTION = PASS / DJANGO_SETTINGS_MODULE honored by setdefault
+WSGI_FILE_CHANGED = YES / documents environment selection; preserves SQLite fallback
+PY_COMPILE = PASS
+DJANGO_CHECK = PASS / development SQLite / no issues
+HOMOLOGATION_SETTINGS_IMPORT = PASS / WSGI selection and settings inspected with isolated initialization
+LOCAL_RUNTIME = Windows / Django 5.2.16 / Psycopg absent
+FULL_POSTGRESQL_STARTUP_AND_CHECK = BLOCKED / Psycopg absent locally
+REQUESTED_VM_VERSIONS = Django 5.2.18 / PostgreSQL 16.15 / Psycopg 3.3.6
+VERSION_COMPATIBILITY = DOCUMENTED_MINIMUMS_SATISFIED / Django 5.2 requires PostgreSQL 14+ and Psycopg 3.1.8+
+VM_CONNECTION = NOT_TESTED
+FILESYSTEM_OWNERSHIP_AND_PERMISSIONS = NOT_TESTED / VM unavailable; provisioning requirements documented
+MIGRATIONS_ON_VM = NOT_RUN
+BUSINESS_RULES_CHANGED = NO
+INTERFACES_CHANGED = NO
+MON_RUNTIME_CHANGED = NO
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS / this section and continuity pointers updated
+ACTIVITY_COMPLETE = NO / runtime PostgreSQL and filesystem permission validation pending
+```
+
+O perfil de homologação fica separado do SQLite local e herda o perfil seguro
+existente. `ARGOS_DB_PASSWORD` e `ARGOS_SECRET_KEY` são obrigatórias no ambiente
+do processo e não aparecem no exemplo. A configuração aponta mídia, logs e
+estáticos para `/dados/argos`; o serviço Linux exige diretórios previamente
+provisionados, com proprietário do usuário do serviço e permissões restritas
+para mídia/logs. O destino de estáticos deve ser gravável pelo usuário de
+`collectstatic`. Os detalhes estão em `docs/seguranca/CONFIGURACAO_DE_AMBIENTES.md`.
+
+Foram executados `py_compile` e `manage.py check` no perfil SQLite, ambos sem
+erros. Uma inspeção isolada do módulo WSGI confirmou que
+`DJANGO_SETTINGS_MODULE=config.settings_homologation` seleciona as settings e
+carrega engine e caminhos esperados; o WSGI completo necessita de Psycopg e não
+foi iniciado. As notas oficiais do Django 5.2 indicam PostgreSQL 14+ e Psycopg
+3.1.8+; assim, as versões informadas para a VM satisfazem o requisito nominal,
+mas o banco e as permissões do sistema de arquivos não foram acessados. Não
+foram executadas migrations, operações na VM, mudanças de regras/interfaces ou
+alterações no MON Runtime.
+
+## 121. HOM-03-POSTGRESQL-VM-VALIDATION (2026-10-15)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-03-POSTGRESQL-VM-VALIDATION
+TARGET = [PRIVATE_VM_ENDPOINT_REDACTED]:/opt/argos/app
+PSYCOPG_DEPENDENCIES = psycopg[c]==3.3.6 Linux; psycopg[binary]==3.3.6 win32
+DEPENDENCY_MARKER_VALIDATION = PASS / Linux and Windows markers select expected implementation
+TRANSFER_PACKAGE = .local/hom03-transfer-20261015/argos-hom03-postgresql-transfer.zip
+TRANSFER_PACKAGE_SHA256 = 1145c18fc26be278bb5450bc5369a4a4e6ea65fb5be7657160e12c363be64efc
+TRANSFER_CONTENTS = new settings + environment example + narrow dependency patch + instructions + checksums
+TRANSFER_INTEGRITY = PASS
+TRANSFER_CONTAINS_DATABASE_OR_SECRETS = NO
+TRANSFER_CONTAINS_HOM01_HOM02_WIP = NO
+SFTP_HOST_REACHED = YES / authentication rejected in batch mode
+SFTP_RESULT = BLOCKED / Permission denied (publickey,password)
+SSH_KEY_AVAILABLE = NO / user confirmed none in session
+FILES_CHANGED_ON_VM = NO
+PROTECTED_ENVIRONMENT_CONFIGURED = NO
+ARGOS_SERVICE_ACCOUNT_PERMISSIONS = NOT_VERIFIED
+HOMOLOGATION_DATABASE_BACKEND = STATIC_SOURCE_CONFIRMED / PostgreSQL only, no SQLite fallback
+REMOTE_DJANGO_SYSTEM_CHECK = NOT_RUN
+REMOTE_POSTGRESQL_CONNECTION = NOT_TESTED
+REMOTE_MIGRATION_PLAN = NOT_VERIFIED
+MIGRATIONS_EXECUTED = NO
+LOCAL_DJANGO_CHECK = PASS / development SQLite only
+LOCAL_WSGI_SETTINGS_SELECTION = PASS / isolated initialization, not full PostgreSQL startup
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS / this section and continuity pointers updated
+ACTIVITY_COMPLETE = NO / authorized SSH key required for remaining VM steps
+ACTIVITY_COMPLETION_PERCENT = 24%
+HOM03_STATUS = BLOCKED_PENDING_SSH_AUTHENTICATION
+```
+
+A tentativa batch-only confirmou resposta do host SSH, mas a autenticação foi
+recusada. O usuário não dispõe de uma chave nesta sessão. Sem acesso autenticado
+não é possível preservar/inspecionar o WIP remoto, configurar o armazenamento
+protegido das variáveis, validar permissões da conta `argos`, executar o Django
+system check PostgreSQL, testar conexão ou consultar o plano do banco. O pacote
+local permanece pronto e não altera o conteúdo da VM.
+
+## 122. HOM-03-SSH-LOGIN-HELPER (2026-10-15)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-03-POSTGRESQL-VM-VALIDATION
+ADDITIONAL_DELIVERABLE = .local/hom03-transfer-20261015/login_vm.py
+SSH_DESTINATION = [PRIVATE_VM_ENDPOINT_REDACTED]
+AUTHENTICATION = delegated to interactive OpenSSH prompt / no credential input in Python
+SECRET_STORAGE_OR_LOGGING = NONE
+AGENT_FORWARDING = DISABLED
+HOST_KEY_CHECK = INTERACTIVE / StrictHostKeyChecking=ask
+SCRIPT_SYNTAX = PASS
+SCRIPT_EXECUTION = NOT_RUN / session has no authorized SSH key; local ssh command is sandbox-blocked
+TRANSFER_PACKAGE = unchanged / .local/hom03-transfer-20261015/argos-hom03-postgresql-transfer.zip
+VM_CHANGES = NONE
+PROJECT_STATE_UPDATE = PASS / this supplemental section and continuity pointers updated
+ACTIVITY_COMPLETION_PERCENT = 28%
+HOM03_STATUS = BLOCKED_PENDING_SSH_AUTHENTICATION
+```
+
+O helper apenas inicia `ssh` como processo interativo. Qualquer senha é
+solicitada pelo próprio OpenSSH; a senha ou chave privada não passa como
+argumento, variável Python, arquivo ou log do script. O helper não contorna o
+bloqueio SSH do ambiente Codex e não foi usado para conexão.
+
+## 123. HOM-02-XLSX-UPDATE-PREVIEW-FIX (2026-10-15)
+
+```text
+PROJECT = projeto_argos
+ACTIVITY = HOM-02-XLSX-UPDATE-PREVIEW-FIX
+ROOT_CAUSE = CameraEdicaoForm validation mutates its instance before preview diff calculation
+FIX = shallow independent Camera snapshot created after matching and before ModelForm construction
+SNAPSHOT_USED_FOR = calcular_alteracoes; target_label
+UPDATE_RENAME_PREVIEW = PASS / update=1; changes=1; original and new names displayed
+UNCHANGED_UPDATE_PREVIEW = PASS / changes=0
+CREATE_BEHAVIOR = PASS
+PATRIMONIO_SERIAL_MATCHING = PASS
+CONFLICTS_AND_ROLLBACK = PASS
+PERSISTENCE_AND_AUDIT = PASS / isolated Django test database; expected name persisted and old/new audit values recorded
+TARGETED_TESTS = PASS / cameras.test_xlsx_import, 14 tests
+RELATED_REGRESSION = PASS / audit integration, cadastral compatibility and normalization, 31 tests
+DJANGO_SYSTEM_CHECK = PASS
+TEST_DATABASE = SQLite in-memory / created and destroyed by Django test runner
+VM_POSTGRESQL = NOT_ACCESSED
+EXISTING_PREVIEW = NOT_CONFIRMED
+UI_UX_OR_BUSINESS_RULES_CHANGED = NO
+GIT_DIFF_CHECK = PASS
+COMMIT_STATUS = PASS / HOM02-only package
+COMMIT_SHA = 5a1d9e63c97712b9ee5ddbdf8f26b802eded801e
+COMMIT_MESSAGE = feat(cameras): implementar importacao XLSX com preview e auditoria
+FILES_COMMITTED = 16 / staged scope reviewed; openpyxl only from requirements
+WORKTREE_WIP_PRESERVED = YES / HOM-01, HOM-03, mixed continuity docs and local files remain unstaged/untracked
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS / this section and continuity pointers updated
+ACTIVITY_COMPLETE = YES / bounded preview fix and required validation complete; HOM02_HUMAN_ACCEPTANCE remains pending
+```
+
+O snapshot da câmera-alvo é copiado antes de construir e validar o
+`CameraEdicaoForm`. A prévia compara os campos importados contra os valores
+originais e conserva o nome anterior como rótulo do destino. Os testes
+confirmaram renomeação, UPDATE sem mudança, CREATE, matching, conflitos,
+rollback e auditoria. O runner criou o banco SQLite em memória, aplicou as
+migrations e destruiu o banco ao encerrar; nenhuma conexão à VM ou ao
+PostgreSQL foi feita. A prévia preexistente não foi confirmada.
+O commit `5a1d9e63c97712b9ee5ddbdf8f26b802eded801e` contém o pacote funcional
+HOM-02 autorizado. Alterações ambientais e de continuidade compartilhadas com
+outras frentes foram preservadas fora do commit.
+
+## 124. ARGOS-ROADMAP-SPRINTS-RECONCILIATION (2026-10-16)
+
+```text
+ACTIVITY = ARGOS-ROADMAP-SPRINTS-RECONCILIATION
+REPOSITORY_ROOT = C:\Users\walacedelgado\PycharmProjects\projeto_argos
+BRANCH = codex/hom-v1-integration
+HEAD = 5a1d9e63c97712b9ee5ddbdf8f26b802eded801e
+STAGING = EMPTY / preflight
+ROADMAP = §24 appended; SPRINTS = §21 appended
+HOM01 = CLOSED / APPROVED / §113
+HOM02 = implementation and technical validations recorded in §§115-123; functional acceptance CONFIRMED by user in this activity
+HOM02_ACCEPTANCE_SCOPE = supersedes only prior PENDING acceptance in §§116/123; no new test, operational readiness, deploy, or homologation claim
+HOM03 = FORMAL_READINESS_PENDING / BLOCKED_PENDING_SSH_AUTHENTICATION / §§121-122
+REMOTE_VM_POSTGRESQL_PERMISSIONS_MIGRATIONS = NOT_VERIFIED / NOT_TOUCHED
+HOM04 = FORMAL_OPENING_NOT_ESTABLISHED / gates HOM-00..03 remain required
+HOM05 = FUTURE_BACKLOG / own activity, authorization and gates
+MON01_09 = TECHNICALLY_COMPLETE / current explicit user instruction; no tests rerun
+MON_WORKER = runtime present in current HEAD; SQLite evidence in §71 is historical; PostgreSQL/multi-worker/production readiness NOT_ESTABLISHED
+UI_V2 = P0/P1/P2 CLOSED PASS; P3 references; P4 scope-specific; P5 selective integrated baseline; P6 scope-specific; P7 global completion NOT_ESTABLISHED
+BC02 = stage-scoped checkpoints; wave-7/production gates not globally PASS
+IMAGE_QUICK_DETAIL = contract §26 LATEST_ACTIVE_IMAGE; current selector mismatch; implementation/integration/validation/homologation per contract NOT_ESTABLISHED/NO/NO/NO
+CAM_INT_04_IMG_CAP = isolated worktree only; not canonical integration; real camera/HTTP homologation pending
+PURGE = NOT_PERFORMED
+FILES_CHANGED = ROADMAP_ARGOS_V5.md §24; SPRINTS_ARGOS_V5.md §21; PROJECT_STATE.md §124; AGENT_CONTINUITY.md §20.83; ACTIVE_DOCUMENT_MAP.md §87
+PREEXISTING_WIP_PRESERVED = config/wsgi.py; ACTIVE_DOCUMENT_MAP.md; AGENT_CONTINUITY.md; PROJECT_STATE.md; HOM_01_UI_V2_BASELINE_CHECKPOINT.md; CONFIGURACAO_DE_AMBIENTES.md; requirements.txt (modified); .local/; config/settings_homologation.py; docs/Agent-Continuity-Standard-v1.0/continuity.zip; docs/projeto.zip; env.homologation.example (untracked)
+ROADMAP_AND_SPRINTS = CLEAN_AT_ENTRY
+OTHER_BRANCH_WORKTREES = CAM-INT-04, IMG-CAP, UI P3-A/B/C/D and P5 inspected read-only; isolated branches are not canonical integration
+CODE_TESTS_DB_GIT_INDEX = NOT_CHANGED / NO_TESTS_RUN / NO_DATABASE_OR_PURGE / NO_STAGE_COMMIT_PUSH_MERGE_DEPLOY
+NEXT_RECOMMENDATION = resume HOM-03 after authorized SSH key; then reevaluate HOM-04 gates; HOM-05 capability backlog separately authorized
+AGENT_HANDOFF_GATE_RESULT = PASS / root independently validated the delta
+ROOT_DELTA_VALIDATION = PASS
+GIT_DIFF_CHECK = PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES
+```
+
+A reconciliação registra HOM-00 como fundação documental completa e a
+classificação P3/P5 dos §§83–86, seguida pela integração/fechamento HOM-01;
+isso não declara todas as integrações de branches ou gates de produção
+completos. HOM-01 permanece fechado. A confirmação do usuário sobre aceite
+funcional HOM-02 altera apenas o aspecto de aceite que §§116/123 deixaram
+PENDING; não reabre HOM-04, não estabelece prontidão operacional e não representa
+validação nova. HOM-03 continua bloqueada pela autenticação SSH; banco,
+permissões e migrations remotas não foram verificados nem tocados. HOM-04 não
+foi formalmente aberta. HOM-05 permanece backlog próprio, não bloqueador da
+entrada inicial por si só.
+
+MON-01..09 são registrados como tecnicamente completos conforme instrução
+explícita atual, sem declarar rerun. O runtime do worker MON está no HEAD; a
+evidência SQLite do §71 é histórica e não prova PostgreSQL, múltiplos workers
+ou prontidão de produção. UI V2 e BC-02 permanecem delimitados por escopo e
+checkpoints; não há declaração global de P0–P7 concluído ou da wave-7/produção
+PASS.
+
+Para imagens, o contrato canônico `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` §26
+seleciona `LATEST_ACTIVE_IMAGE` no Quick Detail entre CAPTURA_CAMERA e
+UPLOAD_MANUAL, permite até três ativas, exibe galeria em ordem crescente e
+mantém captura/upload somente manuais. `LATEST_CAMERA_CAPTURE` segue exclusivo
+de captura. O contrato declara implementação não estabelecida, integração não,
+validação não e homologação não. Upload IMG-03 e preview/exibição segura estão
+integrados no checkout, mas o seletor atual conserva prioridade de captura e
+fallback de upload, divergindo da §26. Serviço/rota/UI de captura e ciclo de
+três imagens/rotação não existem no checkout. CAM-INT-04/IMG-CAP existem apenas
+no worktree isolado inspecionado, sem integração canônica; homologação real de
+câmera/HTTP segue pendente. Há somente upload manual na UI Camera Detail; UI de
+credenciais e botão de captura não estabelecidos.
+
+As decisões de ciclo de vida registradas são: uma quarta inclusão remove a mais
+antiga elegível somente depois da validação da nova imagem; se todas estão
+protegidas, bloquear inclusão; retenção padrão de 12 meses, admitindo rotação
+por capacidade antes desse prazo; preservação especial bloqueia purge. Purge
+físico requer contrato, autoridade, rastreabilidade e testes próprios. Nenhum
+purge ocorreu. Captura nunca decorre de evento de monitoramento. Capacidades
+pendentes de credencial UI, captura UI, galeria, conformidade §26 e retenção/
+rotação seguem atividades próprias; não reabrem HOM-01 e não bloqueiam HOM-04
+automaticamente fora de gate de entrada citado.
+
+Preflight recebido para esta reconciliação: branch `codex/hom-v1-integration`,
+HEAD `5a1d9e63c97712b9ee5ddbdf8f26b802eded801e`, staging vazio. Todo WIP
+preexistente listado acima foi preservado. Não foram executados testes, acesso
+remoto, operações de banco/purge ou operações Git. O root concluiu a validação
+independente do delta e confirmou `git diff --check` sem erros; staging vazio e
+WIP preexistente preservado.
