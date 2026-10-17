@@ -8,7 +8,7 @@ contratual integral nem autoriza release de produção. As lacunas de evidência
 zoom/leitor de tela `NOT_RUN` e QD03-B permanecem registradas como riscos
 residuais aceitos para o fechamento da etapa, sem dispensa dos contratos.
 `QD03_SPECIFICATION_GAP=OPEN_TRACKED_SEPARATELY`; E3 não iniciada. Próximo gate:
-`ARGOS_E2_CONTROLLED_GIT_INTEGRATION`.
+`ARGOS_E2_REMOTE_PUBLICATION_DECISION` após integração Git local E2.
 
 Snapshot histórico HOM (substituído para retomada pelo fechamento E2 da §153): §§113–116 — HOM-01 encerrada, HOM-02 implementada e ambiente QA local preparado para aceitação humana. HOM-01 está `CLOSED`; a regressão global registrada em §112 passou (948 testes em 600.522s; Django system check PASS). HOM-02 implementa template, prévia, confirmação atômica, validação cadastral e auditoria; validação direcionada, regressão de integração e carga sintética de 2.300 registros passaram. Os aceites e limitações em §§99, 101, 108 e 109 foram preservados, incluindo Camera Detail `CLOSED_WITH_LIMITATIONS`. Seções anteriores permanecem como histórico.
 
@@ -8476,3 +8476,51 @@ status da E2 neste snapshot passa a `CLOSED_WITH_EXCEPTIONS` por decisão humana
 eventuais estados divergentes nos documentos de planejamento continuam
 inalterados até autorização específica. E3 permanece `NOT_STARTED`, e produção
 não está autorizada.
+
+## 154. ARGOS — integração Git local controlada da E2 (2026-10-17)
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-E2-CONTROLLED-GIT-INTEGRATION
+ROADMAP_STAGE = E2
+ACTIVE_SLICE = ARGOS-IMG-07-CONFORMANCE
+EXECUTION_MODE = DIRECT
+BRANCH = codex/hom-v1-integration
+HEAD_BEFORE = d12734598920a8643f895191cbfd1519a5893ddb
+E2_PRODUCT_HEAD = aaad7080ac41aabc94fbe86b591be5577b5a30f0
+E2_STATUS = CLOSED_WITH_EXCEPTIONS
+LOCAL_COMMITS_CREATED = 3
+COMMIT_1 = 2b44949a7dc31779ba53e8b060996230aa464b8c / feat(cameras): integrar IMG-07 e testes / 8 arquivos / +329 -10
+COMMIT_2 = 8b393e597f79238ee68d9c924f6ebc132ed03059 / fix(frontend): consolidar UI IMG-07 e QD01 / 3 arquivos / +119 -8
+COMMIT_3 = aaad7080ac41aabc94fbe86b591be5577b5a30f0 / docs(argos): registrar contratos e fechamento E2 / 6 arquivos / +1991 -6
+FILES_INCLUDED = 17 / backend, frontend, testes, contratos ratificados e continuidade E2
+FILES_EXCLUDED = WIP QA local, .codex.zip, runbook local QA e hunk CAM-INT-01 não relacionado
+TARGETED_TESTS = PASS / 14 / SQLite em memória e storage temporário sintético no workspace
+DJANGO_CHECK = PASS
+MIGRATION_CHECK = PASS / nenhuma migration nova
+JAVASCRIPT_SYNTAX = PASS / node --check
+GIT_DIFF_CHECK = PASS
+SENSITIVE_FILE_CHECK = PASS / nenhum segredo ou dado QA persistente no stage
+STAGING_FINAL = EMPTY
+WORKTREE_FINAL = DIRTY / WIP preexistente preservado
+WIP_PRESERVED = YES
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+E3 = NOT_STARTED
+PROJECT_STATE_UPDATE = PASS
+AGENT_CONTINUITY_UPDATE = PASS
+ACTIVE_DOCUMENT_MAP_UPDATE = PASS
+ACTIVITY_COMPLETE = YES
+STATUS = PASS
+NEXT_GATE = ARGOS_E2_REMOTE_PUBLICATION_DECISION
+```
+
+A integração local incluiu somente alterações aprovadas de IMG-07/QD01 e seus
+registros documentais. O arquivo `PROJECT_STATE.md` continha também um hunk
+CAM-INT-01 preexistente; ele foi mantido fora do commit e continua no worktree.
+As alterações de preparação QA local e arquivos locais protegidos foram
+preservados fora do stage. Os três commits estão somente no branch local, três
+commits à frente de `origin/codex/hom-v1-integration`. Não houve publicação,
+merge, tag, deploy, migration ou alteração funcional nesta atividade. O próximo
+gate é a decisão humana de publicação remota E2.

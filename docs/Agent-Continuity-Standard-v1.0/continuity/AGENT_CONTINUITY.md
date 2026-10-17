@@ -19,7 +19,9 @@ integral não é declarada. Os riscos residuais aceitos, resultados históricos
 `PARTIAL`/`BLOCKED`/`NOT_READY`, contratos preservados e a pendência QD03-B estão
 detalhados na §153. Zoom e screen reader continuam `NOT_RUN`; release de
 produção não autorizado; E3 `NOT_STARTED`. Próximo gate:
-`ARGOS_E2_CONTROLLED_GIT_INTEGRATION`.
+`ARGOS_E2_REMOTE_PUBLICATION_DECISION`. A integração local está registrada em
+`PROJECT_STATE.md` §154 e `ACTIVE_DOCUMENT_MAP.md` §114; três commits E2 estão
+no branch local, sem push, merge ou deploy.
 
 RETOMADA ATUAL HOM-02-XLSX-UPDATE-PREVIEW-FIX (2026-10-15): consultar
 `PROJECT_STATE.md` §123 e `ACTIVE_DOCUMENT_MAP.md` §86. A prévia UPDATE agora
@@ -3512,3 +3514,18 @@ Os contratos permanecem preservados; nenhuma nova análise, teste, diagnóstico,
 remediação, alteração de código ou QA data foi realizada. Release de produção
 não autorizado; E3 `NOT_STARTED`; plano de entrega e Roadmap inalterados.
 Próximo gate `ARGOS_E2_CONTROLLED_GIT_INTEGRATION`.
+
+### 20.112 ARGOS — integração Git local controlada da E2 (2026-10-17)
+
+Consultar `PROJECT_STATE.md` §154 e `ACTIVE_DOCUMENT_MAP.md` §114. No branch
+`codex/hom-v1-integration` foram criados três commits locais E2: backend/testes
+`2b44949a7dc31779ba53e8b060996230aa464b8c`, frontend IMG-07/QD01
+`8b393e597f79238ee68d9c924f6ebc132ed03059` e documentação
+`aaad7080ac41aabc94fbe86b591be5577b5a30f0`. Os 17 arquivos incluídos foram
+revisados; o staging final está vazio. WIP de QA local, `.codex.zip` e um hunk
+CAM-INT-01 em `PROJECT_STATE.md` permanecem fora dos commits e preservados.
+Os 14 testes direcionados passaram usando SQLite em memória e storage
+temporário; Django check, migration check, sintaxe JavaScript e `git diff
+--check` passaram. O branch local está três commits à frente do origin. Não
+houve push, merge, deploy, tag, migration ou início de E3. Próximo gate:
+`ARGOS_E2_REMOTE_PUBLICATION_DECISION`.

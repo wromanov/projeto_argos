@@ -11,9 +11,9 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; E2 closed with exceptions in §153; E3 not started |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff §20.111 (E2 closed with exceptions); E3 not started |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest ARGOS pointer §113 (E2 closure with exceptions); contracts preserved |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; E2 integration recorded in §154; E2 closed with exceptions; next gate remote publication decision |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff §20.112 (local E2 commits); next gate remote publication decision |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest ARGOS pointer §114 (local E2 integration); contracts preserved |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
 ## 2. Authorities canônicas do projeto
@@ -2466,3 +2466,17 @@ permanecem fatos históricos.
 
 `PRODUCTION_RELEASE=NOT_AUTHORIZED`; `E3_STATUS=NOT_STARTED`. Próximo gate:
 `ARGOS_E2_CONTROLLED_GIT_INTEGRATION`.
+
+## 114. ARGOS — integração Git local controlada da E2 (2026-10-17)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §154 | Commits locais, validação, WIP preservado e próximo gate | CURRENT / três commits locais; staging vazio; sem publicação |
+| `AGENT_CONTINUITY.md` §20.112 | Retomada da atividade | CURRENT / commits E2 locais; próximo gate decisão de publicação remota |
+| `PROJECT_STATE.md` §153; `AGENT_CONTINUITY.md` §20.111 | Decisão de fechamento E2 | CURRENT / `CLOSED_WITH_EXCEPTIONS`; ressalvas preservadas |
+| Contratos IMG-07 e QD01 ratificados | Requisitos de implementação e evidência | RATIFIED / PRESERVED / nenhuma alteração |
+
+O branch `codex/hom-v1-integration` está três commits à frente do origin. A
+decisão de publicação remota permanece pendente de authority humana específica.
+`PUSH=NOT_PERFORMED`, `MERGE=NOT_PERFORMED`, `DEPLOY=NOT_PERFORMED` e
+`E3=NOT_STARTED`.
