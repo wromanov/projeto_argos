@@ -62,6 +62,65 @@
   gap: var(--argos-section-gap);
 }
 
+/* Keep the external cadastral form owner out of the visible page stack. */
+.camera-form-page .camera-form-owner { display: none; }
+
+.camera-form-page .camera-credential-card > .argos-card__body {
+  display: grid;
+  gap: var(--argos-space-3);
+}
+
+.camera-form-page .camera-credential-status,
+.camera-form-page .camera-credential-fields p,
+.camera-form-page .camera-credential-noscript p {
+  margin: 0;
+  color: var(--argos-color-ink-muted);
+}
+
+.camera-form-page .camera-credential-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--argos-space-2);
+}
+
+.camera-form-page .camera-credential-dialog {
+  width: min(34rem, calc(100vw - 2rem));
+  max-width: none;
+  max-height: min(90vh, 48rem);
+  padding: 0;
+  overflow: auto;
+  border: var(--argos-border-width) solid var(--argos-color-border);
+  border-radius: var(--argos-radius-surface);
+  color: var(--argos-color-ink);
+  background: var(--argos-color-surface);
+  box-shadow: var(--argos-shadow-card);
+}
+
+.camera-form-page .camera-credential-dialog::backdrop {
+  background: rgb(15 23 42 / 48%);
+}
+
+.camera-form-page .camera-credential-dialog > form { margin: 0; }
+.camera-form-page .camera-credential-fields { display: grid; gap: var(--argos-space-2); }
+.camera-form-page .camera-credential-fields input:not([type="checkbox"]) { width: 100%; min-width: 0; }
+.camera-form-page .camera-credential-fields input:focus-visible,
+.camera-form-page .camera-credential-confirm input:focus-visible { outline: var(--argos-focus-width) solid var(--argos-color-action); outline-offset: var(--argos-focus-offset); }
+.camera-form-page .camera-credential-confirm { display: flex; align-items: flex-start; gap: var(--argos-space-2); }
+.camera-form-page .camera-credential-noscript { display: grid; gap: var(--argos-space-3); margin-top: var(--argos-space-4); }
+.camera-form-page .camera-credential-noscript form { display: grid; gap: var(--argos-space-3); padding-top: var(--argos-space-3); border-top: var(--argos-border-width) solid var(--argos-color-border); }
+.camera-form-page .camera-credential-noscript .argos-field { display: grid; min-width: 0; gap: var(--argos-space-1); }
+.camera-form-page .camera-credential-noscript h3 { margin: 0; color: var(--argos-color-ink); font-size: var(--argos-text-section); }
+.camera-form-page .camera-credential-noscript .argos-button { justify-self: start; }
+.camera-form-page .camera-credential-noscript input:not([type="checkbox"]) { width: 100%; min-width: 0; }
+
+@media (max-width: 680px) {
+  .camera-form-page .camera-credential-dialog { width: calc(100vw - 1rem); max-height: calc(100vh - 1rem); }
+  .camera-form-page .camera-credential-dialog .argos-card__header,
+  .camera-form-page .camera-credential-dialog .argos-card__footer { padding-inline: var(--argos-space-3); }
+  .camera-form-page .camera-credential-actions > .argos-button { flex: 1 1 100%; }
+}
+
 .camera-form-page .argos-alert {
   display: flex;
   min-width: 0;

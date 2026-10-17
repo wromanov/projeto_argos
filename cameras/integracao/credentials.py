@@ -220,6 +220,31 @@ def credential_metadata(*, actor, camera_id, key_provider=None):
     }
 
 
+def credential_configuration_status(*, actor, camera_id):
+    """Return only whether the camera has a coherent active credential.
+
+    This projection is for ordinary SSR metadata. It deliberately does not
+    decrypt or return username, key material, version, or timestamps.
+    """
+    require_camera_permission(actor=actor, permission_codename="view_camera_credential", camera_id=camera_id)
+    credential = (
+        CameraCredential.objects.filter(camera_id=camera_id)
+        .select_related("active_version")
+        .first()
+    )
+    active = credential.active_version if credential is not None else None
+    configured = bool(
+        credential is not None
+        and credential.camera_id == camera_id
+        and credential.state == CameraCredential.State.ACTIVE
+        and active is not None
+        and active.credential_id == credential.pk
+        and active.state == CameraCredentialVersion.State.ACTIVE
+        and credential.active_version_id == active.pk
+    )
+    return {"configured": configured}
+
+
 @transaction.atomic
 def replace_camera_credential(*, actor, camera_id, username, password, key_provider=None, request=None):
     """Create and activate a new encrypted version, preserving the prior on failure."""

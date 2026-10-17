@@ -451,6 +451,8 @@ def criar_camera(request):
 def editar_camera(request, pk):
     camera = get_object_or_404(Camera, pk=pk); anterior = Camera.objects.get(pk=pk)
     form = CameraEdicaoForm(request.POST or None, instance=camera)
+    for field in form.fields.values():
+        field.widget.attrs["form"] = "camera-form"
     if request.method == "POST" and form.is_valid():
         camera = form.save(commit=False); alteracoes = calcular_alteracoes(anterior, camera, CAMPOS_CAMERA_AUDITAVEIS)
         if request.user.is_authenticated: camera.atualizado_por = request.user
@@ -463,7 +465,20 @@ def editar_camera(request, pk):
         if alteracoes: registrar_evento(codigo="camera.atualizada", resumo="Câmera atualizada", categoria=EventoAuditoria.Categoria.CAMERA, request=request, camera=camera, entidade=camera, alteracoes=alteracoes)
         messages.success(request, "Câmera atualizada com sucesso.")
         return redirect("cameras:detalhe", pk=camera.pk)
-    return render(request, "cameras/formulario.html", {"form": form, "camera": camera, "titulo_pagina": "Editar câmera"})
+    contexto = {"form": form, "camera": camera, "titulo_pagina": "Editar câmera"}
+    if request.user.has_perm("cameras.view_camera_credential"):
+        from cameras.integracao.credentials import credential_configuration_status
+
+        contexto["credential_panel_visible"] = True
+        contexto["credential_metadata"] = credential_configuration_status(
+            actor=request.user,
+            camera_id=camera.pk,
+        )
+    response = render(request, "cameras/formulario.html", contexto)
+    response["Cache-Control"] = "no-store, no-cache, must-revalidate, private"
+    response["Pragma"] = "no-cache"
+    response["Expires"] = "0"
+    return response
 
 
 @permission_required("cameras.view_camera", raise_exception=True)

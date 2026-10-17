@@ -38,6 +38,8 @@
       </div>
     </header>
 
+    {% if camera %}<form class="camera-form-owner" id="camera-form" aria-labelledby="camera-form-title" method="post" novalidate>{% csrf_token %}</form>{% endif %}
+
     <div class="argos-stack">
       {% if camera %}
         <p class="argos-alert argos-alert--info">
@@ -49,14 +51,12 @@
 
       {% include "cameras/includes/resumo_erros_formulario_p3d.html" %}
 
-      <form class="camera-form" id="camera-form" aria-labelledby="camera-form-title" method="post" novalidate>
-        {% csrf_token %}
-
+      {% if not camera %}<form class="camera-form" id="camera-form" aria-labelledby="camera-form-title" method="post" novalidate>{% csrf_token %}{% endif %}
         {% if form.farm or form.codec or form.retencao_esperada_dias %}
           <script src="{% static 'js/camera-form.js' %}" defer></script>
         {% endif %}
 
-        <section class="argos-card" aria-labelledby="camera-identity-title">
+        <section class="argos-card" id="camera-identity-section" aria-labelledby="camera-identity-title">
           <header class="argos-card__header">
             <div>
               <h2 class="argos-card__title" id="camera-identity-title">Identificação</h2>
@@ -86,7 +86,7 @@
           </div>
         </section>
 
-        <section class="argos-card" aria-labelledby="camera-location-title">
+        <section class="argos-card" id="camera-location-section" aria-labelledby="camera-location-title">
           <header class="argos-card__header">
             <div>
               <h2 class="argos-card__title" id="camera-location-title">Localização</h2>
@@ -109,7 +109,7 @@
           </div>
         </section>
 
-        <section class="argos-card" aria-labelledby="camera-network-title">
+        <section class="argos-card" id="camera-network-section" aria-labelledby="camera-network-title">
           <header class="argos-card__header">
             <div>
               <h2 class="argos-card__title" id="camera-network-title">Rede</h2>
@@ -130,7 +130,121 @@
           </div>
         </section>
 
-        <section class="argos-card" aria-labelledby="camera-recording-title">
+      {% if camera and credential_panel_visible %}
+        <section class="argos-card camera-credential-card" id="camera-credential-card" aria-labelledby="camera-credential-title">
+          <header class="argos-card__header">
+            <div>
+              <h2 class="argos-card__title" id="camera-credential-title">Credenciais de acesso</h2>
+              <p>Autenticação utilizada para acessar esta câmera.</p>
+            </div>
+            <span class="argos-badge argos-badge--neutral">
+              {% if credential_metadata.configured %}Configurada{% else %}Sem ativa{% endif %}
+            </span>
+          </header>
+          <div class="argos-card__body">
+            <p class="camera-credential-status" role="status">
+              {% if credential_metadata.configured %}
+                Há uma credencial ativa configurada. Isso não confirma autenticação ou conexão com a câmera.
+              {% else %}
+                Nenhuma credencial ativa está configurada.
+              {% endif %}
+            </p>
+            {% if perms.cameras.change_camera_credential or perms.cameras.reveal_camera_credential and credential_metadata.configured %}
+              <div class="camera-credential-actions">
+              {% if credential_metadata.configured and perms.cameras.reveal_camera_credential %}
+                <button type="button" class="argos-button argos-button--secondary" data-open-credential="reveal" hidden>Revelar credencial</button>
+                {% endif %}
+              {% if credential_metadata.configured and perms.cameras.change_camera_credential %}
+                <button type="button" class="argos-button argos-button--secondary" data-open-credential="revoke" hidden>Revogar</button>
+              {% endif %}
+              {% if perms.cameras.change_camera_credential %}
+                <button type="button" class="argos-button argos-button--primary" data-open-credential="replace" hidden>
+                  {% if credential_metadata.configured %}Substituir credencial{% else %}Configurar credencial{% endif %}
+                </button>
+                {% endif %}
+              </div>
+            {% endif %}
+            <noscript>
+              {% if perms.cameras.change_camera_credential %}
+                <div class="camera-credential-noscript">
+                  <p>Sem JavaScript, alterações cadastrais não salvas não podem ser detectadas. Antes de continuar, salve-as separadamente ou confirme que aceita descartá-las.</p>
+                  <form method="post" action="{% url 'cameras:replace_camera_credential' camera.pk %}" autocomplete="off">
+                    {% csrf_token %}
+                    <h3>{% if credential_metadata.configured %}Substituir credencial{% else %}Configurar credencial{% endif %}</h3>
+                    <div class="argos-two-column">
+                      <div class="argos-field">
+                        <label class="field__label" for="credential-noscript-username"><span class="argos-field__label">Novo usuário</span></label>
+                        <input id="credential-noscript-username" name="username" maxlength="255" required autocomplete="off">
+                      </div>
+                      <div class="argos-field">
+                        <label class="field__label" for="credential-noscript-password"><span class="argos-field__label">Nova senha</span></label>
+                        <input id="credential-noscript-password" name="password" type="password" maxlength="1024" required autocomplete="new-password">
+                      </div>
+                    </div>
+                    <label class="camera-credential-confirm"><input type="checkbox" name="confirm_unsaved_changes" value="1" required> Salvei as alterações cadastrais separadamente ou aceito descartá-las.</label>
+                    <button class="argos-button argos-button--primary" type="submit">{% if credential_metadata.configured %}Confirmar substituição{% else %}Confirmar configuração{% endif %}</button>
+                  </form>
+                  {% if credential_metadata.configured %}
+                    <form method="post" action="{% url 'cameras:revoke_camera_credential' camera.pk %}">
+                      {% csrf_token %}
+                      <h3>Revogar credencial</h3>
+                      <p>A autenticação que depende desta credencial pode deixar de funcionar.</p>
+                      <label class="camera-credential-confirm"><input type="checkbox" name="confirm_unsaved_changes" value="1" required> Salvei as alterações cadastrais separadamente ou aceito descartá-las e confirmo a revogação.</label>
+                      <button class="argos-button argos-button--secondary" type="submit">Confirmar revogação</button>
+                    </form>
+                  {% endif %}
+                </div>
+              {% endif %}
+              {% if perms.cameras.reveal_camera_credential %}<p>Revelar credencial requer JavaScript para integrar a resposta protegida sem exibi-la como JSON.</p>{% endif %}
+            </noscript>
+          </div>
+        </section>
+
+        <dialog class="camera-credential-dialog" id="credential-replace-dialog" aria-labelledby="credential-replace-title" aria-describedby="credential-replace-help">
+          <header class="argos-card__header"><div><h2 class="argos-card__title" id="credential-replace-title">{% if credential_metadata.configured %}Substituir credencial{% else %}Configurar credencial{% endif %}</h2><p id="credential-replace-help">{% if credential_metadata.configured %}Informe uma nova configuração para substituir a credencial ativa.{% else %}Informe uma nova configuração de autenticação.{% endif %}</p></div><button type="button" class="argos-button argos-button--secondary" data-close-dialog aria-label="Fechar diálogo">Fechar</button></header>
+          <form method="post" action="{% url 'cameras:replace_camera_credential' camera.pk %}" autocomplete="off">
+            {% csrf_token %}
+            <div class="argos-card__body camera-credential-fields">
+              <label for="credential-username">Novo usuário</label>
+              <input id="credential-username" name="username" maxlength="255" required autocomplete="off">
+              <label for="credential-password">Nova senha</label>
+              <input id="credential-password" name="password" type="password" maxlength="1024" required autocomplete="new-password">
+              <p>A senha atual não é recuperada ou pré-preenchida. A operação é independente do salvamento cadastral.</p>
+              <label class="camera-credential-confirm"><input type="checkbox" name="confirm_unsaved_changes" value="1" required> Salvei as alterações cadastrais separadamente ou aceito descartá-las.</label>
+            </div>
+            <footer class="argos-card__footer"><button type="button" class="argos-button argos-button--secondary" data-close-dialog>Cancelar</button><button class="argos-button argos-button--primary" type="submit">{% if credential_metadata.configured %}Confirmar substituição{% else %}Confirmar configuração{% endif %}</button></footer>
+          </form>
+        </dialog>
+
+        {% if credential_metadata.configured %}
+          <dialog class="camera-credential-dialog" id="credential-revoke-dialog" aria-labelledby="credential-revoke-title">
+            <header class="argos-card__header"><div><h2 class="argos-card__title" id="credential-revoke-title">Revogar credencial?</h2><p>A autenticação que depende dela poderá deixar de funcionar.</p></div><button type="button" class="argos-button argos-button--secondary" data-close-dialog aria-label="Fechar diálogo">Fechar</button></header>
+            <form method="post" action="{% url 'cameras:revoke_camera_credential' camera.pk %}">
+              {% csrf_token %}<input type="hidden" name="confirm_unsaved_changes" value="1">
+              <footer class="argos-card__footer"><button type="button" class="argos-button argos-button--secondary" data-close-dialog>Manter credencial</button><button class="argos-button argos-button--secondary" type="submit">Confirmar revogação</button></footer>
+            </form>
+          </dialog>
+        {% endif %}
+
+        {% if credential_metadata.configured and perms.cameras.reveal_camera_credential %}
+          <dialog class="camera-credential-dialog" id="credential-reveal-dialog" aria-labelledby="credential-reveal-title">
+            <header class="argos-card__header"><div><h2 class="argos-card__title" id="credential-reveal-title">Revelação protegida</h2><p>Confirme sua senha atual em cada solicitação.</p></div><button type="button" class="argos-button argos-button--secondary" data-close-dialog>Fechar</button></header>
+            <form id="credential-reveal-form" method="post" action="{% url 'cameras:reveal_camera_credential' camera.pk %}" autocomplete="off">
+              {% csrf_token %}
+              <div class="argos-card__body camera-credential-fields"><label for="credential-current-password">Sua senha atual</label><input id="credential-current-password" name="current_password" type="password" required autocomplete="current-password"><p role="status" data-reveal-status hidden></p><div data-revealed-secret hidden></div></div>
+              <footer class="argos-card__footer"><button type="button" class="argos-button argos-button--secondary" data-close-dialog>Cancelar</button><button class="argos-button argos-button--primary" type="submit">Reautenticar e revelar</button></footer>
+            </form>
+          </dialog>
+        {% endif %}
+
+        <dialog class="camera-credential-dialog" id="credential-dirty-dialog" aria-labelledby="credential-dirty-title">
+          <header class="argos-card__header"><div><h2 class="argos-card__title" id="credential-dirty-title">Alterações cadastrais não salvas</h2><p>O gerenciamento de credenciais não salva o cadastro.</p></div><button type="button" class="argos-button argos-button--secondary" data-close-dialog>Fechar</button></header>
+          <div class="argos-card__body"><p>Volte ao cadastro para salvar suas alterações ou descarte-as explicitamente antes de continuar.</p></div>
+          <footer class="argos-card__footer"><button type="button" class="argos-button argos-button--secondary" data-keep-camera-edits>Voltar ao cadastro</button><button type="button" class="argos-button argos-button--secondary" data-discard-camera-edits>Descartar e continuar</button></footer>
+        </dialog>
+      {% endif %}
+
+        <section class="argos-card" id="camera-recording-section" aria-labelledby="camera-recording-title">
           <header class="argos-card__header">
             <div>
               <h2 class="argos-card__title" id="camera-recording-title">Gravação</h2>
@@ -167,7 +281,7 @@
           </div>
         </section>
 
-        <section class="argos-card" aria-labelledby="camera-registration-title">
+        <section class="argos-card" id="camera-registration-section" aria-labelledby="camera-registration-title">
           <header class="argos-card__header">
             <div>
               <h2 class="argos-card__title" id="camera-registration-title">Cadastro e observações</h2>
@@ -194,13 +308,20 @@
             </p>
             <div class="camera-form-actions">
               <a class="argos-button argos-button--secondary" href="{{ retorno_url }}">Cancelar</a>
-              <button class="argos-button argos-button--primary" type="submit">
+              <button class="argos-button argos-button--primary" type="submit" {% if camera %}form="camera-form"{% endif %}>
                 {% if camera %}Salvar alterações{% else %}Cadastrar câmera{% endif %}
               </button>
             </div>
           </footer>
         </section>
-      </form>
+      {% if not camera %}</form>{% endif %}
+
+
     </div>
   </div>
+{% endblock %}
+
+{% block extra_js %}
+  {% if form.farm or form.codec or form.retencao_esperada_dias %}<script src="{% static 'js/camera-form.js' %}" defer></script>{% endif %}
+  {% if camera and credential_panel_visible %}<script src="{% static 'js/camera-credentials.js' %}" defer></script>{% endif %}
 {% endblock %}

@@ -1,7 +1,11 @@
 from django.urls import path
 
 from . import views
-from .credential_views import reveal_camera_credential_view
+from .credential_views import (
+    replace_camera_credential_view,
+    reveal_camera_credential_view,
+    revoke_camera_credential_view,
+)
 
 
 app_name = "cameras"
@@ -15,6 +19,8 @@ urlpatterns = [
     path("substituicoes/", views.lista_substituicoes, name="lista_substituicoes"),
     path("substituicoes/<int:pk>/", views.detalhe_substituicao, name="detalhe_substituicao"),
     path("<int:pk>/editar/", views.editar_camera, name="editar"),
+    path("<int:camera_id>/credentials/", replace_camera_credential_view, name="replace_camera_credential"),
+    path("<int:camera_id>/credentials/revoke/", revoke_camera_credential_view, name="revoke_camera_credential"),
     path("<int:pk>/desativar/", views.desativar_camera_view, name="desativar"),
     path("<int:pk>/reativar/", views.reativar_camera_view, name="reativar"),
     path("<int:pk>/alterar-situacao/", views.alterar_situacao_camera_view, name="alterar_situacao"),

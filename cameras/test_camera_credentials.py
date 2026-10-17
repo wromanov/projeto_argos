@@ -14,6 +14,7 @@ from django.middleware.csrf import get_token
 from cameras.integracao.configuration import save_connection_config
 from cameras.integracao.credentials import (
     CredentialOperationError,
+    credential_configuration_status,
     credential_metadata,
     replace_camera_credential,
     reveal_camera_credential,
@@ -98,6 +99,60 @@ class CameraCredentialTests(TestCase):
         self.assertNotIn("password", metadata)
         self.assertNotIn("ciphertext", metadata)
 
+    def test_ssr_configuration_projection_is_boolean_only_and_does_not_decrypt(self):
+        from unittest.mock import patch
+
+        credential = self.replace()
+        original_version_id = credential.active_version_id
+        with patch("cameras.integracao.credentials._decrypt", side_effect=AssertionError("must not decrypt")):
+            self.assertEqual(
+                credential_configuration_status(actor=self.technician, camera_id=self.camera.pk),
+                {"configured": True},
+            )
+        self.assertEqual(
+            credential_configuration_status(actor=self.technician, camera_id=self.camera.pk + 100),
+            {"configured": False},
+        )
+        credential.state = CameraCredential.State.INACTIVE
+        credential.save(update_fields=["state"])
+        self.assertEqual(
+            credential_configuration_status(actor=self.technician, camera_id=self.camera.pk),
+            {"configured": False},
+        )
+        other_camera = Camera.objects.create(
+            nome="Other Credential Owner",
+            fabricante="Fabricante",
+            modelo="Modelo",
+            ip="192.0.2.46",
+        )
+        other_credential = replace_camera_credential(
+            actor=self.technician,
+            camera_id=other_camera.pk,
+            username="other-user",
+            password="other-password",
+            key_provider=self.provider,
+        )
+        CameraCredential.objects.filter(pk=credential.pk).update(active_version=other_credential.active_version)
+        credential.state = CameraCredential.State.ACTIVE
+        credential.save(update_fields=["state"])
+        self.assertEqual(
+            credential_configuration_status(actor=self.technician, camera_id=self.camera.pk),
+            {"configured": False},
+        )
+        CameraCredential.objects.filter(pk=credential.pk).update(active_version_id=original_version_id)
+        CameraCredentialVersion.objects.filter(pk=original_version_id).update(
+            state=CameraCredentialVersion.State.RETIRED,
+        )
+        self.assertEqual(
+            credential_configuration_status(actor=self.technician, camera_id=self.camera.pk),
+            {"configured": False},
+        )
+
+    def test_ssr_configuration_projection_requires_metadata_permission(self):
+        for actor in (self.operator, self.monitor, AnonymousUser()):
+            with self.subTest(actor=actor), self.assertRaises(PermissionDenied):
+                credential_configuration_status(actor=actor, camera_id=self.camera.pk)
+
     def test_unauthorized_roles_cannot_view_change_or_reveal(self):
         self.replace()
         for actor in (self.operator, self.monitor, AnonymousUser()):
@@ -135,6 +190,49 @@ class CameraCredentialTests(TestCase):
         audit = json.dumps(list(EventoAuditoria.objects.filter(camera=self.camera).values()), default=str)
         for value in (self.camera_password, self.camera_username, "new-camera-password", "new-camera-user"):
             self.assertNotIn(value, audit)
+
+    def test_replace_rolls_back_when_audit_persistence_fails(self):
+        from cameras.models import CameraCredential
+
+        with patch("cameras.auditoria.registrar_evento", side_effect=RuntimeError("audit unavailable")):
+            with self.assertRaisesRegex(RuntimeError, "audit unavailable"):
+                self.replace()
+
+        self.assertFalse(CameraCredential.objects.filter(camera=self.camera).exists())
+        self.assertFalse(CameraCredentialVersion.objects.exists())
+        self.assertFalse(EventoAuditoria.objects.filter(camera=self.camera).exists())
+
+    def test_replace_audit_failure_preserves_previous_active_version(self):
+        credential = self.replace()
+        previous_version_id = credential.active_version_id
+
+        with patch("cameras.auditoria.registrar_evento", side_effect=RuntimeError("audit unavailable")):
+            with self.assertRaisesRegex(RuntimeError, "audit unavailable"):
+                self.replace(username="replacement-user", password="replacement-password")
+
+        credential.refresh_from_db()
+        self.assertEqual(credential.active_version_id, previous_version_id)
+        self.assertEqual(credential.versions.count(), 1)
+        self.assertEqual(credential.versions.get().state, CameraCredentialVersion.State.ACTIVE)
+        self.assertEqual(EventoAuditoria.objects.filter(camera=self.camera).count(), 1)
+
+    def test_revoke_rolls_back_when_audit_persistence_fails(self):
+        credential = self.replace()
+        version = credential.active_version
+
+        with patch("cameras.auditoria.registrar_evento", side_effect=RuntimeError("audit unavailable")):
+            with self.assertRaisesRegex(RuntimeError, "audit unavailable"):
+                revoke_camera_credential(
+                    actor=self.technician,
+                    camera_id=self.camera.pk,
+                )
+
+        credential.refresh_from_db()
+        version.refresh_from_db()
+        self.assertEqual(credential.active_version_id, version.pk)
+        self.assertEqual(credential.state, CameraCredential.State.ACTIVE)
+        self.assertEqual(version.state, CameraCredentialVersion.State.ACTIVE)
+        self.assertEqual(EventoAuditoria.objects.filter(camera=self.camera).count(), 1)
 
     def test_missing_or_invalid_key_fails_closed_without_replacing_active_secret(self):
         credential = self.replace()
