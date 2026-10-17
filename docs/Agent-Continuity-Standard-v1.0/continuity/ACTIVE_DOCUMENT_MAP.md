@@ -2209,3 +2209,21 @@ E1_STATUS = CLOSED_PUBLISHED_ONLY_AFTER_REMOTE_SYNC_CONFIRMATION
 E2_START = NO
 NEXT_SLICE = ARGOS-IMG-07-CONFORMANCE
 ```
+
+## 98. ARGOS-CRED-UI-01 — recibo de publicação E1 (2026-10-17)
+
+| Fonte | Authority / uso | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §138 | SHAs dos dois commits de entrega, resultado do push, igualdade local/remota e fechamento da slice | CURRENT / CLOSED_PUBLISHED |
+| `AGENT_CONTINUITY.md` §20.96 | Resumo de continuidade após publicação | CURRENT / E1 COMPLETE |
+| `docs/projeto/contracts/backend/camera/ARGOS-CRED-UI-01_HTTP_SSR_INTEGRATION_CONTRACT.md` | Contrato ratificado e implementado para a slice | RATIFIED / IMPLEMENTED_FOR_E1 |
+
+```text
+COMMIT_1_SHA = 588e6d16b46ca224adcb6769d2df3d3511b83e85
+COMMIT_2_SHA = e5954ef89af27b79fd7b2a2ae12c817276cd7aeb
+PUSH = PASS / normal push only
+LOCAL_HEAD = REMOTE_HEAD = e5954ef89af27b79fd7b2a2ae12c817276cd7aeb
+E1_STATUS = CLOSED_PUBLISHED
+E2_START = NO
+NEXT_SLICE = ARGOS-IMG-07-CONFORMANCE
+```

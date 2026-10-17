@@ -3241,4 +3241,8 @@ Consultar `PROJECT_STATE.md` §137. Estado vigente: E1 implementada, validada e 
 
 Nesta atividade passaram 32 testes direcionados, `manage.py check`, verificação sem migrations novas e `git diff --check`. Gate de segurança continua sustentado pelas falhas injetadas/rollback independentes em §132. Persistem: nenhuma idempotência server-side, replace repetido pode gerar versão/evento, revoke repetido pode resultar em 409, concorrência PostgreSQL não testada, reveal indisponível sem JS e auditoria formal de leitor de tela não realizada.
 
-Commit/push foram autorizados pelo usuário para `codex/hom-v1-integration`, em dois commits com mensagens registradas em §137; sem force push. `E1_STATUS` só é `CLOSED_PUBLISHED` após normal push e igualdade do HEAD local/remoto. `E2` é apenas a próxima etapa `ARGOS-IMG-07-CONFORMANCE`; implementação não iniciada e sem auto-start.
+Commit/push foram autorizados pelo usuário para `codex/hom-v1-integration`, em dois commits com mensagens e SHAs registrados em `PROJECT_STATE.md` §§137-138; o push normal e a igualdade local/remota foram confirmados no recibo §138. `E1_STATUS = CLOSED_PUBLISHED`. `E2` é apenas a próxima etapa `ARGOS-IMG-07-CONFORMANCE`; implementação não iniciada e sem auto-start.
+
+### 20.96 ARGOS-CRED-UI-01 — recibo de publicação (2026-10-17)
+
+`PROJECT_STATE.md` §138 registra o resultado efetivo: os dois commits autorizados foram publicados por push normal em `origin/codex/hom-v1-integration`, `LOCAL_HEAD == REMOTE_HEAD == e5954ef89af27b79fd7b2a2ae12c817276cd7aeb`, worktree limpo. E1 está `CLOSED_PUBLISHED`; não houve deploy, migrations ou início de E2. O próximo gate é a abertura separada de `ARGOS-IMG-07-CONFORMANCE`.

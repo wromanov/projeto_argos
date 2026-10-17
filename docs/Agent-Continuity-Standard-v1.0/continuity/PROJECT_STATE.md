@@ -7694,11 +7694,11 @@ PROTOTYPE_V1 = PRESERVED / SHA256 69be00debc4bed45dfbe73d4702ad33faa2db4bad34b2d
 COMMIT_AUTHORIZATION = GRANTED / user request
 PUSH_AUTHORIZATION = GRANTED / user request
 COMMIT_1 = 588e6d16b46ca224adcb6769d2df3d3511b83e85 / feat(cameras): integrate secure camera credential management
-COMMIT_2 = docs(argos): close E1 camera credentials with visual acceptance
-COMMIT_SHAS = recorded by Git history and final activity report after creation
+COMMIT_2 = e5954ef89af27b79fd7b2a2ae12c817276cd7aeb / docs(argos): close E1 camera credentials with visual acceptance
+COMMIT_SHAS = recorded in §138 and final activity report
 PUSH_TARGET = origin/codex/hom-v1-integration / normal push only
-REMOTE_SYNC = to be confirmed by equality of local and remote HEAD after push
-E1_STATUS = CLOSED_PUBLISHED_ONLY_AFTER_REMOTE_SYNC_CONFIRMATION
+REMOTE_SYNC = PASS / final equality recorded in §138
+E1_STATUS = CLOSED_PUBLISHED / §138
 VM_DEPLOY = NOT_PERFORMED
 MIGRATIONS = NOT_PERFORMED
 E2_STATUS = NOT_STARTED
@@ -7706,7 +7706,7 @@ NEXT_STAGE = E2
 NEXT_SLICE = ARGOS-IMG-07-CONFORMANCE
 E2_START = NO
 PROJECT_STATE_UPDATE = PASS
-ACTIVITY_COMPLETE = YES only after normal push and remote equality are confirmed
+ACTIVITY_COMPLETE = YES / normal push and remote equality confirmed in §138
 NEXT_GATE = ARGOS-IMG-07-CONFORMANCE-OPENING
 ```
 
@@ -7715,3 +7715,27 @@ Os testes direcionados foram executados nesta atividade e passaram (32/32); Djan
 Os commits de implementação e documentação são separados conforme a autorização. A publicação só pode ser declarada concluída após push normal da branch indicada e verificação `LOCAL_HEAD == REMOTE_HEAD`; em caso de falha, a atividade permanece pendente de publicação. Sem VM, deploy, merge na main, migration nova, câmera real, credencial real ou implementação E2.
 
 Correção histórica de E0: §130 registrou `GIT_PUBLICATION=PENDING` no checkpoint em que foi escrito. Esse estado foi depois supersedido pela publicação do commit `32344225571abc243ee33df9079bd1106569c787` (`test(argos): fix visual QA provisioning regression`), que era simultaneamente HEAD local e HEAD remoto no preflight desta atividade. Assim, E0 já estava publicada no início desta integração. §§130-131 permanecem como snapshots históricos; esta nota corrige apenas o estado Git que passou a ser conhecido, sem reescrevê-los.
+
+## 138. ARGOS-CRED-UI-01 — recibo de publicação (2026-10-17)
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-CRED-UI-01-FINAL-INTEGRATION-AND-CLOSURE
+BRANCH = codex/hom-v1-integration
+BASE_HEAD = 32344225571abc243ee33df9079bd1106569c787
+COMMIT_1_SHA = 588e6d16b46ca224adcb6769d2df3d3511b83e85
+COMMIT_2_SHA = e5954ef89af27b79fd7b2a2ae12c817276cd7aeb
+PUSH = PASS / normal push to origin/codex/hom-v1-integration
+LOCAL_HEAD = e5954ef89af27b79fd7b2a2ae12c817276cd7aeb
+REMOTE_HEAD = e5954ef89af27b79fd7b2a2ae12c817276cd7aeb
+REMOTE_SYNC = PASS / LOCAL_HEAD == REMOTE_HEAD
+WORKTREE = CLEAN
+E1_STATUS = CLOSED_PUBLISHED
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES
+E2_STATUS = NOT_STARTED
+NEXT_SLICE = ARGOS-IMG-07-CONFORMANCE
+E2_START = NO
+```
+
+Este recibo documental registra os resultados efetivos após o push dos dois commits de entrega. Ele não altera o código funcional nem os commits principais; foi publicado como checkpoint posterior para evitar afirmar a sincronização antes de verificá-la. E2 permanece somente como próxima abertura do roadmap.

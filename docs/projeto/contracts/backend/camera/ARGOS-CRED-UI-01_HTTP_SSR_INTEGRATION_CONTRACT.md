@@ -164,4 +164,4 @@ CARD B e o adendo técnico/visual foram aceitos pelo usuário; este contrato é 
 
 Riscos que permanecem abertos: não há idempotência server-side; replace repetido pode criar versão e evento adicionais; revoke repetido pode responder HTTP 409; PostgreSQL/concorrência não foram testados; reveal sem JavaScript não é suportado pela interface; auditoria formal com leitor de tela não foi realizada. A publicação Git não declara homologação operacional, deploy, acesso a câmera real ou validação de concorrência.
 
-O contrato de prototipação com sufixo `DRAFT` preservado em `docs/prototype/ui-password-cam/references/` é somente o registro histórico anterior à ratificação. Este arquivo é o contrato vigente da slice. Estado de publicação e SHAs da integração constam em `PROJECT_STATE.md` §137 e no relatório final da atividade.
+O contrato de prototipação com sufixo `DRAFT` preservado em `docs/prototype/ui-password-cam/references/` é somente o registro histórico anterior à ratificação. Este arquivo é o contrato vigente da slice. Estado de publicação e SHAs da integração constam em `PROJECT_STATE.md` §138 e no relatório final da atividade.
