@@ -11,9 +11,9 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; reconciliation §124; HOM-03 blocked pending authorized SSH key; HOM-04 opening not established |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff §20.83; resume HOM-03 after authorized SSH key |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; current pointer §87; root validation and diff check PASS |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; E2 closed with exceptions in §153; E3 not started |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff §20.111 (E2 closed with exceptions); E3 not started |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest ARGOS pointer §113 (E2 closure with exceptions); contracts preserved |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
 ## 2. Authorities canônicas do projeto
@@ -2227,3 +2227,242 @@ E1_STATUS = CLOSED_PUBLISHED
 E2_START = NO
 NEXT_SLICE = ARGOS-IMG-07-CONFORMANCE
 ```
+
+## 99. ARGOS-IMG-07 — drafts de implementação e UI/UX (2026-10-17)
+
+| Fonte | Authority / uso | Estado |
+|---|---|---|
+| `docs/projeto/contracts/backend/images/ARGOS_IMG_07_IMPLEMENTATION_CONTRACT.md` | Requisitos de implementação adjudicados para conformidade do Quick Detail; subordinado ao contrato de domínio §26 | HISTORICAL SNAPSHOT: DRAFT / NOT_RATIFIED naquele checkpoint; estado vigente §102 |
+| `docs/prototype/ui-v2/ARGOS_IMG_07_UI_UX_CONFORMANCE_HANDOFF.md` | Handoff de revisão UI/UX, baseline protegida e cenários futuros de conformance | HISTORICAL SNAPSHOT: draft e decisões de apresentação pendentes naquele checkpoint; estado vigente §102 |
+| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`, §§7, 24–26 | Seleção técnica de captura, entrega privada, política do Inventário e seleção Quick Detail | CANONICAL / UNCHANGED |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md` e `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md` | Autoridade visual; Quick Detail aprovado e protegido | CANONICAL / UNCHANGED |
+
+Estado atual: `PROJECT_STATE.md` §139 e `AGENT_CONTINUITY.md` §20.97.
+`ROADMAP_STAGE=E2`, `ACTIVE_SLICE=ARGOS-IMG-07-CONFORMANCE`; esta atividade
+produziu documentação draft somente. Implementação proibida; sem mudanças de
+código e sem alegação de testes executados. Próximo gate:
+`UI_UX_CONFORMANCE_REVIEW`.
+
+```text
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS
+CONTRACT = DRAFT / NOT_RATIFIED
+UI_UX_HANDOFF = DRAFT / NOT_RATIFIED
+IMPLEMENTATION = NOT_AUTHORIZED
+NEXT_GATE = UI_UX_CONFORMANCE_REVIEW
+```
+
+## 100. ARGOS-IMG-07 — reconciliação visual aprovada e draft técnico (2026-10-17)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `docs/projeto/contracts/backend/images/ARGOS_IMG_07_IMPLEMENTATION_CONTRACT.md` | Seleção, identidade JSON/prévia, autorização, stale e projeção | HISTORICAL SNAPSHOT: `DRAFT_READY_FOR_RATIFICATION`; estado vigente §102 |
+| `docs/prototype/ui-v2/ARGOS_IMG_07_UI_UX_CONFORMANCE_HANDOFF.md` | Decisões UI-IMG07-01/02, baseline protegida e validação futura | HISTORICAL SNAPSHOT: draft com decisões visuais aprovadas; estado vigente §102 |
+| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md`, §§7, 24–26 | Captura técnica, entrega privada, Inventário e seleção Quick Detail | CANONICAL / UNCHANGED |
+| `docs/prototype/ui-v2/contracts/ARGOS_UI_V2_VISUAL_CONTRACT.md` e `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md` | Baseline Quick Detail protegida | CANONICAL / UNCHANGED |
+| `docs/projeto/contracts/backend/images/IMAGE_CAPTURE_INTEGRATION_CONTRACT.md` | Integração canônica de captura | CANONICAL / UNCHANGED |
+
+§140 do `PROJECT_STATE.md` e §20.98 do `AGENT_CONTINUITY.md` registram status, gaps e gates correntes. UI-IMG07-01 = APPROVED (seis textos literais para estados existentes); UI-IMG07-02 = APPROVED_OPTION_B (`recorded_at` na região de imagem atual, sem alterar drawer). `UI_IMPACT=MICRO_ADJUSTMENT`; `PROTOTYPE_REQUIRED=NO`; `PROTECTED_LAYOUT=REQUIRED`. Ordem vertical protegida: IMAGEM, IDENTIDADE, INFORMAÇÕES GERAIS, LOCALIZAÇÃO, MONITORAMENTO, FOOTER. Se não couber, divergência e escalonamento, sem layout change.
+
+§26 prevalece apenas para seleção Quick Detail; não muda texto legado UI DS para uso técnico de `LATEST_CAMERA_CAPTURE`, Inventário §25/`DISPLAY_IMAGE`, `ultima-captura` ou `preview_exibicao`. §§24/25 não são endpoints IMG-07 por identidade. JSON atual/prévia futura devem compartilhar camera + immutable_id; stale futuro `409 STALE_SELECTION`, sem bytes/retry/fallback. O erro genérico de `<img>` sem status não permite inferir stale. Nenhum teste/runtime foi executado. Gaps técnicos impedem ratificação; próximo gate `ARGOS_IMG_07_TECHNICAL_RATIFICATION_REVIEW`. `PROJECT_STATE_UPDATE=PASS` para atualização documental; handoff não autoriza implementação. WIP preexistente preservado; nenhum commit/push.
+
+O gate documental foi concluído com `STATUS=PARTIAL`: documentação revisada e continuidade validada, enquanto a ratificação técnica permanece para o próximo gate.
+
+## 101. ARGOS-IMG-07 — technical ratification review (2026-10-17)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `docs/projeto/contracts/backend/images/ARGOS_IMG_07_IMPLEMENTATION_CONTRACT.md` | Contrato técnico de projeção, segurança/HTTP, stale e apresentação de timestamp | HISTORICAL SNAPSHOT: `DRAFT_READY_FOR_FINAL_APPROVAL`; estado vigente §102 |
+| `docs/prototype/ui-v2/ARGOS_IMG_07_UI_UX_CONFORMANCE_HANDOFF.md` | UI-IMG07-01/02, baseline protegida e QA visual futura | HISTORICAL SNAPSHOT: draft com decisões visuais aprovadas; estado vigente §102 |
+| `PROJECT_STATE.md` §141 | Decisão, lacunas fechadas, limites de validação e próximos gates | CURRENT / bounded technical review PASS; implementation validation pending |
+| `AGENT_CONTINUITY.md` §20.99 | Handoff da revisão técnica | CURRENT / final approval gate next |
+| `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` §§7, 24–26; `IMAGE_CAPTURE_INTEGRATION_CONTRACT.md` | Captura técnica, Inventário e domínio de imagem | CANONICAL / UNCHANGED |
+| `ARGOS_UI_V2_VISUAL_CONTRACT.md` e `ARGOS_UI_V2_MASTER_PLAN.md` | Baseline Quick Detail protegida | CANONICAL / UNCHANGED |
+
+Gaps 1–3 estão `CLOSED_BY_CONTRACT`. A projeção preserva o envelope `camera, location, monitoring, image, links`; os campos e comportamento para sem registro/registro/states estão no contrato e no handoff. A futura superfície possui ordem de authz/identity e status 401/403/400/404/409/503/422/200, sem afirmar endpoint concreto nem reusar a rota §24. Stale é 409 antes de storage/bytes, sem retry/fallback; erros body vazio, headers privados; não vazar existência não autorizada. §24 continua captura técnica, Inventário §25 e `LATEST_CAMERA_CAPTURE` permanecem inalterados.
+
+Timestamp aprovado: `Registrada em DD/MM/AAAA às HH:MM`, `pt-BR`, `America/Sao_Paulo` via `config/settings.py`; somente com timestamp válido, sem fallback `captured_at`, dentro da região existente e sem alterar composição. QA futura nos viewports 2048×741, 2048×914, 1920×1080, 1366×768, 900×768, 390×844; exigir conteúdo/footer acessíveis sem nova rolagem/overflow; se não couber, escalonar ao usuário.
+
+`CONTRACT_RATIFIABLE=YES`; `CONTRACT_STATUS=DRAFT_READY_FOR_FINAL_APPROVAL`; `IMPLEMENTATION=NOT_GRANTED`; `PENDING_IMPLEMENTATION_VALIDATION=YES`; `VISUAL_QA_PASS=NOT_RUN`. Activity PASS é somente revisão técnica documental. `PROJECT_STATE_UPDATE=PASS`; `AGENT_HANDOFF_GATE=PASS` após validação independente do root. WIP preexistente preservado, sem código/testes/runtime, stage, commit ou push. Próximo gate `ARGOS_IMG_07_CONTRACT_RATIFICATION_DECISION`; E3 proibida.
+
+Adendo vigente à §101: contrato e handoff exigem stale double-check para a futura preview. Além da checagem antes do storage, depois de load/hash/decode/re-encode e antes de criar 200, executar leitura canônica fresca §26; se câmera/UUID/current/lifecycle divergir, descartar bytes e responder 409 vazio, `no-store`/`nosniff`, sem fallback/retry. Esta segunda leitura é o ponto de linearização; não manter lock/snapshot durante I/O. Em falha de I/O, revalidar antes de 422/503, com precedência de 409. QA futura inclui fake storage barrier, latest concorrente/withdrawal → 409 sem bytes, controle estável → 200, IDs/câmeras cruzados e requests paralelos. Runtime/testes não executados; implementação validation pending; `CONTRACT_READY=YES`, `DRAFT_READY_FOR_FINAL_APPROVAL`, próximo gate §101 permanece `ARGOS_IMG_07_CONTRACT_RATIFICATION_DECISION`.
+
+Complemento vigente da §101 — enum `X-Preview-State`: 401=`UNAUTHENTICATED`; 403=`FORBIDDEN`; 400=`INVALID_VARIANT`; 404=`NOT_FOUND` genérico para câmera/UUID ausente ou não autorizado, sem distinguir quando revele existência; 409=`STALE_SELECTION`; 503=`UNAVAILABLE`; 422=`ERROR`; 200=`AVAILABLE`. `NO_IMAGE_AVAILABLE` só existe na projeção JSON sem preview URL/endpoint. Todas as respostas, inclusive erros, exigem `Cache-Control: no-store` e `X-Content-Type-Options: nosniff`; corpo de erro vazio. `CONTRACT_STATUS=DRAFT_READY_FOR_FINAL_APPROVAL`, runtime pendente.
+
+## 102. ARGOS-IMG-07 — ratificação formal (2026-10-17)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `docs/projeto/contracts/backend/images/ARGOS_IMG_07_IMPLEMENTATION_CONTRACT.md` | Contrato técnico ratificado, limitado à slice IMG-07 | RATIFIED_FOR_ARGOS_IMG_07; implementação não iniciada/não autorizada |
+| `docs/prototype/ui-v2/ARGOS_IMG_07_UI_UX_CONFORMANCE_HANDOFF.md` | Handoff visual/funcional, baseline protegida e validação futura | FINAL HANDOFF / decisões UI-IMG07-01/02 aprovadas; `VISUAL_IMPLEMENTATION=NOT_STARTED` |
+| `PROJECT_STATE.md` §142 | Decisão, autoridade, invariantes e limites | CURRENT / ratificação documental PASS |
+| `AGENT_CONTINUITY.md` §20.100 | Retomada e próxima atividade | CURRENT / aguarda revisão de autorização para implementação |
+| `ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` §§7, 24–26; `IMAGE_CAPTURE_INTEGRATION_CONTRACT.md` | Autoridades de domínio/captura | CANONICAL / UNCHANGED |
+| `ARGOS_UI_V2_VISUAL_CONTRACT.md` e `ARGOS_UI_V2_MASTER_PLAN.md` | Autoridades de composição protegida | CANONICAL / UNCHANGED |
+
+`DECISION_ID=ARGOS-IMG-07-FORMAL-CONTRACT-RATIFICATION`; decisão APPROVED em 2026-10-17 após autorização humana condicional satisfeita. `CONTRACT_CONFORMANCE=PASS`; `TECHNICAL_GAPS=NONE`; `SECURITY_INVARIANTS=PRESERVED`. O contrato deixou de ser draft e teve o sufixo removido do path; links atualizados. O handoff continua handoff, não novo contrato. `IMPLEMENTATION_STATUS=NOT_STARTED / NOT_GRANTED`, `VISUAL_QA_PASS=NOT_RUN`; nenhum código/teste/runtime foi alterado/executado. `PROJECT_STATE_UPDATE=PASS`; `AGENT_HANDOFF_GATE=PASS / root independently validated documents and pointers`. Próximo gate `ARGOS_IMG_07_IMPLEMENTATION_AUTHORIZATION_REVIEW`; E3 proibida; sem commit/push/deploy.
+
+## 103. ARGOS-IMG-07 — implementação controlada (2026-10-17)
+
+Estado corrente: `PROJECT_STATE.md` §143 e `AGENT_CONTINUITY.md` §20.101.
+Contrato IMG-07 ratificado e authorities superiores inalteradas. Seleção,
+projeção JSON, preview privada por identidade, stale double-check e UI foram
+implementados; testes direcionados, autorização, system check e migrações
+passaram. QA visual real não foi alcançada pelo navegador disponível; não há
+screenshots e acessibilidade permanece não validada. `IMPLEMENTATION_STATUS =
+PARTIAL`, próxima gate `ARGOS_IMG_07_IMPLEMENTATION_REVIEW`; E2 não fechada,
+E3 não iniciada, sem commit/push/deploy. WIP documental preexistente preservado.
+
+## 104. ARGOS-IMG-07 — retomada da QA visual (2026-10-17)
+
+Estado corrente: `PROJECT_STATE.md` §144 e `AGENT_CONTINUITY.md` §20.102. QA visual parcial do estado sem imagem em 390×844, 1366×768, 1440×900 e 1920×1080, com dados sintéticos confirmados na sessão Edge; foco por Tab verificado pontualmente. Instância isolada com mídia sintética em porta distinta não ficou acessível e foi removida. Não há imagem no dataset QA para os cenários de captura/upload/timestamp/integridade/indisponibilidade/erro. Screenshots foram revisados na sessão, não persistidos; acessibilidade parcial, contraste/leitor de tela não avaliados. `IMPLEMENTATION_STATUS=PARTIAL`, 90%, próxima gate `ARGOS_IMG_07_IMPLEMENTATION_REVIEW`; E2 aberta, E3 não iniciada, sem commit/push/deploy.
+
+## 105. ARGOS-IMG-07 — aceitação visual integrada no Edge (2026-10-17)
+
+Estado corrente: `PROJECT_STATE.md` §145 e `AGENT_CONTINUITY.md` §20.103. Edge
+autenticado confirmou preview de upload/captura sintéticos, `recorded_at`,
+estados indisponível/erro e navegação por teclado. APIs de serviço confirmaram
+precedência do Inventário/captura técnica; cliente Django confirmou stale 409
+sem bytes e isolamento cross-camera 404 sem bytes. A abertura/fechamento do
+drawer não criou registros, eventos nem jobs. Oito fixtures foram withdrawn via
+lifecycle canônico e sete objetos privados referenciados permanecem; nenhum
+registro ativo, dados preexistentes preservados, SQLite íntegro.
+
+`STATUS=PARTIAL`: screenshots não foram persistidos; a sessão Edge não permitiu
+matriz de viewports e não houve leitor de tela, contraste formal, zoom ou stale
+race visual no `<img>`. Próxima gate `ARGOS_IMG_07_IMPLEMENTATION_REVIEW`; E2
+aberta, E3 não iniciada, sem commit/push/deploy.
+
+## 106. ARGOS-IMG-07 — evidência visual final (2026-10-17)
+
+`PROJECT_STATE.md` §146 e `AGENT_CONTINUITY.md` §20.104 registram a QA visual final em Edge, runtime servido com SHA-256 correspondente ao worktree e isolamento QA validado. Cinco screenshots sanitizados e verificados estão fora do repositório em `C:\Users\walac\.codex\visualizations\2026\10\17\01a148b2-a3fc-7610-ae01-26947a888461\ARGOS-IMG07-QA-20261017-48135e95356c4e2fa86e2e962757a3c4\screenshots`; índice/hash em `screenshots_evidence_index.json`, métricas em `responsive_qa_metrics.json`; manifesto/reconciliação da fixture em `final_fixture_manifest.json`. Viewports 390×844, 1366×768, 1440×900 e 1920×1080 validados. Stale `<img>` validado com resposta MOCK HTTP 409 vazia e texto genérico exato. Contraste do texto de erro 4.22:1, zoom e leitor de tela pendentes. Fixture nova do alvo retirada logicamente; zero imagens ativas, SQLite íntegro, sem alteração de código. Status `PARTIAL`; E2 não fechada, E3 não iniciada; próxima gate `ARGOS_IMG_07_IMPLEMENTATION_REVIEW`; sem commit/push/deploy.
+
+## 107. ARGOS-IMG-07 — remediação visual de contraste (2026-10-17)
+
+`PROJECT_STATE.md` §147 e `AGENT_CONTINUITY.md` §20.105 registram o ajuste direcionado: texto do erro da preview com token `--color-danger`, 7.56:1 sobre `--color-surface-muted`; timestamp revalidado em 4.51:1. Quatro viewports foram renderizados e quatro screenshots `DOM MOCK`, com hashes e métricas, estão em `C:\Users\walac\.codex\visualizations\2026\10\17\01a148b2-a3fc-7610-ae01-26947a888461\ARGOS-IMG07-VISUAL-ACCESSIBILITY-REMEDIATION-20261017\screenshots`; índice e `responsive_qa_metrics.json` no diretório pai. `Ambiente=ÁREA DE TESTE`; sem overflow horizontal, footer visível. Há scroll extent de documento e drawer no mobile; interação independente, zoom e repetição de teclado pendentes após o guard de confiança de URL interromper a automação. Screen reader não testado. Sem alteração de fixture/banco/contrato/layout; `STATUS=PARTIAL`, próxima gate `ARGOS_IMG_07_IMPLEMENTATION_REVIEW`; E2 não fechada, E3 não iniciada; sem commit/push/deploy.
+
+## 108. ARGOS-IMG-07 — revisão final de implementação (2026-10-17)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` §7.3 | Authority funcional da Localização do Quick Detail | CANONICAL / `Ambiente` visível; inclui ponto de referência |
+| `docs/projeto/contracts/backend/images/ARGOS_IMG_07_IMPLEMENTATION_CONTRACT.md` §§6–7 | Escopo IMG-07, baseline protegida e QA | RATIFIED / proíbe nova área de scroll; composição deve ser escalada |
+| `docs/prototype/ui-v2/ARGOS_IMG_07_UI_UX_CONFORMANCE_HANDOFF.md` §§5–6 | Acessibilidade e validação visual futura | Screen reader explicitamente listado; zoom não especificado |
+| `PROJECT_STATE.md` §148 | Evidência e decisão atual | CURRENT / localização FAIL por `ponto_referencia` ausente; scroll lock FAIL; readiness NO |
+| `AGENT_CONTINUITY.md` §20.106 | Handoff da revisão | CURRENT / E2 aberta; próxima gate `ARGOS_IMG_07_FINAL_ACCEPTANCE_DECISION` |
+
+`Ambiente` não deve ser ocultado; aparece conforme §7.3. A ausência do slot visual de `ponto_referencia` e o scroll do documento sob o dialog são findings fora da correção CSS IMG-07 e exigem decisão/remediação separada. Os quatro JPEGs DOM MOCK e métricas persistidas foram reutilizados. A verificação CSS atual confirmou 7.5619:1 e 4.5063:1; teste Django 409 anterior permanece evidência funcional independente. Zoom e screen reader não executados; screen reader consta como requisito na handoff. `NESTED_SCROLL=FAIL`, `ACCESSIBILITY_ACCEPTANCE=PARTIAL`, `IMG07_IMPLEMENTATION_READY=NO`, `STATUS=PARTIAL`. Sem alteração de código, contrato, dados ou evidência; sem commit/push/deploy.
+
+## 109. ARGOS — contrato draft de remediação Quick Detail (2026-10-17)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `docs/prototype/ui-v2/contracts/ARGOS_QUICK_DETAIL_REMEDIATION_IMPLEMENTATION_CONTRACT.md` | Proposta original de remediação do scroll lock QD01, invariantes, validação e gate humano | HISTORICAL SNAPSHOT: DRAFT / NOT_RATIFIED; estado vigente §110 |
+| `PROJECT_STATE.md` §149 | Resultado dos gates 1/2, evidências, estado e próxima gate | HISTORICAL SNAPSHOT: aguardava ratificação humana; estado vigente §150 |
+| `AGENT_CONTINUITY.md` §20.107 | Handoff original da continuidade da remediação | HISTORICAL SNAPSHOT: aguardava `ARGOS_QD_REMEDIATION_ACCEPTANCE`; estado vigente §20.108 |
+| `docs/prototype/ui-v2/ARGOS_IMG_07_UI_UX_CONFORMANCE_HANDOFF.md` §5 e `docs/projeto/contracts/backend/images/ARGOS_IMG_07_IMPLEMENTATION_CONTRACT.md` §§6–7 | Acessibilidade, regressão funcional e composição protegida | RATIFIED_FOR_ARGOS_IMG_07 / unchanged |
+| `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` §7.3 e baseline aceita registrada em `PROJECT_STATE.md` §§19, 27 e `AGENT_CONTINUITY.md` §17 | Localização: authority funcional e baseline visual | AUTHORITY_CONFLICT / escolha humana QD03 pendente |
+
+Gate 1 diagnóstico e Gate 2 arquitetura foram concluídos read-only. O scroll do
+documento sob o dialog foi confirmado como falha; a rolagem interna única do
+drawer permanece aceita e protegida. Contraste de erro/timestamp passou; teclado
+tem PASS anterior; zoom e screen reader não foram executados. A decisão QD03
+continua sem opção selecionada: autorizar proposta/revisão visual UI V2 para
+adicionar `Ponto de referência`, ou manter a composição aceita de quatro campos
+e encaminhar a divergência §7.3 para esclarecimento formal de autoridade. Não
+houve alteração de source/testes nem toque em fixtures, banco, browser ou
+evidências. Próxima gate `ARGOS_QD_REMEDIATION_ACCEPTANCE`, aguardando ratificação
+humana; E2 aberta, E3 não iniciada, sem commit/push/deploy.
+
+## 110. ARGOS — ratificação documental QD01 (2026-10-17)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `docs/prototype/ui-v2/contracts/ARGOS_QUICK_DETAIL_REMEDIATION_IMPLEMENTATION_CONTRACT.md` | Contrato de remediação ratificado e autorização limitada | RATIFIED / QD01_BOUNDED |
+| `PROJECT_STATE.md` §150 | Decisão, escopo, evidência e limites da gate documental | HISTORICAL SNAPSHOT / ratificação documental; implementação vigente §151 |
+| `AGENT_CONTINUITY.md` §20.108 | Handoff da ratificação documental | HISTORICAL SNAPSHOT / implementação vigente §20.109 |
+| `ARGOS_IMG_07_UI_UX_CONFORMANCE_HANDOFF.md` §5 e `ARGOS_IMG_07_IMPLEMENTATION_CONTRACT.md` §§6–7 | Acessibilidade, regressão funcional e composição protegida | RATIFIED_FOR_ARGOS_IMG_07 / unchanged |
+| `ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` §7.3 e baseline visual aceita | Autoridade de localização e composição | QD03-B registrada; especificação permanece com gap aberto |
+
+`QD01=RATIFIED`; implementação autorizada apenas para o scroll de fundo e
+dentro do escopo enumerado no contrato. `QD02=ACCEPTED_BASELINE`.
+`QD03=OPTION_B_APPROVED`; preservar os quatro campos e buscar esclarecimento
+formal da divergência §7.3; `QD03_SPECIFICATION_GAP=OPEN`. Zoom e leitor de tela
+continuam `NOT_RUN`; demais status de acessibilidade são os registrados em
+§148, sem nova validação. Nenhum teste de produto ou implementação foi feito
+nesta gate. E2 aberta, E3 não iniciada, sem commit/push/deploy.
+
+## 111. ARGOS — implementação e QA do scroll lock QD01 (2026-10-17)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `static/js/camera-quick-detail.js` | Implementação do scroll lock de fundo QD01 | MODIFIED / QD01 SCOPE ONLY |
+| `docs/prototype/ui-v2/contracts/ARGOS_QUICK_DETAIL_REMEDIATION_IMPLEMENTATION_CONTRACT.md` | Contrato que autoriza o escopo QD01 | RATIFIED / QD01_BOUNDED |
+| `PROJECT_STATE.md` §151 | Implementação, QA browser, checks e limites | CURRENT / QD01 browser QA PASS; E2 open |
+| `AGENT_CONTINUITY.md` §20.109 | Handoff corrente | CURRENT / QD01 implementation and QA recorded |
+| `ARGOS_IMG_07_UI_UX_CONFORMANCE_HANDOFF.md` §5 | Acessibilidade herdada | RATIFIED / zoom and screen reader remain NOT_RUN |
+
+Edge verificou PageDown bloqueado ao fundo e restauração exata da posição ao
+fechar nos viewports 390×844, 1366×768, 1440×900 e 1920×1080. Em 390×600, o
+corpo do drawer rolou de `scrollTop=0` a `122` com documento em `scrollY=1879`;
+Escape restaurou overflow e posição. Checks registrados em §151 passaram;
+screenshots foram inspecionados inline, sem arquivos persistidos. QD02 permanece
+baseline aceita. QD03-B preserva os quatro campos e o gap §7.3 permanece OPEN.
+E2 aberta, E3 não iniciada; sem migration, commit, push ou deploy.
+
+## 112. ARGOS-IMG-07 — parecer final de aceite (2026-10-17)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `docs/projeto/contracts/backend/images/ARGOS_IMG_07_IMPLEMENTATION_CONTRACT.md` | Contrato técnico IMG-07 e matriz de viewport/concorrência | RATIFIED / PRESERVED |
+| `docs/prototype/ui-v2/ARGOS_IMG_07_UI_UX_CONFORMANCE_HANDOFF.md` | Conformidade visual e acessibilidade | RATIFIED / PRESERVED |
+| `docs/prototype/ui-v2/contracts/ARGOS_QUICK_DETAIL_REMEDIATION_IMPLEMENTATION_CONTRACT.md` | QD01, baseline QD02 e decisão separada QD03-B | RATIFIED / PRESERVED; QD03 specification gap OPEN |
+| `PROJECT_STATE.md` §152 | Parecer final IMG-07 e lacunas de evidência | HISTORICAL / acceptance blocked; preserved by E2 closure §153 |
+| `AGENT_CONTINUITY.md` §20.110 | Handoff do parecer final IMG-07 | HISTORICAL / preserved; current E2 closure handoff §20.111 |
+| `PROJECT_STATE.md` §153; `AGENT_CONTINUITY.md` §20.111 | Decisão humana e encerramento da E2 com ressalvas | CURRENT / `CLOSED_WITH_EXCEPTIONS`; production not authorized; E3 not started |
+| `docs/projeto/ARGOS_DELIVERY_EXECUTION_PLAN_V1.md` | Plano de entrega | Previously recorded E2 `PLANNED` discrepancy preserved; plan unchanged; closure recorded in continuity snapshot per explicit approval |
+
+Parecer `ARGOS-IMG-07-FINAL-ACCEPTANCE-REVIEW`: funcional e regressão
+`PARTIAL`; segurança `PASS_HISTORICAL`; aceites técnico e visual `BLOCKED`;
+`ACCEPTANCE_BLOCKED=YES`; `IMG07_RELEASE_READINESS=NOT_READY`;
+`RECOMMENDATION=REQUIRES_TARGETED_EVIDENCE_COMPLETION`. QD01 concluída, QD02
+preservada, QD03-B aprovada e seu gap documental segue separado. Nenhum defeito
+novo de código foi comprovado.
+
+As cinco classes de evidência pendente e a contagem de viewports (3/6
+contratuais cobertos; faltam 2048×741, 2048×914 e 900×768) constam de
+`PROJECT_STATE.md` §152. Zoom e leitor de tela permanecem `NOT_RUN`. Não houve
+teste/evidência novo, mudança funcional ou alteração de banco neste gate.
+Próximo gate `ARGOS_IMG_07_CONTRACT_EVIDENCE_CLOSURE`; não encerrar E2 nem
+iniciar E3.
+
+
+## 113. ARGOS — fechamento formal da E2 com ressalvas (2026-10-17)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §153 | Decisão humana, estado consolidado e riscos residuais aceitos | CURRENT / E2 `CLOSED_WITH_EXCEPTIONS`; conformidade contratual integral não declarada |
+| `AGENT_CONTINUITY.md` §20.111 | Retomada e limites para a próxima etapa | CURRENT / E2 encerrada com ressalvas; E3 `NOT_STARTED`; produção não autorizada |
+| `PROJECT_STATE.md` §152; `AGENT_CONTINUITY.md` §20.110 | Parecer final e evidências IMG-07 | HISTORICAL / aceites `PARTIAL` e `BLOCKED`, `ACCEPTANCE_BLOCKED=YES`, `IMG07_RELEASE_READINESS=NOT_READY`; preservados |
+| `ARGOS_IMG_07_IMPLEMENTATION_CONTRACT.md`; `ARGOS_IMG_07_UI_UX_CONFORMANCE_HANDOFF.md`; `ARGOS_QUICK_DETAIL_REMEDIATION_IMPLEMENTATION_CONTRACT.md` | Contratos ratificados e requisitos de evidência | RATIFIED / PRESERVED; sem dispensa |
+| `docs/projeto/ARGOS_DELIVERY_EXECUTION_PLAN_V1.md`; `docs/projeto/ROADMAP_ARGOS_V5.md` | Autoridades de planejamento | UNCHANGED; não editadas nesta atividade |
+
+A decisão aprovada encerra apenas a etapa de desenvolvimento E2 com
+`E2_ACCEPTANCE=APPROVED_WITH_EXCEPTIONS`. `IMG07_IMPLEMENTATION=COMPLETE`,
+`QD01_REMEDIATION=COMPLETE`, `QD02_BASELINE=PRESERVED`,
+`QD03_DECISION=OPTION_B_APPROVED`, `CONTRACTUAL_EVIDENCE=PARTIAL`,
+`FULL_CONTRACTUAL_CONFORMANCE=NOT_CLAIMED` e
+`RESIDUAL_RISKS=DOCUMENTED_AND_ACCEPTED`.
+
+Permanecem riscos residuais: evidência ausente em 2048×741, 2048×914 e 900×768;
+evidências persistidas e cobertura complementar da matriz QD01 incompletas;
+prova determinística da corrida no estágio exigido pelo storage ausente; Zoom
+QA e Screen Reader QA `NOT_RUN`; e QD03-B preserva os quatro campos enquanto a
+divergência de “Ponto de referência” aguarda esclarecimento documental separado
+(`QD03_SPECIFICATION_GAP=OPEN_TRACKED_SEPARATELY`). Esses itens não são `PASS`,
+não foram eliminados e não constituem dispensa dos contratos ratificados. Os
+resultados anteriores `PARTIAL`/`BLOCKED`/`NOT_READY` da revisão IMG-07
+permanecem fatos históricos.
+
+`PRODUCTION_RELEASE=NOT_AUTHORIZED`; `E3_STATUS=NOT_STARTED`. Próximo gate:
+`ARGOS_E2_CONTROLLED_GIT_INTEGRATION`.
