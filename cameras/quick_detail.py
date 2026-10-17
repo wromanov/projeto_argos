@@ -2,7 +2,7 @@
 
 from django.urls import reverse
 
-from .imagens.display_service import DisplayImageReadService, DisplayImageState
+from .imagens.quick_detail_service import QuickDetailImageReadService, QuickDetailImageState
 from .models import Camera
 from .monitoramento.read_service import MonitoringReadService
 
@@ -11,7 +11,7 @@ def camera_quick_detail(camera_id):
     monitoring_service = MonitoringReadService()
     camera = monitoring_service.camera_queryset(Camera.objects.filter(pk=camera_id)).get()
     monitoring = monitoring_service.project(camera)
-    display = DisplayImageReadService().display_image(camera.pk)
+    display = QuickDetailImageReadService().select(camera.pk)
     location = {field: getattr(camera, field) or None for field in (
         "terminal", "pavimento", "setor", "ambiente", "ponto_referencia"
     )}
@@ -31,7 +31,11 @@ def camera_quick_detail(camera_id):
                        "scope_reason": str(monitoring.scope_reason) if monitoring.scope_reason else None},
         "image": {"state": str(display.state), "source": str(display.source),
                   "capture_state": str(display.capture_state),
-                  "preview_url": reverse("cameras:preview_exibicao", args=[camera.pk, "PANEL"])
-                  if display.state == DisplayImageState.AVAILABLE else None},
+                  "preview_url": reverse(
+                      "cameras:preview_quick_detail",
+                      args=[camera.pk, display.immutable_id, "PANEL"],
+                  ) if display.state == QuickDetailImageState.AVAILABLE else None,
+                  "immutable_id": str(display.immutable_id) if display.immutable_id else None,
+                  "recorded_at": display.recorded_at.isoformat() if display.recorded_at else None},
         "links": {"full_detail_url": reverse("cameras:detalhe", args=[camera.pk])},
     }

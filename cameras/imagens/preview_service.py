@@ -11,6 +11,7 @@ from PIL import Image, ImageOps, UnidentifiedImageError
 
 from cameras.imagens.read_service import CameraImageReadService, LatestCameraCaptureStatus
 from cameras.imagens.display_service import DisplayImageReadService, DisplayImageState
+from cameras.imagens.quick_detail_service import QuickDetailImageReadService
 from cameras.models import CameraImageRecord
 
 
@@ -101,3 +102,57 @@ class DisplayImagePreviewService(CameraImagePreviewService):
             return PreviewResult(PreviewState(display.state.value))
         record = CameraImageRecord.objects.get(pk=display.immutable_id)
         return self._deliver_record(record, variant)
+
+
+class QuickDetailPreviewState(StrEnum):
+    AVAILABLE = "AVAILABLE"
+    NOT_FOUND = "NOT_FOUND"
+    STALE_SELECTION = "STALE_SELECTION"
+    UNAVAILABLE = "UNAVAILABLE"
+    ERROR = "ERROR"
+
+
+@dataclass(frozen=True, slots=True)
+class QuickDetailPreviewResult:
+    state: QuickDetailPreviewState
+    content: bytes | None = None
+
+
+class QuickDetailImagePreviewService(CameraImagePreviewService):
+    """Entrega a identidade escolhida pelo Quick Detail com double-check stale."""
+
+    def _still_selected(self, camera_id: int, immutable_id) -> bool:
+        current = QuickDetailImageReadService.latest_active_record(camera_id)
+        return current is not None and current.pk == immutable_id
+
+    def deliver(self, camera_id: int, immutable_id, variant: str) -> QuickDetailPreviewResult:
+        if variant not in VARIANTS:
+            raise ValueError("Variante inválida")
+
+        record = CameraImageRecord.objects.filter(pk=immutable_id, camera_id=camera_id).first()
+        if record is None:
+            return QuickDetailPreviewResult(QuickDetailPreviewState.NOT_FOUND)
+        if record.withdrawn_at is not None or not self._still_selected(camera_id, immutable_id):
+            return QuickDetailPreviewResult(QuickDetailPreviewState.STALE_SELECTION)
+
+        # Seleciona e valida a identidade antes de acessar o storage. A nova
+        # consulta após o processamento funciona como ponto de linearização.
+        if (record.integrity_status != CameraImageRecord.IntegrityStatus.VALID
+                or len(record.sha256) != 64
+                or any(char not in "0123456789abcdef" for char in record.sha256)):
+            result = PreviewResult(PreviewState.ERROR)
+        else:
+            try:
+                available = self.storage.exists(record.storage_key)
+            except Exception:
+                available = False
+            if not available:
+                result = PreviewResult(PreviewState.UNAVAILABLE)
+            else:
+                result = self._deliver_record(record, variant)
+
+        if not self._still_selected(camera_id, immutable_id):
+            return QuickDetailPreviewResult(QuickDetailPreviewState.STALE_SELECTION)
+        if result.state == PreviewState.AVAILABLE:
+            return QuickDetailPreviewResult(QuickDetailPreviewState.AVAILABLE, result.content)
+        return QuickDetailPreviewResult(QuickDetailPreviewState(result.state.value))

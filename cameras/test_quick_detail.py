@@ -56,7 +56,8 @@ class QuickDetailTests(TestCase):
         self.assertEqual(data["monitoring"]["state"], str(MonitoringReadService().current(self.camera.pk).effective_state))
         self.assertEqual(EstadoMonitoramento.objects.count(), before_monitoring)
         self.assertEqual(data["image"], {"state": "NO_IMAGE_AVAILABLE", "source": "NONE",
-                                         "capture_state": "NO_CAPTURE_AVAILABLE", "preview_url": None})
+                                         "capture_state": "NO_CAPTURE_AVAILABLE", "preview_url": None,
+                                         "immutable_id": None, "recorded_at": None})
         self.assertEqual(data["links"]["full_detail_url"], reverse("cameras:detalhe", args=[self.camera.pk]))
         self.assertNotIn("storage_key", response.content.decode())
         self.assertEqual(response["Cache-Control"], "no-store")
@@ -80,9 +81,14 @@ class QuickDetailTests(TestCase):
         with patch("cameras.imagens.read_service.default_storage.exists", return_value=True):
             image = self.client.get(self.url).json()["image"]
         self.assertEqual(image["state"], "AVAILABLE")
-        self.assertEqual(image["preview_url"], reverse("cameras:preview_exibicao", args=[self.camera.pk, "PANEL"]))
+        self.assertEqual(image["preview_url"], reverse(
+            "cameras:preview_quick_detail", args=[self.camera.pk, older.pk, "PANEL"]
+        ))
+        self.assertEqual(image["immutable_id"], str(older.pk))
+        self.assertEqual(image["recorded_at"], older.recorded_at.isoformat())
         latest = CameraImageRecord.objects.create(
             camera=self.camera, provenance="CAPTURA_CAMERA", captured_at=now,
+            recorded_at=now + timedelta(minutes=1),
             storage_key="private/latest.png", content_type="image/png", sha256="a" * 64,
             integrity_status="INVALID",
         )
@@ -92,6 +98,39 @@ class QuickDetailTests(TestCase):
         self.assertNotIn("private/", str(image))
         self.assertIsNotNone(older.pk)
         self.assertIsNotNone(latest.pk)
+
+    def test_latest_selection_ignores_captured_at_and_orders_by_recorded_at_then_uuid(self):
+        self.allow_view()
+        moment = timezone.now()
+        older_capture = CameraImageRecord.objects.create(
+            camera=self.camera, provenance="CAPTURA_CAMERA", captured_at=moment + timedelta(days=10),
+            recorded_at=moment, storage_key="private/capture.png", content_type="image/png", sha256="a" * 64,
+        )
+        upload = CameraImageRecord.objects.create(
+            camera=self.camera, provenance="UPLOAD_MANUAL", recorded_at=moment + timedelta(seconds=2),
+            storage_key="private/upload.png", content_type="image/png", sha256="b" * 64,
+        )
+        tied_upload = CameraImageRecord.objects.create(
+            camera=self.camera, provenance="UPLOAD_MANUAL", recorded_at=moment + timedelta(seconds=2),
+            storage_key="private/tied.png", content_type="image/png", sha256="c" * 64,
+        )
+        with patch("cameras.imagens.quick_detail_service.default_storage.exists", return_value=True):
+            image = self.client.get(self.url).json()["image"]
+        selected = max(upload.pk, tied_upload.pk)
+        self.assertEqual(image["immutable_id"], str(selected))
+        self.assertEqual(image["source"], "UPLOAD_MANUAL")
+        self.assertEqual(image["recorded_at"], tied_upload.recorded_at.isoformat())
+        self.assertEqual(image["capture_state"], "AVAILABLE")
+        self.assertNotEqual(image["immutable_id"], str(older_capture.pk))
+
+        newer_capture = CameraImageRecord.objects.create(
+            camera=self.camera, provenance="CAPTURA_CAMERA", captured_at=moment - timedelta(days=10),
+            recorded_at=moment + timedelta(seconds=5), storage_key="private/newer-capture.png",
+            content_type="image/png", sha256="d" * 64,
+        )
+        with patch("cameras.imagens.quick_detail_service.default_storage.exists", return_value=True):
+            image = self.client.get(self.url).json()["image"]
+        self.assertEqual((image["source"], image["immutable_id"]), ("CAPTURA_CAMERA", str(newer_capture.pk)))
 
     def test_inventory_markup_preserves_detail_and_preview(self):
         self.allow_view()

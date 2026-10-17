@@ -8,6 +8,7 @@ from django.http import HttpResponse, JsonResponse, QueryDict
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.dateparse import parse_date
+from uuid import UUID
 
 from .auditoria import CAMPOS_ATIVIDADE_AUDITAVEIS, CAMPOS_CAMERA_AUDITAVEIS, calcular_alteracoes, registrar_evento, valores_iniciais
 from .forms import (
@@ -29,7 +30,10 @@ from .monitoramento.presentation import (
 )
 from .imagens.upload_service import aceitar_upload_manual
 from .imagens.display_service import DisplayImageReadService
-from .imagens.preview_service import CameraImagePreviewService, DisplayImagePreviewService, PreviewState, CONTENT_TYPE, VARIANTS
+from .imagens.preview_service import (
+    CameraImagePreviewService, DisplayImagePreviewService, PreviewState,
+    QuickDetailImagePreviewService, QuickDetailPreviewState, CONTENT_TYPE, VARIANTS,
+)
 from .quick_detail import camera_quick_detail
 from .validadores import normalizar_texto_cadastral
 from .xlsx_import import ImportFileError, build_template, confirm_preview, preview_xlsx, record_failed_confirmation
@@ -573,6 +577,46 @@ def _preview_response(request, pk, variant, service_class):
 def preview_exibicao(request, pk, variant):
     """Entrega a seleção atual de DISPLAY_IMAGE com os mesmos limites HTTP."""
     return _preview_response(request, pk, variant, DisplayImagePreviewService)
+
+
+@login_not_required
+def preview_quick_detail(request, pk, immutable_id, variant):
+    """Entrega IMG-07 vinculada à câmera, identidade imutável e variante."""
+    def empty(status, state):
+        response = HttpResponse(status=status)
+        response["X-Preview-State"] = state
+        response["Cache-Control"] = "no-store"
+        response["X-Content-Type-Options"] = "nosniff"
+        return response
+
+    if not request.user.is_authenticated:
+        return empty(401, "UNAUTHENTICATED")
+    if not request.user.has_perm("cameras.view_camera"):
+        return empty(403, "FORBIDDEN")
+    if request.method != "GET" or variant not in VARIANTS or request.GET:
+        return empty(400, "INVALID_VARIANT")
+    try:
+        selected_id = UUID(immutable_id)
+    except (TypeError, ValueError, AttributeError):
+        return empty(400, "INVALID_VARIANT")
+    if not Camera.objects.filter(pk=pk).exists():
+        return empty(404, "NOT_FOUND")
+
+    result = QuickDetailImagePreviewService().deliver(pk, selected_id, variant)
+    if result.state != QuickDetailPreviewState.AVAILABLE:
+        status, state = {
+            QuickDetailPreviewState.NOT_FOUND: (404, "NOT_FOUND"),
+            QuickDetailPreviewState.STALE_SELECTION: (409, "STALE_SELECTION"),
+            QuickDetailPreviewState.UNAVAILABLE: (503, "UNAVAILABLE"),
+            QuickDetailPreviewState.ERROR: (422, "ERROR"),
+        }[result.state]
+        return empty(status, state)
+    response = HttpResponse(result.content, content_type=CONTENT_TYPE)
+    response["Content-Disposition"] = 'inline; filename="preview.jpg"'
+    response["Cache-Control"] = "no-store"
+    response["X-Content-Type-Options"] = "nosniff"
+    response["X-Preview-State"] = "AVAILABLE"
+    return response
 
 
 @permission_required("cameras.view_camera", raise_exception=True)

@@ -111,15 +111,24 @@ class DisplayImageTests(TestCase):
         self.assertEqual(self.client.get(self.url)["X-Preview-State"], "UNAVAILABLE")
         self.assertIsNotNone(capture.pk)
 
-    def test_inventory_batch_and_quick_detail_share_selection(self):
+    def test_inventory_policy_is_unchanged_while_quick_detail_selects_latest_record(self):
         self.authorize()
-        self.record()
+        manual = self.record()
+        capture = self.record(provenance="CAPTURA_CAMERA")
+        moment = timezone.now()
+        CameraImageRecord.objects.filter(pk=manual.pk).update(recorded_at=moment + timedelta(seconds=1))
+        CameraImageRecord.objects.filter(pk=capture.pk).update(recorded_at=moment - timedelta(seconds=1))
         Camera.objects.bulk_create([Camera(nome=f"Empty {n}") for n in range(19)])
         with CaptureQueriesContext(connection) as queries:
             response = self.client.get(reverse("cameras:lista"))
         image_queries = [q for q in queries if "cameras_cameraimagerecord" in q["sql"].lower()]
         self.assertEqual(len(image_queries), 2)
         self.assertContains(response, self.url)
+        inventory = DisplayImageReadService().display_image(self.camera)
+        self.assertEqual((inventory.source, inventory.immutable_id), ("CAPTURA_CAMERA", capture.pk))
         detail = self.client.get(reverse("cameras:quick_detail", args=[self.camera.pk])).json()["image"]
         self.assertEqual((detail["source"], detail["state"]), ("UPLOAD_MANUAL", "AVAILABLE"))
-        self.assertEqual(detail["preview_url"], reverse("cameras:preview_exibicao", args=[self.camera.pk, "PANEL"]))
+        self.assertEqual(detail["immutable_id"], str(manual.pk))
+        self.assertEqual(detail["preview_url"], reverse(
+            "cameras:preview_quick_detail", args=[self.camera.pk, manual.pk, "PANEL"]
+        ))
