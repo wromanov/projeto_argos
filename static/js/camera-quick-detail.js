@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageFrame = dialog.querySelector("[data-quick-detail-image-frame]");
   const imagePlaceholder = dialog.querySelector("[data-quick-detail-image-placeholder]");
   const imageTitle = dialog.querySelector("[data-quick-detail-image-title]");
+  const imageRecordedAt = dialog.querySelector("[data-quick-detail-image-recorded-at]");
   const footer = dialog.querySelector("[data-quick-detail-footer]");
   const editLink = dialog.querySelector("[data-quick-detail-edit-link]");
   const headerSubtitle = dialog.querySelector("[data-quick-detail-header-subtitle]");
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let requestId = 0;
   let selectedRow = null;
   let opener = null;
+  let documentScrollLock = null;
 
   const value = (item) => item === null || item === undefined || item === "" ? "—" : String(item);
   const date = (item) => {
@@ -32,13 +34,101 @@ document.addEventListener("DOMContentLoaded", () => {
   const statusLabels = (statusLabelsElement ? JSON.parse(statusLabelsElement.textContent) : null) || {};
   const imageLabels = {
     NO_IMAGE_AVAILABLE: "Nenhuma imagem disponível",
-    UNAVAILABLE: "Imagem indisponível",
-    ERROR: "Erro na imagem registrada"
+    UNAVAILABLE: "Imagem temporariamente indisponível",
+    ERROR: "Não foi possível exibir a imagem"
   };
+  const imageSourceLabels = {
+    CAPTURA_CAMERA: "Imagem capturada pela câmera",
+    UPLOAD_MANUAL: "Imagem enviada manualmente"
+  };
+
+  function imageTimestamp(item) {
+    if (!item) return "";
+    const parsed = new Date(item);
+    if (Number.isNaN(parsed.getTime())) return "";
+    const parts = new Intl.DateTimeFormat("pt-BR", {
+      timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit",
+      year: "numeric", hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+    }).formatToParts(parsed).reduce((result, part) => {
+      result[part.type] = part.value;
+      return result;
+    }, {});
+    return `Registrada em ${parts.day}/${parts.month}/${parts.year} às ${parts.hour}:${parts.minute}`;
+  }
 
   function clearSelection() {
     if (selectedRow) selectedRow.classList.remove("camera-row--selected");
     selectedRow = null;
+  }
+
+  function acquireDocumentScrollLock() {
+    const element = document.scrollingElement;
+    if (!element || documentScrollLock) return;
+
+    const computedOverflowY = window.getComputedStyle(element).overflowY;
+    if (computedOverflowY === "hidden" || computedOverflowY === "clip") return;
+
+    const style = element.style;
+    const computedScrollbarGutter = window.getComputedStyle(element).scrollbarGutter;
+    const reserveScrollbarGutter = window.innerWidth > element.clientWidth &&
+      !computedScrollbarGutter.startsWith("stable");
+    documentScrollLock = {
+      element,
+      overflow: style.getPropertyValue("overflow"),
+      overflowPriority: style.getPropertyPriority("overflow"),
+      scrollbarGutter: style.getPropertyValue("scrollbar-gutter"),
+      scrollbarGutterPriority: style.getPropertyPriority("scrollbar-gutter"),
+      reserveScrollbarGutter,
+      scrollX: window.scrollX,
+      scrollY: window.scrollY
+    };
+    if (reserveScrollbarGutter) style.setProperty("scrollbar-gutter", "stable", "important");
+    style.setProperty("overflow", "hidden");
+  }
+
+  function restoreDocumentScrollLock() {
+    const lock = documentScrollLock;
+    if (!lock || dialog.open) return;
+
+    const otherOpenDialogs = Array.from(document.querySelectorAll("dialog[open]"))
+      .filter((otherDialog) => otherDialog !== dialog);
+    if (otherOpenDialogs.length) {
+      otherOpenDialogs.forEach((otherDialog) => {
+        otherDialog.addEventListener("close", restoreDocumentScrollLock, { once: true });
+      });
+      return;
+    }
+
+    documentScrollLock = null;
+    const style = lock.element.style;
+    if (style.getPropertyValue("overflow") === "hidden" && !style.getPropertyPriority("overflow")) {
+      if (lock.overflow) style.setProperty("overflow", lock.overflow, lock.overflowPriority);
+      else style.removeProperty("overflow");
+      if (lock.reserveScrollbarGutter && style.getPropertyValue("scrollbar-gutter") === "stable" &&
+          style.getPropertyPriority("scrollbar-gutter") === "important") {
+        if (lock.scrollbarGutter) {
+          style.setProperty("scrollbar-gutter", lock.scrollbarGutter, lock.scrollbarGutterPriority);
+        } else {
+          style.removeProperty("scrollbar-gutter");
+        }
+      }
+      window.requestAnimationFrame(() => {
+        if (documentScrollLock || document.querySelector("dialog[open]")) return;
+        const restoreStyle = lock.element.style;
+        const scrollBehavior = restoreStyle.getPropertyValue("scroll-behavior");
+        const scrollBehaviorPriority = restoreStyle.getPropertyPriority("scroll-behavior");
+        restoreStyle.setProperty("scroll-behavior", "auto", "important");
+        try {
+          lock.element.scrollTo({ left: lock.scrollX, top: lock.scrollY, behavior: "auto" });
+        } finally {
+          if (scrollBehavior) {
+            restoreStyle.setProperty("scroll-behavior", scrollBehavior, scrollBehaviorPriority);
+          } else {
+            restoreStyle.removeProperty("scroll-behavior");
+          }
+        }
+      });
+    }
   }
 
   function close() {
@@ -46,9 +136,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (controller) controller.abort();
     controller = null;
     image.removeAttribute("src");
+    image.dataset.previewUrl = "";
     image.hidden = true;
     clearSelection();
     if (dialog.open) dialog.close();
+    restoreDocumentScrollLock();
     if (opener && opener.isConnected) opener.focus({ preventScroll: true });
     opener = null;
   }
@@ -74,14 +166,18 @@ document.addEventListener("DOMContentLoaded", () => {
     image.hidden = true;
     imagePlaceholder.hidden = false;
     imageFrame.dataset.imageState = data.image.state.toLowerCase();
-    const sourceLabel = data.image.source === "CAPTURA_CAMERA" ? "Última captura registrada" :
-      data.image.source === "UPLOAD_MANUAL" ? "Imagem enviada manualmente" : "Nenhuma imagem disponível";
+    const sourceLabel = imageSourceLabels[data.image.source] || "Nenhuma imagem disponível";
     imageTitle.textContent = sourceLabel;
-    image.alt = sourceLabel === "Nenhuma imagem disponível" ? "" : `${sourceLabel} da câmera`;
+    image.alt = data.image.source === "NONE" ? "" : sourceLabel;
+    const timestamp = data.image.source === "NONE" ? "" : imageTimestamp(data.image.recorded_at);
+    imageRecordedAt.textContent = timestamp;
+    imageRecordedAt.hidden = !timestamp;
     image.removeAttribute("src");
+    image.dataset.previewUrl = "";
     if (data.image.state === "AVAILABLE" && data.image.preview_url) {
       imageState.textContent = "Carregando imagem…";
       imageFrame.dataset.imageState = "loading";
+      image.dataset.previewUrl = new URL(data.image.preview_url, window.location.href).href;
       image.src = data.image.preview_url;
     } else {
       imageState.textContent = imageLabels[data.image.state] || "Imagem indisponível";
@@ -96,6 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!dialog.open) {
       opener = trigger;
       dialog.showModal();
+      acquireDocumentScrollLock();
     }
     clearSelection();
     selectedRow = row;
@@ -144,6 +241,18 @@ document.addEventListener("DOMContentLoaded", () => {
   dialog.addEventListener("cancel", (event) => { event.preventDefault(); close(); });
   dialog.addEventListener("close", () => { if (opener) close(); });
   dialog.addEventListener("click", (event) => { if (event.target === dialog) close(); });
-  image.addEventListener("load", () => { if (dialog.open && !content.hidden) { image.hidden = false; imagePlaceholder.hidden = true; imageFrame.dataset.imageState = "available"; imageState.textContent = ""; } });
-  image.addEventListener("error", () => { image.hidden = true; imagePlaceholder.hidden = false; imageFrame.dataset.imageState = "unavailable"; imageState.textContent = "Imagem indisponível"; });
+  image.addEventListener("load", () => {
+    if (!dialog.open || content.hidden || !image.dataset.previewUrl || image.currentSrc !== image.dataset.previewUrl) return;
+    image.hidden = false;
+    imagePlaceholder.hidden = true;
+    imageFrame.dataset.imageState = "available";
+    imageState.textContent = "";
+  });
+  image.addEventListener("error", () => {
+    if (!image.dataset.previewUrl || image.currentSrc !== image.dataset.previewUrl) return;
+    image.hidden = true;
+    imagePlaceholder.hidden = false;
+    imageFrame.dataset.imageState = "unavailable";
+    imageState.textContent = "Não foi possível carregar a imagem selecionada";
+  });
 });
