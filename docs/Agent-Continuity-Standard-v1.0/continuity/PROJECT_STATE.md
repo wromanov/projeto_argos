@@ -7299,3 +7299,419 @@ a mensagem específica do marcador inválido. Nenhum backend operacional,
 serviço de provisionamento ou migration foi alterado. As evidências da regressão
 completa são aprovadas e foram reutilizadas sem nova execução. E1 é somente o
 próximo handoff; esta atividade não iniciou `ARGOS-CRED-UI-01`.
+
+## 131. ARGOS-CRED-UI-01 — preparação documental de E1 (2026-10-16)
+
+Foram materializados dois documentos DRAFT para revisão: contrato HTTP/SSR em
+`docs/projeto/contracts/backend/camera/ARGOS-CRED-UI-01_HTTP_SSR_INTEGRATION_CONTRACT_DRAFT.md`
+e handoff visual em
+`docs/prototype/ui-v2/contracts/ARGOS_CRED_UI_01_VISUAL_PROTOTYPING_HANDOFF_DRAFT.md`.
+Eles registram a adjudicação técnica do root e não alteram CAM-INT-02,
+CAM-INT-02-R1, BC-AUTH, Roadmap ou Sprints. E1 permanece somente preparo de
+contrato/handoff; aprovação humana pendente; implementação Django não iniciada.
+
+```text
+ACTIVITY = ARGOS-CRED-UI-01-HTTP-CONTRACT-MULTIAGENT-GATE
+ROADMAP_STAGE = E0 (continuidade vigente; não promovido)
+ACTIVE_SLICE = ARGOS-QA-01 (registro vigente em §130)
+NEXT_SLICE = ARGOS-CRED-UI-01
+E1_STATUS = DOCUMENTATION_PREPARATION_ONLY
+CONTRACT_STATUS = DRAFT / READY_FOR_REVIEW
+VISUAL_HANDOFF_STATUS = DRAFT
+HUMAN_APPROVAL = PENDING
+DJANGO_IMPLEMENTATION = NOT_STARTED
+HANDOFF_READY = YES / technical proposal validated for review
+HTTP_CONTRACT_FINAL_APPROVAL = PENDING_USER
+HUMAN_VISUAL_APPROVAL = PENDING
+DJANGO_UI_IMPLEMENTATION = NOT_STARTED
+NEXT_GATE = TECHNICAL_DRAFT_REVIEW_AND_UI_UX_HANDOFF
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS
+ROOT_DELTA_VALIDATION = PASS
+GIT_DIFF_CHECK = PASS
+```
+
+O pedido original trazia `E0_STATUS=CLOSED/PUBLISHED`, em divergência com §130,
+que registra `ROADMAP_STAGE_E0=READY_FOR_CLOSURE` e `GIT_PUBLICATION=PENDING`.
+A divergência fica registrada sem reconciliação ou promoção de estado. O
+arquiteto solicitado como GPT-6.1 Sol/High foi executado pelo perfil efetivo
+GPT-6 Sol/High; registrar a diferença de runtime. Gaps documentais/técnicos
+incluem projeção metadata com dados além do mínimo e sem estado revogado,
+atomicidade de auditoria não verificada na implementação, duplicidade replace
+sem idempotência garantida e decisões de mensagens/UX pendentes. Root validou
+independentemente o delta documental e o escopo autorizado; `git diff --check`
+passou. Sem testes, alteração de código, stage, commit, push, deploy ou acesso
+operacional.
+
+## 132. ARGOS-CRED-UI-01 — implementação controlada E1 (2026-10-16)
+
+O contrato HTTP/SSR foi ratificado pelo CARD B e pelo adendo aceito; a
+implementação local de backend/UI e os testes de segurança passaram. O gate de
+conformance visual Django permanece bloqueado: a tentativa de abrir o servidor
+local pelo navegador isolado retornou `ERR_CONNECTION_TIMED_OUT`; nenhuma
+captura Django foi produzida. A aprovação humana do protótipo V1 permanece
+válida; o aceite visual da implementação permanece `PENDING`. Consultar
+`ACTIVE_DOCUMENT_MAP.md` §95 e `AGENT_CONTINUITY.md` §20.90.
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-CRED-UI-01-CONTROLLED-IMPLEMENTATION
+ROADMAP_STAGE = E1
+ACTIVE_SLICE = ARGOS-CRED-UI-01
+GATE_A_CONTRACT_RATIFICATION = PASS
+GATE_B_SECURITY_AND_HTTP_VALIDATION = PASS / 26 credential tests; 84 proportional regression tests
+GATE_C_DJANGO_VISUAL_CONFORMANCE = BLOCKED / browser loopback unavailable
+GATE_D_HUMAN_IMPLEMENTATION_REVIEW = PENDING
+AGENT_HANDOFF_GATE = PENDING / visual gate outstanding
+BASE_HEAD = 32344225571abc243ee33df9079bd1106569c787
+BRANCH = codex/hom-v1-integration
+HEAD = 32344225571abc243ee33df9079bd1106569c787
+LOCAL_ORIGIN_TRACKING_REF = SAME_AS_HEAD / remote not freshly fetched because worktree contains WIP
+CONTRACT_RATIFIED = PASS / CARD B + addendum
+SECURITY_FOUNDATION_VALIDATED = PASS / 3 injected audit-failure rollback tests
+HTTP_IMPLEMENTATION_VALIDATED = PASS / targeted endpoint suite
+DJANGO_VISUAL_CONFORMANCE = BLOCKED / browser loopback timed out; no screenshots
+GATE_D_HUMAN_IMPLEMENTATION_REVIEW = PENDING
+GATE_DJANGO_HUMAN_VISUAL_APPROVAL = PENDING
+TARGETED_TESTS = PASS / 26 credential tests
+PROPORTIONAL_REGRESSION = PASS / 84 tests across credential, resolver, connection, authorization, camera form and frontend modules
+DJANGO_SYSTEM_CHECK = PASS
+MAKEMIGRATIONS_CHECK = PASS / no changes detected
+GIT_DIFF_CHECK = PASS
+PROTOTYPE_SHA256 = 69be00debc4bed45dfbe73d4702ad33faa2db4bad34b2df9f640ed0f780e1e1d / unchanged
+HTML_FORM_STRUCTURE = STRUCTURAL_TEST_PASS / real-browser DOM confirmation pending
+NO_JS_FALLBACK = IMPLEMENTED / endpoint and markup checks; browser validation pending
+DIRTY_FORM_BEHAVIOR = IMPLEMENTED / JavaScript comparison and explicit decision; browser interaction pending
+REVEAL_REGRESSION = PASS / existing POST-CSRF-reauth-no-store tests; UI interaction browser validation pending
+DUPLICATE_SUBMISSION_POLICY = DOCUMENTED / repeat replace creates new version; duplicate revoke returns 409; concurrent DB stress not run
+WORKTREE_STATUS = PREEXISTING WIP PRESERVED + E1 changes unstaged/untracked
+PROJECT_STATE_UPDATE = PASS
+ROOT_DELTA_VALIDATION = PASS
+AGENT_HANDOFF_GATE = PENDING / visual gate outstanding
+ACTIVITY_COMPLETE = NO / visual gate pending
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+MIGRATIONS = NO_NEW_MIGRATION_CREATED; no persistent database migration run
+TEST_DATABASE = DISPOSABLE / Django test runner applied existing migrations
+ACTIVITY_COMPLETION_PERCENT = 68%
+NEXT_GATE = DJANGO_RENDERED_SCREENSHOTS_AND_USER_IMPLEMENTATION_REVIEW
+```
+
+Files de código desta slice: `cameras/credential_views.py`,
+`cameras/credential_forms.py`, `cameras/integracao/credentials.py`,
+`cameras/urls.py`, `cameras/views.py`,
+`cameras/templates/cameras/formulario.html`,
+`static/css/ui-v2/camera-form.css`, `static/js/camera-credentials.js` e os
+testes direcionados de credenciais/views. Metadata SSR usa projeção booleana
+sem decrypt e mantém `credential_metadata` compatível. As rotas replace/revoke
+usam os services existentes, allowlist, POST, CSRF, PRG e respostas
+sanitizadas. Testes de falha injetada provaram rollback das mutações quando a
+auditoria falha. O formulário cadastral e formulários de credenciais são
+irmãos; sem JavaScript há formulários SSR de replace/revoke com confirmação
+obrigatória. Reveal usa o endpoint existente e só integra sua resposta por
+JavaScript transitório.
+
+Submissões concorrentes não foram exercitadas com PostgreSQL nem em múltiplos
+workers; não existe idempotência server-side nem migration nova. O controle
+visual do botão é apenas UX. Capturas dos tamanhos 390×844, 1366×768,
+1440×900 e 1920×1080, inspeção de foco/acessibilidade na aplicação real e
+aceite humano ficam pendentes do acesso browser ao servidor local. Nenhum
+protótipo foi apresentado como evidência Django.
+
+O HEAD e a referência local `origin/codex/hom-v1-integration` foram lidos com
+SHA idêntico. Não houve fetch, pois o worktree contém alterações preexistentes
+que devem ser preservadas conforme o protocolo de continuidade; por isso não
+se afirma uma consulta nova ao remoto. O baseline E0 não foi alterado por esta
+slice. Todos os WIP de continuidade, handoff e pacote visual foram preservados.
+
+## 133. ARGOS-CRED-UI-01 — recuperação do acesso visual Django (2026-10-16)
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-CRED-UI-01-DJANGO-VISUAL-GATE-RECOVERY
+ROADMAP_STAGE = E1
+ACTIVE_SLICE = ARGOS-CRED-UI-01
+ROOT = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+BRANCH = codex/hom-v1-integration
+HEAD = 32344225571abc243ee33df9079bd1106569c787
+WORKTREE = E1 WIP preserved; no staged changes
+PYTHON = C:\Users\walac\desenvolvimento\.venvs\argos_hom_py314\Scripts\python.exe
+DJANGO_SETTINGS_MODULE = scripts.localqa.settings
+SERVER_STARTUP = PASS / runserver --noreload on 127.0.0.1:8765; process still running for handoff
+SERVER_COMMAND = specified Python 3.14 manage.py runserver 127.0.0.1:8765 --noreload; ephemeral settings secrets only in process environment
+SERVER_LOG = GET / -> 302 /login/?next=/; login 200; login CSS and brand assets 200
+LOCAL_HTTP_REACHABILITY = PASS / Chrome on this station loaded Django login page; PowerShell socket probe from sandbox was denied
+BROWSER_REACHABILITY = PASS / Chrome extension reached loopback and displayed login; authenticated application not yet reached
+ROOT_CAUSE = sandboxed process/socket boundary prevented the prior loopback attempt; the Django QA server and same-station Chrome communicate when server runs outside that boundary
+QA_DATABASE = existing owner-marked SQLite; inspected read-only; no migration, seed, account change, or credential change performed
+SYNTHETIC_CAMERAS = five existing ARGOS-QA records
+SYNTHETIC_CREDENTIALS = 0
+VISUAL_QA_ACCOUNT = qa-visual-hom01; existing exact five permissions preserved; no view/change credential permission
+USERS_WITH_CREDENTIAL_PERMISSIONS = none in existing QA SQLite
+VISUAL_BASELINE = V1_OPTION_A / unchanged
+CONTRACT_RATIFIED = PASS
+SECURITY_FOUNDATION_VALIDATED = PASS
+HTTP_IMPLEMENTATION_VALIDATED = PASS
+HTML_FORM_STRUCTURE_VALIDATED = PENDING / authenticated Django edit page not reached
+NO_JS_FALLBACK_VALIDATED = PENDING / browser interaction not reached
+DIRTY_FORM_BEHAVIOR = PENDING / browser interaction not reached
+REVEAL_UI_BEHAVIOR = PENDING / no authorized account or synthetic credential state
+DJANGO_VISUAL_CONFORMANCE = BLOCKED / account with credential permissions unavailable
+DESIGN_QA_EVIDENCE = login/redirect evidence only; not evidence for the credential UI
+SCREENSHOTS = no application screenshots; login tab left open for user handoff
+DJANGO_HUMAN_VISUAL_APPROVAL = PENDING
+CONCURRENCY_RESIDUAL_RISK = unchanged from §132; no concurrency stress performed
+OPEN_BLOCKERS = user must sign in locally with an approved synthetic account having view_camera_credential and change_camera_credential, or explicitly authorize a separate synthetic QA identity
+FILES_CHANGED = PROJECT_STATE.md §133; AGENT_CONTINUITY.md §20.91
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PENDING / authenticated review and screenshots required
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+MIGRATION = NOT_PERFORMED
+ACTIVITY_COMPLETION_PERCENT = 30%
+STATUS = PARTIAL
+NEXT_GATE = authenticated Django edit-page inspection and four required viewport captures
+```
+
+The standard QA launcher was deliberately not used: it runs migrations and
+reconciles the operational user with a newly rotated password. Instead, the
+already marked QA SQLite was inspected read-only and Django was started with
+the repository's dedicated QA settings, the specified Python 3.14 interpreter,
+and ephemeral process-only settings values. No database preparation, seed,
+credential operation, or identity provisioning occurred. The initial browser
+failure is explained by the sandbox's denied loopback socket; the browser on
+the station now reaches the Django login page. The account available in the
+existing QA database does not have the permissions required to see the
+credential card, and there are no other users with those permissions. The
+login page is left open for local user handoff; no password was entered or
+requested in chat. Gate C and the human visual acceptance remain pending.
+
+## 134. ARGOS-CRED-UI-01 — autenticação e inspeção da edição Django (2026-10-17)
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-CRED-UI-01-DJANGO-VISUAL-GATE-RECOVERY
+ROADMAP_STAGE = E1
+ACTIVE_SLICE = ARGOS-CRED-UI-01
+USER_DECISION = USE_INICIAR_ARGOS_QA_CMD
+LAUNCHER = INICIAR_ARGOS_QA.cmd / explicitly requested by user
+LAUNCHER_PYTHON = .venv Python 3.12.14 (launcher hardcoded)
+LAUNCHER_MIGRATE = invoked; no migrations to apply
+LAUNCHER_SEED = PASS / idempotent five-camera synthetic seed
+OPERATIONAL_QA_ACCOUNT = qa-operacional-hom01 / reconciled; temporary password rotated and not recorded here
+SERVER_PYTHON = C:\Users\walac\desenvolvimento\.venvs\argos_hom_py314\Scripts\python.exe / 3.14
+SERVER_SETTINGS = scripts.localqa.settings
+SERVER = PASS / 127.0.0.1:8765 --noreload; serving existing QA SQLite
+AUTHENTICATION = PASS / operational synthetic QA account; local login only
+EDIT_CAMERA_PAGE = PASS / real Django template at /cameras/1/editar/ for ARGOS-QA-001
+HTML_FORM_STRUCTURE = PARTIAL / rendered DOM inspected; 2 forms total including logout and camera-form, 0 nested forms, 0 duplicate IDs, all 25 labels resolve; credential forms are absent
+CREDENTIAL_PANEL = HIDDEN / account lacks view_camera_credential and change_camera_credential
+QA_USERS_WITH_CREDENTIAL_PERMISSIONS = 0
+QA_SYNTHETIC_CREDENTIALS = 0
+SECRET_INPUTS_IN_RENDERED_PAGE = 0
+NO_JS_FALLBACK_VALIDATED = PENDING / credential UI was not rendered
+DIRTY_FORM_BEHAVIOR = PENDING / browser interaction not reached
+REVEAL_UI_BEHAVIOR = PENDING / no reveal permission or synthetic credential state
+DJANGO_VISUAL_CONFORMANCE = BLOCKED / authorized credential UI unavailable to the launcher account
+DESIGN_QA_EVIDENCE = authenticated real-Django edit page; card and dialogs not present
+SCREENSHOTS = no required viewport images yet
+VISUAL_DIVERGENCES = NOT_ASSESSED / target card not rendered
+DJANGO_HUMAN_VISUAL_APPROVAL = PENDING
+MIGRATION = NO_PENDING_MIGRATIONS / command invoked by user-requested launcher
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PENDING / credential permission profile required
+ACTIVITY_COMPLETION_PERCENT = 45%
+STATUS = PARTIAL
+NEXT_GATE = user authorization for an isolated synthetic QA identity/profile with camera credential permissions and non-real visual test state
+```
+
+O usuário instruiu o uso do launcher da raiz. O launcher executou o check,
+consultou migrations e informou `No migrations to apply`, inseriu/confirmou
+somente o seed sintético idempotente e reconciliou a conta operacional QA,
+rotacionando sua senha local. Como o launcher usa `.venv` Python 3.12.14,
+encerrou-se apenas seu servidor e o mesmo SQLite passou a ser servido pelo
+Python 3.14 exigido na atividade, sem repetir preparação. O Chrome autenticou
+com a conta sintética e chegou à edição Django real da câmera ARGOS-QA-001.
+
+A inspeção do DOM real encontrou o formulário cadastral separado do formulário
+de logout, sem forms aninhados, IDs duplicados ou inputs de senha. O card não
+foi renderizado porque o perfil operacional contém somente as sete permissões
+definidas pelo launcher e não inclui as permissões de credenciais. Nenhuma
+conta do SQLite tinha essas permissões, e não há credencial sintética para os
+estados de reveal/revogação. O perfil não foi ampliado nem foi criada
+credencial de teste. A revisão visual E1 continua bloqueada; nenhuma captura
+da tela sem o card substitui as capturas requeridas.
+## 135. ARGOS-CRED-UI-01 — recuperação visual Django com QA descartável (2026-10-17)
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-CRED-UI-01-DJANGO-VISUAL-GATE-RECOVERY
+ROADMAP_STAGE = E1
+ACTIVE_SLICE = ARGOS-CRED-UI-01
+ROOT = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+BRANCH = codex/hom-v1-integration
+HEAD = 32344225571abc243ee33df9079bd1106569c787
+WORKTREE = WIP preservado; sem staging
+USER_DECISION = AUTHORIZED_DISPOSABLE_SQLITE_COPY_AND_SYNTHETIC_REVIEW_IDENTITY
+TEMP_QA_CLONE = created from owner-marked QA SQLite; used only for local visual review; deleted after validation
+TEMP_REVIEW_IDENTITY = synthetic nonsuperuser; credential permissions limited to cloned database; deleted with clone
+SYNTHETIC_CREDENTIAL_STATE = created only in cloned SQLite; no secret included in evidence
+SERVER = stopped after screenshots and interaction review
+GATE_A_CONTRACT_RATIFIED = PASS / §132 canonical contract evidence retained
+GATE_B_SECURITY_FOUNDATION_VALIDATED = PASS / three injected audit-failure rollback tests in §132
+GATE_B_HTTP_IMPLEMENTATION_VALIDATED = PASS / 26 credential tests and 84 proportional regressions in §132; not rerun in visual recovery
+GATE_C_DJANGO_VISUAL_CONFORMANCE = PARTIAL / real Django page and four CSS viewports verified; visual and accessibility divergences remain for user review
+HTML_FORM_STRUCTURE_VALIDATED = PASS / rendered DOM; no nested forms, duplicate IDs, or credential inputs in cadastral form; credential forms carry no cadastral fields
+NO_JS_FALLBACK_VALIDATED = PASS / JavaScript disabled; visible SSR forms submitted successfully and PRG message rendered
+DIRTY_FORM_BEHAVIOR = PASS / explicit decision dialog; preserve and discard paths exercised
+REVEAL_REGRESSION = PASS / synthetic success, sanitized reauthentication failure; closing cleared output and password; no secret retained in screenshot or initial/final DOM
+DUPLICATE_SUBMISSION_POLICY = DOCUMENTED_NO_SERVER_IDEMPOTENCY / replace replay creates another version/event; repeated revoke returns 409; no PostgreSQL concurrency stress performed
+DJANGO_HUMAN_VISUAL_APPROVAL = PENDING / user owns final acceptance
+VISUAL_VIEWPORTS = CSS 390x844, 1366x768, 1440x900, 1920x1080 / screenshots indexed in docs/prototype/ui-password-cam/evidence/django-qa-2026-10-17/visual-conformance-fix-01/README.md
+VISUAL_CONFORMANCE = card positioned between Network and Recording at all requested viewports; no horizontal overflow
+VISUAL_DIVERGENCES = DOM/accessibility reading order puts Recording before credential card; action order differs from V1; mobile actions stacked rather than inline
+ACCESSIBILITY_REVIEW = PARTIAL / labels, IDs, focus entry/return, Escape and keyboard path checked; no formal contrast or screen-reader audit
+PERSISTENCE_EVIDENCE = cloned database only / cadastral fields unchanged; active pointer consistent; prior credential version retired; audit entries contain no synthetic username/password
+SOURCE_CHANGES_IN_RECOVERY = none; screenshots, evidence index, and continuity checkpoint only
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO / user visual acceptance remains pending
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+MIGRATION = NOT_PERFORMED_IN_RECOVERY
+E2_START = BLOCKED
+NEXT_GATE = USER_IMPLEMENTATION_REVIEW_AND_ACCEPTANCE
+```
+
+Com a autorização do usuário, criou-se uma cópia SQLite descartável, uma identidade de revisão não privilegiada com permissões de credenciais e um estado integralmente sintético. O Chrome autenticado abriu a tela real de edição Django. O clone foi removido ao final; a base QA original não recebeu credenciais sintéticas nem alteração de permissões. A validação da persistência foi feita apenas na cópia antes da remoção. Nenhum segredo foi incluído nas capturas ou no checkpoint.
+
+As quatro dimensões solicitadas foram testadas com viewport CSS exato. O card aparece visualmente entre Rede e Gravação sem overflow horizontal. A inspeção do DOM observou forms irmãos, payloads isolados e labels/IDs consistentes. O fallback SSR sem JavaScript foi realmente submetido com sucesso; as decisões dirty-preserve/discard, foco e Escape foram exercitadas. O reveal sintético mostrou erro sanitizado para reautenticação inválida e limpou os campos ao fechar. O manifesto de capturas registra dimensões raster efetivas e os estados observados.
+
+Gate C fica parcial para revisão: a ordem de leitura do DOM/árvore acessível coloca Gravação antes do card, embora a ordem visual esteja contratada; a ordem das ações diverge da V1 aprovada e elas empilham no mobile. A validação de acessibilidade foi parcial, sem auditoria formal de contraste ou leitor de tela. Não foi feita alteração de fonte durante esta recuperação. Gate D e o aceite visual final permanecem pendentes; E2 segue bloqueado.
+
+## 136. ARGOS-CRED-UI-01 — correção de conformidade visual Django (2026-10-17)
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-CRED-UI-01-VISUAL-CONFORMANCE-FIX-01
+ROADMAP_STAGE = E1
+ACTIVE_SLICE = ARGOS-CRED-UI-01
+ROOT = C:\Users\walac\desenvolvimento\projeto_argos_hom_integration
+BRANCH = codex/hom-v1-integration
+HEAD_BASE = 32344225571abc243ee33df9079bd1106569c787
+WORKTREE = WIP preservado; sem staging
+USER_AUTHORIZATION = disposable SQLite clone + synthetic QA identity/state; visual conformance recovery
+CONTRACT_RATIFIED = PASS / contrato canônico da atividade; evidência anterior §132
+SECURITY_FOUNDATION_VALIDATED = PASS / falhas injetadas de auditoria e rollback na evidência canônica §132; sem mudança de serviço nesta correção
+HTTP_IMPLEMENTATION_VALIDATED = PASS / regressão atual de views, serviços e UI; 32 testes passaram; evidência mais ampla §132 mantida
+DJANGO_VISUAL_CONFORMANCE = PASS / aplicação Django real nos quatro viewports, DOM/ordem, estados, fallback e contraste observados
+GATE_D_HUMAN_IMPLEMENTATION_REVIEW = PASS / aceite visual explícito do usuário em 2026-10-17
+HTML_FORM_STRUCTURE_VALIDATED = PASS / DOM: zero aninhados/IDs duplicados; payload cadastral isolado de substituir, revogar e revelar
+NO_JS_FALLBACK_VALIDATED = PASS / forms SSR visíveis com JS desligado, confirmação explícita e PRG testado na cópia descartável
+DIRTY_FORM_BEHAVIOR = PASS / estado alterado detectado com JS; preservar ou descartar exige escolha; SSR não alega detecção dinâmica
+REVEAL_REGRESSION = PASS / integração permanece explícita no frontend; erro de reautenticação sanitizado; nenhum segredo em DOM/imagem final
+DUPLICATE_SUBMISSION_POLICY = DOCUMENTED_NO_SERVER_IDEMPOTENCY / conforme contrato canônico §132; sem stress concorrente PostgreSQL
+VISUAL_VIEWPORTS = CSS 390x844, 1366x768, 1440x900, 1920x1080
+VISUAL_ORDER = DOM e pixels: Rede -> Credenciais -> Gravação; ações: Revelar -> Revogar -> Substituir
+ACCESSIBILITY = PARTIAL / nomes/labels, ordem, foco, Escape, teclado e contraste computado verificados; leitor de tela formal não executado
+CONTRAST = secondary 4.71:1; badge 7.36:1; primary button text 6.15:1; secondary button text 14.15:1
+REDUCED_MOTION = PASS / regra prefers-reduced-motion existente suprime transições aplicáveis
+PROTOTYPE_V1 = UNCHANGED / SHA256 69be00debc4bed45dfbe73d4702ad33faa2db4bad34b2df9f640ed0f780e1e1d
+TESTS = PASS / 32 testes em cameras.test_camera_credential_views, cameras.test_camera_credentials, cameras.test_camera_form_ui_recovery
+DJANGO_CHECK = PASS / system check identified no issues
+QA_CLONE = DELETED / original QA SQLite preservado; credencial/usuário sintéticos existiram somente no clone
+MIGRATION = NONE_ON_QA_CLONE / Django test runner aplicou migrations existentes somente no banco de teste em memória
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES / Gates A-D aprovados e PROJECT_STATE atualizado
+DJANGO_HUMAN_VISUAL_APPROVAL = PASS / aprovado pelo usuário em 2026-10-17
+COMMIT = NOT_AUTHORIZED / NOT_PERFORMED
+PUSH = NOT_AUTHORIZED / NOT_PERFORMED
+DEPLOY = NOT_AUTHORIZED / NOT_PERFORMED
+MIGRATIONS = NOT_AUTHORIZED / NOT_PERFORMED_ON_QA_DATABASE
+E2_START = BLOCKED
+NEXT_GATE = SEPARATE_ROADMAP_DECISION_FOR_E2 / E2 segue bloqueado
+```
+
+A correção removeu a ordenação CSS que invertia a sequência semântica, colocou
+credenciais entre Rede e Gravação, e alinhou a ordem das ações com a V1. A
+adaptação responsiva empilha as ações em mobile. O modal de substituição usa
+texto contextual, os campos SSR receberam estilos do Design System e o foco
+visível usa outline local. Não houve alteração do serviço/backend/crypto,
+contrato HTTP, auditoria, protótipo ou escopo funcional.
+
+O browser foi conferido na aplicação Django real contra clone descartável. O
+DOM mostrou forms irmãos, zero forms aninhados e zero IDs duplicados; os
+payloads permaneceram isolados. O fallback SSR foi exercitado com JavaScript
+desabilitado; dirty preserve/discard, retorno de foco, Escape, erro sanitizado
+de reveal e screenshots dos diálogos foram registrados no índice de evidências.
+As capturas atualizadas estão em
+`docs/prototype/ui-password-cam/evidence/django-qa-2026-10-17/visual-conformance-fix-01/README.md`.
+
+Gate A, segurança do Gate B e contrato HTTP do Gate B mantêm a evidência
+canônica já registrada e foram identificados separadamente. Gate C passou nas
+verificações técnicas e visuais desta correção. Gate D foi aprovado pelo usuário e a atividade está concluída. E2 segue bloqueado; commit, push, deploy e migrations seguem não autorizados.
+
+Aceite visual humano registrado em 2026-10-17. A aprovação encerra a revisão desta slice, mas não inicia E2 nem autoriza commit, push ou deploy.
+
+## 137. ARGOS-CRED-UI-01 — integração final e publicação E1 (2026-10-17)
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-CRED-UI-01-FINAL-INTEGRATION-AND-CLOSURE
+ROADMAP_STAGE = E1
+ACTIVE_SLICE = ARGOS-CRED-UI-01
+BASE_HEAD = 32344225571abc243ee33df9079bd1106569c787
+BRANCH = codex/hom-v1-integration
+WORKTREE = WIP não E1 preservado; somente paths classificados da slice foram staged
+E1_IMPLEMENTATION = COMPLETE
+E1_CONTRACT_GATE = PASS / contrato vigente ratificado e limitado à slice
+E1_SECURITY_HTTP_GATE = PASS / fundação de segurança por falha injetada em §132; HTTP por testes nesta atividade
+E1_DJANGO_VISUAL_GATE = PASS / Django real, DOM, SSR/JS, estados e quatro viewports na evidência visual
+E1_HUMAN_APPROVAL_GATE = PASS / aceite explícito do usuário em 2026-10-17
+VISUAL_BASELINE = V1_OPTION_A / CARD_EDIT_CAMERA + NATIVE_DIALOG
+TARGETED_VALIDATION = PASS / 32 tests: cameras.test_camera_credential_views, cameras.test_camera_credentials, cameras.test_camera_form_ui_recovery
+REGRESSION_VALIDATION = PASS / incluída nos 32 testes direcionados; as evidências independentes mais amplas de §132 permanecem históricas
+DJANGO_CHECK = PASS / system check identified no issues
+NEW_MIGRATIONS = NONE / makemigrations --check --dry-run: No changes detected
+GIT_DIFF_CHECK = PASS
+HTML_FORM_STRUCTURE_VALIDATED = PASS / DOM renderizado sem forms aninhados; payload cadastral e payloads de credencial isolados
+NO_JS_FALLBACK_VALIDATED = PASS / formulários SSR e confirmação explícita usados na cópia QA descartável
+DIRTY_FORM_BEHAVIOR = PASS / decisão explícita com JavaScript; SSR não alega detecção dinâmica
+REVEAL_REGRESSION = PASS / POST, CSRF, permissão, reauth, no-store e auditoria sanitizada preservados; frontend integra JSON sem persistir segredo
+DUPLICATE_SUBMISSION_POLICY = DOCUMENTED_NO_SERVER_IDEMPOTENCY / replace repetido pode criar nova versão/evento; revoke repetido pode resultar em HTTP 409
+POSTGRESQL_CONCURRENCY_TESTED = NO
+REVEAL_NOJS = NOT_SUPPORTED_BY_CURRENT_UI
+SCREEN_READER_FORMAL_AUDIT = NOT_PERFORMED
+VISUAL_EVIDENCE = docs/prototype/ui-password-cam/evidence/django-qa-2026-10-17/visual-conformance-fix-01/
+CONTRACT = docs/projeto/contracts/backend/camera/ARGOS-CRED-UI-01_HTTP_SSR_INTEGRATION_CONTRACT.md / RATIFIED_AND_IMPLEMENTED_FOR_E1
+VISUAL_HANDOFF = docs/prototype/ui-password-cam/ARGOS_CRED_UI_01_FINAL_VISUAL_HANDOFF.md
+PROTOTYPE_V1 = PRESERVED / SHA256 69be00debc4bed45dfbe73d4702ad33faa2db4bad34b2df9f640ed0f780e1e1d
+COMMIT_AUTHORIZATION = GRANTED / user request
+PUSH_AUTHORIZATION = GRANTED / user request
+COMMIT_1 = 588e6d16b46ca224adcb6769d2df3d3511b83e85 / feat(cameras): integrate secure camera credential management
+COMMIT_2 = docs(argos): close E1 camera credentials with visual acceptance
+COMMIT_SHAS = recorded by Git history and final activity report after creation
+PUSH_TARGET = origin/codex/hom-v1-integration / normal push only
+REMOTE_SYNC = to be confirmed by equality of local and remote HEAD after push
+E1_STATUS = CLOSED_PUBLISHED_ONLY_AFTER_REMOTE_SYNC_CONFIRMATION
+VM_DEPLOY = NOT_PERFORMED
+MIGRATIONS = NOT_PERFORMED
+E2_STATUS = NOT_STARTED
+NEXT_STAGE = E2
+NEXT_SLICE = ARGOS-IMG-07-CONFORMANCE
+E2_START = NO
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES only after normal push and remote equality are confirmed
+NEXT_GATE = ARGOS-IMG-07-CONFORMANCE-OPENING
+```
+
+Os testes direcionados foram executados nesta atividade e passaram (32/32); Django system check, ausência de migrations, e `git diff --check` também passaram. A fundação de segurança mantém evidência separada de três falhas injetadas de auditoria e rollback em §132; os gates não foram promovidos entre si. As novas capturas permanecem segregadas em `visual-conformance-fix-01/`, sem segredo, dados SQLite ou artefato QA temporário.
+
+Os commits de implementação e documentação são separados conforme a autorização. A publicação só pode ser declarada concluída após push normal da branch indicada e verificação `LOCAL_HEAD == REMOTE_HEAD`; em caso de falha, a atividade permanece pendente de publicação. Sem VM, deploy, merge na main, migration nova, câmera real, credencial real ou implementação E2.
+
+Correção histórica de E0: §130 registrou `GIT_PUBLICATION=PENDING` no checkpoint em que foi escrito. Esse estado foi depois supersedido pela publicação do commit `32344225571abc243ee33df9079bd1106569c787` (`test(argos): fix visual QA provisioning regression`), que era simultaneamente HEAD local e HEAD remoto no preflight desta atividade. Assim, E0 já estava publicada no início desta integração. §§130-131 permanecem como snapshots históricos; esta nota corrige apenas o estado Git que passou a ser conhecido, sem reescrevê-los.

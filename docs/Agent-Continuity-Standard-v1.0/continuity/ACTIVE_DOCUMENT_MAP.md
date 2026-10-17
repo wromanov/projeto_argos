@@ -2118,3 +2118,94 @@ PROJECT_STATE_UPDATE = PASS
 AGENT_HANDOFF_GATE = PASS
 REMOTE_SYNC = PENDING
 ```
+
+## 94. ARGOS-CRED-UI-01 — drafts de contrato e protótipo (2026-10-16)
+
+| Fonte | Authority / uso | Estado |
+|---|---|---|
+| `docs/projeto/contracts/backend/camera/ARGOS-CRED-UI-01_HTTP_SSR_INTEGRATION_CONTRACT_DRAFT.md` | Proposta de integração HTTP/SSR para revisão; subordinada a CAM-INT-02, CAM-INT-02-R1 e BC-AUTH | DRAFT / NOT CANONICAL |
+| `docs/prototype/ui-v2/contracts/ARGOS_CRED_UI_01_VISUAL_PROTOTYPING_HANDOFF_DRAFT.md` | Handoff independente de protótipo visual; states simulados não são integração real | DRAFT / NOT CANONICAL |
+| `docs/projeto/contracts/backend/camera/CAM-INT-02_CREDENTIALS_CONTRACT.md` | Lifecycle e segurança de credenciais | CANONICAL / UNCHANGED |
+| `docs/projeto/contracts/backend/camera/CAM-INT-02-R1_RUNTIME_CREDENTIAL_RESOLUTION_CONTRACT.md` | Boundary de resolução operacional | CANONICAL / UNCHANGED |
+| `docs/projeto/contracts/backend/01_ACCESS_ROLES_AUTHORIZATION_CONTRACT.md` | Permissões e segurança de acesso | CANONICAL / UNCHANGED |
+
+Estado registrado em `PROJECT_STATE.md` §131: continuidade permanece em E0
+com fechamento/publicação pendente segundo §130; ARGOS-CRED-UI-01 é próxima
+slice e está somente em preparação documental. Aprovação humana pendente,
+implementação não iniciada; root delta validation e `git diff --check` passaram.
+
+## 95. ARGOS-CRED-UI-01 — implementação E1 e gates (2026-10-16)
+
+| Fonte | Authority / uso | Estado |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §132 | Decisões, testes, gates separados e limite de conformance visual | CURRENT / code and security tests pass; browser visual gate blocked |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.90 | Handoff de revisão e próximo acesso às capturas Django | CURRENT |
+| `docs/projeto/contracts/backend/camera/ARGOS-CRED-UI-01_HTTP_SSR_INTEGRATION_CONTRACT_DRAFT.md` | Contrato slice-specific ratificado por CARD B e addendum; subordinado às authorities canônicas | RATIFIED FOR E1 / implementation underway; visual gate pending |
+| `cameras/credential_views.py`, `cameras/credential_forms.py`, `cameras/urls.py` | POST replace/revoke e preservação do endpoint reveal | IMPLEMENTATION / targeted tests pass |
+| `cameras/integracao/credentials.py` | Projeção SSR boolean-only, sem decrypt; `credential_metadata` compatível | IMPLEMENTATION / targeted tests pass |
+| `cameras/views.py`, `cameras/templates/cameras/formulario.html`, `static/css/ui-v2/camera-form.css`, `static/js/camera-credentials.js` | Integração SSR do card/dialog na edição sem forms aninhados | IMPLEMENTATION / browser DOM and screenshots pending |
+| `cameras/test_camera_credentials.py`, `cameras/test_camera_credential_views.py` | Testes de rollback, projeção, endpoints, CSRF, allowlist, PRG, duplicação e isolamento cadastral | VALIDATION / 26 credential tests pass |
+
+`PROJECT_STATE.md` §132 registra regressão proporcional (84 testes), Django
+system check, no new migrations, SHA do protótipo preservado e tentativa de
+browser local que expirou por loopback. Screenshots Django nos quatro
+viewports, inspeção visual/DOM/acessibilidade e aceite humano estão pendentes;
+não substituir por capturas do mock. Sem commit, push, merge ou deploy.
+
+```text
+GATE_A_CONTRACT_RATIFICATION = PASS
+GATE_B_SECURITY_AND_HTTP_VALIDATION = PASS
+GATE_C_DJANGO_VISUAL_CONFORMANCE = BLOCKED
+GATE_D_HUMAN_IMPLEMENTATION_REVIEW = PENDING
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PENDING / user review requires Django screenshots
+```
+
+## 96. ARGOS-CRED-UI-01 — recuperação de conformidade visual (2026-10-17)
+
+| Fonte | Authority / uso | Estado |
+|---|---|---|
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`, §136 | Correções aprovadas, execução, verificações independentes e estado dos gates | CURRENT / Gates C-D PASS; human acceptance approved 2026-10-17 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`, §20.94 | Aceite visual e continuidade da slice | ACCEPTED / 2026-10-17 |
+| `docs/prototype/ui-password-cam/evidence/django-qa-2026-10-17/visual-conformance-fix-01/README.md` | Screenshots Django e evidências DOM, SSR, dirty state, reveal e acessibilidade parcial | CURRENT / four required CSS viewports |
+| `docs/prototype/ui-password-cam/prototype/ARGOS_CRED_UI_01_PROTOTIPO_V1.html` | Baseline visual aprovada | CANONICAL / SHA256 unchanged |
+
+```text
+GATE_A_CONTRACT_RATIFICATION = PASS / canonical evidence §132
+GATE_B_SECURITY_FOUNDATION_VALIDATED = PASS / canonical injected-failure evidence §132
+GATE_B_HTTP_IMPLEMENTATION_VALIDATED = PASS / 32 targeted tests + evidence §132
+GATE_C_DJANGO_VISUAL_CONFORMANCE = PASS / real Django app and required checks
+GATE_D_HUMAN_IMPLEMENTATION_REVIEW = PASS / approved by user 2026-10-17
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES
+NEXT_GATE = SEPARATE_ROADMAP_DECISION_FOR_E2 / E2 remains blocked
+E2_START = BLOCKED
+COMMIT = NOT_AUTHORIZED
+PUSH = NOT_AUTHORIZED
+DEPLOY = NOT_AUTHORIZED
+```
+
+Human acceptance received 2026-10-17. This closes Gate D for this slice; it does not authorize starting E2 or publishing changes.
+
+## 97. ARGOS-CRED-UI-01 — integração final E1 (2026-10-17)
+
+| Fonte | Authority / uso | Estado |
+|---|---|---|
+| `docs/projeto/contracts/backend/camera/ARGOS-CRED-UI-01_HTTP_SSR_INTEGRATION_CONTRACT.md` | Contrato HTTP/SSR desta slice, subordinado a CAM-INT-02, CAM-INT-02-R1 e BC-AUTH | RATIFIED / IMPLEMENTED_FOR_E1 |
+| `docs/prototype/ui-password-cam/ARGOS_CRED_UI_01_FINAL_VISUAL_HANDOFF.md` | Composição V1 e estado final dos gates/limites de E1 | CURRENT / HUMAN_APPROVED |
+| `docs/prototype/ui-password-cam/evidence/django-qa-2026-10-17/visual-conformance-fix-01/README.md` | Capturas e evidência da aplicação Django real nos quatro viewports | CURRENT / SANITIZED |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` §137 | Validação, autorização e fechamento da integração | CURRENT / E1 closure |
+| `docs/prototype/ui-password-cam/references/*DRAFT.md`, `handoff/01..05` | Registros originais da prototipação e do estado pré-implementação | HISTORICAL / SUPERSEDED_FOR_CURRENT_STATUS |
+
+```text
+CONTRACT_RATIFIED = PASS
+SECURITY_FOUNDATION_VALIDATED = PASS / injected audit-failure rollback evidence §132
+HTTP_IMPLEMENTATION_VALIDATED = PASS / 32 targeted tests in PROJECT_STATE §137
+DJANGO_VISUAL_CONFORMANCE = PASS
+DJANGO_HUMAN_VISUAL_APPROVAL = PASS / 2026-10-17
+PROJECT_STATE_UPDATE = PASS
+COMMIT_PUSH = AUTHORIZED / two commits; publish status gated on remote equality
+E1_STATUS = CLOSED_PUBLISHED_ONLY_AFTER_REMOTE_SYNC_CONFIRMATION
+E2_START = NO
+NEXT_SLICE = ARGOS-IMG-07-CONFORMANCE
+```

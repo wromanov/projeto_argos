@@ -3023,3 +3023,222 @@ MIGRATIONS = NOT_PERFORMED
 E1 não está iniciada por este handoff. Preservar os estados formais HOM-03,
 HOM-04 e HOM-05; não inferir readiness, homologação ou deploy a partir do relato
 operacional da VM. Em retomada, confirmar branch, HEAD, upstream, staging e WIP.
+
+## Handoff — ARGOS-CRED-UI-01 HTTP/SSR e protótipo (2026-10-16)
+
+O checkpoint documental da slice está em `PROJECT_STATE.md` §131 e o índice
+dos drafts em `ACTIVE_DOCUMENT_MAP.md` §94. O trabalho autorizado preparou
+propostas de contrato HTTP/SSR e de prototipação independente. Não iniciar
+implementação nem tratar E1 como etapa ativa: a continuidade canônica aponta
+E0 em fechamento/publicação pendente (§130), `ARGOS-QA-01` como slice atual e
+`ARGOS-CRED-UI-01` como próxima slice.
+
+```text
+CONTRACT_STATUS = DRAFT / READY_FOR_REVIEW
+VISUAL_HANDOFF_STATUS = DRAFT
+HUMAN_APPROVAL = PENDING
+DJANGO_IMPLEMENTATION = NOT_STARTED
+HANDOFF_READY = YES / technical proposal validated for review
+HTTP_CONTRACT_FINAL_APPROVAL = PENDING_USER
+HUMAN_VISUAL_APPROVAL = PENDING
+DJANGO_UI_IMPLEMENTATION = NOT_STARTED
+NEXT_GATE = TECHNICAL_DRAFT_REVIEW_AND_UI_UX_HANDOFF
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PASS
+ROOT_DELTA_VALIDATION = PASS
+GIT_DIFF_CHECK = PASS
+```
+
+Rotas verificadas: editar `GET/POST /<pk>/editar/` (`editar`) e reveal
+`POST /<camera_id>/credentials/reveal/` (`reveal_camera_credential`). Reveal
+permanece protegido por POST, CSRF, `reveal_camera_credential`, reautenticação
+por solicitação e `no-store`. Replace
+`POST /<camera_id>/credentials/` (`replace_camera_credential`) e revoke
+`POST /<camera_id>/credentials/revoke/` (`revoke_camera_credential`) são
+propostas `NOT_IMPLEMENTED`. Metadados são condicionados a
+`view_camera_credential`; replace/revoke usam `change_camera_credential`.
+
+Gaps que permanecem para revisão humana: o serviço de metadados devolve
+username, `key_version`, versão e timestamp, e não distingue revogada de não
+configurada; falha/rollback de auditoria não foi confirmada na implementação;
+replace duplicado não tem idempotência garantida; decisões de exibição de
+username, confirmação final, mensagens e mapeamento operacional continuam
+pendentes. Nenhum desses itens foi promovido a implementação ou authority.
+O perfil efetivo do arquiteto foi GPT-6 Sol/High, embora o pedido especificasse
+GPT-6.1 Sol/High, indisponível no runtime.
+
+Na prototipação, usar HTML/CSS independentes e vanilla JavaScript opcional.
+States simulados devem ser rotulados como demonstrações sem integração HTTP
+real; somente dados sintéticos; nenhum segredo real. Preservar formulários
+independentes e tela existente, sem formulários aninhados; alerta para mudanças
+cadastrais não salvas; não editar código/CSS produtivo nem regiões protegidas.
+Root validou os drafts independentemente e o escopo documental autorizado;
+`git diff --check` passou. Encaminhar os drafts para review humano/visual.
+Sem testes, código, stage, commit, push, deploy ou acesso operacional.
+
+### 20.90 ARGOS-CRED-UI-01 — handoff da implementação E1 (2026-10-16)
+
+Consultar `PROJECT_STATE.md` §132 e `ACTIVE_DOCUMENT_MAP.md` §95. O usuário
+ratificou o contrato HTTP/SSR pelo CARD B e addendum e autorizou a implementação
+controlada. Gate A passou; Gate B passou nos testes direcionados e regressão
+proporcional. Gate C está bloqueado porque o navegador isolado não alcançou o
+servidor em loopback (`ERR_CONNECTION_TIMED_OUT`); screenshots Django e
+confirmação do DOM real não existem. Gate D e aceite visual humano permanecem
+pendentes. A aprovação V1 do protótipo continua válida.
+
+```text
+ROADMAP_STAGE = E1
+ACTIVE_SLICE = ARGOS-CRED-UI-01
+CONTRACT_RATIFIED = PASS
+SECURITY_FOUNDATION_VALIDATED = PASS
+HTTP_IMPLEMENTATION_VALIDATED = PASS / 26 credential tests; 84 proportional regression tests
+DJANGO_VISUAL_CONFORMANCE = BLOCKED / screenshots and browser DOM pending
+HTML_FORM_STRUCTURE = structural response tests pass; browser DOM confirmation pending
+NO_JS_FALLBACK = markup and endpoint confirmation tested; browser interaction pending
+DIRTY_FORM_BEHAVIOR = implemented; runtime browser validation pending
+REVEAL_REGRESSION = PASS / endpoint POST, CSRF, reauth and no-store tests; frontend display unverified
+DUPLICATE_SUBMISSION_POLICY = documented / sequential replace creates a new version; repeated revoke returns 409; concurrency stress not run
+BASE_HEAD = 32344225571abc243ee33df9079bd1106569c787
+BRANCH = codex/hom-v1-integration
+HEAD = 32344225571abc243ee33df9079bd1106569c787
+ORIGIN_TRACKING_REF = same local SHA; remote not freshly fetched because WIP is present
+WIP = preserved
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PENDING / visual gate outstanding
+ACTIVITY_COMPLETE = NO / Gate C and Gate D pending
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+MIGRATION = NOT_CREATED
+NEXT_GATE = Django-rendered screenshots at 390x844, 1366x768, 1440x900, 1920x1080; inspect DOM/focus/accessibility; user implementation review
+```
+
+Metadata SSR usa projeção `configured` sem decrypt; consumidores existentes de
+`credential_metadata` permanecem compatíveis. Replace/revoke são POST+CSRF,
+chamam somente services existentes, não salvam `CameraEdicaoForm` e retornam
+erros públicos sanitizados. Testes de falha injetada provaram rollback diante
+de falha da auditoria. A interface usa card V1 entre Rede e Gravação e dialog
+nativo; formulários são irmãos. Sem JavaScript, replace/revoke usam formulários
+SSR com confirmação de tratamento de alterações cadastrais; reveal não mostra
+JSON bruto e fica indisponível sem JavaScript.
+
+Não rodar fetch/checkout até reconciliar o WIP. Não assumir PostgreSQL,
+concurrency stress, conformance visual, aceite humano, commit, push, merge,
+deploy ou E2. O protótipo original permanece byte a byte intacto.
+
+### 20.91 ARGOS-CRED-UI-01 — recuperação do Gate C (2026-10-16)
+
+Consultar `PROJECT_STATE.md` §133. Diagnóstico: o Django iniciou com o Python
+3.14 informado, `scripts.localqa.settings` e o SQLite QA existente, sem rodar
+migrations, seed ou provisionamento. O log confirmou `GET /` → login (302),
+login (200) e CSS/assets (200); o Chrome da mesma estação alcançou loopback.
+O teste por PowerShell dentro do sandbox foi negado ao abrir socket, explicando
+a tentativa anterior. O banco foi consultado somente em leitura: cinco câmeras
+sintéticas, zero credenciais e zero contas com permissões de credencial. A
+conta `qa-visual-hom01` e suas cinco permissões foram preservadas; não há
+credenciais inseridas no navegador. A aba de login ficou disponível para o
+usuário entrar localmente com uma identidade sintética previamente aprovada.
+
+```text
+SERVER_STARTUP = PASS / 127.0.0.1:8765, process alive for handoff
+LOCAL_HTTP_REACHABILITY = PASS / login redirect and page/assets 200 in Chrome
+BROWSER_REACHABILITY = PASS / unauthenticated login page only
+ROOT_CAUSE = sandbox loopback socket restriction; same-station browser works when Django runs outside the sandbox boundary
+HTML_FORM_STRUCTURE_VALIDATED = PENDING
+NO_JS_FALLBACK_VALIDATED = PENDING
+DIRTY_FORM_BEHAVIOR = PENDING
+REVEAL_UI_BEHAVIOR = PENDING
+DJANGO_VISUAL_CONFORMANCE = BLOCKED / no authorized account with credential permissions
+DJANGO_HUMAN_VISUAL_APPROVAL = PENDING
+PROJECT_STATE_UPDATE = PASS
+AGENT_HANDOFF_GATE = PENDING
+MIGRATION = NOT_PERFORMED
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+NEXT_GATE = local user sign-in with approved synthetic account; inspect Edit Camera and capture four viewports
+```
+
+Não usar o launcher padrão nesta recuperação, pois ele migra o SQLite e
+rotaciona a senha operacional. Não mudar permissões da conta visual existente,
+não inventar credenciais, não acessar VM e não afirmar DOM ou screenshots da
+tela de edição antes da autenticação autorizada.
+
+### 20.92 ARGOS-CRED-UI-01 — conta do launcher sem permissão do card (2026-10-17)
+
+Consultar `PROJECT_STATE.md` §134. A pedido do usuário, foi executado
+`INICIAR_ARGOS_QA.cmd`. O check passou, o comando de migration reportou que
+não havia migrations pendentes, o seed preservou as cinco câmeras fictícias e
+a senha da conta operacional local foi rotacionada. O launcher usa Python
+3.12.14; o servidor foi reiniciado com o Python 3.14 solicitado, sem repetir
+preparação. O Chrome autenticou e abriu a edição real de `ARGOS-QA-001`.
+
+O usuário `qa-operacional-hom01` não possui `view_camera_credential` nem
+`change_camera_credential`, então o card não aparece. O DOM observado contém
+formulário de logout e `camera-form`, sem aninhamento, IDs duplicados ou
+password inputs; isso não valida a estrutura dos formulários de credenciais,
+que não foram renderizados. Nenhum permission grant, seed de credencial ou
+teste de reveal/revogação foi feito. Gate C permanece bloqueado; solicitar
+autorização para um perfil e estado de credencial sintéticos isolados antes de
+alterar as permissões ou persistir qualquer segredo de teste.
+### 20.93 ARGOS-CRED-UI-01 — evidência Gate C com clone QA descartável (2026-10-17)
+
+Consultar `PROJECT_STATE.md` §135 e o índice de evidências em `docs/prototype/ui-password-cam/evidence/django-qa-2026-10-17/visual-conformance-fix-01/README.md`. Com autorização explícita, uma cópia descartável da base SQLite recebeu uma identidade de revisão não privilegiada e credenciais integralmente sintéticas. Chrome autenticou na aplicação Django real, e o clone e o servidor foram encerrados/removidos após a inspeção. Nenhum segredo sintético foi registrado em screenshots ou documentação. A base QA original não recebeu credenciais sintéticas nem grant de permissões.
+
+DOM: forms irmãos, zero aninhados/IDs duplicados, payload cadastral separado dos payloads de credencial. Fallback SSR sem JS submetido com sucesso. Dirty state, decisões explícitas, diálogo/foco/Escape, replace/revoke/reveal e erro sanitizado de reautenticação observados. Quatro viewports sem overflow e card visualmente entre Rede e Gravação. Evidência de persistência na cópia confirmou campos cadastrais preservados, ponteiro ativo coerente, versão anterior aposentada e auditoria sem valores de segredo.
+
+Gate C permanece parcial por duas divergências visuais/acessíveis: a árvore DOM/acessível lê Gravação antes do card; ordem das ações diferente da V1 e ações empilhadas em mobile. Auditoria formal de contraste/leitor de tela não foi executada. Não alterar fonte durante o Gate C Recovery sem novo escopo. Gate D e aceite humano pendentes; não declarar atividade completa, não iniciar E2, não migrar, commitar, publicar ou fazer deploy.
+
+### 20.94 ARGOS-CRED-UI-01 — correção de conformidade visual Django (2026-10-17)
+
+Consultar `PROJECT_STATE.md` §136 e o índice de capturas em
+`docs/prototype/ui-password-cam/evidence/django-qa-2026-10-17/visual-conformance-fix-01/README.md`. Esta
+correção autorizada retomou o WIP preservado, removeu divergências visuais e
+semânticas do card, e verificou a aplicação Django real em CSS 390×844,
+1366×768, 1440×900 e 1920×1080. O card fica entre Rede e Gravação no DOM e na
+tela; ações Revelar, Revogar e Substituir seguem a V1. Ações empilhadas em
+mobile são a adaptação responsiva.
+
+O DOM inspecionado tinha zero forms aninhados/IDs duplicados e payloads
+isolados. Com JavaScript desabilitado, os forms SSR e a confirmação explícita
+foram observados e o POST/PRG foi exercitado na cópia descartável. Com
+JavaScript, estado dirty exigiu escolha; preservar manteve edição e descartar
+restaurou os dados cadastrados. Foco inicial, navegação Tab, Escape, retorno de
+foco e estado sanitizado de erro de reveal foram verificados. Contraste foi
+calculado das cores computadas para quatro elementos; leitor de tela formal
+não foi executado. A política de repetição/concorrência permanece a registrada
+no contrato canônico §132; não se assumiu idempotência ou concorrência
+PostgreSQL testada.
+
+Gate A e as duas evidências independentes do Gate B permanecem PASS por
+referência a §132. Gate C = PASS técnico desta recuperação. Gate D e
+`DJANGO_HUMAN_VISUAL_APPROVAL` são PASS após aceite explícito em 2026-10-17. A V1
+não foi alterada; a cópia sintética foi removida; testes: 32 passed e `manage.py
+check` limpo. Nenhuma migration foi executada no SQLite QA, e não houve
+commit/push/deploy. E2 continua BLOCKED; aceite visual não autoriza iniciar a próxima etapa.
+
+Aceite humano recebido em 2026-10-17. Esta decisão se aplica ao Gate D/visual; E2 permanece bloqueado e commit, push e deploy continuam não autorizados.
+
+```text
+GATE_A_CONTRACT_RATIFICATION = PASS / evidência canônica §132
+GATE_B_SECURITY_FOUNDATION_VALIDATED = PASS / evidência canônica §132
+GATE_B_HTTP_IMPLEMENTATION_VALIDATED = PASS / regressão de 32 testes e evidência §132
+GATE_C_DJANGO_VISUAL_CONFORMANCE = PASS
+GATE_D_HUMAN_IMPLEMENTATION_REVIEW = PASS / aceite do usuário em 2026-10-17
+DJANGO_HUMAN_VISUAL_APPROVAL = PASS
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES
+E2_START = BLOCKED
+COMMIT = NOT_AUTHORIZED
+PUSH = NOT_AUTHORIZED
+DEPLOY = NOT_AUTHORIZED
+NEXT_GATE = SEPARATE_ROADMAP_DECISION_FOR_E2
+```
+
+### 20.95 ARGOS-CRED-UI-01 — integração final e publicação E1 (2026-10-17)
+
+Consultar `PROJECT_STATE.md` §137. Estado vigente: E1 implementada, validada e aceita visualmente, com gates independentes registrados; contrato ratificado para esta slice em `docs/projeto/contracts/backend/camera/ARGOS-CRED-UI-01_HTTP_SSR_INTEGRATION_CONTRACT.md`, handoff final em `docs/prototype/ui-password-cam/ARGOS_CRED_UI_01_FINAL_VISUAL_HANDOFF.md` e capturas atuais sob `evidence/django-qa-2026-10-17/visual-conformance-fix-01/`. Os handoffs antigos e os arquivos `references/*DRAFT.md` são snapshots históricos da fase de prototipação, não estados atuais.
+
+Nesta atividade passaram 32 testes direcionados, `manage.py check`, verificação sem migrations novas e `git diff --check`. Gate de segurança continua sustentado pelas falhas injetadas/rollback independentes em §132. Persistem: nenhuma idempotência server-side, replace repetido pode gerar versão/evento, revoke repetido pode resultar em 409, concorrência PostgreSQL não testada, reveal indisponível sem JS e auditoria formal de leitor de tela não realizada.
+
+Commit/push foram autorizados pelo usuário para `codex/hom-v1-integration`, em dois commits com mensagens registradas em §137; sem force push. `E1_STATUS` só é `CLOSED_PUBLISHED` após normal push e igualdade do HEAD local/remoto. `E2` é apenas a próxima etapa `ARGOS-IMG-07-CONFORMANCE`; implementação não iniciada e sem auto-start.

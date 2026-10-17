@@ -1,0 +1,48 @@
+ARGOS — CARD DE CONTINUIDADE E1
+
+PROJECT_ID = projeto_argos
+ROADMAP_STAGE = E1
+ACTIVE_SLICE = ARGOS-CRED-UI-01
+ACTIVITY = ARGOS-CRED-UI-01-TECHNICAL-CONTRACT-CLOSURE
+MODE = DIRECT
+
+USER_DECISION = V1_OPTION_A_VISUAL_APPROVED
+SELECTED_UI = CARD_EDIT_CAMERA + NATIVE_DIALOG
+VISUAL_BASELINE = ARGOS_CRED_UI_01_PROTOTIPO_V1.html
+ALTERNATIVE_B = NOT_SELECTED
+
+O usuário aprovou a proposta de interface para gestão de credenciais por câmera.
+Aprovação visual NÃO autoriza implementação Django antes de concluir os gates técnicos.
+
+RECEIVE_AND_REVIEW:
+- README.md
+- prototype/ARGOS_CRED_UI_01_PROTOTIPO_V1.html
+- handoff/01_APPROVAL_AND_VISUAL_CONTRACT.md
+- handoff/02_INTERACTION_AND_PERMISSION_MATRIX.md
+- handoff/03_TECHNICAL_HANDOFF_TO_ARGOS.md
+- handoff/04_DESIGN_QA_AND_EVIDENCE.md
+- references/*_DRAFT.md  (referências não aprovadas como contratos finais)
+
+NEXT ACTION:
+1. Verificar branch/HEAD/WIP e autoridades atuais.
+2. Reconciliar contratos canônicos CAM-INT-02, CAM-INT-02-R1, BC-AUTH.
+3. Fechar gaps do HTTP/SSR DRAFT: metadata mínima, auditoria/rollback,
+   novos endpoints replace/revoke, erros, visibilidade de username e dirty state.
+4. Apresentar recomendação de aprovação técnica e autorização de execução.
+5. Somente após autorização, implementar card e diálogo nativo na tela Editar câmera.
+6. Validar permissões, CSRF, reauth, no-store, HTML SSR, regressões e renderização real.
+
+PROTECTED = SIDEBAR / TOPBAR / QUICK_DETAIL / DASHBOARD_V7 / EXISTING_CAMERA_FORM / OTHER_SCREENS
+NO_GLOBAL_CSS = TRUE
+NO_SECRET_IN_HTML = TRUE
+NO_REAL_CREDENTIALS_OR_CAMERAS = TRUE
+NO_DEPLOY = TRUE
+NO_COMMIT_OR_PUSH_WITHOUT_AUTHORIZATION = TRUE
+NO_E2_AUTOSTART = TRUE
+
+REPORT:
+VISUAL_APPROVAL = PASS_OPTION_A
+HTTP_CONTRACT_STATUS =
+OPEN_CONTRACT_GAPS =
+IMPLEMENTATION_AUTHORIZATION = PENDING
+NEXT_RECOMMENDED_ACTION =

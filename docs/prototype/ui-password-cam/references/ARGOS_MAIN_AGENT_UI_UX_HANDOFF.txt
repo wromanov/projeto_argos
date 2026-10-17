@@ -1,0 +1,509 @@
+
+# ARGOS — UI/UX CONSULTANT HANDOFF
+# E1 — ARGOS-CRED-UI-01
+
+ORIGIN = ARGOS_MAIN_AGENT
+DESTINATION = UI_UX_CONSULTANT
+
+PROJECT_ID = projeto_argos
+ROADMAP_STAGE = E1
+ACTIVE_SLICE = ARGOS-CRED-UI-01
+
+ACTIVITY =
+ARGOS-CRED-UI-01-VISUAL-PROTOTYPING
+
+DESIGN_DIRECTION =
+ARGOS HYBRID — ENTERPRISE OPERATIONAL
+
+PROTOTYPING_STATUS = AUTHORIZED
+DJANGO_IMPLEMENTATION = NOT_AUTHORIZED
+HUMAN_VISUAL_APPROVAL = PENDING
+
+================================================
+1. CONTEXTO
+================================================
+
+Estamos desenvolvendo uma experiência segura
+de gerenciamento de credenciais por câmera.
+
+A funcionalidade será integrada à página
+Editar câmera do Projeto ARGOS.
+
+O agente principal concluiu o discovery e
+produziu dois documentos DRAFT:
+
+1.
+ARGOS-CRED-UI-01_HTTP_SSR_INTEGRATION_CONTRACT_DRAFT.md
+
+2.
+ARGOS_CRED_UI_01_VISUAL_PROTOTYPING_HANDOFF_DRAFT.md
+
+Esses documentos devem ser utilizados
+conjuntamente como fonte técnica.
+
+Não substituir suas decisões funcionais
+por interpretações exclusivamente visuais.
+
+O contrato HTTP definitivo ainda depende
+de aprovação e fechamento de lacunas.
+
+================================================
+2. EXPECTATIVA DE DESIGN
+================================================
+
+Não queremos simplesmente adicionar inputs
+de usuário e senha ao formulário existente.
+
+Queremos uma experiência empresarial de
+gerenciamento de credenciais por dispositivo.
+
+A interface deve transmitir:
+
+- Clareza operacional.
+- Segurança.
+- Consistência visual.
+- Organização.
+- Facilidade de uso.
+- Confiabilidade.
+- Controle explícito das ações.
+
+A solução deve ser visualmente refinada,
+mas sem excesso de elementos decorativos.
+
+Priorizar uma interface limpa, compacta
+e coerente com o Design System ARGOS.
+
+================================================
+3. PRESERVAÇÃO DA INTERFACE
+================================================
+
+A página Editar câmera possui estrutura
+visual e componentes já definidos.
+
+Preservar:
+
+SIDEBAR
+TOPBAR
+FORMULÁRIO CADASTRAL EXISTENTE
+NAVEGAÇÃO
+DESIGN SYSTEM
+PADRÕES DE TIPOGRAFIA
+PADRÕES DE ESPAÇAMENTO
+BOTÕES E CONTROLES CANÔNICOS
+
+Não redesenhar a página inteira.
+
+Não alterar Quick Detail, Dashboard,
+Inventário ou outras interfaces protegidas.
+
+Estudar a tela atual e suas evidências
+antes de propor a inclusão da seção.
+
+O novo componente deve parecer nativo
+do ARGOS.
+
+================================================
+4. ARQUITETURA DE INTERAÇÃO
+================================================
+
+Nome proposto:
+
+CREDENCIAIS DE ACESSO
+
+Avaliar uma estrutura com dois níveis:
+
+NÍVEL A — VISUALIZAÇÃO RESUMIDA
+
+Apresentar:
+
+- Identificação contextual da câmera.
+- Estado mínimo da credencial.
+- Explicação breve da finalidade.
+- Ação principal autorizada.
+- Ações secundárias quando aplicáveis.
+
+Não confundir credencial configurada com
+credencial funcional ou conexão validada.
+
+NÍVEL B — GERENCIAMENTO
+
+Disponibilizar fluxos independentes para:
+
+- Configurar credencial.
+- Substituir credencial.
+- Revogar credencial.
+- Revelar credencial mediante reautenticação,
+  somente quando autorizado.
+
+Não misturar essas ações com o salvamento
+cadastral da câmera.
+
+================================================
+5. COMPARAÇÃO DE SOLUÇÕES
+================================================
+
+Avaliar pelo menos duas alternativas:
+
+A.
+Card integrado à página com gerenciamento
+em <dialog> nativo.
+
+B.
+Card integrado com gerenciamento em
+seção expansível.
+
+Comparar:
+
+- Clareza visual.
+- Densidade.
+- Facilidade de integração Django SSR.
+- Preservação de dados não salvos.
+- Comportamento mobile.
+- Acessibilidade.
+- Feedback de erros.
+- Complexidade desnecessária.
+
+Recomendar uma solução principal e
+justificar tecnicamente a escolha.
+
+Não reproduzir cegamente interfaces de
+Splashtop ou outros produtos.
+
+================================================
+6. CREDENCIAIS E SEGURANÇA
+================================================
+
+REGRAS INEGOCIÁVEIS:
+
+Não exibir senha armazenada na tela comum.
+
+Não utilizar password preenchido com
+asteriscos falsos.
+
+Não exibir username armazenado por padrão.
+
+Não expor key_version, ciphertext,
+versões ou dados internos de criptografia.
+
+Campos de nova senha devem iniciar vazios.
+
+O controle mostrar/ocultar nova senha
+não é equivalente ao reveal da senha
+já armazenada.
+
+O reveal deve possuir fluxo independente
+e reautenticação explícita.
+
+Qualquer exibição autorizada de segredo
+deve ser transitória e ter comportamento
+claro de encerramento.
+
+Não usar segredos reais.
+
+Mocks devem permanecer claramente marcados
+como demonstrações sem integração HTTP.
+
+Não implementar armazenamento client-side
+de segredos no protótipo.
+
+================================================
+7. ESTADOS OBRIGATÓRIOS
+================================================
+
+Demonstrar, no mínimo:
+
+NO_ACTIVE_CREDENTIAL
+CONFIGURED
+EDITING
+SUBMITTING
+SUCCESS
+VALIDATION_ERROR
+PERMISSION_DENIED
+OPERATION_ERROR
+REVOKE_CONFIRMATION
+REVOKE_STATE_CONFLICT
+UNSAVED_CAMERA_CHANGES
+REAUTHENTICATION_REQUIRED
+REVEAL_TRANSIENT
+
+O estado sem credencial ativa não pode
+afirmar se ela nunca existiu ou foi revogada.
+
+Usuários sem permissão para metadata
+não devem receber o painel de estado.
+
+Definir também:
+
+- Transições.
+- Mensagens.
+- Cancelamento.
+- Retorno de foco.
+- Comportamento de atualização.
+- Recuperação após erro.
+- Navegação sem JavaScript.
+
+As mensagens devem ser compreensíveis
+para usuários operacionais, sem expor
+informações internas.
+
+================================================
+8. FLUXOS SENSÍVEIS
+================================================
+
+SUBSTITUIR:
+
+Apresentar usuário e nova senha,
+ambos informados novamente.
+
+Explicar que a ação substitui a
+credencial ativa, quando existente.
+
+Não assumir idempotência no backend.
+
+REVOGAR:
+
+Solicitar confirmação explícita.
+
+Comunicar que a autenticação que depende
+dessa credencial poderá deixar de funcionar
+até a configuração de outra credencial.
+
+Não oferecer restauração de versão
+revogada se o contrato não permitir.
+
+REVEAL:
+
+Exigir reautenticação no fluxo.
+
+Utilizar apresentação transitória.
+
+Prever fechamento e limpeza visual.
+
+Não copiar automaticamente para clipboard.
+
+FORMULÁRIO CADASTRAL DIRTY:
+
+Avisar sobre alterações não salvas antes
+de executar ações independentes.
+
+Não descartar alterações silenciosamente.
+
+Não criar formulários HTML aninhados.
+
+================================================
+9. REFINAMENTO VISUAL
+================================================
+
+Avaliar:
+
+- Hierarquia entre título e descrição.
+- Legibilidade de labels.
+- Agrupamento de informações.
+- Espaçamento vertical.
+- Alinhamento de inputs.
+- Densidade adequada dos cards.
+- Proporção dos botões.
+- Uso de ícones existentes.
+- Diferenciação entre ações primárias,
+  secundárias e destrutivas.
+- Feedback visual de status.
+- Estados de foco e erro.
+- Consistência com a identidade ARGOS.
+
+Evitar:
+
+- Cards desnecessariamente grandes.
+- Espaços vazios excessivos.
+- Formulário visualmente fragmentado.
+- Ações destrutivas muito destacadas.
+- Muitos botões concorrendo por atenção.
+- Texto longo sem hierarquia.
+- Novos tokens globais sem necessidade.
+- Padrões visuais estranhos ao ARGOS.
+
+Não usar cor como único indicador de estado.
+
+================================================
+10. RESPONSIVIDADE E ACESSIBILIDADE
+================================================
+
+Validar, quando aplicável:
+
+390 x 844
+1366 x 768
+1440 x 900
+1920 x 1080
+
+Essas dimensões são referências de
+evidências existentes, não substituem
+testes adicionais necessários.
+
+Garantir:
+
+- Campos fluidos.
+- Botões adaptativos.
+- Ausência de overflow horizontal.
+- Leitura confortável.
+- Targets adequados ao toque.
+- Navegação por teclado.
+- Foco visível.
+- Labels associados.
+- Erros vinculados aos campos.
+- Estados anunciáveis.
+- Dialog acessível, se escolhido.
+- Retorno de foco após fechamento.
+- Reduced motion.
+
+Se usar dialog, justificar seu uso
+e demonstrar abertura/fechamento por
+teclado e gerenciamento de foco.
+
+================================================
+11. STACK E LIMITES
+================================================
+
+PROTOTYPE_STACK:
+
+HTML
+CSS
+JavaScript vanilla quando necessário
+
+Usar Design System ARGOS como referência.
+
+Não utilizar:
+
+React
+Vue
+Angular
+Tailwind
+Bootstrap
+SPA
+Bundler obrigatório
+
+Não criar um Design System paralelo.
+
+Não modificar o código Django nesta fase.
+
+Não implementar endpoints.
+
+Não acessar credenciais operacionais.
+
+Não acessar câmeras reais ou VM.
+
+Não publicar em homologação.
+
+Não efetuar commit/push sem autorização.
+
+================================================
+12. ENTREGÁVEIS
+================================================
+
+A. Avaliação da composição atual de
+   Editar câmera.
+
+B. Comparação concisa das alternativas
+   de interação.
+
+C. Recomendação visual fundamentada.
+
+D. Protótipo HTML/CSS independente
+   de alta fidelidade.
+
+E. Estados interativos demonstráveis,
+   utilizando mocks identificados.
+
+F. Evidências desktop e mobile.
+
+G. Checklist de Design QA:
+
+   - layout;
+   - alinhamento;
+   - densidade;
+   - responsividade;
+   - contraste;
+   - teclado;
+   - acessibilidade;
+   - fluxo e feedback;
+   - aderência ao Design System.
+
+H. Lista de ajustes necessários para
+   futura integração Django.
+
+I. Questões que dependam de aprovação.
+
+================================================
+13. GOVERNANÇA DA PROTOTIPAÇÃO
+================================================
+
+O consultor é autoridade de proposta visual,
+não de mudança de regras de negócio.
+
+Não criar funcionalidades não previstas
+nos contratos técnicos.
+
+Não alterar permissões.
+
+Não inventar endpoints implementados.
+
+Quando identificar uma lacuna funcional,
+registrar a dúvida e encaminhar ao
+agente principal ARGOS.
+
+Não bloquear toda a prototipação por uma
+decisão que afete apenas uma operação.
+
+Usar mocks para demonstrar fluxos cuja
+implementação HTTP ainda está pendente.
+
+A aprovação final da composição pertence
+ao usuário.
+
+A implementação Django será conduzida
+posteriormente pelo agente ARGOS.
+
+================================================
+14. GATE DE RETORNO
+================================================
+
+REPORT:
+
+PROJECT_ID = projeto_argos
+
+ROADMAP_STAGE = E1
+
+ACTIVE_SLICE = ARGOS-CRED-UI-01
+
+ACTIVITY =
+ARGOS-CRED-UI-01-VISUAL-PROTOTYPING
+
+CURRENT_UI_ASSESSMENT =
+
+ALTERNATIVES_EVALUATED =
+
+RECOMMENDED_COMPOSITION =
+
+PROTOTYPE_STATUS =
+
+INTERACTION_STATES_COVERED =
+
+RESPONSIVE_QA =
+
+ACCESSIBILITY_QA =
+
+DESIGN_SYSTEM_FIDELITY =
+
+OPEN_VISUAL_DECISIONS =
+
+OPEN_FUNCTIONAL_QUESTIONS =
+
+HUMAN_VISUAL_APPROVAL = PENDING
+
+DJANGO_IMPLEMENTATION = NOT_STARTED
+
+NEXT_GATE =
+HUMAN_PROTOTYPE_REVIEW
+
+STOP.
+
+Não considerar protótipo aprovado
+sem manifestação explícita do usuário.
