@@ -1,6 +1,6 @@
 # ARGOS — Project State
 
-Retomada atual: `ARGOS-E3-CHECKPOINT-COMMIT-PUSH`, §162.
+Retomada atual: `ARGOS-E3-CHECKPOINT-COMMIT-PUSH`, §163.
 E2 = `CLOSED_WITH_EXCEPTIONS`; E3 = `LOCAL_IMPLEMENTATION_VALIDATED`, sem
 homologação ou encerramento formal; E4 = `NOT_STARTED`. Captura manual, adapter
 HTTP snapshot e processamento por job estão integrados localmente. Variante B e
@@ -10,7 +10,7 @@ permanece DRAFT e sem autorização; migration 0021 presente, não aplicada ao Q
 persistente; F03 preservado e decisão de código CANCELLED pendente. Screenshots
 persistidos inexistentes, câmera real não validada e deploy HML deferred. Os
 testes documentados em §§155, 160–161 são históricos; resultados reexecutados
-serão registrados separadamente após confirmação.
+estão separados em §162. O checkpoint Git foi publicado e sincronizado conforme §163.
 
 Snapshot histórico HOM (substituído para retomada pelo fechamento E2 da §153): §§113–116 — HOM-01 encerrada, HOM-02 implementada e ambiente QA local preparado para aceitação humana. HOM-01 está `CLOSED`; a regressão global registrada em §112 passou (948 testes em 600.522s; Django system check PASS). HOM-02 implementa template, prévia, confirmação atômica, validação cadastral e auditoria; validação direcionada, regressão de integração e carga sintética de 2.300 registros passaram. Os aceites e limitações em §§99, 101, 108 e 109 foram preservados, incluindo Camera Detail `CLOSED_WITH_LIMITATIONS`. Seções anteriores permanecem como histórico.
 
@@ -9095,3 +9095,54 @@ temporário sob `.local/qa/test-runs`, que foi descartado/limpo ao terminar.
 Validações adicionais do root: high-confidence secret scan dos 47 candidatos de
 texto = `PASS`; ambos os manifests SHA-256 dos protótipos = `PASS`. Esses checks
 não alteram o estado de implementação, homologação, QA visual ou E3 formal.
+## 163. ARGOS-E3 — confirmação pós-push do checkpoint (2026-10-18)
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-E3-CHECKPOINT-COMMIT-PUSH
+BRANCH = codex/hom-v1-integration
+HEAD_BEFORE = 9085d1fe457e4b23f26f98499ba1ee136b8cc84b
+COMMITS_PUBLISHED = c42cd63c947be36a5e4a91c08589b01dcd1045da (feat); 0a8b683a3aa99151f28c064aa1d6b806853aca3f (docs)
+HEAD_AFTER = 0a8b683a3aa99151f28c064aa1d6b806853aca3f
+LOCAL_HEAD = REMOTE_HEAD = 0a8b683a3aa99151f28c064aa1d6b806853aca3f
+VERSIONED_PATHS = 68 / 18 functional + 50 documentary
+PUSH = PASS / normal push
+STAGING = EMPTY / at post-push confirmation
+WIP_EXTERNAL = PRESERVED / local QA, .codex.zip, pre-existing CAM-INT-01
+SOURCE_DIFF_CHECK = PASS / no errors
+STAGED_DOCUMENT_DIFF_CHECK = FINDING / manual Markdown line-break whitespace and one extra EOF blank line in DRAFT contract
+PROJECT_STATE_UPDATE = PASS / APPENDED §163
+ACTIVITY_COMPLETE = YES
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+PERSISTENT_QA_MIGRATION = NOT_APPLIED
+E2 = CLOSED_WITH_EXCEPTIONS
+E3 = LOCAL_IMPLEMENTATION_VALIDATED / not formally closed or homologated
+E4 = NOT_STARTED
+F02 = RECOVERY_CONTRACT_DRAFT / implementation NOT_AUTHORIZED
+MIGRATION_0021 = PRESENT / NOT_APPLIED_TO_PERSISTENT_QA
+F03_ERROR_CODE = PRESERVED / CANCELLED decision pending
+RTSP_CAPTURE_WORKER = NOT_OPERATIONALLY_IMPLEMENTED
+REAL_CAMERA_VALIDATION = NOT_PERFORMED
+HML_DEPLOY = DEFERRED
+VISUAL_ACCEPTANCE = APPROVED_SCOPE / Django FAILED, QUEUED, RUNNING only
+```
+
+A confirmação pós-push registrou os dois commits publicados na branch indicada e
+HEAD local/remoto igual ao commit documental. O push foi normal; não houve merge,
+deploy ou aplicação de migration QA persistente. Foram versionados 68 caminhos
+E3: 18 funcionais e 50 documentais. Na confirmação, o staging estava vazio e os
+WIPs externos de QA local, `.codex.zip` e o hunk CAM-INT-01 preexistente foram
+preservados.
+
+O `git diff --check` do source não encontrou erros. A checagem do diff documental
+staged apontou apenas whitespace de quebras manuais Markdown e uma linha vazia
+extra no EOF do contrato DRAFT de recuperação; os arquivos e manifests não foram
+normalizados. Este finding de formatação não promove o DRAFT. Os resultados
+reexecutados e as limitações de testes permanecem conforme §162.
+
+O checkpoint Git está concluído. Isso não declara E3 formalmente encerrada ou
+homologada: E3 permanece `LOCAL_IMPLEMENTATION_VALIDATED`; E4 `NOT_STARTED`.
+F02 continua DRAFT e sem autorização de implementação; 0021 não foi aplicada ao
+QA persistente; a decisão F03 para `CANCELLED` segue pendente. Worker RTSP não
+operacional, HML deferred, sem acesso a câmera real ou deploy.

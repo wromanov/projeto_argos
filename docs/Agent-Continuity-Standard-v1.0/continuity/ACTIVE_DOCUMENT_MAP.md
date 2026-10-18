@@ -11,9 +11,9 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; E3 local checkpoint in §162; next gate Git publication confirmation |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff §20.119 (E3 Git checkpoint); next gate publication confirmation |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest ARGOS pointer §122 (E3 local checkpoint); contracts preserved |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; E3 post-push checkpoint in §163; Git checkpoint complete |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff §20.120 (E3 post-push checkpoint); Git checkpoint complete |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest ARGOS pointer §123 (E3 post-push checkpoint); contracts preserved |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
 ## 2. Authorities canônicas do projeto
@@ -2652,3 +2652,24 @@ tinha 0020 aplicada e 0021 ausente, consultado em SQLite `mode=ro` com
 `PRAGMA query_only=ON`. Não confundir com 0020/0021 usadas no DB temporário do
 runner e descartadas. Secret scan high-confidence (47 candidatos de texto) e
 os dois manifests SHA-256 dos protótipos: `PASS` conforme root.
+## 123. ARGOS-E3 — confirmação pós-push do checkpoint (2026-10-18)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §163 | Commits, publicação, sincronização, WIP e limites do checkpoint | CURRENT / Git e documentação concluídos; E3 não homologada nem formalmente encerrada |
+| `AGENT_CONTINUITY.md` §20.120 | Handoff pós-push | CURRENT / branch sincronizada; sem merge/deploy |
+| Commits `c42cd63c947be36a5e4a91c08589b01dcd1045da` e `0a8b683a3aa99151f28c064aa1d6b806853aca3f` | Implementação e documentação E3 | PUBLISHED / 68 caminhos E3 (18 funcionais, 50 documentais) |
+| PROJECT_STATE.md §162 | Validações reexecutadas, migration QA e limites | PRESERVED / testes assíncronos inconclusivos; QA persistente sem 0021 |
+
+Push normal PASS; HEAD local e remoto confirmados iguais a
+`0a8b683a3aa99151f28c064aa1d6b806853aca3f`; staging vazio na confirmação. WIP
+QA local, `.codex.zip` e hunk CAM-INT-01 preexistente preservados. Source
+diff-check sem erros; staged documentary check apontou somente whitespace de
+quebras Markdown e uma linha vazia extra no EOF do contrato DRAFT, sem
+normalização dos arquivos/manifests.
+
+E2 `CLOSED_WITH_EXCEPTIONS`; E3 `LOCAL_IMPLEMENTATION_VALIDATED`, sem fechamento
+formal/homologação; E4 `NOT_STARTED`. F02 DRAFT e implementação não autorizada;
+0021 não aplicada ao QA persistente; decisão F03/CANCELLED pendente; worker RTSP
+não operacional; sem câmera real ou deploy; HML deferred. `PROJECT_STATE_UPDATE=PASS`,
+`ACTIVITY_COMPLETE=YES` para esta atividade de integração Git.

@@ -11,7 +11,7 @@ PROJECT = ARGOS
 LANGUAGE = pt-BR
 
 RETOMADA ATUAL ARGOS-E3-CHECKPOINT-COMMIT-PUSH (2026-10-18): consultar
-`PROJECT_STATE.md` §162 e `ACTIVE_DOCUMENT_MAP.md` §122. E2 está
+`PROJECT_STATE.md` §163 e `ACTIVE_DOCUMENT_MAP.md` §123. E2 está
 `CLOSED_WITH_EXCEPTIONS`; E3 tem implementação local validada, sem homologação
 ou encerramento formal; E4 `NOT_STARTED`. Captura manual, adapter HTTP snapshot
 e fluxo de jobs estão integrados localmente. Variante B e direção funcional C
@@ -20,7 +20,7 @@ F01 corrigido; F02 permanece DRAFT e implementação não autorizada; 0021 prese
 no source e não aplicada ao QA persistente; F03 preservado e decisão
 `CANCELLED` pendente. Sem câmera real, screenshots persistidos ou deploy HML.
 Resultados históricos e reexecutados devem permanecer separados. Próximo gate:
-confirmar commits/push e sincronização remota, sem merge ou deploy.
+checkpoint Git publicado e sincronizado; sem merge ou deploy.
 
 SNAPSHOT ANTERIOR ARGOS-E3-CAPTURE-JOB-RECOVERY-REMEDIATION (2026-10-18):
 consultar `PROJECT_STATE.md` §161 e `ACTIVE_DOCUMENT_MAP.md` §121. F01
@@ -3701,7 +3701,7 @@ Próximo gate: USER_DJANGO_VISUAL_REVIEW.
 
 ### 20.119 ARGOS-E3 — checkpoint documental de integração local (2026-10-18)
 
-Consultar `PROJECT_STATE.md` §162 e `ACTIVE_DOCUMENT_MAP.md` §122. O checkpoint
+Consultar `PROJECT_STATE.md` §163 e `ACTIVE_DOCUMENT_MAP.md` §123. O checkpoint
 registra E2 `CLOSED_WITH_EXCEPTIONS`, E3 `LOCAL_IMPLEMENTATION_VALIDATED` sem
 homologação/encerramento formal e E4 `NOT_STARTED`. A captura manual, integração
 HTTP/job e adapter HTTP snapshot estão locais; processamento é desacoplado da
@@ -3730,3 +3730,20 @@ Complemento de §162: a auditoria SQLite `mode=ro`/`query_only` do QA persistent
 Isso é distinto das migrations 0020/0021 aplicadas somente no DB descartável do
 test runner. Secret scan high-confidence (47 candidatos de texto) e ambos os
 manifests SHA-256 de protótipos passaram, conforme validação read-only do root.
+### 20.120 ARGOS-E3 — confirmação pós-push do checkpoint (2026-10-18)
+
+Consultar `PROJECT_STATE.md` §163 e `ACTIVE_DOCUMENT_MAP.md` §123. Na branch
+`codex/hom-v1-integration`, os commits `c42cd63c947be36a5e4a91c08589b01dcd1045da`
+(feat) e `0a8b683a3aa99151f28c064aa1d6b806853aca3f` (docs) foram publicados por
+push normal. HEAD local/remoto confirmado igual a `0a8b683a3aa99151f28c064aa1d6b806853aca3f`;
+68 caminhos E3 foram versionados (18 funcionais, 50 documentais). Staging vazio
+na confirmação. WIP QA local, `.codex.zip` e CAM-INT-01 preexistente preservados.
+
+Source diff-check sem erros. Staged documentary diff-check apontou apenas
+whitespace de quebras Markdown e uma linha vazia extra no EOF do contrato DRAFT;
+nenhum arquivo ou manifest foi normalizado. Sem merge, deploy ou migration QA
+persistente. E3 permanece `LOCAL_IMPLEMENTATION_VALIDATED`, não homologada nem
+formalmente encerrada; F02 segue DRAFT sem autorização, F03/CANCELLED pendente,
+RTSP worker não operacional, câmera real não validada e HML deferred.
+`PROJECT_STATE_UPDATE=PASS`; `ACTIVITY_COMPLETE=YES` para a atividade de checkpoint
+Git e documental.
