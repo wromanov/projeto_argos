@@ -4,7 +4,9 @@ from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.paginator import Paginator
 from django.db import IntegrityError, transaction
 from django.db.models import Q
+from django.urls import reverse
 from django.http import HttpResponse, JsonResponse, QueryDict
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.dateparse import parse_date
@@ -21,7 +23,7 @@ from .governanca import (
     ErroGovernancaCamera, alterar_situacao_camera, desativar_camera,
     q_camera_completa, q_camera_incompleta, reativar_camera, substituir_camera,
 )
-from .models import AtividadeCamera, Camera, CameraImportPreview, EventoAuditoria, SubstituicaoCamera
+from .models import AtividadeCamera, Camera, CameraCaptureJob, CameraConnectionConfig, CameraImportPreview, EventoAuditoria, SubstituicaoCamera
 from .monitoramento.read_service import MonitoringReadService
 from .monitoramento.presentation import (
     MONITORING_STATE_LABELS,
@@ -29,6 +31,8 @@ from .monitoramento.presentation import (
     monitoring_state_label,
 )
 from .imagens.upload_service import aceitar_upload_manual
+from .imagens.capture_service import ACTIVE_CAPTURE_STATUSES, capture_eligibility, request_camera_capture
+import uuid
 from .imagens.display_service import DisplayImageReadService
 from .imagens.preview_service import (
     CameraImagePreviewService, DisplayImagePreviewService, PreviewState,
@@ -510,7 +514,126 @@ def detalhe_camera(request, pk):
         contexto["eventos_auditoria"] = camera.eventos_auditoria.select_related("usuario")[:10]
     if request.user.has_perm("cameras.consultar_substituicoescamera"):
         contexto["substituicoes"] = SubstituicaoCamera.objects.filter(Q(camera_anterior=camera) | Q(camera_substituta=camera)).select_related("camera_anterior", "camera_substituta")[:10]
-    return render(request, "cameras/detalhe.html", contexto)
+    show_upload_operation = request.user.has_perm("cameras.add_cameraimagerecord")
+    capture_projection = None
+    try:
+        capture_projection = capture_eligibility(actor=request.user, camera=camera)
+    except PermissionDenied:
+        # Permission-denied users receive no capture zone or privileged details.
+        pass
+
+    capture_copy = {
+        "CONFIGURATION_INCOMPLETE": (
+            "Configuração de captura incompleta",
+            "O perfil de captura desta câmera precisa ser revisado.",
+        ),
+        "METHOD_UNSUPPORTED": (
+            "Método de captura não suportado",
+            "O método configurado não é compatível com o fluxo de captura disponível.",
+        ),
+        "CAPABILITY_UNVERIFIED": (
+            "Suporte à captura não confirmado",
+            "Não foi possível confirmar se este método está disponível.",
+        ),
+        "UNCLASSIFIED": (
+            "Captura indisponível",
+            "Não foi possível confirmar a elegibilidade para captura.",
+        ),
+    }
+    capture_panel_visible = capture_projection is not None
+    can_capture = bool(capture_projection and capture_projection.available)
+    context_capture_job = None
+    capture_in_progress_elsewhere = False
+    job_id = request.GET.get("capture_job", "")
+    if capture_panel_visible:
+        active_job = CameraCaptureJob.objects.filter(
+            camera=camera, status__in=ACTIVE_CAPTURE_STATUSES
+        ).order_by("created_at", "pk").first()
+        if active_job is not None:
+            if active_job.requestor_id == request.user.pk:
+                context_capture_job = active_job
+            else:
+                capture_in_progress_elsewhere = True
+        elif job_id:
+            try:
+                context_capture_job = CameraCaptureJob.objects.get(
+                    pk=UUID(job_id), camera=camera, requestor=request.user
+                )
+            except (ValueError, TypeError, CameraCaptureJob.DoesNotExist):
+                context_capture_job = None
+
+    can_capture = can_capture and not capture_in_progress_elsewhere and (
+        context_capture_job is None
+        or context_capture_job.status == CameraCaptureJob.Status.FAILED
+    )
+    state = capture_projection.state if capture_projection else "NO_PERMISSION"
+    capture_title, capture_message = capture_copy.get(state, ("", ""))
+    capture_has_both_operations = show_upload_operation and capture_panel_visible
+    capture_polling = bool(
+        context_capture_job and context_capture_job.status in ACTIVE_CAPTURE_STATUSES
+    )
+    contexto.update({
+        "show_upload_operation": show_upload_operation,
+        "capture_panel_visible": capture_panel_visible,
+        "capture_has_both_operations": capture_has_both_operations,
+        "can_capture_camera": can_capture,
+        "capture_idempotency_key": uuid.uuid4().hex if can_capture else "",
+        "capture_job": context_capture_job,
+        "capture_polling": capture_polling,
+        "capture_in_progress_elsewhere": capture_in_progress_elsewhere,
+        "capture_eligibility_state": state,
+        "capture_eligibility_title": capture_title,
+        "capture_eligibility_message": capture_message,
+        "capture_status_url": reverse("cameras:capture_status", args=[camera.pk, "00000000-0000-0000-0000-000000000000"]),
+    })
+    response = render(request, "cameras/detalhe.html", contexto)
+    if capture_panel_visible:
+        response["Cache-Control"] = "no-store"
+    return response
+
+
+@permission_required("cameras.view_camera", raise_exception=True)
+@permission_required("cameras.capture_camera_image", raise_exception=True)
+def solicitar_captura_camera(request, pk):
+    if request.method != "POST":
+        return HttpResponse(status=405)
+    camera = get_object_or_404(Camera, pk=pk)
+    try:
+        job = request_camera_capture(
+            actor=request.user,
+            camera_id=camera.pk,
+            idempotency_key=request.POST.get("idempotency_key"),
+        )
+    except (PermissionDenied, DjangoValidationError, ValueError):
+        messages.error(request, "Não foi possível solicitar a captura desta câmera.")
+        return redirect("cameras:detalhe", pk=camera.pk)
+    return redirect(f"{reverse('cameras:detalhe', args=[camera.pk])}?capture_job={job.pk}")
+
+
+@permission_required("cameras.view_camera", raise_exception=True)
+@permission_required("cameras.capture_camera_image", raise_exception=True)
+def status_captura_camera(request, pk, job_id):
+    if request.method != "GET":
+        response = JsonResponse({"state": "METHOD_NOT_ALLOWED"}, status=405)
+    elif request.GET:
+        response = JsonResponse({"state": "INVALID_REQUEST"}, status=400)
+    else:
+        get_object_or_404(Camera, pk=pk)
+        job = get_object_or_404(
+            CameraCaptureJob.objects.filter(camera_id=pk, requestor=request.user), pk=job_id
+        )
+        response = JsonResponse({
+            "state": job.status,
+            "terminal": job.status in {
+                CameraCaptureJob.Status.SUCCEEDED,
+                CameraCaptureJob.Status.FAILED,
+                CameraCaptureJob.Status.CANCELLED,
+            },
+            "error_code": job.error_code if job.error_code in CameraCaptureJob.ERROR_CODES else "",
+        })
+    response["Cache-Control"] = "no-store"
+    response["X-Content-Type-Options"] = "nosniff"
+    return response
 
 
 @login_not_required

@@ -236,19 +236,37 @@
     </div>
   </section>
 
-  {% if perms.cameras.add_cameraimagerecord %}
-  <section class="argos-camera-detail__complementary" aria-labelledby="camera-detail-complementary-heading">
-    <div class="argos-camera-detail__complementary-copy">
-      <header class="argos-section-header"><h2 id="camera-detail-complementary-heading">Operações complementares</h2></header>
-      <h3 id="camera-detail-upload-heading">Enviar imagem manualmente</h3>
-      <p class="argos-camera-detail__upload-copy">A imagem será registrada como upload manual, sem data de captura da câmera.</p>
-    </div>
-    <form class="argos-camera-detail__upload-form" action="{% url 'cameras:upload_imagem' camera.pk %}" method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <label class="argos-field argos-camera-detail__upload-field" for="imagem-camera"><span class="argos-field__label">Imagem</span><input class="argos-input" id="imagem-camera" name="imagem" type="file" accept="image/jpeg,image/png,image/webp" required></label>
-      <button class="argos-button argos-button--primary" type="submit">Enviar imagem</button>
-    </form>
+  {% if show_upload_operation or capture_panel_visible %}
+  <section class="argos-camera-detail__complementary argos-camera-detail__complementary--surface{% if show_upload_operation %} argos-camera-detail__complementary--upload{% endif %}{% if capture_has_both_operations %} argos-camera-detail__complementary--capture{% endif %}" aria-labelledby="camera-detail-complementary-heading">
+    <header class="argos-section-header"><h2 id="camera-detail-complementary-heading">Operações complementares</h2></header>
+    {% if show_upload_operation %}
+    <section class="argos-camera-detail__image-operation" aria-labelledby="camera-detail-upload-heading">
+      <div class="argos-camera-detail__upload-copy-group">
+        <h3 id="camera-detail-upload-heading">Enviar imagem manualmente</h3>
+        <p class="argos-camera-detail__upload-copy">A imagem será registrada como upload manual, sem data de captura da câmera.</p>
+      </div>
+      <form class="argos-camera-detail__upload-form" action="{% url 'cameras:upload_imagem' camera.pk %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label class="argos-field argos-camera-detail__upload-field" for="imagem-camera"><span class="argos-field__label">Imagem</span><input class="argos-input" id="imagem-camera" name="imagem" type="file" accept="image/jpeg,image/png,image/webp" required></label>
+        <button class="argos-button argos-button--primary" type="submit">Enviar imagem</button>
+      </form>
+    </section>
+    {% endif %}
+    {% if capture_panel_visible %}
+    <section class="argos-camera-detail__image-operation" aria-labelledby="camera-detail-capture-heading" data-camera-capture data-eligibility-state="{{ capture_eligibility_state }}" data-status-url="{{ capture_status_url }}" data-job-id="{% if capture_polling %}{{ capture_job.pk }}{% endif %}" data-job-state="{% if capture_polling %}{{ capture_job.status }}{% endif %}">
+      <h3 id="camera-detail-capture-heading">Captura direta da câmera</h3>
+      {% if can_capture_camera %}<p class="argos-camera-detail__upload-copy">Solicita uma captura usando o perfil autorizado desta câmera.</p>{% endif %}
+      {% if can_capture_camera %}
+      <form class="argos-camera-detail__capture-form" action="{% url 'cameras:solicitar_captura' camera.pk %}" method="post">
+        {% csrf_token %}<input type="hidden" name="idempotency_key" value="{{ capture_idempotency_key }}">
+        <button class="argos-button argos-button--primary" type="submit"><svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Capturar imagem</span></button>
+      </form>
+      {% endif %}
+      <p class="argos-camera-detail__capture-feedback" data-capture-feedback aria-live="polite" role="status">{% if capture_in_progress_elsewhere %}Há uma captura em andamento para esta câmera.{% elif capture_job %}{% if capture_job.status == "QUEUED" %}Captura solicitada; aguardando processamento.{% elif capture_job.status == "RUNNING" %}Captura em processamento.{% elif capture_job.status == "SUCCEEDED" %}Captura concluída.{% elif capture_job.status == "CANCELLED" %}Captura cancelada.{% else %}Não foi possível concluir a captura. Tente novamente mais tarde.{% endif %}{% elif not can_capture_camera %}<strong>{{ capture_eligibility_title }}</strong>{% if capture_eligibility_message %} · {{ capture_eligibility_message }}{% endif %}{% endif %}</p>
+    </section>
+    {% endif %}
   </section>
   {% endif %}
 </div>
 {% endblock %}
+{% block extra_js %}{% if capture_polling %}<script src="{% static 'js/camera-capture.js' %}" defer></script>{% endif %}{% endblock %}

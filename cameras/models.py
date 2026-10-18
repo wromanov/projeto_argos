@@ -1229,3 +1229,73 @@ class CameraConnectionConfig(models.Model):
     class Meta:
         constraints = [models.CheckConstraint(condition=Q(config_version__gt=0), name="camera_connection_config_version_positive")]
         indexes = [models.Index(fields=["enabled", "profile"], name="cam_conn_enabled_profile_idx")]
+
+
+class CameraCaptureJob(models.Model):
+    """Durable request and worker state for an explicit camera image capture."""
+
+    class Source(models.TextChoices):
+        HTTP_SNAPSHOT = "HTTP_SNAPSHOT", "HTTP snapshot"
+        RTSP_FRAME = "RTSP_FRAME", "RTSP frame"
+
+    class Status(models.TextChoices):
+        QUEUED = "QUEUED", "Queued"
+        RUNNING = "RUNNING", "Running"
+        SUCCEEDED = "SUCCEEDED", "Succeeded"
+        FAILED = "FAILED", "Failed"
+        CANCELLED = "CANCELLED", "Cancelled"
+
+    ERROR_CODES = (
+        "AUTHORIZATION_DENIED", "CONFIG_INVALID", "CAPABILITY_UNSUPPORTED",
+        "TARGET_DENIED", "CREDENTIAL_UNAVAILABLE", "CONNECT_TIMEOUT",
+        "READ_TIMEOUT", "TLS_ERROR", "CONNECT_ERROR", "HTTP_TRANSPORT_ERROR",
+        "AUTH_FAILURE", "HTTP_STATUS_ERROR", "CONTENT_TYPE_INVALID",
+        "BODY_TOO_LARGE", "IMAGE_INVALID", "STORAGE_ERROR", "INTERNAL_ERROR",
+    )
+
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    camera = models.ForeignKey(Camera, on_delete=models.PROTECT, related_name="capture_jobs")
+    requestor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="camera_capture_jobs")
+    idempotency_key = models.CharField(max_length=128)
+    source = models.CharField(max_length=20, choices=Source.choices)
+    profile_key = models.CharField(max_length=64)
+    profile_version = models.PositiveIntegerField()
+    config_version = models.PositiveIntegerField()
+    status = models.CharField(max_length=12, choices=Status.choices, default=Status.QUEUED)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+    started_at = models.DateTimeField(null=True, blank=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
+    error_code = models.CharField(max_length=32, blank=True, default="")
+    image_record = models.OneToOneField(
+        CameraImageRecord, on_delete=models.PROTECT, null=True, blank=True,
+        related_name="capture_job",
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["camera", "requestor", "idempotency_key"], name="cam_capture_idempotency_uniq"),
+            models.UniqueConstraint(
+                fields=["camera"],
+                condition=Q(status__in=["QUEUED", "RUNNING"]),
+                name="cam_capture_active_camera_uniq",
+            ),
+            models.CheckConstraint(condition=Q(source__in=["HTTP_SNAPSHOT", "RTSP_FRAME"]), name="cam_capture_source_valid"),
+            models.CheckConstraint(condition=Q(status__in=["QUEUED", "RUNNING", "SUCCEEDED", "FAILED", "CANCELLED"]), name="cam_capture_status_valid"),
+            models.CheckConstraint(condition=Q(profile_version__gt=0), name="cam_capture_profile_version_positive"),
+            models.CheckConstraint(condition=Q(config_version__gt=0), name="cam_capture_config_version_positive"),
+            models.CheckConstraint(
+                condition=(
+                    Q(status="SUCCEEDED", image_record__isnull=False, error_code="")
+                    | Q(status__in=["QUEUED", "RUNNING"], image_record__isnull=True, error_code="")
+                    | Q(status__in=["FAILED", "CANCELLED"], image_record__isnull=True, error_code__gt="")
+                ),
+                name="cam_capture_result_coherent",
+            ),
+        ]
+        indexes = [
+            models.Index(fields=["status", "created_at"], name="cam_capture_status_created_idx"),
+            models.Index(fields=["camera", "created_at"], name="cam_capture_camera_created_idx"),
+        ]
+
+    def __str__(self):
+        return f"{self.source} · {self.camera_id} · {self.pk} · {self.status}"
