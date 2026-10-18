@@ -1,0 +1,78 @@
+# CARD — ARGOS E3 C V2.1 | Reconciliação técnica e preparação de integração
+
+PROJECT_ID = projeto_argos
+ROADMAP_STAGE = E3
+ACTIVE_SLICE = ARGOS-E3-MANUAL-IMAGE-CAPTURE
+ACTIVITY = ARGOS-E3-C-V2-1-TECHNICAL-RECONCILIATION
+EXECUTION_MODE = DIRECT
+DESIGN_MODE = CLOSED
+USER_VISUAL_APPROVAL = PASS
+VISUAL_REFERENCE = PROPOSTA_C_V2_1_APPROVED
+IMPLEMENTATION_AUTHORIZATION = PENDING_TECHNICAL_GATE
+E4 = OUT_OF_SCOPE
+
+USER_DECISION:
+O usuário aprovou a Proposta C V2.1 como estados contextuais aditivos
+à Variante B, sem substituição da composição E3 previamente aprovada.
+
+PACOTE:
+1. Ler README.md.
+2. Ler contracts/01_APPROVED_VISUAL_CONTRACT_AND_PRECEDENCE.md.
+3. Ler contracts/02_ELIGIBILITY_UI_STATE_MATRIX.md.
+4. Abrir prototype/ARGOS_E3_CAPTURE_ELIGIBILITY_STATES_PROPOSAL_V2_1.html.
+5. Consultar handoff/03_DJANGO_HANDOFF_AND_GATES.md e QA.
+
+REGRA DE PRECEDÊNCIA CRÍTICA:
+A Variante B ORIGINAL descrevia a seção aberta. O usuário aprovou
+posteriormente a SUPERFÍCIE BRANCA ÚNICA no Django. Preservá-la.
+A C V2.1 é uma EXTENSÃO DE ESTADOS, nunca autorização para redesign.
+
+OBJETIVO DESTE GATE:
+Inspecionar os contratos técnicos ativos de elegibilidade, permissão,
+capability, job e apresentação SSR. Distinguir quais cenários da C
+podem ser apresentados de forma segura pelo backend atual. Registrar
+lacunas materiais sem inferência nem implementação improvisada.
+
+NECESSÁRIO:
+- Confirmar repositório, branch, HEAD, estado Git e WIP atual.
+- Ler AGENTS.md, autoridades ativas E3 e contratos ratificados.
+- Inspecionar superfície Django existente de Operações complementares.
+- Reconciliar os cenários 01,02,03,04a,04b,05,06,07a,07b,08.
+- Garantir que permissão de upload é independente de captura.
+- Omitir efetivamente CTA quando não autorizado/elegível (inclusive teclado).
+- Exibir copy diferenciada SOMENTE quando derivada de estado autorizado.
+- Distinguir UNSUPPORTED de UNKNOWN; não derivar capability de timeout.
+- Confirmar se FAILED permite nova intenção de captura no backend.
+- Confirmar idempotência, ownership e resposta de status do job.
+- Preservar E4 como conceito não produtivo.
+
+PROTEGIDOS:
+SIDEBAR / TOPBAR / QUICK_DETAIL / HISTORICO / OUTRAS SEÇÕES
+DESIGN_SYSTEM_GLOBAL / SERVIÇOS CANÔNICOS / UPLOAD EXISTENTE
+
+LIMITE:
+Não iniciar modificação Django apenas por este CARD.
+Caso a governança vigente já ofereça autorização de implementação
+específica, confirmar seu identificador e escopo antes de executar;
+caso contrário solicitar a autorização do usuário após reconciliação.
+Não realizar commit, merge, push, deploy ou acesso a câmera real.
+
+STOP_AND_ESCALATE:
+Conflito de contrato ratificado, disclosure inseguro, missing capability
+sem fallback, bloqueio de autorização ou alteração fora de escopo.
+
+ENTREGA:
+CONTRACTS_VERIFIED =
+BACKEND_STATE_SUPPORT =
+PERMISSION_DISCLOSURE =
+CURRENT_DJANGO_E3_STATE =
+MISSING_CAPABILITIES =
+IMPLEMENTATION_AUTHORIZATION =
+FILES_CHANGED =
+WIP_PRESERVED =
+VISUAL_BASELINE = B_PLUS_C_V2_1_APPROVED
+DJANGO_VISUAL_APPROVAL = PENDING
+OPEN_FINDINGS =
+NEXT_GATE =
+
+Não iniciar E4. Não declarar C implementada ou E3 encerrada.

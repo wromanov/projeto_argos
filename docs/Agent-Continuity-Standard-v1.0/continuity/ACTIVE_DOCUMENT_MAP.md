@@ -11,9 +11,9 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; E2 integration recorded in §154; E2 closed with exceptions; next gate remote publication decision |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff §20.112 (local E2 commits); next gate remote publication decision |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest ARGOS pointer §114 (local E2 integration); contracts preserved |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; E3 local checkpoint in §162; next gate Git publication confirmation |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff §20.119 (E3 Git checkpoint); next gate publication confirmation |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest ARGOS pointer §122 (E3 local checkpoint); contracts preserved |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
 ## 2. Authorities canônicas do projeto
@@ -2480,3 +2480,175 @@ O branch `codex/hom-v1-integration` está três commits à frente do origin. A
 decisão de publicação remota permanece pendente de authority humana específica.
 `PUSH=NOT_PERFORMED`, `MERGE=NOT_PERFORMED`, `DEPLOY=NOT_PERFORMED` e
 `E3=NOT_STARTED`.
+
+
+## 115. ARGOS-E3 — integração local de operações de imagem (2026-10-17)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §155 | Estado de implementação, migração, validação e limites | CURRENT / `PARTIAL`; E3 não fechada |
+| `AGENT_CONTINUITY.md` §20.113 | Handoff da próxima gate | CURRENT / `LOCAL_IMPLEMENTATION_AND_DJANGO_VISUAL_QA` |
+| `PROJECT_STATE.md` registro de preflight E3 anterior à §155 | Reconciliação de origem/destino, gap HTTP e colisão de migration | PRESERVED / gap registrado antes da implementação |
+| `docs/projeto/contracts/backend/images/IMAGE_CAPTURE_INTEGRATION_CONTRACT.md`; autoridade IMG-CAP registrada no contrato | Contrato de captura, estados e limites de segurança | CANONICAL / sem alteração nesta atividade |
+| Handoff visual E3 aprovado, variante B | Ordem desktop/mobile e ausência autorizada de galeria E4 | APPROVED / preservado |
+
+Rotas Django SSR/JSON e migration `0020_cameracapturejob` foram integradas
+localmente; a migration sucede `0019`. `manage.py check`,
+`makemigrations --check --dry-run` e `git diff --check` passaram. Testes
+selecionados foram confirmados pelo implementador para views/captura, regressão
+de upload, comando do worker, autorização, disponibilidade e idempotência.
+Retestes de `test_camera_http_snapshot` e `test_imagens_capture_service` foram
+interrompidos sem saída e são `INCONCLUSIVE`. QA visual Django `PARTIAL`; inspeção
+Edge somente leitura em `/cameras/1/` e `/cameras/2/` não encontrou
+`[data-camera-capture]`; CSS entregue pelo runtime estava desatualizado, portanto
+`DJANGO_VISUAL_CONFORMANCE=INCONCLUSIVE`. Sem overflow horizontal em 390×844,
+1366×768 e 2048×742; screenshot mobile valida apenas o upload manual responsivo.
+Aprovação visual humana `PENDING`, câmera real `NOT_PERFORMED`, HML `PENDING`; E3
+não está fechada. Próximo passo: runtime com CSS atualizado e fixture sintética
+elegível. Sem merge/cherry-pick, commit, push, deploy, HML ou E4.
+
+## 116. ARGOS-E3 — desbloqueio de QA visual Django (2026-10-17)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §156 | Runtime isolado, fixture, integração e resultado visual | CURRENT / runtime pronto; E3 não fechada |
+| `AGENT_CONTINUITY.md` §20.114 | Handoff para revisão humana | CURRENT / `USER_DJANGO_VISUAL_REVIEW` |
+| Handoff visual E3 aprovado, variante B | Layout desktop/mobile e divisor neutro | APPROVED / divisor ausente na implementação visual |
+
+CSS/JS servidos correspondem aos assets da branch após revalidação sem cache.
+Job sintético `QUEUED`; sem worker/câmera. HTTP status autorizado e CSRF foram
+verificados. Quatro viewports sem overflow; divisor interno ausente é achado
+aberto. Screenshots observados inline, não salvos em arquivos locais.
+
+## 117. ARGOS-E3 — recuperação de fidelidade visual / Rodada 1 (2026-10-18)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §157 | Delta visual, testes e bloqueio de evidência pós-ajuste | CURRENT / implementation local; visual pending |
+| `AGENT_CONTINUITY.md` §20.115 | Handoff de continuidade | CURRENT / sincronizar runtime e concluir QA Edge |
+| `docs/prototype/ui-botao-captura/handoff/01_VISUAL_APPROVAL_AND_CONTRACT.md` | Autoridade visual aprovada, variante B | PRESERVED / sem reabertura de design |
+
+F01–F05 foram ajustados no template/CSS local; F06 e F07 preservados. Testes
+dirigidos de captura e upload 16/16, `manage.py check` e `git diff --check`
+passaram. O Edge em 8765 manteve o markup pré-ajuste; runtime isolado em 8766
+não foi acessível pelo navegador. Sem evidência final de screenshots/viewports;
+conformidade e aprovação visual humanas permanecem pendentes. Sidebar, topbar,
+Quick Detail, histórico, backend, banco QA persistente, HML e E4 preservados.
+
+## 118. ARGOS-E3 — correção de composição visual / R2 (2026-10-18)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §158 | Delta visual, inspeção nativa Edge, estado do runtime e próximo gate | CURRENT / implementação local concluída; conformidade Django pendente |
+| `AGENT_CONTINUITY.md` §20.116 | Handoff da atividade R2 | CURRENT / sincronizar runtime Edge e concluir QA nos quatro viewports |
+| `docs/prototype/ui-botao-captura/handoff/01_VISUAL_APPROVAL_AND_CONTRACT.md` | Authority visual aprovada, variante B | PRESERVED / sem reabrir design |
+
+O CSS R2 forma a superfície única de Operações complementares e agrupa título e
+descrição com gap compacto e alinhamento à esquerda. O markup servido ainda
+omite o wrapper upload-copy presente no template do checkout, mantendo a
+descrição distante do título; não há associação confirmada entre a resposta e o
+processo do checkout. Os testes de captura/upload passaram 16/16. Apenas
+2552×914 foi observado e o screenshot mostra o markup antigo; não é evidência
+pós-correção. Quatro viewports, conformidade visual e aprovação humana continuam
+pendentes; E3 aberta, HML pendente, câmera real não executada e E4 não iniciada.
+
+## 119. ARGOS-E3 — revisão visual aditiva da elegibilidade de captura (2026-10-18)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §159 | Decisão C, artefatos, bloqueios e gates | CURRENT / proposal only; browser QA blocked |
+| `docs/projeto/contracts/backend/images/ARGOS_E3_CAPTURE_ELIGIBILITY_VISUAL_AMENDMENT_DRAFT.md` | Contrato visual aditivo | DRAFT / user visual approval pending |
+| `docs/prototype/ui-botao-captura/proposal-c/ARGOS_E3_CAPTURE_ELIGIBILITY_STATES_PROPOSAL_V1.html` | Protótipo visual de estados C | CREATED / render QA blocked |
+| `docs/prototype/ui-botao-captura/proposal-c/design-qa.md` | Limites e resultados de validação | BLOCKED / no browser screenshots |
+| `docs/projeto/contracts/backend/images/ARGOS_E3_CAPTURE_ELIGIBILITY_VISUAL_CONTRACT_DRAFT.md` | Autoridade técnica de elegibilidade | PRESERVED / recommendation C superseded only by user direction for UI |
+| `docs/prototype/ui-botao-captura/prototype/ARGOS_E3_IMAGE_OPERATIONS_PROTOTYPE_V1.html` | Baseline B congelada | PRESERVED / hash still matches manifest |
+
+A direção funcional C foi aprovada pelo usuário; a baseline B permanece para o
+caso elegível. Nenhum código produtivo foi alterado. A renderização do novo
+protótipo foi bloqueada pela política de URL local; os quatro viewports,
+screenshots e validação por teclado/leitor de tela seguem pendentes. O papel
+SENIOR_UI_UX_FRONTEND_CONSULTANT não estava disponível, portanto não há parecer
+independente dessa função. Próximo gate: revisão visual humana com navegador
+autorizado e parecer UI/UX independente.
+
+## 120. ARGOS-E3 — implementação dos estados de elegibilidade C V2.1 (2026-10-18)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §160 | implementação, testes, limites e próximo gate | CURRENT / partial; runtime and visual review pending |
+| `cameras/imagens/capture_service.py` | elegibilidade, idempotência e limite de job ativo | MODIFIED / focused tests pass |
+| `cameras/models.py` | unicidade de job ativo por câmera | MODIFIED / migration 0021 required |
+| `cameras/migrations/0021_capture_job_active_per_camera.py` | índice parcial de job ativo | CREATED / not applied to persistent QA DB |
+| `cameras/views.py`, `cameras/templates/cameras/detalhe.html` | estados e apresentação autorizada | MODIFIED / view tests pass |
+| `static/css/ui-v2/camera-detail.css`, `static/js/camera-capture.js` | layout variante B e live region | MODIFIED / source only; render QA pending |
+| `cameras/test_imagens_capture_service.py`, `cameras/test_imagens_capture_views.py` | cenários de service, concorrência e UI | MODIFIED / 48 focused tests pass |
+
+O QA foi executado com adapter fake e SQLite temporário; a auditoria do banco QA
+persistente foi somente leitura. O runtime em 8765 não estava ativo, então não há
+screenshots nem validação visual responsiva. Recuperação de jobs RUNNING e
+compatibilidade de `error_code` com consumidores externos continuam pendentes.
+E3 permanece aberta, E4 não iniciada; próximo gate: revisão de implementação C
+V2.1.
+
+## 121. ARGOS-E3 — recuperação de job após falha e diagnóstico F02 (2026-10-18)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| PROJECT_STATE.md §161 | Correção F01, diagnóstico F02, validação e limites | CURRENT / F01 localmente implementado; runtime visual pending |
+| AGENT_CONTINUITY.md §20.118 | Handoff da atividade | CURRENT / USER_DJANGO_VISUAL_REVIEW |
+| cameras/views.py; cameras/test_imagens_capture_views.py | CTA explícito após job FAILED próprio e cobertura | MODIFIED / F01; sem retry automático |
+| docs/projeto/contracts/backend/images/ARGOS_E3_CAPTURE_JOB_RECOVERY_CONTRACT_DRAFT.md | Diagnóstico e proposta futura de recuperação | DRAFT / não normativo; aprovação e autorização pendentes |
+| Contrato IMG-CAP e schema de CameraCaptureJob | Idempotência, estados e fronteiras da captura | PRESERVED / sem alteração |
+
+F01: 26 testes de views/upload e 24 de service passaram; Django check e
+makemigrations --check --dry-run passaram; git diff --check sem erro
+funcional (avisos preexistentes de CRLF). F02: diagnóstico read-only; causa do
+job QUEUED desconhecida e parada do worker não comprovada. Snapshot QA
+inspecionado tinha 0020 aplicada, 0021 não aplicada naquele banco, um QUEUED,
+sem jobs ativos duplicados, integridade OK e zero violações de FK. 0021 não foi
+aplicada; nenhum worker/câmera foi executado/acessado ou dado persistente
+alterado. F03 preservado sem código novo; INTERNAL_ERROR para CANCELLED
+aguarda decisão humana.
+
+O runtime em 127.0.0.1:8765 não estava ativo: sem screenshots ou conformidade
+visual renderizada; aprovação visual humana pendente. Variante B preservada no
+source. E2 CLOSED_WITH_EXCEPTIONS, E3 IN_PROGRESS/NOT_CLOSED, E4
+NOT_STARTED; sem commit/push/merge/deploy. Próximo gate:
+USER_DJANGO_VISUAL_REVIEW.
+
+## 122. ARGOS-E3 — checkpoint documental de integração local (2026-10-18)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §162 | Estados E2/E3/E4, implementação local, decisões, limites e categorias de validação | CURRENT / implementação local validada; E3 sem homologação/encerramento formal |
+| `AGENT_CONTINUITY.md` snapshot atual | Handoff da integração E3 | CURRENT / confirmar commits, push e sincronização remota |
+| `PROJECT_STATE.md` §§155, 160–161 | Integração, implementação C, F01, F02, migrations e resultados históricos | HISTORICAL_EVIDENCE / não confundir com testes reexecutados |
+| `IMAGE_CAPTURE_INTEGRATION_CONTRACT.md` | Autoridade e fronteiras do fluxo IMG-CAP | PRESERVED / execução separada do request/monitoramento; câmera real não validada |
+| `ARGOS_E3_CAPTURE_JOB_RECOVERY_CONTRACT_DRAFT.md` | Proposta de recuperação F02 | DRAFT / implementação não autorizada |
+| Instrução explícita do usuário nesta atividade | Aceite visual humano limitado | APPROVED_SCOPE / Django FAILED, QUEUED e RUNNING; screenshots persistidos inexistentes |
+
+Captura manual, rotas Django SSR/JSON, processamento por job e adapter HTTP
+snapshot estão implementados localmente. Variante B e upload/permissões foram
+preservados; direção funcional C aprovada. F01 está corrigido. F02 continua
+DRAFT, sem autorização; migration 0021 presente no source e não aplicada ao QA
+persistente; F03 preservado e decisão de error code `CANCELLED` pendente.
+Worker RTSP não operacionalmente implementado; sem validação com câmera real,
+screenshots persistidos ou deploy HML.
+
+Resultados históricos permanecem em §§155, 160–161. Reexecuções desta atividade
+devem ser adicionadas separadamente após confirmação do root; este mapa não
+declara testes reexecutados como PASS. O aceite visual desta atividade limita-se
+explicitamente aos três estados indicados e não supre a ausência de screenshots.
+Reexecução do root: checks Django, migration drift, sintaxe JS e `git diff --check`
+passaram (este último com avisos LF/CRLF do WIP QA). O comando síncrono de views,
+upload e worker aprovou 27 testes em 1.353s. O comando agregado (66 testes) e a
+tentativa isolada HTTP interromperam em testes assíncronos: ambos
+`INCONCLUSIVE/INTERRUPTED`, sem PASS para service/adapter HTTP. Migration 0020 e
+0021 foram aplicadas apenas no DB temporário descartável `database.test.sqlite3`
+sob `.local/qa/test-runs`; runner limpou os diretórios. QA persistente não recebeu
+migration. Sem browser/visual, worker operacional ou câmera real.
+Complemento read-only: QA persistente `.local/e3_qa_runtime/database.sqlite3`
+tinha 0020 aplicada e 0021 ausente, consultado em SQLite `mode=ro` com
+`PRAGMA query_only=ON`. Não confundir com 0020/0021 usadas no DB temporário do
+runner e descartadas. Secret scan high-confidence (47 candidatos de texto) e
+os dois manifests SHA-256 dos protótipos: `PASS` conforme root.

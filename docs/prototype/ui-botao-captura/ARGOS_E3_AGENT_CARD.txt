@@ -1,0 +1,64 @@
+CARD B — ARGOS E3 / IMPLEMENTAÇÃO GUIADA POR REFERÊNCIA VISUAL APROVADA
+
+PROJECT_ID = projeto_argos
+ROADMAP_STAGE = E3
+ACTIVE_SLICE = ARGOS-E3-MANUAL-IMAGE-CAPTURE
+ACTIVITY = ARGOS-E3-IMAGE-OPERATIONS-VISUAL-INTEGRATION
+
+USER_DECISION = APPROVED
+APPROVED_VISUAL_VARIANT = B
+APPROVED_ORDER_DESKTOP = UPLOAD_LEFT / CAPTURE_RIGHT
+VISUAL_BASELINE = ARGOS_E3_IMAGE_OPERATIONS_PROTOTYPE_V1.html
+VISUAL_DESIGN_MODE = CLOSED
+E4_GALLERY = CONCEPT_ONLY
+DJANGO_HUMAN_ACCEPTANCE = PENDING
+
+OBJECTIVE:
+Integrar à seção Operações complementares da Camera Detail a
+operação de captura E3, preservando o upload manual existente e
+reproduzindo a composição visual B aprovada pelo usuário.
+
+PREFLIGHT:
+- Confirmar repositório/branch/HEAD/WIP e autoridades reais.
+- Ler README, SHA256SUMS e handoff/01..04 do pacote anexo.
+- Ler os contratos técnicos vigentes da captura, domínio de imagens,
+  segurança, autorização e estado atual da slice E3.
+- Confirmar autorização técnica de execução antes de editar.
+
+MATERIALIZAÇÃO (SOMENTE APÓS GATES TÉCNICOS):
+- Upload à ESQUERDA; captura à DIREITA; empilhar upload antes
+  de captura no mobile.
+- Preservar input file, botão Enviar imagem e endpoint existentes.
+- Capturar imagem: ação explícita, com estados job confirmados,
+  autorização real, CSRF, feedback seguro e sem sucesso prematuro.
+- Visual E4 Ver imagens é futuro: NÃO habilitar botão falso,
+  implementar galeria ou inventar rota na E3.
+- Usar Django SSR, CSS e JS vanilla; componentes/tokens existentes.
+- NÃO copiar sidebar/topbar, seletores A/B, cenários MOCK, timeouts,
+  galeria falsa ou estilos globais do laboratório.
+
+PROTECTED = SIDEBAR, TOPBAR, QUICK_DETAIL, CAMERA_DETAIL_EXISTING,
+            HISTORICO, EXISTING_UPLOAD, GLOBAL_DESIGN_SYSTEM
+
+TEST:
+Django check + testes E3 e upload + permissions/CSRF/status/error
++ screenshots Django 2048x742, 1440x900, 1366x768, 390x844.
+Somente o usuário aprova visualmente o Django integrado.
+
+GIT/OPS:
+No commit, push, merge, VM/deploy sem autorização independente.
+Não começar E4 automaticamente.
+
+RETURN:
+E3_TECHNICAL_AUTHORIZATION =
+CURRENT_BRANCH/HEAD =
+FILES_CHANGED =
+UPLOAD_PRESERVED =
+CAPTURE_STATUS =
+E4_NOT_IMPLEMENTED =
+DJANGO_CHECK/TESTS =
+VISUAL_CONFORMANCE =
+SIDEBAR/TOPBAR/QUICK_DETAIL_PRESERVED =
+DJANGO_HUMAN_VISUAL_APPROVAL = PENDING
+OPEN_FINDINGS =
+NEXT_GATE = USER_DJANGO_VISUAL_REVIEW
