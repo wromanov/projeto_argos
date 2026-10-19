@@ -9249,3 +9249,55 @@ validado pela elegibilidade real E3 com perfil HTTP fake e Target Policy
 TEST-NET restrita; nenhuma captura foi disparada. Screenshots não foram
 persistidos como arquivos. F02/F03 da E3 não foram reabertos; limitações de
 worker operacional, câmera real e HML permanecem para gates próprios.
+
+## 166. ARGOS-PRE-HML-01 — preparação local para inspeção HML (2026-10-19)
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-PRE-HML-01
+ROADMAP_STAGE = H / Controlled Homologation
+BRANCH = codex/hom-v1-integration
+BASELINE_HEAD = 2f5109b0ba72ee5390eb4bcb02dcca4dfad74ff1
+LOCAL_READINESS = READY_FOR_VM_READ_ONLY_INSPECTION
+VM_ACCESS = NOT_PERFORMED
+DEPLOY = NOT_AUTHORIZED
+VM_MIGRATIONS = NOT_AUTHORIZED
+PERSISTENT_DATABASE = NOT_MODIFIED
+CAMERA_REAL = NOT_AUTHORIZED
+REAL_CAMERA_ACCESS = NOT_PERFORMED
+FUNCTIONAL_CODE = NOT_MODIFIED
+E4_VISUAL_QA = NOT_REPEATED
+PREPARATION_COMMIT_OR_PUSH = NOT_PERFORMED
+NEXT_EXECUTION_LOCATION = OTHER_WORKSTATION
+STATUS = PREPARATION_ONLY
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES / runbook e checklist locais preparados
+NEXT_GATE = VM_READ_ONLY_INSPECTION
+```
+
+O runbook `docs/projeto/ARGOS_PRE_HML_01_E3_E4_VM_DEPLOYMENT_RUNBOOK.md`
+registra as alterações locais E3/E4, dependências, linha de migrations 0020/0021,
+compatibilidade documentada PostgreSQL, requisitos de storage/configuração,
+worker e riscos de captura. Separa fatos do checkout de hipóteses que somente a
+VM pode confirmar. Os comandos são modelos condicionais; nenhum comando remoto,
+teste, deploy ou migration foi executado nesta atividade.
+
+A revisão local confirma que o worker pode consumir o QUEUED mais antigo e que
+`--once` não seleciona uma câmera/job; logo o estado da fila e de qualquer
+worker deve ser inspecionado antes de ativar captura. Não há lease/heartbeat ou
+recuperação automática para um job interrompido após entrar em RUNNING. O
+adapter de produção usa HTTP(S); o adapter fake é usado nas evidências locais.
+F02 permanece DRAFT, F03 continua sem decisão autorizada e 0021 exige verificar
+duplicidades ativas antes de qualquer aplicação. Nenhum job foi alterado.
+
+A inspeção READ_ONLY da VM é o próximo gate, a ser continuado em outra estação
+de trabalho. Até obter evidência da VM, permanecem
+desconhecidos sistema operacional, runtime e release ativos, PostgreSQL e schema,
+serviços, mounts/capacidade/permissões, estado da fila/worker, backup/restauração,
+secrets, TLS, Target Policy e regras de rede. Recomendação atual: NO-GO para
+migration, deploy, worker automático ou câmera real; GO somente para a próxima
+inspeção READ_ONLY, com autorização e operador definidos.
+
+O WIP local preexistente foi preservado. Nenhum código funcional, estado
+persistente ou configuração de QA foi alterado. Durante a atividade PRE-HML-01
+não houve commit/push; não foram repetidos QA funcional ou visual E4.

@@ -10,7 +10,19 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-E4-CHECKPOINT-COMMIT-PUSH (2026-10-18): consultar
+RETOMADA ATUAL ARGOS-PRE-HML-01 (2026-10-19): consultar
+`PROJECT_STATE.md` §166, `ACTIVE_DOCUMENT_MAP.md` §126 e
+`docs/projeto/ARGOS_PRE_HML_01_E3_E4_VM_DEPLOYMENT_RUNBOOK.md`. Preparação
+local para possível atualização manual da VM HML E3+E4; baseline
+`codex/hom-v1-integration` / `2f5109b0ba72ee5390eb4bcb02dcca4dfad74ff1`.
+Runbook separa fatos locais e hipóteses da VM, com plano READ_ONLY, backup,
+atualização, migrations, serviços, smoke, captura controlada, rollback e
+evidências. VM não acessada; sem deploy, migration, alteração persistente, câmera
+real, alteração funcional ou repetição de QA visual E4. Deploy, migration na VM
+e câmera real seguem NOT_AUTHORIZED. Preservar WIP local. A continuidade ocorrerá
+em outra estação; próximo gate `VM_READ_ONLY_INSPECTION`.
+
+SNAPSHOT ANTERIOR ARGOS-E4-CHECKPOINT-COMMIT-PUSH (2026-10-18): consultar
 `PROJECT_STATE.md` §165 e `ACTIVE_DOCUMENT_MAP.md` §125. E2 está
 `CLOSED_WITH_EXCEPTIONS`; E3 segue `LOCAL_IMPLEMENTATION_VALIDATED`, sem
 homologação ou encerramento formal. E4 IMG-06 foi publicada após QA funcional
@@ -20,6 +32,7 @@ permanecem isolados; QA persistente, permissões globais, HML e VM não foram
 alterados. E5 IMG-08/09 segue pendente de seus próprios contratos e autorização.
 Preservar WIP local não E4; não alterar a tela aprovada nem reabrir F02/F03.
 Próximo gate: `ARGOS_E5_LIFECYCLE_AUTHORITY_REVIEW`.
+
 F01 corrigido; F02 permanece DRAFT e sem autorização; 0021 presente no source e
 não aplicada ao QA persistente; F03 preservado e decisão `CANCELLED` pendente.
 Manter resultados históricos e reexecutados separados.
@@ -3783,3 +3796,20 @@ E4 não habilita câmera real, HML, migrations na VM, merge ou deploy. QA
 persistent permanece intacto; banco/media sintéticos e WIP temporário são
 preservados fora dos commits. Não reabrir F02/F03 nem alterar a tela aprovada.
 Próximo gate: `ARGOS_E5_LIFECYCLE_AUTHORITY_REVIEW`.
+
+### 20.123 ARGOS-PRE-HML-01 — preparação local para inspeção HML (2026-10-19)
+
+Consultar `PROJECT_STATE.md` §166, `ACTIVE_DOCUMENT_MAP.md` §126 e o runbook
+local E3+E4. O baseline branch/HEAD foi confirmado, e o WIP local permaneceu
+intacto. A revisão identificou migrations 0020/0021, requisitos e incertezas de
+PostgreSQL/storage/configuração e riscos do worker que consome o QUEUED mais
+antigo. `--once` não seleciona job/câmera. A evidência local de adapter fake não
+prova conectividade/captura real; uma interrupção após claim pode deixar job
+RUNNING sem lease/heartbeat/recovery implementados.
+
+Durante a preparação não houve conexão à VM, deploy, migration, alteração de
+banco persistente, execução de worker, acesso a câmera real, teste novo ou
+alteração funcional. O runbook inclui comandos futuros condicionados a inspeção
+e aprovação, critérios de rollback, NO-GO e checklist de evidências. A publicação
+documental é uma atividade de checkpoint separada. Status `PREPARATION_ONLY`;
+próxima execução em outra estação, gate `VM_READ_ONLY_INSPECTION`.

@@ -2718,3 +2718,19 @@ focados reexecutados e integração sintética E3/E4 por adapter HTTP fake. Sem
 captura real, acesso à câmera/HML ou alteração do QA persistente. Screenshots
 não foram persistidos como arquivos; WIP de SQLite, mídias, configurações QA e
 protótipo não foi incluído nos commits.
+
+## 126. ARGOS-PRE-HML-01 — preparação local HML E3+E4 (2026-10-19)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §166 | Snapshot da preparação, limites, status e próximo gate | CURRENT / PREPARATION_ONLY; deploy/migrations/câmera real NOT_AUTHORIZED |
+| `AGENT_CONTINUITY.md` §20.123 | Handoff da atividade | CURRENT / próxima execução em outra estação; inspeção READ_ONLY da VM é o próximo gate |
+| `docs/projeto/ARGOS_PRE_HML_01_E3_E4_VM_DEPLOYMENT_RUNBOOK.md` | Revisão de release, plano manual, rollback, captura controlada e evidências | PREPARED / baseado em evidência local; comandos remotos não executados |
+| Baseline `codex/hom-v1-integration` @ `2f5109b0ba72ee5390eb4bcb02dcca4dfad74ff1` | Origem planejada para revisão | CONFIRMED LOCALLY; conteúdo/estado da VM desconhecido |
+
+A preparação PRE-HML-01 não acessou VM nem câmera, não executou deploy ou
+migration, não alterou banco persistente ou código funcional e não repetiu QA
+visual E4. WIP local foi preservado. Deploy, migrations VM e câmera real não
+estão autorizados. GO apenas para inspeção READ_ONLY, cuja continuidade ocorrerá
+em outra estação; worker automático e captura real permanecem NO-GO até seus
+gates e evidências próprios.
