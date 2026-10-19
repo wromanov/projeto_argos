@@ -3772,12 +3772,12 @@ commit, push, merge, deploy ou acesso a equipamento. Próximo gate:
 ### 20.122 ARGOS-E4 — checkpoint IMG-06 aprovado e publicação (2026-10-18)
 
 Consultar `PROJECT_STATE.md` §165 e `ACTIVE_DOCUMENT_MAP.md` §125. O commit
-`3f448d1` contém somente os dez caminhos da galeria e já foi publicado na branch
-`codex/hom-v1-integration` após fast-forward precheck. O checkpoint documental
-registra QA funcional 105/105, 33 testes focados reexecutados, migration drift
-limpo, adapter HTTP fake e aceite visual humano aprovado. A publicação deste
-checkpoint documental é o passo seguinte da atividade; conferir a confirmação
-final de Git no resultado da atividade.
+`3f448d1` contém somente os dez caminhos da galeria e foi publicado na branch
+`codex/hom-v1-integration` por fast-forward. O checkpoint documental
+`8ce851c` registra QA funcional 105/105, 33 testes focados reexecutados,
+migration drift limpo, adapter HTTP fake e aceite visual humano aprovado. O
+push documental e a igualdade entre HEAD local/remoto foram confirmados; detalhes
+e SHA final permanecem no resultado da atividade.
 
 E4 não habilita câmera real, HML, migrations na VM, merge ou deploy. QA
 persistent permanece intacto; banco/media sintéticos e WIP temporário são
