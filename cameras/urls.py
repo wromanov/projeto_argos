@@ -33,6 +33,7 @@ urlpatterns = [
     path("<int:pk>/imagens/ultima-captura/<str:variant>/", views.preview_ultima_captura, name="preview_ultima_captura"),
     path("<int:pk>/imagens/exibicao/<str:variant>/", views.preview_exibicao, name="preview_exibicao"),
     path("<int:pk>/imagens/quick-detail/<str:immutable_id>/<str:variant>/", views.preview_quick_detail, name="preview_quick_detail"),
+    path("<int:pk>/imagens/galeria/<uuid:immutable_id>/<str:variant>/", views.preview_galeria, name="preview_galeria"),
     path("<int:pk>/quick-detail/", views.quick_detail_camera, name="quick_detail"),
     path("<int:camera_id>/credentials/reveal/", reveal_camera_credential_view, name="reveal_camera_credential"),
     path("atividades/<int:pk>/editar/", views.editar_atividade_camera, name="editar_atividade"),

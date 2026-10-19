@@ -168,7 +168,7 @@ class CaptureHttpViewsTests(TestCase):
                 f'action="{reverse("cameras:solicitar_captura", args=[self.camera.pk])}"', html
             )
 
-    def test_detail_omits_section_when_neither_operation_is_authorized(self):
+    def test_detail_keeps_gallery_when_neither_capture_nor_upload_is_authorized(self):
         self.user.user_permissions.remove(
             Permission.objects.get(codename="capture_camera_image"),
             Permission.objects.get(codename="add_cameraimagerecord"),
@@ -176,7 +176,10 @@ class CaptureHttpViewsTests(TestCase):
 
         response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
 
-        self.assertNotContains(response, "Operações complementares")
+        self.assertContains(response, "Operações complementares")
+        self.assertContains(response, "Ver imagens")
+        self.assertNotContains(response, "Enviar imagem manualmente")
+        self.assertNotContains(response, "Capturar imagem")
         self.assertNotContains(response, "Captura direta da câmera")
         self.assertNotContains(response, 'id="imagem-camera"')
 

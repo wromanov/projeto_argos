@@ -618,4 +618,71 @@
     .argos-camera-detail__upload-form input[type="file"]::file-selector-button { min-height: calc(var(--argos-touch-target-min) - var(--argos-space-2) - var(--argos-border-width) - var(--argos-border-width)); }
     .argos-camera-detail__upload-form > .argos-button { justify-self: stretch; }
   }
+
+  .argos-camera-detail__capture-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--argos-space-3); margin-top: var(--argos-space-3); }
+  .argos-camera-detail__capture-actions .argos-camera-detail__capture-form { margin-top: 0; }
+  .argos-camera-detail__gallery-trigger { margin-top: 0; }
+  .argos-camera-detail__gallery-fallback { grid-template-columns: minmax(0, 1fr); }
+  .argos-camera-detail__gallery-dialog {
+    width: min(900px, calc(100vw - 32px));
+    max-width: none;
+    max-height: min(86dvh, 760px);
+    padding: 0;
+    overflow: hidden;
+    border: var(--argos-border-width) solid var(--argos-color-border);
+    border-radius: var(--argos-radius-surface);
+    color: var(--argos-color-ink);
+    background: var(--argos-color-surface);
+    box-shadow: 0 24px 72px rgb(18 38 52 / 28%);
+  }
+  .argos-camera-detail__gallery-dialog::backdrop { background: rgb(16 31 42 / 54%); }
+  .argos-camera-detail__gallery-header,
+  .argos-camera-detail__gallery-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--argos-space-4);
+    padding: var(--argos-space-5) var(--argos-space-6);
+    background: var(--argos-color-surface);
+  }
+  .argos-camera-detail__gallery-header { border-bottom: var(--argos-border-width) solid var(--argos-color-border); }
+  .argos-camera-detail__gallery-header h2,
+  .argos-camera-detail__gallery-detail h3 { margin: 0; font-size: var(--argos-text-section); }
+  .argos-camera-detail__gallery-header p,
+  .argos-camera-detail__gallery-detail-heading p { margin: var(--argos-space-1) 0 0; color: var(--argos-color-ink-muted); font-size: var(--argos-text-secondary); }
+  .argos-camera-detail__gallery-close { flex: none; }
+  .argos-camera-detail__gallery-body { max-height: calc(min(86dvh, 760px) - 150px); overflow: auto; padding: var(--argos-space-5) var(--argos-space-6); }
+  .argos-camera-detail__gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--argos-space-4); }
+  .argos-camera-detail__gallery-card { min-width: 0; overflow: hidden; border: var(--argos-border-width) solid var(--argos-color-border); border-radius: var(--argos-radius-control); background: var(--argos-color-surface); }
+  .argos-camera-detail__gallery-thumb { display: grid; place-items: center; width: 100%; min-height: 120px; aspect-ratio: 16 / 9; padding: 0; overflow: hidden; border: 0; background: var(--argos-color-surface-subtle); cursor: zoom-in; }
+  .argos-camera-detail__gallery-thumb img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .argos-camera-detail__gallery-thumb:focus-visible { outline: 3px solid var(--argos-color-action); outline-offset: -3px; }
+  .argos-camera-detail__gallery-placeholder { padding: var(--argos-space-3); color: var(--argos-color-ink-muted); font-size: var(--argos-text-secondary); }
+  .argos-camera-detail__gallery-copy { display: grid; gap: var(--argos-space-1); padding: var(--argos-space-3); overflow-wrap: anywhere; }
+  .argos-camera-detail__gallery-copy strong { color: var(--argos-color-ink); }
+  .argos-camera-detail__gallery-copy span { color: var(--argos-color-ink-muted); font-size: var(--argos-text-secondary); }
+  .argos-camera-detail__gallery-detail { min-width: 0; }
+  .argos-camera-detail__gallery-detail-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--argos-space-3); margin-bottom: var(--argos-space-4); }
+  .argos-camera-detail__gallery-detail-heading > div { min-width: 0; }
+  .argos-camera-detail__gallery-preview { display: grid; place-items: center; min-height: 160px; max-height: min(58dvh, 540px); margin: 0; overflow: auto; background: var(--argos-color-surface-subtle); }
+  .argos-camera-detail__gallery-preview img { display: block; width: 100%; max-width: 100%; max-height: min(58dvh, 540px); height: auto; object-fit: contain; }
+  .argos-camera-detail__gallery-preview [role="status"] { padding: var(--argos-space-5); color: var(--argos-color-ink-muted); text-align: center; }
+  .argos-camera-detail__gallery-footer { justify-content: flex-end; border-top: var(--argos-border-width) solid var(--argos-color-border); }
+
+  @media (max-width: 680px) {
+    .argos-camera-detail__gallery-dialog { width: calc(100vw - 24px); max-height: calc(100dvh - 24px); border-radius: var(--argos-radius-surface); }
+    .argos-camera-detail__gallery-header,
+    .argos-camera-detail__gallery-footer { padding: var(--argos-space-4); }
+    .argos-camera-detail__gallery-header { align-items: flex-start; }
+    .argos-camera-detail__gallery-header h2 { font-size: var(--argos-text-body); }
+    .argos-camera-detail__gallery-body { max-height: calc(100dvh - 156px); padding: var(--argos-space-4); }
+    .argos-camera-detail__gallery-grid { grid-template-columns: minmax(0, 1fr); gap: var(--argos-space-3); }
+    .argos-camera-detail__gallery-card { display: grid; grid-template-columns: minmax(112px, 40%) minmax(0, 1fr); align-items: center; }
+    .argos-camera-detail__gallery-thumb { min-height: 84px; }
+    .argos-camera-detail__gallery-copy { padding: var(--argos-space-2) var(--argos-space-3); }
+    .argos-camera-detail__gallery-copy span { font-size: 0.75rem; }
+    .argos-camera-detail__gallery-detail-heading { align-items: flex-start; flex-direction: column; }
+    .argos-camera-detail__gallery-preview { min-height: 120px; max-height: 48dvh; }
+    .argos-camera-detail__gallery-preview img { max-height: 48dvh; }
+  }
 }

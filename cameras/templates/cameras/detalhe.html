@@ -236,7 +236,7 @@
     </div>
   </section>
 
-  {% if show_upload_operation or capture_panel_visible %}
+{% if show_upload_operation or capture_panel_visible or show_image_gallery %}
   <section class="argos-camera-detail__complementary argos-camera-detail__complementary--surface{% if show_upload_operation %} argos-camera-detail__complementary--upload{% endif %}{% if capture_has_both_operations %} argos-camera-detail__complementary--capture{% endif %}" aria-labelledby="camera-detail-complementary-heading">
     <header class="argos-section-header"><h2 id="camera-detail-complementary-heading">Operações complementares</h2></header>
     {% if show_upload_operation %}
@@ -256,17 +256,82 @@
     <section class="argos-camera-detail__image-operation" aria-labelledby="camera-detail-capture-heading" data-camera-capture data-eligibility-state="{{ capture_eligibility_state }}" data-status-url="{{ capture_status_url }}" data-job-id="{% if capture_polling %}{{ capture_job.pk }}{% endif %}" data-job-state="{% if capture_polling %}{{ capture_job.status }}{% endif %}">
       <h3 id="camera-detail-capture-heading">Captura direta da câmera</h3>
       {% if can_capture_camera %}<p class="argos-camera-detail__upload-copy">Solicita uma captura usando o perfil autorizado desta câmera.</p>{% endif %}
-      {% if can_capture_camera %}
-      <form class="argos-camera-detail__capture-form" action="{% url 'cameras:solicitar_captura' camera.pk %}" method="post">
-        {% csrf_token %}<input type="hidden" name="idempotency_key" value="{{ capture_idempotency_key }}">
-        <button class="argos-button argos-button--primary" type="submit"><svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Capturar imagem</span></button>
-      </form>
-      {% endif %}
+      <div class="argos-camera-detail__capture-actions">
+        {% if can_capture_camera %}
+        <form class="argos-camera-detail__capture-form" action="{% url 'cameras:solicitar_captura' camera.pk %}" method="post">
+          {% csrf_token %}<input type="hidden" name="idempotency_key" value="{{ capture_idempotency_key }}">
+          <button class="argos-button argos-button--primary" type="submit"><svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Capturar imagem</span></button>
+        </form>
+        {% endif %}
+        <button class="argos-button argos-button--secondary argos-button--compact argos-camera-detail__gallery-trigger" type="button" data-gallery-open aria-haspopup="dialog" aria-controls="camera-image-gallery">Ver imagens</button>
+      </div>
       <p class="argos-camera-detail__capture-feedback" data-capture-feedback aria-live="polite" role="status">{% if capture_in_progress_elsewhere %}Há uma captura em andamento para esta câmera.{% elif capture_job %}{% if capture_job.status == "QUEUED" %}Captura solicitada; aguardando processamento.{% elif capture_job.status == "RUNNING" %}Captura em processamento.{% elif capture_job.status == "SUCCEEDED" %}Captura concluída.{% elif capture_job.status == "CANCELLED" %}Captura cancelada.{% else %}Não foi possível concluir a captura. Tente novamente mais tarde.{% endif %}{% elif not can_capture_camera %}<strong>{{ capture_eligibility_title }}</strong>{% if capture_eligibility_message %} · {{ capture_eligibility_message }}{% endif %}{% endif %}</p>
+    </section>
+    {% endif %}
+    {% if not capture_panel_visible %}
+    <section class="argos-camera-detail__image-operation argos-camera-detail__gallery-fallback" aria-labelledby="camera-detail-gallery-heading">
+      <h3 id="camera-detail-gallery-heading">Imagens da câmera</h3>
+      <p class="argos-camera-detail__upload-copy">Consulte os registros ativos desta câmera.</p>
+      <button class="argos-button argos-button--secondary argos-button--compact" type="button" data-gallery-open aria-haspopup="dialog" aria-controls="camera-image-gallery">Ver imagens</button>
     </section>
     {% endif %}
   </section>
   {% endif %}
+
+  <dialog class="argos-camera-detail__gallery-dialog" id="camera-image-gallery" aria-labelledby="camera-gallery-title" aria-describedby="camera-gallery-description">
+    <div class="argos-camera-detail__gallery-header">
+      <div>
+        <h2 id="camera-gallery-title">Imagens da câmera</h2>
+        <p id="camera-gallery-description">Até três registros ativos, em ordem de registro.</p>
+      </div>
+      <button class="argos-button argos-button--secondary argos-camera-detail__gallery-close" type="button" data-gallery-close aria-label="Fechar galeria de imagens">Fechar</button>
+    </div>
+    <div class="argos-camera-detail__gallery-body">
+      {% if gallery_state == "AVAILABLE" %}
+      <div class="argos-camera-detail__gallery-grid" data-gallery-grid aria-label="Imagens disponíveis">
+        {% for card in gallery_cards %}
+        <article class="argos-camera-detail__gallery-card">
+          <button class="argos-camera-detail__gallery-thumb" type="button" data-gallery-image
+            aria-label="Ampliar {{ card.label }}"
+            data-image-label="{{ card.label }}"
+            data-image-origin="Origem: {{ card.origin_label }}"
+            data-image-time="{{ card.temporal_label }}"
+            data-image-state="{% if card.is_available %}AVAILABLE{% else %}UNAVAILABLE{% endif %}"
+            data-image-thumb="{% if card.is_available %}{{ card.thumbnail_url }}{% endif %}"
+            data-image-full="{% if card.is_available %}{{ card.full_url }}{% endif %}">
+            {% if card.is_available %}<img src="{{ card.thumbnail_url }}" alt="{{ card.label }} registrada para esta câmera" loading="lazy">{% else %}<span class="argos-camera-detail__gallery-placeholder" aria-hidden="true">Imagem indisponível</span>{% endif %}
+          </button>
+          <div class="argos-camera-detail__gallery-copy">
+            <strong>{{ card.label }}</strong>
+            <span>Origem: {{ card.origin_label }}</span>
+            <span>{{ card.temporal_label }}</span>
+            {% if not card.is_available %}<span class="argos-state__copy">Imagem indisponível</span>{% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% elif gallery_state == "EMPTY" %}
+      <p class="argos-state__copy argos-state--compact" role="status">Nenhuma imagem ativa registrada para esta câmera.</p>
+      {% else %}
+      <p class="argos-state__copy argos-state--compact" role="status">Não foi possível exibir as imagens desta câmera.</p>
+      {% endif %}
+
+      <section class="argos-camera-detail__gallery-detail" data-gallery-detail aria-labelledby="camera-gallery-selected-title" hidden>
+        <div class="argos-camera-detail__gallery-detail-heading">
+          <div>
+            <h3 id="camera-gallery-selected-title" data-gallery-selected-title>Imagem selecionada</h3>
+            <p data-gallery-selected-origin></p>
+            <p data-gallery-selected-time></p>
+          </div>
+          <button class="argos-button argos-button--secondary argos-button--compact" type="button" data-gallery-back>Voltar à galeria</button>
+        </div>
+        <figure class="argos-camera-detail__gallery-preview" data-gallery-preview aria-live="polite"></figure>
+      </section>
+    </div>
+    <div class="argos-camera-detail__gallery-footer">
+      <button class="argos-button argos-button--secondary" type="button" data-gallery-close-footer>Fechar</button>
+    </div>
+  </dialog>
 </div>
 {% endblock %}
-{% block extra_js %}{% if capture_polling %}<script src="{% static 'js/camera-capture.js' %}" defer></script>{% endif %}{% endblock %}
+{% block extra_js %}{% if capture_polling %}<script src="{% static 'js/camera-capture.js' %}" defer></script>{% endif %}<script src="{% static 'js/camera-image-gallery.js' %}" defer></script>{% endblock %}

@@ -38,6 +38,8 @@ from .imagens.preview_service import (
     CameraImagePreviewService, DisplayImagePreviewService, PreviewState,
     QuickDetailImagePreviewService, QuickDetailPreviewState, CONTENT_TYPE, VARIANTS,
 )
+from .imagens.gallery_service import CameraGalleryReadService, GalleryImageState
+from .imagens.gallery_preview_service import CameraGalleryPreviewService, GalleryPreviewState
 from .quick_detail import camera_quick_detail
 from .validadores import normalizar_texto_cadastral
 from .xlsx_import import ImportFileError, build_template, confirm_preview, preview_xlsx, record_failed_confirmation
@@ -586,9 +588,43 @@ def detalhe_camera(request, pk):
         "capture_eligibility_message": capture_message,
         "capture_status_url": reverse("cameras:capture_status", args=[camera.pk, "00000000-0000-0000-0000-000000000000"]),
     })
+    gallery = CameraGalleryReadService().list_active(camera.pk)
+    gallery_cards = []
+    for index, image in enumerate(gallery.images, start=1):
+        gallery_cards.append({
+            "image": image,
+            "label": f"Imagem {index:02d}",
+            "origin_label": (
+                "Captura da câmera"
+                if image.provenance == "CAPTURA_CAMERA"
+                else "Upload manual"
+            ),
+            "temporal_label": (
+                f"Capturada em {timezone.localtime(image.captured_at):%d/%m/%Y · %H:%M}"
+                if image.provenance == "CAPTURA_CAMERA" and image.captured_at
+                else (
+                    "Data de captura indisponível"
+                    if image.provenance == "CAPTURA_CAMERA"
+                    else f"Registrada em {timezone.localtime(image.recorded_at):%d/%m/%Y · %H:%M}"
+                )
+            ),
+            "thumbnail_url": reverse(
+                "cameras:preview_galeria",
+                args=[camera.pk, image.immutable_id, "THUMB"],
+            ),
+            "full_url": reverse(
+                "cameras:preview_galeria",
+                args=[camera.pk, image.immutable_id, "FULL"],
+            ),
+            "is_available": image.state == GalleryImageState.AVAILABLE,
+        })
+    contexto.update({
+        "show_image_gallery": True,
+        "gallery_state": gallery.state,
+        "gallery_cards": gallery_cards,
+    })
     response = render(request, "cameras/detalhe.html", contexto)
-    if capture_panel_visible:
-        response["Cache-Control"] = "no-store"
+    response["Cache-Control"] = "no-store"
     return response
 
 
@@ -736,6 +772,41 @@ def preview_quick_detail(request, pk, immutable_id, variant):
         return empty(status, state)
     response = HttpResponse(result.content, content_type=CONTENT_TYPE)
     response["Content-Disposition"] = 'inline; filename="preview.jpg"'
+    response["Cache-Control"] = "no-store"
+    response["X-Content-Type-Options"] = "nosniff"
+    response["X-Preview-State"] = "AVAILABLE"
+    return response
+
+
+@login_not_required
+def preview_galeria(request, pk, immutable_id, variant):
+    """Entrega privada de uma imagem ativa, vinculada à câmera e ao UUID."""
+    def empty(status, state):
+        response = HttpResponse(status=status)
+        response["X-Preview-State"] = state
+        response["Cache-Control"] = "no-store"
+        response["X-Content-Type-Options"] = "nosniff"
+        return response
+
+    if not request.user.is_authenticated:
+        return empty(401, "UNAUTHENTICATED")
+    if not request.user.has_perm("cameras.view_camera"):
+        return empty(403, "FORBIDDEN")
+    if request.method != "GET" or variant not in {"THUMB", "FULL"} or request.GET:
+        return empty(400, "INVALID_REQUEST")
+    if not Camera.objects.filter(pk=pk).exists():
+        return empty(404, "NOT_FOUND")
+
+    result = CameraGalleryPreviewService().deliver(pk, immutable_id, variant)
+    if result.state != GalleryPreviewState.AVAILABLE:
+        status, state = {
+            GalleryPreviewState.NOT_FOUND: (404, "NOT_FOUND"),
+            GalleryPreviewState.UNAVAILABLE: (503, "UNAVAILABLE"),
+            GalleryPreviewState.ERROR: (422, "ERROR"),
+        }[result.state]
+        return empty(status, state)
+    response = HttpResponse(result.content, content_type=CONTENT_TYPE)
+    response["Content-Disposition"] = 'inline; filename="gallery-preview.jpg"'
     response["Cache-Control"] = "no-store"
     response["X-Content-Type-Options"] = "nosniff"
     response["X-Preview-State"] = "AVAILABLE"
