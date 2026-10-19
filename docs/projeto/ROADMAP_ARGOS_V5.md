@@ -1827,3 +1827,9 @@ migration na VM, não habilitou worker/probes e não acessou câmeras reais. VM
 operacional reportada não é prontidão formal HOM-03. HOM-04 segue sem abertura
 formal; HOM-05 aguarda seu pré-requisito formal HOM-04. Slices podem avançar em
 lanes isoladas conforme seus contratos e autorizações próprias.
+
+## 26. E3 RTSP Frame — checkpoint documental (2026-10-19)
+
+A decisão explícita registrada é `RTSP_FRAME` primário, `HTTP_SNAPSHOT` secundário independente, sem fallback silencioso; o fluxo alvo é `RTSP → FRAME → JPEG → STORAGE → DATABASE → GALERIA E4`. Plano P1–P8, diagnóstico e limites estão em [`ARGOS_E3_RTSP_PRIMARY_RECOVERY_PLAN.md`](ARGOS_E3_RTSP_PRIMARY_RECOVERY_PLAN.md); P1 está detalhada em [`ARGOS_E3_RTSP_ROUND_1_PLAN.md`](ARGOS_E3_RTSP_ROUND_1_PLAN.md), e propostas pendentes em [`ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md`](ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md).
+
+O estado de implantação e próximo gate constam em `PROJECT_STATE.md` §166. Documentação preparada; revisão humana pendente; amendments não aprovados; P1 não autorizada nem iniciada. Nada nesta atualização promove status de IMG-04/IMG-06 ou altera a sequência E0–E8 de §25. Captura RTSP real e galeria E4 com imagem real continuam sem homologação.

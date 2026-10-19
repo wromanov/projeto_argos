@@ -2734,3 +2734,15 @@ visual E4. WIP local foi preservado. Deploy, migrations VM e câmera real não
 estão autorizados. GO apenas para inspeção READ_ONLY, cuja continuidade ocorrerá
 em outra estação; worker automático e captura real permanecem NO-GO até seus
 gates e evidências próprios.
+
+## 126. ARGOS-E3-RTSP-HANDOFF-01 — checkpoint documental (2026-10-19)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `docs/projeto/ARGOS_E3_RTSP_PRIMARY_RECOVERY_PLAN.md` | Plano de recuperação E3, arquitetura e etapas P1–P8 | DOCUMENTATION_PREPARED / HUMAN_CONTENT_REVIEW_PENDING |
+| `docs/projeto/ARGOS_E3_RTSP_ROUND_1_PLAN.md` | Escopo e aceite da P1 — RTSP Frame Extraction Foundation | READY_FOR_REVIEW / ROUND_1_NOT_AUTHORIZED |
+| `docs/projeto/ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md` | Propostas de ajuste de prioridade e supersession | PENDING_HUMAN_APPROVAL / NOT_CANONICAL |
+| `docs/projeto/ARGOS_E3_RTSP_HOME_HANDOFF_CHECKPOINT.md` | Recuperação entre estações e próximo gate | CURRENT HANDOFF |
+| `PROJECT_STATE.md`, §166; `AGENT_CONTINUITY.md`, §20.123 | Estado técnico e instruções de retomada | CURRENT |
+
+O release HML reportado `d44e4e6f` é o baseline remoto verificado nesta publicação. Captura RTSP real não homologada; galeria E4 não validada com imagem real; F02/F03 continuam abertos. Publicar os amendments não os aprova nem inicia P1.

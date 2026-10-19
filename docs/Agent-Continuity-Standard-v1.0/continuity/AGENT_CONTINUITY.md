@@ -3813,3 +3813,19 @@ alteração funcional. O runbook inclui comandos futuros condicionados a inspeç
 e aprovação, critérios de rollback, NO-GO e checklist de evidências. A publicação
 documental é uma atividade de checkpoint separada. Status `PREPARATION_ONLY`;
 próxima execução em outra estação, gate `VM_READ_ONLY_INSPECTION`.
+
+### 20.123 ARGOS-E3-RTSP-HANDOFF-01 — transferência Trabalho → Casa (2026-10-19)
+
+Ler `PROJECT_STATE.md` §166, `ACTIVE_DOCUMENT_MAP.md` §126 e `docs/projeto/ARGOS_E3_RTSP_HOME_HANDOFF_CHECKPOINT.md`, além do plano de recuperação, plano P1 e propostas de amendments. O release HML publicado e a base remota deste checkpoint são `d44e4e6f5556cef8b9db00637c40fbd08259f2f3`; use o topo atual de `origin/codex/hom-v1-integration` para recuperar o commit de handoff. O checkout original de trabalho pode permanecer em `5c798bb` com WIP local não publicado.
+
+```text
+ACTIVITY_ID = ARGOS-E3-RTSP-HANDOFF-01
+DOCUMENTATION_PREPARED = YES
+HUMAN_CONTENT_REVIEW = PENDING
+AMENDMENTS_APPROVED = NO
+ROUND_1_AUTHORIZED = NO
+ROUND_1_EXECUTION = NOT_STARTED
+F02 = OPEN / PRESERVED
+F03 = OPEN / PRESERVED
+PROJECT_STATE_UPDATE = PASS / §166
+```

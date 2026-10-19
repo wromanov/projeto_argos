@@ -1077,3 +1077,17 @@ Para continuidade entre casa e trabalho, confirmar Git e preservar WIP; não
 transportar secrets, `.env`, sessões, bancos ou venvs entre máquinas. Em cada
 acompanhamento informar `PROJECT_ID`, `ROADMAP_STAGE`, `ACTIVE_SLICE`,
 `SLICE_STATUS`, `NEXT_GATE` e `NEXT_SLICE` com base em evidência real.
+
+## 23. ARGOS-E3-RTSP-HANDOFF-01 — preparação e gates (2026-10-19)
+
+| Slice | Escopo | Estado / gate |
+|---|---|---|
+| Documentação E3 RTSP | Plano P1–P8, plano P1, propostas de amendment e checkpoint doméstico | DOCUMENTATION_PREPARED; HUMAN_CONTENT_REVIEW=PENDING |
+| P1 — RTSP Frame Extraction Foundation | Entregar frame bounded e JPEG validável; diagnóstico/runtime GStreamer e testes sintéticos | READY_FOR_REVIEW; ROUND_1_AUTHORIZED=NO; NOT_STARTED |
+| P2–P6 | Perfis/configuração, Target Policy/credenciais, worker/persistência, UI e regressão | Pendentes; dependem da adjudicação documental, P1 e gates próprios |
+| P7 — Homologação real | Validar RTSP→frame→JPEG→registro→galeria na Hikvision | Não autorizada nesta atividade; captura real pendente |
+| P8 — Encerramento | Evidência e aceite operacional | Pendente |
+
+HML reportada em `d44e4e6f`; aplicação, PostgreSQL e migrations E3 ativos; smoke reportado PASS e backup/rollback preservados. Worker de captura contínuo não habilitado. Galeria E4 não homologada com imagem real. Hikvision RF0420 / DS-2CD2143G2-IS / Camera ID 4 sem configuração de conexão ou perfil RTSP operacional; credenciais/Target Policy pendentes. F02 (jobs órfãos) e F03 (códigos de erro) preservados. Não registrar segredos.
+
+A decisão é `RTSP_FRAME` primário, `RTSP` convencional, porta default 554, HTTP Snapshot secundário e independente, sem fallback silencioso; RTSPS e certificado HTTPS para RTSP não são requisitos. Publicar estas propostas não aprova amendments. Próxima atividade candidata `ARGOS-E3-RTSP-ROUND-1-P1`; iniciar somente após revisão humana do pacote/amendments e autorização explícita. Não alterar nesta atualização os status existentes IMG-04/IMG-06 ou o programa E0–E8.

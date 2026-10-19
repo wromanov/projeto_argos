@@ -9301,3 +9301,30 @@ inspeção READ_ONLY, com autorização e operador definidos.
 O WIP local preexistente foi preservado. Nenhum código funcional, estado
 persistente ou configuração de QA foi alterado. Durante a atividade PRE-HML-01
 não houve commit/push; não foram repetidos QA funcional ou visual E4.
+
+## 166. ARGOS-E3-RTSP-HANDOFF-01 — checkpoint e recuperação doméstica (2026-10-19)
+
+A documentação E3 registra `RTSP_FRAME` como método primário; `HTTP_SNAPSHOT` é secundário independente, sem fallback silencioso. O fluxo alvo é `RTSP → FRAME → JPEG → STORAGE → DATABASE → GALERIA E4`. O pacote documental é composto por `docs/projeto/ARGOS_E3_RTSP_PRIMARY_RECOVERY_PLAN.md`, `docs/projeto/ARGOS_E3_RTSP_ROUND_1_PLAN.md` e `docs/projeto/ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md`. A revisão humana do conteúdo está pendente; amendments não aprovados e P1 não autorizada.
+
+Estado HML fornecido pelo usuário: release `d44e4e6f`, aplicação operacional, PostgreSQL e migrations E3 aplicadas, smoke de login/dashboard/inventário/navegação/estáticos aprovado e backup/rollback preservados na VM. Worker de captura não está continuamente habilitado. Captura RTSP real e galeria E4 com imagem real não homologadas. Hikvision RF0420, DS-2CD2143G2-IS, IP `10.143.108.79`, Camera ID 4: configuração de conexão ausente, perfil operacional RTSP Frame não provisionado, credenciais/Target Policy pendentes; permissão QA `capture_camera_image` confirmada. Nenhuma credencial é registrada aqui.
+
+F02 — recuperação de jobs órfãos — e F03 — códigos de erro — permanecem abertas. Diagnóstico/preparação de GStreamer, extração e integração RTSP Frame ao worker, configuração da câmera/perfis, credenciais protegidas/Target Policy, fluxo administrativo e homologação real continuam pendentes. A Rodada 1 P1 só pode começar depois da revisão humana dos documentos e amendments e autorização explícita.
+
+```text
+ACTIVITY_ID = ARGOS-E3-RTSP-HANDOFF-01
+REMOTE_BASE_SHA = d44e4e6f5556cef8b9db00637c40fbd08259f2f3
+RELEASE_HML = d44e4e6f / supplied and verified as remote branch tip at preflight
+DOCUMENTATION_PREPARED = YES
+HUMAN_CONTENT_REVIEW = PENDING
+AMENDMENTS_APPROVED = NO
+ROUND_1_AUTHORIZED = NO
+ROUND_1_EXECUTION = NOT_STARTED
+F02 = OPEN
+F03 = OPEN
+CODE_CHANGES = NONE
+MIGRATIONS_CHANGED = NONE
+VM_CHANGES = NONE
+PROJECT_STATE_UPDATE = PASS / §166
+```
+
+Para continuidade doméstica, consultar `docs/projeto/ARGOS_E3_RTSP_HOME_HANDOFF_CHECKPOINT.md`; confirmar primeiro status e branch do checkout `C:\Users\walac\desenvolvimento\projeto_argos`, preservar qualquer WIP e só então atualizar para o topo publicado da branch `codex/hom-v1-integration`. Não transportar `.local`, bancos, ambientes virtuais, `.env`, sessões ou credenciais.
