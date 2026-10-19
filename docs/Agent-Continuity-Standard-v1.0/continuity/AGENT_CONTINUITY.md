@@ -10,17 +10,19 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-E3-CHECKPOINT-COMMIT-PUSH (2026-10-18): consultar
-`PROJECT_STATE.md` §163 e `ACTIVE_DOCUMENT_MAP.md` §123. E2 está
-`CLOSED_WITH_EXCEPTIONS`; E3 tem implementação local validada, sem homologação
-ou encerramento formal; E4 `NOT_STARTED`. Captura manual, adapter HTTP snapshot
-e fluxo de jobs estão integrados localmente. Variante B e direção funcional C
-preservadas/aprovadas; aceite Django humano restrito a FAILED/QUEUED/RUNNING.
-F01 corrigido; F02 permanece DRAFT e implementação não autorizada; 0021 presente
-no source e não aplicada ao QA persistente; F03 preservado e decisão
-`CANCELLED` pendente. Sem câmera real, screenshots persistidos ou deploy HML.
-Resultados históricos e reexecutados devem permanecer separados. Próximo gate:
-checkpoint Git publicado e sincronizado; sem merge ou deploy.
+RETOMADA ATUAL ARGOS-E4-CHECKPOINT-COMMIT-PUSH (2026-10-18): consultar
+`PROJECT_STATE.md` §165 e `ACTIVE_DOCUMENT_MAP.md` §125. E2 está
+`CLOSED_WITH_EXCEPTIONS`; E3 segue `LOCAL_IMPLEMENTATION_VALIDATED`, sem
+homologação ou encerramento formal. E4 IMG-06 foi publicada após QA funcional
+105/105 e aceite visual humano. A integração E3/E4 foi validada com adapter
+HTTP fake, sem conexão ou captura de câmera real. O SQLite/storage sintéticos
+permanecem isolados; QA persistente, permissões globais, HML e VM não foram
+alterados. E5 IMG-08/09 segue pendente de seus próprios contratos e autorização.
+Preservar WIP local não E4; não alterar a tela aprovada nem reabrir F02/F03.
+Próximo gate: `ARGOS_E5_LIFECYCLE_AUTHORITY_REVIEW`.
+F01 corrigido; F02 permanece DRAFT e sem autorização; 0021 presente no source e
+não aplicada ao QA persistente; F03 preservado e decisão `CANCELLED` pendente.
+Manter resultados históricos e reexecutados separados.
 
 SNAPSHOT ANTERIOR ARGOS-E3-CAPTURE-JOB-RECOVERY-REMEDIATION (2026-10-18):
 consultar `PROJECT_STATE.md` §161 e `ACTIVE_DOCUMENT_MAP.md` §121. F01
@@ -3747,3 +3749,37 @@ formalmente encerrada; F02 segue DRAFT sem autorização, F03/CANCELLED pendente
 RTSP worker não operacional, câmera real não validada e HML deferred.
 `PROJECT_STATE_UPDATE=PASS`; `ACTIVITY_COMPLETE=YES` para a atividade de checkpoint
 Git e documental.
+
+### 20.121 ARGOS-E4 — integração local e QA isolado (2026-10-18)
+
+Consultar `PROJECT_STATE.md` §164 e `ACTIVE_DOCUMENT_MAP.md` §124. A galeria E4
+foi integrada localmente ao Camera Detail com captura e upload, metadados de
+proveniência/data, preview privado, ampliação no mesmo dialog e navegação por
+teclado. A QA de cenários A/B/C e a suíte de 105 testes passaram em SQLite
+isolado. `qa-e4-fullaccess` permanece na base temporária; o banco QA persistente
+foi somente inspecionado em leitura e não foi alterado; nenhum grant global
+mudou, câmera real foi acessada ou HML foi consultado.
+
+A QA visual desktop/mobile, overflow, foco e Escape foi percorrida no navegador
+isolado. Os screenshots foram vistos inline, mas não persistidos como arquivos.
+Após reinício, o navegador não alcançou o servidor local para capturar a página
+elegível; portanto a entrega permanece `PARTIAL` até obtenção desse artefato e
+revisão humana. O launcher QA oficial também permanece bloqueado pela chave
+DPAPI ausente; não inicializar a chave nem alterar o banco persistente. Sem
+commit, push, merge, deploy ou acesso a equipamento. Próximo gate:
+`USER_E4_INTEGRATED_REVIEW`.
+
+### 20.122 ARGOS-E4 — checkpoint IMG-06 aprovado e publicação (2026-10-18)
+
+Consultar `PROJECT_STATE.md` §165 e `ACTIVE_DOCUMENT_MAP.md` §125. O commit
+`3f448d1` contém somente os dez caminhos da galeria e já foi publicado na branch
+`codex/hom-v1-integration` após fast-forward precheck. O checkpoint documental
+registra QA funcional 105/105, 33 testes focados reexecutados, migration drift
+limpo, adapter HTTP fake e aceite visual humano aprovado. A publicação deste
+checkpoint documental é o passo seguinte da atividade; conferir a confirmação
+final de Git no resultado da atividade.
+
+E4 não habilita câmera real, HML, migrations na VM, merge ou deploy. QA
+persistent permanece intacto; banco/media sintéticos e WIP temporário são
+preservados fora dos commits. Não reabrir F02/F03 nem alterar a tela aprovada.
+Próximo gate: `ARGOS_E5_LIFECYCLE_AUTHORITY_REVIEW`.

@@ -1,16 +1,15 @@
 # ARGOS — Project State
 
-Retomada atual: `ARGOS-E3-CHECKPOINT-COMMIT-PUSH`, §163.
-E2 = `CLOSED_WITH_EXCEPTIONS`; E3 = `LOCAL_IMPLEMENTATION_VALIDATED`, sem
-homologação ou encerramento formal; E4 = `NOT_STARTED`. Captura manual, adapter
-HTTP snapshot e processamento por job estão integrados localmente. Variante B e
-direção funcional C aprovadas; aceite Django limitado aos estados
-FAILED/QUEUED/RUNNING por instrução explícita do usuário. F01 concluído; F02
-permanece DRAFT e sem autorização; migration 0021 presente, não aplicada ao QA
-persistente; F03 preservado e decisão de código CANCELLED pendente. Screenshots
-persistidos inexistentes, câmera real não validada e deploy HML deferred. Os
-testes documentados em §§155, 160–161 são históricos; resultados reexecutados
-estão separados em §162. O checkpoint Git foi publicado e sincronizado conforme §163.
+Retomada atual: `ARGOS-E4-CHECKPOINT-COMMIT-PUSH`, §165. E2 permanece
+`CLOSED_WITH_EXCEPTIONS`; E3 permanece `LOCAL_IMPLEMENTATION_VALIDATED`, sem
+homologação ou encerramento formal. E4 IMG-06 está implementada, validada com
+adapter fake e publicada após QA funcional 105/105 PASS e aceite visual humano.
+O runtime local usou fixture SQLite/storage isolados; QA persistente e suas
+permissões não foram alterados. F01 concluído; F02 permanece DRAFT e sem
+autorização; migration 0021 presente, não aplicada ao QA persistente; F03
+preservado e decisão de código CANCELLED pendente. Sem acesso a câmera real ou
+HML, migrations na VM, merge ou deploy. E5/lifecycle permanece backlog próprio;
+os detalhes do checkpoint e limites estão em §165.
 
 Snapshot histórico HOM (substituído para retomada pelo fechamento E2 da §153): §§113–116 — HOM-01 encerrada, HOM-02 implementada e ambiente QA local preparado para aceitação humana. HOM-01 está `CLOSED`; a regressão global registrada em §112 passou (948 testes em 600.522s; Django system check PASS). HOM-02 implementa template, prévia, confirmação atômica, validação cadastral e auditoria; validação direcionada, regressão de integração e carga sintética de 2.300 registros passaram. Os aceites e limitações em §§99, 101, 108 e 109 foram preservados, incluindo Camera Detail `CLOSED_WITH_LIMITATIONS`. Seções anteriores permanecem como histórico.
 
@@ -9146,3 +9145,106 @@ homologada: E3 permanece `LOCAL_IMPLEMENTATION_VALIDATED`; E4 `NOT_STARTED`.
 F02 continua DRAFT e sem autorização de implementação; 0021 não foi aplicada ao
 QA persistente; a decisão F03 para `CANCELLED` segue pendente. Worker RTSP não
 operacional, HML deferred, sem acesso a câmera real ou deploy.
+
+## 164. ARGOS-E4 — integração da galeria e QA local isolado (2026-10-18)
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-E4-GALLERY-DJANGO-INTEGRATION-01
+ACTIVE_SLICE = E4 / IMG-06
+BRANCH = codex/hom-v1-integration
+HEAD = 7c7f0fdd00a09520903b10122b6c9e03a100e42c
+WORKTREE = PRESERVED / alterações E4 locais não commitadas; WIPs preexistentes preservados
+E4_IMPLEMENTATION = LOCAL / Camera Detail integrada à galeria E4; sem schema ou migration novos
+QA_ISOLATION = PASS / SQLite temporário .tmp-e4-gallery-qa-81e4738ac69e42adb0852a210c3cd77c/gallery.sqlite3
+QA_ACCOUNT = qa-e4-fullaccess / ativa, staff, superuser / PRESERVED NA BASE TEMPORÁRIA
+PERSISTENT_QA_DATABASE = NOT_MODIFIED
+OFFICIAL_LOCAL_QA_LAUNCHER = BLOCKED / arquivo de chave DPAPI protegida ausente; não inicializado
+SCENARIO_A_HTTP_SNAPSHOT = PASS / Django Client, botão, CSRF, QUEUED -> RUNNING -> SUCCEEDED, adapter fake, registro e preview privado
+SCENARIO_B_INCOMPLETE_CONFIG = PASS / mensagem contextual, zero imagens e galeria independente
+SCENARIO_C_NO_CAPTURE_PERMISSION = PASS / ação ausente; POST com CSRF válido recebeu 403, sem job; preview permitido para usuário com view
+GALLERY_ZERO_ONE_THREE_AND_OVER_LIMIT = PASS / cobertura integrada e suíte direcionada; excedente preserva registros e indisponibiliza somente a galeria
+AUTOMATED_TESTS = PASS / 105 tests; zero failures; Django system check sem issues
+DESKTOP_QA = PASS / 2048x742, 1440x900, 1366x768 a 100%
+MOBILE_QA = PASS / 390x844 a 100%
+KEYBOARD_FOCUS_AND_ESCAPE = PASS / grid, ampliação, retorno, foco e fechamento no navegador isolado
+OVERFLOW = PASS / sem overflow observado nos viewports validados
+SCREENSHOT_FILES = NOT_SAVED / evidência visual anterior foi exibida inline; nenhum arquivo foi persistido
+ELIGIBLE_CAPTURE_BROWSER_RENDER_AFTER_RESTART = NOT_RUN / navegador não alcançou o servidor isolado após reinício
+REAL_CAMERA = NOT_ACCESSED
+HML = NOT_ACCESSED
+COMMIT = NOT_PERFORMED
+PUSH = NOT_PERFORMED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+STATUS = PARTIAL / falta screenshot persistido e renderização final navegável da câmera elegível
+HUMAN_APPROVAL = PENDING
+NEXT_GATE = USER_E4_INTEGRATED_REVIEW
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = NO
+```
+
+A execução usou a conta sintética `qa-e4-fullaccess` e apenas o SQLite sob
+`.tmp-e4-gallery-qa-81e4738ac69e42adb0852a210c3cd77c`; o banco QA persistente e
+permissões globais não foram alterados. O cenário A usou endereço TEST-NET
+reservado e adapter fake, sem abrir rede de equipamentos. O teste de integração
+confirmou a requisição POST com CSRF, os estados persistidos, a imagem gravada e
+a leitura privada pela galeria. Uma execução autônoma do worker parou no loop
+assíncrono do runtime Windows; o runner sintético aplicou uma ponte inline apenas
+ao adapter assíncrono imediato. A suíte de 105 testes do Django, executada em DB
+de teste descartável, passou incluindo o worker de service.
+
+O launcher QA oficial permaneceu sem inicialização porque falta o arquivo local
+DPAPI; a inspeção desse ambiente foi somente leitura. O QA visual desktop/mobile,
+proporção e teclado já foi percorrido no navegador isolado e os resultados estão
+registrados no JSON temporário. Os screenshots não foram exportados para arquivos.
+Após reiniciar o servidor local, o navegador não conseguiu alcançar o listener
+isolado; por isso não há screenshot final da página de captura elegível. A
+implementação segue local, aguardando revisão humana E4. Nenhum commit, push,
+merge, deploy, alteração de permissão global ou acesso a câmera real ocorreu.
+
+## 165. ARGOS-E4 — checkpoint IMG-06 aprovado e publicação (2026-10-18)
+
+```text
+PROJECT_ID = projeto_argos
+ACTIVITY = ARGOS-E4-CHECKPOINT-COMMIT-PUSH
+ROADMAP_STAGE = E4
+ACTIVE_SLICE = IMG-06
+BRANCH = codex/hom-v1-integration
+BASE_HEAD = 7c7f0fdd00a09520903b10122b6c9e03a100e42c
+E4_CODE_COMMIT = 3f448d1 / feat(images): add E4 camera gallery / PUSHED
+DOCUMENTATION_COMMIT = THIS_CHECKPOINT / hash returned by Git
+E4_IMPLEMENTATION = PASS / integrada ao Camera Detail; máximo três imagens ativas; sem schema/migration novo
+FUNCTIONAL_QA = PASS / 105/105 conforme evidência da execução integrada anterior
+FOCUSED_QA = PASS / 33/33 em DB descartável; Django system check sem issues
+MIGRATION_DRIFT = PASS / makemigrations --check --dry-run: No changes detected
+JAVASCRIPT_SYNTAX = PASS / node --check static/js/camera-image-gallery.js
+E3_E4_INTEGRATION = PASS / cenário sintético com adapter HTTP fake; sem conexão de rede de câmera
+HUMAN_VISUAL_APPROVAL = APPROVED / Camera Detail com Capturar imagem, upload manual e galeria de três imagens
+ACCESSIBILITY_REVIEW = PASS / ampliação/navegação, Escape e retorno do foco conforme QA visual aprovado
+VISUAL_REDESIGN = NOT_AUTHORIZED / sem redesign de tela
+PERSISTENT_QA = NOT_MODIFIED
+QA_FIXTURE = PRESERVED / SQLite e imagens sintéticas em diretório temporário isolado
+REAL_CAMERA = NOT_ACCESSED
+HML = NOT_ACCESSED / homologação e validação HML permanecem pendentes
+VM_MIGRATIONS = NOT_APPLIED
+MERGE = NOT_PERFORMED
+DEPLOY = NOT_PERFORMED
+STAGING_SCOPE = dez caminhos de código E4; WIP externo não staged
+PUSH_GATE = CODE_PUSH_PASS / fast-forward confirmado; documentação em commit separado
+E4_STATUS = IMPLEMENTED / LOCAL_QA_PASS / HUMAN_VISUAL_APPROVED / CODE_PUBLISHED
+PROJECT_STATE_UPDATE = PASS
+ACTIVITY_COMPLETE = YES / checkpoint local e publicação autorizada
+NEXT_STAGE = E5 / IMG-08 e IMG-09, sob seus próprios contratos e autorização
+NEXT_GATE = ARGOS_E5_LIFECYCLE_AUTHORITY_REVIEW
+```
+
+O diff de código contém exclusivamente os dez caminhos da galeria E4, com
+staging explícito; o protótipo de redesign e os artefatos de `.local`, SQLite,
+mídia e configuração de QA permaneceram fora do commit. Foram reaproveitadas as
+evidências 105/105 e a aprovação visual humana; a atividade repetiu somente os
+33 testes focados, sintaxe JS e migration drift. O estado do botão de captura foi
+validado pela elegibilidade real E3 com perfil HTTP fake e Target Policy
+TEST-NET restrita; nenhuma captura foi disparada. Screenshots não foram
+persistidos como arquivos. F02/F03 da E3 não foram reabertos; limitações de
+worker operacional, câmera real e HML permanecem para gates próprios.

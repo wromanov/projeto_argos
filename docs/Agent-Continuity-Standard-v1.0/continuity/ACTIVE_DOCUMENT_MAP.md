@@ -11,9 +11,9 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; E3 post-push checkpoint in §163; Git checkpoint complete |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff §20.120 (E3 post-push checkpoint); Git checkpoint complete |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest ARGOS pointer §123 (E3 post-push checkpoint); contracts preserved |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; E4 IMG-06 published and approved in §165 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff §20.122 (E4 checkpoint published) |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest ARGOS pointer §125 (E4 published); contracts preserved |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
 ## 2. Authorities canônicas do projeto
@@ -21,7 +21,7 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 | Path | Role | Authority scope | Status |
 |---|---|---|---|
 | `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; current reconciliation §24; preserve earlier snapshots |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; current reconciliation §21; preserve §20 historical snapshot |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; current reconciliation §21; E4 IMG-06 approved/published |
 | `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md` | Authority operacional da UI V2 | Escopo, princípios, fluxo P0–P7, gates e próxima atividade visual | PRESENT / CANONICAL; P3-0 é o checkpoint anterior; patch ROOT e próximo gate constam no DCR e em PROJECT_STATE section 37 |
 | `docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md` | Censo factual de superfícies e matrizes UI-V2-P0 | PRESENT / CANONICAL; P0 CLOSED_PASS |
 | `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; §26 approves Quick Detail LATEST_ACTIVE_IMAGE; implementation/integration/validation/homologation not established |
@@ -2673,3 +2673,48 @@ formal/homologação; E4 `NOT_STARTED`. F02 DRAFT e implementação não autoriz
 0021 não aplicada ao QA persistente; decisão F03/CANCELLED pendente; worker RTSP
 não operacional; sem câmera real ou deploy; HML deferred. `PROJECT_STATE_UPDATE=PASS`,
 `ACTIVITY_COMPLETE=YES` para esta atividade de integração Git.
+
+## 124. ARGOS-E4 — integração da galeria e QA local isolado (2026-10-18)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §164 | Estado da implementação e validação local E4 | CURRENT / cenários funcionais PASS, artefatos de screenshot não persistidos, revisão humana pendente |
+| `AGENT_CONTINUITY.md` §20.121 | Handoff da integração local E4 | CURRENT / runtime de revisão após restart não acessível; preservar DB e conta QA sintética |
+| SQLite sintético `.tmp-e4-gallery-qa-81e4738ac69e42adb0852a210c3cd77c/gallery.sqlite3` | Dados E4 A/B/C e conta `qa-e4-fullaccess` | QA_ISOLATED / manter até revisão humana; não é o banco QA persistente |
+| `.tmp-e4-gallery-qa-81e4738ac69e42adb0852a210c3cd77c/qa-results.json` | Matriz de QA e resultados por cenário | CURRENT / 105 testes, A/B/C e viewport; screenshots sem arquivos locais |
+| `cameras/imagens/gallery_service.py`, `gallery_preview_service.py`, `static/js/camera-image-gallery.js` | Leitura E4, preview privado e comportamento acessível | LOCAL_UNCOMMITTED / sem migration/model/backend novo |
+| QA oficial local | Comparação read-only e launcher protegido | BLOCKED / chave DPAPI ausente; sem criação de chave ou mutação da base persistente |
+
+A captura HTTP A usou endereço TEST-NET e adapter fake. B confirmou configuração
+incompleta sem bloquear a galeria; C confirmou separação de permissão de captura
+e leitura privada por usuário autorizado. A matriz de testes cobre zero, uma,
+duas, três e acima de três imagens ativas, proveniência temporal, ordenação,
+permissões, identidade vinculada à câmera e integridade de previews. 105 testes
+focados passaram em banco descartável; o worker fake também concluiu a cadeia de
+estados no SQLite isolado. A navegação, foco e teclado foram verificados
+manualmente no browser isolado.
+
+A revisão visual percorreu desktop `2048x742`, `1440x900`, `1366x768` e mobile
+`390x844`, em zoom 100%, com ampliação preservando proporção e sem overflow. As
+capturas foram observadas inline, sem exportação para arquivos. Depois do restart
+isolado, o browser não conseguiu alcançar a página de captura elegível; esse
+artefato visual continua pendente. O launcher oficial QA permaneceu bloqueado por
+DPAPI. O banco QA persistente foi somente inspecionado em leitura; nada foi
+alterado nele. Nenhuma câmera real, rede de equipamentos, VM HML, commit, push,
+merge ou deploy foi usado.
+
+## 125. ARGOS-E4 — checkpoint IMG-06 aprovado e publicação (2026-10-18)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §165 | Snapshot E4, evidência, commits, limites e próximo gate | CURRENT / implementação, QA e aprovação visual PASS; publicação de código confirmada |
+| `AGENT_CONTINUITY.md` §20.122 | Handoff pós-aprovação E4 | CURRENT / E4 IMG-06 publicada; preservar WIP externo |
+| `docs/projeto/ARGOS_DELIVERY_EXECUTION_PLAN_V1.md` §3 | Estado da etapa E4 | IMPLEMENTED / LOCAL QA PASS / HUMAN VISUAL APPROVED / CODE PUBLISHED; HML deferida |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` §21 | Status IMG-06 e sequência E0–E8 | E4 publicada; próxima E5 IMG-08/09 sob gate próprio |
+| Commit `3f448d1` — `feat(images): add E4 camera gallery` | Código E4 em dez paths revisados | CODE_PUBLISHED / ff após `7c7f0fd` |
+
+A doc registra o aceite visual `APPROVED`, QA funcional 105/105, 33 testes
+focados reexecutados e integração sintética E3/E4 por adapter HTTP fake. Sem
+captura real, acesso à câmera/HML ou alteração do QA persistente. Screenshots
+não foram persistidos como arquivos; WIP de SQLite, mídias, configurações QA e
+protótipo não foi incluído nos commits.
