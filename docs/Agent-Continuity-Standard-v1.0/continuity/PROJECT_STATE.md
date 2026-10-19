@@ -1,16 +1,11 @@
 # ARGOS — Project State
 
-Retomada atual: `ARGOS-E4-CHECKPOINT-COMMIT-PUSH`, §165. E2 permanece
-`CLOSED_WITH_EXCEPTIONS`; E3 permanece `LOCAL_IMPLEMENTATION_VALIDATED`, sem
-homologação ou encerramento formal. E4 IMG-06 está implementada, validada com
-adapter fake e publicada após QA funcional 105/105 PASS e aceite visual humano.
-O runtime local usou fixture SQLite/storage isolados; QA persistente e suas
-permissões não foram alterados. F01 concluído; F02 permanece DRAFT e sem
-autorização; migration 0021 presente, não aplicada ao QA persistente; F03
-preservado e decisão de código CANCELLED pendente. Sem acesso a câmera real ou
-HML, migrations na VM, merge ou deploy. E5/lifecycle permanece backlog próprio;
-os detalhes do checkpoint e limites estão em §165.
-
+Retomada atual: ARGOS-E3-HOME-RECONCILIATION-01, §168. A atividade preparou
+reconciliação exclusivamente documental no worktree isolado derivado de
+df582ade. Captura RTSP real não foi feita; job/migrations e fluxo HTTP já existem,
+mas serviço/worker não executam RTSP. d44e4e6f é o release HML reportado, sem
+verificação nesta atividade. Amendments aguardam aceite humano; P1 não
+autorizada nem iniciada. WIP doméstico preservado.
 Snapshot histórico HOM (substituído para retomada pelo fechamento E2 da §153): §§113–116 — HOM-01 encerrada, HOM-02 implementada e ambiente QA local preparado para aceitação humana. HOM-01 está `CLOSED`; a regressão global registrada em §112 passou (948 testes em 600.522s; Django system check PASS). HOM-02 implementa template, prévia, confirmação atômica, validação cadastral e auditoria; validação direcionada, regressão de integração e carga sintética de 2.300 registros passaram. Os aceites e limitações em §§99, 101, 108 e 109 foram preservados, incluindo Camera Detail `CLOSED_WITH_LIMITATIONS`. Seções anteriores permanecem como histórico.
 
 Snapshot histórico de continuidade ARGOS (não é o estado corrente IMG-07/E2): consulte §113 para o encerramento formal da HOM-01,
@@ -9302,7 +9297,7 @@ O WIP local preexistente foi preservado. Nenhum código funcional, estado
 persistente ou configuração de QA foi alterado. Durante a atividade PRE-HML-01
 não houve commit/push; não foram repetidos QA funcional ou visual E4.
 
-## 166. ARGOS-E3-RTSP-HANDOFF-01 — checkpoint e recuperação doméstica (2026-10-19)
+## 167. ARGOS-E3-RTSP-HANDOFF-01 — checkpoint e recuperação doméstica (2026-10-19)
 
 A documentação E3 registra `RTSP_FRAME` como método primário; `HTTP_SNAPSHOT` é secundário independente, sem fallback silencioso. O fluxo alvo é `RTSP → FRAME → JPEG → STORAGE → DATABASE → GALERIA E4`. O pacote documental é composto por `docs/projeto/ARGOS_E3_RTSP_PRIMARY_RECOVERY_PLAN.md`, `docs/projeto/ARGOS_E3_RTSP_ROUND_1_PLAN.md` e `docs/projeto/ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md`. A revisão humana do conteúdo está pendente; amendments não aprovados e P1 não autorizada.
 
@@ -9312,8 +9307,8 @@ F02 — recuperação de jobs órfãos — e F03 — códigos de erro — perman
 
 ```text
 ACTIVITY_ID = ARGOS-E3-RTSP-HANDOFF-01
-REMOTE_BASE_SHA = d44e4e6f5556cef8b9db00637c40fbd08259f2f3
-RELEASE_HML = d44e4e6f / supplied and verified as remote branch tip at preflight
+DOCUMENTATION_CHECKPOINT = df582ade547358953cb1dee8113850ee5e186cb9
+HML_RELEASE = d44e4e6f / reportado como release ativo; não é o HEAD documental
 DOCUMENTATION_PREPARED = YES
 HUMAN_CONTENT_REVIEW = PENDING
 AMENDMENTS_APPROVED = NO
@@ -9324,7 +9319,38 @@ F03 = OPEN
 CODE_CHANGES = NONE
 MIGRATIONS_CHANGED = NONE
 VM_CHANGES = NONE
-PROJECT_STATE_UPDATE = PASS / §166
+PROJECT_STATE_UPDATE = PASS / §167
 ```
 
-Para continuidade doméstica, consultar `docs/projeto/ARGOS_E3_RTSP_HOME_HANDOFF_CHECKPOINT.md`; confirmar primeiro status e branch do checkout `C:\Users\walac\desenvolvimento\projeto_argos`, preservar qualquer WIP e só então atualizar para o topo publicado da branch `codex/hom-v1-integration`. Não transportar `.local`, bancos, ambientes virtuais, `.env`, sessões ou credenciais.
+Para continuidade no checkout doméstico com WIP, usar `C:\Users\walac\desenvolvimento\projeto_argos_hom_integration`; confirmar primeiro raiz, status, branch e HEAD, preservar integralmente o WIP e não substituir esse checkout pelo worktree isolado P0. Qualquer avanço para commits publicados requer revisão explícita de ancestry e preservação das alterações locais. Não transportar `.local`, bancos, ambientes virtuais, `.env`, sessões ou credenciais.
+
+## 168. ARGOS-E3-HOME-RECONCILIATION-01 — P0 documental (2026-10-19)
+
+    ACTIVITY_ID = ARGOS-E3-HOME-RECONCILIATION-01
+    BASELINE = df582ade547358953cb1dee8113850ee5e186cb9
+    WORKTREE = C:\Users\walac\desenvolvimento\projeto_argos_e3_p0_reconciliation
+    IMPLEMENTATION_AUTHORIZATION = NOT_GRANTED
+    CODE_CHANGES = NONE
+    MIGRATION_CHANGES = NONE
+    VM_ACCESS = NOT_PERFORMED
+    REAL_CAMERA = NOT_PERFORMED
+    ROUND_1 = NOT_AUTHORIZED / NOT_STARTED
+    HUMAN_APPROVAL = PENDING / final acceptance and publication decision
+    WIP_RECONCILIATION = DOCUMENTED / NO_FILES_MOVED
+    PROJECT_STATE_UPDATE = PASS / §168
+    ACTIVITY_COMPLETE = YES / technical documentation adjustments validated; human acceptance pending
+    P0_DOCUMENTATION = READY_FOR_FINAL_ACCEPTANCE
+    C01_C06 = TECHNICALLY_REVIEWED
+    CANONICAL_AMENDMENTS = PENDING_FORMAL_USER_ACCEPTANCE
+    WIP_PRESERVED = YES
+    ROUND_1_IMPLEMENTATION = NOT_STARTED
+    ACTIVITY_COMPLETION_PERCENT = 100%
+    NEXT_GATE = HUMAN_ACCEPTANCE_AND_PUBLICATION_DECISION
+
+A revisão do HEAD confirma CameraCaptureJob, migrations 0020/0021, capture_service.py e run_capture_worker. Serviço/worker suportam HTTP Snapshot; RTSP continua não integrado à execução, e o adapter GStreamer entrega diagnóstico A/B/C/D e resultado booleano de frame, sem bytes/JPEG. Isso distingue implementação existente de captura RTSP real.
+
+d44e4e6f é o release HML reportado; df582ade é a baseline/checkpoint documental. Nenhum equivale a validação ou aceite operacional. Smoke web foi reportado, mas captura RTSP e galeria E4 com imagem real não foram validadas/aceitas nesta atividade.
+
+Amendments C01–C06 são candidatos não canônicos. F02/F03 mantêm IDs, escopos e estados. P1 documenta runtime Linux/Python/GStreamer, H.264/H.265, saída JPEG, timeouts, cancelamento, cleanup, compatibilidade e testes sintéticos; nada foi executado. O relatório WIP está em docs/projeto/ARGOS_E3_HOME_RECONCILIATION_REPORT.md. O worktree de homologação e seus WIPs foram preservados.
+
+A duplicidade histórica de §166 foi corrigida aditivamente: PRE-HML continua §166 e E3-HANDOFF passa a §167. O handoff distingue o checkout operacional com WIP do worktree isolado desta P0. A revisão humana é necessária antes de declarar P0 concluída ou considerar autorização P1.

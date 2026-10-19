@@ -1,9 +1,10 @@
 # ARGOS E3 — Plano de recuperação primária RTSP
 
 ACTIVITY_ID = ARGOS-E3-RTSP-DOC-01
+FOLLOW_ON_ACTIVITY_ID = ARGOS-E3-RTSP-ROUND-1-P1
 STATUS = DOCUMENTATION_ONLY / HUMAN_DOCUMENT_APPROVAL_PENDING
-BASELINE_REFERENCE = codex/hom-v1-integration @ d44e4e6f (informado para HML; não verificado como HEAD local)
-LOCAL_PREFLIGHT = branch codex/hom-v1-integration; HEAD 5c798bb37285d8cf7f42b9197dfc81057f472e09; worktree possui WIP preexistente
+DOCUMENTATION_BASELINE = df582ade547358953cb1dee8113850ee5e186cb9 (HEAD documental publicado)
+HML_RELEASE = d44e4e6f5556cef8b9db00637c40fbd08259f2f3 (release HML reportada; distinta do HEAD Git)
 
 ## 1. Direção aprovada e limites
 
@@ -15,7 +16,7 @@ Esta direção entra como decisão de produto/arquitetura fornecida pelo usuári
 
 Fatos HML recebidos no payload (não reexecutados nesta atividade): release `d44e4e6f` em `codex/hom-v1-integration`; Gunicorn, Django, Nginx e smoke HTTP/funcional aprovados; migrations 0020/0021 aplicadas; rollback local preparado; nenhum worker permanente iniciado. Câmera RF0420, Hikvision DS-2CD2143G2-IS, banco ID 4, IPv4 10.143.108.79, porta candidata 554, endpoint candidato `/Streaming/Channels/101` ainda sem captura real.
 
-Problemas confirmados no payload: worker E3 rejeita `RTSP_FRAME`; adapter RTSP detecta frame mas não entrega bytes; câmera sem `CameraConnectionConfig`; `RTSP_DISCOVERY_V1` não é perfil operacional; integração admin de perfis/conexões incompleta; Target Policy ausente/inválida e chaves de criptografia ausentes na HML examinada; câmera em `CONFIGURATION_INCOMPLETE`; nenhuma captura real nem galeria validada. Permissão de captura de `qa-operacional-hom03` foi corrigida conforme evidência fornecida. Certificado HTTPS inválido da câmera pertence ao método HTTP Snapshot e não bloqueia RTSP convencional.
+No repositório `df582ade`, `CameraCaptureJob` e migrations 0020/0021 existem; `capture_service.py` e `run_capture_worker` também existem. O serviço/worker atual aceita somente `HTTP_SNAPSHOT`; o fluxo não executa `RTSP_FRAME`. O adapter GStreamer implementa diagnóstico A/B/C/D e detecção de recebimento, mas `receive_one_frame(session) -> bool` não entrega bytes de frame nem JPEG. Trata-se de lacuna de integração/capacidade, não ausência desses componentes-base. Estado HML sobre configuração, perfil, credenciais, chaves, Target Policy, permissão e câmera é reportado, não revalidado nesta atividade. Captura RTSP real e validação E4 com imagem real não foram evidenciadas. Certificado HTTPS do método HTTP Snapshot não é requisito do RTSP convencional.
 
 Pendências F02 (recovery de jobs QUEUED/RUNNING, DRAFT) e F03 (semântica `error_code`/`CANCELLED`, aberta) permanecem com os mesmos identificadores. Não habilitar worker recorrente até resolver formalmente recovery/idempotência, cancelamento/erro, claim/retry, configuração e segredos HML, autorização e observabilidade operacional.
 
@@ -23,7 +24,7 @@ Pendências F02 (recovery de jobs QUEUED/RUNNING, DRAFT) e F03 (semântica `erro
 
 Conectividade/diagnóstico RTSP mede etapas de rede, negociação e descrição de mídia. Receber um frame confirma entrega de mídia. Extrair amostra decodificada e codificar JPEG produz bytes persistíveis. Um job durável representa solicitação e estado; storage privado guarda o objeto; `CameraImageRecord` é o registro canônico; a galeria E4 lê e apresenta esse registro pelas regras de imagem aprovadas. Nenhuma etapa implica automaticamente a seguinte.
 
-A lacuna está entre CAM-INT-03 e E3: o protocolo atual `RtspAdapter.receive_one_frame(session) -> bool` confirma resultado, sem bytes de imagem; `GStreamerRtspAdapter` mantém o resultado de entrega em estado efêmero e o consome. O worker E3 precisa receber um artefato de frame limitado e validável, não o booleano diagnóstico. `probe()`/`describe()` não constituem captura persistente.
+A lacuna está entre CAM-INT-03 e o pipeline E3: `receive_one_frame(session) -> bool` reduz a evidência de frame a booleano efêmero. O job, serviço e worker existem, mas suportam somente HTTP Snapshot. P1 deve definir saída bounded de frame/JPEG em API separada; diagnóstico ou recebimento de frame não equivale a imagem persistível.
 
 ## 4. Componentes e reaproveitamento
 
@@ -32,14 +33,14 @@ A lacuna está entre CAM-INT-03 e E3: o protocolo atual `RtspAdapter.receive_one
 | `Camera` | Identidade e cadastro | Reusar; vínculo operacional/config ainda incompleto na HML |
 | `CameraCapabilityProfile` | Scheme, portas, auth e limites técnicos | Reusar; `RTSP_DISCOVERY_V1` não declara suporte de captura |
 | `CameraCapabilityEvidence` | Evidências de capacidade | Reusar; exigir evidência adequada para `SUPPORTED` |
-| `CameraConnectionConfig` | Endpoint/perfil por câmera | Reusar; ausência confirmada para RF0420 |
+| `CameraConnectionConfig` | Endpoint/perfil por câmera | Reusar; configuração operacional de RF0420 ausente no estado HML reportado. Decidir em C04 se o modelo atual comporta configuração independente de RTSP e HTTP Snapshot; schema/API não está adjudicado. |
 | `CameraCredential` / `CameraCredentialVersion` | Segredo cifrado e versões | Reusar via API pública CAM-INT-02; configuração de chave HML ausente |
-| `CameraCaptureJob` | Job durável | Contratado em IMG-CAP, não existe no checkout atual |
+| `CameraCaptureJob` | Job durável | Implementado; migrations 0020 e 0021 presentes. Schema não implica worker RTSP |
 | `CameraImageRecord` | Registro canônico de imagens | Reusar; não duplicar tabela/domínio |
 | `EventoAuditoria` | Auditoria de ação e resultado | Reusar; nunca registrar segredo, URI com userinfo ou bytes |
 | GStreamer RTSP adapter | Probe A–D, SDP/codec e detecção de entrega | Reusar base bounded; evoluir para obter amostra/bytes e encerrar pipeline |
-| `capture_service.py` | Orquestração/persistência de captura | Previsto em contrato, ausente no checkout |
-| `run_capture_worker` | Consumo separado de jobs | Comando de captura ainda ausente; não confundir com worker MON |
+| `capture_service.py` | Orquestração/persistência | Implementado para HTTP Snapshot; fluxo RTSP não integrado |
+| `run_capture_worker` | Consumo separado de jobs | Implementado; execução contínua em HML não estabelecida; RTSP não integrado |
 | E4 read/display/preview services | Leitura, seleção e entrega privada | Reusar sem alterar Quick Detail nem suas regras aprovadas |
 
 ## 5. Arquitetura-alvo
@@ -71,13 +72,26 @@ Conclusão operacional requer validação real autorizada do marco `RTSP → FRA
 
 ```text
 RTSP_PRIMARY_DECISION = RECORDED_FROM_EXPLICIT_USER_INPUT
-ROADMAP_SPRINTS_ALIGNMENT = VERIFIED / Roadmap §26 and Sprints §23; no implementation status promoted
+ROADMAP_SPRINTS_ALIGNMENT = VERIFIED / Roadmap §27 and Sprints §24; historical references remain in earlier snapshots; no implementation status promoted
 HML_CURRENT_STATE = RECONCILED_FROM_SUPPLIED_EVIDENCE_ONLY
 ROUND_1_IMPLEMENTATION_PLAN = READY / SEPARATE DOCUMENT
 CODE_CHANGES = NONE
 VM_CHANGES = NONE
 ROUND_1_EXECUTION = NOT_STARTED
 HUMAN_DOCUMENT_APPROVAL = PENDING
-REMOTE_BASE_VERIFIED = origin/codex/hom-v1-integration @ d44e4e6f5556cef8b9db00637c40fbd08259f2f3
-ORIGINAL_LOCAL_HEAD = 5c798bb37285d8cf7f42b9197dfc81057f472e09 / preserved with preexisting WIP
+HML_RELEASE = d44e4e6f5556cef8b9db00637c40fbd08259f2f3 / supplied operational report; not treated as Git HEAD
+PREVIOUS_PREFLIGHT_HEAD = 5c798bb37285d8cf7f42b9197dfc81057f472e09 / historical reference from prior checkout; not the current baseline
 ```
+
+## 9. Estado reconciliado por evidência
+
+    BASELINE = df582ade547358953cb1dee8113850ee5e186cb9
+    IMPLEMENTED_IN_REPOSITORY = CameraCaptureJob; migrations 0020/0021; capture_service.py; run_capture_worker; HTTP Snapshot capture/persistence; GStreamer diagnostics A/B/C/D and boolean frame receipt; CameraImageRecord and E4 gallery read/display
+    DEPLOYED_IN_HML = d44e4e6f / REPORTED, NOT INDEPENDENTLY VERIFIED HERE
+    VALIDATED_IN_HML = login/dashboard/inventory/navigation/static smoke REPORTED; RTSP capture and real-image E4 NOT VALIDATED
+    OPERATIONALLY_ACCEPTED = RTSP real capture and E4 with real image NOT ESTABLISHED
+    ROUND_1 = NOT_AUTHORIZED / NOT_STARTED
+    F02 = OPEN / preserve current identifier, scope, status
+    F03 = OPEN / preserve current identifier, scope, status
+
+CameraCaptureJob may represent HTTP_SNAPSHOT or RTSP_FRAME and 0021 constrains active jobs per camera; these model/schema capabilities do not imply service/worker support for RTSP. Source migration presence does not prove application to any database. HML data above is reported context, not a VM verification. No historical acceptance or status is rewritten.

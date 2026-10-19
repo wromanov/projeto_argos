@@ -1091,3 +1091,15 @@ acompanhamento informar `PROJECT_ID`, `ROADMAP_STAGE`, `ACTIVE_SLICE`,
 HML reportada em `d44e4e6f`; aplicação, PostgreSQL e migrations E3 ativos; smoke reportado PASS e backup/rollback preservados. Worker de captura contínuo não habilitado. Galeria E4 não homologada com imagem real. Hikvision RF0420 / DS-2CD2143G2-IS / Camera ID 4 sem configuração de conexão ou perfil RTSP operacional; credenciais/Target Policy pendentes. F02 (jobs órfãos) e F03 (códigos de erro) preservados. Não registrar segredos.
 
 A decisão é `RTSP_FRAME` primário, `RTSP` convencional, porta default 554, HTTP Snapshot secundário e independente, sem fallback silencioso; RTSPS e certificado HTTPS para RTSP não são requisitos. Publicar estas propostas não aprova amendments. Próxima atividade candidata `ARGOS-E3-RTSP-ROUND-1-P1`; iniciar somente após revisão humana do pacote/amendments e autorização explícita. Não alterar nesta atualização os status existentes IMG-04/IMG-06 ou o programa E0–E8.
+
+## 24. ARGOS-E3-HOME-RECONCILIATION-01 — P0 e gate P1 (2026-10-19)
+
+| Slice/gate | Estado reconciliado | Consequência |
+|---|---|---|
+| Baseline df582ade | CameraCaptureJob, migrations 0020/0021, serviço/worker HTTP e leitura E4 presentes; RTSP não integrado ao capture service | Corrige alegação de ausência sem promover status de IMG-04 |
+| C01–C06 | Matriz candidata de amendment; contratos atuais continuam canônicos até aceite | Não há promoção silenciosa; revisão humana necessária |
+| F02 / F03 | IDs, escopos e estados vigentes preservados | Nenhuma pendência é fechada ou reaberta |
+| P1 / Round 1 | Plano distingue testes com fakes de decode offline real H.264/H.265 por GStreamer; não iniciado e não autorizado | Requer aceite do pacote e autorização humana específica |
+| HML / imagem real | d44e4e6f reportado; captura RTSP e E4 com imagem real sem validação/aceite | Não declarar homologação operacional |
+
+A sequência E0–E8 e status históricos IMG-04/IMG-06 permanecem intactos e não são reordenados por esta reconciliação. P0 documental está pronta para aceite final; os amendments continuam pendentes de aceite formal. A implementação P1 depende de decisão e autorização próprias.

@@ -10,18 +10,15 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-PRE-HML-01 (2026-10-19): consultar
-`PROJECT_STATE.md` §166, `ACTIVE_DOCUMENT_MAP.md` §126 e
-`docs/projeto/ARGOS_PRE_HML_01_E3_E4_VM_DEPLOYMENT_RUNBOOK.md`. Preparação
-local para possível atualização manual da VM HML E3+E4; baseline
-`codex/hom-v1-integration` / `2f5109b0ba72ee5390eb4bcb02dcca4dfad74ff1`.
-Runbook separa fatos locais e hipóteses da VM, com plano READ_ONLY, backup,
-atualização, migrations, serviços, smoke, captura controlada, rollback e
-evidências. VM não acessada; sem deploy, migration, alteração persistente, câmera
-real, alteração funcional ou repetição de QA visual E4. Deploy, migration na VM
-e câmera real seguem NOT_AUTHORIZED. Preservar WIP local. A continuidade ocorrerá
-em outra estação; próximo gate `VM_READ_ONLY_INSPECTION`.
-
+RETOMADA ATUAL ARGOS-E3-HOME-RECONCILIATION-01 (2026-10-19): consultar
+PROJECT_STATE.md §168, ACTIVE_DOCUMENT_MAP.md §128 e
+docs/projeto/ARGOS_E3_HOME_RECONCILIATION_REPORT.md. Trabalho documental isolado
+em C:\Users\walac\desenvolvimento\projeto_argos_e3_p0_reconciliation, baseline
+df582ade547358953cb1dee8113850ee5e186cb9. Preservar o WIP no checkout
+C:\Users\walac\desenvolvimento\projeto_argos_hom_integration. d44e4e6f é o
+release HML reportado, não o HEAD documental. Amendments C01–C06 são propostas
+não canônicas. Sem alteração funcional, VM ou câmera real; P1 NOT_AUTHORIZED /
+NOT_STARTED. Revisão humana é o próximo gate.
 SNAPSHOT ANTERIOR ARGOS-E4-CHECKPOINT-COMMIT-PUSH (2026-10-18): consultar
 `PROJECT_STATE.md` §165 e `ACTIVE_DOCUMENT_MAP.md` §125. E2 está
 `CLOSED_WITH_EXCEPTIONS`; E3 segue `LOCAL_IMPLEMENTATION_VALIDATED`, sem
@@ -3814,9 +3811,9 @@ e aprovação, critérios de rollback, NO-GO e checklist de evidências. A publi
 documental é uma atividade de checkpoint separada. Status `PREPARATION_ONLY`;
 próxima execução em outra estação, gate `VM_READ_ONLY_INSPECTION`.
 
-### 20.123 ARGOS-E3-RTSP-HANDOFF-01 — transferência Trabalho → Casa (2026-10-19)
+### 20.124 ARGOS-E3-RTSP-HANDOFF-01 — transferência Trabalho → Casa (2026-10-19)
 
-Ler `PROJECT_STATE.md` §166, `ACTIVE_DOCUMENT_MAP.md` §126 e `docs/projeto/ARGOS_E3_RTSP_HOME_HANDOFF_CHECKPOINT.md`, além do plano de recuperação, plano P1 e propostas de amendments. O release HML publicado e a base remota deste checkpoint são `d44e4e6f5556cef8b9db00637c40fbd08259f2f3`; use o topo atual de `origin/codex/hom-v1-integration` para recuperar o commit de handoff. O checkout original de trabalho pode permanecer em `5c798bb` com WIP local não publicado.
+Ler PROJECT_STATE.md §167, ACTIVE_DOCUMENT_MAP.md §127 e ARGOS_E3_RTSP_HOME_HANDOFF_CHECKPOINT.md, mais o plano de recuperação, P1 e amendments. d44e4e6f é o release HML reportado; df582ade é o checkpoint documental desta recuperação. O checkout anterior 5c798bb é referência histórica e pode conter WIP não publicado.
 
 ```text
 ACTIVITY_ID = ARGOS-E3-RTSP-HANDOFF-01
@@ -3827,5 +3824,11 @@ ROUND_1_AUTHORIZED = NO
 ROUND_1_EXECUTION = NOT_STARTED
 F02 = OPEN / PRESERVED
 F03 = OPEN / PRESERVED
-PROJECT_STATE_UPDATE = PASS / §166
+PROJECT_STATE_UPDATE = PASS / §167
 ```
+
+### 20.125 ARGOS-E3-HOME-RECONCILIATION-01 — reconciliação documental (2026-10-19)
+
+Consultar PROJECT_STATE.md §168, ACTIVE_DOCUMENT_MAP.md §128 e o relatório docs/projeto/ARGOS_E3_HOME_RECONCILIATION_REPORT.md. Worktree P0 isolado: C:\Users\walac\desenvolvimento\projeto_argos_e3_p0_reconciliation, baseline df582ade547358953cb1dee8113850ee5e186cb9. O checkout projeto_argos_hom_integration e seus WIPs foram preservados. P0 documental pronta para aceite final; publicação e aceite formal dos amendments continuam pendentes.
+
+Job/migrations e serviço/worker HTTP estão no repositório; RTSP ainda não entrega bytes/JPEG nem é consumido pelo serviço de captura. C01–C06 foram tecnicamente revisados; amendments são candidatos não canônicos até aceite formal. Testes com fakes e decode GStreamer offline real por codec estão distinguidos no plano P1. P1 não autorizada. Estado técnico documental completo; decisão humana de aceite/publicação é o próximo gate. Não executar implementação, câmera real ou VM antes de autorização específica.

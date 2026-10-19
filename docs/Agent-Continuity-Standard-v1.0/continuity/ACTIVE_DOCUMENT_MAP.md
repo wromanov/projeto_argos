@@ -2735,7 +2735,7 @@ estão autorizados. GO apenas para inspeção READ_ONLY, cuja continuidade ocorr
 em outra estação; worker automático e captura real permanecem NO-GO até seus
 gates e evidências próprios.
 
-## 126. ARGOS-E3-RTSP-HANDOFF-01 — checkpoint documental (2026-10-19)
+## 127. ARGOS-E3-RTSP-HANDOFF-01 — checkpoint documental (2026-10-19)
 
 | Fonte | Papel | Estado |
 |---|---|---|
@@ -2743,6 +2743,19 @@ gates e evidências próprios.
 | `docs/projeto/ARGOS_E3_RTSP_ROUND_1_PLAN.md` | Escopo e aceite da P1 — RTSP Frame Extraction Foundation | READY_FOR_REVIEW / ROUND_1_NOT_AUTHORIZED |
 | `docs/projeto/ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md` | Propostas de ajuste de prioridade e supersession | PENDING_HUMAN_APPROVAL / NOT_CANONICAL |
 | `docs/projeto/ARGOS_E3_RTSP_HOME_HANDOFF_CHECKPOINT.md` | Recuperação entre estações e próximo gate | CURRENT HANDOFF |
-| `PROJECT_STATE.md`, §166; `AGENT_CONTINUITY.md`, §20.123 | Estado técnico e instruções de retomada | CURRENT |
+| `PROJECT_STATE.md`, §167; `AGENT_CONTINUITY.md`, §20.124 | Estado técnico e instruções de retomada | CURRENT |
 
-O release HML reportado `d44e4e6f` é o baseline remoto verificado nesta publicação. Captura RTSP real não homologada; galeria E4 não validada com imagem real; F02/F03 continuam abertos. Publicar os amendments não os aprova nem inicia P1.
+O release HML reportado d44e4e6f não é o HEAD documental df582ade. Captura RTSP real não homologada; galeria E4 sem imagem real; F02/F03 continuam abertos. Amendments não aprovados e P1 não autorizada.
+
+## 128. ARGOS-E3-HOME-RECONCILIATION-01 — reconciliação P0 (2026-10-19)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| PROJECT_STATE.md §168 | Snapshot, alterações e gates | CURRENT / P0 documental pronta para aceite final; PROJECT_STATE_UPDATE PASS |
+| AGENT_CONTINUITY.md §20.125 | Retomada e limites | CURRENT / conclusão técnica 100%; aceite/publicação pendentes; P1 não autorizada |
+| docs/projeto/ARGOS_E3_HOME_RECONCILIATION_REPORT.md | WIP e estados de evidência | PREPARED / nenhum WIP transportado |
+| docs/projeto/ARGOS_E3_RTSP_PRIMARY_RECOVERY_PLAN.md | Diagnóstico e baseline E3 | RECONCILED / revisão humana |
+| docs/projeto/ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md | Matriz C01–C06 | TECHNICALLY_REVIEWED / proposta não canônica; aceite formal pendente |
+| docs/projeto/ARGOS_E3_RTSP_ROUND_1_PLAN.md | Plano técnico P1 | PREPARED / runtime GStreamer e decode offline real por codec especificados; não iniciado |
+
+df582ade é o checkpoint documental; d44e4e6f é o release HML reportado. Captura RTSP real e aceite E4 com imagem real permanecem pendentes. P0_DOCUMENTATION = READY_FOR_FINAL_ACCEPTANCE; C01_C06 = TECHNICALLY_REVIEWED; CANONICAL_AMENDMENTS = PENDING_FORMAL_USER_ACCEPTANCE; WIP_PRESERVED = YES; ROUND_1_IMPLEMENTATION = NOT_STARTED; ACTIVITY_COMPLETION_PERCENT = 100%. Nenhuma implementação, migration, VM ou câmera ocorreu nesta atividade.

@@ -4,7 +4,7 @@
 **Data de elaboração:** 11/08/2026
 **Projeto:** ARGOS — Inventário, Governança e Monitoramento de Câmeras
 **Objetivo:** substituir a leitura operacional do roadmap histórico por um mapa aderente ao estado real do produto e às decisões atuais de arquitetura e operação.
-**Ponteiro operacional vigente:** consultar §24 e `SPRINTS_ARGOS_V5.md` §21; registros anteriores permanecem históricos quando assim identificados.
+**Ponteiro operacional vigente:** consultar §27 e SPRINTS_ARGOS_V5.md §24; registros anteriores permanecem históricos quando assim identificados.
 
 ---
 
@@ -1832,4 +1832,25 @@ lanes isoladas conforme seus contratos e autorizações próprias.
 
 A decisão explícita registrada é `RTSP_FRAME` primário, `HTTP_SNAPSHOT` secundário independente, sem fallback silencioso; o fluxo alvo é `RTSP → FRAME → JPEG → STORAGE → DATABASE → GALERIA E4`. Plano P1–P8, diagnóstico e limites estão em [`ARGOS_E3_RTSP_PRIMARY_RECOVERY_PLAN.md`](ARGOS_E3_RTSP_PRIMARY_RECOVERY_PLAN.md); P1 está detalhada em [`ARGOS_E3_RTSP_ROUND_1_PLAN.md`](ARGOS_E3_RTSP_ROUND_1_PLAN.md), e propostas pendentes em [`ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md`](ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md).
 
-O estado de implantação e próximo gate constam em `PROJECT_STATE.md` §166. Documentação preparada; revisão humana pendente; amendments não aprovados; P1 não autorizada nem iniciada. Nada nesta atualização promove status de IMG-04/IMG-06 ou altera a sequência E0–E8 de §25. Captura RTSP real e galeria E4 com imagem real continuam sem homologação.
+O estado de implantação e próximo gate constam em PROJECT_STATE.md §168. A conclusão técnica documental está em 100%; aceite formal dos amendments e decisão de publicação aguardam o usuário. P1 não autorizada nem iniciada. Nada nesta atualização promove status de IMG-04/IMG-06 ou altera a sequência E0–E8 de §25. Captura RTSP real e galeria E4 com imagem real continuam sem homologação.
+
+## 27. ARGOS-E3-HOME-RECONCILIATION-01 — baseline e gates documentais (2026-10-19)
+
+A revisão de df582ade confirma que CameraCaptureJob, migrations 0020/0021, capture_service.py e run_capture_worker existem no repositório. O serviço/worker executa HTTP Snapshot; RTSP não está integrado ao fluxo de captura. GStreamer já fornece diagnóstico A/B/C/D e detecção de frame, mas a interface retorna booleano sem bytes/JPEG. Não descrever os componentes-base como ausentes nem declarar captura RTSP implementada.
+
+d44e4e6f é o release HML reportado; esta atualização não acessou VM nem confirmou migrations aplicadas. Captura real e galeria E4 com imagem real não foram homologadas. Amendments de prioridade RTSP e extração JPEG seguem candidatos pendentes de aceite humano; não alteram retroativamente IMG-04/IMG-06 ou a sequência E0–E8.
+
+    IMPLEMENTED_IN_REPOSITORY = base job/migrations; HTTP capture service/worker; RTSP diagnostics; E4 read/display
+    DEPLOYED_IN_HML = d44e4e6f / REPORTED, NOT INDEPENDENTLY_VERIFIED
+    VALIDATED_IN_HML = web smoke REPORTED; RTSP capture NOT_VALIDATED
+    OPERATIONALLY_ACCEPTED = RTSP real capture NOT_ESTABLISHED
+    ROUND_1 = NOT_AUTHORIZED / NOT_STARTED
+    P0_DOCUMENTATION = READY_FOR_FINAL_ACCEPTANCE
+    C01_C06 = TECHNICALLY_REVIEWED
+    CANONICAL_AMENDMENTS = PENDING_FORMAL_USER_ACCEPTANCE
+    WIP_PRESERVED = YES
+    ROUND_1_IMPLEMENTATION = NOT_STARTED
+    ACTIVITY_COMPLETION_PERCENT = 100%
+    NEXT_GATE = HUMAN_ACCEPTANCE_AND_PUBLICATION_DECISION
+
+Detalhes técnicos e inventário WIP estão em ARGOS_E3_RTSP_PRIMARY_RECOVERY_PLAN.md e ARGOS_E3_HOME_RECONCILIATION_REPORT.md. Esta seção atualiza a leitura factual E3 sem autorizar implementação, migration, acesso à VM ou câmera real.
