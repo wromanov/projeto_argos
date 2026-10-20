@@ -1854,3 +1854,9 @@ d44e4e6f é o release HML reportado; esta atualização não acessou VM nem conf
     NEXT_GATE = HUMAN_ACCEPTANCE_AND_PUBLICATION_DECISION
 
 Detalhes técnicos e inventário WIP estão em ARGOS_E3_RTSP_PRIMARY_RECOVERY_PLAN.md e ARGOS_E3_HOME_RECONCILIATION_REPORT.md. Esta seção atualiza a leitura factual E3 sem autorizar implementação, migration, acesso à VM ou câmera real.
+
+## 28. ARGOS-E3-RTSP-CONTRACT-PROMOTION-01 — promoção documental C01–C06 (2026-10-19)
+
+`USER_AMENDMENT_APPROVAL = APPROVED / C01-C06`. A adjudicação operacional de preflight foi `PREFLIGHT_ADJUDICATION = CONTINUE_DOCUMENTATION_ONLY`; ela não foi uma decisão operacional atribuída ao usuário. A promoção está registrada localmente nos contratos IMG-CAP/BC-02 e CAM-INT-03: RTSP Frame quando elegível/configurado; HTTP Snapshot independente e explícito, sem fallback silencioso; diagnóstico A/B/C/D preservado e API complementar bounded para frame/JPEG. Ambos convergem no `CameraImageRecord` existente, storage privado, auditoria e leitura E4 protegida. A modelagem C04 continua pendente na P2, sem schema ou migration. C05 preserva credenciais protegidas e Target Policy; RTSP convencional não requer HTTPS/RTSPS. F02/F03 mantêm IDs, escopos e estados existentes.
+
+Esta é a promoção contratual local; a publicação remota depende do commit e push normal autorizados nesta atividade. P1 não autorizada/iniciada; sem alteração funcional, VM ou câmera real. Próximo gate após publicação: retomada em `ARGOS-E3-RTSP-ROUND-1-P1`, ainda `PLANNED / NOT_AUTHORIZED`.

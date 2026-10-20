@@ -1103,3 +1103,16 @@ A decisão é `RTSP_FRAME` primário, `RTSP` convencional, porta default 554, HT
 | HML / imagem real | d44e4e6f reportado; captura RTSP e E4 com imagem real sem validação/aceite | Não declarar homologação operacional |
 
 A sequência E0–E8 e status históricos IMG-04/IMG-06 permanecem intactos e não são reordenados por esta reconciliação. P0 documental está pronta para aceite final; os amendments continuam pendentes de aceite formal. A implementação P1 depende de decisão e autorização próprias.
+
+## 25. ARGOS-E3-RTSP-CONTRACT-PROMOTION-01 — estado C01–C06 (2026-10-19)
+
+| Amendment | Promoção/estado canônico | Efeito e limite |
+|---|---|---|
+| C01 | Promovido localmente em IMG-CAP/BC-02 | RTSP Frame primário quando elegível/configurado; HTTP Snapshot independente e seleção explícita; sem fallback silencioso |
+| C02 | Promovido localmente em CAM-INT-03 | Diagnósticos A/B/C/D preservados; API complementar de extração de frame/JPEG, distinta do booleano diagnóstico |
+| C03 | Promovido localmente em IMG-CAP | Reuso de `CameraImageRecord`, storage privado, auditoria e serviços E4/Quick Detail existentes |
+| C04 | Decisão pendente para P2 | Modelagem de configuração independente; sem antecipar cardinalidade, schema, API ou migration |
+| C05 | Promovido localmente em CAM-INT-03 | Segredos protegidos e Target Policy preservados; RTSP convencional `rtsp://`, default 554; HTTPS/RTSPS não requerido |
+| C06 | Preservado | F02/F03 mantêm IDs, escopos e estados; worker recorrente segue gated |
+
+`USER_AMENDMENT_APPROVAL = APPROVED / C01-C06`; separadamente, `PREFLIGHT_ADJUDICATION = CONTINUE_DOCUMENTATION_ONLY` identifica a orientação operacional do preflight, não uma decisão atribuída ao usuário. A promoção atual é local; `REMOTE_PUBLICATION = PENDING` até confirmar o commit e o push normal. Os registros preparatórios §§23–24 permanecem históricos; este §25 supersede somente o estado de aprovação/canonização dos amendments. `ROUND_1_IMPLEMENTATION = NOT_AUTHORIZED / NOT_STARTED`; nenhum status IMG-04/IMG-06 ou a sequência E0–E8 é alterado. Próxima atividade: `ARGOS-E3-RTSP-ROUND-1-P1`, `PLANNED / NOT_AUTHORIZED`.

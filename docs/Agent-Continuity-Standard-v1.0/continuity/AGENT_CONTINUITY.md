@@ -10,15 +10,20 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-E3-HOME-RECONCILIATION-01 (2026-10-19): consultar
-PROJECT_STATE.md §168, ACTIVE_DOCUMENT_MAP.md §128 e
-docs/projeto/ARGOS_E3_HOME_RECONCILIATION_REPORT.md. Trabalho documental isolado
-em C:\Users\walac\desenvolvimento\projeto_argos_e3_p0_reconciliation, baseline
-df582ade547358953cb1dee8113850ee5e186cb9. Preservar o WIP no checkout
-C:\Users\walac\desenvolvimento\projeto_argos_hom_integration. d44e4e6f é o
-release HML reportado, não o HEAD documental. Amendments C01–C06 são propostas
-não canônicas. Sem alteração funcional, VM ou câmera real; P1 NOT_AUTHORIZED /
-NOT_STARTED. Revisão humana é o próximo gate.
+RETOMADA ATUAL ARGOS-E3-RTSP-CONTRACT-PROMOTION-01 (2026-10-19): consultar
+PROJECT_STATE.md §169, ACTIVE_DOCUMENT_MAP.md §129 e
+docs/projeto/ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md. C01–C06 foram
+promovidos localmente nos contratos IMG-CAP/BC-02 e CAM-INT-03; confirmar o
+push do commit desta publicação antes de declarar publicação remota. Trabalho
+somente documental no worktree isolado
+C:\Users\walac\desenvolvimento\projeto_argos_e3_p0_reconciliation, baseline
+fe3c54f721257a7dd8dc9e5f45ce05f8cde7525f. O WIP doméstico foi auditado e
+preservado na P0; não foi reinspecionado nesta atividade por restrição de acesso,
+e não houve mutação do worktree original. C04 segue pendente para P2; F02/F03
+preservados. Próximo gate: publicação remota do checkpoint. P1 NOT_AUTHORIZED /
+NOT_STARTED. Aprovação de
+amendments C01–C06 é distinta da adjudicação operacional do preflight. Sem
+código, migration, VM ou câmera.
 SNAPSHOT ANTERIOR ARGOS-E4-CHECKPOINT-COMMIT-PUSH (2026-10-18): consultar
 `PROJECT_STATE.md` §165 e `ACTIVE_DOCUMENT_MAP.md` §125. E2 está
 `CLOSED_WITH_EXCEPTIONS`; E3 segue `LOCAL_IMPLEMENTATION_VALIDATED`, sem
@@ -3832,3 +3837,23 @@ PROJECT_STATE_UPDATE = PASS / §167
 Consultar PROJECT_STATE.md §168, ACTIVE_DOCUMENT_MAP.md §128 e o relatório docs/projeto/ARGOS_E3_HOME_RECONCILIATION_REPORT.md. Worktree P0 isolado: C:\Users\walac\desenvolvimento\projeto_argos_e3_p0_reconciliation, baseline df582ade547358953cb1dee8113850ee5e186cb9. O checkout projeto_argos_hom_integration e seus WIPs foram preservados. P0 documental pronta para aceite final; publicação e aceite formal dos amendments continuam pendentes.
 
 Job/migrations e serviço/worker HTTP estão no repositório; RTSP ainda não entrega bytes/JPEG nem é consumido pelo serviço de captura. C01–C06 foram tecnicamente revisados; amendments são candidatos não canônicos até aceite formal. Testes com fakes e decode GStreamer offline real por codec estão distinguidos no plano P1. P1 não autorizada. Estado técnico documental completo; decisão humana de aceite/publicação é o próximo gate. Não executar implementação, câmera real ou VM antes de autorização específica.
+### 20.126 ARGOS-E3-RTSP-CONTRACT-PROMOTION-01 — promoção documental (2026-10-19)
+
+Consultar `PROJECT_STATE.md` §169 e `ACTIVE_DOCUMENT_MAP.md` §129. C01–C06
+foram promovidos documentalmente: IMG-CAP/BC-02 seleciona RTSP Frame quando
+elegível/configurado, HTTP Snapshot permanece independente e explícito sem
+fallback silencioso; CAM-INT-03 preserva A/B/C/D e define API complementar de
+frame/JPEG. `CameraImageRecord`, storage privado, auditoria e consumidores E4
+permanecem preservados. C04 segue pendente na P2, sem migration; C05 preserva
+segredos e Target Policy, RTSP convencional sem requisito HTTPS/RTSPS; F02/F03
+mantêm IDs, escopos e estados.
+
+`ORIGINAL_WIP = PREVIOUSLY_AUDITED`; `ORIGINAL_WORKTREE_REINSPECTION = NOT
+PERFORMED / ACCESS_RESTRICTED`; `ORIGINAL_WORKTREE_MUTATION = NONE`. O relato
+de preservação deriva da auditoria documentada na P0, não de nova inspeção.
+Preflight PASS em `fe3c54f721257a7dd8dc9e5f45ce05f8cde7525f`; fetch confirmou
+a baseline remota. `USER_AMENDMENT_APPROVAL = APPROVED / C01-C06`;
+`PREFLIGHT_ADJUDICATION = CONTINUE_DOCUMENTATION_ONLY` foi a instrução
+operacional, não uma decisão atribuída ao usuário. Promoção local; commit/push
+normal autorizados e pendentes. Sem alteração funcional, migration, VM ou
+câmera real. P1 não autorizada/iniciada.

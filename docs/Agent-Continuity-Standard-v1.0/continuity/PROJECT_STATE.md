@@ -9354,3 +9354,31 @@ d44e4e6f é o release HML reportado; df582ade é a baseline/checkpoint documenta
 Amendments C01–C06 são candidatos não canônicos. F02/F03 mantêm IDs, escopos e estados. P1 documenta runtime Linux/Python/GStreamer, H.264/H.265, saída JPEG, timeouts, cancelamento, cleanup, compatibilidade e testes sintéticos; nada foi executado. O relatório WIP está em docs/projeto/ARGOS_E3_HOME_RECONCILIATION_REPORT.md. O worktree de homologação e seus WIPs foram preservados.
 
 A duplicidade histórica de §166 foi corrigida aditivamente: PRE-HML continua §166 e E3-HANDOFF passa a §167. O handoff distingue o checkout operacional com WIP do worktree isolado desta P0. A revisão humana é necessária antes de declarar P0 concluída ou considerar autorização P1.
+
+## 169. ARGOS-E3-RTSP-CONTRACT-PROMOTION-01 — adjudicação e promoção documental (2026-10-19)
+
+```text
+ACTIVITY_ID = ARGOS-E3-RTSP-CONTRACT-PROMOTION-01
+EXECUTION_MODE = DIRECT
+USER_AMENDMENT_APPROVAL = APPROVED / C01-C06
+PREFLIGHT_ADJUDICATION = CONTINUE_DOCUMENTATION_ONLY
+BASELINE = fe3c54f721257a7dd8dc9e5f45ce05f8cde7525f
+ISOLATED_WORKTREE = AUTHORIZED_DOCUMENTATION_SCOPE
+ORIGINAL_WIP = PREVIOUSLY_AUDITED
+ORIGINAL_WORKTREE_REINSPECTION = NOT_PERFORMED / ACCESS_RESTRICTED
+ORIGINAL_WORKTREE_MUTATION = NONE
+CANONICAL_CONTRACT_STATUS = C01-C06 PROMOTED LOCALLY / REMOTE PUBLICATION PENDING
+CODE_CHANGES = PROHIBITED / NONE
+MIGRATIONS = PROHIBITED / NONE
+VM_CHANGES = PROHIBITED / NONE
+CAMERA_REAL = PROHIBITED / NOT ACCESSED
+COMMIT = AUTHORIZED / PENDING
+PUSH = AUTHORIZED / PENDING
+ROUND_1_IMPLEMENTATION = NOT_AUTHORIZED / NOT_STARTED
+PROJECT_STATE_UPDATE = PASS / §169
+NEXT_GATE = CANONICAL_PUBLICATION_REVIEW
+```
+
+O preflight local confirmou raiz do worktree isolado, HEAD exatamente na baseline declarada, detached HEAD, árvore/staging sem alterações e presença dos contratos e documentos P0 necessários; o fetch confirmou que o remoto ainda estava na baseline. A aprovação formal do usuário é `USER_AMENDMENT_APPROVAL = APPROVED / C01-C06`. Separadamente, `PREFLIGHT_ADJUDICATION = CONTINUE_DOCUMENTATION_ONLY` foi a decisão operacional de execução, não atribuída ao usuário. Os contratos IMG-CAP/BC-02 e CAM-INT-03 foram promovidos localmente com supersession explícita; publicação remota ainda pendente. C01 prioriza RTSP Frame quando elegível/configurado; C02 preserva A/B/C/D e especifica API complementar de frame/JPEG; C03 mantém o domínio `CameraImageRecord`, armazenamento privado, auditoria e consumidores E4; C04 permanece decisão de modelagem pendente para P2, sem cardinalidade/schema/API/migration antecipados; C05 preserva credenciais protegidas e Target Policy, sem exigir HTTPS/RTSPS para RTSP convencional; C06 mantém F02/F03 sem alteração de ID, escopo ou estado.
+
+Roadmap §28 e Sprints §25 registram a promoção local. §§26–27 do Roadmap, §§23–24 de Sprints e §§167–168 deste estado permanecem como registros históricos; ficam supersedidos somente onde afirmavam que C01–C06 aguardavam aceite formal. O WIP doméstico continua preservado conforme auditoria registrada no relatório P0; nesta atividade não foi reinspecionado por restrição de acesso. Não se afirma nova verificação nem mutação do worktree original. Após o push, confirmar o SHA remoto antes de declarar publicação concluída. P1 permanece não autorizada.

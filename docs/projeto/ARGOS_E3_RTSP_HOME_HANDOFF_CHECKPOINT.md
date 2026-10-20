@@ -1,11 +1,18 @@
 # ARGOS E3 RTSP — checkpoint de transferência Trabalho → Casa
 
 ACTIVITY_ID = ARGOS-E3-RTSP-HANDOFF-01
-STATUS = DOCUMENTATION_PREPARED / HUMAN_CONTENT_REVIEW_PENDING
+STATUS = HISTORICAL / SUPERSEDED_BY ARGOS-E3-RTSP-CONTRACT-PROMOTION-01
+AMENDMENTS_C01_C06 = APPROVED / CANONICALLY_PROMOTED LOCALLY
+NEXT_GATE = CANONICAL_PUBLICATION_REVIEW
 REPOSITORY = https://github.com/wromanov/projeto_argos.git
 BRANCH = codex/hom-v1-integration
 DOCUMENTATION_CHECKPOINT = df582ade547358953cb1dee8113850ee5e186cb9
 HML_RELEASE = d44e4e6f5556cef8b9db00637c40fbd08259f2f3 (reportado; distinto do checkpoint documental)
+
+O conteúdo abaixo preserva o handoff antes da adjudicação e deve ser lido como
+registro histórico. Os estados de revisão/aprovação de amendments foram
+supersedidos por `PROJECT_STATE.md` §169, Roadmap §28 e Sprints §25; não usar
+suas instruções de retomada como gate atual.
 
 ## Estado confirmado/reportado
 

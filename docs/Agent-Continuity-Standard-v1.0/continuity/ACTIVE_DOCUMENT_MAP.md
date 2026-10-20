@@ -2759,3 +2759,15 @@ O release HML reportado d44e4e6f não é o HEAD documental df582ade. Captura RTS
 | docs/projeto/ARGOS_E3_RTSP_ROUND_1_PLAN.md | Plano técnico P1 | PREPARED / runtime GStreamer e decode offline real por codec especificados; não iniciado |
 
 df582ade é o checkpoint documental; d44e4e6f é o release HML reportado. Captura RTSP real e aceite E4 com imagem real permanecem pendentes. P0_DOCUMENTATION = READY_FOR_FINAL_ACCEPTANCE; C01_C06 = TECHNICALLY_REVIEWED; CANONICAL_AMENDMENTS = PENDING_FORMAL_USER_ACCEPTANCE; WIP_PRESERVED = YES; ROUND_1_IMPLEMENTATION = NOT_STARTED; ACTIVITY_COMPLETION_PERCENT = 100%. Nenhuma implementação, migration, VM ou câmera ocorreu nesta atividade.
+
+## 129. ARGOS-E3-RTSP-CONTRACT-PROMOTION-01 — promoção documental (2026-10-19)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §169 | Aprovação C01–C06, adjudicação operacional do preflight, baseline, restrições, WIP e próximo gate | CURRENT / PROJECT_STATE_UPDATE PASS |
+| `docs/projeto/contracts/backend/images/IMAGE_CAPTURE_INTEGRATION_CONTRACT.md` | C01/C03: seleção de fonte e pipeline de imagem | CANONICAL / RTSP primário; HTTP independente; domínio existente preservado |
+| `docs/projeto/contracts/backend/camera/CAM-INT-03_RTSP_CONNECTION_CONTRACT.md` | C02/C05: diagnóstico, extração complementar e segurança RTSP | CANONICAL / A-B-C-D preservado; frame/JPEG em API separada |
+| `docs/projeto/ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md` | Matriz e supersession C01–C06 | APPROVED / PROMOTED LOCALLY; remote publication pending; P1 não autorizada |
+| Roadmap §28 / Sprints §25 | Estado e limites da promoção | CURRENT / documentação somente |
+
+`USER_AMENDMENT_APPROVAL = APPROVED / C01-C06`; `PREFLIGHT_ADJUDICATION = CONTINUE_DOCUMENTATION_ONLY` foi instrução operacional e não decisão atribuída ao usuário. Preflight confirmado no worktree isolado em `fe3c54f721257a7dd8dc9e5f45ce05f8cde7525f`; fetch confirmou a mesma baseline remota. `ORIGINAL_WIP = PREVIOUSLY_AUDITED`; o worktree doméstico não foi reinspecionado por restrição de acesso nem modificado. F02/F03 e a modelagem C04 permanecem pendentes. Sem código, migration, VM ou câmera real. Commit/push normal autorizados e pendentes; P1 não autorizada.

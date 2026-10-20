@@ -1,8 +1,14 @@
 # ARGOS E3 — Plano de recuperação primária RTSP
 
+```text
+CONTRACT_PROMOTION = APPROVED / C01-C06 PROMOTED LOCALLY
+PROMOTION_ACTIVITY = ARGOS-E3-RTSP-CONTRACT-PROMOTION-01
+ROUND_1_IMPLEMENTATION = NOT_AUTHORIZED / NOT_STARTED
+```
+
 ACTIVITY_ID = ARGOS-E3-RTSP-DOC-01
 FOLLOW_ON_ACTIVITY_ID = ARGOS-E3-RTSP-ROUND-1-P1
-STATUS = DOCUMENTATION_ONLY / HUMAN_DOCUMENT_APPROVAL_PENDING
+STATUS = DOCUMENTATION_ONLY / C01-C06 PROMOTED; PUBLICATION_REVIEW_PENDING
 DOCUMENTATION_BASELINE = df582ade547358953cb1dee8113850ee5e186cb9 (HEAD documental publicado)
 HML_RELEASE = d44e4e6f5556cef8b9db00637c40fbd08259f2f3 (release HML reportada; distinta do HEAD Git)
 
@@ -10,7 +16,11 @@ HML_RELEASE = d44e4e6f5556cef8b9db00637c40fbd08259f2f3 (release HML reportada; d
 
 Por decisão explícita registrada no pedido desta atividade, `RTSP_FRAME` é o método principal e `HTTP_SNAPSHOT` é método secundário independente. RTSP convencional usa `rtsp://`, porta 554 por padrão (configurável sob policy), credencial já cadastrada, decodificação de vídeo e extração de um frame JPEG. RTSPS e certificado HTTPS não são requisitos para RTSP convencional. Não haverá fallback silencioso. Ambos os métodos convergem para validação, persistência privada, metadados, auditoria e galeria E4; o domínio existente de `CameraImageRecord` será reutilizado.
 
-Esta direção entra como decisão de produto/arquitetura fornecida pelo usuário, mas os conflitos com contratos canônicos vigentes ficam sujeitos ao amendment/supersession humano em `ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md`. Este documento não altera retroativamente contratos, não autoriza implementação, câmera real, VM, worker recorrente ou publicação.
+Esta direção foi promovida aos contratos canônicos somente na extensão dos
+amendments C01–C06 aprovados e registrados em
+`ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md`. Registros antigos permanecem
+históricos fora desse escopo. Este documento não autoriza implementação,
+câmera real, VM, worker recorrente, commit ou push.
 
 ## 2. Evidência e estado HML
 
@@ -60,7 +70,7 @@ Django web autentica/autoriza a ação explícita, valida elegibilidade e cria j
 | P7 — Homologação real | Autorização operacional específica para RF0420 e janela/rede aprovadas | `RTSP → FRAME → JPEG → CAMERA_IMAGE_RECORD → GALERIA E4` validado com imagem real |
 | P8 — Reconciliação e encerramento | Evidência, roadmap, contratos, estado e aceite humano | Estado HML reconciliado; nenhuma alegação acima da evidência; encerramento humano |
 
-Dependências globais: amendment dos contratos conflitantes; P1 antes de integrar frame; P2/P3 antes de sessão operacional; P4 antes da UI operacional; gates e autoridade separados para P7. Rodada 1 é somente P1 e não inicia neste documento.
+Dependências globais: amendments C01–C06 promovidos; P1 antes de integrar frame; P2/P3 antes de sessão operacional; P4 antes da UI operacional; gates e autoridade separados para P7. Rodada 1 é somente P1 e não inicia neste documento.
 
 ## 7. Compatibilidade
 
@@ -78,7 +88,7 @@ ROUND_1_IMPLEMENTATION_PLAN = READY / SEPARATE DOCUMENT
 CODE_CHANGES = NONE
 VM_CHANGES = NONE
 ROUND_1_EXECUTION = NOT_STARTED
-HUMAN_DOCUMENT_APPROVAL = PENDING
+HUMAN_DOCUMENT_APPROVAL = APPROVED_FOR_C01_C06 / PUBLICATION_REVIEW_PENDING
 HML_RELEASE = d44e4e6f5556cef8b9db00637c40fbd08259f2f3 / supplied operational report; not treated as Git HEAD
 PREVIOUS_PREFLIGHT_HEAD = 5c798bb37285d8cf7f42b9197dfc81057f472e09 / historical reference from prior checkout; not the current baseline
 ```

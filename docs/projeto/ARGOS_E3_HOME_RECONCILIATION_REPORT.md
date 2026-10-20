@@ -49,3 +49,24 @@ WIP_PRESERVED = YES
 ROUND_1_IMPLEMENTATION = NOT_STARTED
 ACTIVITY_COMPLETION_PERCENT = 100% / technical documentation complete; human acceptance and publication decision pending
 ```
+
+## Adjudicação posterior — promoção documental C01–C06 (2026-10-19)
+
+O estado acima é o registro histórico da P0 e foi supersedido apenas quanto à
+aprovação/canonização dos amendments. Na atividade
+`ARGOS-E3-RTSP-CONTRACT-PROMOTION-01`, a adjudicação operacional de preflight foi
+`CONTINUE_DOCUMENTATION_ONLY`; separadamente, o usuário aprovou formalmente
+`C01–C06`. Os amendments foram promovidos localmente em
+IMG-CAP/BC-02 e CAM-INT-03. Consulte PROJECT_STATE.md §169, Roadmap §28 e Sprints
+§25 para o estado corrente. A P0/WIP auditados não foram repetidos.
+
+```text
+ORIGINAL_WIP = PREVIOUSLY_AUDITED
+ORIGINAL_WORKTREE_REINSPECTION = NOT_PERFORMED / ACCESS_RESTRICTED
+ORIGINAL_WORKTREE_MUTATION = NONE
+WIP_PRESERVATION_EVIDENCE = P0 audit recorded above; no transfer/removal/copy/publication
+ROUND_1_IMPLEMENTATION = NOT_AUTHORIZED / NOT_STARTED
+COMMIT = AUTHORIZED / PENDING
+PUSH = AUTHORIZED / PENDING
+NEXT_GATE = CANONICAL_PUBLICATION_REVIEW
+```

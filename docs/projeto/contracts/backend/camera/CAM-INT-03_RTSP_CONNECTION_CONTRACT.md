@@ -21,6 +21,25 @@ O adapter receberá request tipado criado a partir de câmera elegível e perfil
 
 O adapter retorna apenas categoria fechada, timestamp UTC aware, duração monotônica não negativa e código de erro sanitizado, seguindo `ProbeRequest`/`ProbeResult`. Conteúdo de stream, headers e credenciais não são persistidos pelo contrato de monitoramento.
 
+### Captura RTSP Frame — amendment C02 aprovado
+
+O diagnóstico A/B/C/D e seus contratos de `probe`, `describe` e
+`receive_one_frame(session) -> bool` permanecem preservados. A/B/C/D continuam
+representando reachability, negociação, descrição de mídia e entrega de
+mídia; não são substituídos pela captura nem passam a persistir conteúdo.
+
+A captura possui API/port complementar, explicitamente distinta do resultado
+diagnóstico, para obter no máximo um frame decodificado e produzir JPEG
+validável. A saída bounded expõe apenas bytes da imagem e metadados seguros
+necessários (tipo de mídia, dimensões, codec de origem sanitizado e tempo
+observado); nunca URI, credencial, SDP, caminho local ou objeto GStreamer.
+Limites, deadline, cancelamento, validação e cleanup seguem o plano P1. Não
+alterar o retorno booleano existente sem inventariar callers e preservar sua
+compatibilidade. A captura usa `rtsp://`; RTSPS e certificado HTTPS não são
+requisitos para RTSP convencional. Esta seção supersede qualquer leitura de
+que a recepção booleana A/B/C/D seja a API de captura, conforme amendments
+C02 e C05 aprovados em `ARGOS-E3-RTSP-CONTRACT-PROMOTION-01`.
+
 ## Homologação requerida
 
 Validar modelos/firmwares reais, transporte e modo de autenticação, timeout de connect/read, encerramento de sessão, limite de bytes/frames, vazamento em erros/logs, impacto no equipamento e o que o sinal comprova. Falha de auth/configuração deve ser neutra para transição de disponibilidade. Não existe escolha de RTSP como mecanismo universal nem acesso de rede homologado neste baseline.

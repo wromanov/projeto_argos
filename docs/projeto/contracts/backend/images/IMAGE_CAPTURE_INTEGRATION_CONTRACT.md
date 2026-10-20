@@ -44,11 +44,19 @@ A chave é token aleatório de 16–128 caracteres seguros gerado pelo cliente
 da ação ou pelo servidor, validado antes de criar job; não contém PII.
 
 Seleção: preferência explícita aceita apenas entre capabilities SUPPORTED e
-permitidas; sem preferência, HTTP snapshot tem prioridade sobre RTSP frame.
-Se a fonte escolhida falha, não alternar silenciosamente para outra nem criar
-imagem. Worker de captura separado do monitoramento consome job com claim
-atômico, bounded concurrency/timeout e credencial resolvida no momento.
-HTTP usa CAM-INT-04; RTSP usa o frame validado de CAM-INT-03. Sem perfil/
+permitidas; sem preferência, selecionar `RTSP_FRAME` quando elegível e
+configurado. `HTTP_SNAPSHOT` é método secundário independente e sua seleção
+deve ser explícita quando RTSP não for escolhido. Falha, indisponibilidade ou
+inelegibilidade do método selecionado retorna resultado explícito; não alternar
+silenciosamente nem criar captura por outra fonte. Essa prioridade supersede
+esta regra anterior de prioridade HTTP por amendment C01 aprovado em
+`ARGOS-E3-RTSP-CONTRACT-PROMOTION-01`. Worker de captura separado do
+monitoramento consome job com claim atômico, bounded concurrency/timeout e
+credencial resolvida no momento.
+HTTP usa CAM-INT-04; RTSP usa a API complementar de extração de frame/JPEG de
+CAM-INT-03, separada dos diagnósticos A/B/C/D. Ambas as fontes convergem no
+mesmo fluxo de validação, persistência privada, auditoria e `CameraImageRecord`;
+E4 continua lendo esse registro pelos contratos e regras existentes. Sem perfil/
 credencial/egress ou adapter pronto, job falha com código seguro; não cria
 `CameraImageRecord` e não altera disponibilidade.
 
