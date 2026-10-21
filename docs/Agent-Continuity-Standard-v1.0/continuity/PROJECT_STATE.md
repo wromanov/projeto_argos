@@ -9529,3 +9529,77 @@ remoção controlada dos worktrees históricos com commits integrados na master,
 respeitando as classificações e evidências das auditorias C1/C2-A. Lote 2 não
 foi iniciado, nenhuma remoção adicional foi autorizada, e SQLite de worktrees
 antigos não deve ser presumido descartável por este registro.
+## 173. ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-02 — remoção controlada (2026-10-21)
+
+```text
+ACTIVITY_ID = ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-02
+EXECUTION_MODE = DIRECT
+WORKSTATION = HOME
+USER_AUTHORIZATION = EXPLICIT / ocho caminhos e artefatos de descarte delimitados
+STATUS = PHYSICAL_REMOVAL_COMPLETED / DOCUMENTATION_CLOSED
+TARGET_CHECKOUT = C:\Users\walac\desenvolvimento\projeto_argos
+MASTER_BRANCH_BEFORE = master
+MASTER_HEAD_BEFORE = 22d55c33e3313750bc40cd99bc74e551314ab3b1
+MASTER_HEAD_AFTER = 22d55c33e3313750bc40cd99bc74e551314ab3b1
+MASTER_UNCHANGED = YES
+REMOTE_MASTER_VERIFIED = YES / origin/master ao vivo em 22d55c33e3313750bc40cd99bc74e551314ab3b1 antes e depois
+PREFLIGHT_SQLITE_HISTORICAL_SIZE_DIVERGENCE = ACKNOWLEDGED / C3-A 532480 bytes; C3-B, Lote 1 e preflight Lote 2 610304 bytes; sem atribuir mutação durante Lote 2
+INITIAL_WORKTREE_COUNT = 23
+AUTHORIZED_REMOVAL_COUNT = 8
+ACTUAL_REMOVAL_COUNT = 8
+FINAL_WORKTREE_COUNT = 15
+REMOVAL_METHOD = git worktree remove / sequencial / sem --force
+ZERO_BYTE_SQLITE_REMOVED_COUNT = 7 / somente os db.sqlite3 regulares de 0 bytes autorizados
+CACHE_ARTIFACTS_REMOVED = 763 / 758 arquivos .pyc + 5 itens internos .pytest_cache
+REMOVED_WORKTREES =
+  C:\Users\walac\desenvolvimento\projeto_argos_bc_02_integration / codex/bc-02-integration @ ccc0267527da7cac0a139a68c11982100f627147
+  C:\Users\walac\desenvolvimento\projeto_argos_bc_auth / codex/bc-auth-implementation @ 55651d22a97e19fa342320b15a4f5276beadcf4a
+  C:\Users\walac\desenvolvimento\projeto_argos_cam_health / codex/cam-health-implementation @ 6ef2f7035dae858282eeae76ff5fefff160443bd
+  C:\Users\walac\desenvolvimento\projeto_argos_cam_int_01 / codex/cam-int-01-capability-catalog @ 75cdf708b07a61b26cfd40181f163fcb44526083
+  C:\Users\walac\desenvolvimento\projeto_argos_cam_int_02 / codex/cam-int-02-camera-credentials @ e4a216722911b8434c68ceb882f6f4cf8e4c8ecc
+  C:\Users\walac\desenvolvimento\projeto_argos_cam_int_03 / codex/cam-int-03-implementation @ c031ea40233129408fdb9f19c44ce89c6566a972
+  C:\Users\walac\desenvolvimento\projeto_argos_cam_int_06 / codex/cam-int-06-implementation @ 07c811401c7724f779fcbec85b393eab8cf0f94b
+  C:\Users\walac\desenvolvimento\projeto_argos_mon_obs / codex/mon-obs-observability @ 6fc4f708778210c617cf4b5bca6cca441bdb0705
+FAILED_OR_BLOCKED_WORKTREES = NONE
+HISTORICAL_BRANCHES_PRESERVED = YES / oito refs locais confirmadas após cada remoção
+OTHER_WORKTREES_PRESERVED = YES / comparação exata do inventário inicial menos os oito caminhos; 15 restantes
+ACTIVE_PROCESS_MATCHES = NONE / consultas de processo por caminho/comando/executável
+REPARSE_POINTS_OR_JUNCTIONS = NONE nos alvos e ancestrais
+NESTED_REPOSITORIES_OR_SUBMODULES = NONE
+MAIN_SQLITE_PATH = C:\Users\walac\desenvolvimento\projeto_argos\db.sqlite3
+MAIN_SQLITE_SIZE_BEFORE = 610304 bytes
+MAIN_SQLITE_SIZE_AFTER = 610304 bytes
+MAIN_SQLITE_SHA256 = 52BA8968E727267CD4503A4485C85001C1735CD4F5599458C5AAFE2667DC4696
+MAIN_SQLITE_HASH_UNCHANGED = YES
+MAIN_SQLITE_MUTATION = NONE
+ZIP_PRESERVED = YES / 160715 bytes; SHA-256 inalterado
+CODE_CHANGES = NONE
+DATABASE_CHANGES_OUTSIDE_AUTHORIZED_SCOPE = NONE
+VM_CHANGES = NONE
+BRANCHES_CREATED_OR_DELETED = NONE
+WORKTREES_CREATED = NONE
+FORCE_OPERATIONS = NONE
+COMMIT_OR_PUSH = NONE
+PROJECT_STATE_UPDATE = PASS / §173
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES / remoção física e documentação deste lote concluídas
+C3C_GLOBAL_CLEANUP = IN_PROGRESS
+NEXT_GATE = C3C_BATCH_02_REVIEW
+```
+
+A adjudicação do preflight reconheceu a diferença histórica de tamanho do banco
+principal, sem atribuí-la a esta execução. O hash, tamanho e tipo regular do
+arquivo principal foram registrados antes da remoção e comparados depois; não
+houve consulta ao conteúdo SQLite. A master e o remoto ao vivo permaneceram no
+SHA esperado.
+
+Cada worktree foi revalidado imediatamente antes da remoção: caminho, branch,
+HEAD, ancestry, status limpo, lista de ignorados permitida, banco vazio regular
+quando aplicável, ausência de reparse points, repositórios aninhados,
+submódulos e processos identificados. O mecanismo Git sem força removeu cada
+worktree e manteve sua branch histórica. A comparação final confirmou exatamente
+15 worktrees, sem outros removidos. Nenhuma imagem privada, screenshot,
+configuração, código, migration ou banco fora do escopo foi removido.
+
+A conclusão é exclusiva do Lote 2. Não autoriza nem inicia o Lote 3; qualquer
+nova limpeza exige sua própria delimitação e autorização humana.

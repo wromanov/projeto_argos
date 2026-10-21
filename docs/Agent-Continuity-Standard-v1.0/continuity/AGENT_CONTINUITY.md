@@ -10,7 +10,7 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-01-CLOSURE (2026-10-21): consultar PROJECT_STATE.md §172 e ACTIVE_DOCUMENT_MAP.md §131. A checkout canônica está em master @ 8519c43bc0d0c0d59883db314140b5670bcaadf3; a ref local origin/master coincide. O Lote 1 da C3-C está fechado documentalmente após a remoção reportada de projeto_argos_cam_int_07 e projeto_argos_style_lab, de 25 para 23 worktrees. Esta atividade não repetiu remoções; ZIP e SQLite permanecem presentes e seus conteúdos não foram abertos. C3-C integral continua em andamento; Lote 2 não iniciado. Sem código, banco, VM, branches, worktrees, commit ou push alterados. P1 RTSP não autorizada. Próximo gate: C3C_BATCH_02_PLANNING_AND_AUTHORIZATION.
+RETOMADA ATUAL ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-02 (2026-10-21): consultar PROJECT_STATE.md §173 e ACTIVE_DOCUMENT_MAP.md §132. A checkout canônica está em master @ 22d55c33e3313750bc40cd99bc74e551314ab3b1, igual a origin/master consultada ao vivo. O Lote 2 removeu os oito worktrees autorizados com git worktree remove sem força, reduzindo o inventário de 23 para 15; as oito branches históricas permanecem. Sete SQLite locais de zero bytes e somente caches .pyc/pytest autorizados foram descartados. O SQLite principal permaneceu em 610304 bytes com SHA-256 inalterado; ZIP preservado. Sem mudanças de código, VM, branches, commit ou push. Lote 2 fechado; não iniciar Lote 3. Próximo gate: C3C_BATCH_02_REVIEW.
 
 SNAPSHOT ANTERIOR ARGOS-E4-CHECKPOINT-COMMIT-PUSH (2026-10-18): consultar
 `PROJECT_STATE.md` §165 e `ACTIVE_DOCUMENT_MAP.md` §125. E2 está
@@ -3868,3 +3868,26 @@ CODE_CHANGES = NONE
 DATABASE_CHANGES = NONE
 VM_CHANGES = NONE
 COMMIT_OR_PUSH = NONE
+
+### 20.128 ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-02 (2026-10-21)
+
+Consultar PROJECT_STATE.md §173 e ACTIVE_DOCUMENT_MAP.md §132. O preflight foi
+retomado após adjudicação da divergência histórica do SQLite principal. Master e
+origin/master ao vivo estavam em `22d55c33e3313750bc40cd99bc74e551314ab3b1`; o
+inventário inicial tinha 23 worktrees. Os oito caminhos autorizados foram
+removidos sequencialmente com `git worktree remove`, sem força; o inventário
+final contém 15 e as oito branches históricas permanecem. Foram descartados
+somente sete `db.sqlite3` regulares de 0 bytes e os caches `.pyc`/pytest
+identificados. O banco principal permaneceu em 610304 bytes e SHA-256
+`52BA8968E727267CD4503A4485C85001C1735CD4F5599458C5AAFE2667DC4696`; ZIP,
+master e outros worktrees foram preservados. Sem código, VM, commit ou push.
+
+```text
+C3C_BATCH_02_STATUS = PHYSICAL_REMOVAL_COMPLETED / DOCUMENTATION_CLOSED
+C3C_GLOBAL_CLEANUP = IN_PROGRESS
+PROJECT_STATE_UPDATE = PASS / §173
+ACTIVITY_COMPLETION_PERCENT = 100%
+NEXT_GATE = C3C_BATCH_02_REVIEW
+```
+
+Não iniciar Lote 3 sem autorização própria.

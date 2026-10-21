@@ -2809,3 +2809,20 @@ nenhuma remoção foi repetida. A conclusão aplica-se exclusivamente ao
 C3C-BATCH-01. O C3C-BATCH-02 exige planejamento e autorização próprios,
 incluindo classificação individual e preservação de dados SQLite de worktrees
 históricos.
+## 132. ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-02 (2026-10-21)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| `PROJECT_STATE.md` §173 | Registro operacional e documental do Lote 2 | CURRENT / oito worktrees removidos sem força; 23 → 15; branches históricas preservadas |
+| `AGENT_CONTINUITY.md` §20.128 | Retomada, limites e próximo gate | CURRENT / Lote 2 fechado; Lote 3 não iniciado |
+| Checkout operacional `projeto_argos` | Baseline canônica | `master` @ `22d55c33e3313750bc40cd99bc74e551314ab3b1`; `origin/master` confirmado ao vivo no mesmo SHA |
+| `db.sqlite3` principal | Banco local protegido | PRESERVED / 610304 bytes; SHA-256 igual antes/depois; conteúdo não consultado |
+| `docs/Agent-Continuity-Standard-v1.0.zip` | Artefato local preservado | PRESERVED / 160715 bytes; hash igual antes/depois |
+| Worktrees restantes | Inventário Git | 15 registrados; comparação confirma que apenas os oito autorizados foram removidos |
+
+C3C-BATCH-02 completou a remoção física e o registro documental deste lote. A
+adjudicação reconheceu a diferença histórica do tamanho do SQLite entre C3-A e
+C3-B; o tamanho de 610304 bytes foi estável durante esta execução. O SHA-256 foi
+registrado e permaneceu inalterado. Nenhum outro worktree, branch, banco com
+dados, imagem, screenshot, configuração, código, migration ou VM foi alterado.
+Não houve commit ou push. Lote 3 permanece fora do escopo e não foi iniciado.
