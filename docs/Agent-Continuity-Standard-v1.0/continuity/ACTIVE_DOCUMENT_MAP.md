@@ -11,9 +11,9 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; E4 IMG-06 published and approved in §165 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff §20.122 (E4 checkpoint published) |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest ARGOS pointer §125 (E4 published); contracts preserved |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; reconciliação documental final §171; C3-B preservada em §170 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff C3 reconciliation / PROJECT_STATE §171 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest reconciliation §130 / PROJECT_STATE §171; prior pointers retained historically |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
 ## 2. Authorities canônicas do projeto
@@ -2771,3 +2771,24 @@ df582ade é o checkpoint documental; d44e4e6f é o release HML reportado. Captur
 | Roadmap §28 / Sprints §25 | Estado e limites da promoção | CURRENT / documentação somente |
 
 `USER_AMENDMENT_APPROVAL = APPROVED / C01-C06`; `PREFLIGHT_ADJUDICATION = CONTINUE_DOCUMENTATION_ONLY` foi instrução operacional e não decisão atribuída ao usuário. Preflight confirmado no worktree isolado em `fe3c54f721257a7dd8dc9e5f45ce05f8cde7525f`; fetch confirmou a mesma baseline remota. `ORIGINAL_WIP = PREVIOUSLY_AUDITED`; o worktree doméstico não foi reinspecionado por restrição de acesso nem modificado. F02/F03 e a modelagem C04 permanecem pendentes. Sem código, migration, VM ou câmera real. Commit/push normal autorizados e pendentes; P1 não autorizada.
+
+
+## 130. ARGOS-DEV-WORKSPACE-C3-DOC-RECONCILIATION-01 — reconciliação final na master (2026-10-20)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| PROJECT_STATE.md §171 | Registro canônico que resolve a colisão entre a numeração de origem e o registro C3-B local | CURRENT / C1, C2-A, C3-A e C3-B preservadas; publicação aguarda aprovação humana |
+| PROJECT_STATE.md §170 | Fechamento operacional C3-B, resultados locais e limites | PRESERVED / incluindo 296 testes direcionados; não reexecutados nesta reconciliação |
+| docs/projeto/ARGOS_DEV_WORKSPACE_CONSOLIDATION_REPORT_20261020.md | Inventário geral e plano | INCORPORATED / proveniência preservada |
+| docs/projeto/ARGOS_DEV_WORKSPACE_CONSOLIDATION_C1_REPORT_20261020.md | Adjudicação e preservação C1 | INCORPORATED / C1 concluída no escopo de análise |
+| docs/projeto/ARGOS_DEV_WORKSPACE_CONSOLIDATION_C2A_REPORT_20261020.md | Reconciliação P5/Design System | INCORPORATED / implementação permanece não autorizada |
+| docs/projeto/ARGOS_DEV_WORKSPACE_CONSOLIDATION_C3A_REPORT_20261020.md | Fechamento documental e preparação C3-A | INCORPORATED / C3-A preservada |
+| AGENT_CONTINUITY.md | Handoff corrente | CURRENT / aprovação humana de publicação é o próximo gate |
+
+Na origem, os relatórios referiam-se a PROJECT_STATE §§170–173 e
+ACTIVE_DOCUMENT_MAP §§130–133. A master já continha C3-B em PROJECT_STATE §170;
+por isso, os relatórios preservam sua numeração de origem como proveniência e
+esta entrada aponta para o registro posterior canônico §171, sem duplicar ou
+renumerar a história. O ZIP e os dados locais continuam preservados; não houve
+alteração funcional, exclusão, remoção de worktrees, limpeza C3-C, publicação
+DS 2.4, implementação RTSP Frame ou revalidação da VM HML.

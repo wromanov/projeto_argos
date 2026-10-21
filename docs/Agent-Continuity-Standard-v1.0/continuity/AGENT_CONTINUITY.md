@@ -10,20 +10,8 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-E3-RTSP-CONTRACT-PROMOTION-01 (2026-10-19): consultar
-PROJECT_STATE.md §169, ACTIVE_DOCUMENT_MAP.md §129 e
-docs/projeto/ARGOS_E3_RTSP_PRIMARY_RECOVERY_AMENDMENTS.md. C01–C06 foram
-promovidos localmente nos contratos IMG-CAP/BC-02 e CAM-INT-03; confirmar o
-push do commit desta publicação antes de declarar publicação remota. Trabalho
-somente documental no worktree isolado
-C:\Users\walac\desenvolvimento\projeto_argos_e3_p0_reconciliation, baseline
-fe3c54f721257a7dd8dc9e5f45ce05f8cde7525f. O WIP doméstico foi auditado e
-preservado na P0; não foi reinspecionado nesta atividade por restrição de acesso,
-e não houve mutação do worktree original. C04 segue pendente para P2; F02/F03
-preservados. Próximo gate: publicação remota do checkpoint. P1 NOT_AUTHORIZED /
-NOT_STARTED. Aprovação de
-amendments C01–C06 é distinta da adjudicação operacional do preflight. Sem
-código, migration, VM ou câmera.
+RETOMADA ATUAL ARGOS-DEV-WORKSPACE-C3-DOC-RECONCILIATION-01 (2026-10-20): consultar PROJECT_STATE.md §171 e ACTIVE_DOCUMENT_MAP.md §130. A master e origin/master estão em ddd8f163992fc3cfda25a37d65199e25c249ee72. C1, C2-A, C3-A e C3-B estão preservadas; quatro relatórios foram incorporados. O registro C3-B permanece em PROJECT_STATE.md §170, incluindo o resultado histórico de 296 testes. ZIP, SQLite e demais WIPs/dados locais foram preservados. C3-C não iniciada; P1 RTSP não autorizada; sem código, exclusões, commit ou push. Próximo gate: HUMAN_DOCUMENTATION_PUBLICATION_APPROVAL.
+
 SNAPSHOT ANTERIOR ARGOS-E4-CHECKPOINT-COMMIT-PUSH (2026-10-18): consultar
 `PROJECT_STATE.md` §165 e `ACTIVE_DOCUMENT_MAP.md` §125. E2 está
 `CLOSED_WITH_EXCEPTIONS`; E3 segue `LOCAL_IMPLEMENTATION_VALIDATED`, sem

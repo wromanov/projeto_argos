@@ -1,11 +1,7 @@
 # ARGOS — Project State
 
-Retomada atual: ARGOS-E3-HOME-RECONCILIATION-01, §168. A atividade preparou
-reconciliação exclusivamente documental no worktree isolado derivado de
-df582ade. Captura RTSP real não foi feita; job/migrations e fluxo HTTP já existem,
-mas serviço/worker não executam RTSP. d44e4e6f é o release HML reportado, sem
-verificação nesta atividade. Amendments aguardam aceite humano; P1 não
-autorizada nem iniciada. WIP doméstico preservado.
+Retomada atual: ARGOS-DEV-WORKSPACE-C3-DOC-RECONCILIATION-01, reconciliação final §171 (2026-10-20). master e origin/master permanecem em ddd8f163992fc3cfda25a37d65199e25c249ee72. C1 e C2-A estão concluídas; C3-A e C3-B estão fechadas. Os quatro relatórios foram incorporados e os registros C3-B locais preservados. SQLite, ZIP e demais WIPs/dados locais permanecem retidos. C3-C não iniciada; P1 RTSP não autorizada. Sem alteração funcional, exclusão, commit ou push.
+
 Snapshot histórico HOM (substituído para retomada pelo fechamento E2 da §153): §§113–116 — HOM-01 encerrada, HOM-02 implementada e ambiente QA local preparado para aceitação humana. HOM-01 está `CLOSED`; a regressão global registrada em §112 passou (948 testes em 600.522s; Django system check PASS). HOM-02 implementa template, prévia, confirmação atômica, validação cadastral e auditoria; validação direcionada, regressão de integração e carga sintética de 2.300 registros passaram. Os aceites e limitações em §§99, 101, 108 e 109 foram preservados, incluindo Camera Detail `CLOSED_WITH_LIMITATIONS`. Seções anteriores permanecem como histórico.
 
 Snapshot histórico de continuidade ARGOS (não é o estado corrente IMG-07/E2): consulte §113 para o encerramento formal da HOM-01,
@@ -9382,3 +9378,97 @@ NEXT_GATE = CANONICAL_PUBLICATION_REVIEW
 O preflight local confirmou raiz do worktree isolado, HEAD exatamente na baseline declarada, detached HEAD, árvore/staging sem alterações e presença dos contratos e documentos P0 necessários; o fetch confirmou que o remoto ainda estava na baseline. A aprovação formal do usuário é `USER_AMENDMENT_APPROVAL = APPROVED / C01-C06`. Separadamente, `PREFLIGHT_ADJUDICATION = CONTINUE_DOCUMENTATION_ONLY` foi a decisão operacional de execução, não atribuída ao usuário. Os contratos IMG-CAP/BC-02 e CAM-INT-03 foram promovidos localmente com supersession explícita; publicação remota ainda pendente. C01 prioriza RTSP Frame quando elegível/configurado; C02 preserva A/B/C/D e especifica API complementar de frame/JPEG; C03 mantém o domínio `CameraImageRecord`, armazenamento privado, auditoria e consumidores E4; C04 permanece decisão de modelagem pendente para P2, sem cardinalidade/schema/API/migration antecipados; C05 preserva credenciais protegidas e Target Policy, sem exigir HTTPS/RTSPS para RTSP convencional; C06 mantém F02/F03 sem alteração de ID, escopo ou estado.
 
 Roadmap §28 e Sprints §25 registram a promoção local. §§26–27 do Roadmap, §§23–24 de Sprints e §§167–168 deste estado permanecem como registros históricos; ficam supersedidos somente onde afirmavam que C01–C06 aguardavam aceite formal. O WIP doméstico continua preservado conforme auditoria registrada no relatório P0; nesta atividade não foi reinspecionado por restrição de acesso. Não se afirma nova verificação nem mutação do worktree original. Após o push, confirmar o SHA remoto antes de declarar publicação concluída. P1 permanece não autorizada.
+
+## 170. ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3B — migração operacional para master (2026-10-20)
+
+```text
+ACTIVITY_ID = ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3B
+EXECUTION_MODE = DIRECT
+AUTHORIZATION = C3B_APPROVED_WITH_SAFETY_GATES
+CANONICAL_FOLDER = C:\Users\walac\desenvolvimento\projeto_argos
+CURRENT_BRANCH = master
+CURRENT_HEAD = ddd8f163992fc3cfda25a37d65199e25c249ee72
+REMOTE_MASTER_VERIFIED = YES / origin/master = CURRENT_HEAD
+MASTER_EQUALS_ORIGIN = YES
+UI_WIP_COMMITS_PRESERVED = YES / 2 exclusive commits; local and remote refs at fea031d6e3ca5d55a4cebc16ffb9d3f0f236a573
+ZIP_PRESERVED = YES / 160715 bytes / SHA256 F36522DE65C9C3603A7621B2D6E74CDB9772F35AF7D4D2AAAFE3D77270FC5EFF
+SQLITE_TEST_DATABASE = C:\Users\walac\desenvolvimento\projeto_argos\db.sqlite3 / local development config confirmed / existing file preserved / exclusive-open check passed
+DJANGO_CHECK = PASS
+MIGRATIONS = PASS / cameras.0018 through cameras.0021 applied; no pending migrations
+DEPENDENCIES = PASS / pip check clean; Python 3.14.7; Django 5.2.16
+TARGETED_TESTS = PASS / 296 tests / 264.126 seconds
+LOOPBACK_SMOKE = PASS / anonymous GET /login/ returned HTTP 200; server stopped
+CODE_CHANGES = NONE
+FILES_DELETED = NONE
+OTHER_WORKTREES = PRESERVED / C3A documentary WIP and HOM integration WIP unchanged
+COMMIT_OR_PUSH = NONE
+PROJECT_STATE_UPDATE = PASS / §170
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES / C3B acceptance gates satisfied
+CANONICAL_FOLDER_READINESS = READY_FOR_LOCAL_DEVELOPMENT; HML/production and real-camera runtime remain unvalidated
+FUNCTIONAL_VALIDATION = CODE_PRESENT and TARGETED_TESTS_PASSED; login route smoke-tested; full feature runtime and real-camera capture NOT_YET_VALIDATED
+NEXT_GATE = C3B_REVIEW_AND_C3C_CLEANUP_PLANNING
+```
+
+O preflight confirmou a raiz Git canônica, ausência de alterações rastreadas locais, ZIP não rastreado intacto, nenhum arquivo não rastreado/ignorado em colisão com master e abertura exclusiva do SQLite. `git fetch origin` confirmou a baseline exigida; `git switch master` foi concluído sem força ou descarte. O banco local não foi recriado nem apagado; somente as migrations pendentes foram aplicadas após confirmar o destino efetivo `config.settings` e a identidade do arquivo sob a pasta canônica. Os testes direcionados cobriram autenticação/permissões, dashboard/inventário, Quick Detail, diagnóstico, HTTP Snapshot, captura E3, galeria E4 e monitoramento; foram executados sem câmera real ou VM. O smoke test foi restrito a loopback e não usou credenciais.
+
+Os sete documentos preparados na C3-A permanecem no worktree `projeto_argos_e3_p0_reconciliation`, sem sobrescrita ou publicação. O worktree HOM também permanece inalterado. Não houve alteração funcional, exclusão, commit, push, conexão à VM ou validação de RTSP Frame. Recomendar revisão reconciliada dos documentos C3-A na master antes de qualquer publicação; planejar C3-C separadamente, sem iniciar remoções de worktrees nesta atividade.
+
+
+## 171. ARGOS-DEV-WORKSPACE-CONSOLIDATION-01 — reconciliação documental final na master (2026-10-20)
+
+ACTIVITY_ID = ARGOS-DEV-WORKSPACE-C3-DOC-RECONCILIATION-01
+EXECUTION_MODE = DIRECT
+SCOPE = DOCUMENTATION_ONLY
+BRANCH = master
+BASELINE_HEAD = ddd8f163992fc3cfda25a37d65199e25c249ee72
+ORIGIN_MASTER_AFTER_FETCH = ddd8f163992fc3cfda25a37d65199e25c249ee72
+MASTER_BRANCH_VERIFIED = PASS
+SOURCE_WORKTREE = projeto_argos_e3_p0_reconciliation / unchanged
+C1_RECORD = PRESERVED / completed; detailed report incorporated
+C2A_RECORD = PRESERVED / completed; implementation not authorized
+C3A_RECORD = PRESERVED / documentary closure and preparation; detailed report incorporated
+C3B_RECORD = PRESERVED / existing PROJECT_STATE.md §170 unchanged
+SOURCE_SECTION_NUMBERING = §§170–173 retained as provenance in source reports; not transplanted over master §170
+TARGET_DOCUMENT_SET = 7 authorized paths / 4 reports added + 3 continuity documents reconciled
+C3C = NOT_STARTED / cleanup planning remains the next separate gate
+TEST_RESULT = 296 targeted tests PASS / historical C3B evidence; not rerun
+LOCAL_DATA_PRESERVATION = PASS / SQLite, ZIP and non-documentary WIP retained; contents not opened, copied or removed
+DS_2_4 = NOT_PUBLISHED
+RTSP_FRAME = NOT_IMPLEMENTED
+HML_VM_REVALIDATION = NOT_PERFORMED
+OLD_WORKTREES_REMOVED = NO
+C3C_CLEANUP = NOT_COMPLETED
+CODE_CHANGES = NONE
+FILES_DELETED = NONE
+WORKTREES_CREATED = NONE
+BRANCHES_CREATED = NONE
+COMMIT_OR_PUSH = NONE
+PROJECT_STATE_UPDATE = PASS / §171
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES / documentation prepared for human publication approval
+NEXT_GATE = HUMAN_DOCUMENTATION_PUBLICATION_APPROVAL
+
+A numeração dos registros produzidos no worktree documental de origem colide com
+a numeração local da C3-B: a origem usa §§170–173 para inventário, C1, C2-A e
+C3-A, enquanto a master já contém o fechamento C3-B em §170. Para preservar o
+registro C3-B e evitar duplicação ou renumeração silenciosa, esta seção posterior
+é o índice canônico na master; os quatro relatórios incorporados mantêm os
+detalhes e registram a proveniência de sua numeração original.
+
+Relatórios incorporados:
+- docs/projeto/ARGOS_DEV_WORKSPACE_CONSOLIDATION_REPORT_20261020.md — inventário e plano de consolidação.
+- docs/projeto/ARGOS_DEV_WORKSPACE_CONSOLIDATION_C1_REPORT_20261020.md — adjudicação e preservação C1.
+- docs/projeto/ARGOS_DEV_WORKSPACE_CONSOLIDATION_C2A_REPORT_20261020.md — reconciliação P5/Design System e gates C2-B/C2-C.
+- docs/projeto/ARGOS_DEV_WORKSPACE_CONSOLIDATION_C3A_REPORT_20261020.md — fechamento C3-A e preparação da pasta canônica.
+
+A C1 permanece concluída no escopo de análise e preservação; C2-A concluiu a
+reconciliação documental, sem autorizar implementação; C3-A fechou sua
+preparação documental; e C3-B completou a migração operacional para master com
+296 testes direcionados e smoke local, conforme §170. A informação de 296 testes
+é evidência histórica da C3-B e não foi reexecutada nesta atividade.
+
+O ZIP de continuidade e os bancos SQLite continuam preservados. WIP e dados
+locais continuam retidos nos worktrees de origem. Não se declara DS 2.4 publicado,
+RTSP Frame implementado, VM HML revalidada, remoção de worktrees antigos ou
+limpeza C3-C concluída. P1 RTSP permanece não autorizada e não iniciada.
