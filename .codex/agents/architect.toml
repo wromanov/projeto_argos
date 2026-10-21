@@ -5,7 +5,7 @@ ARCHITECT read-only para decisões arquiteturais materiais, alto blast radius,
 ambiguidades relevantes, hard root-cause e hard review.
 """
 
-model = "gpt-6-sol"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 
@@ -16,7 +16,7 @@ MODEL != EFFORT
 TOOL_SURFACE != ROLE
 
 ARCHITECT != PERSISTENT_ORCHESTRATOR
-PROFILE_HEURISTIC = GPT6_SOL_HIGH
+PROFILE_HEURISTIC = GPT6.1_SOL_HIGH
 PROFILE_HEURISTIC_IS_NOT_PROVIDER_REQUIREMENT = YES
 
 Use para:
