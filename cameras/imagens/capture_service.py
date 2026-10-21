@@ -1,4 +1,4 @@
-"""Authorized, durable camera capture requests and HTTP worker execution."""
+"""Authorized, durable camera capture requests and HTTP/RTSP worker execution."""
 
 from __future__ import annotations
 
@@ -36,6 +36,7 @@ from cameras.integracao.http_snapshot.adapter import (
 )
 from cameras.integracao.target_policy import TargetDecision, TargetPolicy, TargetPolicyError
 from cameras.integracao.rtsp.fake import FakeRtspAdapter
+from cameras.integracao.rtsp.gst_adapter import GStreamerRtspAdapter
 from cameras.integracao.rtsp.ports import RtspConnectionRequest, RtspFrameError, RtspJpegFrame
 from cameras.models import (
     Camera,
@@ -57,6 +58,14 @@ _ADAPTER_ERRORS = frozenset(CameraCaptureJob.ERROR_CODES) - {
     "AUTHORIZATION_DENIED", "CREDENTIAL_UNAVAILABLE", "STORAGE_ERROR", "INTERNAL_ERROR",
 }
 ACTIVE_CAPTURE_STATUSES = (CameraCaptureJob.Status.QUEUED, CameraCaptureJob.Status.RUNNING)
+# Keep closed until preventive redirect/egress controls are implemented and validated.
+# This is intentionally not environment-configurable: an operational setting alone
+# cannot prove that GStreamer is prevented from connecting to a redirected target.
+_RTSP_REDIRECT_EGRESS_CONTROL_VALIDATED = False
+
+
+def _rtsp_real_capture_authorized():
+    return _RTSP_REDIRECT_EGRESS_CONTROL_VALIDATED
 
 
 @dataclass(frozen=True)
@@ -109,10 +118,9 @@ def capture_eligibility(*, actor, camera):
         if profile.adapter_key == CameraCapabilityProfile.Adapter.RTSP:
             current = _load_rtsp_config(camera_id=camera.pk, policy=policy, allowed_ports=allowed_ports)
             _authorized_rtsp_target(policy, current, allowed_ports)
-            # The P1 GStreamer adapter can follow an RTSP redirect before the
-            # application observes its bus message. Until an egress guard is
-            # implemented and validated, the web capture action stays disabled.
-            return CaptureEligibility("RTSP_NOT_HOMOLOGATED")
+            if not _rtsp_real_capture_authorized():
+                return CaptureEligibility("RTSP_NOT_HOMOLOGATED")
+            return CaptureEligibility("AVAILABLE", CameraCaptureJob.Source.RTSP_FRAME)
         if profile.adapter_key != CameraCapabilityProfile.Adapter.HTTP_SNAPSHOT:
             return CaptureEligibility("METHOD_UNSUPPORTED")
         resolved = _load_http_config(camera_id=camera.pk, allowed_ports=allowed_ports)
@@ -170,6 +178,8 @@ def request_camera_capture(
             config = _load_rtsp_config(camera_id=camera_id, policy=policy, allowed_ports=allowed_ports)
             _require_supported_camera(config.camera, config.profile)
             _authorized_rtsp_target(policy, config, allowed_ports)
+            if not _rtsp_real_capture_authorized():
+                raise _CaptureFailure("CAPABILITY_UNSUPPORTED")
         else:
             config = _load_http_config(camera_id=camera_id, allowed_ports=allowed_ports)
             _require_supported_camera(config.camera, config.profile)
@@ -327,10 +337,17 @@ def run_next_capture(*, target_policy=None, environment_allowed_ports=None, adap
 
 
 def _run_next_rtsp_capture(*, job, target_policy, environment_allowed_ports, rtsp_adapter):
-    # This is deliberately a test-only seam. Production worker callers do not
-    # provide an RTSP extractor until redirect and egress controls are proven.
-    if type(rtsp_adapter) is not FakeRtspAdapter:
-        raise _CaptureFailure("CAPABILITY_UNSUPPORTED")
+    # Fake injection remains a socket-free test seam. Production selection is
+    # available behind a code-owned gate that stays closed until preventive
+    # redirect/egress controls are implemented and validated.
+    if type(rtsp_adapter) is FakeRtspAdapter:
+        extractor = rtsp_adapter
+    else:
+        if not _rtsp_real_capture_authorized():
+            raise _CaptureFailure("CAPABILITY_UNSUPPORTED")
+        extractor = GStreamerRtspAdapter() if rtsp_adapter is None else rtsp_adapter
+        if type(extractor) is not GStreamerRtspAdapter:
+            raise _CaptureFailure("CAPABILITY_UNSUPPORTED")
 
     policy, allowed_ports = _runtime_policy(target_policy, environment_allowed_ports)
     config = _load_rtsp_config(camera_id=job.camera_id, policy=policy, allowed_ports=allowed_ports)
@@ -383,7 +400,7 @@ def _run_next_rtsp_capture(*, job, target_policy, environment_allowed_ports, rts
         )
         _require_running_job(job.pk)
         try:
-            frame = rtsp_adapter.extract_one_jpeg_frame(request)
+            frame = extractor.extract_one_jpeg_frame(request)
         except RtspFrameError as exc:
             raise _CaptureFailure(_RTSP_ERROR_MAP[exc.code]) from None
         snapshot = _validated_rtsp_snapshot(frame)

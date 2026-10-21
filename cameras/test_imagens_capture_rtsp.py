@@ -10,7 +10,12 @@ from django.core.files.storage import default_storage
 from django.test import TestCase, override_settings
 from django.utils import timezone
 
-from cameras.imagens.capture_service import request_camera_capture, run_next_capture
+from cameras.imagens.capture_service import (
+    _rtsp_real_capture_authorized,
+    capture_eligibility,
+    request_camera_capture,
+    run_next_capture,
+)
 from cameras.imagens.gallery_service import CameraGalleryReadService, GalleryState
 from cameras.integracao.credentials import CredentialOperationError, ResolvedCameraCredential
 from cameras.integracao.rtsp.fake import FakeRtspAdapter
@@ -83,14 +88,16 @@ class CameraRtspCaptureTests(TestCase):
         })
 
     def _request(self, key="rtsp-capture-key-0001", **kwargs):
-        return request_camera_capture(
-            actor=self.actor,
-            camera_id=self.camera.pk,
-            idempotency_key=key,
-            target_policy=kwargs.pop("target_policy", self.policy),
-            environment_allowed_ports=kwargs.pop("environment_allowed_ports", {554}),
-            **kwargs,
-        )
+        # This helper exercises the authorized worker path without opening a socket.
+        with patch("cameras.imagens.capture_service._rtsp_real_capture_authorized", return_value=True):
+            return request_camera_capture(
+                actor=self.actor,
+                camera_id=self.camera.pk,
+                idempotency_key=key,
+                target_policy=kwargs.pop("target_policy", self.policy),
+                environment_allowed_ports=kwargs.pop("environment_allowed_ports", {554}),
+                **kwargs,
+            )
 
     def _run(self, *, rtsp_adapter=None, http_adapter=None, policy=None, allowed_ports=None):
         return run_next_capture(
@@ -114,6 +121,27 @@ class CameraRtspCaptureTests(TestCase):
         self.config.credential = credential
         self.config.save(update_fields=["credential"])
         return credential
+
+    def test_backend_gate_keeps_real_rtsp_unavailable_and_rejects_enqueue(self):
+        self.assertFalse(_rtsp_real_capture_authorized())
+        with patch(
+            "cameras.imagens.capture_service._runtime_policy",
+            return_value=(self.policy, frozenset({554})),
+        ):
+            eligibility = capture_eligibility(actor=self.actor, camera=self.camera)
+        self.assertEqual(eligibility.state, "RTSP_NOT_HOMOLOGATED")
+        self.assertFalse(eligibility.available)
+
+        with self.assertRaises(ValidationError):
+            request_camera_capture(
+                actor=self.actor,
+                camera_id=self.camera.pk,
+                idempotency_key="rtsp-gate-blocked-01",
+                source_preference=CameraCaptureJob.Source.RTSP_FRAME,
+                target_policy=self.policy,
+                environment_allowed_ports={554},
+            )
+        self.assertFalse(CameraCaptureJob.objects.exists())
 
     def test_no_preference_selects_rtsp_and_fake_persists_into_existing_e4_gallery(self):
         job = self._request()
@@ -153,7 +181,6 @@ class CameraRtspCaptureTests(TestCase):
         resolver.assert_not_called()
         self.assertEqual(result.pk, job.pk)
         self.assertEqual(result.error_code, "CAPABILITY_UNSUPPORTED")
-
         job = self._request("rtsp-capture-key-0008")
         gstreamer_adapter = object.__new__(GStreamerRtspAdapter)
         with (
@@ -179,6 +206,27 @@ class CameraRtspCaptureTests(TestCase):
         resolver.assert_not_called()
         self.assertEqual(result.pk, job.pk)
         self.assertEqual(result.error_code, "CAPABILITY_UNSUPPORTED")
+
+    def test_worker_selects_gstreamer_through_existing_e3_path_when_gate_is_open(self):
+        job = self._request("rtsp-capture-key-0009")
+        synthetic_adapter = FakeRtspAdapter()
+
+        with (
+            patch("cameras.imagens.capture_service._rtsp_real_capture_authorized", return_value=True),
+            patch.object(
+                GStreamerRtspAdapter,
+                "extract_one_jpeg_frame",
+                side_effect=lambda request: synthetic_adapter.extract_one_jpeg_frame(request),
+            ) as extract,
+        ):
+            result = self._run(http_adapter=_HttpAdapterThatMustNotRun())
+
+        self.assertEqual(result.pk, job.pk)
+        self.assertEqual(result.status, CameraCaptureJob.Status.SUCCEEDED, result.error_code)
+        self.assertEqual(extract.call_count, 1)
+        self.assertEqual(extract.call_args.args[0].uri, "rtsp://10.42.0.10:554/stream")
+        self.assertEqual(synthetic_adapter.calls, 1)
+        self.assertEqual(result.image_record.provenance, CameraImageRecord.Provenance.CAPTURA_CAMERA)
 
     def test_valid_credential_is_resolved_by_r1_and_supplied_only_in_memory(self):
         self._attach_credential()

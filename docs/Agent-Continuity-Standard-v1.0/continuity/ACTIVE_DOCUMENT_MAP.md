@@ -2906,3 +2906,29 @@ PROJECT_STATE_UPDATE = PASS / §178 e §§20.133, 137
 REAL_RTSP_ENABLED = NO
 P1_FINAL_ACCEPTANCE = PENDING
 NEXT_STEP = ARGOS_IN_APP_REAL_CAMERA_VALIDATION
+
+## 138. ARGOS-E3-RTSP-WORKER-INTEGRATION-02 (2026-10-21)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| [PROJECT_STATE.md §179](PROJECT_STATE.md) | Wiring do worker, validação local, gate de segurança e estado de publicação | CURRENT / 115/115 testes; gate RTSP fechado; commit recusado pelo auto-review; remoto não verificado |
+| [AGENT_CONTINUITY.md §20.134](AGENT_CONTINUITY.md) | Handoff e gates de retomada | CURRENT / requer autorização direta para commit e verificação ao vivo do master antes de push |
+| Integração local anterior | 12 arquivos staged explicitamente | STAGED / commit não criado; `.codex/agents.zip` fora do stage |
+| Worker E3/GStreamer | `capture_service.py` e `test_imagens_capture_rtsp.py` | LOCAL / seleção GStreamer atrás de gate de código fixo fechado; fake continua injetável |
+| Banco e segurança operacional | Câmeras, VM, rede, credenciais, migrations, monitoramento | NOT_ACCESSED / NOT_CHANGED |
+
+O caminho do worker e E4 foi validado com fakes. Isso não comprova conexão,
+redirect/egress preventivo, runtime GStreamer, H.264/H.265, memória, deadline ou
+teardown reais. `REAL_RTSP_ENABLED = NO`; `P1_FINAL_ACCEPTANCE = PENDING`.
+`git ls-remote` falhou pelo proxy local e a comparação GitHub retornou 404;
+portanto `REMOTE_MASTER_VERIFIED = NO` e não houve push. O auto-review também
+recusou o commit local; não contornar a recusa. A integração permanece staged e
+os artefatos ignorados/inacessíveis existentes foram preservados.
+
+PROJECT_STATE_UPDATE = PASS / §179 e §§20.134, 138
+ACTIVITY_STATUS = PARTIAL
+ACTIVITY_COMPLETE = NO
+REAL_RTSP_ENABLED = NO
+P1_FINAL_ACCEPTANCE = PENDING
+REMOTE_MASTER_VERIFIED = NO
+NEXT_GATE = USER_DIRECT_COMMIT_AUTHORIZATION_AND_LIVE_REMOTE_VERIFICATION

@@ -10,7 +10,7 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-E3-RTSP-INTEGRATION-01 (2026-10-21): consultar [PROJECT_STATE.md §178](PROJECT_STATE.md) e [ACTIVE_DOCUMENT_MAP.md §137](ACTIVE_DOCUMENT_MAP.md). Checkout canônico em `master` @ `76e6220f5627497a526ecda7884a84978db1bc9e`; integração local RTSP/E3/E4 validada com 113/113 testes offline/fakes e Django system check. A fonte HTTP exige seleção `HTTP_SNAPSHOT` explícita; RTSP real permanece desabilitado, pois o worker de produção não recebe o extrator GStreamer e o gate de redirect/egress continua pendente. Sem câmera, VM, rede externa, DB operacional ou mutação de monitoramento; sem stage, commit ou push. Aceite final da P1 permanece pendente. Próximo passo registrado: `ARGOS_IN_APP_REAL_CAMERA_VALIDATION`, condicionado à autorização e aos gates de segurança aplicáveis.
+RETOMADA ATUAL ARGOS-E3-RTSP-WORKER-INTEGRATION-02 (2026-10-21): consultar [PROJECT_STATE.md §179](PROJECT_STATE.md) e [ACTIVE_DOCUMENT_MAP.md §138](ACTIVE_DOCUMENT_MAP.md). Checkout canônico em `master` @ `76e6220f5627497a526ecda7884a84978db1bc9e`; o worker seleciona `GStreamerRtspAdapter` atrás de gate de código fechado e os testes offline/fakes passaram 115/115. Não houve conexão RTSP real, socket GStreamer, fallback HTTP, mutação de monitoramento ou migration. A integração anterior está staged em 12 caminhos; o auto-review recusou o commit local e nenhum push ocorreu. O remoto ao vivo permanece não verificado (`git ls-remote` bloqueado pelo proxy local; comparação GitHub 404), embora a referência local `origin/master` esteja dois commits atrás. Aceite P1 continua pendente. Próximo gate: autorização direta no chat para o commit local; depois, recuperar verificação do remoto antes de qualquer push.
 
 SNAPSHOT ANTERIOR ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-02 (2026-10-21): consultar PROJECT_STATE.md §173 e ACTIVE_DOCUMENT_MAP.md §132. A checkout canônica estava em master @ 22d55c33e3313750bc40cd99bc74e551314ab3b1, igual a origin/master consultada ao vivo. O Lote 2 removeu os oito worktrees autorizados com git worktree remove sem força, reduzindo o inventário de 23 para 15; as oito branches históricas permanecem. Sete SQLite locais de zero bytes e somente caches .pyc/pytest autorizados foram descartados. O SQLite principal permaneceu em 610304 bytes com SHA-256 inalterado; ZIP preservado. Sem mudanças de código, VM, branches, commit ou push. Lote 2 fechado; não iniciar Lote 3. Próximo gate: C3C_BATCH_02_REVIEW.
 
@@ -4000,3 +4000,39 @@ REAL_RTSP_ENABLED = NO
 MONITORING_MUTATION = NONE
 P1_FINAL_ACCEPTANCE = PENDING
 NEXT_GATE = ARGOS_IN_APP_REAL_CAMERA_VALIDATION
+
+## 20.134. ARGOS-E3-RTSP-WORKER-INTEGRATION-02 (2026-10-21)
+
+Consultar [PROJECT_STATE.md §179](PROJECT_STATE.md) para o wiring local do
+worker. O default produtivo cria `GStreamerRtspAdapter` somente após a função
+interna de autorização; essa função depende de uma constante de código que
+permanece `False` até haver prevenção de redirect/egress implementada e
+validada. Com o gate fechado, eligibility não apresenta RTSP como disponível,
+enqueue rejeita novo job RTSP e o worker bloqueia antes de resolver credenciais
+ou invocar adapter. Fake continua injetável para teste; HTTP exige seleção
+explícita e não recebe fallback de RTSP.
+
+Os testes focais offline passaram 115/115 no PowerShell normal com banco de
+teste isolado. `manage.py check`, `git diff --check` staged e unstaged passaram.
+O teste cobre despacho pelo worker ao GStreamer com extração fake; não valida
+runtime, socket, codec, redirect/egress, deadline/teardown real, RSS ou buffers
+upstream. C01–C06, persistência E4 e ausência de mutação de monitoramento foram
+preservadas. Sem câmera, VM, rede externa, banco operacional, credencial real ou
+migration. `REAL_RTSP_ENABLED = NO`; `P1_FINAL_ACCEPTANCE = PENDING`.
+
+Os 12 caminhos da integração anterior estão staged explicitamente, mas o
+auto-review recusou o commit local e não houve commit ou push. A tentativa
+`git ls-remote` não conectou ao proxy `127.0.0.1:9`; a comparação pelo conector
+GitHub retornou 404. A referência local `origin/master` não comprova o estado
+remoto ao vivo. Preservar `.codex/agents.zip` e os diretórios temporários
+inacessíveis. Não tentar contornar a recusa do auto-review; o próximo gate de
+commit depende de autorização direta no chat e a publicação depende de leitura
+remota atualizada.
+
+PROJECT_STATE_UPDATE = PASS / §179
+ACTIVITY_STATUS = PARTIAL
+ACTIVITY_COMPLETE = NO
+REAL_RTSP_ENABLED = NO
+P1_FINAL_ACCEPTANCE = PENDING
+REMOTE_MASTER_VERIFIED = NO
+NEXT_GATE = USER_DIRECT_COMMIT_AUTHORIZATION_AND_LIVE_REMOTE_VERIFICATION

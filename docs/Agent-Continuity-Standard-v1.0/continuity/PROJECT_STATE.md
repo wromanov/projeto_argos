@@ -1,6 +1,6 @@
 # ARGOS — Project State
 
-Retomada atual: ARGOS-E3-RTSP-INTEGRATION-01, checkpoint §178 (2026-10-21). Checkout canônico `master` @ `76e6220f5627497a526ecda7884a84978db1bc9e`; sem stage, commit ou push nesta atividade. A integração local RTSP/E3/E4 passou nos 113 testes focais e no Django system check usando banco de teste e fakes. `RTSP_FRAME` é primário para perfil RTSP; HTTP exige seleção explícita e não há fallback. O worker de produção não recebe extrator GStreamer real; RTSP real permanece desabilitado até evidência controlada de redirects/egress. P1 final continua pendente; sem câmera, VM, rede real, DB operacional ou mutação de monitoramento. Próximo passo: `ARGOS_IN_APP_REAL_CAMERA_VALIDATION`, sujeito ao gate/autorização aplicável.
+Retomada atual: ARGOS-E3-RTSP-WORKER-INTEGRATION-02, checkpoint §179 (2026-10-21). Checkout canônico `master` @ `76e6220f5627497a526ecda7884a84978db1bc9e`; a integração anterior está em 12 caminhos staged, sem commit. O novo wiring do worker está local e não staged. Os testes focais passaram 115/115, o Django system check e os dois `git diff --check` passaram em banco temporário isolado. O worker seleciona `GStreamerRtspAdapter` somente atrás de gate interno fixo, atualmente fechado; o backend rejeita enqueue RTSP e o worker bloqueia antes de credenciais ou adapter. `RTSP_FRAME` continua primário por contrato; HTTP exige seleção explícita e não há fallback. `REAL_RTSP_ENABLED = NO`; P1 final permanece pendente; sem câmera, VM, rede real, DB operacional, migration ou mutação de monitoramento. O auto-review recusou o commit local e não houve push. `git ls-remote` falhou pelo proxy local; o conector GitHub retornou 404, portanto `REMOTE_MASTER_VERIFIED = NO`. Consulte §179 e o gate de retomada em `AGENT_CONTINUITY.md` §20.134.
 
 Snapshot histórico HOM (substituído para retomada pelo fechamento E2 da §153): §§113–116 — HOM-01 encerrada, HOM-02 implementada e ambiente QA local preparado para aceitação humana. HOM-01 está `CLOSED`; a regressão global registrada em §112 passou (948 testes em 600.522s; Django system check PASS). HOM-02 implementa template, prévia, confirmação atômica, validação cadastral e auditoria; validação direcionada, regressão de integração e carga sintética de 2.300 registros passaram. Os aceites e limitações em §§99, 101, 108 e 109 foram preservados, incluindo Camera Detail `CLOSED_WITH_LIMITATIONS`. Seções anteriores permanecem como histórico.
 
@@ -9797,3 +9797,69 @@ status não foi produzido por esta atividade e foi preservado.
 `P1_FINAL_ACCEPTANCE = PENDING`. A conclusão desta seção cobre somente a
 implementação local integrada e sua validação offline; não concede homologação
 operacional nem aceite final da P1. `NEXT_STEP = ARGOS_IN_APP_REAL_CAMERA_VALIDATION`.
+
+## 179. ARGOS-E3-RTSP-WORKER-INTEGRATION-02 — wiring local e gate fail-closed (2026-10-21)
+
+```text
+ACTIVITY_ID = ARGOS-E3-RTSP-WORKER-INTEGRATION-02
+BRANCH = master
+HEAD = 76e6220f5627497a526ecda7884a84978db1bc9e
+LOCAL_ORIGIN_MASTER_TRACKING_REF = 625b47f91d219b40ed7f65c2405b845bd7b00d58
+LOCAL_AHEAD_OF_TRACKING_REF = 2
+LIVE_REMOTE_MASTER = UNVERIFIED / git ls-remote falhou via proxy local; conector GitHub retornou 404
+INTEGRATION_STAGE = 12 caminhos explícitos / contém somente a integração RTSP/E3/E4 anterior
+WORKER_STAGE = NONE / alterações locais ainda fora do índice
+UNRELATED_ZIP = .codex/agents.zip / unstaged e preservado
+INACCESSIBLE_TEMP_DIRS = preservados sem acesso ou remoção
+FOCUSED_TESTS = PASS / 115 of 115 / banco SQLite de teste isolado / PowerShell normal
+DJANGO_SYSTEM_CHECK = PASS
+GIT_DIFF_CHECK = PASS / staged e unstaged
+WORKER_GSTREAMER_WIRING = CONNECTED / GStreamerRtspAdapter é a seleção produtiva atrás do gate; adapter fake segue injetável
+RTSP_REAL_CAPTURE_GATE = CLOSED / constante de código sem override de ambiente; abrir somente após prevenção de redirect/egress implementada e validada
+RTSP_ENQUEUE = BLOCKED while gate closed / valida permissão e Target Policy, não cria job RTSP operacional
+RTSP_WORKER = BLOCKED before credentials and adapter when gate closed
+CREDENTIAL_INTEGRATION = R1 público reutilizado após autorização; credenciais sintéticas só nos testes offline
+TARGET_POLICY = validação de IP, scheme, porta, path e farm preservada e revalidada antes do adapter
+CAPTURE_JOB_AND_E4 = PASS / fluxo fake exercita job, JPEG validado, persistência privada, auditoria e galeria
+HTTP_SNAPSHOT = seleção explícita; sem fallback de RTSP
+MIGRATIONS = NONE
+MONITORING_MUTATION = NONE
+REAL_RTSP_ENABLED = NO
+P1_FINAL_ACCEPTANCE = PENDING
+LOCAL_COMMIT = NOT_CREATED / auto-review rejeitou a alteração de histórico porque não aceitou a autorização no anexo como verificável; não houve nova tentativa
+PUSH = NOT_ATTEMPTED / remoto não verificável
+PUBLISHED_COMMIT_SHA = NONE
+REMOTE_MASTER_VERIFIED = NO
+PROJECT_STATE_UPDATE = PASS / §179
+ACTIVITY_STATUS = PARTIAL / implementação e validação local concluídas; publicação pendente
+ACTIVITY_COMPLETE = NO
+ACTIVITY_COMPLETION_PERCENT = 96%
+NEXT_STEP = autorização direta no chat para criar o commit local; depois, restaurar acesso ao remoto, verificar master e somente então avaliar push normal
+```
+
+A implementação faz o worker selecionar `GStreamerRtspAdapter()` quando a
+autorização interna de captura real estiver aberta. A autorização permanece
+fechada por uma constante de código (`_RTSP_REDIRECT_EGRESS_CONTROL_VALIDATED =
+False`) sem configuração ambiental capaz de habilitá-la. Enquanto fechada,
+`capture_eligibility` mantém RTSP não homologado, o serviço de enqueue rejeita
+novos jobs RTSP e o worker encerra jobs legados antes de resolver credenciais ou
+chamar qualquer adapter. Os testes exercitam o despacho ao tipo GStreamer com
+extração substituída por fake; não abrem sockets nem comprovam runtime, codec ou
+prevenção de redirect/egress.
+
+A integração anterior continua nos 12 caminhos staged explicitamente para um
+commit próprio. O auto-review recusou o commit local; não houve commit nem push.
+O stage não inclui `.codex/agents.zip`. `HEAD` já estava dois commits à frente da
+referência local `origin/master`, mas o estado ao vivo não pôde ser confirmado:
+`git ls-remote` falhou ao conectar ao proxy local `127.0.0.1:9` e a comparação
+via conector GitHub retornou 404. Portanto, não declarar publicação nem SHA
+remoto. Os diretórios temporários inacessíveis existentes foram preservados.
+
+O teste inicial dentro do sandbox sofreu `WinError 5` ao limpar diretórios
+temporários e foi repetido com sucesso no PowerShell normal, conforme a
+estratégia já registrada. Os 115 casos PASS são offline/fakes; não demonstram
+redirect/egress, decodificação RTSP real, deadline/teardown real, RSS ou buffers
+upstream. Nenhuma câmera, VM, rede corporativa, banco operacional, credencial
+real, migration, F02/F03 ou monitoramento foi acessado ou alterado. O aceite
+final P1 permanece pendente. O commit e a publicação permanecem bloqueados até
+novo gate de autorização e verificação do remoto.
