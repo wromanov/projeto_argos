@@ -537,6 +537,10 @@ def detalhe_camera(request, pk):
             "Suporte à captura não confirmado",
             "Não foi possível confirmar se este método está disponível.",
         ),
+        "RTSP_NOT_HOMOLOGATED": (
+            "Captura RTSP temporariamente indisponível",
+            "A validação de segurança da conexão ainda precisa ser concluída.",
+        ),
         "UNCLASSIFIED": (
             "Captura indisponível",
             "Não foi possível confirmar a elegibilidade para captura.",
@@ -579,6 +583,18 @@ def detalhe_camera(request, pk):
         "capture_panel_visible": capture_panel_visible,
         "capture_has_both_operations": capture_has_both_operations,
         "can_capture_camera": can_capture,
+        "capture_source_preference": (
+            capture_projection.source_preference if can_capture and capture_projection else ""
+        ),
+        "capture_source_label": (
+            "Captura via HTTP"
+            if can_capture and capture_projection
+            and capture_projection.source_preference == CameraCaptureJob.Source.HTTP_SNAPSHOT
+            else "Captura de quadro RTSP"
+            if can_capture and capture_projection
+            and capture_projection.source_preference == CameraCaptureJob.Source.RTSP_FRAME
+            else ""
+        ),
         "capture_idempotency_key": uuid.uuid4().hex if can_capture else "",
         "capture_job": context_capture_job,
         "capture_polling": capture_polling,
@@ -639,6 +655,7 @@ def solicitar_captura_camera(request, pk):
             actor=request.user,
             camera_id=camera.pk,
             idempotency_key=request.POST.get("idempotency_key"),
+            source_preference=request.POST.get("source_preference"),
         )
     except (PermissionDenied, DjangoValidationError, ValueError):
         messages.error(request, "Não foi possível solicitar a captura desta câmera.")

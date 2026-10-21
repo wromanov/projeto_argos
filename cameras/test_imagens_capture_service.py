@@ -85,6 +85,7 @@ class CameraCaptureServiceTests(TestCase):
 
     def _request(self, key="capture-key-0001", **kwargs):
         target_policy = kwargs.pop("target_policy", self.policy)
+        kwargs.setdefault("source_preference", CameraCaptureJob.Source.HTTP_SNAPSHOT)
         return request_camera_capture(
             actor=self.actor, camera_id=self.camera.pk, idempotency_key=key,
             target_policy=target_policy, environment_allowed_ports={443}, **kwargs,
@@ -233,15 +234,29 @@ class CameraCaptureServiceTests(TestCase):
             "CONFIGURATION_INCOMPLETE",
         )
 
-    def test_capture_eligibility_marks_non_http_profile_as_e3_method_unsupported(self):
+    def test_capture_eligibility_keeps_supported_rtsp_visible_but_not_homologated(self):
         CameraCapabilityProfile.objects.filter(pk=self.profile.pk).update(
-            adapter_key=CameraCapabilityProfile.Adapter.RTSP
+            adapter_key=CameraCapabilityProfile.Adapter.RTSP,
+            allowed_schemes=["rtsp"], allowed_ports=[554],
+            tls_policy=CameraCapabilityProfile.TLSPolicy.NOT_APPLICABLE,
+            auth_method=CameraCapabilityProfile.AuthMethod.RTSP_NEGOTIATE,
+            endpoint_policy=CameraCapabilityProfile.EndpointPolicy.PROFILE_FIXED,
+            default_path="/stream", allowed_override_fields=[],
         )
-
-        self.assertEqual(
-            capture_eligibility(actor=self.actor, camera=self.camera).state,
-            "METHOD_UNSUPPORTED",
-        )
+        rtsp_policy = TargetPolicy.from_mapping({
+            "allowed_cidrs": ["10.42.0.0/24"],
+            "ports_by_scheme": {"rtsp": [554]},
+            "allowed_paths_by_scheme": {"rtsp": ["/stream"]},
+            "allowed_farms": ["FARM-A"],
+        })
+        with patch(
+            "cameras.imagens.capture_service._runtime_policy",
+            return_value=(rtsp_policy, {554}),
+        ):
+            self.assertEqual(
+                capture_eligibility(actor=self.actor, camera=self.camera).state,
+                "RTSP_NOT_HOMOLOGATED",
+            )
 
     def test_public_availability_query_requires_supported_profile_and_trusted_target_policy(self):
         with patch.dict(os.environ, {
@@ -263,7 +278,7 @@ class CameraCaptureServiceTests(TestCase):
         )
 
         self.assertEqual(result.pk, job.pk)
-        self.assertEqual(result.status, CameraCaptureJob.Status.SUCCEEDED)
+        self.assertEqual(result.status, CameraCaptureJob.Status.SUCCEEDED, result.error_code)
         self.assertEqual(result.image_record.provenance, CameraImageRecord.Provenance.CAPTURA_CAMERA)
         self.assertIsNone(adapter.requests[0][1])
         self.assertEqual(monitoring_before, list(EstadoMonitoramento.objects.filter(camera=self.camera).values()))
@@ -333,6 +348,7 @@ class CameraCaptureServiceTests(TestCase):
             allowed_job = request_camera_capture(
                 actor=self.actor, camera_id=self.camera.pk,
                 idempotency_key="capture-env-path-allowed-01",
+                source_preference=CameraCaptureJob.Source.HTTP_SNAPSHOT,
             )
             allowed_adapter = _FakeSnapshotAdapter()
             allowed_result = run_next_capture(adapter=allowed_adapter)
@@ -344,6 +360,7 @@ class CameraCaptureServiceTests(TestCase):
             absent_job = request_camera_capture(
                 actor=self.actor, camera_id=self.camera.pk,
                 idempotency_key="capture-env-path-absent-01",
+                source_preference=CameraCaptureJob.Source.HTTP_SNAPSHOT,
             )
             os.environ.pop("ARGOS_CAMERA_ALLOWED_PATHS")
             absent_adapter = _FakeSnapshotAdapter()
@@ -359,6 +376,7 @@ class CameraCaptureServiceTests(TestCase):
             revoked_job = request_camera_capture(
                 actor=self.actor, camera_id=self.camera.pk,
                 idempotency_key="capture-env-path-revoked-01",
+                source_preference=CameraCaptureJob.Source.HTTP_SNAPSHOT,
             )
             os.environ["ARGOS_CAMERA_ALLOWED_PATHS"] = "https:/snapshot-other"
             revoked_adapter = _FakeSnapshotAdapter()
@@ -374,6 +392,7 @@ class CameraCaptureServiceTests(TestCase):
             invalid_job = request_camera_capture(
                 actor=self.actor, camera_id=self.camera.pk,
                 idempotency_key="capture-env-path-invalid-01",
+                source_preference=CameraCaptureJob.Source.HTTP_SNAPSHOT,
             )
             os.environ["ARGOS_CAMERA_ALLOWED_PATHS"] = "https:relative-path"
             invalid_adapter = _FakeSnapshotAdapter()
@@ -577,6 +596,13 @@ class CameraCaptureServiceTests(TestCase):
 
         self.assertFalse(CameraCaptureJob.objects.exists())
 
+    def test_http_profile_requires_explicit_http_source_preference(self):
+        with self.assertRaises(ValidationError):
+            self._request("capture-http-no-source-01", source_preference=None)
+        with self.assertRaises(ValidationError):
+            self._request("capture-http-empty-source-01", source_preference="")
+        self.assertFalse(CameraCaptureJob.objects.exists())
+
 
 class CaptureJobConcurrencyTests(TransactionTestCase):
     reset_sequences = True
@@ -640,6 +666,7 @@ class CaptureJobConcurrencyTests(TransactionTestCase):
                         idempotency_key=key,
                         target_policy=self.policy,
                         environment_allowed_ports={443},
+                        source_preference=CameraCaptureJob.Source.HTTP_SNAPSHOT,
                     )
                     return ("created", str(job.pk))
                 except ValidationError as exc:

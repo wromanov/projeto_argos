@@ -50,6 +50,11 @@ class CaptureHttpViewsTests(TestCase):
             form,
             r'<input\b[^>]*\bname="idempotency_key"[^>]*\bvalue="([a-f0-9]{32})"',
         )
+        self.assertIn(
+            f'<input type="hidden" name="source_preference" value="{CameraCaptureJob.Source.HTTP_SNAPSHOT}">',
+            form,
+        )
+        self.assertIn("Método configurado: Captura via HTTP.", html)
         self.assertRegex(
             form,
             r'<button\b[^>]*\btype="submit"[^>]*>.*?<span>Capturar imagem</span>.*?</button>',
@@ -71,11 +76,15 @@ class CaptureHttpViewsTests(TestCase):
         job = self._job()
         url = reverse("cameras:solicitar_captura", args=[self.camera.pk])
         with patch("cameras.views.request_camera_capture", return_value=job) as request_capture:
-            response = self.client.post(url, {"idempotency_key": "stable-capture-key-0001"})
+            response = self.client.post(url, {
+                "idempotency_key": "stable-capture-key-0001",
+                "source_preference": CameraCaptureJob.Source.HTTP_SNAPSHOT,
+            })
         request_capture.assert_called_once_with(
             actor=self.user,
             camera_id=self.camera.pk,
             idempotency_key="stable-capture-key-0001",
+            source_preference=CameraCaptureJob.Source.HTTP_SNAPSHOT,
         )
         self.assertEqual(response.status_code, 302)
         self.assertIn(f"capture_job={job.pk}", response["Location"])
@@ -119,7 +128,7 @@ class CaptureHttpViewsTests(TestCase):
 
     def test_detail_shows_capture_only_when_available_and_keeps_upload_first(self):
         self.user.user_permissions.add(Permission.objects.get(codename="add_cameraimagerecord"))
-        with patch("cameras.views.capture_eligibility", return_value=CaptureEligibility("AVAILABLE")):
+        with patch("cameras.views.capture_eligibility", return_value=CaptureEligibility("AVAILABLE", CameraCaptureJob.Source.HTTP_SNAPSHOT)):
             response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
         self.assertEqual(response.status_code, 200)
         html = response.content.decode()
@@ -156,6 +165,7 @@ class CaptureHttpViewsTests(TestCase):
         cases = (
             ("METHOD_UNSUPPORTED", "Método de captura não suportado"),
             ("CAPABILITY_UNVERIFIED", "Suporte à captura não confirmado"),
+            ("RTSP_NOT_HOMOLOGATED", "Captura RTSP temporariamente indisponível"),
         )
         for state, title in cases:
             with self.subTest(state=state), patch(
@@ -185,7 +195,7 @@ class CaptureHttpViewsTests(TestCase):
 
     def test_detail_capture_only_uses_full_width_surface_without_divider(self):
         self.user.user_permissions.remove(Permission.objects.get(codename="add_cameraimagerecord"))
-        with patch("cameras.views.capture_eligibility", return_value=CaptureEligibility("AVAILABLE")):
+        with patch("cameras.views.capture_eligibility", return_value=CaptureEligibility("AVAILABLE", CameraCaptureJob.Source.HTTP_SNAPSHOT)):
             response = self.client.get(reverse("cameras:detalhe", args=[self.camera.pk]))
 
         html = response.content.decode()
@@ -237,7 +247,7 @@ class CaptureHttpViewsTests(TestCase):
     def test_detail_failed_owned_job_allows_a_new_explicit_capture_when_still_eligible(self):
         job = self._job(status=CameraCaptureJob.Status.FAILED, error_code="INTERNAL_ERROR")
         with (
-            patch("cameras.views.capture_eligibility", return_value=CaptureEligibility("AVAILABLE")),
+            patch("cameras.views.capture_eligibility", return_value=CaptureEligibility("AVAILABLE", CameraCaptureJob.Source.HTTP_SNAPSHOT)),
             patch("cameras.views.request_camera_capture") as request_capture,
         ):
             response = self.client.get(
@@ -273,7 +283,7 @@ class CaptureHttpViewsTests(TestCase):
     def test_detail_does_not_disclose_another_requestors_failed_job(self):
         other = get_user_model().objects.create_user(username="other-failed-requestor")
         job = self._job(requestor=other, status=CameraCaptureJob.Status.FAILED, error_code="INTERNAL_ERROR")
-        with patch("cameras.views.capture_eligibility", return_value=CaptureEligibility("AVAILABLE")):
+        with patch("cameras.views.capture_eligibility", return_value=CaptureEligibility("AVAILABLE", CameraCaptureJob.Source.HTTP_SNAPSHOT)):
             response = self.client.get(
                 f"{reverse('cameras:detalhe', args=[self.camera.pk])}?capture_job={job.pk}"
             )

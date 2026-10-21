@@ -188,6 +188,7 @@ def resolve_connection_config(*, camera_id, environment_allowed_ports, automatic
     rtsp_uri = config.rtsp_uri
     if config.profile.adapter_key == CameraCapabilityProfile.Adapter.RTSP:
         host = _normalized_ipv4(config.camera.ip or "")
+        explicit_port = None
         if not rtsp_uri:
             path = config.profile.default_path
             schemes = config.profile.allowed_schemes
@@ -197,7 +198,10 @@ def resolve_connection_config(*, camera_id, environment_allowed_ports, automatic
             path = parsed.path
             schemes = config.profile.allowed_schemes
             scheme = parsed.scheme
-        if 554 in config.profile.allowed_ports:
+            explicit_port = parsed.port
+        if explicit_port is not None:
+            port = explicit_port
+        elif 554 in config.profile.allowed_ports:
             port = 554
         elif len(config.profile.allowed_ports) == 1:
             port = config.profile.allowed_ports[0]

@@ -51,6 +51,7 @@
       }
       if (result.terminal || ["SUCCEEDED", "FAILED", "CANCELLED"].includes(state)) {
         stop();
+        if (state === "SUCCEEDED") window.location.reload();
         return;
       }
     } catch (_) {

@@ -1,6 +1,6 @@
 # ARGOS — Project State
 
-Retomada atual: ARGOS-DEV-WORKSPACE-C3-DOC-RECONCILIATION-01, reconciliação final §171 (2026-10-20). master e origin/master permanecem em ddd8f163992fc3cfda25a37d65199e25c249ee72. C1 e C2-A estão concluídas; C3-A e C3-B estão fechadas. Os quatro relatórios foram incorporados e os registros C3-B locais preservados. SQLite, ZIP e demais WIPs/dados locais permanecem retidos. C3-C não iniciada; P1 RTSP não autorizada. Sem alteração funcional, exclusão, commit ou push.
+Retomada atual: ARGOS-E3-RTSP-INTEGRATION-01, checkpoint §178 (2026-10-21). Checkout canônico `master` @ `76e6220f5627497a526ecda7884a84978db1bc9e`; sem stage, commit ou push nesta atividade. A integração local RTSP/E3/E4 passou nos 113 testes focais e no Django system check usando banco de teste e fakes. `RTSP_FRAME` é primário para perfil RTSP; HTTP exige seleção explícita e não há fallback. O worker de produção não recebe extrator GStreamer real; RTSP real permanece desabilitado até evidência controlada de redirects/egress. P1 final continua pendente; sem câmera, VM, rede real, DB operacional ou mutação de monitoramento. Próximo passo: `ARGOS_IN_APP_REAL_CAMERA_VALIDATION`, sujeito ao gate/autorização aplicável.
 
 Snapshot histórico HOM (substituído para retomada pelo fechamento E2 da §153): §§113–116 — HOM-01 encerrada, HOM-02 implementada e ambiente QA local preparado para aceitação humana. HOM-01 está `CLOSED`; a regressão global registrada em §112 passou (948 testes em 600.522s; Django system check PASS). HOM-02 implementa template, prévia, confirmação atômica, validação cadastral e auditoria; validação direcionada, regressão de integração e carga sintética de 2.300 registros passaram. Os aceites e limitações em §§99, 101, 108 e 109 foram preservados, incluindo Camera Detail `CLOSED_WITH_LIMITATIONS`. Seções anteriores permanecem como histórico.
 
@@ -9730,3 +9730,70 @@ RUNTIME_VALIDATION = NOT_VALIDATED / codecs, RSS/upstream, deadline/teardown rea
 P1_FINAL_ACCEPTANCE = NOT_GRANTED
 PHASE_B_RUNTIME_VALIDATION = NOT_AUTHORIZED
 NEXT_GATE = HUMAN_AUTHORIZATION_FOR_PHASE_B_RUNTIME_VALIDATION
+
+## 178. ARGOS-E3-RTSP-INTEGRATION-01 — integração local RTSP/E3/E4 (2026-10-21)
+
+```text
+ACTIVITY_ID = ARGOS-E3-RTSP-INTEGRATION-01
+REPOSITORY = C:/Users/walacedelgado/PycharmProjects/projeto_argos
+BRANCH = master
+BASELINE_HEAD = 76e6220f5627497a526ecda7884a84978db1bc9e
+STAGING = EMPTY
+COMMIT = NONE
+PUSH = NONE
+LOCAL_INTEGRATION_IMPLEMENTATION = VALIDATED
+FOCUSED_TESTS = PASS / 113 of 113
+DJANGO_SYSTEM_CHECK = PASS
+GIT_DIFF_CHECK = PASS
+REAL_RTSP_ENABLED = NO
+MONITORING_MUTATION = NONE
+P1_FINAL_ACCEPTANCE = PENDING
+C01-C06 = PRESERVED / nenhum contrato canônico alterado nesta atividade
+ACTIVITY_COMPLETE = YES / this local integration slice only
+NEXT_STEP = ARGOS_IN_APP_REAL_CAMERA_VALIDATION
+```
+
+A integração local conecta a fonte `RTSP_FRAME` à fronteira E3 e reutiliza a
+persistência, auditoria e galeria E4 existentes quando um `FakeRtspAdapter`
+fornece um frame JPEG válido. Para perfil RTSP, a fonte padrão interna é
+`RTSP_FRAME`; a fonte HTTP exige `HTTP_SNAPSHOT` explícito, sem fallback. O
+resolver preserva uma porta RTSP explicitamente configurada e autorizada, com
+teste de regressão.
+
+O request RTSP só é construído após leitura da configuração persistida e do
+perfil, permissão de captura, validação da Target Policy para IP, scheme, porta,
+path e farm e eventual resolução R1 pela API pública de credenciais. O tipo
+`RtspConnectionRequest` não é prova de autorização. O worker de produção não
+recebe o extrator GStreamer; o caminho integrado aceita apenas a instância exata
+de `FakeRtspAdapter` e falha fechado antes de credenciais e rede quando o seam
+não está presente. A UI mantém RTSP indisponível até que redirect/egress tenha
+validação de segurança suficiente.
+
+ROOT executou no PowerShell normal, com `scripts.localqa.test_settings`, banco
+de teste e `TEMP` isolado em `.local/qa/argos-rtsp-root-validation/temp`, os
+módulos `cameras.test_camera_connection_config`,
+`cameras.test_imagens_capture_service`, `cameras.test_imagens_capture_views`,
+`cameras.test_imagens_capture_worker`, `cameras.test_imagens_gallery_service`,
+`cameras.test_imagens_capture_rtsp`, `cameras.test_camera_rtsp_adapter` e
+`cameras.test_camera_rtsp_runtime`: 113/113 passaram em 1,731 s. O Django
+system check não encontrou issues e `git diff --check` passou. A evidência é de
+testes offline/fakes; não demonstra decodificação real H.264/H.265, GStreamer
+runtime, rede, redirects/egress, deadline/teardown real ou RSS/buffers upstream.
+
+Arquivos funcionais e de teste alterados: `cameras/imagens/capture_service.py`,
+`cameras/integracao/configuration.py`,
+`cameras/templates/cameras/detalhe.html`,
+`cameras/test_camera_connection_config.py`,
+`cameras/test_imagens_capture_service.py`,
+`cameras/test_imagens_capture_views.py`, `cameras/views.py`,
+`static/js/camera-capture.js` e novo `cameras/test_imagens_capture_rtsp.py`.
+Não foram criados modelos ou migrations. Nenhuma câmera, VM, rede externa,
+database operacional, credencial real, F02/F03 ou estado de monitoramento foi
+acessado ou alterado. Nenhuma integração ou alteração de C04/P2 foi realizada.
+O `?? .codex/agents.zip` observado no
+status não foi produzido por esta atividade e foi preservado.
+
+`REAL_RTSP_ENABLED = NO`; `MONITORING_MUTATION = NONE`;
+`P1_FINAL_ACCEPTANCE = PENDING`. A conclusão desta seção cobre somente a
+implementação local integrada e sua validação offline; não concede homologação
+operacional nem aceite final da P1. `NEXT_STEP = ARGOS_IN_APP_REAL_CAMERA_VALIDATION`.

@@ -10,7 +10,9 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-02 (2026-10-21): consultar PROJECT_STATE.md §173 e ACTIVE_DOCUMENT_MAP.md §132. A checkout canônica está em master @ 22d55c33e3313750bc40cd99bc74e551314ab3b1, igual a origin/master consultada ao vivo. O Lote 2 removeu os oito worktrees autorizados com git worktree remove sem força, reduzindo o inventário de 23 para 15; as oito branches históricas permanecem. Sete SQLite locais de zero bytes e somente caches .pyc/pytest autorizados foram descartados. O SQLite principal permaneceu em 610304 bytes com SHA-256 inalterado; ZIP preservado. Sem mudanças de código, VM, branches, commit ou push. Lote 2 fechado; não iniciar Lote 3. Próximo gate: C3C_BATCH_02_REVIEW.
+RETOMADA ATUAL ARGOS-E3-RTSP-INTEGRATION-01 (2026-10-21): consultar [PROJECT_STATE.md §178](PROJECT_STATE.md) e [ACTIVE_DOCUMENT_MAP.md §137](ACTIVE_DOCUMENT_MAP.md). Checkout canônico em `master` @ `76e6220f5627497a526ecda7884a84978db1bc9e`; integração local RTSP/E3/E4 validada com 113/113 testes offline/fakes e Django system check. A fonte HTTP exige seleção `HTTP_SNAPSHOT` explícita; RTSP real permanece desabilitado, pois o worker de produção não recebe o extrator GStreamer e o gate de redirect/egress continua pendente. Sem câmera, VM, rede externa, DB operacional ou mutação de monitoramento; sem stage, commit ou push. Aceite final da P1 permanece pendente. Próximo passo registrado: `ARGOS_IN_APP_REAL_CAMERA_VALIDATION`, condicionado à autorização e aos gates de segurança aplicáveis.
+
+SNAPSHOT ANTERIOR ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-02 (2026-10-21): consultar PROJECT_STATE.md §173 e ACTIVE_DOCUMENT_MAP.md §132. A checkout canônica estava em master @ 22d55c33e3313750bc40cd99bc74e551314ab3b1, igual a origin/master consultada ao vivo. O Lote 2 removeu os oito worktrees autorizados com git worktree remove sem força, reduzindo o inventário de 23 para 15; as oito branches históricas permanecem. Sete SQLite locais de zero bytes e somente caches .pyc/pytest autorizados foram descartados. O SQLite principal permaneceu em 610304 bytes com SHA-256 inalterado; ZIP preservado. Sem mudanças de código, VM, branches, commit ou push. Lote 2 fechado; não iniciar Lote 3. Próximo gate: C3C_BATCH_02_REVIEW.
 
 SNAPSHOT ANTERIOR ARGOS-E4-CHECKPOINT-COMMIT-PUSH (2026-10-18): consultar
 `PROJECT_STATE.md` §165 e `ACTIVE_DOCUMENT_MAP.md` §125. E2 está
@@ -3975,3 +3977,26 @@ PROJECT_STATE_UPDATE = PASS / §177
 P1_FINAL_ACCEPTANCE = NOT_GRANTED
 PHASE_B_RUNTIME_VALIDATION = NOT_AUTHORIZED
 NEXT_GATE = HUMAN_AUTHORIZATION_FOR_PHASE_B_RUNTIME_VALIDATION
+
+## 20.133. ARGOS-E3-RTSP-INTEGRATION-01 (2026-10-21)
+
+Consultar [PROJECT_STATE.md §178](PROJECT_STATE.md) para a integração local
+RTSP/E3/E4: `RTSP_FRAME` é a fonte primária para perfil RTSP; HTTP exige
+seleção explícita e não há fallback. A persistência, auditoria e galeria E4
+foram exercitadas com `FakeRtspAdapter`; o worker de produção não recebe o
+extrator GStreamer. Redirect/egress ainda não está validado, portanto RTSP real
+permanece desabilitado.
+
+Os 113 testes focais, Django system check e `git diff --check` passaram com
+banco de teste isolado e fakes. Isso não demonstra decodificação offline real
+H.264/H.265, GStreamer runtime, rede, redirects/egress, RSS/upstream, deadline
+ou teardown real. Não houve VM, câmera, DB operacional, credencial real ou
+mutação de monitoramento. P1 final permanece pendente e não houve commit/push.
+Próximo passo registrado: `ARGOS_IN_APP_REAL_CAMERA_VALIDATION`, condicionado
+à autorização e aos gates de segurança aplicáveis.
+
+PROJECT_STATE_UPDATE = PASS / §178
+REAL_RTSP_ENABLED = NO
+MONITORING_MUTATION = NONE
+P1_FINAL_ACCEPTANCE = PENDING
+NEXT_GATE = ARGOS_IN_APP_REAL_CAMERA_VALIDATION

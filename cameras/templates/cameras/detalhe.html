@@ -255,11 +255,11 @@
     {% if capture_panel_visible %}
     <section class="argos-camera-detail__image-operation" aria-labelledby="camera-detail-capture-heading" data-camera-capture data-eligibility-state="{{ capture_eligibility_state }}" data-status-url="{{ capture_status_url }}" data-job-id="{% if capture_polling %}{{ capture_job.pk }}{% endif %}" data-job-state="{% if capture_polling %}{{ capture_job.status }}{% endif %}">
       <h3 id="camera-detail-capture-heading">Captura direta da câmera</h3>
-      {% if can_capture_camera %}<p class="argos-camera-detail__upload-copy">Solicita uma captura usando o perfil autorizado desta câmera.</p>{% endif %}
+      {% if can_capture_camera %}<p class="argos-camera-detail__upload-copy">Método configurado: {{ capture_source_label }}.</p>{% endif %}
       <div class="argos-camera-detail__capture-actions">
         {% if can_capture_camera %}
         <form class="argos-camera-detail__capture-form" action="{% url 'cameras:solicitar_captura' camera.pk %}" method="post">
-          {% csrf_token %}<input type="hidden" name="idempotency_key" value="{{ capture_idempotency_key }}">
+          {% csrf_token %}<input type="hidden" name="idempotency_key" value="{{ capture_idempotency_key }}"><input type="hidden" name="source_preference" value="{{ capture_source_preference }}">
           <button class="argos-button argos-button--primary" type="submit"><svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Capturar imagem</span></button>
         </form>
         {% endif %}

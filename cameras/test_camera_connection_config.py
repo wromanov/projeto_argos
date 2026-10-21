@@ -158,6 +158,38 @@ class CameraConnectionConfigurationTests(TestCase):
         resolved = resolve_connection_config(camera_id=self.camera.pk, environment_allowed_ports=self.policy_ports)
         self.assertEqual(resolved["rtsp_uri"], "rtsp://192.0.2.10:554")
 
+    def test_resolver_preserves_explicit_authorized_rtsp_port(self):
+        profile = CameraCapabilityProfile.objects.create(
+            profile_key="RTSP_EXPLICIT_PORT_TEST", version=1, active=True,
+            adapter_key=CameraCapabilityProfile.Adapter.RTSP,
+            allowed_schemes=["rtsp"], allowed_ports=[554, 8554],
+            tls_policy=CameraCapabilityProfile.TLSPolicy.NOT_APPLICABLE,
+            auth_method=CameraCapabilityProfile.AuthMethod.RTSP_NEGOTIATE,
+            credential_required=False,
+            endpoint_policy=CameraCapabilityProfile.EndpointPolicy.TECHNICIAN_OVERRIDE,
+            default_path="/stream", allowed_override_fields=["port"],
+            probe_evidence_stage=CameraCapabilityProfile.ProbeStage.D,
+            source_ref="test fixture",
+        )
+        config = save_connection_config(
+            actor=self.user, camera_id=self.camera.pk,
+            values={
+                "profile": profile,
+                "rtsp_uri": "rtsp://192.0.2.10:8554/stream",
+                "enabled": True,
+            },
+            environment_allowed_ports={554, 8554},
+        )
+
+        resolved = resolve_connection_config(
+            camera_id=self.camera.pk, environment_allowed_ports={554, 8554},
+        )
+
+        self.assertEqual(config.rtsp_uri, "rtsp://192.0.2.10:8554/stream")
+        self.assertEqual(resolved["rtsp_uri"], "rtsp://192.0.2.10:8554/stream")
+        with self.assertRaises(ValidationError):
+            resolve_connection_config(camera_id=self.camera.pk, environment_allowed_ports={554})
+
 
     def test_audit_failure_rolls_back_config_and_generation(self):
         with patch("cameras.auditoria.registrar_evento", side_effect=RuntimeError("audit unavailable")):

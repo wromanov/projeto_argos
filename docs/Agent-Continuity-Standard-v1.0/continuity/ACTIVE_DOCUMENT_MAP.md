@@ -11,9 +11,9 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; reconciliação documental final §171; C3-B preservada em §170 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; current handoff C3 reconciliation / PROJECT_STATE §171 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; latest reconciliation §130 / PROJECT_STATE §171; prior pointers retained historically |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; integração RTSP/E3/E4 §178; snapshots anteriores preservados |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; handoff ARGOS-E3-RTSP-INTEGRATION-01 / PROJECT_STATE §178 |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; atividade atual §137 / PROJECT_STATE §178; histórico anterior preservado |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
 ## 2. Authorities canônicas do projeto
@@ -2885,3 +2885,24 @@ PROJECT_STATE_UPDATE = PASS / §177 e §§20.132, 136
 P1_FINAL_ACCEPTANCE = NOT_GRANTED
 PHASE_B_RUNTIME_VALIDATION = NOT_AUTHORIZED
 NEXT_GATE = HUMAN_AUTHORIZATION_FOR_PHASE_B_RUNTIME_VALIDATION
+
+## 137. ARGOS-E3-RTSP-INTEGRATION-01 (2026-10-21)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| [PROJECT_STATE.md §178](PROJECT_STATE.md) | Registro factual da integração local RTSP/E3/E4 e validação | CURRENT / 113/113 testes focais e Django system check PASS; RTSP real desabilitado |
+| [PROJECT_STATE.md §177](PROJECT_STATE.md) | Fundação P1 Phase A e limites de runtime | PRESERVED / aceite final P1 pendente; validação runtime real não demonstrada |
+| [AGENT_CONTINUITY.md §20.133](AGENT_CONTINUITY.md) | Handoff corrente e gates | CURRENT / integração local validada; próximo passo requer gate/autorização aplicável |
+| `docs/projeto/contracts/backend/camera/ARGOS_E3_RTSP_P1_FRAME_EXTRACTION_IMPLEMENTATION_CONTRACT_DRAFT.md` | Contrato draft da extração RTSP P1 | DRAFT / seus limites de runtime continuam sem evidência nesta integração local |
+
+Esta atividade integrou o caminho RTSP ao worker e à persistência/galeria E4
+por meio de `FakeRtspAdapter`; o worker de produção não recebe o GStreamer real.
+HTTP exige seleção explícita e não há fallback. Não houve conexão de rede,
+câmera ou VM, nem mutação de monitoramento. Os testes offline/fakes não
+demonstram codecs reais, redirects/egress, memória, deadline ou teardown em
+runtime. Aceite final P1 permanece pendente; sem commit ou push.
+
+PROJECT_STATE_UPDATE = PASS / §178 e §§20.133, 137
+REAL_RTSP_ENABLED = NO
+P1_FINAL_ACCEPTANCE = PENDING
+NEXT_STEP = ARGOS_IN_APP_REAL_CAMERA_VALIDATION
