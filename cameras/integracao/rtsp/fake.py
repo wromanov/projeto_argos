@@ -3,7 +3,8 @@ from datetime import datetime, timezone
 import time
 from cameras.monitoramento.contracts import ProbeResultCode
 from uuid import uuid4
-from .ports import RtspConnectionRequest, RtspSession, RtspStage, StageStatus, make_result
+from .ports import RtspConnectionRequest, RtspFrameError, RtspJpegFrame, RtspSession, RtspStage, StageStatus, make_result
+from .gst_adapter import _encode_validated_jpeg
 
 class FakeRtspAdapter:
     def __init__(self, outcomes=None, *, codec="H264", error_code="PROTOCOL_ERROR", monotonic=time.monotonic, now=lambda: datetime.now(timezone.utc)):
@@ -38,6 +39,26 @@ class FakeRtspAdapter:
             target.cancel_event.set()
         elif isinstance(target, RtspSession):
             self._sessions.pop(target.id, None)
+
+    def extract_one_jpeg_frame(self, request: RtspConnectionRequest) -> RtspJpegFrame:
+        """Synthetic bytes only; this does not establish GStreamer codec support."""
+        if not isinstance(request, RtspConnectionRequest):
+            raise RtspFrameError("INVALID_REQUEST")
+        if request.cancel_event.is_set():
+            raise RtspFrameError("CANCELLED")
+        self.calls += 1
+        self.last_uri = request.uri
+        self.last_transport = request.transport
+        self.authentication_configured = request.credential is not None
+        if any(self.outcomes.get(stage, StageStatus.PASS) is not StageStatus.PASS for stage in RtspStage):
+            code = self.error_code if self.error_code in {"INVALID_REQUEST", "TARGET_BLOCKED", "CREDENTIAL_UNAVAILABLE", "AUTH_FAILURE", "CODEC_UNAVAILABLE", "DECODE_FAILED", "ENCODE_FAILED", "INVALID_SAMPLE", "LIMIT_EXCEEDED", "TIMEOUT", "CANCELLED", "UNAUTHORIZED_REDIRECT", "TEARDOWN_FAILED", "RUNTIME_ERROR"} else "RUNTIME_ERROR"
+            raise RtspFrameError(code)
+        if self.codec not in {"H264", "H265"}:
+            raise RtspFrameError("CODEC_UNAVAILABLE")
+        encoded = _encode_validated_jpeg(bytes((255, 0, 0, 0, 255, 0, 0, 0, 255, 255, 255, 255)), 2, 2)
+        if request.cancel_event.is_set():
+            raise RtspFrameError("CANCELLED")
+        return RtspJpegFrame(encoded, 2, 2, self.codec, self.now())
 
     def probe(self, request):
         started = self.monotonic()

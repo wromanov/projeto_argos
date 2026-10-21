@@ -3869,6 +3869,27 @@ DATABASE_CHANGES = NONE
 VM_CHANGES = NONE
 COMMIT_OR_PUSH = NONE
 
+### 20.130 ARGOS-WORK-SQLITE-MIGRATION-APPLY-01 (2026-10-21)
+
+Consultar PROJECT_STATE.md §175 e ACTIVE_DOCUMENT_MAP.md §134. No checkout WORK,
+master local permaneceu em 625b47f91d219b40ed7f65c2405b845bd7b00d58. O backup
+pré-migration persistente foi verificado por hash e manifesto; integrity_check
+retornou ok e foreign_key_check retornou zero violações. As migrations
+cameras.0018–0021 foram aplicadas sem erro. Django check, plano de migrations,
+integridade SQLite, FKs e esquema passaram; nenhuma migration ficou pendente.
+
+Os testes direcionados rodaram em SQLite em memória separado: 61 testes, com
+6 failures e 23 errors. Os grupos de snapshots de saúde e importação passaram;
+há falhas/erros em capture jobs. Um teste representativo observou status FAILED
+em vez de SUCCEEDED e WinError 5 na limpeza de diretório temporário. A causa
+global não foi determinada. Código e migrations não foram alterados.
+
+O banco operacional terminou com 589824 bytes e SHA-256
+A567C50A2721C6754F4A7D64F4DE199AD33C41AD9046EB21453EDFAD2D974676.
+HOM-03 segue pendente de SSH autorizado; P1 RTSP não está autorizada. Revisão
+humana pós-migration é o próximo gate. Nenhuma consulta ao remoto, commit ou
+push foi realizada nesta atividade.
+
 ### 20.128 ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-02 (2026-10-21)
 
 Consultar PROJECT_STATE.md §173 e ACTIVE_DOCUMENT_MAP.md §132. O preflight foi
@@ -3891,3 +3912,66 @@ NEXT_GATE = C3C_BATCH_02_REVIEW
 ```
 
 Não iniciar Lote 3 sem autorização própria.
+
+### 20.129 ARGOS-WORK-SQLITE-MIGRATION-PREFLIGHT-01 (2026-10-21)
+
+Consultar PROJECT_STATE.md §174. No checkout em WORK, master permaneceu em 625b47f91d219b40ed7f65c2405b845bd7b00d58. O SQLite local foi preservado; como a enumeração de processos retornou Access Denied, foi criado backup online SQLite com origem read-only, integrity_check PASS e hash da origem inalterado. Backup e manifesto estão no caminho registrado em §174.
+
+As migrations cameras.0018–0021 foram lidas e o SQL foi inspecionado sem execução. 0001–0017 permanecem aplicadas; 0018–0021 continuam pendentes. A 0020 contém ciclos de reconstrução SQLite ao acrescentar constraints; a tabela de destino estava ausente antes da aplicação. Nenhuma migration foi aplicada. Não iniciar aplicação até aprovação humana e revalidação do backup, dos writers e do esquema.
+
+Django check = PASS. HOM-03 continua bloqueada por autenticação SSH; P1 RTSP continua não autorizada/não iniciada. A consolidação de worktrees na estação Casa é uma frente independente e não foi tocada.
+
+PROJECT_STATE_UPDATE = PASS / §174
+NEXT_GATE = HUMAN_SQLITE_MIGRATION_APPROVAL
+CODE_CHANGES = NONE
+COMMIT_OR_PUSH = NONE
+
+### 20.131 ARGOS-WORK-RECOVERY-CLOSURE-01 (2026-10-21)
+
+Consultar PROJECT_STATE.md §176 e ACTIVE_DOCUMENT_MAP.md §135. A branch local é
+`master` em 625b47f91d219b40ed7f65c2405b845bd7b00d58. Os 24 testes do módulo
+Capture Jobs passaram no PowerShell do usuário, em SQLite em memória, incluindo
+os seis casos anteriormente falhos; o resultado anterior dos 61 testes
+(6 failures, 23 errors) permanece histórico e não foi integralmente repetido.
+O WinError 5 anterior ocorreu no ambiente Codex ao criar/limpar diretórios
+temporários; o usuário reportou filesystem de teste PASS em diretório gravável.
+
+A conexão `git ls-remote` falhou no proxy local `127.0.0.1:9`. O conector
+GitHub confirmou `master` idêntica à baseline esperada, sem commits ahead/behind.
+Como o Git CLI não consegue publicar pelo proxy, não houve stage, commit ou
+push; não criar commit local isolado. O status local mostra somente os três
+documentos de continuidade modificados e staging vazio; dois diretórios
+temporários sem acesso geraram avisos e foram preservados.
+
+Não houve mudança de código, migration ou banco. E0 / ARGOS-QA-01 continua
+pendente: os 24 testes de Capture Jobs não validam VISUAL_QA_USERNAME nem
+reexecutam os 61 testes originais. Os checkpoints locais registram E1 / CRED-UI
+implementada (§§137–138), E2 / IMG-07 integrada e fechada com exceções aceitas
+(§§153–154), E3 integrada/publicada (§§162–163) e E4 / IMG-06 publicada (§165).
+O roadmap e plano E0–E8 ainda marcam E1–E4 como planejadas; divergência
+registrada em PROJECT_STATE §176 sem alteração desses documentos.
+
+Próxima atividade recomendada para seleção: ARGOS_E5_LIFECYCLE_AUTHORITY_REVIEW
+(IMG-08/09), para delimitar contrato de retenção/rotação, proteção e auditoria;
+não assumir autorização para purge, migration ou implementação. Retenção de 12
+meses e rotação somente após validar a nova imagem estão registradas; não foi
+localizado contrato E5 independente. Alternativa: ARGOS-INV-EXPORT-01, aprovada
+mas deferida à sprint final. HOM-03 requer SSH autorizado; P1 RTSP não autorizada.
+
+PROJECT_STATE_UPDATE = PASS / §176
+REMOTE_MASTER_VERIFIED = YES / GitHub connector compare identical
+COMMIT_OR_PUSH = NOT_ATTEMPTED / Git CLI connection blocked by local proxy
+NEXT_GATE = HUMAN_FEATURE_SELECTION
+
+## 20.132. ARGOS-E3-RTSP-ROUND-1-P1-PHASE-A (2026-10-21)
+
+Consultar [PROJECT_STATE.md §177](PROJECT_STATE.md) para o registro da Fase A P1 RTSP: implementação aditiva autorizada, quatro arquivos de código, testes focais offline 28/28 PASS no test DB e revisão `ACCEPT_WITH_FINDINGS`. `probe`, `describe`, `receive_one_frame(session) -> bool`, A/B/C/D e C01–C06 foram preservados.
+
+P1 final acceptance permanece `NOT_GRANTED`; Phase B runtime validation permanece `NOT_AUTHORIZED`. H.264/H.265 reais offline, RSS/buffers upstream, deadline/teardown GStreamer real e redirects/egress estão `NOT_VALIDATED`. Não houve VM, câmera ou rede real nem alterações de resolver, worker E3, E4, C04/P2, CI ou DB. Próximo gate: `HUMAN_AUTHORIZATION_FOR_PHASE_B_RUNTIME_VALIDATION`.
+
+As alterações observadas em `.codex/agents/architect.toml` e `.codex/agents/security_reviewer.toml` não pertencem a esta atividade; não editar nem atribuí-las a este registro. O usuário atualizou o perfil architect.
+
+PROJECT_STATE_UPDATE = PASS / §177
+P1_FINAL_ACCEPTANCE = NOT_GRANTED
+PHASE_B_RUNTIME_VALIDATION = NOT_AUTHORIZED
+NEXT_GATE = HUMAN_AUTHORIZATION_FOR_PHASE_B_RUNTIME_VALIDATION

@@ -1,10 +1,12 @@
 """Fake-only tests for the RTSP stages and their application boundaries."""
 from datetime import datetime, timezone
+from io import BytesIO
 from ipaddress import IPv4Address
 from types import SimpleNamespace
 from unittest import TestCase
 from unittest.mock import patch
 import socket
+from PIL import Image
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
@@ -16,8 +18,9 @@ from cameras.integracao.target_policy import AuthorizedTargetRequest, TargetPoli
 from cameras.models import Camera, CameraCapabilityProfile, CameraConnectionConfig, CameraCredential, EstadoMonitoramento
 from cameras.monitoramento.contracts import ProbeResultCode
 from cameras.integracao.rtsp.fake import FakeRtspAdapter
-from cameras.integracao.rtsp.gst_adapter import GStreamerRtspAdapter, GStreamerUnavailable, MAX_FRAME_BYTES, _DEPAYLOADERS
-from cameras.integracao.rtsp.ports import RtspConnectionRequest, RtspStage, StageStatus
+from cameras.integracao.rtsp.gst_adapter import (GStreamerRtspAdapter, GStreamerUnavailable,
+    MAX_FRAME_BYTES, MAX_RAW_BYTES, _DEPAYLOADERS, _copy_rgb_rows, _encode_validated_jpeg, _sample_rgb)
+from cameras.integracao.rtsp.ports import RtspConnectionRequest, RtspFrameError, RtspJpegFrame, RtspStage, StageStatus
 from cameras.integracao.rtsp.service import run_camera_connection_test
 
 
@@ -113,6 +116,7 @@ class _TemporalPipeline:
             self.current_state, self.pending_state = "NULL", None
         return 0
     def get_bus(self): return self.bus
+    def get_state(self, _timeout): return (0, 0 if self.current_state == "NULL" else 1, None)
 
 def _temporal_gstreamer_adapter(sync_result=True):
     clock = [0.0]
@@ -372,3 +376,260 @@ class ManualRtspServiceTests(DjangoTestCase):
         adapter = FakeRtspAdapter()
         with self.assertRaises(PermissionDenied): self._run(adapter)
         self.assertEqual(adapter.calls, 0)
+
+
+class RtspFrameExtractionTests(TestCase):
+    """Offline contract checks; they do not establish H264/H265 runtime decoding."""
+
+    def test_fake_returns_opaque_valid_jpeg_and_preserves_diagnostics(self):
+        secret = ResolvedCameraCredential("frame-user-secret", "frame-password-secret")
+        adapter = FakeRtspAdapter(codec="H265")
+        frame = adapter.extract_one_jpeg_frame(request(secret))
+        self.assertIsInstance(frame, RtspJpegFrame)
+        self.assertEqual((frame.width, frame.height, frame.codec, frame.media_type), (2, 2, "H265", "image/jpeg"))
+        with Image.open(BytesIO(frame.jpeg_bytes)) as image:
+            image.load()
+            self.assertEqual((image.format, image.size), ("JPEG", (2, 2)))
+        self.assertNotIn("frame-password-secret", repr(frame))
+        self.assertNotIn("10.42.0.10", repr(frame))
+        self.assertTrue(adapter.probe(request()).is_success)
+
+    def test_fake_cancel_and_closed_failures(self):
+        value = request()
+        value.cancel_event.set()
+        with self.assertRaises(RtspFrameError) as raised:
+            FakeRtspAdapter().extract_one_jpeg_frame(value)
+        self.assertEqual(raised.exception.code, "CANCELLED")
+        adapter = FakeRtspAdapter({RtspStage.MEDIA_DELIVERY: StageStatus.FAIL}, error_code="DECODE_FAILED")
+        with self.assertRaises(RtspFrameError) as raised:
+            adapter.extract_one_jpeg_frame(request())
+        self.assertEqual(raised.exception.code, "DECODE_FAILED")
+        with self.assertRaises(ValueError):
+            RtspFrameError("rtsp://private")
+
+    def test_rgb_row_copy_honors_padding_and_limits_before_copy(self):
+        raw = b"XX" + b"\x01\x02\x03\x04\x05\x06PP" + b"\x07\x08\x09\x0a\x0b\x0cQQ"
+        copied = _copy_rgb_rows(raw, width=2, height=2, stride=8, offset=2)
+        self.assertEqual(copied, raw[2:8] + raw[10:16])
+        for kwargs, expected in (({"width": 1921, "height": 1, "stride": 8192}, "LIMIT_EXCEEDED"),
+                                 ({"width": 2, "height": 2, "stride": 8193}, "INVALID_SAMPLE"),
+                                 ({"width": 2, "height": 2, "stride": 8, "offset": 3}, "INVALID_SAMPLE"),
+                                 ({"width": 2, "height": 2, "stride": 8, "offset": 2, "buffer_size": MAX_RAW_BYTES + 1}, "LIMIT_EXCEEDED")):
+            with self.subTest(kwargs=kwargs), self.assertRaises(RtspFrameError) as raised:
+                _copy_rgb_rows(raw, **kwargs)
+            self.assertEqual(raised.exception.code, expected)
+        edge = _copy_rgb_rows(bytes(8192 * 1080), width=1920, height=1080, stride=8192)
+        self.assertEqual(len(edge), 1920 * 1080 * 3)
+
+    def test_sample_rejects_oversize_buffer_before_mapping(self):
+        class Buffer:
+            def get_size(self): return MAX_RAW_BYTES + 1
+            def map(self, _flags): raise AssertionError("oversized sample was mapped")
+        caps = SimpleNamespace(get_size=lambda: 1, get_structure=lambda _index:
+            SimpleNamespace(get_name=lambda: "video/x-raw", get_string=lambda _key: "RGB"))
+        sample = SimpleNamespace(get_caps=lambda: caps, get_buffer=lambda: Buffer())
+        class VideoInfo:
+            width, height = 2, 2
+            stride, offset = [8], [0]
+            def from_caps(self, _caps): return True
+        video = SimpleNamespace(VideoInfo=VideoInfo, buffer_get_video_meta=lambda _buffer: None)
+        with self.assertRaises(RtspFrameError) as raised:
+            _sample_rgb(sample, SimpleNamespace(MapFlags=SimpleNamespace(READ=1)), video, lambda: None)
+        self.assertEqual(raised.exception.code, "LIMIT_EXCEEDED")
+
+    def test_jpeg_encoder_and_dto_validate_independently(self):
+        encoded = _encode_validated_jpeg(bytes((255, 0, 0)) * 4, 2, 2)
+        frame = RtspJpegFrame(encoded, 2, 2, "H264", datetime.now(timezone.utc))
+        self.assertEqual(frame.media_type, "image/jpeg")
+        for invalid in (b"not jpeg", b"\xff\xd8" + b"x" * (5 * 1024 * 1024) + b"\xff\xd9"):
+            with self.assertRaises(ValueError):
+                RtspJpegFrame(invalid, 2, 2, "H264", datetime.now(timezone.utc))
+        with self.assertRaises(ValueError):
+            RtspJpegFrame(encoded, True, 2, "H264", datetime.now(timezone.utc))
+
+    def test_jpeg_writer_stops_overflow_during_save_and_reports_encode_failure(self):
+        from cameras.integracao.rtsp.gst_adapter import MAX_JPEG_BYTES
+        def overflow(_image, output, **_kwargs):
+            output.write(b"x" * (MAX_JPEG_BYTES + 1))
+        with patch.object(Image.Image, "save", overflow), self.assertRaises(RtspFrameError) as raised:
+            _encode_validated_jpeg(bytes(12), 2, 2)
+        self.assertEqual(raised.exception.code, "LIMIT_EXCEEDED")
+        with patch.object(Image.Image, "save", side_effect=OSError("provider detail")), self.assertRaises(RtspFrameError) as raised:
+            _encode_validated_jpeg(bytes(12), 2, 2)
+        self.assertEqual(raised.exception.code, "ENCODE_FAILED")
+        self.assertNotIn("provider detail", str(raised.exception))
+
+    def test_cancel_during_encode_is_observed_before_jpeg_return(self):
+        checks = [0]
+        def check():
+            checks[0] += 1
+            if checks[0] == 2:
+                raise RtspFrameError("CANCELLED")
+        with self.assertRaises(RtspFrameError) as raised:
+            _encode_validated_jpeg(bytes(12), 2, 2, check=check)
+        self.assertEqual(raised.exception.code, "CANCELLED")
+
+    def test_frame_pipeline_cleans_partial_construction(self):
+        for failure in ("make", "config", "add", "link"):
+            with self.subTest(failure=failure):
+                class Pipeline:
+                    states = []
+                    def add(self, _element):
+                        if failure == "add": raise RuntimeError("provider detail")
+                    def set_state(self, value):
+                        self.states.append(value)
+                        return 0
+                    def get_state(self, _timeout): return (0, 0, None)
+                pipeline = Pipeline()
+                class Element(_FakeElement):
+                    def set_property(self, name, value):
+                        if failure == "config" and name == "caps": raise RuntimeError("provider detail")
+                        super().set_property(name, value)
+                    def link(self, other): return failure != "link"
+                class Factory:
+                    @staticmethod
+                    def make(name, _instance):
+                        if failure == "make" and name == "appsink": return None
+                        return Element(name)
+                gst = SimpleNamespace(Pipeline=SimpleNamespace(new=lambda _name: pipeline),
+                    ElementFactory=Factory, Caps=_FakeCaps, State=SimpleNamespace(NULL=0),
+                    StateChangeReturn=SimpleNamespace(FAILURE=-1))
+                with self.assertRaises(Exception):
+                    GStreamerRtspAdapter._frame_pipeline(gst, _FakeRtsp, request())
+                self.assertEqual(pipeline.states, [0])
+
+    def test_frame_pipeline_is_rgb_and_keeps_credentials_out_of_uri(self):
+        secret = ResolvedCameraCredential("frame-user-secret", "frame-password-secret")
+        pipeline, source, decoder, converter, sink = GStreamerRtspAdapter._frame_pipeline(_FakeGst, _FakeRtsp, request(secret))
+        self.assertEqual(len(pipeline.elements), 4)
+        self.assertEqual((source.name, decoder.name, converter.name, sink.name),
+                         ("rtspsrc", "decodebin", "videoconvert", "appsink"))
+        self.assertEqual(source.props["location"], "rtsp://10.42.0.10:554/stream1")
+        self.assertEqual(source.props["user-id"], "frame-user-secret")
+        self.assertEqual(source.props["user-pw"], "frame-password-secret")
+        self.assertEqual(sink.props["caps"], "video/x-raw,format=RGB")
+        self.assertEqual((sink.props["max-buffers"], sink.props["max-bytes"]), (1, MAX_RAW_BYTES))
+
+    def test_frame_pipeline_uses_remaining_monotonic_budget_after_setup(self):
+        clock = [0.0]
+        class Factory:
+            @staticmethod
+            def make(name, _instance):
+                if name == "rtspsrc": clock[0] += 4.0
+                return _FakeElement(name)
+        gst = SimpleNamespace(Pipeline=_FakePipeline, ElementFactory=Factory, Caps=_FakeCaps,
+            State=SimpleNamespace(NULL=0), StateChangeReturn=SimpleNamespace(FAILURE=-1))
+        _pipeline, source, _decoder, _converter, _sink = GStreamerRtspAdapter._frame_pipeline(
+            gst, _FakeRtsp, request(timeout=15, connect_timeout=12), lambda: 15.0 - clock[0])
+        self.assertEqual(source.props["timeout"], 11_000_000)
+        self.assertEqual(source.props["tcp-timeout"], 11_000_000)
+
+    def test_gstreamer_control_flow_builds_jpeg_from_one_offline_rgb_sample(self):
+        for advertised, expected in (("H264", "H264"), ("HEVC", "H265")):
+            with self.subTest(advertised=advertised):
+                adapter, bus, _clock, pipeline, gst, _elements, source_pad = _temporal_gstreamer_adapter()
+                source_pad.get_string = lambda key: {"media": "video", "encoding-name": advertised}.get(key)
+                gst.MapFlags = SimpleNamespace(READ=1)
+                source, decoder, converter, sink = (_TemporalElement() for _ in range(4))
+                adapter._frame_pipeline = lambda *_: (pipeline, source, decoder, converter, sink)
+
+                class Buffer:
+                    unmapped = False
+                    def get_size(self): return 16
+                    def map(self, _flags): return True, SimpleNamespace(data=b"\xff\x00\x00\x00\xff\x00PP" + b"\x00\x00\xff\xff\xff\xffQQ")
+                    def unmap(self, _info): self.unmapped = True
+                buffer = Buffer()
+                caps = SimpleNamespace(get_size=lambda: 1, get_structure=lambda _index:
+                    SimpleNamespace(get_name=lambda: "video/x-raw", get_string=lambda _key: "RGB"))
+                sink.emit = lambda _signal: SimpleNamespace(get_caps=lambda: caps, get_buffer=lambda: buffer)
+                class VideoInfo:
+                    width, height = 2, 2
+                    stride, offset = [8], [0]
+                    def from_caps(self, _caps): return True
+                adapter.video_loader = lambda: SimpleNamespace(VideoInfo=VideoInfo, buffer_get_video_meta=lambda _buffer: None)
+                raw_pad = SimpleNamespace(get_current_caps=lambda: SimpleNamespace(get_size=lambda: 1,
+                    get_structure=lambda _index: SimpleNamespace(get_name=lambda: "video/x-raw")),
+                    link=lambda _target: gst.PadLinkReturn.OK)
+                def deliver():
+                    source.signals["pad-added"](source, source_pad)
+                    decoder.signals["pad-added"](decoder, raw_pad)
+                    sink.signals["new-sample"](sink)
+                bus.actions = [deliver]
+                frame = adapter.extract_one_jpeg_frame(request())
+                self.assertEqual((frame.width, frame.height, frame.codec), (2, 2, expected))
+                self.assertTrue(buffer.unmapped)
+                self.assertEqual(pipeline.states[-1], gst.State.NULL)
+                with Image.open(BytesIO(frame.jpeg_bytes)) as image:
+                    image.load()
+                    self.assertEqual(image.size, (2, 2))
+
+    def test_global_deadline_and_redirect_are_closed_without_network(self):
+        adapter, bus, clock, pipeline, gst, elements, pad = _temporal_gstreamer_adapter()
+        converter = _TemporalElement()
+        adapter.video_loader = lambda: object()
+        adapter._frame_pipeline = lambda *_: (pipeline, elements[0] if elements else _TemporalElement(),
+            _TemporalElement(), converter, _TemporalElement())
+        # The original fake clock advances in 0.1 s steps; advance a full second
+        # per poll so the 15 s cap is reached within its bounded fixture budget.
+        bus.actions = [lambda: clock.__setitem__(0, clock[0] + 1.0) for _ in range(16)]
+        with self.assertRaises(RtspFrameError) as raised:
+            adapter.extract_one_jpeg_frame(request(timeout=30, connect_timeout=3))
+        self.assertEqual(raised.exception.code, "TIMEOUT")
+        self.assertLessEqual(clock[0], 16)
+        self.assertEqual(pipeline.states[-1], gst.State.NULL)
+
+        adapter, bus, _clock, pipeline, gst, _elements, _pad = _temporal_gstreamer_adapter()
+        adapter.video_loader = lambda: object()
+        adapter._frame_pipeline = lambda *_: (pipeline, _TemporalElement(), _TemporalElement(),
+                                              _TemporalElement(), _TemporalElement())
+        bus.actions = [SimpleNamespace(type=gst.MessageType.REDIRECT)]
+        with self.assertRaises(RtspFrameError) as raised:
+            adapter.extract_one_jpeg_frame(request())
+        self.assertEqual(raised.exception.code, "UNAUTHORIZED_REDIRECT")
+        self.assertEqual(pipeline.states[-1], gst.State.NULL)
+
+    def test_expired_setup_never_enters_playing(self):
+        adapter, _bus, clock, pipeline, gst, _elements, _pad = _temporal_gstreamer_adapter()
+        adapter.video_loader = lambda: object()
+        def slow_setup(*_args):
+            clock[0] = 16.0
+            return pipeline, _TemporalElement(), _TemporalElement(), _TemporalElement(), _TemporalElement()
+        adapter._frame_pipeline = slow_setup
+        with self.assertRaises(RtspFrameError) as raised:
+            adapter.extract_one_jpeg_frame(request(timeout=30, connect_timeout=3))
+        self.assertEqual(raised.exception.code, "TIMEOUT")
+        self.assertEqual(pipeline.states, [gst.State.NULL])
+
+    def test_cancel_during_observed_timestamp_cannot_return_frame(self):
+        adapter, bus, _clock, pipeline, gst, _elements, source_pad = _temporal_gstreamer_adapter()
+        value = request()
+        source, decoder, converter, sink = (_TemporalElement() for _ in range(4))
+        adapter.video_loader = lambda: object()
+        adapter._frame_pipeline = lambda *_: (pipeline, source, decoder, converter, sink)
+        adapter.now = lambda: (value.cancel_event.set(), datetime.now(timezone.utc))[1]
+        sink.emit = lambda _signal: object()
+        def deliver():
+            source.signals["pad-added"](source, source_pad)
+            sink.signals["new-sample"](sink)
+        bus.actions = [deliver]
+        with patch("cameras.integracao.rtsp.gst_adapter._sample_rgb", return_value=(bytes(12), 2, 2)):
+            with self.assertRaises(RtspFrameError) as raised:
+                adapter.extract_one_jpeg_frame(value)
+        self.assertEqual(raised.exception.code, "CANCELLED")
+        self.assertEqual(pipeline.states[-1], gst.State.NULL)
+
+    def test_teardown_failure_overrides_incomplete_attempt(self):
+        adapter, bus, _clock, pipeline, gst, _elements, _pad = _temporal_gstreamer_adapter()
+        adapter.video_loader = lambda: object()
+        adapter._frame_pipeline = lambda *_: (pipeline, _TemporalElement(), _TemporalElement(),
+                                              _TemporalElement(), _TemporalElement())
+        original_set_state = pipeline.set_state
+        def fail_null(state):
+            if state == gst.State.NULL: raise RuntimeError("provider detail")
+            return original_set_state(state)
+        pipeline.set_state = fail_null
+        bus.actions = [SimpleNamespace(type=gst.MessageType.REDIRECT)]
+        with self.assertRaises(RtspFrameError) as raised:
+            adapter.extract_one_jpeg_frame(request())
+        self.assertEqual(raised.exception.code, "TEARDOWN_FAILED")
+        self.assertNotIn("provider detail", str(raised.exception))

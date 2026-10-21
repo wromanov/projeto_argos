@@ -2826,3 +2826,62 @@ C3-B; o tamanho de 610304 bytes foi estável durante esta execução. O SHA-256 
 registrado e permaneceu inalterado. Nenhum outro worktree, branch, banco com
 dados, imagem, screenshot, configuração, código, migration ou VM foi alterado.
 Não houve commit ou push. Lote 3 permanece fora do escopo e não foi iniciado.
+
+## 133. ARGOS-WORK-SQLITE-MIGRATION-PREFLIGHT-01 (2026-10-21)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| PROJECT_STATE.md §174 | Preflight do SQLite, backup online, análise 0018–0021 e plano de recuperação | CURRENT / backup verificado; migrations não aplicadas |
+| AGENT_CONTINUITY.md §20.129 | Retomada e gates após preflight | CURRENT / aguarda aprovação humana para migrations |
+| Backup SQLite | Cópia consistente via API online, origem read-only | PRESERVED / integrity_check PASS; caminho e manifesto em PROJECT_STATE §174 |
+| db.sqlite3 no checkout WORK | Banco local de desenvolvimento | PRESERVED / SHA-256 inalterado durante a atividade; migrations 0018–0021 pendentes |
+
+A atividade não alterou migrations, código, banco, roadmap ou prioridades. Próximo gate: HUMAN_SQLITE_MIGRATION_APPROVAL.
+
+## 134. ARGOS-WORK-SQLITE-MIGRATION-APPLY-01 (2026-10-21)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| PROJECT_STATE.md §175 | Aplicação das migrations, backup, verificações e resultado dos testes | CURRENT / migrations 0018–0021 aplicadas; verificações Django/SQLite PASS; testes focados FAIL |
+| AGENT_CONTINUITY.md §20.130 | Continuidade e limites pós-migration | CURRENT / HOM-03 pendente de SSH autorizado; P1 RTSP não autorizada |
+| Backup persistente | Estado pré-migration e manifesto | PRESERVED / hashes e integridade verificados |
+| db.sqlite3 no checkout WORK | Banco local pós-migration | 589824 bytes; SHA-256 A567C50A2721C6754F4A7D64F4DE199AD33C41AD9046EB21453EDFAD2D974676; integrity_check ok; FK 0 |
+
+A aplicação e as verificações Django/SQLite foram concluídas. Os testes focados
+rodaram em banco em memória, com 6 failures e 23 errors em 61 testes. Revisão
+humana pós-migration pendente. Nenhuma mudança de código, commit ou push.
+
+## 135. ARGOS-WORK-RECOVERY-CLOSURE-01 (2026-10-21)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| PROJECT_STATE.md §176 | Fechamento da recuperação, evidência dos testes e decisão operacional | CURRENT / Capture Jobs 24/24 PASS no PowerShell reportado; suíte original de 61 não totalmente revalidada |
+| AGENT_CONTINUITY.md §20.131 | Handoff e restrições de retomada | CURRENT / master local em 625b47f; acesso remoto indisponível; sem commit/push |
+| PROJECT_STATE §§153–165; Roadmap §25 e plano de entrega §2 | Próxima atividade funcional recomendada e divergência documental | E5 / IMG-08/09 lifecycle authority review; tabelas E0–E8 no Roadmap/plano marcam E1–E4 como planejadas, embora os checkpoints atuais registrem integração/fechamento/publicação |
+| WORK local | Documentação e estado Git | Somente três documentos de continuidade modificados; staging vazio; dois diretórios temporários inacessíveis preservados |
+
+O resultado informado pelo usuário de 24/24 Capture Jobs complementa, sem
+substituir, o registro anterior de 61 testes com falhas/erros. E1–E4 têm
+checkpoints de implementação/integração/fechamento/publicação em PROJECT_STATE
+§§137–165; os estados do Roadmap/plano E0–E8 estão desatualizados para esses
+marcos e não foram editados. Próxima recomendação: revisar autoridade/escopo de
+IMG-08/09 (retenção, rotação, proteção, auditoria), sem purge implícito.
+ARGOS-INV-EXPORT-01 é alternativa aprovada mas deferida à sprint final. O acesso
+`git ls-remote` falhou pelo proxy local `127.0.0.1:9`, mas o conector GitHub
+confirmou `master` idêntica à baseline esperada (0 ahead/behind). Publicação
+via Git CLI não tentada; staging vazio. Próximo gate: HUMAN_FEATURE_SELECTION.
+
+## 136. ARGOS-E3-RTSP-ROUND-1-P1-PHASE-A (2026-10-21)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| [PROJECT_STATE.md §177](PROJECT_STATE.md) | Registro factual de implementação, verificação e gates da Fase A RTSP | CURRENT / Phase A implementada; testes offline 28/28 PASS no test DB; revisão `ACCEPT_WITH_FINDINGS` |
+| [ARGOS_E3_RTSP_P1_FRAME_EXTRACTION_IMPLEMENTATION_CONTRACT_DRAFT.md](../../../projeto/contracts/backend/camera/ARGOS_E3_RTSP_P1_FRAME_EXTRACTION_IMPLEMENTATION_CONTRACT_DRAFT.md) | Contrato draft da fundação P1 e limites de implementação/runtime | DRAFT / C01–C06 preservados; aceite P1 não concedido; Phase B não autorizada |
+| [AGENT_CONTINUITY.md §20.132](AGENT_CONTINUITY.md) | Handoff e restrições para retomada | CURRENT / próximo gate exige autorização humana explícita para Phase B |
+
+Permanecem `NOT_VALIDATED`: H.264/H.265 reais offline, RSS/buffers upstream, deadline/teardown GStreamer real e redirects/egress. Não houve acesso a VM, câmera ou rede real, nem alterações de resolver, worker E3, E4, C04/P2, CI ou DB. Modificações dos perfis architect/security reviewer não foram atribuídas a esta atividade.
+
+PROJECT_STATE_UPDATE = PASS / §177 e §§20.132, 136
+P1_FINAL_ACCEPTANCE = NOT_GRANTED
+PHASE_B_RUNTIME_VALIDATION = NOT_AUTHORIZED
+NEXT_GATE = HUMAN_AUTHORIZATION_FOR_PHASE_B_RUNTIME_VALIDATION

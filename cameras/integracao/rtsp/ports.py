@@ -131,6 +131,53 @@ class RtspAdapter(Protocol):
     def receive_one_frame(self, session: RtspSession) -> bool: ...
     def cancel(self, target: RtspConnectionRequest | RtspSession) -> None: ...
 
+FRAME_ERROR_CODES = frozenset({
+    "INVALID_REQUEST", "TARGET_BLOCKED", "CREDENTIAL_UNAVAILABLE", "AUTH_FAILURE",
+    "CODEC_UNAVAILABLE", "DECODE_FAILED", "ENCODE_FAILED", "INVALID_SAMPLE",
+    "LIMIT_EXCEEDED", "TIMEOUT", "CANCELLED", "UNAUTHORIZED_REDIRECT",
+    "TEARDOWN_FAILED", "RUNTIME_ERROR",
+})
+
+class RtspFrameError(Exception):
+    """Closed internal failure; provider messages and credentials never cross this boundary."""
+    def __init__(self, code: str):
+        if not isinstance(code, str) or code not in FRAME_ERROR_CODES:
+            raise ValueError("invalid RTSP frame error code")
+        self.code = code
+        super().__init__(code)
+
+@dataclass(frozen=True, slots=True, repr=False)
+class RtspJpegFrame:
+    jpeg_bytes: bytes
+    width: int
+    height: int
+    codec: str
+    observed_at: datetime
+    media_type: str = "image/jpeg"
+
+    def __post_init__(self):
+        if not isinstance(self.jpeg_bytes, bytes) or not self.jpeg_bytes:
+            raise ValueError("JPEG bytes are required")
+        if len(self.jpeg_bytes) > 5 * 1024 * 1024 or not self.jpeg_bytes.startswith(b"\xff\xd8") or not self.jpeg_bytes.endswith(b"\xff\xd9"):
+            raise ValueError("invalid JPEG envelope")
+        if type(self.width) is not int or type(self.height) is not int or not (0 < self.width <= 1920 and 0 < self.height <= 1080):
+            raise ValueError("invalid frame dimensions")
+        if self.width * self.height > 2_073_600:
+            raise ValueError("frame pixel limit exceeded")
+        if not isinstance(self.codec, str) or self.codec not in {"H264", "H265"}:
+            raise ValueError("unsupported frame codec")
+        if self.media_type != "image/jpeg":
+            raise ValueError("invalid frame media type")
+        if not isinstance(self.observed_at, datetime) or self.observed_at.utcoffset() is None:
+            raise ValueError("observed_at must be timezone-aware")
+        object.__setattr__(self, "observed_at", self.observed_at.astimezone(timezone.utc))
+
+    def __repr__(self):
+        return f"RtspJpegFrame(width={self.width}, height={self.height}, codec={self.codec!r}, media_type='image/jpeg')"
+
+class RtspFrameExtractor(Protocol):
+    def extract_one_jpeg_frame(self, request: RtspConnectionRequest) -> RtspJpegFrame: ...
+
 def make_result(statuses, category, started, *, error_code=None, codec=None, stage_timings=None, monotonic, now):
     observed = now().astimezone(timezone.utc)
     timings = stage_timings or {}

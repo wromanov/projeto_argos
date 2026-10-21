@@ -9603,3 +9603,130 @@ configuração, código, migration ou banco fora do escopo foi removido.
 
 A conclusão é exclusiva do Lote 2. Não autoriza nem inicia o Lote 3; qualquer
 nova limpeza exige sua própria delimitação e autorização humana.
+
+## 174. ARGOS-WORK-SQLITE-MIGRATION-PREFLIGHT-01 — preflight e backup (2026-10-21)
+
+ACTIVITY_ID = ARGOS-WORK-SQLITE-MIGRATION-PREFLIGHT-01
+WORKSTATION = WORK
+DATABASE = C:\Users\walacedelgado\PycharmProjects\projeto_argos\db.sqlite3
+MASTER_HEAD = 625b47f91d219b40ed7f65c2405b845bd7b00d58
+DATABASE_SIZE = 512000 bytes
+DATABASE_SHA256_BEFORE = DCAB761A5FECA0F8E4082EBA18AD9567DB84C2CB91EC3D197199995B4E5354B2
+DATABASE_SHA256_AFTER = DCAB761A5FECA0F8E4082EBA18AD9567DB84C2CB91EC3D197199995B4E5354B2
+DATABASE_HASH_UNCHANGED = YES
+DATABASE_SETTINGS_PATH = confirmed identical to DATABASE
+DATABASE_FILE = regular file; WAL/SHM/journal absent
+PROCESS_ENUMERATION = BLOCKED / Win32_Process query returned Access Denied; SQLite online backup used to avoid assuming inactivity
+SQLITE_VERSION = 3.50.4; JSON_VALID available
+SQLITE_INTEGRITY = PASS; foreign_key_check returned 0 violations
+BACKUP_TYPE = SQLite online backup API; source opened read-only
+BACKUP_PATH = C:\Users\walacedelgado\.codex\visualizations\2026\10\21\01a15e88-e79c-7262-8d05-a9ca9285b294\argos-sqlite-backup-20261021\db.sqlite3
+BACKUP_SIZE = 512000 bytes
+BACKUP_SHA256 = CCECAFAF067065FB4ECC475D476FF5C46B44391757AE72C77CC960C3FDF51520
+BACKUP_INTEGRITY = PASS / PRAGMA integrity_check = ok on creation and read-only verification
+BACKUP_FOREIGN_KEY_VIOLATIONS = 0
+BACKUP_MANIFEST = PASS / MANIFEST.json; SHA-256 A158E5D14A783DA4D94AE780298A27E7A429D4F502DA4811E32F3B8E943DC1BC
+DJANGO_CHECK = PASS / no system check issues
+MIGRATIONS_APPLIED = cameras.0001 through cameras.0017
+MIGRATIONS_PENDING = cameras.0018 through cameras.0021
+MIGRATIONS_APPLIED_THIS_ACTIVITY = NONE
+MIGRATION_ANALYSIS = 0018–0021 inspected from source and generated SQL; no RunPython or RunSQL
+MIGRATION_DEPENDENCY_STATUS = 0018 depends on 0017; 0019 depends on 0018 and AUTH_USER_MODEL; 0020 depends on 0019 and AUTH_USER_MODEL; 0021 depends on 0020
+MIGRATION_0018 = Create CameraHealthSnapshot, OneToOne CASCADE to Camera, observation index and check constraints; additive table
+MIGRATION_0019 = AlterModelOptions no-op in SQL; Create CameraImportPreview, FK CASCADE to user, JSON fields and expiry/user indexes
+MIGRATION_0020 = Create CameraCaptureJob, FKs PROTECT, idempotency uniqueness, check constraints and indexes; SQLite rebuilds this newly created table repeatedly while adding constraints
+MIGRATION_0021 = partial unique index: at most one QUEUED/RUNNING capture job per camera
+TARGET_TABLES_BEFORE = cameras_camerahealthsnapshot, cameras_cameraimportpreview, cameras_cameracapturejob all absent
+DATA_RISK = 0020 uses table copy/drop/rename cycles; current target table is absent and introduced within that migration, but stop if pre-application schema differs. 0018/0019/0020 reversals drop created tables and their data; 0021 reversal removes the index.
+PLAN = human approval; verify backup and quiesce writers; apply 0018, 0019, 0020, 0021 sequentially; then checks, migration plan, integrity/FK/schema inspection, and targeted tests against a separate test database
+RECOVERY = preserve failed/current database and sidecars; restore the verified pre-migration backup only after adjudicating post-backup writes. Full restore discards writes made after backup.
+HOM-03 = BLOCKED_PENDING_SSH_AUTHENTICATION
+P1_RTSP = NOT_AUTHORIZED / NOT_STARTED
+WORKTREE_CONSOLIDATION = separate station HOME activity; Lotes 1 and 2 recorded complete; no worktree operation here
+CODE_CHANGES = NONE
+MIGRATIONS_APPLIED_THIS_ACTIVITY = NONE
+COMMIT_OR_PUSH = NONE
+PROJECT_STATE_UPDATE = PASS / §174
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_STATUS = PREFLIGHT_AND_BACKUP_COMPLETED / migrations remain unapplied
+NEXT_GATE = HUMAN_SQLITE_MIGRATION_APPROVAL
+
+## 175. ARGOS-WORK-SQLITE-MIGRATION-APPLY-01 (2026-10-21)
+
+No checkout WORK, master permaneceu em 625b47f91d219b40ed7f65c2405b845bd7b00d58. O backup permanente em C:\Users\walacedelgado\Backups\ARGOS\2026-10-21\sqlite-pre-0018-0021 foi validado: banco SHA-256 CCECAFAF067065FB4ECC475D476FF5C46B44391757AE72C77CC960C3FDF51520, manifesto SHA-256 A158E5D14A783DA4D94AE780298A27E7A429D4F502DA4811E32F3B8E943DC1BC, integridade SQLite ok e zero violações de FK. O banco pré-migration foi preservado.
+
+As migrations cameras.0018_camera_health_snapshot, cameras.0019_alter_camera_options_cameraimportpreview, cameras.0020_cameracapturejob e cameras.0021_capture_job_active_per_camera foram aplicadas em sequência. Django check passou; showmigrations não mostrou pendências. O SQLite final tem 589824 bytes, SHA-256 A567C50A2721C6754F4A7D64F4DE199AD33C41AD9046EB21453EDFAD2D974676, integrity_check ok e zero violações de FK. Tabelas anteriores foram preservadas; tabelas, constraints e índices esperados, incluindo o índice único parcial de jobs ativos, estão presentes.
+
+Os testes direcionados executaram 61 casos em banco de teste SQLite em memória separado: 6 failures e 23 errors. Os testes de snapshots e importação passaram; houve falhas/erros no conjunto de capture jobs. No teste representativo, o serviço retornou FAILED em vez de SUCCEEDED e a limpeza de pasta temporária retornou WinError 5 (Acesso negado). Nenhuma alteração de código foi feita; não atribuir causa além da evidência observada.
+
+HOM-03 continua pendente de autenticação SSH autorizada. P1 RTSP continua não autorizada. A documentação registra aplicação concluída com validação Django/SQLite aprovada e testes direcionados com falha; revisão humana pós-migration pendente. O estado remoto não foi consultado nesta atividade.
+
+PROJECT_STATE_UPDATE = PASS / §175
+MIGRATIONS_APPLIED = cameras.0018–0021
+DJANGO_CHECK = PASS
+SQLITE_INTEGRITY = PASS / foreign_key_check = 0
+TARGETED_TESTS = FAIL / 61 executados; 6 failures; 23 errors
+CODE_CHANGES = NONE
+COMMIT_OR_PUSH = NONE
+NEXT_GATE = HUMAN_POST_MIGRATION_REVIEW
+
+## 176. ARGOS-WORK-RECOVERY-CLOSURE-01 (2026-10-21)
+
+ACTIVITY_ID = ARGOS-WORK-RECOVERY-CLOSURE-01
+WORKSTATION = WORK
+BRANCH = master
+HEAD = 625b47f91d219b40ed7f65c2405b845bd7b00d58
+TRACKED_LOCAL_CHANGES = somente PROJECT_STATE.md, AGENT_CONTINUITY.md e ACTIVE_DOCUMENT_MAP.md
+STAGING = EMPTY
+GITHUB_LS_REMOTE = BLOCKED / falha ao conectar ao proxy local 127.0.0.1:9
+GITHUB_CONNECTOR_COMPARE = PASS / master idêntica à baseline 625b47f91d219b40ed7f65c2405b845bd7b00d58
+REMOTE_MASTER_VERIFIED = YES / GitHub connector compare: identical, ahead 0, behind 0
+COMMIT_OR_PUSH = NOT_ATTEMPTED / Git CLI sem conectividade; não criar commit local isolado
+
+O usuário reportou execução em sessão normal do Windows PowerShell com diretório temporário gravável fora do repositório: verificação de filesystem PASS, teste individual de capture PASS e módulo de testes de capture PASS, 24/24, zero failures e zero errors. Os testes usaram SQLite em memória; os seis casos que falharam anteriormente estão incluídos nesses 24. Este resultado é distinto do teste anterior em Codex: 61 casos, 6 failures e 23 errors, em que houve WinError 5 ao criar/limpar diretórios temporários. A suíte original de 61 não foi integralmente revalidada; não declarar seus 61 casos como PASS.
+
+Estado funcional preservado: migrations cameras.0018–0021 aplicadas; Django check e integridade SQLite anteriormente registrados como PASS; nenhum código ou banco foi alterado nesta atividade. HOM-03 segue dependendo de autenticação SSH autorizada; P1 RTSP continua não autorizada. Git status também apontou dois diretórios temporários inacessíveis (`argos-capture-test-5qbsxwlq` e `argos-capture-test-kg6sfgxa`); não foram abertos, alterados ou removidos.
+
+O resultado 24/24 resolve a evidência do módulo Capture Jobs no PowerShell reportado, mas não comprova a correção focal da fixture VISUAL_QA_USERNAME nem revalida a seleção original de 61; E0 / ARGOS-QA-01 permanece aberto no plano. A leitura do checkout e dos checkpoints correntes mostra E1 / ARGOS-CRED-UI-01 implementada (§§137–138), E2 / IMG-07 integrada e encerrada com exceções aceitas (§§153–154), E3 implementada/publicada (§§162–163) e E4 / IMG-06 publicada (§165). Portanto, a tabela E0–E8 em `ROADMAP_ARGOS_V5.md` §25 e `ARGOS_DELIVERY_EXECUTION_PLAN_V1.md` §2 está desatualizada para E1–E4; esses arquivos não foram modificados nesta atividade.
+
+Próxima atividade recomendada: `ARGOS_E5_LIFECYCLE_AUTHORITY_REVIEW`, iniciando pela delimitação de IMG-08/09 para retenção, rotação, proteção e auditoria, sem purge físico. O checkpoint de E4 (§165) já aponta E5 por gate próprio; as regras registradas incluem retenção padrão de 12 meses, rotação por capacidade somente após validar a nova imagem e bloqueio quando todas as imagens estão protegidas. Objetivo: fechar contrato/autoridade, limites e teste de aceite antes da implementação. Estado atual: backlog PLANNED; nenhum contrato de implementação E5 foi localizado como arquivo independente. Dependências: seleção humana desta atividade e revisão explícita de contrato/dados; não depende de SSH ou P1 RTSP. Componentes prováveis após o gate: `cameras/models.py`, lifecycle/galeria em `cameras/imagens/gallery_service.py`, auditoria e testes direcionados; migration somente se o contrato aprovar novos campos. Aceite: nova imagem válida antes de rotação, nenhuma retirada silenciosa de item protegido, regra de 12 meses e trilha de auditoria; não executar purge. Esforço estimado: médio; risco: médio-alto por afetar retenção de evidência e estado persistido. Alternativa: `ARGOS-INV-EXPORT-01`, exportação CSV/PDF com whitelist, filtros preservados e boundary de autorização do inventário; esforço médio, risco médio de exposição de dados. Está aprovada, porém deliberadamente deferida à sprint final, então exige decisão humana para repriorização.
+
+PROJECT_STATE_UPDATE = PASS / §176
+DJANGO_ENVIRONMENT = READY / pip check e manage.py check PASS conforme estado informado
+MIGRATIONS = APPLIED / cameras.0018–0021
+SQLITE_BACKUP = PRESERVED / validação e hashes registrados em §§174–175
+FILESYSTEM_TEST = PASS / resultado reportado pelo usuário
+CAPTURE_SINGLE_TEST = PASS / resultado reportado pelo usuário
+CAPTURE_MODULE_TESTS = 24/24 PASS / SQLite de testes em memória; zero failures e errors / resultado reportado pelo usuário
+ORIGINAL_61_TEST_SUITE = NOT_FULLY_REVALIDATED
+ORIGINAL_61_CASES_NOT_COVERED_BY_CAPTURE_MODULE = 37 / sem resultado novo nesta atividade
+CODE_CHANGES = NONE
+DATABASE_CHANGES = NONE
+DOCUMENTATION_FILES_CHANGED = PROJECT_STATE.md, AGENT_CONTINUITY.md, ACTIVE_DOCUMENT_MAP.md
+COMMIT_SHA = NONE
+PUSH_STATUS = BLOCKED_NOT_ATTEMPTED / git ls-remote falhou pelo proxy local; remote baseline verificada via GitHub connector
+NEXT_RECOMMENDED_DEVELOPMENT_ACTIVITY = E5 / IMG-08 e IMG-09, precedida por ARGOS_E5_LIFECYCLE_AUTHORITY_REVIEW
+ALTERNATIVE_ACTIVITY = ARGOS-INV-EXPORT-01 / deferida à sprint final
+NEXT_GATE = HUMAN_FEATURE_SELECTION
+
+## 177. ARGOS-E3-RTSP-ROUND-1-P1-PHASE-A (2026-10-21)
+
+Fase A da fundação P1 de extração de frame RTSP foi autorizada e implementada como API aditiva. Foram alterados quatro arquivos de código: `cameras/integracao/rtsp/ports.py`, `cameras/integracao/rtsp/gst_adapter.py`, `cameras/integracao/rtsp/fake.py` e `cameras/test_camera_rtsp_adapter.py`. A API preserva `probe`, `describe`, `receive_one_frame(session) -> bool` e os diagnósticos A/B/C/D. C01–C06 e a fronteira da P1 permanecem preservados.
+
+Os testes focais offline foram reexecutados pelo ROOT no test DB: 28/28 PASS. `git diff --check` não apontou erros; houve apenas avisos de CRLF. A revisão independente terminou em `ACCEPT_WITH_FINDINGS`. Esses resultados não são evidência de runtime real.
+
+Continuam `NOT_VALIDATED`: H.264 e H.265 em decodificação real offline; RSS e buffers upstream; deadline e teardown em GStreamer real; redirects/egress. Não houve acesso a VM, câmera ou rede real. Não houve alteração do resolver, worker E3, persistência E4, C04/P2, CI ou DB.
+
+`P1_FINAL_ACCEPTANCE = NOT_GRANTED`; `PHASE_B_RUNTIME_VALIDATION = NOT_AUTHORIZED`; `NEXT_GATE = HUMAN_AUTHORIZATION_FOR_PHASE_B_RUNTIME_VALIDATION`. Nenhum teste offline ou revisão estática concede autorização para a Fase B.
+
+O worktree também mostra modificações em `.codex/agents/architect.toml` e `.codex/agents/security_reviewer.toml`; elas não são atribuídas a esta atividade e não foram editadas por ela. O perfil architect foi atualizado pelo usuário.
+
+PROJECT_STATE_UPDATE = PASS / §177 e pointers de continuidade registrados
+ACTIVITY_COMPLETE = YES / documentação factual da Fase A registrada; aceite P1 e Fase B permanecem pendentes
+CODE_CHANGES = PHASE_A_IMPLEMENTED / quatro arquivos listados acima
+FOCUSED_OFFLINE_TESTS = 28/28 PASS / executados pelo ROOT no test DB
+STATIC_REVIEW = ACCEPT_WITH_FINDINGS / git diff --check sem erros; avisos CRLF
+RUNTIME_VALIDATION = NOT_VALIDATED / codecs, RSS/upstream, deadline/teardown real e redirects/egress
+P1_FINAL_ACCEPTANCE = NOT_GRANTED
+PHASE_B_RUNTIME_VALIDATION = NOT_AUTHORIZED
+NEXT_GATE = HUMAN_AUTHORIZATION_FOR_PHASE_B_RUNTIME_VALIDATION
