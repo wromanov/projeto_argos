@@ -2792,3 +2792,20 @@ esta entrada aponta para o registro posterior canônico §171, sem duplicar ou
 renumerar a história. O ZIP e os dados locais continuam preservados; não houve
 alteração funcional, exclusão, remoção de worktrees, limpeza C3-C, publicação
 DS 2.4, implementação RTSP Frame ou revalidação da VM HML.
+
+## 131. ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-01-CLOSURE (2026-10-21)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| PROJECT_STATE.md §172 | Fechamento documental do Lote 1, preflight atual, limites e próximo gate | CURRENT / remoção física concluída; Lote 1 fechado; C3-C integral segue em andamento |
+| AGENT_CONTINUITY.md §20.127 | Handoff da atividade e restrições para retomada | CURRENT / Lote 2 não iniciado; planejamento e autorização são o próximo gate |
+| Inventário atual de worktrees | Confirmação pontual do estado após o Lote 1 | 23 registrados; projeto_argos_cam_int_07 e projeto_argos_style_lab ausentes |
+| docs/Agent-Continuity-Standard-v1.0.zip | Pacote local de continuidade | PRESERVED / presente, 160715 bytes; conteúdo não aberto |
+| db.sqlite3 na checkout canônica | Banco SQLite principal | PRESERVED / presente, 610304 bytes; conteúdo não aberto nem modificado |
+
+A atividade atualizou somente os três documentos de continuidade na checkout
+canônica. A evidência da remoção física vem do registro fornecido para o Lote 1;
+nenhuma remoção foi repetida. A conclusão aplica-se exclusivamente ao
+C3C-BATCH-01. O C3C-BATCH-02 exige planejamento e autorização próprios,
+incluindo classificação individual e preservação de dados SQLite de worktrees
+históricos.

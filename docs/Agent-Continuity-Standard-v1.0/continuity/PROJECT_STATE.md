@@ -9472,3 +9472,60 @@ O ZIP de continuidade e os bancos SQLite continuam preservados. WIP e dados
 locais continuam retidos nos worktrees de origem. Não se declara DS 2.4 publicado,
 RTSP Frame implementado, VM HML revalidada, remoção de worktrees antigos ou
 limpeza C3-C concluída. P1 RTSP permanece não autorizada e não iniciada.
+
+## 172. ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-01 — fechamento documental (2026-10-21)
+
+ACTIVITY_ID = ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-01-CLOSURE
+EXECUTION_MODE = DIRECT
+WORKSTATION = HOME
+SCOPE = DOCUMENTATION_ONLY
+USER_AUTHORIZATION = GRANTED
+TARGET_CHECKOUT = C:\Users\walac\desenvolvimento\projeto_argos
+BRANCH = master
+BASELINE_HEAD = 8519c43bc0d0c0d59883db314140b5670bcaadf3
+MASTER_BRANCH_VERIFIED = PASS
+MASTER_HEAD = 8519c43bc0d0c0d59883db314140b5670bcaadf3
+ORIGIN_MASTER_LOCAL_REF = 8519c43bc0d0c0d59883db314140b5670bcaadf3
+MASTER_EQUALS_ORIGIN_MASTER = YES / comparação das refs locais; fetch não executado
+PREFLIGHT_GATE = PASS
+INITIAL_WORKTREE_COUNT = 25 / evidência reportada na execução física do Lote 1
+FINAL_WORKTREE_COUNT = 23 / inventário atual confirmou 23 registros
+WORKTREES_REMOVED = projeto_argos_cam_int_07; projeto_argos_style_lab
+REMOVAL_METHOD = git worktree remove / sem --force / conforme evidência da execução do Lote 1
+FAILED_REMOVALS = NONE / conforme evidência da execução do Lote 1
+MASTER_UNCHANGED_DURING_PHYSICAL_REMOVAL = YES / conforme evidência da execução do Lote 1
+HISTORICAL_BRANCHES_PRESERVED = YES / conforme evidência da execução do Lote 1; nenhuma branch removida nesta atividade
+OTHER_WORKTREES_PRESERVED = YES / 23 worktrees registrados no inventário atual; nenhum removido nesta atividade
+ZIP_PRESERVED = YES / arquivo presente, 160715 bytes; tamanho coincide com o registro §170; conteúdo não aberto nesta atividade
+ZIP_PREVIOUS_SHA256 = F36522DE65C9C3603A7621B2D6E74CDB9772F35AF7D4D2AAAFE3D77270FC5EFF / verificação anterior registrada em §170; não recalculada
+SQLITE_PRESERVED = YES / db.sqlite3 presente, 610304 bytes; conteúdo não aberto nem modificado nesta atividade
+CODE_CHANGES = NONE
+DATABASE_CHANGES = NONE
+VM_CHANGES = NONE
+BRANCHES_CREATED = NONE
+WORKTREES_CREATED = NONE
+FILES_DELETED = NONE / nesta atividade documental
+COMMIT_OR_PUSH = NONE
+DOCUMENTATION_FILES_MODIFIED = PROJECT_STATE.md; AGENT_CONTINUITY.md; ACTIVE_DOCUMENT_MAP.md
+PROJECT_STATE_UPDATE = PASS / §172
+GIT_DIFF_CHECK = PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_STATUS = COMPLETED / Lote 1 da C3-C
+C3C_BATCH_01_STATUS = PHYSICAL_REMOVAL_COMPLETED / DOCUMENTATION_CLOSED
+NEXT_GATE = C3C_BATCH_02_PLANNING_AND_AUTHORIZATION
+
+O preflight desta atividade confirmou master no SHA esperado e a ref local
+origin/master no mesmo SHA. O estado Git não tinha alterações rastreadas; o
+único item não rastreado era o ZIP de continuidade já conhecido. O arquivo ZIP
+e o SQLite foram confirmados por metadados, sem abertura de conteúdo. O
+inventário atual contém 23 worktrees.
+
+O registro físico acima preserva os resultados informados pela execução do
+Lote 1. Esta atividade não repetiu a remoção. O fechamento é restrito ao Lote 1
+da C3-C; não significa conclusão da limpeza C3-C integral.
+
+O próximo passo é ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-02: planejar a
+remoção controlada dos worktrees históricos com commits integrados na master,
+respeitando as classificações e evidências das auditorias C1/C2-A. Lote 2 não
+foi iniciado, nenhuma remoção adicional foi autorizada, e SQLite de worktrees
+antigos não deve ser presumido descartável por este registro.

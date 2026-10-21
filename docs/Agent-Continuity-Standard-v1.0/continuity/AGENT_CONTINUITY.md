@@ -10,7 +10,7 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-DEV-WORKSPACE-C3-DOC-RECONCILIATION-01 (2026-10-20): consultar PROJECT_STATE.md §171 e ACTIVE_DOCUMENT_MAP.md §130. A master e origin/master estão em ddd8f163992fc3cfda25a37d65199e25c249ee72. C1, C2-A, C3-A e C3-B estão preservadas; quatro relatórios foram incorporados. O registro C3-B permanece em PROJECT_STATE.md §170, incluindo o resultado histórico de 296 testes. ZIP, SQLite e demais WIPs/dados locais foram preservados. C3-C não iniciada; P1 RTSP não autorizada; sem código, exclusões, commit ou push. Próximo gate: HUMAN_DOCUMENTATION_PUBLICATION_APPROVAL.
+RETOMADA ATUAL ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-01-CLOSURE (2026-10-21): consultar PROJECT_STATE.md §172 e ACTIVE_DOCUMENT_MAP.md §131. A checkout canônica está em master @ 8519c43bc0d0c0d59883db314140b5670bcaadf3; a ref local origin/master coincide. O Lote 1 da C3-C está fechado documentalmente após a remoção reportada de projeto_argos_cam_int_07 e projeto_argos_style_lab, de 25 para 23 worktrees. Esta atividade não repetiu remoções; ZIP e SQLite permanecem presentes e seus conteúdos não foram abertos. C3-C integral continua em andamento; Lote 2 não iniciado. Sem código, banco, VM, branches, worktrees, commit ou push alterados. P1 RTSP não autorizada. Próximo gate: C3C_BATCH_02_PLANNING_AND_AUTHORIZATION.
 
 SNAPSHOT ANTERIOR ARGOS-E4-CHECKPOINT-COMMIT-PUSH (2026-10-18): consultar
 `PROJECT_STATE.md` §165 e `ACTIVE_DOCUMENT_MAP.md` §125. E2 está
@@ -3845,3 +3845,26 @@ a baseline remota. `USER_AMENDMENT_APPROVAL = APPROVED / C01-C06`;
 operacional, não uma decisão atribuída ao usuário. Promoção local; commit/push
 normal autorizados e pendentes. Sem alteração funcional, migration, VM ou
 câmera real. P1 não autorizada/iniciada.
+
+### 20.127 ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-01-CLOSURE (2026-10-21)
+
+Consultar PROJECT_STATE.md §172 e ACTIVE_DOCUMENT_MAP.md §131. O Lote 1
+removeu, conforme evidência reportada, projeto_argos_cam_int_07 e
+projeto_argos_style_lab com git worktree remove sem força, reduzindo o
+inventário de 25 para 23. O preflight desta atividade confirmou master e a
+ref local origin/master no SHA 8519c43bc0d0c0d59883db314140b5670bcaadf3;
+o inventário atual tem 23 worktrees. ZIP e db.sqlite3 permanecem presentes;
+seus conteúdos não foram abertos. A atualização é documental e não repete a
+limpeza.
+
+ACTIVITY_ID = ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-01-CLOSURE
+C3C_BATCH_01_STATUS = PHYSICAL_REMOVAL_COMPLETED
+PROJECT_STATE_UPDATE = PASS / §172
+ACTIVITY_COMPLETION_PERCENT = 100%
+C3C_GLOBAL_CLEANUP = IN_PROGRESS
+BATCH_02 = NOT_STARTED
+NEXT_GATE = C3C_BATCH_02_PLANNING_AND_AUTHORIZATION
+CODE_CHANGES = NONE
+DATABASE_CHANGES = NONE
+VM_CHANGES = NONE
+COMMIT_OR_PUSH = NONE
