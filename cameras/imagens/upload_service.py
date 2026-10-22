@@ -2,19 +2,12 @@
 
 from hashlib import sha256
 from io import BytesIO
-from uuid import uuid4
-
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.core.files.base import ContentFile
-from django.core.files.storage import default_storage
-from django.db import transaction
-from django.utils import timezone
-
 from cameras.models import CameraImageRecord, sanitizar_nome_original
 
 
-# Restrição operacional reversível. A política de produto permanece pendente.
+# Limites de aceitação aplicados antes do armazenamento e do lifecycle.
 FORMATS = {"JPEG": ("jpg", "jpeg", "image/jpeg"), "PNG": ("png", "image/png"), "WEBP": ("webp", "image/webp")}
 EXTENSION = {"jpg": "JPEG", "jpeg": "JPEG", "png": "PNG", "webp": "WEBP"}
 
@@ -74,35 +67,21 @@ def aceitar_upload_manual(*, camera, usuario, arquivo, request=None):
     except (OSError, ValueError, SyntaxError, UnidentifiedImageError) as exc:
         raise ValidationError("Arquivo de imagem inválido ou corrompido.") from exc
 
-    # A chave deriva exclusivamente de identidade gerada no servidor.
-    storage_key = f"camera-images/{camera.pk}/{uuid4().hex}.{FORMATS[formato][0]}"
-    saved_key = None
-    try:
-        saved_key = default_storage.save(storage_key, ContentFile(data))
-        with transaction.atomic():
-            record = CameraImageRecord(
-                camera=camera, provenance=CameraImageRecord.Provenance.UPLOAD_MANUAL,
-                captured_at=None, recorded_at=timezone.now(), storage_key=saved_key,
-                content_type=FORMATS[formato][-1], size_bytes=len(data),
-                width=width, height=height, sha256=sha256(data).hexdigest(),
-                original_filename=nome, uploaded_by=usuario,
-            )
-            record.full_clean()
-            record.save()
-            if request is not None:
-                from cameras.auditoria import registrar_evento
-                from cameras.models import EventoAuditoria
-                registrar_evento(
-                    codigo="imagem.upload_manual", resumo="Imagem enviada manualmente",
-                    categoria=EventoAuditoria.Categoria.CAMERA, request=request,
-                    camera=camera, entidade=record,
-                    metadados={"provenance": record.provenance, "size_bytes": record.size_bytes},
-                )
-        return record
-    except Exception:
-        if saved_key is not None:
-            try:
-                default_storage.delete(saved_key)
-            except Exception:
-                pass
-        raise
+    # Storage e lifecycle convergem após a validação completa dos bytes.
+    from cameras.imagens.lifecycle_service import persist_validated_image
+
+    return persist_validated_image(
+        camera=camera,
+        provenance=CameraImageRecord.Provenance.UPLOAD_MANUAL,
+        captured_at=None,
+        data=data,
+        content_type=FORMATS[formato][-1],
+        extension=FORMATS[formato][0],
+        width=width,
+        height=height,
+        sha256=sha256(data).hexdigest(),
+        uploaded_by=usuario,
+        original_filename=nome,
+        actor=usuario,
+        request=request,
+    )

@@ -14,8 +14,6 @@ from uuid import uuid4
 from asgiref.sync import async_to_sync
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied, ValidationError
-from django.core.files.base import ContentFile
-from django.core.files.storage import default_storage
 from django.db import DEFAULT_DB_ALIAS, IntegrityError, OperationalError, connections, transaction
 from django.utils import timezone
 from PIL import Image
@@ -38,6 +36,11 @@ from cameras.integracao.target_policy import TargetDecision, TargetPolicy, Targe
 from cameras.integracao.rtsp.fake import FakeRtspAdapter
 from cameras.integracao.rtsp.gst_adapter import GStreamerRtspAdapter
 from cameras.integracao.rtsp.ports import RtspConnectionRequest, RtspFrameError, RtspJpegFrame
+from cameras.imagens.lifecycle_service import (
+    ImageLifecycleCapacityError,
+    ImageLifecycleStorageError,
+    persist_validated_image,
+)
 from cameras.models import (
     Camera,
     CameraCaptureJob,
@@ -696,47 +699,39 @@ def _persist_success(*, job_id, camera, requestor, snapshot, captured_at):
     extension = {"JPEG": "jpg", "PNG": "png", "WEBP": "webp"}.get(snapshot.image_format)
     if extension is None or snapshot.content_type not in SUPPORTED_CONTENT_TYPES:
         return _finish_failure(job_id, "IMAGE_INVALID")
-    storage_name = f"camera-images/{camera.pk}/{uuid4().hex}.{extension}"
-    saved_key = None
+
+    def finish_job(record):
+        job = CameraCaptureJob.objects.select_for_update().get(pk=job_id)
+        if job.status != CameraCaptureJob.Status.RUNNING:
+            raise _CaptureFailure("INTERNAL_ERROR")
+        job.image_record = record
+        job.status = CameraCaptureJob.Status.SUCCEEDED
+        job.finished_at = timezone.now()
+        job.save(update_fields=["image_record", "status", "finished_at"])
+        _audit_job(
+            job, requestor, "imagem.captura.concluida", "Captura de imagem concluída.",
+            origin=EventoAuditoria.Origem.COMANDO,
+        )
+
     try:
-        try:
-            saved_key = default_storage.save(storage_name, ContentFile(snapshot.data))
-        except Exception:
-            raise _CaptureFailure("STORAGE_ERROR") from None
-        with transaction.atomic():
-            job = CameraCaptureJob.objects.select_for_update().get(pk=job_id)
-            if job.status != CameraCaptureJob.Status.RUNNING:
-                raise _CaptureFailure("INTERNAL_ERROR")
-            record = CameraImageRecord(
-                camera=camera,
-                provenance=CameraImageRecord.Provenance.CAPTURA_CAMERA,
-                captured_at=captured_at,
-                recorded_at=timezone.now(),
-                storage_key=saved_key,
-                content_type=snapshot.content_type,
-                size_bytes=len(snapshot.data),
-                width=snapshot.width,
-                height=snapshot.height,
-                sha256=sha256(snapshot.data).hexdigest(),
-                captured_by_system="IMG-CAP",
-            )
-            record.save()
-            job.image_record = record
-            job.status = CameraCaptureJob.Status.SUCCEEDED
-            job.finished_at = timezone.now()
-            job.save(update_fields=["image_record", "status", "finished_at"])
-            _audit_job(
-                job, requestor, "imagem.captura.concluida", "Captura de imagem concluída.",
-                origin=EventoAuditoria.Origem.COMANDO,
-            )
-            return job
-    except Exception:
-        if saved_key is not None:
-            try:
-                default_storage.delete(saved_key)
-            except Exception:
-                pass
-        raise
+        return persist_validated_image(
+            camera=camera,
+            provenance=CameraImageRecord.Provenance.CAPTURA_CAMERA,
+            data=snapshot.data,
+            content_type=snapshot.content_type,
+            extension=extension,
+            width=snapshot.width,
+            height=snapshot.height,
+            sha256=sha256(snapshot.data).hexdigest(),
+            captured_at=captured_at,
+            captured_by_system="IMG-CAP",
+            actor=requestor,
+            on_created=finish_job,
+        ).capture_job
+    except ImageLifecycleStorageError:
+        raise _CaptureFailure("STORAGE_ERROR") from None
+    except ImageLifecycleCapacityError:
+        raise _CaptureFailure("LIFECYCLE_BLOCKED") from None
 
 
 def _finish_failure(job_id, code):

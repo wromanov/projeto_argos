@@ -14,6 +14,7 @@ CAMERA_AUTHORIZATION_PERMISSIONS = frozenset(
         "run_camera_connection_test",
         "view_camera_diagnostic",
         "capture_camera_image",
+        "manage_camera_image_hold",
         "manage_camera_target_policy",
         "manage_monitoring_runtime",
     }

@@ -1116,3 +1116,20 @@ A sequência E0–E8 e status históricos IMG-04/IMG-06 permanecem intactos e n�
 | C06 | Preservado | F02/F03 mantêm IDs, escopos e estados; worker recorrente segue gated |
 
 `USER_AMENDMENT_APPROVAL = APPROVED / C01-C06`; separadamente, `PREFLIGHT_ADJUDICATION = CONTINUE_DOCUMENTATION_ONLY` identifica a orientação operacional do preflight, não uma decisão atribuída ao usuário. A promoção atual é local; `REMOTE_PUBLICATION = PENDING` até confirmar o commit e o push normal. Os registros preparatórios §§23–24 permanecem históricos; este §25 supersede somente o estado de aprovação/canonização dos amendments. `ROUND_1_IMPLEMENTATION = NOT_AUTHORIZED / NOT_STARTED`; nenhum status IMG-04/IMG-06 ou a sequência E0–E8 é alterado. Próxima atividade: `ARGOS-E3-RTSP-ROUND-1-P1`, `PLANNED / NOT_AUTHORIZED`.
+
+## 26. ARGOS-E5-LIFECYCLE-FOUNDATION-01 — matriz corrente E0–E5 (2026-10-21)
+
+Esta matriz corrente atualiza E0–E5; as matrizes e evidências anteriores, inclusive §22, permanecem históricas. E6–E8 não são reordenadas nem alteradas por esta atividade.
+
+| Etapa | Sprint/slice | Status confirmado | Próximo gate |
+|---|---|---|---|
+| E0 | ARGOS-QA-01 | Pendente; não executada nesta atividade | Corrigir/validar fixture e reexecutar a suíte original conforme gate E0. |
+| E1 | ARGOS-CRED-UI-01 | Implementada em checkpoints anteriores (§§137–138 de PROJECT_STATE) | Preservar seus gates próprios; não reaberta. |
+| E2 | ARGOS-IMG-07-CONFORMANCE | CLOSED_WITH_EXCEPTIONS (§§153–154 de PROJECT_STATE) | Exceções permanecem explícitas; não reaberta. |
+| E3 | IMG-04 / IMG-05 / CAM-INT-04 | Implementação local integrada com testes fakes; RTSP real e aceite operacional não estabelecidos | Manter gate RTSP fechado até seus critérios de segurança/runtime e autorização. |
+| E4 | IMG-06 | IMPLEMENTED / APPROVED / PUBLISHED (§165 de PROJECT_STATE) | Homologação de imagem real continua separada. |
+| E5 | ARGOS-E5-LIFECYCLE-FOUNDATION-01 | E5-A implementado localmente; suíte segmentada E3/E4: 89 total (88 PASS, 1 SKIP) em SQLite | Designar grupos autorizados antes de expor hold/release; validar branch de concorrência em backend com row locks antes de alegar sua garantia; gates próprios de publicação/homologação continuam pendentes. |
+
+E5-A acrescenta persistência compartilhada de upload/captura, limite de três ativos por câmera, rotação lógica deterministicamente ordenada por (recorded_at, pk) depois de validar a nova imagem, retenção de 12 meses corridos, holds, auditoria, migração mínima e comando bounded de expiração lógica. Não há purge físico. A migration 0022 consta no plano local e não foi aplicada ao banco operacional. A autorização para hold/release exige permissão própria global e escopo de câmera; como não há grupos designados, o comportamento permanece fail-closed e nenhuma UI/rota/admin foi exposta.
+
+manage.py check, makemigrations --check --dry-run e git diff --check passaram. O teste concorrente de cinco workers foi incluído com skip quando has_select_for_update é falso; SQLite acionou o skip, logo a serialização com row lock não foi exercitada neste host. Nenhum PostgreSQL foi usado. A suíte ampla manage.py test cameras encerrou sem diagnóstico final e permanece inconclusiva. Não houve stage, commit, push ou alteração de banco operacional/VM/rede/câmera/VMS/monitoramento.

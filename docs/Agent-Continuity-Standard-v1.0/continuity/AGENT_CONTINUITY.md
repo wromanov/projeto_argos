@@ -10,7 +10,7 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-E3-RTSP-WORKER-INTEGRATION-02 (2026-10-21): consultar [PROJECT_STATE.md §179](PROJECT_STATE.md) e [ACTIVE_DOCUMENT_MAP.md §138](ACTIVE_DOCUMENT_MAP.md). Checkout canônico em `master` @ `76e6220f5627497a526ecda7884a84978db1bc9e`; o worker seleciona `GStreamerRtspAdapter` atrás de gate de código fechado e os testes offline/fakes passaram 115/115. Não houve conexão RTSP real, socket GStreamer, fallback HTTP, mutação de monitoramento ou migration. A integração anterior está staged em 12 caminhos; o auto-review recusou o commit local e nenhum push ocorreu. O remoto ao vivo permanece não verificado (`git ls-remote` bloqueado pelo proxy local; comparação GitHub 404), embora a referência local `origin/master` esteja dois commits atrás. Aceite P1 continua pendente. Próximo gate: autorização direta no chat para o commit local; depois, recuperar verificação do remoto antes de qualquer push.
+RETOMADA ATUAL ARGOS-E5-LIFECYCLE-FOUNDATION-01 (2026-10-21): consultar [PROJECT_STATE.md §180](PROJECT_STATE.md), [ACTIVE_DOCUMENT_MAP.md §139](ACTIVE_DOCUMENT_MAP.md) e [ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md §27](../../projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md). E5-A está implementado localmente em `master` @ `f4500d65ebab133a93a47c84641abe37b5615cfe`; a suíte focal E3/E4 teve 89 testes no total: 88 PASS e 1 SKIP condicional, correspondente ao teste de concorrência em SQLite. A migration 0022 consta no plano e não foi aplicada ao banco operacional. Não houve stage, commit, push, homologação, acesso operacional ou RTSP real. Grupos autorizados de hold/release continuam indefinidos, portanto a superfície segue fechada. Próximo gate: designar grupos de escopo de câmera antes de expor hold/release.
 
 SNAPSHOT ANTERIOR ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-02 (2026-10-21): consultar PROJECT_STATE.md §173 e ACTIVE_DOCUMENT_MAP.md §132. A checkout canônica estava em master @ 22d55c33e3313750bc40cd99bc74e551314ab3b1, igual a origin/master consultada ao vivo. O Lote 2 removeu os oito worktrees autorizados com git worktree remove sem força, reduzindo o inventário de 23 para 15; as oito branches históricas permanecem. Sete SQLite locais de zero bytes e somente caches .pyc/pytest autorizados foram descartados. O SQLite principal permaneceu em 610304 bytes com SHA-256 inalterado; ZIP preservado. Sem mudanças de código, VM, branches, commit ou push. Lote 2 fechado; não iniciar Lote 3. Próximo gate: C3C_BATCH_02_REVIEW.
 
@@ -4036,3 +4036,64 @@ REAL_RTSP_ENABLED = NO
 P1_FINAL_ACCEPTANCE = PENDING
 REMOTE_MASTER_VERIFIED = NO
 NEXT_GATE = USER_DIRECT_COMMIT_AUTHORIZATION_AND_LIVE_REMOTE_VERIFICATION
+
+
+## 20.135. ARGOS-E5-LIFECYCLE-FOUNDATION-01 (2026-10-21)
+
+Consultar [PROJECT_STATE.md §180](PROJECT_STATE.md) e [ACTIVE_DOCUMENT_MAP.md §139](ACTIVE_DOCUMENT_MAP.md) para o estado local de E5-A. O serviço compartilhado de upload/captura aplica limite de três imagens ativas, rotação e expiração lógica auditadas, holds e retenção de 12 meses corridos. A migration mínima é 0022 e consta no plano, não aplicada a banco operacional. A expiração é bounded; purge não foi implementado.
+
+A validação segmentada E3/E4 teve 89 casos no total (88 PASS, 1 SKIP condicional) no SQLite; o caso de cinco workers/row lock não foi exercitado porque este backend não suporta SELECT FOR UPDATE. Não há validação PostgreSQL. A suíte ampla manage.py test cameras é inconclusiva: foi encerrada sem diagnóstico final. E5-A está local, sem stage/commit/push e sem homologação/publicação.
+
+Grupos autorizados de câmera para hold/release permanecem por design não definidos; a permissão própria combinada com autorização por objeto falha fechado. Não expor UI, endpoint ou administração de hold/release antes do gate de grupos. Não houve acesso a banco operacional, VM, rede, câmera, VMS ou monitoramento; RTSP real continua desabilitado.
+
+PROJECT_STATE_UPDATE = PASS / §180
+ACTIVITY_STATUS = LOCAL_IMPLEMENTATION_AND_FOCUSED_QA_PASS
+REAL_RTSP_ENABLED = NO
+ROW_LOCK_CONCURRENCY = NOT_EXERCISED
+POSTGRESQL_VALIDATION = NOT_PERFORMED
+NEXT_GATE = DESIGNATE_CAMERA_SCOPE_GROUPS_FOR_HOLD_RELEASE
+
+
+
+## 20.136. ARGOS-E5-A-REGRESSION-CLOSE-02 (2026-10-22)
+
+Consultar [PROJECT_STATE.md §181](PROJECT_STATE.md) para a revisão dos fixtures
+e os resultados segmentados dos 859 testes descobertos. Os fixtures antes com
+SQL direto agora usam ORM na criação e o serviço expire_due_images; uma
+regressão adicional no teste de preview foi corrigida por lifecycle e passou na
+reexecução.
+
+A validação fechou com 733 PASS, 0 FAIL, 2 ERROR ambientais (openpyxl ausente),
+1 SKIP de concorrência não suportada pelo SQLite e 123 sem resultado terminal
+após timeouts bounded (115 não iniciados, 8 inconclusivos). manage.py check,
+makemigrations --check --dry-run, git diff --check e os 19 testes afetados
+passaram. POSTGRESQL_CONCURRENCY = PENDING; aceite de produção não estabelecido.
+WIP e ZIP preservados; sem stage, commit ou push.
+
+PROJECT_STATE_UPDATE = PASS / §181
+ACTIVITY_STATUS = CLOSED_WITH_BROAD_REGRESSION_LIMITATIONS
+LOCAL_COMMIT_READINESS = NOT_READY
+PRODUCTION_READINESS = NOT_ESTABLISHED
+REAL_RTSP_ENABLED = NO
+COMMIT = NONE
+PUSH = NONE
+
+
+## 20.137. ARGOS-E5-A-COMMIT-READINESS-01 (2026-10-22)
+
+Consultar [PROJECT_STATE.md §182](PROJECT_STATE.md) e [ACTIVE_DOCUMENT_MAP.md §141](ACTIVE_DOCUMENT_MAP.md) para o fechamento de prontidão local. O `.venv` Python 3.14.7 está sem `openpyxl`, embora `requirements.txt` a declare; não instalar sem autorização. Os testes assíncronos HTTP/E3 e de monitoramento ficam inconclusivos porque o event loop do Windows trava ao criar o self-pipe local em `socket._fallback_socketpair`; o smoke de `asyncio.run` confirmou a limitação.
+
+Três gates síncronos de captura passaram e 38 controles síncronos de monitoramento passaram. A execução de persistência do worker não terminou por bloqueio do event loop. Nenhuma regressão E5-A foi comprovada; os focais lifecycle de §180/§181 e as verificações check/migration dry-run/diff check permanecem aprovados. Recomenda-se commit local de desenvolvimento com registro explícito das limitações. Isso não representa aceite final nem prontidão de produção; PostgreSQL e testes assíncronos permanecem pendentes.
+
+DEVELOPMENT_COMMIT_READINESS = READY
+FINAL_ACCEPTANCE = NOT_ESTABLISHED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+POSTGRESQL_CONCURRENCY = PENDING
+REAL_RTSP_ENABLED = NO
+STAGING = EMPTY
+COMMIT = NONE
+PUSH = NONE
+PROJECT_STATE_UPDATE = PASS / §182
+ACTIVITY_STATUS = CLOSED_WITH_ENVIRONMENT_LIMITATIONS
+ACTIVITY_COMPLETION_PERCENT = 100%
+NEXT_GATE = NONE_CREATED

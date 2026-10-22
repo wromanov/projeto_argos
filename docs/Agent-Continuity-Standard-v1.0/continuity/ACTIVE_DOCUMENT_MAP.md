@@ -11,20 +11,20 @@ ACTIVE_DOCUMENT_MAP_READY = YES
 |---|---|---|---|
 | `AGENTS.md` | Entry point / guardrails | Leitura mínima, autoridade, Git, segurança e continuidade | PRESENT / CURRENT CHECKOUT |
 | `docs/projeto/ARGOS_CONTINUITY_AND_HANDOFF_RULES_V1.md` | Continuidade e handoff ARGOS | Princípio, critérios do gate, responsabilidades documentais, precedência e recuperação | PRESENT / CANONICAL / ACTIVE |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; integração RTSP/E3/E4 §178; snapshots anteriores preservados |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; handoff ARGOS-E3-RTSP-INTEGRATION-01 / PROJECT_STATE §178 |
-| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; atividade atual §137 / PROJECT_STATE §178; histórico anterior preservado |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md` | Snapshot operacional | Estado atual, baseline, gates, autorização, decisões, blockers e próxima atividade | PRESENT / CURRENT_SNAPSHOT; ARGOS-E5-LIFECYCLE-FOUNDATION-01 §180; snapshots anteriores preservados |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md` | Continuidade do agente | Contexto necessário, riscos, limites, decisões e referências para assumir | PRESENT / ACTIVE; handoff E5-A / PROJECT_STATE §180; grupos de hold/release pendentes |
+| `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md` | Mapa de authorities | Paths, escopo, vigência e precedência documental | PRESENT / CURRENT; atividade atual §139 / PROJECT_STATE §180; histórico anterior preservado |
 | `docs/Agent-Continuity-Standard-v1.0/continuity/NEW_CHAT_BOOTSTRAP_PROMPT.md` | Bootstrap de nova sessão | Ordem de leitura, validação Git e limites para retomada | PRESENT / ACTIVE; read latest PROJECT_STATE first |
 
 ## 2. Authorities canônicas do projeto
 
 | Path | Role | Authority scope | Status |
 |---|---|---|---|
-| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; current reconciliation §24; preserve earlier snapshots |
-| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; current reconciliation §21; E4 IMG-06 approved/published |
+| `docs/projeto/ROADMAP_ARGOS_V5.md` | Roadmap operacional | Macrofases, capacidades, dependências e status macro | PRESENT / CANONICAL; current E0–E5 reconciliation §29; preserve earlier snapshots |
+| `docs/projeto/SPRINTS_ARGOS_V5.md` | Mapa de execução | Ordem, atividades/slices, dependências, status e gates | PRESENT / CANONICAL; current E0–E5 reconciliation §26; E5-A local, not published |
 | `docs/projeto/ARGOS_UI_V2_MASTER_PLAN.md` | Authority operacional da UI V2 | Escopo, princípios, fluxo P0–P7, gates e próxima atividade visual | PRESENT / CANONICAL; P3-0 é o checkpoint anterior; patch ROOT e próximo gate constam no DCR e em PROJECT_STATE section 37 |
 | `docs/projeto/ARGOS_UI_V2_SCREEN_CENSUS.md` | Censo factual de superfícies e matrizes UI-V2-P0 | PRESENT / CANONICAL; P0 CLOSED_PASS |
-| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; §26 approves Quick Detail LATEST_ACTIVE_IMAGE; implementation/integration/validation/homologation not established |
+| `docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md` | Contrato de domínio de imagem | IMG-01...IMG-09 e consumidores de imagem | PRESENT / CANONICAL; §26 Quick Detail remains normative; §27 records local IMG-08/09 lifecycle implementation and evidence |
 | `docs/projeto/ARGOS_UI_DESIGN_SYSTEM_INTEGRATION_SPEC_V1.md` | Especificação UI/design system | Decisões UI-DS, CameraQuickDetailPanel, relação com Fase C e integração | PRESENT / CANONICAL; Quick Detail baseline approved; UI-3 product acceptance pending, section 18 |
 | `docs/projeto/ARGOS_UI_DS_UI0_PREFLIGHT_FINDINGS_V1.md` | Registro factual dos findings de UI-0 | Findings do preflight read-only, sem alterar a authority de UI-DS | PRESENT / CURRENT FINDINGS RECORD; NON-BLOCKING |
 | `docs/projeto/ADR-019_monitoramento_disponibilidade_gestao_imagens.md` | ADR de arquitetura | Arquitetura de monitoramento e relação com gestão de imagens | PRESENT / AUTHORITY; verificar vigência no escopo aplicável |
@@ -2932,3 +2932,51 @@ REAL_RTSP_ENABLED = NO
 P1_FINAL_ACCEPTANCE = PENDING
 REMOTE_MASTER_VERIFIED = NO
 NEXT_GATE = USER_DIRECT_COMMIT_AUTHORIZATION_AND_LIVE_REMOTE_VERIFICATION
+
+## 139. ARGOS-E5-LIFECYCLE-FOUNDATION-01 (2026-10-21)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| [PROJECT_STATE.md §180](PROJECT_STATE.md) | Snapshot da implementação local, migration e evidências | CURRENT / suíte E3/E4: 89 testes no total (88 PASS, 1 SKIP condicional) em SQLite; sem PostgreSQL ou homologação |
+| [AGENT_CONTINUITY.md §20.135](AGENT_CONTINUITY.md) | Handoff e gates do próximo agente | CURRENT / manter hold/release fechado até definir grupos autorizados |
+| [ROADMAP_ARGOS_V5.md §29](../../projeto/ROADMAP_ARGOS_V5.md) | Matriz de status corrente E0–E5 | CURRENT / E0 permanece pendente; E1–E4 conforme evidências anteriores; E5-A implementado localmente |
+| [SPRINTS_ARGOS_V5.md §26](../../projeto/SPRINTS_ARGOS_V5.md) | Matriz corrente de sprints E0–E5 | CURRENT / gates e estado local E5-A |
+| [ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md §27](../../projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md) | Estado de implementação IMG-08/09 e lifecycle | CURRENT / limite, hold, retenção, auditoria, migration e evidência local |
+
+E5-A está implementado na working tree da Casa sobre master @ f4500d65ebab133a93a47c84641abe37b5615cfe. O teste concorrente condicionado a row lock foi skipped em SQLite; nenhuma validação PostgreSQL foi realizada. A suíte ampla manage.py test cameras não tem resultado final e permanece inconclusiva. Não houve stage, commit, push, aplicação de migration, homologação ou acesso operacional. O ZIP de WIP continua preservado e não foi aberto.
+
+
+
+## 140. ARGOS-E5-A-REGRESSION-CLOSE-02 (2026-10-22)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| [PROJECT_STATE.md §181](PROJECT_STATE.md) | Fechamento da regressão, revisão de fixtures, erros e timeouts | CURRENT / 859 descobertos; 733 PASS, 2 erros ambientais, 1 skip, 123 sem resultado terminal |
+| [AGENT_CONTINUITY.md §20.136](AGENT_CONTINUITY.md) | Handoff e gates do E5-A | CURRENT / regressão de fixture corrigida; suíte ampla limitada; sem aceite de produção |
+| E5-A working tree | Implementação e migration 0022 | LOCAL / preservada; staging vazio; sem commit/push |
+| PostgreSQL concurrency | Teste de row lock real | PENDING / SQLite não é substituto |
+
+PROJECT_STATE_UPDATE = PASS / §181 e §§20.136, 140
+ACTIVITY_STATUS = CLOSED_WITH_BROAD_REGRESSION_LIMITATIONS
+LOCAL_COMMIT_READINESS = NOT_READY
+PRODUCTION_READINESS = NOT_ESTABLISHED
+COMMIT = NONE
+PUSH = NONE
+
+
+## 141. ARGOS-E5-A-COMMIT-READINESS-01 (2026-10-22)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| [PROJECT_STATE.md §182](PROJECT_STATE.md) | Ambiente, foco HTTP/E3, monitoramento e recomendação local | CURRENT / pronto para commit local de desenvolvimento; aceite final/produção pendentes |
+| [AGENT_CONTINUITY.md §20.137](AGENT_CONTINUITY.md) | Handoff e bloqueios ambientais | CURRENT / openpyxl ausente e asyncio bloqueado no socketpair local |
+| E5-A working tree | Implementação, testes e migration 0022 | LOCAL / WIP preservado, sem stage/commit/push |
+| PostgreSQL concurrency | Serialização por row lock | PENDING / nenhum ambiente isolado autorizado disponível nesta atividade |
+
+PROJECT_STATE_UPDATE = PASS / §182 e §§20.137, 141
+ACTIVITY_STATUS = CLOSED_WITH_ENVIRONMENT_LIMITATIONS
+DEVELOPMENT_COMMIT_READINESS = READY
+FINAL_ACCEPTANCE = NOT_ESTABLISHED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+COMMIT = NONE
+PUSH = NONE

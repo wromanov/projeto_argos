@@ -8,6 +8,7 @@ from django.db import connection
 from django.test import TestCase
 from django.test.utils import CaptureQueriesContext
 
+from cameras.imagens.lifecycle_service import expire_due_images
 from cameras.models import (
     Camera,
     CameraImageRecord,
@@ -266,9 +267,13 @@ class CameraImageReadServiceTests(TestCase):
             captured_at=NOW - timedelta(minutes=1),
             storage_key="opaque/previous",
         )
-        current = self.record(camera, storage_key="opaque/current")
+        current = self.record(
+            camera,
+            recorded_at=NOW - timedelta(days=400),
+            storage_key="opaque/current",
+        )
         self.available_keys.update({previous.storage_key, current.storage_key})
-        current.withdraw(reason="Retirada operacional")
+        self.assertEqual(expire_due_images(camera_id=camera.pk), 1)
 
         result = self.service.latest_camera_capture(camera)
 

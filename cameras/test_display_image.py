@@ -31,7 +31,15 @@ class DisplayImageTests(TestCase):
         self.user = get_user_model().objects.create_user(username="display-viewer", password="pass")
         self.url = reverse("cameras:preview_exibicao", args=[self.camera.pk, "THUMB"])
 
-    def record(self, *, provenance="UPLOAD_MANUAL", stored=True, integrity="VALID", camera=None):
+    def record(
+        self,
+        *,
+        provenance="UPLOAD_MANUAL",
+        stored=True,
+        integrity="VALID",
+        camera=None,
+        recorded_at=None,
+    ):
         camera = camera or self.camera
         output = BytesIO()
         Image.new("RGB", (120, 80), "blue").save(output, format="PNG")
@@ -42,6 +50,7 @@ class DisplayImageTests(TestCase):
         return CameraImageRecord.objects.create(
             camera=camera, provenance=provenance,
             captured_at=timezone.now() if provenance == "CAPTURA_CAMERA" else None,
+            recorded_at=recorded_at if recorded_at is not None else timezone.now(),
             storage_key=key, content_type="image/png", size_bytes=len(data),
             sha256=sha256(data).hexdigest(), integrity_status=integrity,
         )
@@ -70,21 +79,19 @@ class DisplayImageTests(TestCase):
         self.assertEqual(DisplayImageReadService().display_image(self.camera).state, "ERROR")
 
     def test_latest_manual_failure_never_uses_older(self):
-        older = self.record()
-        current = self.record(stored=False)
         moment = timezone.now()
-        CameraImageRecord.objects.filter(pk=older.pk).update(recorded_at=moment - timedelta(days=1))
-        CameraImageRecord.objects.filter(pk=current.pk).update(recorded_at=moment)
+        older = self.record(recorded_at=moment - timedelta(days=1))
+        current = self.record(stored=False, recorded_at=moment)
         display = DisplayImageReadService().display_image(self.camera)
         self.assertEqual((display.immutable_id, display.state), (current.pk, "UNAVAILABLE"))
-        CameraImageRecord.objects.filter(pk=current.pk).update(integrity_status="INVALID")
+        current.integrity_status = "INVALID"
+        current.save(update_fields=["integrity_status"])
         self.assertEqual(DisplayImageReadService().display_image(self.camera).state, "ERROR")
 
     def test_manual_order_uses_recorded_at_then_id(self):
-        first = self.record()
-        second = self.record()
         moment = timezone.now()
-        CameraImageRecord.objects.filter(pk__in=[first.pk, second.pk]).update(recorded_at=moment)
+        first = self.record(recorded_at=moment)
+        second = self.record(recorded_at=moment)
         self.assertEqual(DisplayImageReadService().display_image(self.camera).immutable_id, max(first.pk, second.pk))
 
     def test_secure_preview_reselects_and_preserves_capture_route(self):
@@ -113,11 +120,12 @@ class DisplayImageTests(TestCase):
 
     def test_inventory_policy_is_unchanged_while_quick_detail_selects_latest_record(self):
         self.authorize()
-        manual = self.record()
-        capture = self.record(provenance="CAPTURA_CAMERA")
         moment = timezone.now()
-        CameraImageRecord.objects.filter(pk=manual.pk).update(recorded_at=moment + timedelta(seconds=1))
-        CameraImageRecord.objects.filter(pk=capture.pk).update(recorded_at=moment - timedelta(seconds=1))
+        manual = self.record(recorded_at=moment - timedelta(seconds=1))
+        capture = self.record(
+            provenance="CAPTURA_CAMERA",
+            recorded_at=moment - timedelta(seconds=2),
+        )
         Camera.objects.bulk_create([Camera(nome=f"Empty {n}") for n in range(19)])
         with CaptureQueriesContext(connection) as queries:
             response = self.client.get(reverse("cameras:lista"))

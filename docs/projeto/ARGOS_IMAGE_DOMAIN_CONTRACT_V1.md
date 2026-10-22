@@ -681,3 +681,15 @@ INTEGRATED = NO
 VALIDATED = NO
 HOMOLOGATED = NO
 ```
+
+## 27. ARGOS-E5-LIFECYCLE-FOUNDATION-01 — estado local de IMG-08/09 (2026-10-21)
+
+Esta atualização registra a implementação local do primeiro incremento aprovado de lifecycle. Não altera as regras de apresentação em §26 nem a semântica de LATEST_CAMERA_CAPTURE. O limite é de três registros ativos por câmera. Upload e captura passam pelo mesmo serviço após a validação integral dos bytes; a retirada por capacidade ocorre dentro da transação, somente depois da nova imagem ser persistida. A escolha é determinística pela menor combinação (recorded_at, id), excluindo registros já retirados e protegidos por hold. Se não houver itens elegíveis suficientes, o aceite falha sem retirar imagens protegidas e somente o novo objeto armazenado é compensado.
+
+A expiração lógica usa 12 meses corridos a partir de recorded_at, atribuído pelo servidor após o armazenamento e a aquisição do lock da câmera quando o backend oferece SELECT FOR UPDATE. Holds com timestamp/ator opcionais protegem contra rotação e expiração. Hold e release requerem a permissão específica e autorização de objeto no escopo da câmera. Como os grupos autorizados ainda não foram designados, o fluxo falha fechado; não foram expostos UI, endpoint ou tela administrativa para hold/release.
+
+A migration cameras.0022_alter_cameraimagerecord_options_and_more acrescenta somente os dois campos nullable de hold, a coerência entre ator e timestamp e a permissão própria. O serviço de expiração é bounded e independente do monitoramento. A retirada é lógica e auditada; nenhum purge físico ou exclusão de bytes históricos é permitido por este incremento. QuerySet.update e bulk_update são bloqueados para impedir bypass de fatos e lifecycle.
+
+Status observado: implementação local; 89 testes focais E3/E4 no total (88 PASS, 1 SKIP automático). O skip é o teste condicional de concorrência, pois SQLite não suporta SELECT FOR UPDATE. manage.py check passou; makemigrations --check --dry-run não detectou mudanças; migrate --plan inclui a migration 0022, não aplicada a banco operacional; git diff --check passou. PostgreSQL e homologação formal não foram realizados.
+
+Os testes locais usaram SQLite descartável e cobrem rotação, preservação de objetos históricos, holds, expiração, autorização, auditoria, rollback/compensação, upload e captura fake E3/E4. A suíte ampla manage.py test cameras ficou sem progresso e foi encerrada sem traceback final; a saída parcial indicou erros e não é resultado aprovado. Esta seção atualiza somente o estado de implementação do lifecycle: não declara concorrência com row lock validada, PostgreSQL, homologação operacional ou publicação.

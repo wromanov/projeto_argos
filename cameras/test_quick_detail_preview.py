@@ -15,6 +15,7 @@ from django.urls import reverse
 from django.utils import timezone
 from PIL import Image
 
+from cameras.imagens.lifecycle_service import expire_due_images
 from cameras.imagens.preview_service import PreviewResult, PreviewState
 from cameras.models import Camera, CameraImageRecord
 
@@ -71,10 +72,8 @@ class QuickDetailPreviewTests(TestCase):
 
     def test_withdrawn_or_superseded_identity_is_stale_without_bytes(self):
         self.allow_view()
-        record = self.make_record()
-        record.withdrawn_at = timezone.now()
-        record.withdrawal_reason = "retirada sintética"
-        record.save(update_fields=["withdrawn_at", "withdrawal_reason"])
+        record = self.make_record(recorded_at=timezone.now() - timedelta(days=400))
+        self.assertEqual(expire_due_images(camera_id=self.camera.pk), 1)
         response = self.client.get(self.url(record))
         self.assertEqual((response.status_code, response["X-Preview-State"], response.content),
                          (409, "STALE_SELECTION", b""))

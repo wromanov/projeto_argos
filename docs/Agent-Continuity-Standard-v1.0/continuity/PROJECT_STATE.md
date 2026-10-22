@@ -9863,3 +9863,137 @@ upstream. Nenhuma câmera, VM, rede corporativa, banco operacional, credencial
 real, migration, F02/F03 ou monitoramento foi acessado ou alterado. O aceite
 final P1 permanece pendente. O commit e a publicação permanecem bloqueados até
 novo gate de autorização e verificação do remoto.
+
+## 180. ARGOS-E5-LIFECYCLE-FOUNDATION-01 — implementação local (2026-10-21)
+
+ACTIVITY_ID = ARGOS-E5-LIFECYCLE-FOUNDATION-01
+WORKSTATION = CASA / ROMA_CASA
+REPOSITORY = C:/Users/walac/desenvolvimento/projeto_argos
+BRANCH = master
+BASELINE_HEAD = f4500d65ebab133a93a47c84641abe37b5615cfe
+HEAD_AFTER_WORK = f4500d65ebab133a93a47c84641abe37b5615cfe
+TRACKED_CODE_AND_TEST_CHANGES = cameras/authorization.py; cameras/imagens/capture_service.py; cameras/imagens/upload_service.py; cameras/models.py; cameras/test_imagens_gallery_service.py; cameras/test_imagens_upload.py
+NEW_CODE_FILES = cameras/imagens/lifecycle_service.py; cameras/management/commands/expire_camera_images.py; cameras/migrations/0022_alter_cameraimagerecord_options_and_more.py
+DOCUMENTATION_CHANGES = ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md §27; ROADMAP_ARGOS_V5.md §29; SPRINTS_ARGOS_V5.md §26; AGENT_CONTINUITY.md §20.135; ACTIVE_DOCUMENT_MAP.md §139; PROJECT_STATE.md §180
+STATUS_ONLY_LINE_ENDING_NO_CONTENT_DIFF = cameras/management/__init__.py; cameras/management/commands/__init__.py
+PREEXISTING_UNTRACKED_WIP = docs/Agent-Continuity-Standard-v1.0.zip / preserved, never opened
+STAGING = EMPTY
+COMMIT = NONE
+PUSH = NONE
+
+E5-A compartilha o serviço de persistência entre upload manual e captura. A validação completa precede o armazenamento; a nova imagem é registrada na mesma transação que a auditoria, o callback de sucesso da captura e a rotação. Quando disponível, o serviço trava o registro da câmera. O aceite usa recorded_at do servidor após armazenamento/lock. Mantém até três registros ativos por câmera e, se excedido, retira logicamente os mais antigos elegíveis por (recorded_at, pk), após a nova imagem ter sido validada e persistida. Holds bloqueiam expiração e rotação. Retenção é de 12 meses corridos; a expiração é bounded e separada do monitoramento. Nenhum purge físico ocorre. Auditoria é transacional; em falha, somente o objeto novo é compensado. QuerySet.update e bulk_update não podem alterar fatos/lifecycle.
+
+Hold/release exige permissão global específica e autorização por objeto no escopo da câmera. Grupos autorizados ainda não foram designados; por isso o controle é deny-by-default e não há endpoint, UI ou administração expostos. A migration cameras.0022_alter_cameraimagerecord_options_and_more adiciona os campos nullable de timestamp/ator, a constraint de coerência e a permissão. Ela consta no plano; nenhum banco operacional foi acessado ou alterado.
+
+Validações no ambiente local isolado: suíte segmentada de regressão E3/E4, 89 total (88 PASS, 1 SKIP) em SQLite descartável; manage.py check PASS; makemigrations --check --dry-run PASS / No changes detected; migrate --plan inclui a migration 0022; git diff --check PASS. O teste de concorrência com cinco workers é condicionado a has_select_for_update e foi skipped pelo SQLite; portanto concorrência/serialização real não foi demonstrada neste host. Não foi usada nem validada uma instância PostgreSQL. A suíte ampla manage.py test cameras foi parada após ficar sem progresso; a saída parcial continha indicadores E, sem traceback/resultado final, e é INCONCLUSIVE, não PASS. Uma revisão read-only independente não encontrou bloqueadores de produção.
+
+Nenhuma operação foi feita em banco operacional, VM, rede, câmera, VMS ou monitoramento; RTSP real permaneceu desabilitado. Não houve stage, commit ou push. E5-A está implementado e validado localmente, mas não está publicado nem formalmente homologado. O ZIP de WIP segue preservado, sem leitura.
+
+PROJECT_STATE_UPDATE = PASS / §180
+ACTIVITY_STATUS = LOCAL_IMPLEMENTATION_AND_FOCUSED_QA_PASS
+MIGRATION = 0022 / planned only; not applied operationally
+DJANGO_SYSTEM_CHECK = PASS
+FOCUSED_E3_E4_TESTS = 89 total / 88 PASS / 1 SKIP
+ROW_LOCK_CONCURRENCY = NOT_EXERCISED / SQLite has_select_for_update=False
+POSTGRESQL_VALIDATION = NOT_PERFORMED
+BROAD_CAMERAS_SUITE = INCONCLUSIVE / stopped without final traceback
+STAGING = EMPTY
+COMMIT_OR_PUSH = NONE
+FORMAL_HOMOLOGATION = NOT_ESTABLISHED
+NEXT_GATE = DESIGNATE_CAMERA_SCOPE_GROUPS_FOR_HOLD_RELEASE; keep surface fail-closed until then
+
+
+
+## 181. ARGOS-E5-A-REGRESSION-CLOSE-02 — regressão ampla local (2026-10-22)
+
+ACTIVITY_ID = ARGOS-E5-A-REGRESSION-CLOSE-02
+WORKSTATION = CASA
+REPOSITORY = C:/Users/walac/desenvolvimento/projeto_argos
+BRANCH = master
+BASELINE_HEAD = f4500d65ebab133a93a47c84641abe37b5615cfe
+HEAD_AFTER_WORK = f4500d65ebab133a93a47c84641abe37b5615cfe
+TEST_DISCOVERY_TOTAL = 859 / 62 módulos
+TERMINAL_TEST_RESULTS = 736 / 733 PASS, 0 FAIL, 2 ERROR, 1 SKIP
+UNRESOLVED_TESTS = 123 / 115 não iniciados e 8 iniciados sem resultado final por timeout
+
+### Execução ampla segmentada
+
+Cada grupo usou banco SQLite em memória e saída sem credenciais. Os grupos 1–3, 5–8, 10–11 e 17 terminaram com resumo. O grupo 16 terminou com dois erros ambientais de XLSX e um erro de fixture E5-A que foi corrigido e reexecutado com sucesso. Os grupos 4, 9 e 12–15 chegaram ao limite individual de 120 segundos e foram subdivididos por módulo, com limite individual de 60 segundos.
+
+| Grupo | Módulos (abreviados) | Descobertos | Resultado da rodada agrupada | Duração |
+|---|---|---:|---|---:|
+| 1 | atividades, auditoria integração | 56 | 56 PASS | 51,57 s |
+| 2 | auditoria modelo/views, autorização, capabilities | 57 | 57 PASS | 51,06 s |
+| 3 | compatibilidade e credenciais | 56 | Django Ran 56, código 0, sem falha/skip; parser reconheceu 55 linhas | 101,39 s |
+| 4 | diagnóstico, formulário, saúde, HTTP snapshot | 43 | 23 PASS; timeout; módulos isolados depois | 120,06 s |
+| 5 | adaptador e runtime RTSP | 39 | 39 PASS / testes locais | 10,93 s |
+| 6 | target policy e catálogos | 54 | 54 PASS | 6,16 s |
+| 7 | cadastro, display, frontend, governança modelo | 56 | 56 PASS | 31,25 s |
+| 8 | transições e views de governança | 49 | 49 PASS | 8,88 s |
+| 9 | captura RTSP, serviço, views e worker | 58 | 13 PASS; timeout; módulos isolados depois | 120,05 s |
+| 10 | galeria, preview, leitura e upload | 53 | 52 PASS, 1 SKIP condicional a row lock | 25,87 s |
+| 11 | confirmação e laboratório de confirmação | 43 | 43 PASS | 3,70 s |
+| 12 | indisponibilidade e laboratório | 60 | 34 PASS; timeout; módulos isolados depois | 120,04 s |
+| 13 | Mon08/Mon09 e observabilidade | 44 | 5 PASS; timeout; módulos isolados depois | 120,06 s |
+| 14 | persistência, probe, leitura | 50 | 29 PASS; timeout; módulos isolados depois | 120,06 s |
+| 15 | scheduler, UI, worker runtime, QA e quick detail | 60 | 30 PASS; timeout; módulos isolados depois | 120,06 s |
+| 16 | quick preview, rotas, substituição, rede, XLSX | 52 | 49 PASS, 3 ERROR; quick preview corrigido e reexecutado PASS | 84,53 s |
+| 17 | cameras.tests | 29 | 29 PASS | 27,93 s |
+
+Os replays por módulo terminaram sem falhas em diagnóstico (10), formulário (5), saúde (13), captura RTSP (13), captura views (19), capture worker (1), indisponibilidade (18), integração de indisponibilidade (19), Mon09b (3), Mon09c (10), Mon09d (6), observabilidade (10), persistência (19), serviço de leitura de monitoramento (10), UI de monitoramento (11), normalização (8), provisioning QA (6) e quick detail (5). Também passaram os 19 testes afetados em test_display_image e test_imagens_read_service após a revisão final.
+
+Permaneceram sem resultado terminal nos replays bounded: test_camera_http_snapshot (14 não iniciados, 1 inconclusivo), test_imagens_capture_service (24, 1), test_monitoramento_laboratorio (22, 1), test_monitoramento_mon08b (6, 1), test_monitoramento_mon08c (4, 1), test_monitoramento_probe (17, 1), test_monitoramento_scheduler_laboratorio (20, 1) e test_monitoramento_worker_runtime (8, 1). Total: 115 não iniciados e 8 iniciados sem desfecho; são inconclusivos, não falhas nem aprovações.
+
+### Revisão de fixtures e erros
+
+cameras/test_display_image.py: removidos os UPDATE SQL que mudavam recorded_at e integrity_status. Empates/ordenação são semeados na criação ORM; VALID→INVALID usa save(update_fields), permitido pelo contrato do modelo. São cenários de ordenação/integridade, não registros legados inconsistentes; a alteração preserva a detecção do desempate por recorded_at e ID.
+
+cameras/test_imagens_read_service.py: removido o SQL de retirada. O registro vencido é retirado pelo serviço público expire_due_images; o teste afirma que a leitura escolhe o anterior disponível. Nenhum SQL direto permanece nesses dois módulos.
+
+Foi corrigida uma regressão demonstrada em test_quick_detail_preview: o fixture alterava withdrawn_at diretamente após a criação, violando o novo contrato. Agora cria um registro vencido e usa a API de expiração lógica. O teste passou isoladamente.
+
+Dois erros restantes são ambientais: openpyxl não está instalado para dois testes XLSX. Não foram instaladas dependências. O único SKIP é o teste de concorrência condicional a SELECT FOR UPDATE, que SQLite não oferece; SQLite não foi contado como validação PostgreSQL.
+
+manage.py check = PASS; makemigrations --check --dry-run = PASS / No changes detected, executado com SQLite em memória; git diff --check = PASS com avisos LF/CRLF. A migration 0022 foi aplicada somente nos bancos SQLite descartáveis dos testes; a verificação isolada anterior confirmou dados legados, campos nullable, constraint e permissão. Nenhum banco operacional foi aberto ou alterado. POSTGRESQL_CONCURRENCY = PENDING.
+
+REAL_RTSP_ENABLED = NO; testes RTSP usaram adaptadores locais/fakes. Nenhum arquivo de monitoramento produtivo foi alterado, não há purge físico, não houve acesso a câmera/VMS/rede/credenciais e o ZIP docs/Agent-Continuity-Standard-v1.0.zip permaneceu fechado e com 160715 bytes.
+
+FIXTURE_SQL_REVIEW = PASS; E5_A_REGRESSION_STATUS = FIXED / focused recheck PASS; broad suite INCONCLUSIVE; LOCAL_COMMIT_READINESS = NOT_READY / 123 testes sem resultado terminal; PRODUCTION_READINESS = NOT_ESTABLISHED; STAGING = EMPTY; COMMIT = NONE; PUSH = NONE.
+
+PROJECT_STATE_UPDATE = PASS / §181
+ACTIVITY_STATUS = CLOSED_WITH_BROAD_REGRESSION_LIMITATIONS
+ACTIVITY_COMPLETION_PERCENT = 100%
+NEXT_GATE = NONE_CREATED / fechar esta atividade; não inferir aceite formal
+
+
+## 182. ARGOS-E5-A-COMMIT-READINESS-01 — fechamento de ambiente e captura (2026-10-22)
+
+ACTIVITY_ID = ARGOS-E5-A-COMMIT-READINESS-01
+WORKSTATION = CASA
+REPOSITORY = C:/Users/walac/desenvolvimento/projeto_argos
+BRANCH = master
+BASELINE_HEAD = f4500d65ebab133a93a47c84641abe37b5615cfe
+HEAD_AFTER_WORK = f4500d65ebab133a93a47c84641abe37b5615cfe
+STATUS = CLOSED_WITH_ENVIRONMENT_LIMITATIONS
+
+O ambiente de teste é o `.venv` do repositório, Python 3.14.7, selecionado nas instruções operacionais locais; `py` aponta para Python global 3.15 e não é substituto validado. `requirements.txt` declara `openpyxl>=3.1.5,<4`, mas a dependência está ausente no `.venv`; não foi instalada. Remediação reproduzível, se autorizada em atividade própria: `.venv\Scripts\python.exe -m pip install "openpyxl>=3.1.5,<4"`.
+
+`test_camera_http_snapshot` e o caminho sintético do worker usam asyncio/async_to_sync, mas o runner local não consegue inicializar o event loop Windows. Smoke `asyncio.run(asyncio.sleep(0))` ficou bloqueado; pilha com faulthandler localizou `socket.accept()` em `socket._fallback_socketpair` durante `ProactorEventLoop._make_self_pipe`. Portanto casos HTTP/E3 assíncronos não têm resultado de teste, e são INCONCLUSIVE por limitação ambiental; nenhum acesso a rede/câmera ocorreu. Três casos síncronos do `CameraCaptureServiceTests` passaram: idempotência da intenção, gate RTSP fechado e exigência explícita da fonte HTTP. O teste síncrono de worker/persistência também foi tentado e interrompido no bloqueio de event loop.
+
+Nos módulos de monitoramento sem alterações de produção, passaram nesta atividade 38 testes síncronos: probe (14), isolamento Mon08B (3), configuração/contratos/escala sintética do scheduler (20) e configuração do worker (1). Os testes assíncronos permanecem bloqueados pela inicialização de event loop; Mon08C mantém os cenários de carga sintética de 2.300 ativos previamente inconclusivos e não foi repetido. Não há regressão de monitoramento atribuída a E5-A.
+
+Verificações finais: `manage.py check` PASS; `makemigrations --check --dry-run` PASS / No changes detected, com configuração SQLite em memória; `git diff --check` PASS com avisos LF/CRLF. Testes síncronos criaram somente bancos de teste descartáveis. A migration 0022 não foi aplicada a banco operacional. Evidência de testes focais de lifecycle/upload/capacidade/hold/expiração/auditoria/compensação permanece em §180 e §181. Nenhuma correção de código foi necessária nesta atividade.
+
+DEVELOPMENT_COMMIT_READINESS = READY / recomendação local baseada nos focais E5 prévios aprovados, verificações estáticas válidas e ausência de regressão E5 comprovada; registrar antes do commit os bloqueios ambientais openpyxl/asyncio
+FINAL_ACCEPTANCE = NOT_ESTABLISHED / execução HTTP assíncrona e suíte total sem resultado; PostgreSQL pendente
+PRODUCTION_READINESS = NOT_ESTABLISHED
+POSTGRESQL_CONCURRENCY = PENDING
+REAL_RTSP_ENABLED = NO
+MONITORING_PRODUCTION_FILES_CHANGED = NO
+STAGING = EMPTY
+COMMIT = NONE
+PUSH = NONE
+ZIP = preserved / not opened
+PROJECT_STATE_UPDATE = PASS / §182
+ACTIVITY_COMPLETION_PERCENT = 100%
+NEXT_GATE = NONE_CREATED / atividade encerrada; nenhuma nova frente aberta

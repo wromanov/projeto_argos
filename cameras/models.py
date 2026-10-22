@@ -762,6 +762,16 @@ def sanitizar_nome_original(value):
 
 
 class CameraImageRecordQuerySet(models.QuerySet):
+    def update(self, **kwargs):
+        raise ValidationError(
+            "Fatos e lifecycle de imagem só podem mudar pelo serviço de lifecycle."
+        )
+
+    def bulk_update(self, objs, fields, batch_size=None):
+        raise ValidationError(
+            "Fatos e lifecycle de imagem só podem mudar pelo serviço de lifecycle."
+        )
+
     def delete(self):
         raise ValidationError("Registros de imagem são históricos; use a retirada lógica.")
 
@@ -831,12 +841,24 @@ class CameraImageRecord(models.Model):
         verbose_name="Retirada por",
     )
     withdrawal_reason = models.CharField(max_length=500, blank=True, default="", verbose_name="Motivo da retirada")
+    retention_held_at = models.DateTimeField(null=True, blank=True, verbose_name="Protegida desde")
+    retention_held_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="camera_image_records_held",
+        verbose_name="Protegida por",
+    )
 
     objects = CameraImageRecordQuerySet.as_manager()
 
     class Meta:
         verbose_name = "Registro de imagem da câmera"
         verbose_name_plural = "Registros de imagem da câmera"
+        permissions = [
+            ("manage_camera_image_hold", "Pode proteger ou liberar retenção de imagem por câmera"),
+        ]
         constraints = [
             models.CheckConstraint(
                 condition=Q(provenance__in=["CAPTURA_CAMERA", "UPLOAD_MANUAL"]),
@@ -859,6 +881,13 @@ class CameraImageRecord(models.Model):
                     | Q(withdrawn_at__isnull=False, withdrawal_reason__gt="")
                 ),
                 name="camimg_withdrawal_auditable",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    Q(retention_held_by__isnull=True, retention_held_at__isnull=True)
+                    | Q(retention_held_by__isnull=False, retention_held_at__isnull=False)
+                ),
+                name="camimg_hold_actor_has_timestamp",
             ),
             models.CheckConstraint(
                 condition=(
@@ -915,6 +944,12 @@ class CameraImageRecord(models.Model):
                 errors["withdrawal_reason"] = "A retirada lógica exige um motivo auditável."
         elif self.withdrawal_reason:
             errors["withdrawal_reason"] = "O motivo só pode ser informado junto à retirada lógica."
+        if self.retention_held_at is not None and timezone.is_naive(self.retention_held_at):
+            errors["retention_held_at"] = "retention_held_at deve ser timezone-aware."
+        if self.retention_held_by_id is not None and self.retention_held_at is None:
+            errors["retention_held_at"] = "Um autor de hold exige retention_held_at."
+        if self.withdrawn_at is not None and self.retention_held_at is not None:
+            errors["retention_held_at"] = "Imagem retirada não pode permanecer protegida."
         if errors:
             raise ValidationError(errors)
 
@@ -922,7 +957,13 @@ class CameraImageRecord(models.Model):
         self.original_filename = sanitizar_nome_original(self.original_filename)
         if not self._state.adding:
             previous = type(self).objects.filter(pk=self.pk).values(
-                *self._IMMUTABLE_FACT_FIELDS, "integrity_status", "withdrawn_at", "withdrawn_by_id", "withdrawal_reason"
+                *self._IMMUTABLE_FACT_FIELDS,
+                "integrity_status",
+                "withdrawn_at",
+                "withdrawn_by_id",
+                "withdrawal_reason",
+                "retention_held_at",
+                "retention_held_by_id",
             ).first()
             if previous is None:
                 raise ValidationError("A identidade de um registro de imagem não pode ser substituída.")
@@ -938,12 +979,26 @@ class CameraImageRecord(models.Model):
                 previous["withdrawn_at"], previous["withdrawn_by_id"], previous["withdrawal_reason"]
             )
             lifecycle_after = (self.withdrawn_at, self.withdrawn_by_id, self.withdrawal_reason)
+            hold_before = (previous["retention_held_at"], previous["retention_held_by_id"])
+            hold_after = (self.retention_held_at, self.retention_held_by_id)
+            service_mutation = getattr(self, "_lifecycle_service_mutation", False)
+            if lifecycle_before != lifecycle_after and not service_mutation:
+                raise ValidationError("Retirada lógica só pode mudar pelo serviço de lifecycle.")
             if previous["withdrawn_at"] is not None and lifecycle_before != lifecycle_after:
                 raise ValidationError("A retirada lógica é histórica e não pode ser alterada ou revertida.")
+            if hold_before != hold_after and not service_mutation:
+                raise ValidationError("Hold só pode mudar pelo serviço de lifecycle.")
+            if hold_before[0] is not None and hold_after[0] is not None and hold_before != hold_after:
+                raise ValidationError("Um hold ativo não pode ser substituído; libere-o primeiro.")
         self.full_clean()
-        return super().save(*args, **kwargs)
+        result = super().save(*args, **kwargs)
+        if hasattr(self, "_lifecycle_service_mutation"):
+            del self._lifecycle_service_mutation
+        return result
 
     def withdraw(self, *, reason, by=None, at=None):
+        if not getattr(self, "_lifecycle_service_mutation", False):
+            raise ValidationError("Retirada lógica só pode mudar pelo serviço de lifecycle.")
         if self._state.adding:
             raise ValidationError("Salve o registro antes de retirá-lo logicamente.")
         if self.withdrawn_at is not None:
@@ -1250,7 +1305,7 @@ class CameraCaptureJob(models.Model):
         "TARGET_DENIED", "CREDENTIAL_UNAVAILABLE", "CONNECT_TIMEOUT",
         "READ_TIMEOUT", "TLS_ERROR", "CONNECT_ERROR", "HTTP_TRANSPORT_ERROR",
         "AUTH_FAILURE", "HTTP_STATUS_ERROR", "CONTENT_TYPE_INVALID",
-        "BODY_TOO_LARGE", "IMAGE_INVALID", "STORAGE_ERROR", "INTERNAL_ERROR",
+        "BODY_TOO_LARGE", "IMAGE_INVALID", "STORAGE_ERROR", "LIFECYCLE_BLOCKED", "INTERNAL_ERROR",
     )
 
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)

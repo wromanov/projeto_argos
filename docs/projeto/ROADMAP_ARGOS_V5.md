@@ -1860,3 +1860,20 @@ Detalhes técnicos e inventário WIP estão em ARGOS_E3_RTSP_PRIMARY_RECOVERY_PL
 `USER_AMENDMENT_APPROVAL = APPROVED / C01-C06`. A adjudicação operacional de preflight foi `PREFLIGHT_ADJUDICATION = CONTINUE_DOCUMENTATION_ONLY`; ela não foi uma decisão operacional atribuída ao usuário. A promoção está registrada localmente nos contratos IMG-CAP/BC-02 e CAM-INT-03: RTSP Frame quando elegível/configurado; HTTP Snapshot independente e explícito, sem fallback silencioso; diagnóstico A/B/C/D preservado e API complementar bounded para frame/JPEG. Ambos convergem no `CameraImageRecord` existente, storage privado, auditoria e leitura E4 protegida. A modelagem C04 continua pendente na P2, sem schema ou migration. C05 preserva credenciais protegidas e Target Policy; RTSP convencional não requer HTTPS/RTSPS. F02/F03 mantêm IDs, escopos e estados existentes.
 
 Esta é a promoção contratual local; a publicação remota depende do commit e push normal autorizados nesta atividade. P1 não autorizada/iniciada; sem alteração funcional, VM ou câmera real. Próximo gate após publicação: retomada em `ARGOS-E3-RTSP-ROUND-1-P1`, ainda `PLANNED / NOT_AUTHORIZED`.
+
+## 29. ARGOS-E5-LIFECYCLE-FOUNDATION-01 — estado atualizado E0–E5 (2026-10-21)
+
+Esta seção atualiza a matriz corrente E0–E5 da §25 somente com estados confirmados no checkout Casa. Os registros históricos da §25 e das seções anteriores permanecem preservados. E6–E8 seguem os estados já registrados na §25.
+
+| Etapa | Slice | Estado corrente confirmado | Gate / limite |
+|---|---|---|---|
+| E0 — Estabilização para entrega | ARGOS-QA-01 | PENDING | A fixture VISUAL_QA_USERNAME e a revalidação integral da suíte original seguem fora deste incremento. |
+| E1 — Credenciais por câmera | ARGOS-CRED-UI-01 | Implementada em checkpoint anterior | Consultar PROJECT_STATE §§137–138; este incremento não reabriu E1. |
+| E2 — Quick Detail | ARGOS-IMG-07-CONFORMANCE | CLOSED_WITH_EXCEPTIONS | Consultar PROJECT_STATE §§153–154; exceções preservadas. |
+| E3 — Captura manual | IMG-04 / IMG-05 / CAM-INT-04 | Serviço e integração local implementados; testes offline/fakes; aceite P1 e captura RTSP real pendentes | Gate RTSP permanece fechado; consultar PROJECT_STATE §§178–179. |
+| E4 — Galeria | IMG-06 | IMPLEMENTED / APPROVED / PUBLISHED no checkpoint documentado | Consultar PROJECT_STATE §165; homologação com imagem de câmera real não é declarada aqui. |
+| E5 — Segurança e lifecycle | ARGOS-E5-LIFECYCLE-FOUNDATION-01 / IMG-08 / IMG-09 | Implementado e validado localmente: 89 testes E3/E4 no total (88 PASS, 1 SKIP automático) no SQLite | Sem commit/push, aplicação da migration em banco operacional ou homologação. Concorrência com row lock não exercitada; grupo autorizado de hold/release continua indefinido e deny-by-default. Purge físico não incluído. |
+
+O incremento E5-A aplica três imagens ativas por câmera, rotação lógica da mais antiga elegível após validação/persistência da nova, retenção de 12 meses corridos baseada no recorded_at do servidor, holds contra rotação/expiração, auditoria e expiração bounded independente de monitoramento. A migration cameras.0022_alter_cameraimagerecord_options_and_more é a única migration criada e consta no plano local; não foi aplicada a banco operacional.
+
+manage.py check, makemigrations --check --dry-run e git diff --check passaram. A suíte ampla manage.py test cameras foi interrompida sem progresso e sem traceback final; não conta como PASS. O checkout continuou em master @ f4500d65ebab133a93a47c84641abe37b5615cfe; não houve stage, commit ou push.

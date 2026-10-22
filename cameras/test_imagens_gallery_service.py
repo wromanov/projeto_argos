@@ -5,6 +5,7 @@ from hashlib import sha256
 from io import BytesIO
 from uuid import UUID, uuid4
 
+from django.db import connection
 from django.test import SimpleTestCase, TestCase, override_settings
 from PIL import Image
 
@@ -158,7 +159,10 @@ class GalleryServicesTests(TestCase):
     def test_integrity_hash_and_storage_failures_are_sanitized_states(self):
         bad_integrity = self.record(integrity_status=CameraImageRecord.IntegrityStatus.INVALID)
         bad_hash = self.record()
-        CameraImageRecord.objects.filter(pk=bad_hash.pk).update(sha256="bad")
+        table = connection.ops.quote_name(CameraImageRecord._meta.db_table)
+        database_pk = CameraImageRecord._meta.pk.get_db_prep_value(bad_hash.pk, connection)
+        with connection.cursor() as cursor:
+            cursor.execute(f"UPDATE {table} SET sha256 = %s WHERE id = %s", ["bad", database_pk])
         missing = self.record(storage_present=False)
         result = self.read.list_active(self.camera.pk)
         states = {image.immutable_id: image.state for image in result.images}
@@ -171,9 +175,13 @@ class GalleryServicesTests(TestCase):
         record = self.record()
         wrong_camera = self.preview.deliver(self.other_camera.pk, record.pk, "FULL")
         self.assertEqual(wrong_camera.state, GalleryPreviewState.NOT_FOUND)
-        record.withdrawn_at = NOW
-        record.withdrawal_reason = "retirada sintética"
-        record.save(update_fields=("withdrawn_at", "withdrawal_reason"))
+        table = connection.ops.quote_name(CameraImageRecord._meta.db_table)
+        database_pk = CameraImageRecord._meta.pk.get_db_prep_value(record.pk, connection)
+        with connection.cursor() as cursor:
+            cursor.execute(
+                f"UPDATE {table} SET withdrawn_at = %s, withdrawal_reason = %s WHERE id = %s",
+                [NOW, "retirada sintética", database_pk],
+            )
         withdrawn = self.preview.deliver(self.camera.pk, record.pk, "FULL")
         self.assertEqual(withdrawn.state, GalleryPreviewState.NOT_FOUND)
         invalid_variant = self.preview.deliver(self.camera.pk, record.pk, "SOURCE")
