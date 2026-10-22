@@ -10029,3 +10029,29 @@ ACTIVITY_COMPLETION_PERCENT = 100%
 NEXT_GATE = HUMAN_AUTHORITY_DECISION_FOR_CAMERA_IMAGE_HOLD_RELEASE
 
 Revalidacao ARGOS-E5-B-VALIDATION-AND-CONSOLIDATION-01: sete testes isolados dos seis cenarios de autoridade/auditoria/rollback = 7/7 PASS; modulo cameras.test_imagens_upload = 23 testes, 22 PASS e 1 SKIP condicional por SQLite sem SELECT FOR UPDATE. Python 3.14.7; banco SQLite descartavel via scripts.localqa.test_settings; manage.py check PASS; makemigrations --check --dry-run PASS / No changes detected; git diff --check PASS. Nenhum banco operacional foi acessado. Os dois __init__.py locais e o ZIP permaneceram fora do escopo de escrita/stage.
+
+## 184. ARGOS-E5-B-VALIDATION-AND-CONSOLIDATION-01 (2026-10-22)
+
+ACTIVITY_ID = ARGOS-E5-B-VALIDATION-AND-CONSOLIDATION-01
+WORKSTATION = ROMA_CASA
+REPOSITORY = C:/Users/walac/desenvolvimento/projeto_argos
+BRANCH = master
+BASELINE_HEAD = b33aebb0d35606ab54ecf38a51d8b915a2ef8da2
+E5B_CODE_COMMIT = 06f27018ff5279a4b84c238e6321721c4efa4f53
+PUSH = VERIFIED / origin/master igual ao commit E5-B
+STATUS = TECHNICALLY_COMPLETE / HUMAN_AUTHORITY_AND_PRODUCTION_GATES_PENDING
+
+Sete testes isolados cobrindo ausencia de grant global, grant sem escopo por camera, superuser sem excecao, hold/release com grant e escopo controlados, auditoria de sucesso/negacao/erro sem segredos e rollback sem falso sucesso: 7/7 PASS. O modulo cameras.test_imagens_upload terminou com 23 testes, 22 PASS e 1 SKIP condicional porque SQLite nao oferece SELECT FOR UPDATE; o skip nao comprova concorrencia PostgreSQL. Python 3.14.7; banco SQLite descartavel por scripts.localqa.test_settings; Django check PASS; makemigrations --check --dry-run PASS / No changes detected; git diff --check PASS.
+
+Arquivos E5-B no commit: cameras/imagens/lifecycle_service.py; cameras/test_imagens_upload.py; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; docs/projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md; docs/projeto/ROADMAP_ARGOS_V5.md; docs/projeto/SPRINTS_ARGOS_V5.md. Os dois __init__.py locais e docs/Agent-Continuity-Standard-v1.0.zip (160715 bytes, nao aberto) foram preservados fora do stage e do commit.
+
+OPERATIONAL_DATABASE = NOT_ACCESSED
+REAL_RTSP_ENABLED = NO
+MIGRATION = NONE / nenhuma migration nova
+HUMAN_DECISION_REQUIRED = designar grupos para cameras.manage_camera_image_hold, aprovar concessao por camera e declarar excecoes privilegiadas; nenhuma permissao foi inferida
+POSTGRESQL_CONCURRENCY = PENDING
+FINAL_ACCEPTANCE = NOT_ESTABLISHED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+PROJECT_STATE_UPDATE = PASS / section 184
+ACTIVITY_COMPLETION_PERCENT = 100%
+NEXT_GATE = HUMAN_AUTHORITY_DECISION_FOR_CAMERA_IMAGE_HOLD_RELEASE
