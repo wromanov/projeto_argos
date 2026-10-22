@@ -249,49 +249,94 @@ def _require_hold_authority(*, actor, camera):
     require_camera_permission(
         actor=actor, permission_codename=HOLD_PERMISSION, camera_id=camera.pk
     )
+    # Django superusers bypass has_perm; no privileged hold authority is approved.
+    if getattr(actor, "is_superuser", False):
+        raise PermissionDenied
     # ModelBackend has no object grants by default, so this check denies closed
     # until an explicit camera-scope authorization backend/grant exists.
     if not actor.has_perm(f"cameras.{HOLD_PERMISSION}", camera):
         raise PermissionDenied
 
 
-def set_image_hold(*, actor, camera_id, image_id, held=True):
-    if not getattr(actor, "is_authenticated", False):
-        raise PermissionDenied
-    with transaction.atomic():
-        camera = _lock_camera(camera_id)
-        _require_hold_authority(actor=actor, camera=camera)
-        record = (
-            CameraImageRecord.objects.select_for_update()
-            .filter(pk=image_id, camera_id=camera_id)
-            .first()
-        )
-        if record is None:
-            raise CameraImageRecord.DoesNotExist
-        if record.withdrawn_at is not None:
-            raise ValidationError("Uma imagem retirada não pode receber alteração de hold.")
-        if held:
-            if record.retention_held_at is not None:
-                raise ValidationError("A imagem já está protegida.")
-            record.retention_held_at = timezone.now()
-            record.retention_held_by = actor
-            code = "imagem.hold.ativado"
-            summary = "Proteção de retenção ativada para a imagem."
-        else:
-            if record.retention_held_at is None:
-                raise ValidationError("A imagem não está protegida.")
-            record.retention_held_at = None
-            record.retention_held_by = None
-            code = "imagem.hold.liberado"
-            summary = "Proteção de retenção liberada para a imagem."
-        record._lifecycle_service_mutation = True
-        record.save(update_fields=["retention_held_at", "retention_held_by"])
-        _audit_lifecycle(
-            code=code,
-            summary=summary,
+def _audit_hold_failure(*, actor, camera_id, image_id, held, error):
+    """Registra uma recusa/falha sem incluir mensagem ou dados sensíveis."""
+    try:
+        camera = Camera.objects.filter(pk=camera_id).first()
+        from cameras.auditoria import registrar_evento
+
+        registrar_evento(
+            codigo=(
+                "imagem.hold.negado"
+                if isinstance(error, PermissionDenied)
+                else "imagem.hold.erro"
+            ),
+            resumo=(
+                "Operação de proteção de imagem negada."
+                if isinstance(error, PermissionDenied)
+                else "Falha sanitizada ao alterar proteção de imagem."
+            ),
+            categoria=EventoAuditoria.Categoria.CAMERA,
+            usuario=actor if getattr(actor, "is_authenticated", False) else None,
             camera=camera,
-            record=record,
-            actor=actor,
-            origin=EventoAuditoria.Origem.WEB,
+            entidade=None,
+            metadados={
+                "camera_id": str(camera_id),
+                "image_record_id": str(image_id),
+                "operation": "hold" if held else "release",
+                "error_type": type(error).__name__,
+                "executor": "ARGOS-IMG-LIFECYCLE",
+            },
+            origem=EventoAuditoria.Origem.WEB,
         )
-        return record
+    except Exception:
+        # A falha de auditoria não deve mascarar o erro original; a operação
+        # de negócio já foi revertida pela atomicidade do bloco chamador.
+        pass
+
+
+def set_image_hold(*, actor, camera_id, image_id, held=True):
+    try:
+        if not getattr(actor, "is_authenticated", False):
+            raise PermissionDenied
+        with transaction.atomic():
+            camera = _lock_camera(camera_id)
+            _require_hold_authority(actor=actor, camera=camera)
+            record = (
+                CameraImageRecord.objects.select_for_update()
+                .filter(pk=image_id, camera_id=camera_id)
+                .first()
+            )
+            if record is None:
+                raise CameraImageRecord.DoesNotExist
+            if record.withdrawn_at is not None:
+                raise ValidationError("Uma imagem retirada não pode receber alteração de hold.")
+            if held:
+                if record.retention_held_at is not None:
+                    raise ValidationError("A imagem já está protegida.")
+                record.retention_held_at = timezone.now()
+                record.retention_held_by = actor
+                code = "imagem.hold.ativado"
+                summary = "Proteção de retenção ativada para a imagem."
+            else:
+                if record.retention_held_at is None:
+                    raise ValidationError("A imagem não está protegida.")
+                record.retention_held_at = None
+                record.retention_held_by = None
+                code = "imagem.hold.liberado"
+                summary = "Proteção de retenção liberada para a imagem."
+            record._lifecycle_service_mutation = True
+            record.save(update_fields=["retention_held_at", "retention_held_by"])
+            _audit_lifecycle(
+                code=code,
+                summary=summary,
+                camera=camera,
+                record=record,
+                actor=actor,
+                origin=EventoAuditoria.Origem.WEB,
+            )
+            return record
+    except Exception as error:
+        _audit_hold_failure(
+            actor=actor, camera_id=camera_id, image_id=image_id, held=held, error=error
+        )
+        raise

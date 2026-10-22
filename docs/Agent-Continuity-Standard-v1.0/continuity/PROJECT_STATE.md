@@ -9997,3 +9997,35 @@ ZIP = preserved / not opened
 PROJECT_STATE_UPDATE = PASS / §182
 ACTIVITY_COMPLETION_PERCENT = 100%
 NEXT_GATE = NONE_CREATED / atividade encerrada; nenhuma nova frente aberta
+
+## 183. ARGOS-E5-B-AUTHORITY-AND-HARDENING-01 (2026-10-22)
+
+ACTIVITY_ID = ARGOS-E5-B-AUTHORITY-AND-HARDENING-01
+WORKSTATION = ROMA_CASA
+REPOSITORY = C:/Users/walac/desenvolvimento/projeto_argos
+BRANCH = master
+BASELINE_HEAD = b33aebb0d35606ab54ecf38a51d8b915a2ef8da2
+HEAD_AFTER_WORK = b33aebb0d35606ab54ecf38a51d8b915a2ef8da2
+STATUS = LOCAL_IMPLEMENTATION_AND_FOCUSED_QA_PASS / AUTHORITY_DECISION_PENDING
+
+O servico interno set_image_hold permanece fail-closed: exige cameras.manage_camera_image_hold global e concessao no objeto camera; ModelBackend padrao nao fornece essa concessao. Nenhum grupo foi designado; superusuarios sao negados explicitamente; nao ha UI, endpoint ou acao admin exposta. Hold/release nao ficam habilitados em producao. O incremento adiciona auditoria sanitizada de negacoes e erros fora da transacao revertida; sucessos continuam auditados atomicamente com a mutacao. Metadados de falha limitam-se a camera_id, image_record_id, operacao, classe da excecao e executor; mensagem/traceback nao e persistida.
+
+Cobertura focal: cameras.test_imagens_upload.ImageLifecycleInvariantTests = 13/13 PASS em banco SQLite descartavel em memoria. Modulo cameras.test_imagens_upload = 21 total, 20 PASS, 1 SKIP condicional porque SQLite nao oferece SELECT FOR UPDATE. Inclui hold/release auditado, negacao global e por escopo de camera, erro auditado, lifecycle de 3 ativos/12 meses, preservacao de historico, compensacao do objeto novo e protecao contra update/bulk_update. manage.py check PASS; makemigrations --check --dry-run PASS / No changes detected com settings SQLite :memory:; git diff --check PASS, com avisos LF/CRLF preexistentes no worktree. Nenhum teste global foi repetido.
+
+MIGRATION = NONE / nenhuma migration nova
+OPERATIONAL_DATABASE = NOT_ACCESSED
+REAL_RTSP_ENABLED = NO
+MONITORING_OPERATIONAL_FILES_CHANGED = NO
+STAGING = EMPTY
+COMMIT = NONE
+PUSH = NONE
+ZIP = preserved / 160715 bytes / not opened
+PREEXISTING_WIP = cameras/management/__init__.py; cameras/management/commands/__init__.py; docs/Agent-Continuity-Standard-v1.0.zip
+HUMAN_DECISION_REQUIRED = designar explicitamente os grupos que receberao cameras.manage_camera_image_hold e aprovar a regra de concessao por camera (incluindo inclusao/exclusao de perfis privilegiados); nao ha grant automatico.
+PROJECT_STATE_UPDATE = PASS / section 183
+FINAL_ACCEPTANCE = NOT_ESTABLISHED / grupo e concessao por camera pendentes; concorrencia PostgreSQL pendente
+PRODUCTION_READINESS = NOT_ESTABLISHED
+ACTIVITY_COMPLETION_PERCENT = 100%
+NEXT_GATE = HUMAN_AUTHORITY_DECISION_FOR_CAMERA_IMAGE_HOLD_RELEASE
+
+Revalidacao ARGOS-E5-B-VALIDATION-AND-CONSOLIDATION-01: sete testes isolados dos seis cenarios de autoridade/auditoria/rollback = 7/7 PASS; modulo cameras.test_imagens_upload = 23 testes, 22 PASS e 1 SKIP condicional por SQLite sem SELECT FOR UPDATE. Python 3.14.7; banco SQLite descartavel via scripts.localqa.test_settings; manage.py check PASS; makemigrations --check --dry-run PASS / No changes detected; git diff --check PASS. Nenhum banco operacional foi acessado. Os dois __init__.py locais e o ZIP permaneceram fora do escopo de escrita/stage.

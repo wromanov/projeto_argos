@@ -120,6 +120,7 @@ class ManualImageUploadTests(TestCase):
         self.user.user_permissions.add(Permission.objects.get(codename="add_cameraimagerecord"))
         return self.user
 
+
 class ImageLifecycleInvariantTests(TestCase):
     def setUp(self):
         self.temp = TemporaryDirectory()
@@ -130,6 +131,23 @@ class ImageLifecycleInvariantTests(TestCase):
         self.camera = Camera.objects.create(nome="Lifecycle", fabricante="X", modelo="Y")
         self.user = get_user_model().objects.create_user(username="lifecycle")
 
+    def test_hold_state_error_is_audited_without_exception_details(self):
+        from unittest.mock import patch
+        from cameras.imagens.lifecycle_service import set_image_hold
+
+        with patch.object(self.user, "has_perm", return_value=True):
+            with self.assertRaises(CameraImageRecord.DoesNotExist):
+                set_image_hold(
+                    actor=self.user,
+                    camera_id=self.camera.pk,
+                    image_id="00000000-0000-0000-0000-000000000001",
+                )
+        event = EventoAuditoria.objects.get(
+            codigo="imagem.hold.erro", camera=self.camera
+        )
+        self.assertEqual(event.metadados["operation"], "hold")
+        self.assertEqual(event.metadados["error_type"], "DoesNotExist")
+        self.assertNotIn("exception", event.metadados)
     def seed(self, *, recorded_at, held=False):
         data = f"legacy-image-{CameraImageRecord.objects.count()}".encode()
         storage_key = default_storage.save(
@@ -223,6 +241,26 @@ class ImageLifecycleInvariantTests(TestCase):
             codigo="imagem.retencao.expirada", camera=self.camera
         ).exists())
 
+    def test_hold_without_global_permission_is_denied_and_audited(self):
+        from django.core.exceptions import PermissionDenied
+        from cameras.imagens.lifecycle_service import set_image_hold
+
+        row = self.seed(recorded_at=timezone.now())
+        with self.assertRaises(PermissionDenied):
+            set_image_hold(actor=self.user, camera_id=self.camera.pk, image_id=row.pk)
+
+        row.refresh_from_db()
+        self.assertIsNone(row.retention_held_at)
+        self.assertIsNone(row.retention_held_by)
+        self.assertFalse(EventoAuditoria.objects.filter(
+            camera=self.camera, codigo="imagem.hold.ativado"
+        ).exists())
+        denied = EventoAuditoria.objects.get(
+            codigo="imagem.hold.negado", camera=self.camera
+        )
+        self.assertEqual(denied.metadados["error_type"], "PermissionDenied")
+        self.assertNotIn("message", denied.metadados)
+
     def test_hold_requires_global_and_camera_scoped_permission(self):
         from django.contrib.auth.models import Permission
         from django.core.exceptions import PermissionDenied
@@ -241,6 +279,46 @@ class ImageLifecycleInvariantTests(TestCase):
         self.assertFalse(EventoAuditoria.objects.filter(
             codigo="imagem.hold.ativado", camera=self.camera
         ).exists())
+        denied = EventoAuditoria.objects.get(
+            codigo="imagem.hold.negado", camera=self.camera
+        )
+        self.assertEqual(denied.metadados["operation"], "hold")
+        self.assertEqual(denied.metadados["image_record_id"], str(row.pk))
+        self.assertEqual(denied.metadados["error_type"], "PermissionDenied")
+        self.assertNotIn("message", denied.metadados)
+
+    def test_superuser_has_no_implicit_hold_authority(self):
+        from unittest.mock import patch
+        from django.core.exceptions import PermissionDenied
+        from django.contrib.auth import get_user_model
+        from cameras.imagens.lifecycle_service import set_image_hold
+
+        admin = get_user_model().objects.create_superuser(
+            username="image_admin", password="unused"
+        )
+        row = self.seed(recorded_at=timezone.now())
+        with patch.object(admin, "has_perm", return_value=True):
+            with self.assertRaises(PermissionDenied):
+                set_image_hold(actor=admin, camera_id=self.camera.pk, image_id=row.pk)
+        row.refresh_from_db()
+        self.assertIsNone(row.retention_held_at)
+        EventoAuditoria.objects.get(codigo="imagem.hold.negado", camera=self.camera)
+    def test_camera_scope_denial_is_audited_without_mutation(self):
+        from django.core.exceptions import PermissionDenied
+        from cameras.imagens.lifecycle_service import set_image_hold
+
+        other_camera = Camera.objects.create(nome="Fora de escopo")
+        row = self.seed(recorded_at=timezone.now())
+        with patch.object(self.user, "has_perm", return_value=False):
+            with self.assertRaises(PermissionDenied):
+                set_image_hold(actor=self.user, camera_id=other_camera.pk, image_id=row.pk)
+        row.refresh_from_db()
+        self.assertIsNone(row.retention_held_at)
+        denied = EventoAuditoria.objects.get(
+            codigo="imagem.hold.negado", camera=other_camera
+        )
+        self.assertEqual(denied.metadados["camera_id"], str(other_camera.pk))
+        self.assertEqual(denied.metadados["image_record_id"], str(row.pk))
 
     def test_storage_failure_creates_no_record(self):
         from unittest.mock import patch
@@ -303,9 +381,54 @@ class ImageLifecycleInvariantTests(TestCase):
         row.refresh_from_db()
         self.assertIsNone(row.retention_held_at)
         self.assertIsNone(row.retention_held_by)
-        self.assertEqual(EventoAuditoria.objects.filter(
+        events = list(EventoAuditoria.objects.filter(
             camera=self.camera, codigo__in=["imagem.hold.ativado", "imagem.hold.liberado"]
-        ).count(), 2)
+        ).order_by("codigo"))
+        self.assertEqual(len(events), 2)
+        self.assertEqual(
+            {event.codigo: event.metadados for event in events},
+            {
+                "imagem.hold.ativado": {
+                    "image_record_id": str(row.pk),
+                    "executor": "ARGOS-IMG-LIFECYCLE",
+                },
+                "imagem.hold.liberado": {
+                    "image_record_id": str(row.pk),
+                    "executor": "ARGOS-IMG-LIFECYCLE",
+                },
+            },
+        )
+
+    def test_hold_audit_failure_rolls_back_without_false_success(self):
+        from unittest.mock import patch
+        from cameras.imagens.lifecycle_service import set_image_hold
+
+        row = self.seed(recorded_at=timezone.now())
+        with patch.object(self.user, "has_perm", return_value=True):
+            with patch(
+                "cameras.imagens.lifecycle_service._audit_lifecycle",
+                side_effect=RuntimeError("hold audit secret failure"),
+            ):
+                with self.assertRaisesRegex(RuntimeError, "hold audit secret failure"):
+                    set_image_hold(
+                        actor=self.user, camera_id=self.camera.pk, image_id=row.pk
+                    )
+
+        row.refresh_from_db()
+        self.assertIsNone(row.retention_held_at)
+        self.assertIsNone(row.retention_held_by)
+        self.assertFalse(EventoAuditoria.objects.filter(
+            camera=self.camera, codigo="imagem.hold.ativado"
+        ).exists())
+        failure = EventoAuditoria.objects.get(
+            camera=self.camera, codigo="imagem.hold.erro"
+        )
+        self.assertEqual(failure.metadados["error_type"], "RuntimeError")
+        self.assertEqual(failure.metadados["operation"], "hold")
+        self.assertNotIn("message", failure.metadados)
+        self.assertNotIn("traceback", failure.metadados)
+        self.assertNotIn("hold audit secret failure", str(failure.metadados))
+        self.assertNotIn("hold audit secret failure", failure.resumo)
 
     def test_hold_metadata_requires_actor_and_timestamp_together(self):
         from django.db import IntegrityError, transaction

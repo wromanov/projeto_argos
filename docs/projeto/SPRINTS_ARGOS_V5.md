@@ -1133,3 +1133,13 @@ Esta matriz corrente atualiza E0–E5; as matrizes e evidências anteriores, inc
 E5-A acrescenta persistência compartilhada de upload/captura, limite de três ativos por câmera, rotação lógica deterministicamente ordenada por (recorded_at, pk) depois de validar a nova imagem, retenção de 12 meses corridos, holds, auditoria, migração mínima e comando bounded de expiração lógica. Não há purge físico. A migration 0022 consta no plano local e não foi aplicada ao banco operacional. A autorização para hold/release exige permissão própria global e escopo de câmera; como não há grupos designados, o comportamento permanece fail-closed e nenhuma UI/rota/admin foi exposta.
 
 manage.py check, makemigrations --check --dry-run e git diff --check passaram. O teste concorrente de cinco workers foi incluído com skip quando has_select_for_update é falso; SQLite acionou o skip, logo a serialização com row lock não foi exercitada neste host. Nenhum PostgreSQL foi usado. A suíte ampla manage.py test cameras encerrou sem diagnóstico final e permanece inconclusiva. Não houve stage, commit, push ou alteração de banco operacional/VM/rede/câmera/VMS/monitoramento.
+
+## 27. ARGOS-E5-B-AUTHORITY-AND-HARDENING-01 (2026-10-22)
+
+| Slice | Estado local confirmado | Gate pendente |
+|---|---|---|
+| IMG-08/IMG-09 / E5-B | Servico interno audita sucessos, negacoes e erros de hold/release; permissao global especifica e escopo por camera verificados; 21 testes focais (20 PASS, 1 SKIP condicional) | Sem grupos de hold/release designados; fail-closed; superusuarios negados; nenhuma superficie exposta. Decisao humana sobre grupos e concessoes por camera requerida antes de habilitar. |
+
+Nenhuma migration nova, banco operacional, monitoramento, camera/VMS/rede ou RTSP real foi tocado. E5-A continua com maximo de tres imagens ativas, retencao de 12 meses corridos por recorded_at, hold bloqueando rotacao/expiracao, transacao e compensacao apenas do objeto novo; nao existe purge fisico. PostgreSQL concorrente permanece pendente.
+
+Revalidacao ARGOS-E5-B-VALIDATION-AND-CONSOLIDATION-01: controles isolados de grant global, escopo de camera, superuser, hold/release autorizado, auditoria sanitizada e rollback = 7/7 PASS; modulo completo = 23 testes, 22 PASS, 1 SKIP condicional de SELECT FOR UPDATE no SQLite. Sem banco operacional ou migration nova.
