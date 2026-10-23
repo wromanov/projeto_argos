@@ -1176,15 +1176,17 @@ NEXT_GATE = separate authorized E6 consolidation review; no stage/commit/push in
 
 | Slice | Escopo confirmado | QA / status | Gate pendente |
 |---|---|---|---|
-| E6 — Inventário / exportação | CSV/PDF, filtros compartilhados, allowlist, `cameras.view_camera`, requirements e continuidade | Revisão independente de segurança sem blocker para baseline de desenvolvimento; reteste 40 PASS, 0 FAIL, 2 SKIP; check e dry-run de migrations PASS | Staging seletivo, commit local e fetch/fast-forward/push normal pendentes; produção não estabelecida |
+| E6 — Inventário / exportação | CSV/PDF, filtros compartilhados, allowlist, `cameras.view_camera`, requirements e continuidade | Revisão independente de segurança sem blocker para baseline de desenvolvimento; reteste 40 PASS, 0 FAIL, 2 SKIP; check e dry-run de migrations PASS; commit `ddf18995` publicado e confirmado em `origin/master` | Baseline de desenvolvimento consolidada; produção não estabelecida; E7 é atividade separada |
 
 A limitação de concorrência foi registrada: validação PDF e leitura para renderização são consultas separadas; alterações concorrentes podem superar os limites verificados. Não foi reproduzida e não amplia escopo de autorização; não declarar teto rígido sob concorrência. Produção também aguarda aceite de acesso e confidencialidade para IP/topologia/texto livre. Sem migration ou acesso operacional. Preservar dois `__init__.py`, ZIP, backups, bancos e demais WIP fora de E6.
 
 PROJECT_STATE_UPDATE = PASS / §187, §§20.140, 144, ROADMAP §33, SPRINTS §30
-ACTIVITY_STATUS = REVIEW_AND_VALIDATION_PASS / STAGING_AND_PUBLICATION_PENDING
-DEVELOPMENT_COMMIT_READINESS = READY_FOR_AUTHORIZED_LOCAL_COMMIT
+ACTIVITY_STATUS = DEVELOPMENT_BASELINE_COMMITTED_AND_PUBLISHED
+DEVELOPMENT_COMMIT = ddf18995c35db5d275cdae0d89b866173b666fc7
+REMOTE_VERIFICATION = PASS / origin/master matches DEVELOPMENT_COMMIT
+DEVELOPMENT_COMMIT_READINESS = COMPLETE
 PRODUCTION_READINESS = NOT_ESTABLISHED
-ACTIVITY_COMPLETION_PERCENT = 72%
-ACTIVITY_COMPLETE = NO
-RETURN_TO_ARGOS = PENDING
-NEXT_GATE = stage only the 13 E6 paths; commit, fetch origin/master, verify fast-forward, push normally
+ACTIVITY_COMPLETION_PERCENT = 96%
+ACTIVITY_COMPLETE = NO / final result dispatch remains
+RETURN_TO_ARGOS = PENDING / final result dispatch is the last required action
+NEXT_GATE = dispatch final result to Projeto Argos 5.0, then stop; E7 is separate

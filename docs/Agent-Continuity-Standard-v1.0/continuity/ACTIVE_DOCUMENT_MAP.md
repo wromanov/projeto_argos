@@ -3026,10 +3026,10 @@ NEXT_GATE = separate authorized E6 consolidation review; no stage/commit/push in
 
 | Fonte | Papel | Estado |
 |---|---|---|
-| [PROJECT_STATE.md §187](PROJECT_STATE.md) | Preflight, diff, security review, testes e limite de concorrência PDF | CURRENT / revisão sem blocker para baseline de desenvolvimento; publish pendente |
-| [AGENT_CONTINUITY.md §20.140](AGENT_CONTINUITY.md) | Handoff e próximo gate | CURRENT / staging seletivo, commit local e verificação remota pendentes |
-| [ROADMAP_ARGOS_V5.md §33](../../projeto/ROADMAP_ARGOS_V5.md) | Estado E6 após revisão | CURRENT / pronta para commit autorizado; produção não estabelecida |
-| [SPRINTS_ARGOS_V5.md §30](../../projeto/SPRINTS_ARGOS_V5.md) | Slice E6 e gates | CURRENT / QA PASS; publicar só após fast-forward verificado |
+| [PROJECT_STATE.md §187](PROJECT_STATE.md) | Preflight, diff, security review, testes, commit e publicação | CURRENT / baseline de desenvolvimento publicada em `ddf18995`; produção não estabelecida |
+| [AGENT_CONTINUITY.md §20.140](AGENT_CONTINUITY.md) | Handoff e próximo gate | CURRENT / push e SHA remoto confirmados; envio do resultado é a última ação |
+| [ROADMAP_ARGOS_V5.md §33](../../projeto/ROADMAP_ARGOS_V5.md) | Estado E6 após revisão | CURRENT / commit `ddf18995` publicado em `origin/master`; produção não estabelecida |
+| [SPRINTS_ARGOS_V5.md §30](../../projeto/SPRINTS_ARGOS_V5.md) | Slice E6 e gates | CURRENT / QA PASS e baseline publicada; próximo gate E7 separado |
 
 | Arquivos E6 para staging | Papel | Estado |
 |---|---|---|
@@ -3040,11 +3040,13 @@ NEXT_GATE = separate authorized E6 consolidation review; no stage/commit/push in
 BC-AUTH mantém `cameras.view_camera` global de modelo, sem escopo por objeto/tenant. O gate de segurança não encontrou exposição de campos dedicados a segredo; IP/topologia/texto livre permanecem risco de confidencialidade documentado. O PDF tem uma limitação de disponibilidade sob escrita concorrente entre validação e renderização; severidade baixa para desenvolvimento, pendência de produção. Nenhum acesso operacional ocorreu.
 
 PROJECT_STATE_UPDATE = PASS / §187, §§20.140, 144, ROADMAP §33, SPRINTS §30
-ACTIVITY_STATUS = REVIEW_AND_VALIDATION_PASS / STAGING_AND_PUBLICATION_PENDING
-STAGING_AT_REVIEW = EMPTY
-DEVELOPMENT_COMMIT_READINESS = READY_FOR_AUTHORIZED_LOCAL_COMMIT
+ACTIVITY_STATUS = DEVELOPMENT_BASELINE_COMMITTED_AND_PUBLISHED
+STAGING_AT_REVIEW = EMPTY / preflight; subsequent staging contained exactly 13 E6 paths
+DEVELOPMENT_COMMIT = ddf18995c35db5d275cdae0d89b866173b666fc7
+REMOTE_VERIFICATION = PASS / origin/master confirmed at the same SHA
+DEVELOPMENT_COMMIT_READINESS = COMPLETE
 PRODUCTION_READINESS = NOT_ESTABLISHED
-ACTIVITY_COMPLETION_PERCENT = 72%
-ACTIVITY_COMPLETE = NO
-RETURN_TO_ARGOS = PENDING
-NEXT_GATE = stage only the 13 listed E6 paths, inspect cached diff, commit, fetch and push normally if fast-forward
+ACTIVITY_COMPLETION_PERCENT = 96%
+ACTIVITY_COMPLETE = NO / final report dispatch remains
+RETURN_TO_ARGOS = PENDING / final result dispatch is the last required action
+NEXT_GATE = dispatch the single final result to Projeto Argos 5.0, then stop; E7 remains separate

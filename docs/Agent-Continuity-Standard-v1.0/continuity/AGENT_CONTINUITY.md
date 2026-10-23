@@ -10,7 +10,7 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-E6-GIT-CONSOLIDATION-01 (2026-10-23): consultar [PROJECT_STATE.md §187](PROJECT_STATE.md), [ACTIVE_DOCUMENT_MAP.md §144](ACTIVE_DOCUMENT_MAP.md), [ROADMAP_ARGOS_V5.md §33](../../projeto/ROADMAP_ARGOS_V5.md) e [SPRINTS_ARGOS_V5.md §30](../../projeto/SPRINTS_ARGOS_V5.md). O HEAD `c42ddceba6489f37e9b03ff1028e567a2f472064` confere com `master`; staging estava vazio no preflight. Reteste focal: 40 PASS, 0 FAIL, 2 SKIP; independent security review sem blocker para baseline de desenvolvimento. Limitação baixa: alterações concorrentes entre a validação e renderização do PDF podem exceder os limites; não foi reproduzida e impede aceite de produção sem mitigação/validação. Preparar somente os 13 arquivos E6 listados na §187. Dois `__init__.py`, ZIP não aberto, backups, bancos e WIP permanecem preservados. Commit e push autorizados após revisão do staging, fetch ao vivo e fast-forward; nenhum foi feito no preflight. Próximo passo: staging seletivo e revisão do diff em cache.
+RETOMADA ATUAL ARGOS-E6-GIT-CONSOLIDATION-01 (2026-10-23): consultar [PROJECT_STATE.md §187](PROJECT_STATE.md), [ACTIVE_DOCUMENT_MAP.md §144](ACTIVE_DOCUMENT_MAP.md), [ROADMAP_ARGOS_V5.md §33](../../projeto/ROADMAP_ARGOS_V5.md) e [SPRINTS_ARGOS_V5.md §30](../../projeto/SPRINTS_ARGOS_V5.md). A baseline E6 foi consolidada no commit `ddf18995c35db5d275cdae0d89b866173b666fc7`, publicado por push normal e confirmado por consulta direta a `origin/master` no mesmo SHA. Os 13 caminhos E6 foram staged seletivamente; os dois `__init__.py` e o ZIP não aberto foram preservados fora do commit. Reteste focal: 40 PASS, 0 FAIL, 2 SKIP; revisão independente de segurança sem blocker para baseline de desenvolvimento. Limitação baixa: alterações concorrentes entre validação e renderização do PDF podem exceder os limites; não reproduzida, permanece pendência para produção, que não está homologada. Nenhum banco operacional ou infraestrutura foi acessado. Próxima etapa: `ARGOS-E7-UI-V2-RESIDUAL`, em atividade separada e conforme autoridade do usuário.
 
 SNAPSHOT ANTERIOR ARGOS-E5-LIFECYCLE-FOUNDATION-01 (2026-10-21): consultar [PROJECT_STATE.md §180](PROJECT_STATE.md), [ACTIVE_DOCUMENT_MAP.md §139](ACTIVE_DOCUMENT_MAP.md) e [ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md §27](../../projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md). E5-A está implementado localmente em `master` @ `f4500d65ebab133a93a47c84641abe37b5615cfe`; a suíte focal E3/E4 teve 89 testes no total: 88 PASS e 1 SKIP condicional, correspondente ao teste de concorrência em SQLite. A migration 0022 consta no plano e não foi aplicada ao banco operacional. Não houve stage, commit, push, homologação, acesso operacional ou RTSP real. Grupos autorizados de hold/release continuam indefinidos, portanto a superfície segue fechada. Próximo gate: designar grupos de escopo de câmera antes de expor hold/release.
 
@@ -4128,7 +4128,7 @@ ACTIVITY_COMPLETE = YES
 RETURN_TO_ARGOS = SENT
 NEXT_GATE = separate authorized E6 consolidation review; no stage/commit/push in this activity
 
-## 20.140. ARGOS-E6-GIT-CONSOLIDATION-01 — revisão pré-commit (2026-10-23)
+## 20.140. ARGOS-E6-GIT-CONSOLIDATION-01 — revisão e publicação (2026-10-23)
 
 Consultar [PROJECT_STATE.md §187](PROJECT_STATE.md), [ACTIVE_DOCUMENT_MAP.md §144](ACTIVE_DOCUMENT_MAP.md), [ROADMAP_ARGOS_V5.md §33](../../projeto/ROADMAP_ARGOS_V5.md) e [SPRINTS_ARGOS_V5.md §30](../../projeto/SPRINTS_ARGOS_V5.md). O HEAD e a branch `master` conferem com a baseline esperada e o staging inicial estava vazio. A revisão funcional e de segurança não encontrou blocker para a baseline de desenvolvimento. O parecer independente confirmou `cameras.view_camera` e a allowlist cadastral, sem inventar escopo por objeto; registrou exposição residual de IP/topologia e texto livre.
 
@@ -4139,10 +4139,14 @@ Limitação de segurança/consistência para produção: count, aggregate dos ca
 No snapshot desta revisão: `STAGING_AT_REVIEW = EMPTY`; commit e publicação ainda pendentes. Prontidão de produção não estabelecida. Próximo gate: staging seletivo, revisão do diff em cache, commit autorizado e verificação remota fast-forward.
 
 PROJECT_STATE_UPDATE = PASS / §187, §§20.140, 144, ROADMAP §33, SPRINTS §30
-ACTIVITY_STATUS = REVIEW_AND_VALIDATION_PASS / STAGING_AND_PUBLICATION_PENDING
-DEVELOPMENT_COMMIT_READINESS = READY_FOR_AUTHORIZED_LOCAL_COMMIT
+ACTIVITY_STATUS = DEVELOPMENT_BASELINE_COMMITTED_AND_PUBLISHED
+DEVELOPMENT_COMMIT = ddf18995c35db5d275cdae0d89b866173b666fc7 / feat(argos): add inventory CSV and PDF export
+REMOTE_VERIFICATION = PASS / origin/master = ddf18995c35db5d275cdae0d89b866173b666fc7, confirmed by push receipt and direct ls-remote
+STAGING = PASS / exactly the 13 E6 paths listed in PROJECT_STATE §187; no unrelated WIP
+WORKTREE_AFTER_COMMIT = only two pre-existing __init__.py modifications and untracked unopened ZIP; preserved
+DEVELOPMENT_COMMIT_READINESS = COMPLETE
 PRODUCTION_READINESS = NOT_ESTABLISHED
-ACTIVITY_COMPLETION_PERCENT = 72%
-ACTIVITY_COMPLETE = NO
-RETURN_TO_ARGOS = PENDING
-NEXT_GATE = exact E6 staging, commit, then live origin/master verification and normal push
+ACTIVITY_COMPLETION_PERCENT = 96%
+ACTIVITY_COMPLETE = NO / final result dispatch to Projeto Argos 5.0 remains
+RETURN_TO_ARGOS = PENDING / dispatch is the last required action
+NEXT_GATE = send the single final result to Projeto Argos 5.0; after that, E7 UI V2 residual is a separate activity

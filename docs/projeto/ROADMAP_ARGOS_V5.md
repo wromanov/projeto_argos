@@ -1922,17 +1922,19 @@ Esta seção atualiza somente a prontidão Git de E6. A exportação CSV/PDF pas
 
 | Etapa | Slice | Estado corrente confirmado | Gate / limite |
 |---|---|---|---|
-| E6 — Inventário / exportação | ARGOS-E6-GIT-CONSOLIDATION-01 | Revisão técnica/segurança PASS; 40 testes reexecutados PASS, 0 FAIL, 2 SKIP; system check, migration dry-run, sintaxe e diff check PASS | Staging, commit e publicação ainda pendentes neste snapshot. Prontidão de produção não estabelecida. |
+| E6 — Inventário / exportação | ARGOS-E6-GIT-CONSOLIDATION-01 | Revisão técnica/segurança PASS; 40 testes reexecutados PASS, 0 FAIL, 2 SKIP; system check, migration dry-run, sintaxe e diff check PASS; commit `ddf18995` em `origin/master` confirmado | Baseline de desenvolvimento publicada; produção não estabelecida. |
 
 Confidencialidade residual: IP, máscara, gateway, VLAN, farm/localização e texto livre podem conter material sensível; esses campos continuam na allowlist cadastral e não há sanitização semântica. Limitação adicional: count, aggregate e iteração do PDF são consultas distintas; escrita concorrente pode ultrapassar os limites pré-validados de registros/caracteres. É inferência estática de baixa severidade para a baseline de desenvolvimento, não reproduzida e não amplifica autorização; produção exige seleção consistente ou orçamento incremental. Sem banco operacional, VM, câmera/VMS, rede ou credenciais. E3–E5 não foram reabertas.
 
-O staging desta atividade deve conter somente os 13 caminhos E6 registrados em PROJECT_STATE §187. Os dois `__init__.py` e o ZIP permanecem preservados e fora do commit; o ZIP não foi aberto. O commit autorizado usa `feat(argos): add inventory CSV and PDF export`; o push será normal para `origin/master` após fetch ao vivo e confirmação de fast-forward. E6 será publicada como baseline de desenvolvimento, não como release homologada. Próxima etapa após publicação: `ARGOS-E7-UI-V2-RESIDUAL`.
+O staging conteve somente os 13 caminhos E6 registrados em PROJECT_STATE §187. Os dois `__init__.py` e o ZIP foram preservados fora do commit; o ZIP não foi aberto. O commit `ddf18995c35db5d275cdae0d89b866173b666fc7` (`feat(argos): add inventory CSV and PDF export`) foi publicado por push normal; a consulta direta confirmou `origin/master` no mesmo SHA. E6 é baseline de desenvolvimento, não release homologada. A limitação PDF sob escrita concorrente continua pendente para produção. Próxima etapa: `ARGOS-E7-UI-V2-RESIDUAL`, em atividade separada.
 
 PROJECT_STATE_UPDATE = PASS / §187, §§20.140, 144, ROADMAP §33, SPRINTS §30
-ACTIVITY_STATUS = REVIEW_AND_VALIDATION_PASS / STAGING_AND_PUBLICATION_PENDING
-DEVELOPMENT_COMMIT_READINESS = READY_FOR_AUTHORIZED_LOCAL_COMMIT
+ACTIVITY_STATUS = DEVELOPMENT_BASELINE_COMMITTED_AND_PUBLISHED
+DEVELOPMENT_COMMIT = ddf18995c35db5d275cdae0d89b866173b666fc7
+REMOTE_VERIFICATION = PASS / origin/master matches DEVELOPMENT_COMMIT
+DEVELOPMENT_COMMIT_READINESS = COMPLETE
 PRODUCTION_READINESS = NOT_ESTABLISHED
-ACTIVITY_COMPLETION_PERCENT = 72%
-ACTIVITY_COMPLETE = NO
-RETURN_TO_ARGOS = PENDING
-NEXT_GATE = exact E6 staging, authorized commit, live remote verification and normal push
+ACTIVITY_COMPLETION_PERCENT = 96%
+ACTIVITY_COMPLETE = NO / final result dispatch remains
+RETURN_TO_ARGOS = PENDING / final result dispatch is the last required action
+NEXT_GATE = dispatch final result to Projeto Argos 5.0, then stop; E7 is separate
