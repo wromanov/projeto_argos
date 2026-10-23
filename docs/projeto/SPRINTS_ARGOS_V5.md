@@ -1143,3 +1143,48 @@ manage.py check, makemigrations --check --dry-run e git diff --check passaram. O
 Nenhuma migration nova, banco operacional, monitoramento, camera/VMS/rede ou RTSP real foi tocado. E5-A continua com maximo de tres imagens ativas, retencao de 12 meses corridos por recorded_at, hold bloqueando rotacao/expiracao, transacao e compensacao apenas do objeto novo; nao existe purge fisico. PostgreSQL concorrente permanece pendente.
 
 Revalidacao ARGOS-E5-B-VALIDATION-AND-CONSOLIDATION-01: controles isolados de grant global, escopo de camera, superuser, hold/release autorizado, auditoria sanitizada e rollback = 7/7 PASS; modulo completo = 23 testes, 22 PASS, 1 SKIP condicional de SELECT FOR UPDATE no SQLite. Sem banco operacional ou migration nova.
+
+## 28. ARGOS-E6-INVENTORY-EXPORT-01 — slice E6 (2026-10-23)
+
+| Slice | Escopo confirmado | QA / status | Gate pendente |
+|---|---|---|---|
+| E6 — Inventário / exportação | Exportação CSV/PDF na listagem; filtros compartilhados; allowlist cadastral mais `situacao_operacional`; permissão `cameras.view_camera` | Implementação local; 17 testes focais, 15 PASS, 0 FAIL, 2 SKIP; check, migrations dry-run, diff check e py_compile PASS | `requirements.txt` declara `reportlab>=5.0.1,<6`, não instalado; a UI mantém PDF indisponível até instalação. Runtime/conteúdo pendente de validação autorizada; BC-AUTH atual não define escopo por objeto/tenant. |
+
+CSV streama todas as linhas filtradas, preserva ordenação, ignora `page`, trata nulos e neutraliza fórmulas. A lista de campos exclui credenciais, ciphertext, firmware e estado técnico interno. PDF limita-se a 2.300 registros e 1.000.000 caracteres agregados nos campos livres selecionados; se exceder, o usuário recebe orientação para CSV ou refinamento, sem arquivo parcial. Dados de topologia/IP e conteúdo arbitrário em notas seguem exposição residual.
+
+Sem migration, banco operacional, VM, câmera/VMS, rede, credenciais, alterações E3–E5, stage, commit ou push. `DEVELOPMENT_COMMIT_READINESS = CONDITIONAL / PDF_RUNTIME_NOT_VERIFIED`; `PRODUCTION_READINESS = NOT_ESTABLISHED`; `PROJECT_STATE_UPDATE = PASS / §185, §§20.138, 142, ROADMAP §31, SPRINTS §28`; `ACTIVITY_COMPLETION_PERCENT = 96%`; `ACTIVITY_COMPLETE = NO`. Consultar PROJECT_STATE §185, AGENT_CONTINUITY §20.138 e ROADMAP_ARGOS_V5 §31. Não reabrir aceite HOM-02 nem alterar gates de outras etapas.
+
+## 29. ARGOS-E6-PDF-RUNTIME-VALIDATION-01 — validação funcional da slice E6 (2026-10-23)
+
+| Slice | Escopo confirmado | QA / status | Gate pendente |
+|---|---|---|---|
+| E6 — Inventário / exportação | Exportação CSV/PDF, filtros compartilhados, allowlist e cameras.view_camera global | 46 PASS, 0 FAIL, 2 SKIP; conteúdo PDF extraído; limites máximos aceitos e excedentes rejeitados antes de gerar | Pronto para revisão de commit de desenvolvimento. Produção não estabelecida; BC-AUTH não define escopo por objeto/tenant. |
+
+PDFs reais gerados com ReportLab 5.1.0 e lidos por pypdf 6.10.0. Passaram conteúdo filtrado, Unicode, valores nulos em branco, ordenação, simples/combinação de filtros, paginação atual ignorada, múltiplas páginas, máximo de 2.300 registros e exatamente 1.000.000 de caracteres. Os excedentes foram rejeitados sem chamar o gerador. A regressão CSV passou. Os dois skips correspondem à dependência de PDF indisponível (não aplicável no ambiente instalado) e ao contrato BC-AUTH sem autorização por objeto. Observação residual: topologia/IP e texto livre permanecem dados sensíveis possíveis; não há alegação de sanitização semântica.
+
+Sem migration, acesso a banco operacional, VM, câmera/VMS, rede ou credenciais; E3–E5 preservadas. Staging vazio, sem commit ou push. Consultar PROJECT_STATE §186, AGENT_CONTINUITY §20.139, ACTIVE_DOCUMENT_MAP §143 e ROADMAP §32. Não reabrir aceite HOM-02 nem alterar gates de outras etapas.
+
+PROJECT_STATE_UPDATE = PASS / §186, §§20.139, 143, ROADMAP §32, SPRINTS §29
+DEVELOPMENT_COMMIT_READINESS = READY_FOR_SEPARATE_E6_COMMIT_REVIEW
+PRODUCTION_READINESS = NOT_ESTABLISHED
+ACTIVITY_COMPLETE = YES
+RETURN_TO_ARGOS = SENT
+ACTIVITY_COMPLETION_PERCENT = 100%
+NEXT_GATE = separate authorized E6 consolidation review; no stage/commit/push in this activity
+
+## 30. ARGOS-E6-GIT-CONSOLIDATION-01 — slice E6 (2026-10-23)
+
+| Slice | Escopo confirmado | QA / status | Gate pendente |
+|---|---|---|---|
+| E6 — Inventário / exportação | CSV/PDF, filtros compartilhados, allowlist, `cameras.view_camera`, requirements e continuidade | Revisão independente de segurança sem blocker para baseline de desenvolvimento; reteste 40 PASS, 0 FAIL, 2 SKIP; check e dry-run de migrations PASS | Staging seletivo, commit local e fetch/fast-forward/push normal pendentes; produção não estabelecida |
+
+A limitação de concorrência foi registrada: validação PDF e leitura para renderização são consultas separadas; alterações concorrentes podem superar os limites verificados. Não foi reproduzida e não amplia escopo de autorização; não declarar teto rígido sob concorrência. Produção também aguarda aceite de acesso e confidencialidade para IP/topologia/texto livre. Sem migration ou acesso operacional. Preservar dois `__init__.py`, ZIP, backups, bancos e demais WIP fora de E6.
+
+PROJECT_STATE_UPDATE = PASS / §187, §§20.140, 144, ROADMAP §33, SPRINTS §30
+ACTIVITY_STATUS = REVIEW_AND_VALIDATION_PASS / STAGING_AND_PUBLICATION_PENDING
+DEVELOPMENT_COMMIT_READINESS = READY_FOR_AUTHORIZED_LOCAL_COMMIT
+PRODUCTION_READINESS = NOT_ESTABLISHED
+ACTIVITY_COMPLETION_PERCENT = 72%
+ACTIVITY_COMPLETE = NO
+RETURN_TO_ARGOS = PENDING
+NEXT_GATE = stage only the 13 E6 paths; commit, fetch origin/master, verify fast-forward, push normally

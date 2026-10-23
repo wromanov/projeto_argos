@@ -12,6 +12,7 @@ app_name = "cameras"
 
 urlpatterns = [
     path("", views.lista_cameras, name="lista"),
+    path("exportacao/", views.exportar_inventario, name="exportar"),
     path("importacao/", views.importar_cameras, name="importar"),
     path("importacao/template.xlsx", views.baixar_template_importacao, name="importar_template"),
     path("importacao/<uuid:preview_id>/confirmar/", views.confirmar_importacao_cameras, name="confirmar_importacao"),

@@ -2980,3 +2980,71 @@ FINAL_ACCEPTANCE = NOT_ESTABLISHED
 PRODUCTION_READINESS = NOT_ESTABLISHED
 COMMIT = NONE
 PUSH = NONE
+
+## 142. ARGOS-E6-INVENTORY-EXPORT-01 (2026-10-23)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| [PROJECT_STATE.md §185](PROJECT_STATE.md) | Implementação, allowlist, exposição residual, QA e limites ambientais | CURRENT / 17 testes focais: 15 PASS, 0 FAIL, 2 SKIP; PDF runtime não verificado |
+| [AGENT_CONTINUITY.md §20.138](AGENT_CONTINUITY.md) | Handoff e próximo gate | CURRENT / validar geração/conteúdo PDF em ambiente autorizado com ReportLab |
+| [ROADMAP_ARGOS_V5.md §31](../../projeto/ROADMAP_ARGOS_V5.md) | Estado atual da etapa E6 | CURRENT / implementação e QA locais; sem aceite operacional |
+| [SPRINTS_ARGOS_V5.md §28](../../projeto/SPRINTS_ARGOS_V5.md) | Slice E6 e gates | CURRENT / PDF runtime pendente; commit readiness condicional |
+| E6 working tree | CSV/PDF, filtros compartilhados, testes, UI e requirements (`reportlab>=5.0.1,<6`, não instalado) | LOCAL / nenhuma migration; PDF indisponível na UI até instalar; sem stage/commit/push |
+
+PROJECT_STATE_UPDATE = PASS / §185 e §§20.138, 142, ROADMAP §31 e SPRINTS §28
+ACTIVITY_STATUS = LOCAL_IMPLEMENTATION_AND_FOCUSED_QA_PASS / PDF_RUNTIME_NOT_VERIFIED
+ACTIVITY_COMPLETION_PERCENT = 96%
+ACTIVITY_COMPLETE = NO
+DEVELOPMENT_COMMIT_READINESS = CONDITIONAL / PDF_RUNTIME_NOT_VERIFIED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+STAGING = EMPTY
+COMMIT = NONE
+PUSH = NONE
+
+## 143. ARGOS-E6-PDF-RUNTIME-VALIDATION-01 (2026-10-23)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| [PROJECT_STATE.md §186](PROJECT_STATE.md) | Resultado técnico, versão ReportLab, evidência PDF, testes, limites e prontidão | CURRENT / ReportLab 5.1.0; PDFs reais extraídos; E6 pronto para revisão de commit de desenvolvimento |
+| [AGENT_CONTINUITY.md §20.139](AGENT_CONTINUITY.md) | Handoff e próximo gate | CURRENT / validação local passou; produção não estabelecida; sem stage/commit/push |
+| [ROADMAP_ARGOS_V5.md §32](../../projeto/ROADMAP_ARGOS_V5.md) | Estado corrente da validação E6 | CURRENT / runtime/conteúdo e limites comprovados localmente |
+| [SPRINTS_ARGOS_V5.md §29](../../projeto/SPRINTS_ARGOS_V5.md) | QA e readiness da slice E6 | CURRENT / 46 PASS, 0 FAIL, 2 SKIP; duas limitações explicitadas |
+| Artefatos PDF sintéticos | Evidência de inspeção | PRESERVED / .local/qa/e6-pdf-runtime-6e639c5cf7374ee6b80162520af52ccf; PDFs lidos por pypdf 6.10.0 |
+
+ReportLab foi instalado somente na .venv Python 3.14.7. Geração e extração verificaram conteúdo, Unicode, nulos, filtros simples e combinados, ordenação, paginação independente, múltiplas páginas, 2.300 registros e 1.000.000 caracteres; limites excedidos foram rejeitados antes da geração. O CSV e o fluxo de autorização global cameras.view_camera passaram nos testes focais. O escopo por objeto/tenant continua não definido por BC-AUTH. Nenhum banco operacional ou infraestrutura foi acessado; E3–E5 ficaram preservadas. ZIP não aberto. Staging vazio, sem commit/push.
+
+PROJECT_STATE_UPDATE = PASS / §186, §§20.139, 143, ROADMAP §32, SPRINTS §29
+ACTIVITY_STATUS = TECHNICAL_RUNTIME_AND_CONTENT_VALIDATION_PASS
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES
+DEVELOPMENT_COMMIT_READINESS = READY_FOR_SEPARATE_E6_COMMIT_REVIEW
+PRODUCTION_READINESS = NOT_ESTABLISHED
+RETURN_TO_ARGOS = SENT
+NEXT_GATE = separate authorized E6 consolidation review; no stage/commit/push in this activity
+
+## 144. ARGOS-E6-GIT-CONSOLIDATION-01 — revisão pré-commit (2026-10-23)
+
+| Fonte | Papel | Estado |
+|---|---|---|
+| [PROJECT_STATE.md §187](PROJECT_STATE.md) | Preflight, diff, security review, testes e limite de concorrência PDF | CURRENT / revisão sem blocker para baseline de desenvolvimento; publish pendente |
+| [AGENT_CONTINUITY.md §20.140](AGENT_CONTINUITY.md) | Handoff e próximo gate | CURRENT / staging seletivo, commit local e verificação remota pendentes |
+| [ROADMAP_ARGOS_V5.md §33](../../projeto/ROADMAP_ARGOS_V5.md) | Estado E6 após revisão | CURRENT / pronta para commit autorizado; produção não estabelecida |
+| [SPRINTS_ARGOS_V5.md §30](../../projeto/SPRINTS_ARGOS_V5.md) | Slice E6 e gates | CURRENT / QA PASS; publicar só após fast-forward verificado |
+
+| Arquivos E6 para staging | Papel | Estado |
+|---|---|---|
+| `cameras/views.py`, `cameras/urls.py`, `cameras/templates/cameras/lista.html`, `cameras/inventory_export.py`, `cameras/inventory_filters.py`, `cameras/test_inventory_export.py`, `static/css/inventario.css`, `requirements.txt` | Implementação, UI, dependência e testes | E6 / revisados; ReportLab declarado; pypdf não é dependência de produção |
+| `PROJECT_STATE.md`, `AGENT_CONTINUITY.md`, `ACTIVE_DOCUMENT_MAP.md`, `ROADMAP_ARGOS_V5.md`, `SPRINTS_ARGOS_V5.md` | Continuidade da atividade E6 | E6 / estes cinco checkpoints |
+| WIP preexistente: dois `cameras/management/__init__.py` e `docs/Agent-Continuity-Standard-v1.0.zip` | Fora do escopo | PRESERVED / não staged; ZIP não aberto |
+
+BC-AUTH mantém `cameras.view_camera` global de modelo, sem escopo por objeto/tenant. O gate de segurança não encontrou exposição de campos dedicados a segredo; IP/topologia/texto livre permanecem risco de confidencialidade documentado. O PDF tem uma limitação de disponibilidade sob escrita concorrente entre validação e renderização; severidade baixa para desenvolvimento, pendência de produção. Nenhum acesso operacional ocorreu.
+
+PROJECT_STATE_UPDATE = PASS / §187, §§20.140, 144, ROADMAP §33, SPRINTS §30
+ACTIVITY_STATUS = REVIEW_AND_VALIDATION_PASS / STAGING_AND_PUBLICATION_PENDING
+STAGING_AT_REVIEW = EMPTY
+DEVELOPMENT_COMMIT_READINESS = READY_FOR_AUTHORIZED_LOCAL_COMMIT
+PRODUCTION_READINESS = NOT_ESTABLISHED
+ACTIVITY_COMPLETION_PERCENT = 72%
+ACTIVITY_COMPLETE = NO
+RETURN_TO_ARGOS = PENDING
+NEXT_GATE = stage only the 13 listed E6 paths, inspect cached diff, commit, fetch and push normally if fast-forward

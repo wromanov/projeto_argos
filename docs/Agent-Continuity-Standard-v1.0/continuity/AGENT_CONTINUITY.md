@@ -10,7 +10,9 @@ USER_PROTOCOL_ACTIVATION = APPROVED
 PROJECT = ARGOS
 LANGUAGE = pt-BR
 
-RETOMADA ATUAL ARGOS-E5-LIFECYCLE-FOUNDATION-01 (2026-10-21): consultar [PROJECT_STATE.md §180](PROJECT_STATE.md), [ACTIVE_DOCUMENT_MAP.md §139](ACTIVE_DOCUMENT_MAP.md) e [ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md §27](../../projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md). E5-A está implementado localmente em `master` @ `f4500d65ebab133a93a47c84641abe37b5615cfe`; a suíte focal E3/E4 teve 89 testes no total: 88 PASS e 1 SKIP condicional, correspondente ao teste de concorrência em SQLite. A migration 0022 consta no plano e não foi aplicada ao banco operacional. Não houve stage, commit, push, homologação, acesso operacional ou RTSP real. Grupos autorizados de hold/release continuam indefinidos, portanto a superfície segue fechada. Próximo gate: designar grupos de escopo de câmera antes de expor hold/release.
+RETOMADA ATUAL ARGOS-E6-GIT-CONSOLIDATION-01 (2026-10-23): consultar [PROJECT_STATE.md §187](PROJECT_STATE.md), [ACTIVE_DOCUMENT_MAP.md §144](ACTIVE_DOCUMENT_MAP.md), [ROADMAP_ARGOS_V5.md §33](../../projeto/ROADMAP_ARGOS_V5.md) e [SPRINTS_ARGOS_V5.md §30](../../projeto/SPRINTS_ARGOS_V5.md). O HEAD `c42ddceba6489f37e9b03ff1028e567a2f472064` confere com `master`; staging estava vazio no preflight. Reteste focal: 40 PASS, 0 FAIL, 2 SKIP; independent security review sem blocker para baseline de desenvolvimento. Limitação baixa: alterações concorrentes entre a validação e renderização do PDF podem exceder os limites; não foi reproduzida e impede aceite de produção sem mitigação/validação. Preparar somente os 13 arquivos E6 listados na §187. Dois `__init__.py`, ZIP não aberto, backups, bancos e WIP permanecem preservados. Commit e push autorizados após revisão do staging, fetch ao vivo e fast-forward; nenhum foi feito no preflight. Próximo passo: staging seletivo e revisão do diff em cache.
+
+SNAPSHOT ANTERIOR ARGOS-E5-LIFECYCLE-FOUNDATION-01 (2026-10-21): consultar [PROJECT_STATE.md §180](PROJECT_STATE.md), [ACTIVE_DOCUMENT_MAP.md §139](ACTIVE_DOCUMENT_MAP.md) e [ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md §27](../../projeto/ARGOS_IMAGE_DOMAIN_CONTRACT_V1.md). E5-A está implementado localmente em `master` @ `f4500d65ebab133a93a47c84641abe37b5615cfe`; a suíte focal E3/E4 teve 89 testes no total: 88 PASS e 1 SKIP condicional, correspondente ao teste de concorrência em SQLite. A migration 0022 consta no plano e não foi aplicada ao banco operacional. Não houve stage, commit, push, homologação, acesso operacional ou RTSP real. Grupos autorizados de hold/release continuam indefinidos, portanto a superfície segue fechada. Próximo gate: designar grupos de escopo de câmera antes de expor hold/release.
 
 SNAPSHOT ANTERIOR ARGOS-DEV-WORKSPACE-CONSOLIDATION-C3C-BATCH-02 (2026-10-21): consultar PROJECT_STATE.md §173 e ACTIVE_DOCUMENT_MAP.md §132. A checkout canônica estava em master @ 22d55c33e3313750bc40cd99bc74e551314ab3b1, igual a origin/master consultada ao vivo. O Lote 2 removeu os oito worktrees autorizados com git worktree remove sem força, reduzindo o inventário de 23 para 15; as oito branches históricas permanecem. Sete SQLite locais de zero bytes e somente caches .pyc/pytest autorizados foram descartados. O SQLite principal permaneceu em 610304 bytes com SHA-256 inalterado; ZIP preservado. Sem mudanças de código, VM, branches, commit ou push. Lote 2 fechado; não iniciar Lote 3. Próximo gate: C3C_BATCH_02_REVIEW.
 
@@ -4097,3 +4099,50 @@ PROJECT_STATE_UPDATE = PASS / §182
 ACTIVITY_STATUS = CLOSED_WITH_ENVIRONMENT_LIMITATIONS
 ACTIVITY_COMPLETION_PERCENT = 100%
 NEXT_GATE = NONE_CREATED
+
+## 20.138. ARGOS-E6-INVENTORY-EXPORT-01 (2026-10-23)
+
+Consultar [PROJECT_STATE.md §185](PROJECT_STATE.md), [ACTIVE_DOCUMENT_MAP.md §142](ACTIVE_DOCUMENT_MAP.md), [ROADMAP_ARGOS_V5.md §31](../../projeto/ROADMAP_ARGOS_V5.md) e [SPRINTS_ARGOS_V5.md §28](../../projeto/SPRINTS_ARGOS_V5.md). CSV/PDF foram integrados à listagem local; `requirements.txt` declara `reportlab>=5.0.1,<6`, ainda não instalado, e a interface mantém PDF indisponível até instalação. A geração real de PDF não foi validada. O filtro/export exige `cameras.view_camera`, conforme BC-AUTH global vigente, sem escopo por objeto/tenant.
+
+Manter a allowlist baseada nos campos cadastrais aprovados e `situacao_operacional`; não incluir credenciais, ciphertext ou estado técnico interno. CSV streama todas as linhas filtradas, preserva ordenação e ignora `page`. O PDF limita o relatório a 2.300 registros e a 1.000.000 caracteres agregados em campos livres; excedentes recebem orientação para usar CSV/refinar filtros. Dados de topologia/IP e texto livre permanecem exposição residual; não alegar sanitização semântica.
+
+QA: 17 testes focais (15 PASS, 0 FAIL, 2 SKIP); check, dry-run de migrations sem mudanças, diff check e py_compile passaram. Nenhuma migration, DB operacional, VM, câmera, VMS, rede ou credencial foi tocada; E3–E5 não foram reabertas. Preservar WIP e ZIP. Não houve stage, commit ou push. `ACTIVITY_COMPLETE = NO`; `PROJECT_STATE_UPDATE = PASS / §185 e §§20.138, 142`; prontidão de produção não estabelecida. Próximo gate: validar PDF em ambiente autorizado com ReportLab e revisar/decidir a consolidação em atividade própria.
+
+## 20.139. ARGOS-E6-PDF-RUNTIME-VALIDATION-01 (2026-10-23)
+
+Consultar [PROJECT_STATE.md §186](PROJECT_STATE.md), [ACTIVE_DOCUMENT_MAP.md §143](ACTIVE_DOCUMENT_MAP.md), [ROADMAP_ARGOS_V5.md §32](../../projeto/ROADMAP_ARGOS_V5.md) e [SPRINTS_ARGOS_V5.md §29](../../projeto/SPRINTS_ARGOS_V5.md). ReportLab 5.1.0 instalado apenas na .venv Python 3.14.7. A extração com pypdf 6.10.0 validou os PDFs de filtro simples e combinado, cabeçalhos, campos nulos em branco, Unicode, texto longo, ordenação, ausência de dados fora do filtro/allowlist, e documentos multipágina. Os limites foram demonstrados com geração no teto de 2.300 registros e 1.000.000 caracteres, além de rejeição controlada de 2.301 e 1.000.001 antes do gerador.
+
+O módulo cameras.test_inventory_export passou com 17 testes: 15 PASS, 0 FAIL, 2 SKIP; autorização/listagem passou com 25/25; sondagens temporárias passaram 6/6. Os skips são o feedback de indisponibilidade quando a dependência existe e a ausência contratual de escopo de autorização por objeto. Check Django, migrations dry-run, sintaxe e diff check passaram. A correção foi somente no fixture PDF, que agora evita uma busca textual incompatível com o nome cadastral normalizado; nenhum defeito no gerador ou nos filtros compartilhados foi encontrado.
+
+Os PDFs sintéticos foram preservados em .local/qa/e6-pdf-runtime-6e639c5cf7374ee6b80162520af52ccf e seus hashes constam no PROJECT_STATE §186. O banco de cada execução foi SQLite descartável; nenhum banco operacional, VM, câmera/VMS, rede ou credencial foi acessado. E3–E5 não foram alteradas. Os dois __init__.py locais e o ZIP foram preservados; ZIP não aberto. Sem stage, commit ou push. E6 está pronto para revisão de commit de desenvolvimento; produção não estabelecida por BC-AUTH global vigente e exposição residual de topologia/IP e texto livre.
+
+PROJECT_STATE_UPDATE = PASS / §186, §§20.139, 143, ROADMAP §32, SPRINTS §29
+ACTIVITY_STATUS = TECHNICAL_RUNTIME_AND_CONTENT_VALIDATION_PASS
+DEVELOPMENT_COMMIT_READINESS = READY_FOR_SEPARATE_E6_COMMIT_REVIEW
+PRODUCTION_READINESS = NOT_ESTABLISHED
+STAGING = EMPTY
+COMMIT = NONE
+PUSH = NONE
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES
+RETURN_TO_ARGOS = SENT
+NEXT_GATE = separate authorized E6 consolidation review; no stage/commit/push in this activity
+
+## 20.140. ARGOS-E6-GIT-CONSOLIDATION-01 — revisão pré-commit (2026-10-23)
+
+Consultar [PROJECT_STATE.md §187](PROJECT_STATE.md), [ACTIVE_DOCUMENT_MAP.md §144](ACTIVE_DOCUMENT_MAP.md), [ROADMAP_ARGOS_V5.md §33](../../projeto/ROADMAP_ARGOS_V5.md) e [SPRINTS_ARGOS_V5.md §30](../../projeto/SPRINTS_ARGOS_V5.md). O HEAD e a branch `master` conferem com a baseline esperada e o staging inicial estava vazio. A revisão funcional e de segurança não encontrou blocker para a baseline de desenvolvimento. O parecer independente confirmou `cameras.view_camera` e a allowlist cadastral, sem inventar escopo por objeto; registrou exposição residual de IP/topologia e texto livre.
+
+Os testes repetidos nesta atividade foram 40 PASS, 0 FAIL e 2 SKIP condicionais: 15 PASS em `cameras.test_inventory_export`, mais 25 PASS de autorização e integração/listagem. `manage.py check`, migration dry-run, sintaxe Python e `git diff --check` passaram. A geração e extração dos PDFs e as provas de limite permanecem registradas na §186 e foram confirmadas pela suíte E6 nesta atividade.
+
+Limitação de segurança/consistência para produção: count, aggregate dos campos livres e iteração de renderização PDF são consultas separadas. Uma escrita concorrente poderia fazer o PDF exceder o orçamento verificado; isso é inferência estática, não reproduzida, severidade baixa para baseline de desenvolvimento e não amplia os registros autorizados. Não alegar teto rígido sob concorrência; para produção, usar snapshot consistente ou orçamento incremental. O ZIP e os dois `__init__.py` preexistentes foram preservados. Apenas 13 caminhos E6 identificados entram no staging; nenhum banco operacional ou infraestrutura foi acessado.
+
+No snapshot desta revisão: `STAGING_AT_REVIEW = EMPTY`; commit e publicação ainda pendentes. Prontidão de produção não estabelecida. Próximo gate: staging seletivo, revisão do diff em cache, commit autorizado e verificação remota fast-forward.
+
+PROJECT_STATE_UPDATE = PASS / §187, §§20.140, 144, ROADMAP §33, SPRINTS §30
+ACTIVITY_STATUS = REVIEW_AND_VALIDATION_PASS / STAGING_AND_PUBLICATION_PENDING
+DEVELOPMENT_COMMIT_READINESS = READY_FOR_AUTHORIZED_LOCAL_COMMIT
+PRODUCTION_READINESS = NOT_ESTABLISHED
+ACTIVITY_COMPLETION_PERCENT = 72%
+ACTIVITY_COMPLETE = NO
+RETURN_TO_ARGOS = PENDING
+NEXT_GATE = exact E6 staging, commit, then live origin/master verification and normal push

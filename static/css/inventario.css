@@ -1593,6 +1593,103 @@
     line-height: 1.35;
 }
 
+.inventory-export {
+    margin-block: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+}
+
+.inventory-export > summary {
+    width: fit-content;
+    cursor: pointer;
+}
+
+.inventory-export > summary:focus-visible,
+.inventory-export__field input:focus-visible,
+.inventory-export__format select:focus-visible,
+.inventory-export__actions button:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+}
+
+.inventory-export__form {
+    display: grid;
+    gap: var(--space-4);
+    margin-block-start: var(--space-4);
+}
+
+.inventory-export__group {
+    min-width: 0;
+    margin: 0;
+    padding: var(--space-3);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.inventory-export__group legend {
+    padding-inline: var(--space-1);
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    font-weight: 650;
+}
+
+.inventory-export__format {
+    display: grid;
+    max-width: 18rem;
+    gap: var(--space-1);
+}
+
+.inventory-export__hint {
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+}
+
+.inventory-export__fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+    gap: var(--space-2) var(--space-4);
+    margin-block-start: var(--space-3);
+}
+
+.inventory-export__field {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    min-width: 0;
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    cursor: pointer;
+}
+
+.inventory-export__field input {
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+    margin: .125rem 0 0;
+    accent-color: var(--color-primary);
+}
+
+.inventory-export__actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media (max-width: 44rem) {
+    .inventory-export {
+        padding: var(--space-3);
+    }
+
+    .inventory-export__actions,
+    .inventory-export__actions button {
+        width: 100%;
+    }
+}
+
 .inventory-query-summary {
     position: relative;
     overflow: hidden;

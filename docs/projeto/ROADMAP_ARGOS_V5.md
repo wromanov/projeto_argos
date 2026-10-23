@@ -1885,3 +1885,54 @@ E5-B acrescenta auditoria sanitizada para negacoes e falhas do servico interno d
 QA local ROMA_CASA: 21 testes de upload/lifecycle (20 PASS, 1 SKIP por falta de SELECT FOR UPDATE no SQLite); Django check PASS; makemigrations check com SQLite em memoria PASS / sem mudancas; git diff --check PASS. Nenhum banco operacional, RTSP real, monitoramento, migration, stage, commit ou push foi utilizado/executado. A decisao humana pendente e designar grupos para cameras.manage_camera_image_hold e aprovar concessoes por camera e excecoes privilegiadas. Concorrencia PostgreSQL e aceite final permanecem pendentes.
 
 Revalidacao ARGOS-E5-B-VALIDATION-AND-CONSOLIDATION-01: sete testes isolados dos seis cenarios = 7/7 PASS; cameras.test_imagens_upload = 23 testes, 22 PASS e 1 SKIP condicional porque SQLite nao oferece SELECT FOR UPDATE. Django check e makemigrations --check --dry-run passaram; nenhuma migration nova foi detectada. Banco SQLite descartavel; nenhum banco operacional acessado.
+
+## 31. ARGOS-E6-INVENTORY-EXPORT-01 — estado corrente E6 (2026-10-23)
+
+Esta atualização altera somente o estado corrente de E6; preserva a ordem E0–E8, os demais estados/gates e o histórico das seções anteriores. E6 sai de PLANNED para implementação local com QA focal aprovado, sem promover aceite operacional, HOM-02, homologação ou produção.
+
+| Etapa | Slice | Estado corrente confirmado | Gate / limite |
+|---|---|---|---|
+| E6 — Inventário / exportação | ARGOS-E6-INVENTORY-EXPORT-01 (`ARGOS-INV-EXPORT-01`) | Implementação CSV/PDF integrada localmente; testes focais: 17 total, 15 PASS, 0 FAIL, 2 SKIP | `requirements.txt` declara `reportlab>=5.0.1,<6`, ainda não instalado; UI mantém PDF indisponível até instalação e geração real aguarda validação autorizada. Sem escopo por objeto/tenant no BC-AUTH vigente; permissão é global `cameras.view_camera`. Não reabrir HOM-02. |
+
+CSV exporta todas as linhas filtradas, mantém ordenação e ignora `page`; allowlist usa `CameraBaseForm.CAMPOS_CAMERA` mais `situacao_operacional`. Credenciais, ciphertext, firmware e estado técnico interno são excluídos. O PDF usa limite de 2.300 registros e orçamento agregado de 1.000.000 caracteres nos campos livres selecionados; excedente orienta usar CSV/refinar filtros, sem gerar parcial. Endereços IP/topologia e conteúdo de campos livres permanecem exposição residual e não se declara sanitização semântica.
+
+`manage.py check`, `makemigrations --check --dry-run` / No changes detected, `git diff --check` e `py_compile` passaram. Nenhuma migration foi criada; banco operacional, VM, câmera/VMS, rede e credenciais não foram acessados. E3–E5 permanecem fechadas conforme seus próprios gates. Prontidão de produção não estabelecida; commit readiness condicional à validação runtime do PDF. Consultar PROJECT_STATE §185, AGENT_CONTINUITY §20.138, ACTIVE_DOCUMENT_MAP §142 e SPRINTS_ARGOS_V5 §28. `PROJECT_STATE_UPDATE = PASS / §185, §§20.138, 142, ROADMAP §31, SPRINTS §28`; atividade não declarada completa.
+
+## 32. ARGOS-E6-PDF-RUNTIME-VALIDATION-01 — validação funcional local (2026-10-23)
+
+Esta seção supersede somente o gate de runtime E6 registrado em §31; preserva os demais estados e históricos E0–E8. A exportação PDF foi validada localmente após instalação autorizada do ReportLab na .venv.
+
+| Etapa | Slice | Estado corrente confirmado | Gate / limite |
+|---|---|---|---|
+| E6 — Inventário / exportação | ARGOS-E6-PDF-RUNTIME-VALIDATION-01 | PDF real e conteúdo extraído; filtros, ordenação, Unicode, nulos, texto longo, páginas múltiplas, 2.300 registros e 1.000.000 caracteres validados. Testes finais: 46 PASS, 0 FAIL, 2 SKIP. | E6 pronto para revisão de commit de desenvolvimento; produção não estabelecida. BC-AUTH permanece global sem escopo por objeto/tenant e há exposição residual de IP/topologia/texto livre. |
+
+ReportLab 5.1.0 está funcional na .venv Python 3.14.7. As entradas de 2.301 registros e 1.000.001 caracteres foram rejeitadas antes do gerador. Não houve regressão CSV comprovada. O skip de autorização por objeto continua conforme BC-AUTH; o skip de feedback de indisponibilidade aplica-se porque a dependência está instalada. Banco SQLite descartável; sem banco operacional, VM, câmera/VMS, rede ou credenciais. Sem alteração de E3–E5, stage, commit ou push. Consultar PROJECT_STATE §186, AGENT_CONTINUITY §20.139, ACTIVE_DOCUMENT_MAP §143 e SPRINTS §29.
+
+PROJECT_STATE_UPDATE = PASS / §186, §§20.139, 143, ROADMAP §32, SPRINTS §29
+DEVELOPMENT_COMMIT_READINESS = READY_FOR_SEPARATE_E6_COMMIT_REVIEW
+PRODUCTION_READINESS = NOT_ESTABLISHED
+ACTIVITY_COMPLETE = YES
+RETURN_TO_ARGOS = SENT
+ACTIVITY_COMPLETION_PERCENT = 100%
+NEXT_GATE = separate authorized E6 consolidation review; no stage/commit/push in this activity
+
+## 33. ARGOS-E6-GIT-CONSOLIDATION-01 — revisão da baseline E6 (2026-10-23)
+
+Esta seção atualiza somente a prontidão Git de E6. A exportação CSV/PDF passou pela revisão do diff e nova QA focal. A revisão de segurança independente não encontrou blocker para a baseline de desenvolvimento: a rota mantém `cameras.view_camera` e a mesma consulta global da listagem, conforme BC-AUTH vigente; os campos expostos seguem a allowlist cadastral. Credenciais, ciphertext, firmware e estado técnico dedicado não são exportados.
+
+| Etapa | Slice | Estado corrente confirmado | Gate / limite |
+|---|---|---|---|
+| E6 — Inventário / exportação | ARGOS-E6-GIT-CONSOLIDATION-01 | Revisão técnica/segurança PASS; 40 testes reexecutados PASS, 0 FAIL, 2 SKIP; system check, migration dry-run, sintaxe e diff check PASS | Staging, commit e publicação ainda pendentes neste snapshot. Prontidão de produção não estabelecida. |
+
+Confidencialidade residual: IP, máscara, gateway, VLAN, farm/localização e texto livre podem conter material sensível; esses campos continuam na allowlist cadastral e não há sanitização semântica. Limitação adicional: count, aggregate e iteração do PDF são consultas distintas; escrita concorrente pode ultrapassar os limites pré-validados de registros/caracteres. É inferência estática de baixa severidade para a baseline de desenvolvimento, não reproduzida e não amplifica autorização; produção exige seleção consistente ou orçamento incremental. Sem banco operacional, VM, câmera/VMS, rede ou credenciais. E3–E5 não foram reabertas.
+
+O staging desta atividade deve conter somente os 13 caminhos E6 registrados em PROJECT_STATE §187. Os dois `__init__.py` e o ZIP permanecem preservados e fora do commit; o ZIP não foi aberto. O commit autorizado usa `feat(argos): add inventory CSV and PDF export`; o push será normal para `origin/master` após fetch ao vivo e confirmação de fast-forward. E6 será publicada como baseline de desenvolvimento, não como release homologada. Próxima etapa após publicação: `ARGOS-E7-UI-V2-RESIDUAL`.
+
+PROJECT_STATE_UPDATE = PASS / §187, §§20.140, 144, ROADMAP §33, SPRINTS §30
+ACTIVITY_STATUS = REVIEW_AND_VALIDATION_PASS / STAGING_AND_PUBLICATION_PENDING
+DEVELOPMENT_COMMIT_READINESS = READY_FOR_AUTHORIZED_LOCAL_COMMIT
+PRODUCTION_READINESS = NOT_ESTABLISHED
+ACTIVITY_COMPLETION_PERCENT = 72%
+ACTIVITY_COMPLETE = NO
+RETURN_TO_ARGOS = PENDING
+NEXT_GATE = exact E6 staging, authorized commit, live remote verification and normal push

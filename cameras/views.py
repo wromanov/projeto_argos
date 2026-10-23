@@ -1,3 +1,6 @@
+import tempfile
+import uuid
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_not_required, permission_required
 from django.core.exceptions import PermissionDenied, ValidationError
@@ -5,11 +8,12 @@ from django.core.paginator import Paginator
 from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.urls import reverse
-from django.http import HttpResponse, JsonResponse, QueryDict
+from django.http import FileResponse, HttpResponse, JsonResponse, QueryDict, StreamingHttpResponse
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.dateparse import parse_date
+from django.views.decorators.http import require_GET
 from uuid import UUID
 
 from .auditoria import CAMPOS_ATIVIDADE_AUDITAVEIS, CAMPOS_CAMERA_AUDITAVEIS, calcular_alteracoes, registrar_evento, valores_iniciais
@@ -32,7 +36,6 @@ from .monitoramento.presentation import (
 )
 from .imagens.upload_service import aceitar_upload_manual
 from .imagens.capture_service import ACTIVE_CAPTURE_STATUSES, capture_eligibility, request_camera_capture
-import uuid
 from .imagens.display_service import DisplayImageReadService
 from .imagens.preview_service import (
     CameraImagePreviewService, DisplayImagePreviewService, PreviewState,
@@ -43,6 +46,17 @@ from .imagens.gallery_preview_service import CameraGalleryPreviewService, Galler
 from .quick_detail import camera_quick_detail
 from .validadores import normalizar_texto_cadastral
 from .xlsx_import import ImportFileError, build_template, confirm_preview, preview_xlsx, record_failed_confirmation
+from .inventory_filters import FiltrosInventario
+from .inventory_export import (
+    EXPORT_FIELDS,
+    InvalidExportSelection,
+    PdfExportLimitExceeded,
+    csv_stream,
+    pdf_export_available,
+    selected_fields,
+    validate_pdf_limits,
+    write_pdf,
+)
 
 ORDENACOES_PERMITIDAS = {"nome", "-nome", "status", "-status", "ip", "-ip", "atualizado_em", "-atualizado_em"}
 
@@ -145,84 +159,18 @@ def _query_params(**params):
 
 @permission_required("cameras.view_camera", raise_exception=True)
 def lista_cameras(request):
-    queryset = Camera.objects.all()
-    q = request.GET.get("q", "").strip()
-
-    status_selecionados = [
-        valor for valor in _valores_get_unicos(request, "status")
-        if valor in {"ONLINE", "OFFLINE", "NAO_VERIFICADO"}
-    ]
-    situacoes_selecionadas = [
-        valor for valor in _valores_get_unicos(request, "situacao_operacional")
-        if valor in Camera.SituacaoOperacional.values
-    ]
-    completudes_selecionadas = [
-        valor for valor in _valores_get_unicos(request, "completude")
-        if valor in {"COMPLETO", "INCOMPLETO"}
-    ]
-    terminais_selecionados = _valores_get_unicos(request, "terminal", normalizar=True)
-    tipos_selecionados = [
-        valor for valor in _valores_get_unicos(request, "tipo")
-        if valor in Camera.TipoCamera.values
-    ]
-    fabricantes_selecionados = _valores_get_unicos(request, "fabricante", normalizar=True)
-    farms_selecionadas = _valores_get_unicos(request, "farm", normalizar=True)
-
-    vlans_selecionadas = []
-    for valor in _valores_get_unicos(request, "vlan"):
-        try:
-            vlan = int(valor)
-        except (TypeError, ValueError):
-            continue
-        if 1 <= vlan <= 4094:
-            vlan_texto = str(vlan)
-            if vlan_texto not in vlans_selecionadas:
-                vlans_selecionadas.append(vlan_texto)
-
-    ordenacao = request.GET.get("ordenacao", "nome")
-
-    if q:
-        queryset = queryset.filter(
-            Q(nome__icontains=q) | Q(patrimonio__icontains=q) | Q(ip__icontains=q)
-            | Q(serial__icontains=q) | Q(mac__icontains=q) | Q(fabricante__icontains=q)
-            | Q(modelo__icontains=q) | Q(terminal__icontains=q) | Q(pavimento__icontains=q)
-            | Q(setor__icontains=q) | Q(ambiente__icontains=q) | Q(farm__icontains=q)
-        )
-
-    if status_selecionados:
-        filtro_status = Q()
-        status_diretos = [v for v in status_selecionados if v in {"ONLINE", "OFFLINE"}]
-        if status_diretos:
-            filtro_status |= Q(status__in=status_diretos)
-        if "NAO_VERIFICADO" in status_selecionados:
-            filtro_status |= Q(status__isnull=True) | Q(status="")
-        queryset = queryset.filter(filtro_status)
-
-    if situacoes_selecionadas:
-        queryset = queryset.filter(situacao_operacional__in=situacoes_selecionadas)
-
-    if completudes_selecionadas:
-        filtro_completude = Q()
-        if "COMPLETO" in completudes_selecionadas:
-            filtro_completude |= q_camera_completa()
-        if "INCOMPLETO" in completudes_selecionadas:
-            filtro_completude |= q_camera_incompleta()
-        queryset = queryset.filter(filtro_completude)
-
-    if terminais_selecionados:
-        queryset = queryset.filter(terminal__in=terminais_selecionados)
-    if tipos_selecionados:
-        queryset = queryset.filter(tipo__in=tipos_selecionados)
-    if fabricantes_selecionados:
-        queryset = queryset.filter(fabricante__in=fabricantes_selecionados)
-    if vlans_selecionadas:
-        queryset = queryset.filter(vlan__in=[int(v) for v in vlans_selecionadas])
-    if farms_selecionadas:
-        queryset = queryset.filter(farm__in=farms_selecionadas)
-
-    if ordenacao not in ORDENACOES_PERMITIDAS:
-        ordenacao = "nome"
-    queryset = queryset.order_by(ordenacao, "pk")
+    filtros = FiltrosInventario.de_parametros(request.GET)
+    queryset = filtros.aplicar(Camera.objects.all())
+    q = filtros.q
+    status_selecionados = list(filtros.status)
+    situacoes_selecionadas = list(filtros.situacao_operacional)
+    completudes_selecionadas = list(filtros.completude)
+    terminais_selecionados = list(filtros.terminal)
+    tipos_selecionados = list(filtros.tipo)
+    fabricantes_selecionados = list(filtros.fabricante)
+    farms_selecionadas = list(filtros.farm)
+    vlans_selecionadas = list(filtros.vlan)
+    ordenacao = filtros.ordenacao
 
     paginator = Paginator(queryset, 20)
     page_obj = paginator.get_page(request.GET.get("page"))
@@ -234,12 +182,12 @@ def lista_cameras(request):
          "display": displays[camera.pk]}
         for camera in page_cameras
     )
-    query_params = _query_params(q=q, status=status_selecionados,
-        situacao_operacional=situacoes_selecionadas, completude=completudes_selecionadas,
-        terminal=terminais_selecionados, tipo=tipos_selecionados,
-        fabricante=fabricantes_selecionados, vlan=vlans_selecionadas,
-        farm=farms_selecionadas,
-        ordenacao=ordenacao if request.GET.get("ordenacao") in ORDENACOES_PERMITIDAS else None)
+    query_params = filtros.para_querydict()
+    export_query_params = [
+        (nome, valor)
+        for nome, valores in query_params.lists()
+        for valor in valores
+    ]
 
     filtros_ativos = []
 
@@ -339,6 +287,10 @@ def lista_cameras(request):
         "vlans_selecionadas": vlans_selecionadas,
         "farms_selecionadas": farms_selecionadas,
         "filtros_ativos": filtros_ativos,
+        "export_fields": EXPORT_FIELDS,
+        "query_params": query_params,
+        "export_query_params": export_query_params,
+        "pdf_export_available": pdf_export_available(),
         "status_filtro_opcoes": [
             ("ONLINE", monitoring_state_label("ONLINE")),
             ("OFFLINE", monitoring_state_label("OFFLINE")),
@@ -385,10 +337,88 @@ def lista_cameras(request):
         "total_resultados": paginator.count,
         "possui_cameras_cadastradas": Camera.objects.exists(),
         "ordenacao": ordenacao,
-        "query_params": query_params,
         "monitoring_state_labels": dict(MONITORING_STATE_LABELS),
         "can_import_cameras": request.user.has_perm("cameras.importar_cameras"),
     })
+
+
+def _retornar_ao_inventario(request, filtros, mensagem):
+    messages.error(request, mensagem)
+    query = filtros.para_querydict().urlencode()
+    url = reverse("cameras:lista")
+    return redirect(f"{url}?{query}" if query else url)
+
+
+@permission_required("cameras.view_camera", raise_exception=True)
+@require_GET
+def exportar_inventario(request):
+    filtros = FiltrosInventario.de_parametros(request.GET)
+    formato = request.GET.get("formato", "").strip().lower()
+    if formato not in {"csv", "pdf"}:
+        return _retornar_ao_inventario(
+            request, filtros, "Selecione um formato de exportação válido."
+        )
+
+    try:
+        fields = selected_fields(request.GET.getlist("campos"))
+    except (InvalidExportSelection, TypeError):
+        return _retornar_ao_inventario(
+            request, filtros, "Selecione ao menos um campo cadastral permitido."
+        )
+
+    queryset = filtros.aplicar(Camera.objects.all())
+    record_count = queryset.count()
+    if not record_count:
+        return _retornar_ao_inventario(
+            request, filtros, "Nenhuma câmera corresponde aos filtros para exportação."
+        )
+
+    if formato == "csv":
+        response = StreamingHttpResponse(
+            csv_stream(queryset, fields),
+            content_type="text/csv; charset=utf-8",
+        )
+        response["Content-Disposition"] = 'attachment; filename="argos-inventario-cameras.csv"'
+        response["X-Content-Type-Options"] = "nosniff"
+        response["Cache-Control"] = "private, no-store"
+        return response
+
+    if not pdf_export_available():
+        return _retornar_ao_inventario(
+            request,
+            filtros,
+            "A exportação PDF está temporariamente indisponível. Tente novamente mais tarde.",
+        )
+
+    try:
+        validate_pdf_limits(queryset, fields, record_count)
+    except PdfExportLimitExceeded:
+        return _retornar_ao_inventario(
+            request,
+            filtros,
+            "O relatório PDF excede o limite seguro. Reduza filtros ou campos, ou escolha CSV.",
+        )
+
+    output = tempfile.SpooledTemporaryFile(max_size=2 * 1024 * 1024, mode="w+b")
+    try:
+        write_pdf(output, queryset, fields, filtros.resumo(), record_count)
+        output.seek(0)
+        response = FileResponse(
+            output,
+            as_attachment=True,
+            filename="argos-inventario-cameras.pdf",
+            content_type="application/pdf",
+        )
+    except Exception:
+        output.close()
+        return _retornar_ao_inventario(
+            request,
+            filtros,
+            "Não foi possível gerar o PDF agora. Nenhum dado foi alterado.",
+        )
+    response["X-Content-Type-Options"] = "nosniff"
+    response["Cache-Control"] = "private, no-store"
+    return response
 
 
 @permission_required("cameras.importar_cameras", raise_exception=True)

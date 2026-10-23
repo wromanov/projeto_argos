@@ -10055,3 +10055,146 @@ PRODUCTION_READINESS = NOT_ESTABLISHED
 PROJECT_STATE_UPDATE = PASS / section 184
 ACTIVITY_COMPLETION_PERCENT = 100%
 NEXT_GATE = HUMAN_AUTHORITY_DECISION_FOR_CAMERA_IMAGE_HOLD_RELEASE
+
+## 185. ARGOS-E6-INVENTORY-EXPORT-01 — implementação local e QA focal (2026-10-23)
+
+ACTIVITY_ID = ARGOS-E6-INVENTORY-EXPORT-01
+WORKSTATION = CASA
+REPOSITORY = C:/Users/walac/desenvolvimento/projeto_argos
+BRANCH = master
+BASELINE_HEAD = c42ddceba6489f37e9b03ff1028e567a2f472064
+EXPECTED_HEAD = c42ddceba6489f37e9b03ff1028e567a2f472064
+HEAD_AFTER_WORK = c42ddceba6489f37e9b03ff1028e567a2f472064
+STATUS = LOCAL_IMPLEMENTATION_AND_FOCUSED_QA_PASS / PDF_RUNTIME_NOT_VERIFIED
+
+EXPORT_FORMATS_IMPLEMENTED = CSV; PDF (runtime pendente)
+EXPORTED_FIELDS = patrimonio; nome; fabricante; modelo; serial; mac; tipo; terminal; pavimento; setor; ambiente; descricao_detalhada; ponto_referencia; ip; mascara_subrede; gateway; vlan; farm; retencao_esperada_dias; codec; origem_cadastro; observacoes; situacao_operacional
+
+E6 integra exportação CSV/PDF à interface e à listagem existente. Os filtros compartilhados em `cameras/inventory_filters.py` preservam os critérios e a ordenação da listagem; a exportação processa todas as linhas filtradas e ignora `page`. A rota exige a mesma permissão global `cameras.view_camera`; o contrato BC-AUTH vigente não define escopo por objeto ou tenant, portanto não se declara autorização por registro.
+
+A allowlist deriva de `CameraBaseForm.CAMPOS_CAMERA` (`cameras/forms.py`) mais `situacao_operacional`, sem expansão por introspecção. CSV é streamado, inclui BOM UTF-8, representa nulos como célula vazia e neutraliza fórmulas. Credenciais, ciphertext, firmware e estado técnico interno ficam excluídos. PDF está implementado com ReportLab/Vera; `requirements.txt` declara `reportlab>=5.0.1,<6`, mas o pacote não foi instalado e a interface mantém PDF indisponível até a instalação. O teste de geração/conteúdo real foi SKIP. O wrapper de texto foi corrigido para medições lineares; limites de 2.300 registros e 1.000.000 caracteres agregados nos campos livres selecionados evitam relatório parcial e orientam a usar CSV ou refinar filtros quando excedidos.
+
+Revisão de segurança residual: o inventário expõe dados cadastrais que podem incluir topologia e endereços IP; campos livres podem conter conteúdo sensível inserido por usuários e não passam por inspeção semântica. A allowlist exclui campos dedicados a credenciais, mas isso não sanitiza o texto livre.
+
+QA focal `cameras.test_inventory_export`: 17 testes, 15 PASS, 0 FAIL, 2 SKIP. Os skips correspondem à geração real de PDF, indisponível por ReportLab ausente, e ao cenário de autorização por objeto/tenant não definido no contrato BC-AUTH. A cobertura inclui aproximadamente 2.300 registros, filtros, ordenação, paginação, repetição de filtros no formulário, Unicode, nulos, injeção CSV, tampering de campos, permissão, omissão de ciphertext, inventário vazio, não mutação do lifecycle e wrapping linear de texto longo (10.000 caracteres, medições limitadas a `len(texto)+2`). `manage.py check`, `makemigrations --check --dry-run` / No changes detected, `git diff --check` e `py_compile` = PASS. O Git emitiu avisos de conversão LF/CRLF para os dois `__init__.py` preexistentes e os cinco documentos atualizados; não são falhas do `diff --check`.
+
+FILES_CREATED = `cameras/inventory_export.py`; `cameras/inventory_filters.py`; `cameras/test_inventory_export.py`
+FILES_MODIFIED = `cameras/views.py`; `cameras/urls.py`; `cameras/templates/cameras/lista.html`; `static/css/inventario.css`; `requirements.txt`; `docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md`; `docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md`; `docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md`; `docs/projeto/ROADMAP_ARGOS_V5.md`; `docs/projeto/SPRINTS_ARGOS_V5.md`
+
+MIGRATION = NONE
+TEST_DATABASE = descartável; banco operacional não acessado
+CAMERA_VMS_NETWORK_CREDENTIALS_RTSP = NOT_ACCESSED
+E3_E4_E5_LIFECYCLE = NOT_CHANGED / NOT_REOPENED
+PRODUCTION_READINESS = NOT_ESTABLISHED
+DEVELOPMENT_COMMIT_READINESS = CONDITIONAL / PDF_RUNTIME_NOT_VERIFIED
+STAGING = EMPTY
+COMMIT = NONE
+PUSH = NONE
+PREEXISTING_WIP = cameras/management/__init__.py; cameras/management/commands/__init__.py; docs/Agent-Continuity-Standard-v1.0.zip (preservado, não aberto)
+ACTIVITY_COMPLETION_PERCENT = 96%
+ACTIVITY_COMPLETE = NO
+PROJECT_STATE_UPDATE = PASS / §185, §§20.138, 142, ROADMAP §31, SPRINTS §28
+NEXT_GATE = validar geração e conteúdo PDF em ambiente autorizado com ReportLab; revisão/commit em atividade separada
+
+## 186. ARGOS-E6-PDF-RUNTIME-VALIDATION-01 — validação funcional local (2026-10-23)
+
+ACTIVITY_ID = ARGOS-E6-PDF-RUNTIME-VALIDATION-01
+WORKSTATION = CASA
+REPOSITORY = C:/Users/walac/desenvolvimento/projeto_argos
+BRANCH = master
+BASELINE_HEAD = c42ddceba6489f37e9b03ff1028e567a2f472064
+EXPECTED_HEAD = c42ddceba6489f37e9b03ff1028e567a2f472064
+HEAD_AFTER_WORK = c42ddceba6489f37e9b03ff1028e567a2f472064
+STATUS = TECHNICAL_RUNTIME_AND_CONTENT_VALIDATION_PASS / PRODUCTION_ACCEPTANCE_NOT_ESTABLISHED
+
+REPORTLAB_VERSION = 5.1.0 / installed only in .venv with Python 3.14.7
+ADDITIONAL_DEPENDENCIES_INSTALLED = NONE
+PDF_INSPECTOR = bundled pypdf 6.10.0 / not added to project dependencies
+PDF_RUNTIME_VALIDATED = YES
+PDF_CONTENT_VALIDATED = YES
+PDF_LIMITS_VALIDATED = YES
+CSV_REGRESSION = PASS
+DJANGO_CHECK = PASS
+MIGRATIONS_CHECK = PASS / No changes detected
+PYTHON_SYNTAX = PASS / AST parse of 7 changed Python files
+GIT_DIFF_CHECK = PASS / existing LF-to-CRLF warnings only
+
+PDF_CONTENT_EVIDENCE = pypdf parsed metadata and extracted headings, columns and text. Combined filters (terminal, manufacturer and VLAN), descending order, ignored page=999, simple filter, Unicode, nulls rendered blank, 1,500-word long text and excluded credential/firmware/out-of-filter sentinels all passed. The filtered PDF contained two matching rows; the simple-filter PDF contained the two expected rows.
+
+PDF_LIMIT_EVIDENCE = 2,300 records generated a valid 77-page PDF; 2,301 records were rejected before write_pdf. Exactly 1,000,000 free-text characters generated a valid 812-page PDF and all 1,000,000 characters were recovered by extraction; 1,000,001 were rejected before write_pdf. The independent 10,000-character wrapping test passed its linear-call bound.
+
+OBSERVED_LOCAL_TIMINGS = combined-filter PDF 0.042 s / 30,841 bytes; 2,300-record PDF 0.542 s / 109,600 bytes; 1,000,000-character PDF 4.647 s / 821,498 bytes. Timings cover the local synthetic TestClient request and response-body collection; they are not production load or concurrency claims.
+
+PDF_ARTIFACTS = .local/qa/e6-pdf-runtime-6e639c5cf7374ee6b80162520af52ccf
+- combined_unicode_long.pdf / 7 pages / 30,841 bytes / SHA-256 C11D6D54792400762D8B8B211BE8310C0590DCBEA7B51F95EC6E0CF8CAD36773
+- simple_filter.pdf / 1 page / 22,663 bytes / SHA-256 DFEF07553EC47EA305C7D803392583535C13A93AEB788B575486727CB8BF84BF
+- maximum_records_2300.pdf / 77 pages / 109,600 bytes / SHA-256 E4A9D5589D345082D39AE48EEF3342C6EF39695D68DCCB11F26CEB6E7936E8D2
+- maximum_free_text_1000000.pdf / 812 pages / 821,498 bytes / SHA-256 BB1D21510ADED8B9A1C1DA61663A07C9E4CBD697B1096853672ACACA9FBD55AF
+
+TEST_RUNS = cameras.test_inventory_export: 17 total / 15 PASS / 0 FAIL / 2 SKIP; cameras.test_authorization.CameraAuthorizationTests and cameras.test_frontend.ListaCamerasFrontendTests: 25 PASS; temporary synthetic runtime probes: 6 PASS. Combined final results: 46 PASS / 0 FAIL / 2 SKIP.
+TESTS_SKIPPED = PDF-unavailable feedback case skipped because ReportLab is installed; object/tenant authorization case skipped because BC-AUTH defines no object-level scope.
+TEST_FIXTURE_CORRECTION = cameras/test_inventory_export.py now uses an unfiltered inventory for PDF generation and puts accented Unicode in observations. The prior test query did not match the normalized cadastral name; no production filter or PDF code defect was found.
+AUTHORIZATION = cameras.view_camera global permission preserved; no object/tenant scope inferred
+ALLOWLIST = CameraBaseForm.CAMPOS_CAMERA plus situacao_operacional; extracted output omitted credential ciphertext, firmware, internal-state and out-of-filter sentinels
+SECURITY_RESIDUAL = inventory may contain IP/topology and user-entered free text; no semantic sanitization is claimed
+
+FILES_MODIFIED = cameras/test_inventory_export.py; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md; docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md; docs/projeto/ROADMAP_ARGOS_V5.md; docs/projeto/SPRINTS_ARGOS_V5.md
+TEMPORARY_PROBE_SOURCE = removed after the run
+TEST_DATABASE = disposable SQLite via scripts.localqa.test_settings
+OPERATIONAL_DATABASE = NOT_ACCESSED
+MIGRATION = NONE
+VM_CAMERA_VMS_NETWORK_CREDENTIALS = NOT_ACCESSED
+E3_E4_E5 = NOT_MODIFIED / NOT_REOPENED
+PREEXISTING_WIP = both cameras/management/__init__.py files and docs/Agent-Continuity-Standard-v1.0.zip preserved; ZIP not opened
+STAGING = EMPTY
+COMMIT = NONE
+PUSH = NONE
+
+DEVELOPMENT_COMMIT_READINESS = READY_FOR_SEPARATE_E6_COMMIT_REVIEW
+PRODUCTION_READINESS = NOT_ESTABLISHED / BC-AUTH object scope and operational acceptance remain pending
+ACTIVITY_COMPLETION_PERCENT = 100%
+ACTIVITY_COMPLETE = YES
+RETURN_TO_ARGOS = SENT
+PROJECT_STATE_UPDATE = PASS / §186, §§20.139, 143, ROADMAP §32, SPRINTS §29
+NEXT_STEP = separate authorized E6 consolidation review; no stage/commit/push in this activity
+
+## 187. ARGOS-E6-GIT-CONSOLIDATION-01 — revisão pré-commit (2026-10-23)
+
+ACTIVITY_ID = ARGOS-E6-GIT-CONSOLIDATION-01
+WORKSTATION = CASA
+REPOSITORY = C:/Users/walac/desenvolvimento/projeto_argos
+BRANCH = master
+BASELINE_HEAD = c42ddceba6489f37e9b03ff1028e567a2f472064
+EXPECTED_HEAD = c42ddceba6489f37e9b03ff1028e567a2f472064
+STATUS = REVIEW_AND_VALIDATION_PASS / STAGING_AND_PUBLICATION_PENDING
+
+SCOPE = 8 E6 implementation/test/dependency files plus 5 continuity/roadmap files; no unrelated WIP included
+FILES_TO_STAGE = cameras/views.py; cameras/urls.py; cameras/templates/cameras/lista.html; cameras/inventory_export.py; cameras/inventory_filters.py; cameras/test_inventory_export.py; static/css/inventario.css; requirements.txt; docs/Agent-Continuity-Standard-v1.0/continuity/PROJECT_STATE.md; docs/Agent-Continuity-Standard-v1.0/continuity/AGENT_CONTINUITY.md; docs/Agent-Continuity-Standard-v1.0/continuity/ACTIVE_DOCUMENT_MAP.md; docs/projeto/ROADMAP_ARGOS_V5.md; docs/projeto/SPRINTS_ARGOS_V5.md
+DEPENDENCY_REVIEW = reportlab>=5.0.1,<6 required by PDF generator; pypdf is inspection-only and not declared for production
+CSV_VALIDATION = PASS / focused E6 tests cover formulas, nulls, Unicode, allowlist, filters and pagination
+PDF_VALIDATION = PASS / real generation and extraction, content and limits recorded in §186; current E6 retest also passed PDF generation
+TESTS = current retest 40 PASS / 0 FAIL / 2 SKIP: cameras.test_inventory_export 15 PASS + 2 conditional SKIP; authorization/list integration 25 PASS. Prior §186 synthetic PDF extraction/limit probes: 6 PASS.
+DJANGO_CHECK = PASS
+MAKEMIGRATIONS_CHECK = PASS / No changes detected using disposable test settings
+PYTHON_SYNTAX = PASS / 5 changed Python files parsed
+GIT_DIFF_CHECK = PASS / line-ending warnings only; no whitespace errors
+
+SECURITY_REVIEW = NO BLOCKER for staging/commit of development baseline / independent security review plus ROOT review
+AUTHORIZATION = cameras.view_camera model-level permission remains identical to inventory list; BC-AUTH defines no object/tenant scope; no scope invented
+ALLOWLIST = CameraBaseForm.CAMPOS_CAMERA plus situacao_operacional; dedicated credentials, ciphertext, firmware and internal technical state excluded
+CONFIDENTIALITY_RESIDUAL = IP/mask/gateway/VLAN/farm/location and free text may be sensitive; these fields remain within the cadastral allowlist and may contain user-entered secrets; no semantic sanitization is claimed
+PDF_CONCURRENCY_LIMITATION = LOW severity for development baseline: count(), free-text aggregate and lazy render are separate queries; concurrent inserts/edits could exceed the checked 2,300-record or 1,000,000-character budgets. Inference only; not reproduced; does not expand authorized records. Production acceptance requires a consistent selection or incremental budget enforcement.
+PRODUCTION_READINESS = NOT_ESTABLISHED / no object scope, residual sensitive inventory data, PDF concurrency bound and operational acceptance
+
+GIT_PREFLIGHT = PASS / root, branch and HEAD match; staging empty; no unexpected paths
+PRESERVED_WIP = cameras/management/__init__.py; cameras/management/commands/__init__.py; docs/Agent-Continuity-Standard-v1.0.zip (unopened); local QA PDFs retained outside staging
+STAGING_AT_REVIEW = EMPTY
+COMMIT_AT_REVIEW = NONE
+PUSH_AT_REVIEW = NONE
+AUTHORIZED_COMMIT_SUBJECT = feat(argos): add inventory CSV and PDF export
+PUSH_AUTHORITY = YES / normal push to origin/master only after live fetch and fast-forward verification
+DEVELOPMENT_BASELINE_STATUS = REVIEWED / local commit and remote publication pending
+ACTIVITY_COMPLETION_PERCENT = 72%
+ACTIVITY_COMPLETE = NO
+PROJECT_STATE_UPDATE = PASS / §187, §§20.140, 144, ROADMAP §33, SPRINTS §30
+NEXT_STEP = stage only FILES_TO_STAGE, inspect cached diff, then commit and verify origin/master before normal push

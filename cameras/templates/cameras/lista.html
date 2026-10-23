@@ -73,6 +73,38 @@
       </span>
     </p>
   </div>
+  <details class="inventory-export">
+    <summary class="argos-button argos-button--secondary">Exportar resultados</summary>
+    <form class="inventory-export__form" method="get" action="{% url 'cameras:exportar' %}">
+      {% for name, value in export_query_params %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}
+      <fieldset class="inventory-export__group">
+        <legend>Formato do arquivo</legend>
+        <label class="argos-field inventory-export__format" for="inventory-export-format">
+          <span class="argos-field__label">Formato</span>
+          <select class="argos-input" id="inventory-export-format" name="formato">
+            <option value="csv">CSV</option>
+            <option value="pdf"{% if not pdf_export_available %} disabled{% endif %}>PDF{% if not pdf_export_available %} (indisponível){% endif %}</option>
+          </select>
+        </label>
+        {% if not pdf_export_available %}<p class="inventory-export__hint">A exportação PDF está temporariamente indisponível.</p>{% endif %}
+      </fieldset>
+      <fieldset class="inventory-export__group">
+        <legend>Campos para exportar</legend>
+        <p class="inventory-export__hint" id="inventory-export-fields-hint">Marque os campos desejados. A ordem no arquivo segue a ordem abaixo.</p>
+        <div class="inventory-export__fields" aria-describedby="inventory-export-fields-hint">
+          {% for field in export_fields %}
+            <label class="inventory-export__field" for="inventory-export-field-{{ forloop.counter }}">
+              <input id="inventory-export-field-{{ forloop.counter }}" type="checkbox" name="campos" value="{{ field.key }}" checked>
+              <span>{{ field.label }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <div class="inventory-export__actions">
+        <button class="argos-button argos-button--primary" type="submit">Baixar exportação</button>
+      </div>
+    </form>
+  </details>
   <p class="inventory-table-hint" id="inventory-table-hint">Em telas menores, deslize a tabela horizontalmente para consultar todas as colunas.</p>
   <div class="argos-table-region table-region inventory-camera-table-region" role="region" aria-label="Câmeras encontradas" aria-describedby="inventory-table-hint" tabindex="0">
     <table class="argos-table argos-table--compact data-table camera-table">
